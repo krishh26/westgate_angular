@@ -8,6 +8,9 @@ import { BOSUserModule } from './modules/bos-user/bos-user.module';
 import { ResetPasswordComponent } from './utility/shared/components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './utility/shared/components/forgot-password/forgot-password.component';
 import { LoginComponent } from './utility/shared/components/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,15 @@ import { LoginComponent } from './utility/shared/components/login/login.componen
     BrowserModule,
     AppRoutingModule,
     BOSUserModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: false,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
