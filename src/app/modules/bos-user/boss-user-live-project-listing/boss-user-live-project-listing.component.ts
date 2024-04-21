@@ -25,7 +25,7 @@ export class BossUserLiveProjectListingComponent {
   ) { }
 
   ngOnInit(): void {
-    
+
     this.getProjectList();
   }
 
@@ -40,7 +40,7 @@ export class BossUserLiveProjectListingComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data;
-       // this.totalRecords = response?.totalCount;
+        // this.totalRecords = response?.totalCount;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -49,6 +49,12 @@ export class BossUserLiveProjectListingComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+
+  projectDetails(item: any) {
+    localStorage.setItem("projectID", item?._id);
+    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: item?._id } });
   }
 
 
