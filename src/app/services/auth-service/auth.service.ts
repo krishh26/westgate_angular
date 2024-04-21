@@ -38,6 +38,12 @@ export class AuthService {
       .post<any>(this.baseUrl + AuthEndPoint.LOGIN_USER, payload ,{ headers: this.getHeader() });
   }
 
+  logout(): void {
+    this.localStorageService.clearStorage();
+    this.router.navigateByUrl('/');
+  }
+
+
   forgotPassword(payload: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + AuthEndPoint.FORGOT_PASSWORD, payload);
