@@ -8,7 +8,7 @@ import { BossUserAddProjectComponent } from './boss-user-add-project/boss-user-a
 import { BossUserViewProjectComponent } from './boss-user-view-project/boss-user-view-project.component';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { HeaderComponent } from 'src/app/utility/shared/components/header/header.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,8 @@ import { HeaderComponent } from 'src/app/utility/shared/components/header/header
   imports: [
     CommonModule,
     BOSUserRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxPaginationModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
