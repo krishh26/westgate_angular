@@ -1,5 +1,9 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { ProjectService } from 'src/app/services/project-service/project.service';
 
 @Component({
   selector: 'app-boss-user-add-project',
@@ -8,17 +12,90 @@ import { Component } from '@angular/core';
 })
 export class BossUserAddProjectComponent {
 
-  systemCalendarFormat!: string;
-
-  ngOnInit(): void {
-    // Detect system calendar format
-    const date = new Date();
-    const format = new Intl.DateTimeFormat([], { calendar: 'auto' }).resolvedOptions().calendar;
-    this.systemCalendarFormat = format;
-
-    // You can set the initial value of the input field here
-    const formattedDate = formatDate(date, 'yyyy-MM-dd', 'en', format);
-    // Set formattedDate to your input field
+  addEditProjectForm = {
+    projectName: new FormControl("", Validators.required),
+    BOSID: new FormControl("", Validators.required),
+    publishDate: new FormControl("", Validators.required),
+    website: new FormControl("", Validators.required),
+    category: new FormControl("", Validators.required),
+    industry: new FormControl("", Validators.required),
+    description: new FormControl("", Validators.required),
+    link: new FormControl("", Validators.required),
+    periodOfContractStart: new FormControl("", Validators.required),
+    periodOfContractEnd: new FormControl("", Validators.required),
+    value: new FormControl("", Validators.required),
+    projectType: new FormControl("", Validators.required),
+    mailID: new FormControl("", Validators.required),
+    clientType: new FormControl("", Validators.required),
+    clientName: new FormControl("", Validators.required),
+    
+    submission: new FormControl("12/9/2002", Validators.required),
+    dueDate: new FormControl("12/9/2001", Validators.required),
   }
 
+  productForm:FormGroup = new FormGroup(this.addEditProjectForm);
+  showLoader: boolean = false;
+  projectId:string = '';
+  constructor(
+    private route:ActivatedRoute,
+    private projectService: ProjectService,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {
+  }
+  
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.projectId = params['id']
+    });
+    if(this.projectId && this.projectId.length){
+      this.patchProjectValue()
+    }
+  }
+
+  patchProjectValue(){
+    this.projectService.getProjectDetailsById(this.projectId).subscribe((response)=>{
+      this.productForm.patchValue(response.data[0])
+    },
+    error=>{
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    })
+  }
+
+  // Submit form
+  submitForm() {
+    this.showLoader = true;
+    let payload = {
+      data: this.productForm.value
+    }
+    if(this.projectId){
+      this.projectService.editProject(this.projectId,this.productForm.value).subscribe((response) => {
+        if(response.status){
+          this.router.navigate(['/boss-user/project-list']);
+        }else{
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      error =>{
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      })
+    }else {
+      this.projectService.addProject(payload).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.router.navigate(['/boss-user/project-list']);
+  
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      });
+    }
+  }
 }

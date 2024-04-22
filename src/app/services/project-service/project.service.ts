@@ -36,9 +36,9 @@ export class ProjectService {
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT, payload);
   }
 
-  editProject(payload: any): Observable<any> {
+  editProject(projectId:string,payload: any): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + ProjectEndPoint.PROJECT_EDIT, payload);
+      .patch<any>(this.baseUrl + ProjectEndPoint.PROJECT_EDIT + `/${projectId}`, payload);
   }
 
   addProject(payload: any): Observable<any> {
@@ -51,6 +51,9 @@ export class ProjectService {
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + this.projectid);
   }
 
-
-
+  // Darshan
+  getProjectDetailsById(projectId : string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + projectId);
+  }
 }

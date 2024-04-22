@@ -14,6 +14,7 @@ import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-documen
 import { MailScreenshotListComponent } from './mail-screenshot-list/mail-screenshot-list.component';
 import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
 import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-user-upload-project.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-
     CommonModule,
     BOSUserRoutingModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

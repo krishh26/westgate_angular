@@ -9,8 +9,9 @@ import { ResetPasswordComponent } from './utility/shared/components/reset-passwo
 import { ForgotPasswordComponent } from './utility/shared/components/forgot-password/forgot-password.component';
 import { LoginComponent } from './utility/shared/components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,11 @@ import { ToastrModule } from 'ngx-toastr';
       preventDuplicates: false,
     }),
   ],
-  providers: [],
+  providers: [ {
+    provide: HTTP_INTERCEPTORS,
+    useClass:APIInterceptor,
+    multi: true
+}],
   bootstrap: [AppComponent],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

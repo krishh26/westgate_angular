@@ -70,6 +70,10 @@ export class BossUserLiveProjectListingComponent {
     localStorage.setItem("projectID", item?._id);
     this.router.navigate(['/boss-user/view-project'], { queryParams: { id: item?._id } });
   }
+  editProjectDetails(item:any){
+    console.log(item)
+    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: item?._id } });
 
+  }
 
 }
