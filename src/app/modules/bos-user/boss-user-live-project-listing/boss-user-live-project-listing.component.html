@@ -9,7 +9,24 @@
           </div>
         </div>
         <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-          <a routerLink="/boss-user/add-project" class="btn btn-outline-white w-100">+ Add Project</a>
+          <nav id="navbar" class="navbar">
+            <ul>
+              <!-- <li class="dropdown">
+                <a class="btn btn-outline-white w-100">+ Add Project</a>
+              </li>
+              <ul>
+                <li><a href="href:;">Profile Seting</a></li>
+                <li><a style="cursor: pointer;">Logout</a></li>
+              </ul> -->
+              <li class="dropdown">
+                <span class="btn btn-outline-white w-100">+ Add Project</span>
+                <ul>
+                  <li><a routerLink="/boss-user/add-project">Single Entry</a></li>
+                  <li><a style="cursor: pointer;">Bulk Entry</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
       <div class="table-responsive mt-5 mb-3">
