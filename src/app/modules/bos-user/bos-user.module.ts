@@ -9,6 +9,11 @@ import { BossUserViewProjectComponent } from './boss-user-view-project/boss-user
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { HeaderComponent } from 'src/app/utility/shared/components/header/header.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FioDocumentListComponent } from './fio-document-list/fio-document-list.component';
+import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-document-add-edit.component';
+import { MailScreenshotListComponent } from './mail-screenshot-list/mail-screenshot-list.component';
+import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
+import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-user-upload-project.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
     BossUserLiveProjectListingComponent,
     BossUserAddProjectComponent,
     BossUserViewProjectComponent,
-    HeaderComponent
+    HeaderComponent,
+    FioDocumentListComponent,
+    FioDocumentAddEditComponent,
+    MailScreenshotListComponent,
+    MailScreenshotAddEditComponent,
+    BossUserUploadProjectComponent
   ],
   imports: [
     CommonModule,
