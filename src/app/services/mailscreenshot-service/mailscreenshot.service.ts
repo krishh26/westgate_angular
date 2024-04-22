@@ -27,22 +27,22 @@ export class MailscreenshotService {
     this.baseUrl = environment.baseUrl;
   }
 
-  getProjectList(payload: any): Observable<any> {
+  getmailSSList(payload: any): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + MailScreenshotEndPoint.MAILSCREENSHOT_LIST, payload);
   }
 
-  deleteProject(payload: any): Observable<any> {
+  deletemailSS(payload: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + MailScreenshotEndPoint.DELETE_MAILSCREENSHOT, payload);
   }
 
-  editProject(payload: any): Observable<any> {
+  editmailSS(payload: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + MailScreenshotEndPoint.MAILSCREENSHOT_EDIT, payload);
   }
 
-  addProject(payload: any): Observable<any> {
+  addmailSS(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + MailScreenshotEndPoint.ADD_MAILSCREENSHOT, payload);
   }
