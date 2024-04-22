@@ -13,6 +13,8 @@ export class BossUserViewProjectComponent {
   projectDetails: any = [];
   projectId: string = '';
   projectID: any;
+  dateDifference: any;
+  currentDate: Date = new Date();
 
   constructor(
     private projectService: ProjectService,
@@ -30,8 +32,12 @@ export class BossUserViewProjectComponent {
     this.getProjectDetails();
   }
 
-  getProjectDetails() {
+  formatMilliseconds(milliseconds: number): string {
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    return `${days} days`;
+  }
 
+  getProjectDetails() {
     // let payload = {
     //   project_id: this.projectID
     // };
@@ -40,6 +46,12 @@ export class BossUserViewProjectComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data[0];
+        const dueDate = new Date(this.projectDetails?.dueDate);
+        const currentDate = new Date();
+        const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+        console.log(`Date difference for project ${dateDifference}`);
+        const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+        this.dateDifference = formattedDateDifference;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

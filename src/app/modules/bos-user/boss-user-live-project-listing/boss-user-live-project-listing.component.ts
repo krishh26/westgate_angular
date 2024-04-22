@@ -17,6 +17,9 @@ export class BossUserLiveProjectListingComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
+  dueDate: any;
+  currentDate: Date = new Date();
+  dateDifference: any
 
   constructor(
     private projectService: ProjectService,
@@ -25,8 +28,12 @@ export class BossUserLiveProjectListingComponent {
   ) { }
 
   ngOnInit(): void {
-
     this.getProjectList();
+  }
+
+  formatMilliseconds(milliseconds: number): string {
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    return `${days} days`;
   }
 
   getProjectList() {
@@ -40,7 +47,14 @@ export class BossUserLiveProjectListingComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data;
-        // this.totalRecords = response?.totalCount;
+        this.projectList.forEach((project: any) => {
+          const dueDate = new Date(project.dueDate);
+          const currentDate = new Date();
+          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+          console.log(`Date difference for project ${dateDifference}`);
+          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+          this.dateDifference = formattedDateDifference;
+        });
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
