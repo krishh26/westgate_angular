@@ -36,6 +36,9 @@ h6 {
   color: #DBFF00;
 }
 
+.p-13 {
+  font-size: 13px !important;
+}
 .p-18 {
   font-size: 18px !important;
 }
@@ -73,6 +76,9 @@ h6 {
 .desktop-pt200{
   padding-top: 200px;
 }
+.text-theme{
+  color: #0077DC;
+}
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -84,7 +90,7 @@ h6 {
   bottom: 0;
   z-index: 9999;
   overflow: hidden;
-  background: #198754;
+  background: #0077DC;
 }
 
 #preloader:before {
@@ -92,7 +98,7 @@ h6 {
   position: fixed;
   top: calc(50% - 30px);
   left: calc(50% - 30px);
-  border: 6px solid #198754;
+  border: 6px solid #0077DC;
   border-top-color: #fff;
   border-bottom-color: #fff;
   border-radius: 50%;
@@ -206,8 +212,7 @@ h6 {
   margin: 0 auto;
   top: 32%;
   transform: translateY(-50%);
-  /* background-image: url(../img/menu-ball.svg);
-  background-image: url(../../assets/img/silver-border-simple-abstract-background.png); */
+  /* background-image: url(../img/menu-ball.svg); */
   width: 42px;
   height: 42px;
   background-size: contain;
@@ -443,7 +448,7 @@ Button Styling
   background-color: #0077DC;
   color: #FFF;
   border-radius: 6px;
-  padding: 15px 30px;
+  padding: 12px 30px;
   border-color: #0077DC;
   font-weight: 400;
 }
@@ -486,7 +491,43 @@ Button Styling
   background: #0077DC;
   color: #FFF;
 }
+.btn-small{
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 100px;
+  padding: 5px 15px;
+  border-color: #0077DC;
+  font-weight: 400;
+}
+.btn-small:hover, .btn-small:focus, .btn-small.active{
+  background-color: #0077DC !important;
+  color: #FFF !important;
+  border-radius: 100px;
+  padding: 5px 15px;
+  border-color: #0077DC !important;
+  font-weight: 400;
+}
+.upload-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.btn-upload-file {
+  color: #0077DC;
+  border: 1px solid transparent;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  padding: .75rem .75rem;
+  border-radius: 6px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -520,6 +561,9 @@ Form Control CSS
   margin-bottom: 5px;
 }
 .form-control{
+  padding: .75rem .75rem;
+}
+.form-select{
   padding: .75rem .75rem;
 }
 .form-group .input-icon{
@@ -611,12 +655,27 @@ Table CSS
   background-color: #0077DC;
   border-color: #FFF;
 }
+/*-----------------------------------------
+Page Header
+------------------------------------------*/
+.pageheader{
+  background-color: #0077DC;
+  color: #FFF;
+  padding: 15px 0;
+}
+.pageheader p{
+  margin-bottom: 0px;
+}
 
 /*==========================================
 Media Query CSS
 ==========================================*/
 
 @media (max-width: 768px) {
+  .navbar a, .navbar a:focus {
+    justify-content: start;
+}
+
   #footer .footer-bottom {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -645,7 +704,6 @@ Media Query CSS
 }
 .Heading-h1 {
   font-size: 54px;
-  font-family: "Potta One", system-ui;
 }
 .kfc-wrapper .kfc-image-items {
   width: 100%;
@@ -672,7 +730,7 @@ ul.Foodmenu-list li {
   font-size: 20px;
   font-family: "Potta One", system-ui;
 }
-.mob-mb-1{
-  margin-bottom: 1rm;
+.mob-mb1{
+  margin-bottom: 1rem;
 }
 }
