@@ -33,12 +33,12 @@ export class ProjectService {
 
   deleteProject(payload: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT, payload);
+      .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT, payload);
   }
 
   editProject(payload: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + ProjectEndPoint.PROJECT_EDIT, payload);
+      .patch<any>(this.baseUrl + ProjectEndPoint.PROJECT_EDIT, payload);
   }
 
   addProject(payload: any): Observable<any> {
