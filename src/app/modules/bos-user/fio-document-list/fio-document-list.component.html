@@ -28,8 +28,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
+                        <tr
+                            *ngFor="let item of FOIList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support
+                                    Services</a></td>
                             <td v-align="middle">546552</td>
                             <td>2023-05-31</td>
                             <td>Website</td>
@@ -41,7 +43,8 @@
                             <td>15</td>
                             <td>25-11-2014 & 5:00PM</td>
                             <td>
-                                <a routerLink="/boss-user/foi-document-details" class="action-btn"><i class="bi bi-eye-fill"></i></a>
+                                <a   (click)="foiDetails(item)" class="action-btn"><i
+                                        class="bi bi-eye-fill"></i></a>
                                 <a routerLink="/boss-user/foi-document-add" class="action-btn"><i
                                         class="bi bi-file-earmark-arrow-up-fill"></i></a>
                             </td>

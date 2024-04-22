@@ -14,6 +14,7 @@ import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-documen
 import { MailScreenshotListComponent } from './mail-screenshot-list/mail-screenshot-list.component';
 import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
 import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-user-upload-project.component';
+import { FoiViewDetailsComponent } from './foi-view-details/foi-view-details.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-
     FioDocumentAddEditComponent,
     MailScreenshotListComponent,
     MailScreenshotAddEditComponent,
-    BossUserUploadProjectComponent
+    BossUserUploadProjectComponent,
+    FoiViewDetailsComponent
   ],
   imports: [
     CommonModule,
