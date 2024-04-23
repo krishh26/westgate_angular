@@ -57,8 +57,14 @@
                     </tbody>
                 </table>
             </div>
-
-            <nav>
+            <div class="row mt-3 align-items-center">
+                <div class="row">
+                  <div class="pagination">
+                    <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            <!-- <nav>
                 <ul class="pagination justify-content-end">
                     <li class="page-item disabled">
                         <span class="page-link">Previous</span>
@@ -72,8 +78,7 @@
                         <a class="page-link" href="javascript:;">Next</a>
                     </li>
                 </ul>
-            </nav>
-
+            </nav> -->
         </div>
     </section>
 

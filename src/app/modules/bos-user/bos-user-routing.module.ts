@@ -5,7 +5,6 @@ import { BossUserAddProjectComponent } from './boss-user-add-project/boss-user-a
 import { BossUserLiveProjectListingComponent } from './boss-user-live-project-listing/boss-user-live-project-listing.component';
 import { BossUserViewProjectComponent } from './boss-user-view-project/boss-user-view-project.component';
 import { BOSUserComponent } from './bos-user.component';
-import { MailScreenshotListComponent } from './mail-screenshot-list/mail-screenshot-list.component';
 import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
 import { FioDocumentListComponent } from './fio-document-list/fio-document-list.component';
 import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-document-add-edit.component';
@@ -43,10 +42,6 @@ const routes: Routes = [
       {
         path: "foi-document-details",
         component: FoiViewDetailsComponent
-      },
-      {
-        path: "mail-screenhot-list",
-        component: MailScreenshotListComponent
       },
       {
         path: "mail-screenhot-add",

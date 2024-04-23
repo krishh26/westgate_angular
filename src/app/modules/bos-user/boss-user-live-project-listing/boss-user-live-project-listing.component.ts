@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 
 @Component({
   selector: 'app-boss-user-live-project-listing',
@@ -19,7 +20,8 @@ export class BossUserLiveProjectListingComponent {
   totalRecords: number = pagination.totalRecords;
   dueDate: any;
   currentDate: Date = new Date();
-  dateDifference: any
+  dateDifference: any;
+  searchText: any;
 
   constructor(
     private projectService: ProjectService,
@@ -38,15 +40,17 @@ export class BossUserLiveProjectListingComponent {
 
   getProjectList() {
     this.showLoader = true;
-    let params = {
-      keyword: ''
-    }
-    this.projectService.getProjectList(params).subscribe((response) => {
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = 0;
       if (response?.status == true) {
         this.showLoader = false;
-        this.projectList = response?.data;
+        this.projectList = response?.data?.data;
+        console.log(this.projectList);
+        
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
@@ -76,4 +80,11 @@ export class BossUserLiveProjectListingComponent {
 
   }
 
+  
+  paginate(page: number) {
+    this.page = page;
+    this.getProjectList();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
+
