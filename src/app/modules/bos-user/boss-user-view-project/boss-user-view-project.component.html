@@ -9,45 +9,46 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-                    <a routerLink="/boss-user/project-list" class="btn btn-outline-white w-100"> <i class="bi bi-arrow-left"></i>
+                    <a routerLink="/boss-user/project-list" class="btn btn-outline-white w-100"> <i
+                            class="bi bi-arrow-left"></i>
                         Back</a>
                 </div>
             </div>
             <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
-                  <thead>
-                    <tr>
-                      <th width="200px">Project Title</th>
-                      <th>BOS ID</th>
-                      <th>Publish Date</th>
-                      <th>Category</th>
-                      <th>Industry</th>
-                      <th>Value</th>
-                      <th>Website</th>
-                      <th>Link to notice</th>
-                      <th>Created Date</th>
-                      <th>Time Due (Mail)</th>
-                      <th>Due Date & Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
-                      <td><a>{{projectDetails?.projectName}}</a></td>
-                      <td v-align="middle">{{projectDetails?.BOSID}}</td>
-                      <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
-                      <td>{{projectDetails?.category}}</td>
-                      <td>{{projectDetails?.industry}}</td>
-                      <td>{{projectDetails?.value}}</td>
-                      <td>{{projectDetails?.website}}</td>
-                      <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
-                      <td>{{projectDetails?.createdAt | date:'MM/dd/yyyy'}}</td>
-                      <td>{{dateDifference}}</td>
-                      <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
-                    </tr>
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th width="200px">Project Title</th>
+                            <th>BOS ID</th>
+                            <th>Publish Date</th>
+                            <th>Category</th>
+                            <th>Industry</th>
+                            <th>Value</th>
+                            <th>Website</th>
+                            <th>Link to notice</th>
+                            <th>Created Date</th>
+                            <th>Time Due (Mail)</th>
+                            <th>Due Date & Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
+                            <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.category}}</td>
+                            <td>{{projectDetails?.industry}}</td>
+                            <td>{{projectDetails?.value}}</td>
+                            <td>{{projectDetails?.website}}</td>
+                            <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
+                            <td>{{projectDetails?.createdAt | date:'MM/dd/yyyy'}}</td>
+                            <td>{{dateDifference}}</td>
+                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                        </tr>
+                    </tbody>
                 </table>
-              </div>
+            </div>
             <!--Project details-->
             <h4 class="text-theme"><strong>Project Description</strong></h4>
             <p>{{projectDetails?.description}} </p>
@@ -74,32 +75,22 @@
                             <p class="mb-0">FIO Screenshot</p>
                         </div>
                         <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
+                            <a href="javascript:;" class="btn btn-small w-100" data-bs-toggle="modal"
                                 data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
                         </div>
                         <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mt-3">
-                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                            <p class="mb-0">FIO Document</p>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
+                            <a href="javascript:;" class="btn btn-small w-100" 
+                                ><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                Download</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
-                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date : 'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date : 'MM/dd/yyyy'}}</strong></p>
+                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'MM/dd/yyyy'}}</strong></p>
                             <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>
@@ -108,3 +99,43 @@
         </div>
     </section>
 </main><!-- End #main -->
+
+<!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">FIO Screenshot e</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/img/screenshot.png" class="img-fluid" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Upload FIO Screenshot Modal -->
+  <!-- <div class="modal fade" id="fioScreenshot" tabindex="-1" aria-labelledby="fioScreenshotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fioScreenshotLabel">FIO Screenshot</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">         
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Uplod FIO Scheenshot</label>
+            <input class="form-control" type="file" id="formFile">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
