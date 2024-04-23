@@ -8,6 +8,10 @@ import { ProjectsMatchedComponent } from './projects-matched/projects-matched.co
 import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashboard.component';
 import { SupplierHomeComponent } from './supplier-home/supplier-home.component';
 import { TotalProjectsInCategoryComponent } from './total-projects-in-category/total-projects-in-category.component';
+import { QuestionDetailsComponent } from './question-details/question-details.component';
+import { ProjectsDetailsComponent } from './projects-details/projects-details.component';
+import { ExpiredProjectComponent } from './expired-project/expired-project.component';
+import { AppliedProjectsDetailsComponent } from './applied-projects-details/applied-projects-details.component';
 
 
 const routes: Routes = [
@@ -42,6 +46,22 @@ const routes: Routes = [
       {
         path: "total-projects-in-category",
         component: TotalProjectsInCategoryComponent
+      },
+      {
+        path: "applied-project-details",
+        component: AppliedProjectsDetailsComponent
+      },
+      {
+        path: "expired-project",
+        component: ExpiredProjectComponent
+      },
+      {
+        path: "projects-details",
+        component: ProjectsDetailsComponent
+      },
+      {
+        path: "question-details",
+        component: QuestionDetailsComponent
       },
     ]
   },

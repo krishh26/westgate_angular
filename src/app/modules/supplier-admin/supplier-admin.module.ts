@@ -11,6 +11,11 @@ import { SupplierRoutingModule } from './supplier-admin.routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
+import { QuestionDetailsComponent } from './question-details/question-details.component';
+import { ProjectsDetailsComponent } from './projects-details/projects-details.component';
+import { ExpiredProjectComponent } from './expired-project/expired-project.component';
+import { AppliedProjectsDetailsComponent } from './applied-projects-details/applied-projects-details.component';
+import { SupplierHeaderComponent } from 'src/app/utility/shared/components/supplier-header/supplier-header.component';
 
 
 
@@ -22,7 +27,12 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
     ProjectsAppliedComponent,
     ProjectsShortlistedComponent,
     ProjectsAllComponent,
-    ProjectsMatchedComponent
+    ProjectsMatchedComponent,
+    QuestionDetailsComponent,
+    ProjectsDetailsComponent,
+    ExpiredProjectComponent,
+    AppliedProjectsDetailsComponent,
+    SupplierHeaderComponent
   ],
   imports: [
     CommonModule,
