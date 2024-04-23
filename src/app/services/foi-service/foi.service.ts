@@ -29,22 +29,22 @@ export class FoiService {
     this.baseUrl = environment.baseUrl;
   }
 
-  getProjectList(payload: any): Observable<any> {
+  getFOIList(): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + FOIEndPoint.FOI_LIST, payload);
+      .get<any>(this.baseUrl + FOIEndPoint.FOI_LIST);
   }
 
-  deleteProject(payload: any): Observable<any> {
+  deleteFOI(payload: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + FOIEndPoint.DELETE_FOI, payload);
   }
 
-  editProject(payload: any): Observable<any> {
+  editFOI(payload: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + FOIEndPoint.FOI_EDIT, payload);
   }
 
-  addProject(payload: any): Observable<any> {
+  addFOI(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + FOIEndPoint.ADD_FOI, payload);
   }
