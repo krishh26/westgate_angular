@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
+import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-dashboard/supplier-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    SupplierDashboardComponent,
   ],
   imports: [
     BrowserModule,
