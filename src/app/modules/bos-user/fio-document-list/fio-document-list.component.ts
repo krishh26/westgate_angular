@@ -68,11 +68,48 @@ export class FioDocumentListComponent {
     });
   }
 
+  searchtext() {
+    this.showLoader = true;
+    // Payload.projectList.keyword = this.searchText || '';
+    // Payload.projectList.page = String(this.page);
+    // Payload.projectList.limit = String(this.pagesize);
+    let params = {
+      keyword: this.searchText || '',
+      page: String(this.page),
+      limit: String(this.pagesize),
+    }
+    this.projectService.getProjectList(params).subscribe((response) => {
+      this.FOIList = [];
+      this.totalRecords = 0;
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.FOIList = response?.data?.data;
+        console.log(this.FOIList);
+
+        this.FOIList.forEach((project: any) => {
+          const dueDate = new Date(project.dueDate);
+          const currentDate = new Date();
+          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+          console.log(`Date difference for project ${dateDifference}`);
+          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+          this.dateDifference = formattedDateDifference;
+        });
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+
+
   foiDetails(item: any) {
     localStorage.setItem("foiID", item?._id);
     this.router.navigate(['/boss-user/foi-document-details'], { queryParams: { id: item?._id } });
   }
-
 
   paginate(page: number) {
     this.page = page;

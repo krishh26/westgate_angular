@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -17,7 +17,7 @@ export enum ProjectEndPoint {
 export class ProjectService {
 
   baseUrl!: string;
-  projectid! : any
+  projectid!: any
 
   constructor(
     private httpClient: HttpClient,
@@ -26,9 +26,20 @@ export class ProjectService {
     this.projectid = localStorage.getItem('projectID')
   }
 
-  getProjectList(payload: any): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LIST, payload);
+  // getProjectList(payload: any): Observable<any> {
+  //   return this.httpClient
+  //     .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LIST, payload);
+  // }
+
+  getProjectList(params: { keyword: string, page: string, limit: string }): Observable<any> {
+    const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('keyword', params.keyword || '');
+    queryParams = queryParams.set('page', params.page);
+    queryParams = queryParams.set('limit', params.limit);
+
+    return this.httpClient.get<any>(url, { params: queryParams });
   }
 
   deleteProject(payload: any): Observable<any> {
@@ -36,7 +47,7 @@ export class ProjectService {
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT, payload);
   }
 
-  editProject(projectId:string,payload: any): Observable<any> {
+  editProject(projectId: string, payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.PROJECT_EDIT + `/${projectId}`, payload);
   }
@@ -52,7 +63,7 @@ export class ProjectService {
   }
 
   // Darshan
-  getProjectDetailsById(projectId : string): Observable<any> {
+  getProjectDetailsById(projectId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + projectId);
   }
