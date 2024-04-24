@@ -39,9 +39,11 @@ h6 {
 .p-13 {
   font-size: 13px !important;
 }
+
 .p-18 {
   font-size: 18px !important;
 }
+
 .p-22 {
   font-size: 22px !important;
 }
@@ -55,9 +57,10 @@ h6 {
 }
 
 .Heading-h3 {
-  font-size: 26px; 
+  font-size: 26px;
 }
-.EventTitle{
+
+.EventTitle {
   font-size: 26px;
 }
 
@@ -67,18 +70,21 @@ h6 {
 }
 
 .bg-primary {
-  background-color: #8FC152 !important;
+  background-color: #0077DC !important;
 }
 
 .desktop-right {
   text-align: right;
 }
-.desktop-pt200{
+
+.desktop-pt200 {
   padding-top: 200px;
 }
-.text-theme{
+
+.text-theme {
   color: #0077DC;
 }
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -428,19 +434,22 @@ h6 {
   display: block;
   visibility: visible !important;
 }
-.login-avtar{
+
+.login-avtar {
   width: 32px;
   height: 32px;
   position: relative;
   border-radius: 100px;
   margin-right: 10px;
 }
-.login-avtar img{
+
+.login-avtar img {
   width: 32px;
   height: 32px;
   object-fit: cover;
   border-radius: 100px;
 }
+
 /*==========================================
 Button Styling
 ============================================*/
@@ -459,6 +468,25 @@ Button Styling
   color: #FFF;
   border-color: #0077DC;
 }
+
+.btn-primarysm {
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  border-color: #0077DC;
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.btn-primarysm:hover,
+.btn-primarysm.active {
+  background-color: #0077DC;
+  color: #FFF;
+  border-color: #0077DC;
+}
+
+
 .btn-white {
   background-color: #FFF;
   color: #000;
@@ -474,24 +502,28 @@ Button Styling
   color: #000;
   border-color: #FFF;
 }
-.btn-outline-white{
+
+.btn-outline-white {
   background-color: transparent;
   border-radius: 6px;
   color: #0077DC;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
-.action-btn{
+
+.action-btn {
   background: #D9D9D9;
   padding: 5px;
   border-radius: 4px;
   color: #6e6e6e;
   margin-left: 5px;
 }
-.action-btn:hover{
+
+.action-btn:hover {
   background: #0077DC;
   color: #FFF;
 }
-.btn-small{
+
+.btn-small {
   background-color: #0077DC;
   color: #FFF;
   border-radius: 100px;
@@ -499,7 +531,10 @@ Button Styling
   border-color: #0077DC;
   font-weight: 400;
 }
-.btn-small:hover, .btn-small:focus, .btn-small.active{
+
+.btn-small:hover,
+.btn-small:focus,
+.btn-small.active {
   background-color: #0077DC !important;
   color: #FFF !important;
   border-radius: 100px;
@@ -507,6 +542,7 @@ Button Styling
   border-color: #0077DC !important;
   font-weight: 400;
 }
+
 .upload-btn-wrapper {
   position: relative;
   display: inline-block;
@@ -528,6 +564,96 @@ Button Styling
   top: 0;
   opacity: 0;
 }
+
+.explore-btn {
+  border-radius: 100px;
+  padding: 5px 30px;
+  font-weight: 400;
+  border: none;
+  width: 100% !important;
+  display: block;
+  text-align: center;
+  color: #FFF;
+}
+
+.explore-btn:hover {
+  color: #FFF;
+}
+
+.bg-blue {
+  background-color: #0077DC;
+  color: #FFF;
+}
+
+.text-blue {
+  color: #0077DC;
+}
+
+.bg-green {
+  background-color: #5E9743;
+  color: #FFF;
+}
+
+.text-green {
+  color: #5E9743;
+}
+
+.bg-teal {
+  background-color: #289F98;
+  color: #FFF;
+}
+
+.text-teal {
+  color: #289F98;
+}
+
+.bg-brown {
+  background-color: #9F3628;
+  color: #FFF;
+}
+
+.text-brown {
+  color: #9F3628;
+}
+
+.bg-light-purple {
+  background-color: #93678E;
+  color: #FFF;
+}
+
+.text-light-purple {
+  color: #93678E;
+}
+
+.bg-dark-gray {
+  background-color: #686868;
+  color: #FFF;
+}
+.bg-dark {
+  background-color: #252525;
+  color: #FFF;
+}
+
+.text-dark-gray {
+  color: #686868;
+}
+
+.btn-secondary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #B7B7B7;
+  --bs-btn-border-color: #B7B7B7;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #5c636a;
+  --bs-btn-hover-border-color: #565e64;
+  --bs-btn-focus-shadow-rgb: 130, 138, 145;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #565e64;
+  --bs-btn-active-border-color: #51585e;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #B7B7B7;
+  --bs-btn-disabled-border-color: #B7B7B7;
+}
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -539,72 +665,97 @@ section {
 .section-bg {
   background-color: #f3f5fa;
 }
-.bosTeam-wrapper{
+
+.bosTeam-wrapper {
   position: absolute;
   bottom: 0;
 }
-.body-welcome-page{
-  background-image: url("../img/welcome-page-bg.png");
+
+.body-welcome-page {
+  background-image: url("../img/welcome-page-banner.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: cover;  
+  background-size: cover;
 }
+
+.dashboard-section {
+  background-image: url("../img/dasboard-background.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /*-------------------------------------------------------
 Form Control CSS
 ---------------------------------------------------------*/
-.form-group{
+.form-group {
   margin-bottom: 15px;
   position: relative;
 }
-.form-group label{
+
+.form-group label {
   margin-bottom: 5px;
 }
-.form-control{
+
+.form-control {
   padding: .75rem .75rem;
 }
-.form-select{
+
+.form-select {
   padding: .75rem .75rem;
 }
-.form-group .input-icon{
+
+.form-group .input-icon {
   position: absolute;
   left: 15px;
   top: 15px;
 }
-.control-search{
+
+.control-search {
   border-radius: 32px;
   background-color: #D9D9D9;
   padding-left: 40px;
 }
+
 /*-------------------------------------------------------
 Login Page CSS
 -------------------------------------------------------*/
-.body-login{
+.body-login {
   background-image: url("../img/silver-border-simple-abstract-background.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: cover;  
+  background-size: cover;
 }
-.login-modal{
+
+.login-modal {
   display: block;
   border-radius: 30px;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
-.login-modal .login-body{
+
+.login-modal .login-body {
   padding: 30px;
 }
-.btn-login{
+
+.btn-login {
   font-weight: 700;
   font-size: 18px;
   background-color: transparent;
   color: #000;
 }
 
-.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active{
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
   border-color: transparent;
 }
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
@@ -612,69 +763,163 @@ Login Page CSS
   font-size: 14px;
   background: #25380E;
 }
+
 /*--------------------------------------------------------------
 # Listing CSS
 --------------------------------------------------------------*/
-ul.LinkList-nav{
+ul.LinkList-nav {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-ul.LinkList-nav li{
- display: block;
+
+ul.LinkList-nav li {
+  display: block;
 }
-ul.LinkList-nav li a{
+
+ul.LinkList-nav li a {
   display: block;
   color: #0077DC;
   text-decoration: underline;
   padding: 15px 0px;
 }
-ul.LinkList-nav li a img{
- margin-right: 10px;
-} 
+
+ul.LinkList-nav li a img {
+  margin-right: 10px;
+}
+ul.project-document{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+ul.project-document li{
+  display: block;
+  padding: 10px 15px;
+  border-bottom: 1px solid #D9D9D9;
+}
+ul.project-document li:last-child{
+  border-bottom: none;
+}
+
 /*------------------------------------------
 Table CSS
 -------------------------------------------*/
-.table>thead th{
+.table>thead th {
   font-size: 14px;
   font-weight: 600;
 }
-.table>tbody td{
+
+.table>tbody td {
   font-size: 14px;
 }
-.table-striped>tbody>tr:nth-of-type(odd)>*{
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
   background-color: #F9F9F9 !important;
 }
-.page-link{
+
+.page-link {
   color: #0077DC;
 }
 
-.active>.page-link, .page-link.active {
+.active>.page-link,
+.page-link.active {
   z-index: 3;
   color: var(--bs-pagination-active-color);
   background-color: #0077DC;
   border-color: #FFF;
 }
+
 /*-----------------------------------------
 Page Header
 ------------------------------------------*/
-.pageheader{
+.pageheader {
   background-color: #0077DC;
   color: #FFF;
   padding: 15px 0;
 }
-.pageheader p{
+
+.pageheader p {
   margin-bottom: 0px;
 }
 
+.page-title {
+  background: #0077dc;
+  color: #FFF;
+  padding: 15px 100px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+.page-title-gray {
+  background: #686868;
+  color: #FFF;
+  padding: 15px 100px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+/*------------------------------------------
+Card Styling
+------------------------------------------*/
+.card{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.statistic-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 11px 1px;
+  background-color: #FFF;
+}
+
+.statistic-card .card-body {
+  flex: 1 1 auto;
+  padding: 2rem 2rem;
+}
+/*----------------------------------------
+Projects Nav Tabs
+------------------------------------------*/
+ul.projects-nav-tab{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  justify-content: space-between;
+  display: flex;
+  background-color: #D0D0D0;
+  ;
+}
+ul.projects-nav-tab li{
+  display: inline-flex;
+}
+ul.projects-nav-tab li a{
+  display: block;
+  padding: 5px 140px;
+  border-radius: 100px;
+  color: #000;
+  text-align: center;
+}
+ul.projects-nav-tab li a.active{
+  background-color: #0077DC;
+  color: #FFF;
+}
+ul.projects-nav-tab li:first-child a{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+ul.projects-nav-tab li:last-child a{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 /*==========================================
 Media Query CSS
 ==========================================*/
 
 @media (max-width: 768px) {
-  .navbar a, .navbar a:focus {
+
+  .navbar a,
+  .navbar a:focus {
     justify-content: start;
-}
+  }
 
   #footer .footer-bottom {
     padding-top: 20px;
@@ -694,43 +939,54 @@ Media Query CSS
   .desktop-right {
     text-align: left;
   }
+
   .navbar a::before {
     right: auto;
     top: 37%;
     left: 22px;
-}
-.page-header .page-title {
-  padding-top: 30;
-}
-.Heading-h1 {
-  font-size: 54px;
-}
-.kfc-wrapper .kfc-image-items {
-  width: 100%;
-  height: auto;
-}
-.kfc-wrapper .kfc-image-items .kfc-image {
-  width: 100%;
-}
-.bg-cover {
-  min-height: 450px;
-}
-.kfc-wrapper .kfc-image-items {
-  position: relative;
-}
-.kfc-wrapper .kfc-image-items .kfc-image {
-  bottom: 30px;
-}
-ul.Foodmenu-list li {
-  width:100%;
-  margin-left: 05px;
-  margin-bottom: 10px;
-}
-.EventTitle{
-  font-size: 20px;
-  font-family: "Potta One", system-ui;
-}
-.mob-mb1{
-  margin-bottom: 1rem;
-}
+  }
+
+  .page-header .page-title {
+    padding-top: 30;
+  }
+
+  .Heading-h1 {
+    font-size: 54px;
+  }
+
+  .kfc-wrapper .kfc-image-items {
+    width: 100%;
+    height: auto;
+  }
+
+  .kfc-wrapper .kfc-image-items .kfc-image {
+    width: 100%;
+  }
+
+  .bg-cover {
+    min-height: 450px;
+  }
+
+  .kfc-wrapper .kfc-image-items {
+    position: relative;
+  }
+
+  .kfc-wrapper .kfc-image-items .kfc-image {
+    bottom: 30px;
+  }
+
+  ul.Foodmenu-list li {
+    width: 100%;
+    margin-left: 05px;
+    margin-bottom: 10px;
+  }
+
+  .EventTitle {
+    font-size: 20px;
+    font-family: "Potta One", system-ui;
+  }
+
+  .mob-mb1 {
+    margin-bottom: 1rem;
+  }
 }

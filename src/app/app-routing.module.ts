@@ -10,6 +10,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/bos-user/bos-user.module').then(m => m.BOSUserModule)
   },
   {
+    path: 'supplier-admin',
+    loadChildren: () => import('./modules/supplier-admin/supplier-admin.module').then(m => m.SupplierAdminModule)
+  },
+  {
     path: 'login',
     component : LoginComponent
   },

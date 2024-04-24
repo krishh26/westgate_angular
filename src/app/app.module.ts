@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-dashboard/supplier-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    SupplierDashboardComponent,
   ],
   imports: [
     BrowserModule,
