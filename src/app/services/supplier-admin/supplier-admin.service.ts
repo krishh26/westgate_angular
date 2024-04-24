@@ -7,9 +7,7 @@ import { Observable } from 'rxjs';
 
 export enum SupplierAdminEndPoint {
   DASHBOARD_LIST = '/project/dashboard',
-  ADD_FOI = '/foi/create',
-  FOI_EDIT = '/foi/update',
-  DELETE_FOI = '/foi/delete',
+  ADD_CASESTUDY = 'case-study/create',
   // PROJECT_DETAILS = '/project/get/'
 }
 
@@ -31,6 +29,11 @@ export class SupplierAdminService {
   getDashboardList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.DASHBOARD_LIST);
+  }
+
+  addCaseStudy(payload:any) {
+    return this.httpClient
+      .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_CASESTUDY, payload);
   }
 
 
