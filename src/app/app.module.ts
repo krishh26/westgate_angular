@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-dashboard/supplier-dashboard.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-da
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    NgbModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

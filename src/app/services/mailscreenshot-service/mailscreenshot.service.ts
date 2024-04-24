@@ -6,10 +6,10 @@ import { environment } from 'src/environment/environment';
 import { Observable } from 'rxjs';
 
 export enum MailScreenshotEndPoint {
-  MAILSCREENSHOT_LIST = '/mail-screenshot/list',
-  ADD_MAILSCREENSHOT = '/mail-screenshot/create',
-  MAILSCREENSHOT_EDIT = '/mail-screenshot/update',
-  DELETE_MAILSCREENSHOT = '/mail-screenshot/delete',
+  MAIL_SCREENSHOT_LIST = '/mail-screenshot/list',
+  ADD_MAIL_SCREENSHOT = '/mail-screenshot/create',
+  MAIL_SCREENSHOT_EDIT = '/mail-screenshot/update',
+  DELETE_MAIL_SCREENSHOT = '/mail-screenshot/delete',
   // PROJECT_DETAILS = '/project/get/'
 }
 @Injectable({
@@ -27,24 +27,24 @@ export class MailscreenshotService {
     this.baseUrl = environment.baseUrl;
   }
 
-  getmailSSList(payload: any): Observable<any> {
+  getMailSSList(payload: any): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + MailScreenshotEndPoint.MAILSCREENSHOT_LIST, payload);
+      .get<any>(this.baseUrl + MailScreenshotEndPoint.MAIL_SCREENSHOT_LIST, payload);
   }
 
-  deletemailSS(payload: any): Observable<any> {
+  deleteMailSS(payload: any): Observable<any> {
     return this.httpClient
-      .delete<any>(this.baseUrl + MailScreenshotEndPoint.DELETE_MAILSCREENSHOT, payload);
+      .delete<any>(this.baseUrl + MailScreenshotEndPoint.DELETE_MAIL_SCREENSHOT, payload);
   }
 
-  editmailSS(payload: any): Observable<any> {
+  editMailSS(payload: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + MailScreenshotEndPoint.MAILSCREENSHOT_EDIT, payload);
+      .patch<any>(this.baseUrl + MailScreenshotEndPoint.MAIL_SCREENSHOT_EDIT, payload);
   }
 
-  addmailSS(payload: any): Observable<any> {
+  addMailSS(payload: any): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + MailScreenshotEndPoint.ADD_MAILSCREENSHOT, payload);
+      .post<any>(this.baseUrl + MailScreenshotEndPoint.ADD_MAIL_SCREENSHOT, payload);
   }
 
 

@@ -70,12 +70,21 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
-                    <div class="row align-items-center">
+                    <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                      <p class="mb-0">FOI Screenshot</p>
+                    </div>
+                    <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                      <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                        <p class="mb-0">No Record Found.</p>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                    <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
                       <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                        <p class="mb-0">FOI Screenshot</p>
+                        <p class="mb-0">{{foiDocument?.name}}</p>
                       </div>
                       <div class="col-lg-4 col-xl-4 col-6">
-                        <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                        <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
                             class="bi bi-eye-fill"></i> View</a>
                       </div>
                       <div class="col-lg-4 col-xl-4 col-6">
@@ -83,6 +92,7 @@
                             class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                       </div>
                     </div>
+                  </ng-container>
                   </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
@@ -104,11 +114,11 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ViewScreenshotLabel">FOI Screenshot</h5>
+                <h5 class="modal-title" id="ViewScreenshotLabel">FOI Screenshot {{selectedDocument?.name}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="assets/img/screenshot.png" class="img-fluid" />
+                <img [src]="selectedDocument?.link?.url" class="img-fluid" />
             </div>
             <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -126,7 +136,7 @@
           <h5 class="modal-title" id="fioScreenshotLabel">FIO Screenshot</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">         
+        <div class="modal-body">
           <div class="mb-3">
             <label for="formFile" class="form-label">Uplod FIO Scheenshot</label>
             <input class="form-control" type="file" id="formFile">
