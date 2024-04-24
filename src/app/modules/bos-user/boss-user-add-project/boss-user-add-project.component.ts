@@ -15,7 +15,7 @@ export class BossUserAddProjectComponent {
   addEditProjectForm = {
     projectName: new FormControl("", Validators.required),
     BOSID: new FormControl("", Validators.required),
-    publishDate: new FormControl("", Validators.required),
+    publishDate: new FormControl(this.getCurrentDate(), Validators.required),
     website: new FormControl("", Validators.required),
     category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
@@ -61,6 +61,11 @@ export class BossUserAddProjectComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     })
+  }
+
+  getCurrentDate(): string {
+    const currentDate = new Date();
+    return currentDate.toISOString().substring(0, 10);
   }
 
   // Submit form
