@@ -449,6 +449,20 @@ h6 {
   object-fit: cover;
   border-radius: 100px;
 }
+.avtar32 {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  border-radius: 100px;
+  margin-right: 10px;
+}
+
+.avtar32 img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 100px;
+}
 
 /*==========================================
 Button Styling
@@ -654,6 +668,24 @@ Button Styling
   --bs-btn-disabled-bg: #B7B7B7;
   --bs-btn-disabled-border-color: #B7B7B7;
 }
+.btn-success {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #2DAE00;
+  --bs-btn-border-color: #2DAE00;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #2DAE00;
+  --bs-btn-hover-border-color: #2DAE00;
+  --bs-btn-focus-shadow-rgb: 60, 153, 110;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #2DAE00;
+  --bs-btn-active-border-color: #2DAE00;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #2DAE00;
+  --bs-btn-disabled-border-color: #2DAE00;
+  border-radius: 6px;
+  padding: 12px 30px;
+}
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -681,6 +713,13 @@ section {
 
 .dashboard-section {
   background-image: url("../img/dasboard-background.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.casestudy-section {
+  background-image: url("../img/case-studies-bg.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -875,6 +914,14 @@ Card Styling
 .statistic-card .card-body {
   flex: 1 1 auto;
   padding: 2rem 2rem;
+}
+.card-gradient1{
+  background: #E9F4FF;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #F6F6F6, #E9F4FF);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #F6F6F6, #E9F4FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.border-radius16{
+  border-radius: 16px;
 }
 /*----------------------------------------
 Projects Nav Tabs
