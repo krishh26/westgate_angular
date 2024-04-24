@@ -15,7 +15,7 @@ export class LocalStorageService {
   setLogger(details: any): void {
     const loginData = JSON.stringify(details);
     localStorage.setItem('loginUser', loginData);
-    localStorage.setItem('loginToken', details?.api_token);
+    localStorage.setItem('loginToken', details?.token);
   }
 
   // Set the updated loginUser details
