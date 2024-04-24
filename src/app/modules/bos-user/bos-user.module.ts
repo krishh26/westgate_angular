@@ -14,7 +14,8 @@ import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-documen
 import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
 import { BossUserUploadProjectComponent } from './boss-user-upload-project/boss-user-upload-project.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FoiViewDetailsComponent } from './foi-view-details/foi-view-details.component';
+import { ViewDocumentComponent } from 'src/app/utility/shared/pop-ups/view-document/view-document.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { FoiViewDetailsComponent } from './foi-view-details/foi-view-details.com
     FioDocumentAddEditComponent,
     MailScreenshotAddEditComponent,
     BossUserUploadProjectComponent,
-    FoiViewDetailsComponent
+    ViewDocumentComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +37,8 @@ import { FoiViewDetailsComponent } from './foi-view-details/foi-view-details.com
     SharedModule,
     NgxPaginationModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

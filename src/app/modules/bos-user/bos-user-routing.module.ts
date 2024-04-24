@@ -8,7 +8,6 @@ import { BOSUserComponent } from './bos-user.component';
 import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-screenshot-add-edit.component';
 import { FioDocumentListComponent } from './fio-document-list/fio-document-list.component';
 import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-document-add-edit.component';
-import { FoiViewDetailsComponent } from './foi-view-details/foi-view-details.component';
 
 const routes: Routes = [
   {
@@ -38,10 +37,6 @@ const routes: Routes = [
       {
         path: "foi-document-add",
         component: FioDocumentAddEditComponent
-      },
-      {
-        path: "foi-document-details",
-        component: FoiViewDetailsComponent
       },
       {
         path: "mail-screenhot-add",
