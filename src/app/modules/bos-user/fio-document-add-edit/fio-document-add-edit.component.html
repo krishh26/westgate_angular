@@ -1,47 +1,63 @@
 <main id="main">
     <section>
       <div class="container">
-        <div class="row">         
+        <div class="row">
           <div class="col-12 mob-mb1 text-end">
             <a routerLink="/boss-user/foi-document-list" class="btn btn-outline-white"> Back</a>
           </div>
         </div>
-       <form>
+          <div class="row mb-3 align-items-center" *ngFor="let item of foiDocumentList">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">FOI Doc Name</label>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <input disabled type="text" class="form-control" [value]="item?.name">
+            </div>
+            <div class="col-lg-3 col-xl-3 col-3">
+              <a (click)="openDocument(item)" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                  class="bi bi-eye-fill"></i> View</a>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-3">
+              <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#fioScreenshot"><i class="bi bi-trash3-fill"></i> Delete</a>
+            </div>
+          </div>
+       <form  [formGroup]="documentForm" (ngSubmit)="submitForm()">
         <div class="row mb-3 align-items-center">
           <label for="inputEmail3" class="col-sm-2 col-form-label">FOI Doc Name</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" formControlName="name">
+            <span class="text-danger" style="color: red;"
+              *ngIf="documentForm.controls.name.touched && documentForm.controls.name?.errors?.['required']">
+                      Please enter document name
+            </span>
           </div>
           <div class="col-sm-2">
             <div class="upload-btn-wrapper">
-              <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
-              <input type="file" name="myfile" />
+              <label for="fileInput" class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</label>
+              <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;" (change)="addFiles($event)"/>
             </div>
           </div>
           <div class="col-sm-2">
-            <button class="btn btn-dark">+</button>
-          </div>
-        </div>
-        <div class="row mb-3 align-items-center">
-          <label for="inputEmail3" class="col-sm-2 col-form-label">FOI Doc Name</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control">
-          </div>
-          <div class="col-sm-2">
-            <div class="upload-btn-wrapper">
-              <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
-              <input type="file" name="myfile" />
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-dark">-</button>
+            <button class="btn btn-dark" type="submit">+</button>
           </div>
         </div>
        </form>
-    
-
       </div>
     </section>
+</main>
 
-
-  </main><!-- End #main -->
+<!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header" style="display: flex; justify-content: space-between;">
+              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document ({{selectedDocument?.name}})</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

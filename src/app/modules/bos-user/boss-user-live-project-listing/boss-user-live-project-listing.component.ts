@@ -50,7 +50,7 @@ export class BossUserLiveProjectListingComponent {
         this.showLoader = false;
         this.projectList = response?.data?.data;
         console.log(this.projectList);
-        
+
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
@@ -70,17 +70,14 @@ export class BossUserLiveProjectListingComponent {
   }
 
 
-  projectDetails(item: any) {
-    localStorage.setItem("projectID", item?._id);
-    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: item?._id } });
-  }
-  editProjectDetails(item:any){
-    console.log(item)
-    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: item?._id } });
-
+  projectDetails(projectId: any) {
+    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
   }
 
-  
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: projectId } });
+  }
+
   paginate(page: number) {
     this.page = page;
     this.getProjectList();

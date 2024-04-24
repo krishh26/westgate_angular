@@ -42,8 +42,8 @@
                             <td>{{dateDifference}}</td>
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>
-                                <a (click)="foiDetails(item)" class="action-btn"><i class="bi bi-eye-fill"></i></a>
-                                <a routerLink="/boss-user/foi-document-add" class="action-btn"><i
+                                <a (click)="foiDetails(item?._id)" class="action-btn"><i class="bi bi-eye-fill"></i></a>
+                                <a (click)="addFoiDetails(item?._id)" class="action-btn"><i
                                         class="bi bi-file-earmark-arrow-up-fill"></i></a>
                             </td>
                         </tr>

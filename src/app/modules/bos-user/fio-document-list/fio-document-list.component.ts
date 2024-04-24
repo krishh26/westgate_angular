@@ -32,12 +32,10 @@ export class FioDocumentListComponent {
     this.getFOIList();
   }
 
-
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
   }
-
 
   getFOIList() {
     this.showLoader = true;
@@ -54,7 +52,6 @@ export class FioDocumentListComponent {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          console.log(`Date difference for project ${dateDifference}`);
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
@@ -68,11 +65,13 @@ export class FioDocumentListComponent {
     });
   }
 
-  foiDetails(item: any) {
-    localStorage.setItem("foiID", item?._id);
-    this.router.navigate(['/boss-user/foi-document-details'], { queryParams: { id: item?._id } });
+  foiDetails(projectID: any) {
+    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectID } });
   }
 
+  addFoiDetails(projectID: any) {
+    this.router.navigate(['/boss-user/foi-document-add'], { queryParams: { id: projectID } });
+  }
 
   paginate(page: number) {
     this.page = page;

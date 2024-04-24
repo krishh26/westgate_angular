@@ -41,11 +41,11 @@ export class FoiService {
 
   editFOI(payload: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + FOIEndPoint.FOI_EDIT, payload);
+      .patch<any>(this.baseUrl + FOIEndPoint.FOI_EDIT, payload);
   }
 
   addFOI(payload: any): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + FOIEndPoint.ADD_FOI, payload);
+      .post<any>(this.baseUrl + FOIEndPoint.ADD_FOI, payload);
   }
 }
