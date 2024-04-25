@@ -13,15 +13,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-dashboard/supplier-dashboard.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    SupplierDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +30,8 @@ import { SupplierDashboardComponent } from './modules/supplier-admin/supplier-da
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
     NgbModule,
     ToastrModule.forRoot({
       timeOut: 3000,

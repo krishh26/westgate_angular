@@ -13,6 +13,16 @@
                         <h4 class="mb-4"><strong>Hello!</strong></h4>
                         <form class="needs-validation" [formGroup]="loginForm" (ngSubmit)="login()">
                             <div class="form-group">
+                                <label>Role</label>
+                                <input type="text" formControlName="role" required class="form-control"
+                                    placeholder="Enter role">
+                                <span class="text-danger" *ngIf="
+                                loginForm.controls.role?.touched &&
+                                loginForm.controls.role?.errors?.['required']">
+                                    Please enter role
+                                </span>
+                            </div>
+                            <div class="form-group">
                                 <label>Email id</label>
                                 <input type="email" formControlName="email" required class="form-control"
                                     placeholder="Enter email id">
