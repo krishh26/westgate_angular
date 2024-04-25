@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 export enum SupplierAdminEndPoint {
   DASHBOARD_LIST = '/project/dashboard',
-  ADD_CASESTUDY = 'case-study/create',
+  ADD_CASESTUDY = '/case-study/create',
   // PROJECT_DETAILS = '/project/get/',
   MANAGE_USER_LIST = '/user/suplier',
   ADD_USER = '/user/suplier/register',

@@ -2,34 +2,48 @@
     <section class="casestudy-section">
         <div class="container">
             <h4 class="text-theme mb-4"><strong>Case Studies</strong></h4>
-            <div class="row">
-                <div class="col-lg-4 col-xl-4 col-12">
-                    <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-2 col-form-label">Category</label>
-                        <div class="col-sm-10">
-                            <select class="form-select">
-                                <optgroup></optgroup>
-                            </select>
+            <form [formGroup]="caseForm" (ngSubmit)="addCaseStudy()">
+                <div class="row">
+                    <div class="col-lg-3 col-xl-3 col-12">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder=" name" formControlName="name"
+                                    required>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-5 col-xl-5 col-12">
-                    <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label">Sub-Category</label>
-                        <div class="col-sm-9">
-                            <select class="form-select">
-                                <optgroup></optgroup>
-                            </select>
+                    <div class="col-lg-4 col-xl-4 col-12">
+                        <div class="row mb-2">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Category</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" formControlName="category">
+                                    <option value="" disabled selected hidden>Select Category</option>
+                                    <option value="WebDevelopment">Web Development</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-lg-5 col-xl-5 col-12">
+                        <div class="row mb-3">
+                            <label for="colFormLabel" class="col-sm-3 col-form-label">Sub-Category</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" formControlName="subCategory">
+                                    <option value="" disabled selected hidden>Select Sub-Category</option>
+                                    <option value="ReactJs">React Js</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-12 text-end">
+                        <label for="fileInput" class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                            Upload Document</label>
+                        <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;"
+                            (change)="addFiles($event)" />&nbsp;
+                        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                    </div>
                 </div>
-                <div class="col-lg-3 col-xl-3 col-12 text-end">
-                    <a href="javascript:;" class="btn btn-primary btn-sm"><i
-                            class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                        Document</a>
-                    <a href="javascript:;" class="btn btn-primary btn-sm">Add</a>
-                </div>
-            </div>
+            </form>
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-12">
                     <div class="form-group">
@@ -45,9 +59,9 @@
     </section>
     <section class="p-0">
         <div class="container">
-            <div class="card card-gradient1 border-radius16 mb-4"  *ngFor="let item of caseStudyList"pan>
+            <div class="card card-gradient1 border-radius16 mb-4" *ngFor="let item of caseStudyList" pan>
                 <div class="card-body">
-                    <div class="row align-items-center" >
+                    <div class="row align-items-center">
                         <div class="col-lg-2 col-xl-2 col-12">
                             <p class="mb-0"><strong>{{item?.name}}</strong></p>
                         </div>
