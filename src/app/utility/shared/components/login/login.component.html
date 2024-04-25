@@ -14,8 +14,14 @@
                         <form class="needs-validation" [formGroup]="loginForm" (ngSubmit)="login()">
                             <div class="form-group">
                                 <label>Role</label>
-                                <input type="text" formControlName="role" required class="form-control"
-                                    placeholder="Enter role">
+                                <!-- <input type="text" formControlName="role" required class="form-control"
+                                    placeholder="Enter role"> -->
+                                    <select formControlName="role" class="form-select">
+                                        <option disabled selected hidden value="">Select User Role</option>
+                                        <option value="BOS">Bos User</option>
+                                        <!-- <option value="FindmyTender">Find my Tender</option> -->
+                                        <option value="SupplierAdmin">Supplier Admin</option>
+                                    </select>
                                 <span class="text-danger" *ngIf="
                                 loginForm.controls.role?.touched &&
                                 loginForm.controls.role?.errors?.['required']">

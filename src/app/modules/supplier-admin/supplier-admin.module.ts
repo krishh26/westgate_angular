@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupplierAdminComponent } from './supplier-admin.component';
 import { TotalProjectsInCategoryComponent } from './total-projects-in-category/total-projects-in-category.component';
@@ -16,6 +16,7 @@ import { ProjectsDetailsComponent } from './projects-details/projects-details.co
 import { ExpiredProjectComponent } from './expired-project/expired-project.component';
 import { AppliedProjectsDetailsComponent } from './applied-projects-details/applied-projects-details.component';
 import { SupplierHeaderComponent } from 'src/app/utility/shared/components/supplier-header/supplier-header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -40,7 +41,9 @@ import { SupplierHeaderComponent } from 'src/app/utility/shared/components/suppl
     SharedModule,
     NgxPaginationModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    NgbModule
+  ],
+  schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SupplierAdminModule { }
