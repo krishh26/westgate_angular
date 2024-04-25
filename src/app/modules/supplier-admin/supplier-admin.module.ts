@@ -19,6 +19,8 @@ import { SupplierHeaderComponent } from 'src/app/utility/shared/components/suppl
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { CaseStudiesComponent } from './case-studies/case-studies.component';
+import { AddCaseStudyComponent } from './add-case-study/add-case-study.component';
 
 
 
@@ -38,6 +40,8 @@ import { AddUserComponent } from './add-user/add-user.component';
     SupplierHeaderComponent,
     AddUserComponent,
     ManageUserComponent,
+    CaseStudiesComponent,
+    AddCaseStudyComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +50,7 @@ import { AddUserComponent } from './add-user/add-user.component';
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -10,7 +10,9 @@ export enum SupplierAdminEndPoint {
   ADD_CASESTUDY = 'case-study/create',
   // PROJECT_DETAILS = '/project/get/',
   MANAGE_USER_LIST = '/user/suplier',
-  ADD_USER = '/user/suplier/register'
+  ADD_USER = '/user/suplier/register',
+  CASE_STUDY_LIST ='/case-study/list',
+  ADD_CASE_STUDY = '/case-study/create'
 }
 
 @Injectable({
@@ -31,6 +33,11 @@ export class SupplierAdminService {
   getDashboardList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.DASHBOARD_LIST);
+  }
+
+  getCaseStudyList(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SupplierAdminEndPoint.CASE_STUDY_LIST);
   }
 
   getManageUserList(): Observable<any> {
