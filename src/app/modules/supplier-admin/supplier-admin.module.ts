@@ -37,7 +37,7 @@ import { AddUserComponent } from './add-user/add-user.component';
     AppliedProjectsDetailsComponent,
     SupplierHeaderComponent,
     AddUserComponent,
-    ManageUserComponent
+    ManageUserComponent,
   ],
   imports: [
     CommonModule,
