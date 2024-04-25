@@ -6,7 +6,7 @@
                     <h4 class="text-theme mb-4"><strong>Users</strong></h4>
                 </div>
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4">
-                    <a href="javascript:;" class="btn btn-primary w-100">Add</a>
+                    <a routerLink="/supplier-admin/add-user" class="btn btn-primary w-100">Add</a>
                 </div>
             </div>
             <div class="table-responsive">
@@ -24,46 +24,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr
+                            *ngFor="let item of manageUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td>
                                 <div class="avtar32">
                                     <img src="assets/img/face1.jpg" />
                                 </div>
                             </td>
-                            <td><a href="javascript:;">James</a></td>
-                            <td><a href="javascript:;">james@gmail.com</a></td>
-                            <td>546552</td>
-                            <td>Domain 1</td>
-                            <td>Department 1</td>
-                            <td>2023-05-31</td>
-                            <td><button class="btn btn-sm btn-secondary">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="avtar32">
-                                    <img src="assets/img/face1.jpg" />
-                                </div>
-                            </td>
-                            <td><a href="javascript:;">James</a></td>
-                            <td><a href="javascript:;">james@gmail.com</a></td>
-                            <td>546552</td>
-                            <td>Domain 1</td>
-                            <td>Department 1</td>
-                            <td>2023-05-31</td>
-                            <td><button class="btn btn-sm btn-secondary">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="avtar32">
-                                    <img src="assets/img/face1.jpg" />
-                                </div>
-                            </td>
-                            <td><a href="javascript:;">James</a></td>
-                            <td><a href="javascript:;">james@gmail.com</a></td>
-                            <td>546552</td>
-                            <td>Domain 1</td>
-                            <td>Department 1</td>
-                            <td>2023-05-31</td>
+                            <td><a href="javascript:;">{{item?.userName}}</a></td>
+                            <td><a href="javascript:;">{{item?.email}}</a></td>
+                            <td>{{item?._id}}</td>
+                            <td>{{item?.domain}}</td>
+                            <td>{{item?.department}}</td>
+                            <td>{{item?.doj | date : 'MM/dd/YYYY'}}</td>
                             <td><button class="btn btn-sm btn-secondary">Remove</button></td>
                         </tr>
                     </tbody>

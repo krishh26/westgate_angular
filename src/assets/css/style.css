@@ -449,6 +449,7 @@ h6 {
   object-fit: cover;
   border-radius: 100px;
 }
+
 .avtar32 {
   width: 32px;
   height: 32px;
@@ -643,6 +644,7 @@ Button Styling
   background-color: #686868;
   color: #FFF;
 }
+
 .bg-dark {
   background-color: #252525;
   color: #FFF;
@@ -668,6 +670,7 @@ Button Styling
   --bs-btn-disabled-bg: #B7B7B7;
   --bs-btn-disabled-border-color: #B7B7B7;
 }
+
 .btn-success {
   --bs-btn-color: #fff;
   --bs-btn-bg: #2DAE00;
@@ -686,6 +689,7 @@ Button Styling
   border-radius: 6px;
   padding: 12px 30px;
 }
+
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -718,8 +722,17 @@ section {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .casestudy-section {
   background-image: url("../img/case-studies-bg.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.adduser-section {
+  background-image: url("../img/businesspeople-having-discussion-office.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -826,17 +839,20 @@ ul.LinkList-nav li a {
 ul.LinkList-nav li a img {
   margin-right: 10px;
 }
-ul.project-document{
+
+ul.project-document {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-ul.project-document li{
+
+ul.project-document li {
   display: block;
   padding: 10px 15px;
   border-bottom: 1px solid #D9D9D9;
 }
-ul.project-document li:last-child{
+
+ul.project-document li:last-child {
   border-bottom: none;
 }
 
@@ -888,6 +904,7 @@ Page Header
   border-radius: 100px;
   font-weight: 600;
 }
+
 .page-title-gray {
   background: #686868;
   color: #FFF;
@@ -899,9 +916,10 @@ Page Header
 /*------------------------------------------
 Card Styling
 ------------------------------------------*/
-.card{
+.card {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
+
 .statistic-card {
   position: relative;
   display: flex;
@@ -915,18 +933,24 @@ Card Styling
   flex: 1 1 auto;
   padding: 2rem 2rem;
 }
-.card-gradient1{
-  background: #E9F4FF;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #F6F6F6, #E9F4FF);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #F6F6F6, #E9F4FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+.card-gradient1 {
+  background: #E9F4FF;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #F6F6F6, #E9F4FF);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #F6F6F6, #E9F4FF);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.border-radius16{
+
+.border-radius16 {
   border-radius: 16px;
 }
+
 /*----------------------------------------
 Projects Nav Tabs
 ------------------------------------------*/
-ul.projects-nav-tab{
+ul.projects-nav-tab {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -935,27 +959,206 @@ ul.projects-nav-tab{
   background-color: #D0D0D0;
   ;
 }
-ul.projects-nav-tab li{
+
+ul.projects-nav-tab li {
   display: inline-flex;
 }
-ul.projects-nav-tab li a{
+
+ul.projects-nav-tab li a {
   display: block;
   padding: 5px 140px;
   border-radius: 100px;
   color: #000;
   text-align: center;
 }
-ul.projects-nav-tab li a.active{
+
+ul.projects-nav-tab li a.active {
   background-color: #0077DC;
   color: #FFF;
 }
-ul.projects-nav-tab li:first-child a{
+
+ul.projects-nav-tab li:first-child a {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-ul.projects-nav-tab li:last-child a{
+
+ul.projects-nav-tab li:last-child a {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+}
+
+/*==========================================
+Chat Page
+==========================================*/
+#TeamList-sidebar {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 30px 30px 0px 30px;
+}
+
+#TeamList-sidebar .girl-image {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+#TeamList-sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+#TeamList-sidebar ul li{
+  display: block;
+  margin-bottom: 15px;
+}
+#TeamList-sidebar ul li{
+  display: block;
+}
+#TeamList-sidebar ul li a{
+  display: block;
+  padding: 10px;
+  border-radius: 100px;
+  text-align: center;
+  background-color: #c4e0f7;
+  color: #FFF;  
+}
+#TeamList-sidebar ul li a.active{
+  background-color: #0077dc;
+  color: #FFF;  
+}
+#chatWindow{
+  background-color: #ECECEC;
+  padding: 30px;
+  border-radius: 35px;
+  min-height: 600px;
+  position: relative;
+}
+.chatHistory{
+  display: block;
+  height: 500px;
+  overflow-y: scroll;
+}
+.chatHistory ul li {
+  display: inline-block;
+  clear: both;
+  float: left;
+  margin: 15px 15px 5px 15px;
+  width: calc(100% - 25px);
+  font-size: 0.9em;
+}
+.chatHistory ul li .sent {
+  background: #FFF;
+  color: #000;
+  padding: 15px;
+  border-radius: 16px;
+  max-width: 75%;
+  position: relative;
+}
+.chatHistory ul li .sent::before{
+  content: "\F5E3";
+    font-family: "bootstrap-icons";
+    position: absolute;
+    bottom: -9px;
+    left: -22px;
+    transform: rotate(270deg);
+    font-size: 2.5rem;
+    color: #FFF;
+}
+
+.chatHistory ul li .replies {
+  background: #FFF;
+  color: #000;
+  float: right;
+  padding: 15px;
+  border-radius: 16px;
+  max-width: 75%;
+  position: relative;
+  margin-right: 30px;
+}
+.chatHistory ul li .replies::before{
+  content: "\F5E3";
+    font-family: "bootstrap-icons";
+    position: absolute;
+    bottom: -9px;
+    right: -22px;
+    transform: rotate(90deg);
+    font-size: 2.5rem;
+    color: #FFF;
+}
+.chatHistory ul li .replies p, .chatHistory ul li .sent p{
+  margin-bottom: 0px;
+}
+.chatHistory ul li .replies .team-name, .chatHistory ul li .sent .team-name{
+  font-size: 13px;
+  color: #0077DC;
+  display: block;
+  margin-bottom: 0px;
+}
+.chatHistory ul li .replies .recived-time{
+  font-size: 12px;
+  color: #D9D9D9;
+  display: block;
+  margin-bottom: 0px;
+}
+.chatHistory ul li .sent .recived-time{
+  font-size: 12px;
+  color: #D9D9D9;
+  display: block;
+  margin-bottom: 0px;
+  text-align: right;
+}
+.chatHistory ul li .sent .recived-time i, .chatHistory ul li .replies .recived-time i{
+  margin-right: 5px;
+}
+.chatHistory ul li .sent .read-tick, .chatHistory ul li .replies .read-tick {
+  color: #0077DC;
+}
+.chatHistory ul li .replies .unread-tick, .chatHistory ul li .sent .unread-tick{
+  color: #D9D9D9;
+}
+.chatsendBox{
+  display: block;
+  position: relative;
+  background: #FFF;
+  border-radius: 100px;
+  padding: 5px;
+  max-height: 60px;
+  min-height: 60px;
+  margin-top: 20px;
+}
+.bi-send-fill::before {
+  content: "\f6b9";
+  transform: rotate(45deg);
+}
+.chatsendBox ul.floatingbuttons{
+  margin: 0;
+  padding: 0;
+  list-style-type: 0;
+}
+.chatsendBox ul.floatingbuttons li{
+  display: inline-block;
+}
+.chatsendBox ul.floatingbuttons a{
+  display: block;
+  width: 42px;
+  height: 42px;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 45px;
+  color: #0077DC;
+  background-color: #FFF;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-left: 5px;
+}
+.google-meet{
+  position: fixed;
+  right: 135px;
+  bottom: 110px;
+}
+.Mobile-chatsendBox{
+  display: none;
 }
 /*==========================================
 Media Query CSS
@@ -1032,8 +1235,63 @@ Media Query CSS
     font-size: 20px;
     font-family: "Potta One", system-ui;
   }
-
   .mob-mb1 {
     margin-bottom: 1rem;
   }
+  #TeamList-sidebar ul li {
+    display: inline-block;
+}
+#chatWindow{
+  padding: 10px;
+}
+.chatHistory ul li .sent, .chatHistory ul li .replies {
+  max-width: 100%;
+}
+.TeamList-sidebar{
+  padding: 0px;
+}
+.chatsendBox{
+  display: none;
+}
+.Mobile-chatsendBox{
+  display: block;
+  position: fixed;
+  background: #FFF;
+  border-radius: 0;
+  padding: 5px;
+  max-height: 110;
+  min-height: 110;
+  margin-top: 20px;
+  bottom: 0;
+}
+.bi-send-fill::before {
+  content: "\f6b9";
+  transform: rotate(45deg);
+}
+.Mobile-chatsendBox ul.floatingbuttons{
+  margin: 0;
+  padding: 0;
+  list-style-type: 0;
+}
+.Mobile-chatsendBox ul.floatingbuttons li{
+  display: inline-block;
+}
+.Mobile-chatsendBox ul.floatingbuttons a{
+  display: block;
+  width: 42px;
+  height: 42px;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 45px;
+  color: #0077DC;
+  background-color: #FFF;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-left: 5px;
+}
+.google-meet{
+  position: fixed;
+  right: 15px;
+  top: 60px;
+}
 }

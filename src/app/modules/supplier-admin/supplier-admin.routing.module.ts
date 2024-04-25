@@ -12,6 +12,8 @@ import { QuestionDetailsComponent } from './question-details/question-details.co
 import { ProjectsDetailsComponent } from './projects-details/projects-details.component';
 import { ExpiredProjectComponent } from './expired-project/expired-project.component';
 import { AppliedProjectsDetailsComponent } from './applied-projects-details/applied-projects-details.component';
+import { ManageUserComponent } from './manage-user/manage-user.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 
 const routes: Routes = [
@@ -62,6 +64,14 @@ const routes: Routes = [
       {
         path: "question-details",
         component: QuestionDetailsComponent
+      },
+      {
+        path: "manage-user",
+        component: ManageUserComponent
+      },
+      {
+        path: "add-user",
+        component: AddUserComponent
       },
     ]
   },

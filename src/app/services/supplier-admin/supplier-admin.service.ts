@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export enum SupplierAdminEndPoint {
   DASHBOARD_LIST = '/project/dashboard',
   ADD_CASESTUDY = 'case-study/create',
-  // PROJECT_DETAILS = '/project/get/'
+  // PROJECT_DETAILS = '/project/get/',
+  MANAGE_USER_LIST = '/user/suplier'
 }
 
 @Injectable({
@@ -29,6 +30,11 @@ export class SupplierAdminService {
   getDashboardList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.DASHBOARD_LIST);
+  }
+
+  getManageUserList(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SupplierAdminEndPoint.MANAGE_USER_LIST);
   }
 
   addCaseStudy(payload:any) {

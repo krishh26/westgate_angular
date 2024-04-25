@@ -17,6 +17,8 @@ import { ExpiredProjectComponent } from './expired-project/expired-project.compo
 import { AppliedProjectsDetailsComponent } from './applied-projects-details/applied-projects-details.component';
 import { SupplierHeaderComponent } from 'src/app/utility/shared/components/supplier-header/supplier-header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ManageUserComponent } from './manage-user/manage-user.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 
 
@@ -33,7 +35,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProjectsDetailsComponent,
     ExpiredProjectComponent,
     AppliedProjectsDetailsComponent,
-    SupplierHeaderComponent
+    SupplierHeaderComponent,
+    AddUserComponent,
+    ManageUserComponent
   ],
   imports: [
     CommonModule,
