@@ -218,7 +218,7 @@ h6 {
   margin: 0 auto;
   top: 32%;
   transform: translateY(-50%);
-  /* background-image: url(../img/menu-ball.svg); */
+  background-image: url(../img/menu-ball.svg);
   width: 42px;
   height: 42px;
   background-size: contain;
@@ -739,6 +739,14 @@ section {
   background-size: cover;
 }
 
+.user-profile-section {
+  background-image: url("../img/user-profile-page-bg.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
 /*-------------------------------------------------------
 Form Control CSS
 ---------------------------------------------------------*/
@@ -771,6 +779,44 @@ Form Control CSS
   padding-left: 40px;
 }
 
+.profile-avtar{
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  margin: auto;
+  margin-bottom: 15px;
+  position: relative;
+}
+.profile-avtar img{
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+.input--file {
+  right: 0;
+  position: absolute;
+  color: #1b1b1b;
+  bottom: 10px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  background: #ebebeb;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+
+}
+
+.input--file input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 32px;
+  cursor: pointer;
+}
 /*-------------------------------------------------------
 Login Page CSS
 -------------------------------------------------------*/

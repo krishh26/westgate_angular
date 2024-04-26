@@ -16,6 +16,7 @@ import { ManageUserComponent } from './manage-user/manage-user.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { CaseStudiesComponent } from './case-studies/case-studies.component';
 import { AddCaseStudyComponent } from './add-case-study/add-case-study.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
 const routes: Routes = [
@@ -82,6 +83,10 @@ const routes: Routes = [
       {
         path: "add-case-study",
         component: AddCaseStudyComponent
+      },
+      {
+        path: "user-profile",
+        component: UserProfileComponent
       },
     ]
   },
