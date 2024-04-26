@@ -81,10 +81,6 @@ const routes: Routes = [
         component: CaseStudiesComponent
       },
       {
-        path: "add-case-study",
-        component: AddCaseStudyComponent
-      },
-      {
         path: "user-profile",
         component: UserProfileComponent
       },

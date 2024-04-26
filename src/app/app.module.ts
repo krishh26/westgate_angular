@@ -35,7 +35,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     NgbModule,
     ToastrModule.forRoot({
       timeOut: 3000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       preventDuplicates: false,
     }),
   ],
