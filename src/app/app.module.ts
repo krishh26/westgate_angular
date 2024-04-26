@@ -15,12 +15,14 @@ import { APIInterceptor } from './utility/interceptor/ApiInterceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FeasibilityAnalystComponent } from './modules/feasibility-analyst/feasibility-analyst.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    FeasibilityAnalystComponent,
   ],
   imports: [
     BrowserModule,
