@@ -115,7 +115,7 @@ export class ProjectsAllComponent {
 
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+    this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId } });
   }
 
   editProjectDetails(projectId: any) {

@@ -41,8 +41,8 @@
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                <a routerLink="/supplier-admin/projects-details" class="btn btn-sm btn-primarysm"
-                                    title="View Details">View</a>
+                                <a class="btn btn-sm btn-primarysm"
+                                    title="View Details" (click)="projectDetails(item?._id)">View</a>
                                 <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
                             </td>
                         </tr>

@@ -20,24 +20,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>
-                                <select class="form-select-sm">
-                                    <option>Completed</option>
-                                    <option>In-Progress</option>
-                                </select>
-                            </td>
-                            <td>25-11-2014 & 5:00PM</td>
+                            <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
+                            <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.category}}</td>
+                            <td>{{projectDetails?.industry}}</td>
+                            <td>{{projectDetails?.value}}</td>
+                            <td>{{projectDetails?.projectType}}</td>
+                            <td>{{projectDetails?.status}}</td>
+                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                <a href="" class="btn btn-primarysm" title="chat"><i class="bi bi-chat-dots me-2"></i>
-                                    Chat</a>
+                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
                             </td>
                         </tr>
                     </tbody>
@@ -49,14 +44,7 @@
         <div class="container">
             <div class="row mb-4">
                 <h4 class="text-theme"><strong>Project Description</strong></h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+                <p>{{projectDetails?.description}}</p>
             </div>
             <div class="row mb-4">
                 <div class="col-12">
@@ -72,7 +60,8 @@
                                         <p class="mb-0">ITT</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -84,7 +73,8 @@
                                         <p class="mb-0">SQ</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -96,7 +86,8 @@
                                         <p class="mb-0">T&C</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -108,7 +99,8 @@
                                         <p class="mb-0">Specification</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -120,7 +112,8 @@
                                         <p class="mb-0">Notice</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -139,7 +132,8 @@
                                         <p class="mb-0">Project Notice</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -151,7 +145,8 @@
                                         <p class="mb-0">Ownership Tracker File</p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
                                         <a href="javascript:;" class="btn btn-primarysm"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
@@ -170,9 +165,9 @@
                                     <h6 class="text-theme"><strong>Client Detils</strong></h6>
                                 </div>
                                 <div class="col-lg-7 col-xl-7 col-12">
-                                    <p class="p-13 mb-0">Mail ID : abc@gmail.com</p>
-                                    <p class="p-13 mb-0">Client Type : Private Sector</p>
-                                    <p class="p-13 mb-0">Client Name : XYZ</p>
+                                    <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                                    <p class="p-13 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                                    <p class="p-13 mb-0">Client Name : {{projectDetails?.clientName}}</p>
                                 </div>
                             </div>
                         </div>
@@ -209,8 +204,10 @@
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
-                            <p class="p-13"><strong>Period of Contract: Start Date - End Date</strong></p>
-                            <p class="p-13"><strong>Project Type: Developement</strong></p>
+                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'MM/dd/yyyy'}}</strong></p>
+                            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>
                 </div>
