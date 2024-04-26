@@ -5,7 +5,8 @@
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input type="search" class="form-control control-search" placeholder="Search">
+                        <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
+                        (input)="searchtext()">
                     </div>
                 </div>
             </div>
@@ -27,106 +28,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>In-Progress</td>
-                            <td>25-11-2014 & 5:00PM</td>
+                        <tr
+                            *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                            <td><a>{{item?.projectName}}</a></td>
+                            <td v-align="middle">{{item?.BOSID}}</td>
+                            <td>{{item?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{item?.category}}</td>
+                            <td>{{item?.industry}}</td>
+                            <td>{{item?.value}}</td>
+                            <td>{{item?.projectType}}</td>
+                            <td>{{item?.status}}</td>
+                            <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View</a>
+                                <a routerLink="/supplier-admin/projects-details" class="btn btn-sm btn-primarysm"
+                                    title="View Details">View</a>
                                 <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
                             </td>
                         </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>In-Progress</td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td><i class="bi bi-circle-fill text-warning"></i> CS(3/3)</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View</a>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>In-Progress</td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View</a>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>In-Progress</td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View</a>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist" disabled>Shortlist</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>School</td>
-                            <td>£50000</td>
-                            <td>Development</td>
-                            <td>In-Progress</td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View</a>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist" disabled>Shortlist</a>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
             </div>
 
-            <nav>
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                        <span class="page-link">Previous</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="javascript:;">1</a></li>
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">2</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="javascript:;">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:;">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="row mt-3 align-items-center">
+                <div class="row">
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </section>

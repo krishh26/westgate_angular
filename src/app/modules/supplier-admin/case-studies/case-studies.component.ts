@@ -97,5 +97,11 @@ export class CaseStudiesComponent {
     }
   }
 
+  paginate(page: number) {
+    this.page = page;
+    this.getCaseStudiesList();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 
 }
