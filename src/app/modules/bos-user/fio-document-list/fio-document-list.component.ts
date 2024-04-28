@@ -67,15 +67,10 @@ export class FioDocumentListComponent {
 
   searchtext() {
     this.showLoader = true;
-    // Payload.projectList.keyword = this.searchText || '';
-    // Payload.projectList.page = String(this.page);
-    // Payload.projectList.limit = String(this.pagesize);
-    let params = {
-      keyword: this.searchText || '',
-      page: String(this.page),
-      limit: String(this.pagesize),
-    }
-    this.projectService.getProjectList(params).subscribe((response) => {
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.FOIList = [];
       this.totalRecords = 0;
       if (response?.status == true) {

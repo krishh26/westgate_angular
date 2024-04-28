@@ -8,7 +8,9 @@ export enum ProjectEndPoint {
   ADD_PROJECT = '/project/create',
   PROJECT_EDIT = '/project/update',
   DELETE_PROJECT = '/project/delete',
-  PROJECT_DETAILS = '/project/get/'
+  PROJECT_DETAILS = '/project/get/',
+  APPLY_PROJECT = "/project/apply",
+  SORT_LIST_PROJECT = "/project/sortlist"
 }
 
 @Injectable({
@@ -31,14 +33,19 @@ export class ProjectService {
   //     .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LIST, payload);
   // }
 
-  getProjectList(params: { keyword: string, page: string, limit: string }): Observable<any> {
+  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
     let queryParams = new HttpParams();
     queryParams = queryParams.set('keyword', params.keyword || '');
     queryParams = queryParams.set('page', params.page);
     queryParams = queryParams.set('limit', params.limit);
-
+    if (params.applied) {
+      queryParams = queryParams.set('applied', params.applied);
+    }
+    if (params.sortlist) {
+      queryParams = queryParams.set('sortlist', params.sortlist);
+    }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
@@ -66,5 +73,15 @@ export class ProjectService {
   getProjectDetailsById(projectId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + projectId);
+  }
+
+  projectApply(payload : any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.APPLY_PROJECT, payload);
+  }
+
+  projectSortList(payload : any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
   }
 }

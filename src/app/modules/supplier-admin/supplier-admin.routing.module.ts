@@ -17,6 +17,8 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { CaseStudiesComponent } from './case-studies/case-studies.component';
 import { AddCaseStudyComponent } from './add-case-study/add-case-study.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SupplierAdminProjectListingComponent } from './supplier-admin-project-listing/supplier-admin-project-listing.component';
+import { SuppilerAdminChatComponent } from './suppiler-admin-chat/suppiler-admin-chat.component';
 
 
 const routes: Routes = [
@@ -24,21 +26,25 @@ const routes: Routes = [
     path: '',
     component: SupplierAdminComponent,
     children: [
+      // {
+      //   path: "projects-all",
+      //   component: ProjectsAllComponent
+      // },
+      // {
+      //   path: "projects-shortlisted",
+      //   component: ProjectsShortlistedComponent
+      // },
+      // {
+      //   path: "projects-applied",
+      //   component: ProjectsAppliedComponent
+      // },
+      // {
+      //   path: "projects-matched",
+      //   component: ProjectsMatchedComponent
+      // },
       {
-        path: "projects-all",
-        component: ProjectsAllComponent
-      },
-      {
-        path: "projects-shortlisted",
-        component: ProjectsShortlistedComponent
-      },
-      {
-        path: "projects-applied",
-        component: ProjectsAppliedComponent
-      },
-      {
-        path: "projects-matched",
-        component: ProjectsMatchedComponent
+        path: "project-list",
+        component: SupplierAdminProjectListingComponent
       },
       {
         path: "supplier-dashboard",
@@ -83,6 +89,10 @@ const routes: Routes = [
       {
         path: "user-profile",
         component: UserProfileComponent
+      },
+      {
+        path: "chat",
+        component: SuppilerAdminChatComponent
       },
     ]
   },

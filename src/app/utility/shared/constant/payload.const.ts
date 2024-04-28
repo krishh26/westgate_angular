@@ -4,6 +4,8 @@ export const Payload = {
         keyword: '',
         page: '1',
         limit: '10',
+        applied : false,
+        sortlist : false
     },
 
     mailSSList: {

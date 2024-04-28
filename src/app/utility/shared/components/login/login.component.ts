@@ -51,12 +51,13 @@ export class LoginComponent extends BaseLogin implements OnInit {
       this.showLoader = true;
       this.authService.loginUser(this.loginForm.value).subscribe((response) => {
         if (response?.status == true) {
-          this.localStorageService.setLogger(response?.data);
+          this.localStorageService.setLoginToken(response?.data);
           this.showLoader = false;
           console.log(response?.data);
           this.tokenDecode = response?.data?.token;
           const decoded = jwtDecode(this.tokenDecode);
           this.loginDetails = decoded;
+          this.localStorageService.setLogger(this.loginDetails);
           if (this.loginDetails?.role == 'BOS') {
             this.router.navigateByUrl('/boss-user/home');
           } else if (this.loginDetails?.role == 'SupplierAdmin') {
@@ -73,6 +74,4 @@ export class LoginComponent extends BaseLogin implements OnInit {
       })
     }
   }
-
-
 }

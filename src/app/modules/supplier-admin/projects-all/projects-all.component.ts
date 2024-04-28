@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime } from 'rxjs';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
@@ -11,60 +13,46 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
   templateUrl: './projects-all.component.html',
   styleUrls: ['./projects-all.component.scss']
 })
-export class ProjectsAllComponent {
-
+export class ProjectsAllComponent implements OnInit {
   showLoader: boolean = false;
   projectList: any = [];
-
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-  dueDate: any;
-  currentDate: Date = new Date();
-  dateDifference: any;
-  searchText: any;
-  myControl = new FormControl();
+  searchText: FormControl = new FormControl('');
+  loginUser: any;
 
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
-    private router: Router
-  ) { }
-
-  ngOnInit(): void {
-    this.myControl.valueChanges.subscribe((res: any) => {
-      let storeTest = res;
-      this.searchText = res.toLowerCase();
-    });
-    this.getProjectList();
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
   }
 
-  formatMilliseconds(milliseconds: number): string {
-    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-    return `${days} days`;
+  ngOnInit(): void {
+    this.searchText.valueChanges.pipe(debounceTime(500)).subscribe((result) => {
+      console.log('result', result);
+      this.getProjectList();
+    });
+
+    this.getProjectList();
   }
 
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.keyword = String(this.searchText?.value) || "";
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.applied = false;
+    Payload.projectList.sortlist = false;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = 0;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        console.log(this.projectList);
-
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          console.log(`Date difference for project ${dateDifference}`);
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -74,52 +62,9 @@ export class ProjectsAllComponent {
       this.showLoader = false;
     });
   }
-
-  
-  searchtext() {
-    this.showLoader = true;
-    // Payload.projectList.keyword = this.searchText || '';
-    // Payload.projectList.page = String(this.page);
-    // Payload.projectList.limit = String(this.pagesize);
-    let params = {
-      keyword: this.searchText || '',
-      page: String(this.page),
-      limit: String(this.pagesize),
-    }
-    console.log(Payload.projectList);
-    this.projectService.getProjectList(params).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = 0;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-        console.log(this.projectList);
-
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          console.log(`Date difference for project ${dateDifference}`);
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
-  }
-
 
   projectDetails(projectId: any) {
     this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId } });
-  }
-
-  editProjectDetails(projectId: any) {
-    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: projectId } });
   }
 
   paginate(page: number) {
@@ -128,6 +73,21 @@ export class ProjectsAllComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-
+  sortListProject(projectId: string) {
+    const payload = {
+      userId: this.loginUser.id,
+      projectId: projectId
+    }
+    this.projectService.projectSortList(payload).subscribe((response) => {
+      if (response?.status) {
+        this.notificationService.showSuccess(response?.message);
+        this.getProjectList();
+      } else {
+        return this.notificationService.showError(response?.message);
+      }
+    }, (error) => {
+      return this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
 
 }

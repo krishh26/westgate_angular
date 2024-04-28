@@ -77,16 +77,11 @@ export class BossUserLiveProjectListingComponent {
 
   searchtext() {
     this.showLoader = true;
-    // Payload.projectList.keyword = this.searchText || '';
-    // Payload.projectList.page = String(this.page);
-    // Payload.projectList.limit = String(this.pagesize);
-    let params = {
-      keyword: this.searchText || '',
-      page: String(this.page),
-      limit: String(this.pagesize),
-    }
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
     console.log(Payload.projectList);
-    this.projectService.getProjectList(params).subscribe((response) => {
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = 0;
       if (response?.status == true) {

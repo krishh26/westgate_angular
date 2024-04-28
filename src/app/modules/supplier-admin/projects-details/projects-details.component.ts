@@ -1,5 +1,7 @@
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Observer } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 
@@ -18,17 +20,21 @@ export class ProjectsDetailsComponent {
   projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
-  selectedDocument : any;
+  selectedDocument: any;
+  loginUser: any;
 
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private localStorageService: LocalStorageService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
+
+    this.loginUser = this.localStorageService.getLogger();
   }
 
   ngOnInit(): void {
@@ -62,4 +68,37 @@ export class ProjectsDetailsComponent {
     });
   }
 
+  openDocument(data: any) {
+    this.selectedDocument = data;
+  }
+
+  download(imageUrl: string, fileName: string): void {
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName); // You can customize the filename here
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+  }
+
+  applyProject() {
+    const payload = {
+      userId: this.loginUser.id,
+      projectId: this.projectId
+    }
+    this.projectService.projectApply(payload).subscribe((response) => {
+      if (response?.status) {
+        this.notificationService.showSuccess(response?.message);
+      } else {
+        return this.notificationService.showError(response?.message);
+      }
+    }, (error) => {
+      return this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
 }

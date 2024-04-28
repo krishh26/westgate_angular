@@ -54,7 +54,8 @@
                     <h5>Client Documents</h5>
                     <div class="card">
                         <ul class="project-document">
-                            <li>
+                          <ng-container *ngIf="projectDetails?.clientDocument?.length > 0">
+                            <li *ngFor="let clientDocument of projectDetails?.clientDocument">
                                 <div class="row">
                                     <div class="col-5 text-center">
                                         <p class="mb-0">ITT</p>
@@ -67,58 +68,12 @@
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">SQ</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
+                          </ng-container>
+                          <ng-container *ngIf="projectDetails?.clientDocument?.length == 0">
+                            <li style="text-align: center;">
+                                <p>No Record Found.</p>
                             </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">T&C</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Specification</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Notice</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
+                          </ng-container>
                         </ul>
                     </div>
                 </div>
@@ -126,32 +81,26 @@
                     <h5>West Gate Documents</h5>
                     <div class="card">
                         <ul class="project-document">
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Project Notice</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
+                          <ng-container *ngIf="projectDetails?.westGetDocument?.length > 0">
+                            <li *ngFor="let westGetDocument of projectDetails?.westGetDocument">
+                              <div class="row">
+                                <div class="col-5 text-center">
+                                    <p class="mb-0">Project Notice</p>
                                 </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Ownership Tracker File</p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
+                                <div class="col-7 text-center">
+                                    <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                        View</a>
+                                    <a href="javascript:;" class="btn btn-primarysm"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                 </div>
+                            </div>
                             </li>
+                          </ng-container>
+                          <ng-container *ngIf="projectDetails?.westGetDocument?.length == 0">
+                            <li style="text-align: center;">
+                                <p>No Record Found.</p>
+                            </li>
+                          </ng-container>
                         </ul>
                     </div>
                 </div>
@@ -174,32 +123,31 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
-                    <div class="row align-items-center">
-                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                            <p class="mb-0">FIO Screenshot</p>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
+                  <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                    <p class="mb-0">FOI Document</p>
+                  </div>
+                  <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                    <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                      <p class="mb-0">No Record Found.</p>
                     </div>
-                    <div class="row align-items-center mt-3">
-                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                            <p class="mb-0">FIO Document</p>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
+                  </div>
+                  <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                  <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                    <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                      <p class="mb-0">{{foiDocument?.name}}</p>
                     </div>
+                    <div class="col-lg-4 col-xl-4 col-6">
+                      <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                          class="bi bi-eye-fill"></i> View</a>
+                    </div>
+                    <div class="col-lg-4 col-xl-4 col-6">
+                      <!-- <a [href]="foiDocument?.link?.url" target="_blank" class="btn btn-small w-100"><i
+                          class="bi bi-file-earmark-arrow-down-fill"></i> Download</a> -->
+                          <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank" class="btn btn-small w-100"><i
+                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                    </div>
+                  </div>
+                  </ng-container>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
@@ -289,7 +237,26 @@
     </section>
     <section>
         <div class="container text-center">
-            <button class="btn btn-primary w-25">Apply</button>
+            <button class="btn btn-primary w-25" (click)="applyProject()">Apply</button>
         </div>
     </section>
 </main><!-- End #main -->
+
+<!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+          </div>
+          <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
+      </div>
+  </div>
+</div>
