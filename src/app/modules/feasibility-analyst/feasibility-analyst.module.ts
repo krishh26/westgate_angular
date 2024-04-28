@@ -32,4 +32,4 @@ import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class SupplierAdminModule { }
+export class FeasibilityModule { }
