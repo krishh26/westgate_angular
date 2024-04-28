@@ -35,7 +35,16 @@ h6 {
 .limegreen {
   color: #DBFF00;
 }
+.p-6 {
+  font-size: 6px !important;
+}
+.p-10 {
+  font-size: 10px !important;
+}
 
+.p-12 {
+  font-size: 12px !important;
+}
 .p-13 {
   font-size: 13px !important;
 }
@@ -84,7 +93,9 @@ h6 {
 .text-theme {
   color: #0077DC;
 }
-
+.display-block{
+  display: block;
+}
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -253,7 +264,7 @@ h6 {
 .navbar .dropdown ul {
   display: block;
   position: absolute;
-  left: -66px;
+  left: 0px;
   /* top: calc(100% + 30px); */
   margin: 0;
   padding: 10px 0;
@@ -573,11 +584,11 @@ Button Styling
 }
 
 .upload-btn-wrapper input[type=file] {
-  font-size: 100px;
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
+
 }
 
 .explore-btn {
@@ -689,7 +700,29 @@ Button Styling
   border-radius: 6px;
   padding: 12px 30px;
 }
-
+.btn-outline-secondary{
+  background-color: #FFFF;
+  color: #0077DC;
+  border-color: transparent;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.btn-outline-secondary:hover, .btn-outline-secondary:focus{
+  background-color: #FFFF;
+  color: #0077DC;
+  border-color: transparent;
+}
+.editbtn{
+  display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: #FFF;
+    text-align: center;
+    line-height: 22px;
+    color: #000;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/

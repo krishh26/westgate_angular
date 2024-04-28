@@ -11,11 +11,13 @@ import { MinimumEligibilityFormComponent } from './minimum-eligibility-form/mini
 import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-note-questions.component';
 import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
 import { FeasibilityProjectsListComponent } from './feasibility-projects-list/feasibility-projects-list.component';
+import { FeasibilityAnalystComponent } from './feasibility-analyst.component';
 
 
 
 @NgModule({
     declarations: [
+        FeasibilityAnalystComponent,
         FeasibilityProjectDetailsComponent,
         FeasibilityLoginDetailsComponent,
         MinimumEligibilityFormComponent,

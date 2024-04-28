@@ -16,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FeasibilityModule } from './modules/feasibility-analyst/feasibility-analyst.module';
+import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { FeasibilityModule } from './modules/feasibility-analyst/feasibility-ana
     AppRoutingModule,
     BOSUserModule,
     FeasibilityModule,
+    SupplierAdminModule,
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
