@@ -31,21 +31,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>School <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>£50000 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>Development</td>
+                            <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
+                            <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.category}}</td>
+                            <td>{{projectDetails?.industry}}</td>
+                            <td>{{projectDetails?.value}}</td>
+                            <td>{{projectDetails?.projectType}}</td>
+                            <td>{{projectDetails?.status}}</td>
+                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                            <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                In-Progress
-                            </td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option>In-Progress, In Hold</option>
-                                </select>
+                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
                             </td>
                         </tr>
                     </tbody>
@@ -54,14 +52,7 @@
             <!--Project description-->
             <div class="row mb-4 mt-4">
                 <h4 class="text-theme"><strong>Project Description</strong></h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+                <p>{{projectDetails?.description}}</p>
             </div>
             <!--client details-->
             <div class="row mt-5">
@@ -73,9 +64,9 @@
                                     <h6 class="text-theme"><strong>Client Detils</strong></h6>
                                 </div>
                                 <div class="col-lg-7 col-xl-7 col-12">
-                                    <p class="p-13 mb-0">Mail ID : abc@gmail.com</p>
-                                    <p class="p-13 mb-0">Client Type : Private Sector</p>
-                                    <p class="p-13 mb-0">Client Name : XYZ</p>
+                                    <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                                    <p class="p-13 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                                    <p class="p-13 mb-0">Client Name : {{projectDetails?.clientName}}</p>
                                 </div>
                             </div>
                         </div>
@@ -92,8 +83,8 @@
                         </div>
                         <div class="col-lg-4 col-xl-4 col-6">
                             <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
+                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                Download</a>
                         </div>
                     </div>
                     <div class="row align-items-center mt-3">
@@ -104,16 +95,18 @@
                             <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
                         </div>
                         <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
+                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                Download</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
-                            <p class="p-13"><strong>Period of Contract: Start Date - End Date</strong></p>
-                            <p class="p-13"><strong>Project Type: Developement</strong></p>
+                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'MM/dd/yyyy'}}</strong></p>
+                            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>
                 </div>
@@ -189,11 +182,14 @@
                                         deliver.</td>
                                     <td>
                                         <strong>35%</strong>
-                                        <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill"> View
+                                        <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill">
+                                                View
                                                 Instructions</i></a>
-                                        <a href="javascript:;" class="btn btn-outline-secondary"><i class="bi bi-pencil-fill">
+                                        <a href="javascript:;" class="btn btn-outline-secondary"><i
+                                                class="bi bi-pencil-fill">
                                                 Edit</i></a>
-                                        <a href="javascript:;" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i></a>
+                                        <a href="javascript:;" class="btn btn-outline-secondary"><i
+                                                class="bi bi-x-circle"></i></a>
                                     </td>
                                     <td>
                                         <a href="project-details-next-step3.html" class="btn btn-secondary">Next</a>

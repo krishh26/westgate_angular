@@ -5,7 +5,8 @@
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input type="search" class="form-control control-search" placeholder="Search">
+                        <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
+                        (input)="searchtext()">
                     </div>
                 </div>
             </div>
@@ -27,40 +28,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support
-                                    Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
-                            </td>
-                            <td>School <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>£50000 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>Development</td>
+                        <tr
+                            *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                            <td><a>{{item?.projectName}}</a></td>
+                            <td v-align="middle">{{item?.BOSID}}</td>
+                            <!-- <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                            </td> -->
+                            <td>{{item?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{item?.category}}</td>
+                            <td>{{item?.industry}}</td>
+                            <td>{{item?.value}}</td>
+                            <td>{{item?.projectType}}</td>
+                            <td>{{item?.status}}</td>
+                            <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>
-                                In-Progress
-                            </td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td>
-                                <a href="" class="btn btn-primarysm" title="View Details">View Details</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support
-                                    Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
-                            </td>
-                            <td>School <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>£50000 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>Development</td>
-                            <td>
-                                In-Progress
-                            </td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td>
-                                <a href="" class="btn btn-primarysm" title="View Details">View Details</a>
+                                <a (click)="projectDetails(item?._id)" class="btn btn-primarysm" title="View Details">View Details</a>
                             </td>
                         </tr>
                     </tbody>
