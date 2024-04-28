@@ -5,6 +5,8 @@ import { FeasibilityProjectDetailsComponent } from './feasibility-project-detail
 import { FeasibilityProjectsListComponent } from './feasibility-projects-list/feasibility-projects-list.component';
 import { MinimumEligibilityFormComponent } from './minimum-eligibility-form/minimum-eligibility-form.component';
 import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-note-questions.component';
+import { FeasibilityLoginDetailsComponent } from './feasibility-login-details/feasibility-login-details.component';
+import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
 
 const routes: Routes = [
     {
@@ -26,6 +28,14 @@ const routes: Routes = [
             {
                 path: "summary-note-questions",
                 component: SummaryNoteQuestionsComponent
+            },
+            {
+                path: "feasibility-login-detail",
+                component: FeasibilityLoginDetailsComponent
+            },
+            {
+                path: "add-login-detail",
+                component: AddLoginDetailsComponent
             },
         ]
     },
