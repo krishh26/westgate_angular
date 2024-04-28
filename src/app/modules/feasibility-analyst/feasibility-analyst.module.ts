@@ -12,6 +12,8 @@ import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-
 import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
 import { FeasibilityProjectsListComponent } from './feasibility-projects-list/feasibility-projects-list.component';
 import { FeasibilityAnalystComponent } from './feasibility-analyst.component';
+import { FeasibilityHeaderComponent } from 'src/app/utility/shared/components/feasibility-header/feasibility-header.component';
+
 
 
 
@@ -23,7 +25,8 @@ import { FeasibilityAnalystComponent } from './feasibility-analyst.component';
         MinimumEligibilityFormComponent,
         SummaryNoteQuestionsComponent,
         AddLoginDetailsComponent,
-        FeasibilityProjectsListComponent
+        FeasibilityProjectsListComponent,
+        FeasibilityHeaderComponent
     ],
     imports: [
         CommonModule,

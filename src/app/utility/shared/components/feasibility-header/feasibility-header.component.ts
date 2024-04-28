@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-feasibility-header',
   templateUrl: './feasibility-header.component.html',
-  styleUrls: ['./feasibility-header.component.css']
+  styleUrls: ['./feasibility-header.component.scss']
 })
-export class FeasibilityHeaderComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class FeasibilityHeaderComponent {
 
 }
