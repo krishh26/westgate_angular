@@ -30,8 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
               "src/assets/css/style.css",
+              "src/styles.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/assets/vendor/bootstrap/css/bootstrap.css",
               "src/assets/vendor/bootstrap/css/bootstrap.min.css",
@@ -120,8 +120,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
               "src/assets/css/style.css",
+              "src/styles.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/assets/vendor/bootstrap/css/bootstrap.css",
               "src/assets/vendor/bootstrap/css/bootstrap.min.css",

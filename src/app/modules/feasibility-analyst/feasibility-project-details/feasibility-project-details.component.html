@@ -1,1 +1,402 @@
-<p>feasibility-project-details works!</p>
+<main id="main">
+    <section>
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                    <div class="form-group mb-0">
+                        <span class="input-icon"><i class="bi bi-search"></i></span>
+                        <input type="search" class="form-control control-search" placeholder="Search">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-xl-2 col-12">
+                    <a href="project-list.html" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-5 mb-3">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th width="200px">Project Title</th>
+                            <th>BOS ID</th>
+                            <th>Publish Date</th>
+                            <th>Category</th>
+                            <th>Industry</th>
+                            <th>Value</th>
+                            <th>Project Type</th>
+                            <th>Status</th>
+                            <th>Due Date &amp; Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
+                            <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.category}}</td>
+                            <td>{{projectDetails?.industry}}</td>
+                            <td>{{projectDetails?.value}}</td>
+                            <td>{{projectDetails?.projectType}}</td>
+                            <td>{{projectDetails?.status}}</td>
+                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                            <td>
+                                <select class="form-select form-select-sm">
+                                    <option>In-Progress, In Hold</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-9 col-xl-9 col-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <label class="display-block">Sub-contracting</label>
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Query Image</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <label class="display-block">Economical partnership</label>
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Query Image</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <label class="display-block">other</label>
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Query Image</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <label class="display-block">&nbsp;</label>
+                                <div class="upload-btn-wrapper">
+                                    <button type="button" class="btn btn-dark btn-sm"><i
+                                            class="bi bi-plus-lg"></i></button>
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Doc...</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-check form-check-inline mt-3">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                    value="option1">
+                                <label class="form-check-label" for="inlineRadio1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                    value="option2">
+                                <label class="form-check-label" for="inlineRadio2">No</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Document</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Document</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                            <div class="form-group">
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Document</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xl-3 col-12">
+                    <div class="card bg-primary">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-xl-4 col-12">
+                                    <h6 class="p-12 text-white"><strong>Client Detils</strong></h6>
+                                </div>
+                                <div class="col-lg-7 col-xl-7 col-12">
+                                    <p class="p-10 mb-0 text-white">Mail ID : {{projectDetails?.mailID}}</p>
+                                    <p class="p-10 mb-0 text-white">Client Type : {{projectDetails?.clientType}}</p>
+                                    <p class="p-10 mb-0 text-white">Client Name : {{projectDetails?.clientName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Project description-->
+            <div class="row mb-4 mt-4">
+                <h4 class="text-theme"><strong>Project Description</strong></h4>
+                <p>{{projectDetails?.description}}</p>
+            </div>
+            <!--client details-->
+            <div class="row mt-5">
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-xl-4 col-12">
+                                    <h6 class="text-theme"><strong>Client Detils</strong></h6>
+                                </div>
+                                <div class="col-lg-7 col-xl-7 col-12">
+                                    <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                                    <p class="p-13 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                                    <p class="p-13 mb-0">Client Name : {{projectDetails?.clientName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                            <p class="mb-0">FOI Screenshot</p>
+                        </div>
+                        <div class="col-lg-4 col-xl-4 col-6">
+                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
+                                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                        </div>
+                        <!-- <div class="col-lg-4 col-xl-4 col-6">
+                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
+                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                Download</a>
+                        </div> -->
+                    </div>
+                    <div class="row align-items-center mt-3">
+                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                            <p class="mb-0">FOI Document</p>
+                        </div>
+                        <div class="col-lg-4 col-xl-4 col-6">
+                            <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
+                        </div>
+                        <!-- <div class="col-lg-4 col-xl-4 col-6">
+                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                Download</a>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'MM/dd/yyyy'}}</strong></p>
+                            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Documents-->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
+                </div>
+                <div class="col-lg-5 col-xl-5 col-12 mob-mb1">
+                    <h5>Client Documents</h5>
+                    <div class="card">
+                        <ul class="project-document">
+                            <li>
+                                <div class="row">
+                                    <div class="col-5 text-center">
+                                        <p class="mb-0">ITT <a href="href:;" class="editbtn"><i
+                                                    class="bi bi-pencil-fill"></i></a></p>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" class="btn btn-primarysm"><i
+                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-5 text-center">
+                                        <p class="mb-0">SQ <a href="href:;" class="editbtn"><i
+                                                    class="bi bi-pencil-fill"></i></a></p>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" class="btn btn-primarysm"><i
+                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-5 text-center">
+                                        <p class="mb-0">T&amp;C <a href="href:;" class="editbtn"><i
+                                                    class="bi bi-pencil-fill"></i></a></p>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" class="btn btn-primarysm"><i
+                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-5 text-center">
+                                        <p class="mb-0">Specification <a href="href:;" class="editbtn"><i
+                                                    class="bi bi-pencil-fill"></i></a></p>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" class="btn btn-primarysm"><i
+                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-5 text-center">
+                                        <p class="mb-0">Notice <a href="href:;" class="editbtn"><i
+                                                    class="bi bi-pencil-fill"></i></a></p>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" class="btn btn-primarysm"><i
+                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-dark btn-sm add-card-btn"><i
+                                class="bi bi-plus-lg"></i></button>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-12">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="option1">
+                            <label class="form-check-label" for="inlineRadio1">In-Progress</label>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Comments for In-Progress" />
+                    </div>
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">In-Hold</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <input type="date" class="form-control" placeholder="Date" />
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" placeholder="Comments for In-Hold" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="option1">
+                            <label class="form-check-label text-success" for="inlineRadio1">Pass</label>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Comments for Pass" />
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xl-3 col-12">
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
+                                    <label class="form-check-label text-danger" for="inlineRadio1">Fail</label>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="upload-btn-wrapper">
+                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Document</button>
+                                    <input type="file" name="myfile">
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <select class="form-select">
+                                    <option>Select</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-xl-4 col-12">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-xl-6 col-12">
+                            <p><strong>Login Details 1</strong></p>
+                        </div>
+                        <div class="col-lg-6 col-xl-6 col-10">
+                            <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                            <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                Upload</a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-xl-6 col-12">
+                            <p><strong>Login Details 1</strong></p>
+                        </div>
+                        <div class="col-lg-6 col-xl-6 col-10">
+                            <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
+                            <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                Upload</a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-xl-6 col-12 text-end">
+                            <button type="button" class="btn btn-sm btn-dark"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                    <a href="project-details-next-step2.html" class="btn btn-dark w-100">Next</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

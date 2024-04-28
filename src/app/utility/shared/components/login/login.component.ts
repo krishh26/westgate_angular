@@ -62,6 +62,8 @@ export class LoginComponent extends BaseLogin implements OnInit {
             this.router.navigateByUrl('/boss-user/home');
           } else if (this.loginDetails?.role == 'SupplierAdmin') {
             this.router.navigateByUrl('/supplier-admin/supplier-home');
+          } else if (this.loginDetails?.role == 'FeasibilityUser') {
+            this.router.navigateByUrl('/feasibility-user/feasibility-project-list');
           }
           this.notificationService.showSuccess(response?.message || 'User login successfully');
         } else {

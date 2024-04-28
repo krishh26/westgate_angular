@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/supplier-admin/supplier-admin.module').then(m => m.SupplierAdminModule)
   },
   {
+    path: 'feasibility-user',
+    loadChildren: () => import('./modules/feasibility-analyst/feasibility-analyst.module').then(m => m.FeasibilityModule)
+  },
+  {
     path: 'login',
     component : LoginComponent
   },
