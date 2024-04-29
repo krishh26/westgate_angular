@@ -15,12 +15,13 @@ body {
 
 a {
   color: #0077DC;
-  text-decoration: none;
+  text-decoration: none !important;
+  cursor: pointer;
 }
 
 a:hover {
   color: #0077DC;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 h1,
@@ -138,12 +139,18 @@ h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+.body-top{
+  padding-top: 100px;
+}
 #header {
   transition: all 0.5s;
   z-index: 997;
   padding: 15px 0px;
-  /* background-color: #FFF; */
-  /* box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05); */
+  background-color: #FFF; 
+  box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05);
+  position: fixed;
+  top: 0px;
+  width: 100%;
 }
 
 #header.header-scrolled,
@@ -154,6 +161,7 @@ h6 {
 #header .logo {
   font-size: 30px;
   margin: 0;
+  margin-left: 0px !important;
   padding: 0;
   line-height: 1;
   font-weight: 500;
@@ -205,6 +213,7 @@ h6 {
   transition: 0.3s;
   z-index: 1;
   position: relative;
+   text-decoration: none;
 }
 
 .navbar a i,
@@ -288,10 +297,14 @@ h6 {
   text-transform: none;
   font-weight: 500;
   color: #0c3c53;
+  text-decoration: none !important;
 }
 
 .navbar .dropdown ul a i {
   font-size: 12px;
+}
+.navbar .dropdown ul a span {
+  text-decoration: none !important;
 }
 
 .navbar .dropdown ul a:hover,
@@ -318,6 +331,9 @@ h6 {
   top: -10px !important;
   left: 100%;
   visibility: visible;
+}
+.navbar .dropdown .dropdown ul li span{
+text-decoration: none !important;
 }
 
 @media (max-width: 1366px) {
@@ -496,20 +512,20 @@ Button Styling
 }
 
 .btn-primarysm {
-  background-color: #0077DC;
-  color: #FFF;
-  border-radius: 6px;
-  padding: 0.25rem 0.5rem;
-  border-color: #0077DC;
-  font-weight: 400;
-  font-size: 0.875rem;
+  background-color: #0077DC  !important;
+  color: #FFF !important;
+  border-radius: 6px !important;
+  padding: 0.25rem 0.5rem !important;
+  border-color: #0077DC !important;
+  font-weight: 400 !important;
+  font-size: 0.875rem !important;
 }
 
 .btn-primarysm:hover,
 .btn-primarysm.active {
-  background-color: #0077DC;
-  color: #FFF;
-  border-color: #0077DC;
+  background-color: #0077DC !important;
+  color: #FFF !important;
+  border-color: #0077DC !important
 }
 
 
@@ -550,12 +566,12 @@ Button Styling
 }
 
 .btn-small {
-  background-color: #0077DC;
-  color: #FFF;
-  border-radius: 100px;
-  padding: 5px 15px;
-  border-color: #0077DC;
-  font-weight: 400;
+  background-color: #0077DC !important;
+  color: #FFF !important;
+  border-radius: 100px !important;
+  padding: 5px 15px !important;
+  border-color: #0077DC !important;
+  font-weight: 400 !important;
 }
 
 .btn-small:hover,
@@ -587,7 +603,7 @@ Button Styling
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 0;
+  opacity: 0 !important;
 
 }
 
@@ -789,27 +805,28 @@ Form Control CSS
 }
 
 .form-group label {
-  margin-bottom: 5px;
+  margin-bottom: 5px !important;
 }
 
 .form-control {
-  padding: .75rem .75rem;
+  padding: .75rem .75rem !important;
 }
 
 .form-select {
-  padding: .75rem .75rem;
+  padding: .75rem .75rem !important;
+  background-position: right .75rem center !important;
 }
 
 .form-group .input-icon {
-  position: absolute;
-  left: 15px;
-  top: 15px;
+  position: absolute !important;
+  left: 15px !important;
+  top: 15px !important;
 }
 
 .control-search {
-  border-radius: 32px;
-  background-color: #D9D9D9;
-  padding-left: 40px;
+  border-radius: 32px !important;
+  background-color: #D9D9D9 !important;
+  padding-left: 40px  !important;
 }
 
 .profile-avtar{
@@ -1372,5 +1389,11 @@ Media Query CSS
   position: fixed;
   right: 15px;
   top: 60px;
+}
+.bosTeam-wrapper{
+  position: relative;
+}
+.desktop-pt200{
+  padding-top: 0;
 }
 }
