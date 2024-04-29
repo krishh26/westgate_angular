@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Router } from '@angular/router';
@@ -11,8 +11,9 @@ export enum SupplierAdminEndPoint {
   // PROJECT_DETAILS = '/project/get/',
   MANAGE_USER_LIST = '/user/suplier',
   ADD_USER = '/user/suplier/register',
-  CASE_STUDY_LIST ='/case-study/list',
-  ADD_CASE_STUDY = '/case-study/create'
+  CASE_STUDY_LIST = '/case-study/list',
+  ADD_CASE_STUDY = '/case-study/create',
+  DELETE_USER = '/user/delete/'
 }
 
 @Injectable({
@@ -45,14 +46,27 @@ export class SupplierAdminService {
       .get<any>(this.baseUrl + SupplierAdminEndPoint.MANAGE_USER_LIST);
   }
 
-  addCaseStudy(payload:any) {
+  addCaseStudy(payload: any) {
     return this.httpClient
       .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_CASESTUDY, payload);
   }
 
-  addUser(payload:any) {
+  addUser(payload: any) {
     return this.httpClient
       .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_USER, payload);
+  }
+
+  // deleteUser(params: { id: string }): Observable<any> {
+  //   return this.httpClient
+  //     .post<any>(this.baseUrl + SupplierAdminEndPoint.DELETE_USER, payload);
+  // }
+
+  deleteUser(params: { id: string }): Observable<any> {
+    const url = `${this.baseUrl}${SupplierAdminEndPoint.DELETE_USER}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('id', params.id || '');
+    return this.httpClient.delete<any>(url, { params: queryParams });
   }
 
 }
