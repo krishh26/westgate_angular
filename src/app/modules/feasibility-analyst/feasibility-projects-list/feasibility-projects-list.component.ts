@@ -61,7 +61,7 @@ export class FeasibilityProjectsListComponent {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          console.log(`Date difference for project ${dateDifference}`);
+           
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });

@@ -43,7 +43,7 @@
                             <td>{{projectDetails?.website}}</td>
                             <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
                             <td>{{projectDetails?.createdAt | date:'MM/dd/yyyy'}}</td>
-                            <td>{{dateDifference}}</td>
+                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy'}}</td>
                             <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                         </tr>
                     </tbody>
