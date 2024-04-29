@@ -5,8 +5,8 @@
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
-                        (input)="searchtext()">
+                        <input class="form-control control-search" placeholder="Search" type="text"
+                            [(ngModel)]="searchText" (input)="searchtext()">
                     </div>
                 </div>
             </div>
@@ -42,11 +42,19 @@
                             <td>{{item?.status}}</td>
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>
-                                <a (click)="projectDetails(item?._id)" class="btn btn-primarysm" title="View Details">View Details</a>
+                                <a (click)="projectDetails(item?._id)" class="btn btn-primarysm"
+                                    title="View Details">View Details</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="row mt-3 align-items-center">
+                <div class="row">
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
