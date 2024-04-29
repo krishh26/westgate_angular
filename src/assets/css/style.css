@@ -491,10 +491,17 @@ text-decoration: none !important;
   object-fit: cover;
   border-radius: 100px;
 }
+.me-2{
+  margin-right: 0.75rem;
+}
 
 /*==========================================
 Button Styling
 ============================================*/
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active
+{
+  border-color: transparent !important;
+}
 .btn-primary {
   background-color: #0077DC;
   color: #FFF;
