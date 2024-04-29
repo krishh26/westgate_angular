@@ -43,7 +43,7 @@ export class BossUserViewProjectComponent {
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
-        this.projectDetails = response?.data[0];
+        this.projectDetails = response?.data;
         const dueDate = new Date(this.projectDetails?.dueDate);
         const currentDate = new Date();
         const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
