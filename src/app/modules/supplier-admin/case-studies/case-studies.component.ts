@@ -21,6 +21,7 @@ export class CaseStudiesComponent {
   totalRecords: number = pagination.totalRecords;
   imageToUpload: any;
   imageSrc: any;
+  selectedDocument : any;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -101,6 +102,11 @@ export class CaseStudiesComponent {
     this.page = page;
     this.getCaseStudiesList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  
+  openDocument(data: any) {
+    this.selectedDocument = data;
   }
 
 
