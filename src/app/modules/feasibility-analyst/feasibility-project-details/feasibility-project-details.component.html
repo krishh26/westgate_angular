@@ -9,7 +9,8 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-xl-2 col-12">
-                    <a routerLink="/feasibility-user/feasibility-project-list" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
+                    <a routerLink="/feasibility-user/feasibility-project-list"
+                        class="btn btn-outline-secondary w-100 box-shadow">Back</a>
                 </div>
             </div>
 
@@ -183,27 +184,55 @@
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                             <p class="mb-0">FOI Screenshot</p>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="row align-items-center" *ngIf="projectDetails?.mailScreenshots?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
                         </div>
-                        <!-- <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-down-fill"></i>
-                                Download</a>
-                        </div> -->
+                        <ng-container *ngIf="projectDetails?.mailScreenshots?.length > 0">
+                            <div class="row align-items-center" *ngFor="let foiScreenshot of projectDetails?.fois">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{foiScreenshot?.name}}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiScreenshot)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="download(foiScreenshot?.link?.url, foiScreenshot?.name)" target="_blank"
+                                        class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <div class="row align-items-center mt-3">
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                             <p class="mb-0">FOI Document</p>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
                         </div>
-                        <!-- <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
-                                Download</a>
-                        </div> -->
+                        <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{foiDocument?.name}}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                                        class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
@@ -226,79 +255,26 @@
                     <h5>Client Documents</h5>
                     <div class="card">
                         <ul class="project-document">
-                            <li>
+                            <li *ngFor="let item of projectDetails?.clientDocument">
                                 <div class="row">
                                     <div class="col-5 text-center">
-                                        <p class="mb-0">ITT <a href="href:;" class="editbtn"><i
+                                        <p class="mb-0">{{item?.name}} <a href="href:;" class="editbtn"><i
                                                     class="bi bi-pencil-fill"></i></a></p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
+                                        <a href="href:;" class="btn btn-primarysm" data-bs-toggle="modal"
+                                            data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i
+                                                class="bi bi-eye-fill"></i>
                                             View</a>
-                                        <a href="href:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">SQ <a href="href:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="href:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">T&amp;C <a href="href:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="href:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Specification <a href="href:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="href:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Notice <a href="href:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="href:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i>
-                                            View</a>
-                                        <a href="href:;" class="btn btn-primarysm"><i
+                                        <a href="href:;" class="btn btn-primarysm"
+                                            (click)="download(item?.link?.url, item?.name)" target="_blank"><i
                                                 class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                        <button type="button" class="btn btn-dark btn-sm add-card-btn"><i
-                                class="bi bi-plus-lg"></i></button>
+                        <button type="button" class="btn btn-dark btn-sm add-card-btn"><i class="bi bi-plus-lg"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12">
@@ -393,10 +369,55 @@
             </div>
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a href="project-details-next-step2.html" class="btn btn-dark w-100">Next</a>
+                    <a routerLink="/feasibility-user/summary-note-questions" class="btn btn-dark w-100">Next</a>
                 </div>
             </div>
         </div>
     </section>
 
-</main><!-- End #main -->
+</main>
+
+<!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Client Document Modal -->
+<div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewClientDocLabel">Client Document : {{selectedDocument?.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img [src]="selectedDocument?.file?.url" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View FOI Document Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
