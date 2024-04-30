@@ -22,6 +22,7 @@ export class ProjectsDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
+  summaryquestionList :any
 
   constructor(
     private projectService: ProjectService,
@@ -39,6 +40,7 @@ export class ProjectsDetailsComponent {
 
   ngOnInit(): void {
     this.getProjectDetails();
+    this.getSummaryQuestion()
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -67,6 +69,23 @@ export class ProjectsDetailsComponent {
       this.showLoader = false;
     });
   }
+
+  getSummaryQuestion() {
+    this.showLoader = true;
+    this.projectService.getSummaryQuestionList(this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.summaryquestionList = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
 
   openDocument(data: any) {
     this.selectedDocument = data;
