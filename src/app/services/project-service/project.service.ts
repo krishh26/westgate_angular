@@ -11,7 +11,8 @@ export enum ProjectEndPoint {
   PROJECT_DETAILS = '/project/get/',
   APPLY_PROJECT = "/project/apply",
   SORT_LIST_PROJECT = "/project/sortlist",
-  SUMMARYQUESTION_LIST = "/summary-question/list/"
+  SUMMARYQUESTION_LIST = "/summary-question/list/",
+  QUESTION_DETAILS = '/summary-question/list/'
 }
 
 @Injectable({
@@ -71,10 +72,7 @@ export class ProjectService {
   }
 
   getSummaryQuestionList(projectId: string): Observable<any> {
-    // Constructing query parameters
     const params = new HttpParams().set('projectId', projectId);
-
-    // Using the params in the request
     return this.httpClient.get<any>(this.baseUrl + ProjectEndPoint.SUMMARYQUESTION_LIST, { params });
   }
 
@@ -82,6 +80,11 @@ export class ProjectService {
   getProjectDetailsById(projectId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + projectId);
+  }
+
+  getQuestionDetailsById(projectId: string): Observable<any> {
+    const params = new HttpParams().set('projectId', projectId);
+    return this.httpClient.get<any>(this.baseUrl + ProjectEndPoint.QUESTION_DETAILS, { params });
   }
 
   projectApply(payload : any): Observable<any> {

@@ -86,6 +86,10 @@ export class ProjectsDetailsComponent {
     });
   }
 
+  questionDetails(projectId: any) {
+    this.router.navigate(['/supplier-admin/question-details'], { queryParams: { id: projectId } });
+  }
+
 
   openDocument(data: any) {
     this.selectedDocument = data;

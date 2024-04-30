@@ -193,8 +193,8 @@
                                 <td>{{item?.weightage}}%</td>
                                 <td>{{item?.verify}}</td>
                                 <td>{{item?.deadline | date : 'MM/dd/yyyy'}}</td>
-                                <td> dolor sit amet, consectetur......</td>
-                                <td><a href="question-details.html" class="btn btn-small w-100"><i
+                                <td>{{item?.response?.message}}</td>
+                                <td><a (click)="questionDetails(item?._id)" class="btn btn-small w-100"><i
                                             class="bi bi-eye-fill"></i> View Question</a></td>
                             </tr>
                         </tbody>
