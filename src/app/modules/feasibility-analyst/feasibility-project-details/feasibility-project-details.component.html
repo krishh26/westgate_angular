@@ -353,21 +353,11 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-xl-4 col-12">
-                    <div class="row align-items-center">
+                    <div class="row align-items-center" *ngFor="let item of projectDetails?.loginDetail">
                         <div class="col-lg-6 col-xl-6 col-12">
-                            <p><strong>Login Details 1</strong></p>
+                            <p><strong>{{item?.name}}</strong></p>
                         </div>
-                        <div class="col-lg-6 col-xl-6 col-10">
-                            <a href="href:;" class="btn btn-primarysm me-2"><i class="bi bi-eye-fill"></i> View</a>
-                            <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-xl-6 col-12">
-                            <p><strong>Login Details 1</strong></p>
-                        </div>
-                        <div class="col-lg-6 col-xl-6 col-10">
+                        <div class="col-lg-6 col-xl-6 col-10" >
                             <a href="href:;" class="btn btn-primarysm me-2"><i class="bi bi-eye-fill"></i> View</a>
                             <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                                 Upload</a>
