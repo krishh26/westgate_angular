@@ -87,7 +87,7 @@ const routes: Routes = [
         component: CaseStudiesComponent
       },
       {
-        path: "user-profile",
+        path: "supplier-user-profile",
         component: UserProfileComponent
       },
       {

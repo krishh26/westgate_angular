@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FeasibilityModule } from './modules/feasibility-analyst/feasibility-analyst.module';
 import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.module';
+import { ProjectManagerModule } from './modules/Project-Manager/Project-Manager.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +38,7 @@ import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.mod
     BrowserAnimationsModule,
     NoopAnimationsModule,
     NgbModule,
+    ProjectManagerModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
