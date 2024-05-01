@@ -79,4 +79,8 @@ export class FeasibilityProjectDetailsComponent {
       });
   }
 
+  summaryDetail(){
+    this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+  }
+
 }

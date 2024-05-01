@@ -1,7 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
+import { SummaryService } from 'src/app/services/summary/summary.service';
 
 @Component({
   selector: 'app-summary-note-questions',
@@ -10,29 +12,49 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 })
 export class SummaryNoteQuestionsComponent {
 
-  
+
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
   projectDetails: any = [];
+  summaryquestionList: any = [];
   projectId: string = '';
   projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
+  summary = {
+    questionName: new FormControl("", Validators.required),
+    question: new FormControl("", Validators.required),
+    instructions: new FormControl("", Validators.required),
+    weightage: new FormControl("", Validators.required),
+    comment: new FormControl("", Validators.required),
+    refrenceDocument: new FormControl("", Validators.required),
+    projectId: new FormControl("", Validators.required),
+    summaryQuestionFor: new FormControl("", Validators.required),
+    deadline: new FormControl("", Validators.required),
+  }
+
+  summaryForm: FormGroup;
 
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private summaryService: SummaryService,
+
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
+    this.summaryForm = new FormGroup(this.summary);
+    this.summaryForm.controls['projectId'].setValue(this.projectId)
   }
+
   ngOnInit(): void {
     this.getProjectDetails();
+    this.getSummaryList()
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -79,5 +101,55 @@ export class SummaryNoteQuestionsComponent {
       });
   }
 
+  getSummaryList() {
+    this.projectService.getSummaryQuestionList(this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.summaryquestionList = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
 
+  submitForm() {
+    this.summaryForm.markAllAsTouched();
+    if (!this.summaryForm.valid) {
+      return this.notificationService.showError('Please Fill All Summary Details.')
+    }
+    this.summaryService.addSummary(this.summaryForm.value).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getSummaryList();
+        this.summaryForm.reset();
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  editSummary(details: any) {
+    console.log('adasdadadadadasdasd', details)
+  }
+
+
+  deleteSummary(summaryId?: string) {
+    this.summaryService.deleteSummary(summaryId).subscribe((response) => {
+      if(response?.status == true) {
+        this.getSummaryList();
+      } else {
+          this.notificationService.showError(response?.message || 'Error');
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
 }
