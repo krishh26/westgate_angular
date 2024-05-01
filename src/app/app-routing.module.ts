@@ -18,6 +18,14 @@ const routes: Routes = [
     loadChildren: () => import('./modules/feasibility-analyst/feasibility-analyst.module').then(m => m.FeasibilityModule)
   },
   {
+    path: 'project-manager',
+    loadChildren: () => import('./modules/Project-Manager/Project-Manager.module').then(m => m.ProjectManagerModule)
+  },
+  {
+    path: 'uk-writer',
+    loadChildren: () => import('./modules/uk-writer/uk-writer.module').then(m => m.UkWriterModule)
+  },
+  {
     path: 'login',
     component : LoginComponent
   },

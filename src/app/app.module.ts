@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FeasibilityModule } from './modules/feasibility-analyst/feasibility-analyst.module';
 import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.module';
 import { ProjectManagerModule } from './modules/Project-Manager/Project-Manager.module';
+import { UkWriterModule } from './modules/uk-writer/uk-writer.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,7 @@ import { ProjectManagerModule } from './modules/Project-Manager/Project-Manager.
     NoopAnimationsModule,
     NgbModule,
     ProjectManagerModule,
+    UkWriterModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
