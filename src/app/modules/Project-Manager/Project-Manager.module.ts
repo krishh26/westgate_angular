@@ -1,11 +1,34 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectManagerComponent } from './Project-Manager.component';
+import { ProjectManagerRoutingModule } from './project-manager.routing.module';
+import { ProjectManagerHeaderComponent } from 'src/app/utility/shared/components/project-manager-header/project-manager-header.component';
+import { ProjectMangerHeaderTwoComponent } from 'src/app/utility/shared/components/project-manger-header-two/project-manger-header-two.component';
+import { ProjectManagerHomeComponent } from './project-manager-home/project-manager-home.component';
+import { ProjectManagerCloseProjectListComponent } from './project-manager-close-project-list/project-manager-close-project-list.component';
+import { ProjectManagerAllProjectListComponent } from './project-manager-all-project-list/project-manager-all-project-list.component';
+import { ProjectManagerMatchProjectListComponent } from './project-manager-match-project-list/project-manager-match-project-list.component';
+import { AllProjectDetailsComponent } from './all-project-details/all-project-details.component';
+import { MatchProjectDetailsComponent } from './match-project-details/match-project-details.component';
+import { ProjectCloseDetailsComponent } from './project-close-details/project-close-details.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ProjectManagerRoutingModule
   ],
-  declarations: [ProjectManagerComponent]
+  declarations: [
+    ProjectManagerComponent,
+    ProjectManagerHomeComponent,
+    ProjectManagerHeaderComponent,
+    ProjectMangerHeaderTwoComponent,
+    ProjectManagerCloseProjectListComponent,
+    ProjectManagerAllProjectListComponent,
+    ProjectManagerMatchProjectListComponent,
+    AllProjectDetailsComponent,
+    MatchProjectDetailsComponent,
+    ProjectCloseDetailsComponent
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProjectManagerModule { }

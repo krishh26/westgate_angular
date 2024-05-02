@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
-  selector: 'app-supplier-header',
-  templateUrl: './supplier-header.component.html',
-  styleUrls: ['./supplier-header.component.css']
+  selector: 'app-project-manager-header',
+  templateUrl: './project-manager-header.component.html',
+  styleUrls: ['./project-manager-header.component.scss']
 })
-export class SupplierHeaderComponent  {
+export class ProjectManagerHeaderComponent {
   loginUser: any;
 
   constructor(
