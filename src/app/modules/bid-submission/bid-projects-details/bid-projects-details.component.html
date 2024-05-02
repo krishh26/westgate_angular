@@ -1,8 +1,8 @@
 <main id="main">
     <section>
         <div class="container-fluid">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-12 text-end">
+            <div class="row align-items-center justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-3">
                     <a href="matched-projects.html" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
                 </div>
             </div>
@@ -41,7 +41,16 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="row justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Waiting for Result
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
                     <thead>
@@ -50,8 +59,6 @@
                             <th>Supplier ID</th>
                             <th>Admin Name</th>
                             <th>Handover Call</th>
-                            <th>Bidding Company Name</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,11 +67,6 @@
                             <td>416526</td>
                             <td>Ayush</td>
                             <td>Held on: 12th Feb 2023</td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                            <td> <button type="button" class="btn btn-light"><i class="bi bi-pencil-fill"></i></button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -224,8 +226,12 @@
                                 <td>01-02-2014</td>
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
-                                <td><a href="question-answer-details.html" class="btn btn-small w-100"><i
-                                            class="bi bi-eye-fill"></i> View Solution</a></td>
+                                <td>
+                                    <a href="question-details.html" class="btn btn-small me-2"><i
+                                            class="bi bi-eye-fill"></i> View Solution</a>
+                                    <a href="question-details.html" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                </td>
                             </tr>
                             <tr>
                                 <td width="350">1. Project management approach and project team outlined. Resilience –
@@ -235,8 +241,12 @@
                                 <td>01-02-2014</td>
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
-                                <td><a href="question-answer-details.html" class="btn btn-small w-100"><i
-                                            class="bi bi-eye-fill"></i> View Solution</a></td>
+                                <td>
+                                    <a href="question-details.html" class="btn btn-small me-2"><i
+                                            class="bi bi-eye-fill"></i> View Solution</a>
+                                    <a href="question-details.html" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                </td>
                             </tr>
                             <tr>
                                 <td width="350">1. Project management approach and project team outlined. Resilience –
@@ -246,8 +256,12 @@
                                 <td>01-02-2014</td>
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
-                                <td><a href="question-answer-details.html" class="btn btn-small w-100"><i
-                                            class="bi bi-eye-fill"></i> View Solution</a></td>
+                                <td>
+                                    <a href="question-details.html" class="btn btn-small me-2"><i
+                                            class="bi bi-eye-fill"></i> View Solution</a>
+                                    <a href="question-details.html" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -289,10 +303,11 @@
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
                                 <td>
-                                    <a href="#" class="btn btn-view-document btn-boxshadow btn-sm"><i
+                                    <a href="question-details-uk.html"
+                                        class="btn btn-view-document btn-boxshadow btn-sm me-2"><i
                                             class="bi bi-eye-fill"></i> View Response</a>
                                     <a href="#" class="btn btn-outline-purewhite"><i
-                                            class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                 </td>
                             </tr>
                             <tr>
@@ -304,10 +319,11 @@
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
                                 <td>
-                                    <a href="#" class="btn btn-view-document btn-boxshadow btn-sm"><i
+                                    <a href="question-details-uk.html"
+                                        class="btn btn-view-document btn-boxshadow btn-sm me-2"><i
                                             class="bi bi-eye-fill"></i> View Response</a>
                                     <a href="#" class="btn btn-outline-purewhite"><i
-                                            class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                 </td>
                             </tr>
                             <tr>
@@ -319,17 +335,26 @@
                                 <td>Ayush</td>
                                 <td> dolor sit amet, consectetur......</td>
                                 <td>
-                                    <a href="#" class="btn btn-view-document btn-boxshadow btn-sm"><i
+                                    <a href="question-details-uk.html"
+                                        class="btn btn-view-document btn-boxshadow btn-sm me-2"><i
                                             class="bi bi-eye-fill"></i> View Response</a>
                                     <a href="#" class="btn btn-outline-purewhite"><i
-                                            class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
+                                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                                 </td>
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
-
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-outline-dark me-2">Save</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
             </div>
         </div>
     </section>
