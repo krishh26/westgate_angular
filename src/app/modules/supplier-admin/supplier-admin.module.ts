@@ -23,6 +23,9 @@ import { CaseStudiesComponent } from './case-studies/case-studies.component';
 import { AddCaseStudyComponent } from './add-case-study/add-case-study.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SupplierAdminProjectListingComponent } from './supplier-admin-project-listing/supplier-admin-project-listing.component';
+import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/supplier-dashboard-header.component';
+import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supplier-dashboard-value.component';
+import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashboard.component';
 
 
 
@@ -45,7 +48,10 @@ import { SupplierAdminProjectListingComponent } from './supplier-admin-project-l
     CaseStudiesComponent,
     AddCaseStudyComponent,
     UserProfileComponent,
-    SupplierAdminProjectListingComponent
+    SupplierAdminProjectListingComponent,
+    SupplierDashboardHeaderComponent,
+    SupplierDashboardValueComponent,
+    SupplierDashboardComponent
   ],
   imports: [
     CommonModule,

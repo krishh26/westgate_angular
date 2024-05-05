@@ -20,6 +20,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SupplierAdminProjectListingComponent } from './supplier-admin-project-listing/supplier-admin-project-listing.component';
 import { SuppilerAdminChatComponent } from './suppiler-admin-chat/suppiler-admin-chat.component';
 import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supplier-dashboard-value.component';
+import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/supplier-dashboard-header.component';
 
 
 const routes: Routes = [
@@ -98,6 +99,10 @@ const routes: Routes = [
       {
         path: "supplier-dashboard-value",
         component: SupplierDashboardValueComponent
+      },
+      {
+        path: "supplier-dashboard-header",
+        component: SupplierDashboardHeaderComponent
       },
     ]
   },
