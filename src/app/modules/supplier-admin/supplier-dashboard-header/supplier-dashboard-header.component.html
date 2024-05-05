@@ -2,16 +2,9 @@
     <div class="container-fluids">
         <div class="row align-items-center">
             <nav>
-                <!-- <p *ngIf="activeComponent == 1" style="text-align: center; font-weight: bold;">Explore all published
-                    projects and their details in one convenient location - your gateway to countless opportunities.
-                </p>
+                <p style="text-align: center; font-weight: bold;">Welcome to the Dashboard! Here, you can track the progress of your projects at a glance. Stay updated on the status of your submissions, monitor awards, and manage your pipeline smoothly. Your success starts here.
 
-                <p *ngIf="activeComponent == 2" style="text-align: center; font-weight: bold;">Discover projects
-                    perfectly
-                    aligned with your capabilities - explore matched opportunities and take action. 100% match? Dive in!
-                    Partial
-                    match? Contact us for assistance or upload additional case studies to unlock more opportunities.
-                </p> -->
+                </p>
                 <ul class="projects-nav-tab">
                     <li (click)="changeComponent(1)" style="text-align: center;">
                         <a [ngClass]="{'active' : activeComponent == 1}">Project Count</a>
