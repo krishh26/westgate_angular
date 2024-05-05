@@ -19,6 +19,7 @@ import { AddCaseStudyComponent } from './add-case-study/add-case-study.component
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SupplierAdminProjectListingComponent } from './supplier-admin-project-listing/supplier-admin-project-listing.component';
 import { SuppilerAdminChatComponent } from './suppiler-admin-chat/suppiler-admin-chat.component';
+import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supplier-dashboard-value.component';
 
 
 const routes: Routes = [
@@ -93,6 +94,10 @@ const routes: Routes = [
       {
         path: "chat",
         component: SuppilerAdminChatComponent
+      },
+      {
+        path: "supplier-dashboard-value",
+        component: SupplierDashboardValueComponent
       },
     ]
   },
