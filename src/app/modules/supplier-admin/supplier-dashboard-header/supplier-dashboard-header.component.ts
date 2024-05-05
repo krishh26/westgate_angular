@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SupplierDashboardHeaderComponent {
 
-  activeComponent: number = 2;  // 1 : Matched Project , 2 : All Project, 3: Shortlisted, 4: Applied Projects
+  activeComponent: number = 1; 
 
   ngOnInit(): void {
 
