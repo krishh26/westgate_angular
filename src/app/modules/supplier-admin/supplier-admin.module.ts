@@ -26,6 +26,8 @@ import { SupplierAdminProjectListingComponent } from './supplier-admin-project-l
 import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/supplier-dashboard-header.component';
 import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supplier-dashboard-value.component';
 import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashboard.component';
+import { SupplierProjectSubmittedComponent } from './supplier-project-submitted/supplier-project-submitted.component';
+import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-in-progress/supplier-project-work-in-progress.component';
 
 
 
@@ -51,7 +53,9 @@ import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashbo
     SupplierAdminProjectListingComponent,
     SupplierDashboardHeaderComponent,
     SupplierDashboardValueComponent,
-    SupplierDashboardComponent
+    SupplierDashboardComponent,
+    SupplierProjectSubmittedComponent,
+    SupplierProjectWorkInProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +66,6 @@ import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashbo
     ReactiveFormsModule,
     NgbModule,
   ],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SupplierAdminModule { }
