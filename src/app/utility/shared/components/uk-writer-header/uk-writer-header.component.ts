@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 @Component({
   selector: 'app-uk-writer-header',
   templateUrl: './uk-writer-header.component.html',
-  styleUrls: ['./uk-writer-header.component.css']
+  styleUrls: ['./uk-writer-header.component.scss']
 })
 export class UkWriterHeaderComponent  {
 

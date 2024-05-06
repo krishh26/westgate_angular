@@ -7,7 +7,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 @Component({
   selector: 'app-supplier-header',
   templateUrl: './supplier-header.component.html',
-  styleUrls: ['./supplier-header.component.css']
+  styleUrls: ['./supplier-header.component.scss']
 })
 export class SupplierHeaderComponent {
   loginUser: any;
