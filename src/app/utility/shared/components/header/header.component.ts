@@ -16,11 +16,17 @@ export class HeaderComponent {
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router,
+    public router: Router,
     private notificationService: NotificationService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
+
+  navUrlArr = [
+    { title: 'Home', route: ['/boss-user/home'] },
+    { title: 'Live Projects', route: ['/boss-user/project-list'] },
+  ];
+
 
   logout(): void {
     this.authService.logout();
