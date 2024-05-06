@@ -15,15 +15,47 @@ body {
 
 a {
   color: #0077DC;
-  text-decoration: none !important;
-  cursor: pointer;
+  text-decoration: none;
 }
 
 a:hover {
   color: #0077DC;
-  text-decoration: none !important;
+  text-decoration: none;
 }
+.fonts-11{font-size: 11px !important;}
+.fonts-12{font-size: 12px !important;}
+.fonts-13{font-size: 13px !important;}
+.fonts-14{font-size: 14px !important;}
+.fonts-20{font-size: 20px;}
 
+
+.text-success{color:#4DFF0F !important}
+
+.bg-white{background-color: #fff;}
+.bg-f9{background-color: #F9F9F9;}
+.bg-transparent{background-color: transparent !important;}
+
+.opacity-7{opacity: 0.7;}
+
+.w-space{white-space: nowrap;}
+
+.match-detail  table td{
+    border-top: 0;
+    border-bottom: 0;
+    background-color: #F9F9F9;
+    vertical-align: top;
+  }
+
+  .match-detail  table th{
+    border-bottom: 0;
+  }
+  tbody::before
+/* {
+  content: '';
+  display: block;
+  height: 15px;
+
+} */
 h1,
 h2,
 h3,
@@ -36,16 +68,7 @@ h6 {
 .limegreen {
   color: #DBFF00;
 }
-.p-6 {
-  font-size: 6px !important;
-}
-.p-10 {
-  font-size: 10px !important;
-}
 
-.p-12 {
-  font-size: 12px !important;
-}
 .p-13 {
   font-size: 13px !important;
 }
@@ -94,9 +117,7 @@ h6 {
 .text-theme {
   color: #0077DC;
 }
-.display-block{
-  display: block;
-}
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -139,18 +160,12 @@ h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-.body-top{
-  padding-top: 100px;
-}
 #header {
   transition: all 0.5s;
   z-index: 997;
   padding: 15px 0px;
-  background-color: #FFF; 
-  box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05);
-  position: fixed;
-  top: 0px;
-  width: 100%;
+  /* background-color: #FFF; */
+  /* box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05); */
 }
 
 #header.header-scrolled,
@@ -161,7 +176,6 @@ h6 {
 #header .logo {
   font-size: 30px;
   margin: 0;
-  margin-left: 0px !important;
   padding: 0;
   line-height: 1;
   font-weight: 500;
@@ -213,7 +227,6 @@ h6 {
   transition: 0.3s;
   z-index: 1;
   position: relative;
-   text-decoration: none;
 }
 
 .navbar a i,
@@ -238,7 +251,7 @@ h6 {
   margin: 0 auto;
   top: 32%;
   transform: translateY(-50%);
-  /* background-image: url(../img/menu-ball.svg); */
+  /* background-image: url("../../assets/img/img/menu-ball.svg"); */
   width: 42px;
   height: 42px;
   background-size: contain;
@@ -273,7 +286,7 @@ h6 {
 .navbar .dropdown ul {
   display: block;
   position: absolute;
-  left: 0px;
+  left: -66px;
   /* top: calc(100% + 30px); */
   margin: 0;
   padding: 10px 0;
@@ -297,14 +310,10 @@ h6 {
   text-transform: none;
   font-weight: 500;
   color: #0c3c53;
-  text-decoration: none !important;
 }
 
 .navbar .dropdown ul a i {
   font-size: 12px;
-}
-.navbar .dropdown ul a span {
-  text-decoration: none !important;
 }
 
 .navbar .dropdown ul a:hover,
@@ -331,9 +340,6 @@ h6 {
   top: -10px !important;
   left: 100%;
   visibility: visible;
-}
-.navbar .dropdown .dropdown ul li span{
-text-decoration: none !important;
 }
 
 @media (max-width: 1366px) {
@@ -491,17 +497,10 @@ text-decoration: none !important;
   object-fit: cover;
   border-radius: 100px;
 }
-.me-2{
-  margin-right: 0.75rem;
-}
 
 /*==========================================
 Button Styling
 ============================================*/
-.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active
-{
-  border-color: transparent !important;
-}
 .btn-primary {
   background-color: #0077DC;
   color: #FFF;
@@ -519,20 +518,20 @@ Button Styling
 }
 
 .btn-primarysm {
-  background-color: #0077DC  !important;
-  color: #FFF !important;
-  border-radius: 6px !important;
-  padding: 0.25rem 0.5rem !important;
-  border-color: #0077DC !important;
-  font-weight: 400 !important;
-  font-size: 0.875rem !important;
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  border-color: #0077DC;
+  font-weight: 400;
+  font-size: 0.875rem;
 }
 
 .btn-primarysm:hover,
 .btn-primarysm.active {
-  background-color: #0077DC !important;
-  color: #FFF !important;
-  border-color: #0077DC !important
+  background-color: #0077DC;
+  color: #FFF;
+  border-color: #0077DC;
 }
 
 
@@ -573,12 +572,12 @@ Button Styling
 }
 
 .btn-small {
-  background-color: #0077DC !important;
-  color: #FFF !important;
-  border-radius: 100px !important;
-  padding: 5px 15px !important;
-  border-color: #0077DC !important;
-  font-weight: 400 !important;
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 100px;
+  padding: 5px 15px;
+  border-color: #0077DC;
+  font-weight: 400;
 }
 
 .btn-small:hover,
@@ -607,11 +606,11 @@ Button Styling
 }
 
 .upload-btn-wrapper input[type=file] {
+  font-size: 100px;
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 0 !important;
-
+  opacity: 0;
 }
 
 .explore-btn {
@@ -723,29 +722,7 @@ Button Styling
   border-radius: 6px;
   padding: 12px 30px;
 }
-.btn-outline-secondary{
-  background-color: #FFFF;
-  color: #0077DC;
-  border-color: transparent;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-}
-.btn-outline-secondary:hover, .btn-outline-secondary:focus{
-  background-color: #FFFF;
-  color: #0077DC;
-  border-color: transparent;
-}
-.editbtn{
-  display: inline-block;
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    background: #FFF;
-    text-align: center;
-    line-height: 22px;
-    color: #000;
-    font-size: 13px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-}
+
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -765,6 +742,14 @@ section {
 
 .body-welcome-page {
   background-image: url("../img/welcome-page-banner.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.welcome-page {
+  background-image: url("../../assets/img/bg 1.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -812,28 +797,27 @@ Form Control CSS
 }
 
 .form-group label {
-  margin-bottom: 5px !important;
+  margin-bottom: 5px;
 }
 
 .form-control {
-  padding: .75rem .75rem !important;
+  padding: .75rem .75rem;
 }
 
 .form-select {
-  padding: .75rem .75rem !important;
-  background-position: right .75rem center !important;
+  padding: .75rem .75rem;
 }
 
 .form-group .input-icon {
-  position: absolute !important;
-  left: 15px !important;
-  top: 15px !important;
+  position: absolute;
+  left: 15px;
+  top: 15px;
 }
 
 .control-search {
-  border-radius: 32px !important;
-  background-color: #D9D9D9 !important;
-  padding-left: 40px  !important;
+  border-radius: 32px;
+  background-color: #D9D9D9;
+  padding-left: 40px;
 }
 
 .profile-avtar{
@@ -878,7 +862,7 @@ Form Control CSS
 Login Page CSS
 -------------------------------------------------------*/
 .body-login {
-  background-image: url("../img/silver-border-simple-abstract-background.png");
+  background-image: url("../../assets/img/businesspeople-having-discussion-office.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -962,19 +946,23 @@ ul.project-document li:last-child {
 /*------------------------------------------
 Table CSS
 -------------------------------------------*/
+.table{
+  padding: 0.8rem 0.4rem !important;
+}
 .table>thead th {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
+  vertical-align: middle;
 }
 
 .table>tbody td {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd)>* {
   background-color: #F9F9F9 !important;
 }
-
+.project-close> .table>tbody .bg-d3 td{background-color: #d3d3d3;}
 .page-link {
   color: #0077DC;
 }
@@ -1396,11 +1384,5 @@ Media Query CSS
   position: fixed;
   right: 15px;
   top: 60px;
-}
-.bosTeam-wrapper{
-  position: relative;
-}
-.desktop-pt200{
-  padding-top: 0;
 }
 }

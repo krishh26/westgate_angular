@@ -30,23 +30,21 @@ export class ProjectService {
     this.projectid = localStorage.getItem('projectID')
   }
 
-  // getProjectList(payload: any): Observable<any> {
-  //   return this.httpClient
-  //     .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LIST, payload);
-  // }
-
-  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean }): Observable<any> {
+  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
     let queryParams = new HttpParams();
-    queryParams = queryParams.set('keyword', params.keyword || '');
-    queryParams = queryParams.set('page', params.page);
-    queryParams = queryParams.set('limit', params.limit);
-    if (params.applied) {
-      queryParams = queryParams.set('applied', params.applied);
+    queryParams = queryParams.set('keyword', params?.keyword || '');
+    queryParams = queryParams.set('page', params?.page);
+    queryParams = queryParams.set('limit', params?.limit);
+    if (params?.applied) {
+      queryParams = queryParams.set('applied', params?.applied);
     }
-    if (params.sortlist) {
-      queryParams = queryParams.set('sortlist', params.sortlist);
+    if (params?.sortlist) {
+      queryParams = queryParams.set('sortlist', params?.sortlist);
+    }
+    if (params?.match) {
+      queryParams = queryParams.set('match',params?.match);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
@@ -87,12 +85,12 @@ export class ProjectService {
     return this.httpClient.get<any>(this.baseUrl + ProjectEndPoint.QUESTION_DETAILS, { params });
   }
 
-  projectApply(payload : any): Observable<any> {
+  projectApply(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.APPLY_PROJECT, payload);
   }
 
-  projectSortList(payload : any): Observable<any> {
+  projectSortList(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
   }
