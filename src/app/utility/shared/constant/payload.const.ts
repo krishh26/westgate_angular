@@ -5,7 +5,8 @@ export const Payload = {
         page: '1',
         limit: '10',
         applied : false,
-        sortlist : false
+        sortlist : false,
+        match : ""
     },
 
     mailSSList: {

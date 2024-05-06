@@ -11,11 +11,20 @@ import { ProjectManagerMatchProjectListComponent } from './project-manager-match
 import { AllProjectDetailsComponent } from './all-project-details/all-project-details.component';
 import { MatchProjectDetailsComponent } from './match-project-details/match-project-details.component';
 import { ProjectCloseDetailsComponent } from './project-close-details/project-close-details.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { SharedModule } from 'src/app/utility/shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
-    ProjectManagerRoutingModule
+    ProjectManagerRoutingModule,
+    NgxPaginationModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule
   ],
   declarations: [
     ProjectManagerComponent,
