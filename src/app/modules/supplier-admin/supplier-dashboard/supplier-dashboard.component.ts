@@ -22,7 +22,7 @@ export class SupplierDashboardComponent {
   }
 
   ngOnInit(): void {
-this.getProjectDetails();
+    this.getProjectDetails();
   }
 
   getProjectDetails() {
