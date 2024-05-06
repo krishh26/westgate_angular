@@ -7,6 +7,11 @@ import { UkWriterMatchedProjectsComponent } from './uk-writer-matched-projects/u
 import { UkWriterProjectsAllComponent } from './uk-writer-projects-all/uk-writer-projects-all.component';
 import { UkWriterProjectsDetailsComponent } from './uk-writer-projects-details/uk-writer-projects-details.component';
 import { UkWriterQuestionDetailsEditComponent } from './uk-writer-question-details-edit/uk-writer-question-details-edit.component';
+import { UkWriterRoutingModule } from './uk-writer.routing.module';
+import { SharedModule } from 'src/app/utility/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -22,7 +27,13 @@ import { UkWriterQuestionDetailsEditComponent } from './uk-writer-question-detai
     UkWriterQuestionDetailsEditComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule,
+    NgxPaginationModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    UkWriterRoutingModule
   ]
 })
 export class UkWriterModule { }

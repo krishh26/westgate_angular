@@ -46,6 +46,7 @@ export class LoginComponent extends BaseLogin implements OnInit {
 
   // Function to use for the login the user
   login(): void {
+    debugger
     this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
       this.showLoader = true;
