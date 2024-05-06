@@ -23,6 +23,7 @@ import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supp
 import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/supplier-dashboard-header.component';
 import { SupplierProjectSubmittedComponent } from './supplier-project-submitted/supplier-project-submitted.component';
 import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-in-progress/supplier-project-work-in-progress.component';
+import { ProjectNotificationComponent } from 'src/app/utility/shared/common/project-notification/project-notification.component';
 
 
 const routes: Routes = [
@@ -113,6 +114,10 @@ const routes: Routes = [
       {
         path: "supplier-project-work-in-progress",
         component: SupplierProjectWorkInProgressComponent
+      },
+      {
+        path: "notification",
+        component: ProjectNotificationComponent
       },
     ]
   },
