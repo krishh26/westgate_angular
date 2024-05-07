@@ -1,7 +1,7 @@
 <!-- ======= Header ======= -->
 <header id="header">
-    <div class="container d-flex align-items-center">
-      <a routerLink="supplier-admin/supplier-home" class="logo me-auto"><img src="assets/img/wgih-logo.svg" alt=""
+    <div class="container-fluid d-flex align-items-center">
+      <a routerLink="supplier-admin/supplier-home" class="logo mee-auto"><img src="assets/img/wgih-logo.svg" alt=""
           class="img-fluid"></a>
       <nav id="navbar" class="navbar">
         <!-- <ul>
@@ -47,22 +47,35 @@
             <a style="cursor: pointer;" id="notificationDropdown" (click)="clicked = !clicked" data-toggle="dropdown">
               <i class="bi bi-bell" style="font-size: 17px;"></i> <span class="count"></span>
             </a>
-            <div #notificationDiv class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+            <div #notificationDiv class="dropdown-menu dropdown-menu-right navbar-dropdown notificationDropdown-box"
             aria-labelledby="notificationDropdown" [ngClass]="{'': !clicked, 'show-menu': clicked}">
-             <p routerLink="/setting/notification" class="mb-0 font-weight-normal dropdown-header">Notifications</p>
-              <span class="float-right" style="cursor: pointer;" routerLink="/supplier-admin/notification">view All</span>
-              <a class="dropdown-item preview-item"
-                  *ngFor="let item of projectNotificationList; let index = index">
-                  <ng-container *ngIf="index < 3">
-                  <div class="preview-item-content">
-                      <p>{{item?.title}}</p>
-                      <h6 class="preview-subject font-weight-normal">{{item?.discription}}</h6>
-                      <p class="font-weight-light small-text mb-0 text-muted">
-                          {{item?.updatedAt | date:'MM/dd/yyyy, h:mm a'}}
-                      </p>
-                  </div>
-                </ng-container>
-              </a>
+            <div class="dropdown-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <p routerLink="/setting/notification" class="mb-0 p-12">Notifications</p>
+                </div>
+                <div class="col-4">
+                  <a routerLink="/supplier-admin/notification">view All</a>
+                </div>
+              </div>  
+            </div>  
+            <ul class="notification-list">
+              <li>
+                <a *ngFor="let item of projectNotificationList; let index = index">
+                <ng-container *ngIf="index < 3">
+                <div class="preview-item-content">
+                    <p>{{item?.title}}</p>
+                    <h6 class="preview-subject font-weight-normal">{{item?.discription}}</h6>
+                    <p class="font-weight-light small-text mb-0 text-muted">
+                        {{item?.updatedAt | date:'MM/dd/yyyy, h:mm a'}}
+                    </p>
+                </div>
+              </ng-container>
+            </a>
+              </li>
+            </ul>         
+              
+              
             </div>
           </li>
           <li class="dropdown"><a href="javascript:;">

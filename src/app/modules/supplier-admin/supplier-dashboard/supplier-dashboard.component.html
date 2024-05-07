@@ -1,6 +1,6 @@
 <main id="main">
     <section class="dashboard-section">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
                     <div class="statistic-card">
@@ -96,6 +96,21 @@
                         </div>
                     </div>
                     <a href="/supplier-admin/projects-applied" class="explore-btn bg-dark-gray w-100">Explore</a>
+                </div>
+                <div class="col-12 mb-5">
+                    <div class="statistic-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <p><strong>Expired History</strong></p>
+                                </div>
+                                <div class="col-4">
+                                    <h2 class="text-dark-gray"><strong>{{supplierdashboardlist?.totalNotAwarded}}</strong></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-gray w-100">Explore</a>
                 </div>
             </div>
         </div>
