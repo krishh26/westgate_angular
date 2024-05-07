@@ -5,7 +5,7 @@
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <div class="form-group mb-0">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input type="search" [formControl]="searchText" class="form-control control-search" placeholder="Search">
+            <input type="search" [formControl]="searchText" class="form-control control-search" placeholder="Search by BOS ID & Project Title.">
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@
               <th>Project Type</th>
               <th>Status</th>
               <th>Due Date &amp; Time</th>
-              <th></th>
+              <th>Compatibility</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -41,7 +41,9 @@
               <td>
                 <a class="btn btn-sm btn-primary m-1"
                     title="View Details" (click)="projectDetails(item?._id)">View Details</a>
-                <a (click)="sortListProject(item?._id)" class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlist</a>
+
+                <a *ngIf="item?.sortListUserId?.length > 0" style="background-color: darkgray;" class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlisted</a>
+                <a *ngIf="item?.sortListUserId?.length == 0" (click)="sortListProject(item?._id)" class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlist</a>
               </td>
             </tr>
           </tbody>

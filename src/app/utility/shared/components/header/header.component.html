@@ -5,15 +5,22 @@
                     src="assets/img/wgih-logo.svg" alt="" class="img-fluid"></a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link active" routerLink="/boss-user/home" href="javascript:void(0)">Home</a></li>
+                    <!-- <li><a class="nav-link active" routerLink="/boss-user/home" href="javascript:void(0)">Home</a></li>
                     <li><a class="nav-link" href="javascript:void(0)" routerLink="/boss-user/project-list"><i
                                 class="bi bi-dot text-danger p-22"></i> Live
-                            Projects</a></li>
+                            Projects</a></li> -->
+
+                    <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
+                        <a [class.active]="(item.route.includes(router.url))" class="nav-link " data-toggle="tab"
+                            [routerLink]="item.route">
+                            <i *ngIf="item.title == 'Live Projects'" class="bi bi-dot text-danger p-22"></i>
+                            <span>{{item.title}}</span>
+                        </a>
+                    </li>
                     <li class="dropdown"><a href="href:;">
                             <div class="login-avtar">
                                 <img src="assets/img/face1.jpg" />
                             </div>
-                            <!-- <span>BOS : </span> -->
                             <span>{{loginUser?.userName}}</span> <i class="bi bi-chevron-down"></i>
                         </a>
                         <ul>

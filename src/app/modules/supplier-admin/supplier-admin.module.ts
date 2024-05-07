@@ -23,6 +23,11 @@ import { CaseStudiesComponent } from './case-studies/case-studies.component';
 import { AddCaseStudyComponent } from './add-case-study/add-case-study.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SupplierAdminProjectListingComponent } from './supplier-admin-project-listing/supplier-admin-project-listing.component';
+import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/supplier-dashboard-header.component';
+import { SupplierDashboardValueComponent } from './supplier-dashboard-value/supplier-dashboard-value.component';
+import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashboard.component';
+import { SupplierProjectSubmittedComponent } from './supplier-project-submitted/supplier-project-submitted.component';
+import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-in-progress/supplier-project-work-in-progress.component';
 
 
 
@@ -45,7 +50,12 @@ import { SupplierAdminProjectListingComponent } from './supplier-admin-project-l
     CaseStudiesComponent,
     AddCaseStudyComponent,
     UserProfileComponent,
-    SupplierAdminProjectListingComponent
+    SupplierAdminProjectListingComponent,
+    SupplierDashboardHeaderComponent,
+    SupplierDashboardValueComponent,
+    SupplierDashboardComponent,
+    SupplierProjectSubmittedComponent,
+    SupplierProjectWorkInProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +66,6 @@ import { SupplierAdminProjectListingComponent } from './supplier-admin-project-l
     ReactiveFormsModule,
     NgbModule,
   ],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SupplierAdminModule { }

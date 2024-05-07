@@ -68,5 +68,4 @@ export class SupplierAdminService {
     queryParams = queryParams.set('id', params.id || '');
     return this.httpClient.delete<any>(url, { params: queryParams });
   }
-
 }

@@ -39,8 +39,10 @@ export class LoginComponent extends BaseLogin implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.loginUser) {
-      this.router.navigateByUrl('/boss-user/home');
+    console.log(this.loginUser);
+    
+    if (!this.loginUser) {
+      this.router.navigateByUrl('/');
     }
   }
 
@@ -66,6 +68,8 @@ export class LoginComponent extends BaseLogin implements OnInit {
             this.router.navigateByUrl('/feasibility-user/feasibility-project-list');
           } else if (this.loginDetails?.role == 'ProjectManager') {
             this.router.navigateByUrl('/project-manager/dashboard');
+          } else if (this.loginDetails?.role == 'UKWriter') {
+            this.router.navigateByUrl('/uk-writer/uk-writer-home');
           }
           this.notificationService.showSuccess(response?.message || 'User login successfully');
         } else {

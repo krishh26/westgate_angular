@@ -19,12 +19,13 @@ import { FeasibilityModule } from './modules/feasibility-analyst/feasibility-ana
 import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.module';
 import { ProjectManagerModule } from './modules/Project-Manager/Project-Manager.module';
 import { UkWriterModule } from './modules/uk-writer/uk-writer.module';
+import { ProjectNotificationComponent } from './utility/shared/common/project-notification/project-notification.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

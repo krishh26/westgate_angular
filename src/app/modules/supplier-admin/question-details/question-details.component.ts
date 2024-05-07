@@ -43,6 +43,7 @@ export class QuestionDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.questionDetails = response?.data;
+        console.log('this.questionDetails',this.questionDetails);
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
