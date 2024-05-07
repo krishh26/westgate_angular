@@ -29,9 +29,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              "src/assets/css/style.css",
-              "src/styles.scss",
+            "styles": [            
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/assets/vendor/bootstrap/css/bootstrap.css",
               "src/assets/vendor/bootstrap/css/bootstrap.min.css",
@@ -48,7 +46,9 @@
               "src/assets/vendor/bootstrap/css/bootstrap-utilities.css",
               "src/assets/vendor/bootstrap/css/bootstrap-utilities.min.css",
               "src/assets/vendor/bootstrap/css/bootstrap-utilities.rtl.css",
-              "src/assets/vendor/bootstrap/css/bootstrap-utilities.rtl.min.css"
+              "src/assets/vendor/bootstrap/css/bootstrap-utilities.rtl.min.css",
+              "src/assets/css/style.css",
+              "src/styles.scss"
             ],
             "scripts": [
               "src/assets/js/jquery.min.js",

@@ -1,6 +1,6 @@
 <main id="main">
     <section class="casestudy-section">
-        <div class="container">
+        <div class="container-fluid">
             <h4 class="text-theme mb-4"><strong>Case Studies</strong></h4>
             <form [formGroup]="caseForm" (ngSubmit)="addCaseStudy()">
                 <div class="row">
@@ -60,7 +60,7 @@
     </section>
 
     <section class="p-0">
-        <div class="container">
+        <div class="container-fluid">
             <div class="card card-gradient1 border-radius16 mb-4" *ngFor="let item of caseStudyList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                 <div class="card-body">
                     <div class="row align-items-center">
