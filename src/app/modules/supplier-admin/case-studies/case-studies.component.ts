@@ -104,7 +104,7 @@ export class CaseStudiesComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  
+
   openDocument(data: any) {
     this.selectedDocument = data;
   }
@@ -123,4 +123,23 @@ export class CaseStudiesComponent {
       });
   }
 
+
+  triggerDownload() {
+    var file : string = './../../../../assets/img/case-study.png';
+    const downloadLink = document.createElement('a');
+
+    if (typeof file === 'string') {
+      downloadLink.href = file;
+    } else {
+      downloadLink.href = URL.createObjectURL(file);
+    }
+
+    downloadLink.download = 'template.png';
+    downloadLink.click();
+
+    // For some browsers, remove the object URL after download:
+    if (typeof file === 'object') {
+      URL.revokeObjectURL(downloadLink.href);
+    }
+  }
 }

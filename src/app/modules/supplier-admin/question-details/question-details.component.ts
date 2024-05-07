@@ -18,8 +18,13 @@ export class QuestionDetailsComponent {
   loginUser:any;
   projectDetails:any
 
+
   ngOnInit(): void {
-    this.getQuestionDetails();
+    // this.getQuestionDetails();
+    const details = localStorage.getItem('ViewQuestion');
+    if(details) {
+      this.questionDetails = JSON.parse(details);
+    }
   }
 
   constructor(
@@ -36,22 +41,22 @@ export class QuestionDetailsComponent {
     this.loginUser = this.localStorageService.getLogger();
   }
 
-  getQuestionDetails() {
-    console.log(this.projectId);
-    this.showLoader = true;
-    this.projectService.getQuestionDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.questionDetails = response?.data;
-        console.log('this.questionDetails',this.questionDetails);
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
-  }
+  // getQuestionDetails() {
+  //   console.log(this.projectId);
+  //   this.showLoader = true;
+  //   this.projectService.getQuestionDetailsById(this.projectId).subscribe((response) => {
+  //     if (response?.status == true) {
+  //       this.showLoader = false;
+  //       this.questionDetails = response?.data;
+  //       console.log('this.questionDetails',this.questionDetails);
+  //     } else {
+  //       this.notificationService.showError(response?.message);
+  //       this.showLoader = false;
+  //     }
+  //   }, (error) => {
+  //     this.notificationService.showError(error?.message);
+  //     this.showLoader = false;
+  //   });
+  // }
 
 }

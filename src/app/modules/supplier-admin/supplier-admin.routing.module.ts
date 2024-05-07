@@ -24,6 +24,8 @@ import { SupplierDashboardHeaderComponent } from './supplier-dashboard-header/su
 import { SupplierProjectSubmittedComponent } from './supplier-project-submitted/supplier-project-submitted.component';
 import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-in-progress/supplier-project-work-in-progress.component';
 import { ProjectNotificationComponent } from 'src/app/utility/shared/common/project-notification/project-notification.component';
+import { ProjectDetailsForAppliedComponent } from './project-details-for-applied/project-details-for-applied.component';
+import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
 
 
 const routes: Routes = [
@@ -76,8 +78,16 @@ const routes: Routes = [
         component: ProjectsDetailsComponent
       },
       {
+        path: "projects-details-for-applied",
+        component: ProjectDetailsForAppliedComponent
+      },
+      {
         path: "question-details",
         component: QuestionDetailsComponent
+      },
+      {
+        path: "question-answer-details",
+        component: QuestionAnswerDetailsComponent
       },
       {
         path: "manage-user",

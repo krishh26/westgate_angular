@@ -1,16 +1,15 @@
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Observer } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 
 @Component({
-  selector: 'app-projects-details',
-  templateUrl: './projects-details.component.html',
-  styleUrls: ['./projects-details.component.scss']
+  selector: 'app-project-details-for-applied',
+  templateUrl: './project-details-for-applied.component.html',
+  styleUrls: ['./project-details-for-applied.component.scss']
 })
-export class ProjectsDetailsComponent {
+export class ProjectDetailsForAppliedComponent {
 
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
@@ -22,7 +21,7 @@ export class ProjectsDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryquestionList :any
+  summaryquestionList: any
 
   constructor(
     private projectService: ProjectService,
@@ -87,8 +86,8 @@ export class ProjectsDetailsComponent {
   }
 
   questionDetails(details: any) {
-    localStorage.setItem('ViewQuestion', JSON.stringify(details));
-    this.router.navigate(['/supplier-admin/question-details'], { queryParams: { id: details?._id } });
+    localStorage.setItem('QuestionAnswerDetails', JSON.stringify(details));
+    this.router.navigate(['/supplier-admin/question-answer-details'], { queryParams: { id: details?._id } });
   }
 
 

@@ -29,6 +29,8 @@ import { SupplierDashboardComponent } from './supplier-dashboard/supplier-dashbo
 import { SupplierProjectSubmittedComponent } from './supplier-project-submitted/supplier-project-submitted.component';
 import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-in-progress/supplier-project-work-in-progress.component';
 import { FooterComponent } from 'src/app/utility/shared/components/footer/footer.component';
+import { ProjectDetailsForAppliedComponent } from './project-details-for-applied/project-details-for-applied.component';
+import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
 
 
 
@@ -57,7 +59,9 @@ import { FooterComponent } from 'src/app/utility/shared/components/footer/footer
     SupplierDashboardComponent,
     SupplierProjectSubmittedComponent,
     SupplierProjectWorkInProgressComponent,
-    FooterComponent
+    FooterComponent,
+    ProjectDetailsForAppliedComponent,
+    QuestionAnswerDetailsComponent
   ],
   imports: [
     CommonModule,
