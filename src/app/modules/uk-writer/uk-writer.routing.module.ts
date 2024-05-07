@@ -7,6 +7,7 @@ import { UkWriterQuestionDetailsComponent } from './uk-writer-question-details/u
 import { UkWriterProjectsDetailsComponent } from './uk-writer-projects-details/uk-writer-projects-details.component';
 import { UkWriterProjectsAllComponent } from './uk-writer-projects-all/uk-writer-projects-all.component';
 import { UkWriterMatchedProjectsComponent } from './uk-writer-matched-projects/uk-writer-matched-projects.component';
+import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writer-supplier-list.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: "uk-writer-projects-all",
         component: UkWriterProjectsAllComponent
+      },
+      {
+        path: "uk-writer-supplier-list",
+        component: UkWriterSupplierListComponent
       },
     ]
   },

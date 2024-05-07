@@ -45,7 +45,7 @@
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>2</td>
                             <td>
-                                <a href="" class="btn btn-sm btn-primarysm" title="View Details">View Suppliers</a>
+                                <a (click)="supplierDetails(item?._id)" class="btn btn-sm btn-primarysm" title="View Details">View Suppliers</a>
                             </td>
                         </tr>
                     </tbody>

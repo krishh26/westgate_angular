@@ -63,7 +63,7 @@ export class UkWriterProjectsAllComponent {
     });
   }
 
-  projectDetails(projectId: any) {
+  supplierDetails(projectId: any) {
     this.router.navigate(['/uk-writer/uk-writer-projects-details'], { queryParams: { id: projectId } });
   }
 

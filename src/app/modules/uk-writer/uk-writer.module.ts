@@ -12,6 +12,7 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writer-supplier-list.component';
 
 
 
@@ -24,7 +25,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UkWriterProjectsAllComponent,
     UkWriterProjectsDetailsComponent,
     UkWriterQuestionDetailsEditComponent,
-    UkWriterQuestionDetailsEditComponent
+    UkWriterQuestionDetailsEditComponent,
+    UkWriterSupplierListComponent
   ],
   imports: [
     CommonModule,
