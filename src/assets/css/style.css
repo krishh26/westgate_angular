@@ -814,7 +814,7 @@ section {
 
 .bosTeam-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: 54px;
 }
 
 .body-welcome-page {
@@ -977,9 +977,40 @@ Login Page CSS
 --------------------------------------------------------------*/
 #footer {
   font-size: 14px;
-  background: #25380E;
+  background: #424242;
+  color: #FFF;
+  padding: 60px 0;
 }
-
+ul.footernav{
+  margin:0 ;
+  padding: 0;
+  list-style-type: none;
+}
+ul.footernav li{
+  display: block;
+}
+ul.footernav a{
+ display: block;
+ padding: 5px 0;
+ color: #FFFF;
+}
+ul.social-media{
+  margin:0 ;
+  padding: 0;
+  list-style-type: none;
+}
+ul.social-media li{
+  display: inline-block;
+}
+ul.social-media li a{
+  display: block;
+  padding: 5px;
+  color: #FFF;
+  font-size: 1.2rem;
+}
+.border-right-end {
+  border-right: 1px solid #dee2e6 !important;
+}
 /*--------------------------------------------------------------
 # Listing CSS
 --------------------------------------------------------------*/
