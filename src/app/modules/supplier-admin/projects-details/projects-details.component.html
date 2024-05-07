@@ -1,6 +1,11 @@
 <main id="main">
     <section>
         <div class="container-fluid">
+            <div class="row align-items-end justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2">
+                    <a href="#" class="btn btn-outline-white w-100">Back</a>
+                </div>
+            </div>
             <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
                     <thead>
@@ -198,7 +203,7 @@
                                 <td>{{item?.verify}}</td>
                                 <td>{{item?.deadline | date : 'MM/dd/yyyy'}}</td>
                                 <td>{{item?.response?.message}}</td>
-                                <td><a (click)="questionDetails(item?._id)" class="btn-sm btn-primary m-1"><i
+                                <td><a (click)="questionDetails(item?._id)" class="btn-sm btn-primary"><i
                                             class="bi bi-eye-fill"></i> View Question</a></td>
                             </tr>
                         </tbody>

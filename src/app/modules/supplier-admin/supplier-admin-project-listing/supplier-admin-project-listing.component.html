@@ -1,28 +1,29 @@
-<section class="pt-3 pb-0 ps-0 pe-0">
+<section class="pb-0">
+  <div class="container-fluid text-center">
+    <p *ngIf="activeComponent == 2" style="text-align: center; font-weight: bold;">Explore all published
+      projects and their details in one convenient location - your gateway to countless opportunities.
+    </p>
+
+    <p *ngIf="activeComponent == 1" style="text-align: center; font-weight: bold;">Discover projects perfectly
+      aligned with your capabilities - explore matched opportunities and take action. 100% match? Dive in! Partial
+      match? Contact us for assistance or upload additional case studies to unlock more opportunities.
+    </p>
+
+    <p *ngIf="activeComponent == 3" style="text-align: center; font-weight: bold;">Explore the projects you've
+      shown interest in and take the next steps.
+    </p>
+
+    <p *ngIf="activeComponent == 4" style="text-align: center; font-weight: bold;">Monitor projects currently in
+      the pipeline - witness the journey from preparation to submission.
+    </p>
+
+    <p *ngIf="activeComponent == 5" style="text-align: center; font-weight: bold;">Track the status of your
+      submitted projects - from awaiting results to outcomes, all in one place.
+    </p>
+  </div>
   <div class="container-fluids">
     <div class="row align-items-center">
-      <nav>
-        <p *ngIf="activeComponent == 2" style="text-align: center; font-weight: bold;">Explore all published
-          projects and their details in one convenient location - your gateway to countless opportunities.
-        </p>
-
-        <p *ngIf="activeComponent == 1" style="text-align: center; font-weight: bold;">Discover projects perfectly
-          aligned with your capabilities - explore matched opportunities and take action. 100% match? Dive in! Partial
-          match? Contact us for assistance or upload additional case studies to unlock more opportunities.
-        </p>
-
-        <p *ngIf="activeComponent == 3" style="text-align: center; font-weight: bold;">Explore the projects you've
-          shown interest in and take the next steps.
-        </p>
-
-        <p *ngIf="activeComponent == 4" style="text-align: center; font-weight: bold;">Monitor projects currently in
-          the pipeline - witness the journey from preparation to submission.
-        </p>
-
-        <p *ngIf="activeComponent == 5" style="text-align: center; font-weight: bold;">Track the status of your
-          submitted projects - from awaiting results to outcomes, all in one place.
-        </p>
-
+      <nav>   
         <ul class="projects-nav-tab">
           <li (click)="changeComponent(2)">
             <a [ngClass]="{'active' : activeComponent == 2}">All Projects</a>
