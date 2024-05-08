@@ -20,12 +20,15 @@ import { SupplierAdminModule } from './modules/supplier-admin/supplier-admin.mod
 import { ProjectManagerModule } from './modules/Project-Manager/Project-Manager.module';
 import { UkWriterModule } from './modules/uk-writer/uk-writer.module';
 import { ProjectNotificationComponent } from './utility/shared/common/project-notification/project-notification.component';
+import { SuperAdminModule } from './modules/super-admin/super-admin.module';
+import { BidSubmissionModule } from './modules/bid-submission/bid-submission.module';
+import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project-co-ordinator.module';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +36,10 @@ import { ProjectNotificationComponent } from './utility/shared/common/project-no
     BOSUserModule,
     FeasibilityModule,
     SupplierAdminModule,
+    SuperAdminModule,
+    UkWriterModule,
+    BidSubmissionModule,
+    ProjectCoOrdinatorModule,
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
