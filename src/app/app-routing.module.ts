@@ -22,12 +22,20 @@ const routes: Routes = [
     loadChildren: () => import('./modules/Project-Manager/Project-Manager.module').then(m => m.ProjectManagerModule)
   },
   {
+    path: 'project-co-ordinator',
+    loadChildren: () => import('./modules/project-co-ordinator/project-co-ordinator.module').then(m => m.ProjectCoOrdinatorModule)
+  },
+  {
     path: 'uk-writer',
     loadChildren: () => import('./modules/uk-writer/uk-writer.module').then(m => m.UkWriterModule)
   },
   {
     path: 'bid-submission',
     loadChildren: () => import('./modules/bid-submission/bid-submission.module').then(m => m.BidSubmissionModule)
+  },
+  {
+    path: 'super-admin',
+    loadChildren: () => import('./modules/super-admin/super-admin.module').then(m => m.SuperAdminModule)
   },
   {
     path: 'login',
