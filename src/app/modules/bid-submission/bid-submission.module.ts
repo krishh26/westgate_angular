@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { BidSubmissionHeaderComponent } from 'src/app/utility/shared/components/bid-submission-header/bid-submission-header.component';
+import { BidHeaderComponent } from 'src/app/utility/shared/components/bid-header/bid-header.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { BidSubmissionHeaderComponent } from 'src/app/utility/shared/components/
     BidProjectsAllComponent,
     BidMatchedProjectsComponent,
     BidQuestionDetailsComponent,
-    BidSubmissionHeaderComponent
+    BidSubmissionHeaderComponent,
+    BidHeaderComponent
   ]
 })
 export class BidSubmissionModule { }
