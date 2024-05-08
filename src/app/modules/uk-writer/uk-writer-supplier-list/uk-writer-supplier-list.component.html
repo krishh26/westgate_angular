@@ -21,13 +21,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
+                        <tr>
+                            <td><a href="javascript:;">{{supplierList?.name}}</a></td>
+                            <td v-align="middle">{{supplierList?._id}}</td>
+                            <td>{{supplierList.userName}}</td>
+                            <td>Status</td>
+                            <td>
+                                <button (click)="projectDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3" style="white-space: nowrap;font-size: 11px;">View Supplier Response</button>
+                            </td>
+                        </tr>
+                        <!-- <tr
                         *ngFor="let supplier of supplierList">
                             <td><a href="javascript:;">{{supplier?.name}}</a></td>
                             <td v-align="middle">{{supplier?._id}}</td>
-                            <td>{{supplier?.userName}}</td>
+                            <td>{{supplier.userName}}</td>
                             <td>Status</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
