@@ -43,7 +43,7 @@
                             <td>{{item?.status}}</td>
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>
-                                <a href="javascript:;" class="btn btn-sm btn-primarysm" title="View Details">View
+                                <a (click)="projectDetails(item?._id)" class="btn btn-sm btn-primarysm" title="View Details">View
                                     Project Details</a>
                             </td>
                         </tr>

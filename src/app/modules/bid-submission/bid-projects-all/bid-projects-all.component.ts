@@ -68,6 +68,10 @@ export class BidProjectsAllComponent {
     localStorage.setItem('UKprojectID' ,projectId )
   }
 
+  projectDetails(projectId: any) {
+    this.router.navigate(['/bid-submission/bid-projects-details'], { queryParams: { id: projectId } });
+  }
+
   paginate(page: number) {
     this.page = page;
     this.getProjectList();
