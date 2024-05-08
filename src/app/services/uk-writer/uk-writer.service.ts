@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 
 export enum UKWriterEndPoint {
   DASHBOARD_DATA = '/project/ukwriter/dashboard',
-  UKWRITER_UPDATE = '/summary-question/uk-writer/update/'
+  UKWRITER_UPDATE = '/summary-question/uk-writer/update/',
+  SUPPLIER_LIST = '/project/ukwriter/selected-user/'
 }
 
 
@@ -35,6 +36,11 @@ export class UkWriterService {
   addUkData(payload: any) {
     return this.httpClient
       .post<any>(this.baseUrl + UKWriterEndPoint.UKWRITER_UPDATE, payload);
+  }
+
+  getSupplierList(userId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(`${this.baseUrl}${UKWriterEndPoint.SUPPLIER_LIST}${userId}`);
   }
 
 

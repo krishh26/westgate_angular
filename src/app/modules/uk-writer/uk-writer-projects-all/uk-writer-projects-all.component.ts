@@ -36,7 +36,6 @@ export class UkWriterProjectsAllComponent {
       console.log('result', result);
       this.getProjectList();
     });
-
     this.getProjectList();
   }
 
@@ -64,7 +63,8 @@ export class UkWriterProjectsAllComponent {
   }
 
   supplierDetails(projectId: any) {
-    this.router.navigate(['/uk-writer/uk-writer-projects-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/uk-writer/uk-writer-supplier-list'], { queryParams: { id: projectId } });
+    localStorage.setItem('UKprojectID' ,projectId )
   }
 
   paginate(page: number) {

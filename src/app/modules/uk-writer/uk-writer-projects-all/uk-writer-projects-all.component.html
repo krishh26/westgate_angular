@@ -40,12 +40,13 @@
                             <td>£{{item?.value}}</td>
                             <td>{{item?.website}}</td>
                             <td><a href="javascript:;">{{item?.link}}</a></td>
-                            <td>{{item?.createdAt  | date:'MM/dd/yyyy'}}</td>
+                            <td>{{item?.createdAt | date:'MM/dd/yyyy'}}</td>
                             <td>{{item?.status}}</td>
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
                             <td>2</td>
                             <td>
-                                <a (click)="supplierDetails(item?._id)" class="btn btn-sm btn-primarysm" title="View Details">View Suppliers</a>
+                                <a (click)="supplierDetails(item?._id)" class="btn btn-sm btn-primarysm"
+                                    title="View Details">View Suppliers</a>
                             </td>
                         </tr>
                     </tbody>
@@ -53,11 +54,11 @@
             </div>
             <div class="row mt-3 align-items-center">
                 <div class="row">
-                  <div class="pagination">
-                    <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
-                  </div>
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                    </div>
                 </div>
-              </div>
+            </div>
             <!-- <nav>
                 <ul class="pagination justify-content-end">
                     <li class="page-item disabled">
@@ -73,8 +74,6 @@
                     </li>
                 </ul>
             </nav> -->
-
         </div>
     </section>
-
 </main><!-- End #main -->
