@@ -156,15 +156,29 @@
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                             <p class="mb-0">FOI Screenshot</p>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
+                        <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{foiDocument?.name}}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
+                                        data-bs-target="#fioScreenshot"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <div class="row align-items-center mt-3">
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
