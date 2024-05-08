@@ -26,6 +26,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/uk-writer/uk-writer.module').then(m => m.UkWriterModule)
   },
   {
+    path: 'bid-submission',
+    loadChildren: () => import('./modules/bid-submission/bid-submission.module').then(m => m.BidSubmissionModule)
+  },
+  {
     path: 'login',
     component : LoginComponent
   },
