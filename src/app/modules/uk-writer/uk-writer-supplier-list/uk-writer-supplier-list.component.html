@@ -18,6 +18,7 @@
                             <th>Supplier ID</th>
                             <th>Admin Name</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,10 @@
                             <td v-align="middle">{{supplier?._id}}</td>
                             <td>{{supplier?.userName}}</td>
                             <td>Status</td>
+                            <td>
+                                <a (click)="supplierDetails(supplier?._id)" class="btn btn-sm btn-primarysm"
+                                    title="View Details">View Supplier Details</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

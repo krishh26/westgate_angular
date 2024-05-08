@@ -68,4 +68,8 @@ export class UkWriterSupplierListComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  supplierDetails(item:any) {
+
+  } 
+
 }
