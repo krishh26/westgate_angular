@@ -18,6 +18,7 @@
                             <th>Supplier ID</th>
                             <th>Admin Name</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,7 +28,8 @@
                             <td>{{supplierList.userName}}</td>
                             <td>Status</td>
                             <td>
-                                <button (click)="projectDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3" style="white-space: nowrap;font-size: 11px;">View Supplier Response</button>
+                                <a (click)="projectDetails()" class="btn btn-sm btn-primarysm"
+                                title="View Details">View Supplier Details</a>
                             </td>
                         </tr>
                         <!-- <tr
