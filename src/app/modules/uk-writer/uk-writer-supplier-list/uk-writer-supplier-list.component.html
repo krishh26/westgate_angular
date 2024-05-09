@@ -22,10 +22,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">{{supplierList?.name}}</a></td>
-                            <td v-align="middle">{{supplierList?._id}}</td>
-                            <td>{{supplierList.userName}}</td>
+                        <tr
+                        *ngFor="let supplier of supplierList">
+                            <td><a href="javascript:;">{{supplier.supplierId?.name}}</a></td>
+                            <td v-align="middle">{{supplier.supplierId?._id}}</td>
+                            <td>{{supplier.supplierId.userName}}</td>
                             <td>Status</td>
                             <td>
                                 <a (click)="projectDetails()" class="btn btn-sm btn-primarysm"

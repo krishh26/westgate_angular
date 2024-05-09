@@ -54,7 +54,7 @@ export class UkWriterSupplierListComponent {
       if (response?.status == true) {
         this.showLoader = false;
         // Assuming response.data[0] is an array of suppliers
-        this.supplierList = response?.data[0]?.supplierId;
+        this.supplierList = response?.data;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

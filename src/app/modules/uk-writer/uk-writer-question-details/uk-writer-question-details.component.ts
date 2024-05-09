@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./uk-writer-question-details.component.scss']
 })
 export class UkWriterQuestionDetailsComponent {
+  questionDetails: any = [];
 
+  constructor(){
+    const details = localStorage.getItem('ViewQuestion');
+    if(details) {
+      this.questionDetails = JSON.parse(details);
+    }
+  }
 }
