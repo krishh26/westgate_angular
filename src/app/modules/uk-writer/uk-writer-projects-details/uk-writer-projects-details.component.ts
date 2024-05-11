@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
+import { UkWriterService } from 'src/app/services/uk-writer/uk-writer.service';
 
 @Component({
   selector: 'app-uk-writer-projects-details',
@@ -11,21 +12,31 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 export class UkWriterProjectsDetailsComponent {
 
   projectID : string = '';
+  supplierId : string = '';
   showLoader: boolean = false;
   projectDetails: any = [];
+  supplierDetails: any = [];
   selectedDocument: any;
   summaryquestionList :any
 
 
-  constructor(private route:ActivatedRoute,private projectService:ProjectService,
+  constructor(private route:ActivatedRoute,
+    private projectService:ProjectService,
+    private ukwriterService: UkWriterService,
     private router: Router,
     private notificationService: NotificationService,
   ){
     
     this.route.queryParams.subscribe((params) => {
-      this.projectID = params['id']
+      if(params['id']){
+        this.projectID = params['id']
+      }
+      if(params['supplierId']){
+        this.supplierId = params['supplierId']
+      }
     });
     this.getProjectDetails()
+    this.getSupplierDetails()
 
   }
 
@@ -44,6 +55,27 @@ export class UkWriterProjectsDetailsComponent {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       })
+  }
+
+  getSupplierDetails(){
+    this.ukwriterService.getSupplierListById(this.projectID,this.supplierId).subscribe((response)=>{
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.supplierDetails = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    },
+    error=>{
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    })
+  }
+
+  supplierListPage(){
+    localStorage.setItem('UKprojectID' ,this.projectID )
+    this.router.navigate(['/uk-writer/uk-writer-supplier-list'], { queryParams: { id: this.projectID } });
   }
 
   openDocument(data: any) {

@@ -65,17 +65,13 @@ export class UkWriterSupplierListComponent {
     });
   }
   
-  projectDetails() {
-    this.router.navigate(['/uk-writer/uk-writer-projects-details'], { queryParams: { id: this.projectID } });
+  projectDetails(supplierId:string) {
+    this.router.navigate(['/uk-writer/uk-writer-projects-details'], { queryParams: { id: this.projectID,supplierId: supplierId} });
   }
   paginate(page: number) {
     this.page = page;
     this.getSupplierList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  supplierDetails(item:any) {
-
-  } 
 
 }

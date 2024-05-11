@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-between">
                 <div class="col-12 text-end">
-                    <a href="matched-projects.html" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
+                    <a (click)="supplierListPage()" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
                 </div>
             </div>
 
@@ -57,12 +57,17 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Company Name</td>
-                            <td>416526</td>
+                            <td>{{supplierDetails?.supplierId?.name}}</td>
+                            <td>{{supplierDetails?.supplierId?._id}}</td>
                             <td>Ayush</td>
-                            <td>Held on: 12th Feb 2023</td>
+                            <td>Held on: {{supplierDetails?.handoverCall | date:'d MMM y' }}
+                                </td>
                             <td>
-                                <input type="text" class="form-control form-control-sm">
+                                <select class="form-select form-select-sm">
+                                    <ng-container *ngFor="let company of supplierDetails?.companySelect">
+                                        <option >{{company}}</option>
+                                    </ng-container>
+                                </select>
                             </td>
                             <td> <button type="button" class="btn btn-light"><i class="bi bi-pencil-fill"></i></button>
                             </td>
