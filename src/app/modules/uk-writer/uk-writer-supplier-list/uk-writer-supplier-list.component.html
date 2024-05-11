@@ -29,7 +29,7 @@
                             <td>{{supplier.supplierId.userName}}</td>
                             <td>Status</td>
                             <td>
-                                <a (click)="projectDetails()" class="btn btn-sm btn-primarysm"
+                                <a (click)="projectDetails(supplier.supplierId?._id)" class="btn btn-sm btn-primarysm"
                                 title="View Details">View Supplier Details</a>
                             </td>
                         </tr>

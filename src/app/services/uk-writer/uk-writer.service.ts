@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export enum UKWriterEndPoint {
   DASHBOARD_DATA = '/project/ukwriter/dashboard',
   UKWRITER_UPDATE = '/summary-question/uk-writer/update/',
-  SUPPLIER_LIST = '/project/ukwriter/selected-user/'
+  SUPPLIER_LIST = '/project/ukwriter/selected-user/',
+  SUPPLIER_LIST_BY_ID = '/project/ukwriter/supplier-user/'
 }
 
 
@@ -42,6 +43,10 @@ export class UkWriterService {
     return this.httpClient
       .get<any>(`${this.baseUrl}${UKWriterEndPoint.SUPPLIER_LIST}${userId}`);
   }
-
+  // project/ukwriter/supplier-user/:projectId?supplierId=6623a984f86ed3af4b99295c
+  getSupplierListById(projectId: string,supplierId:string): Observable<any> {
+    return this.httpClient
+      .get<any>(`${this.baseUrl}${UKWriterEndPoint.SUPPLIER_LIST_BY_ID}${projectId}?supplierId=${supplierId}`);
+  }
 
 }
