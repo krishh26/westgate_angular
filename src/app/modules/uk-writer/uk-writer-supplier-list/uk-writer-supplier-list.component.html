@@ -24,15 +24,22 @@
                     <tbody>
                         <tr
                         *ngFor="let supplier of supplierList">
-                            <td><a href="javascript:;">{{supplier?.name}}</a></td>
-                            <td v-align="middle">{{supplier?._id}}</td>
-                            <td>{{supplier?.userName}}</td>
+                            <td><a href="javascript:;">{{supplier.supplierId?.name}}</a></td>
+                            <td v-align="middle">{{supplier.supplierId?._id}}</td>
+                            <td>{{supplier.supplierId.userName}}</td>
                             <td>Status</td>
                             <td>
-                                <a (click)="supplierDetails(supplier?._id)" class="btn btn-sm btn-primarysm"
-                                    title="View Details">View Supplier Details</a>
+                                <a (click)="projectDetails()" class="btn btn-sm btn-primarysm"
+                                title="View Details">View Supplier Details</a>
                             </td>
                         </tr>
+                        <!-- <tr
+                        *ngFor="let supplier of supplierList">
+                            <td><a href="javascript:;">{{supplier?.name}}</a></td>
+                            <td v-align="middle">{{supplier?._id}}</td>
+                            <td>{{supplier.userName}}</td>
+                            <td>Status</td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
