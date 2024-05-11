@@ -30,7 +30,7 @@ export class ProjectService {
     this.projectid = localStorage.getItem('projectID')
   }
 
-  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string }): Observable<any> {
+  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string, status: string }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
     let queryParams = new HttpParams();
@@ -44,7 +44,10 @@ export class ProjectService {
       queryParams = queryParams.set('sortlist', params?.sortlist);
     }
     if (params?.match) {
-      queryParams = queryParams.set('match',params?.match);
+      queryParams = queryParams.set('match', params?.match);
+    }
+    if (params?.status) {
+      queryParams = queryParams.set('status', params?.status);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }

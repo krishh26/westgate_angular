@@ -22,63 +22,58 @@
         <tbody>
           <tr>
             <td></td>
-            <td class="text-primary">Provision of MyBedsLife Student Engagement App Support Services</td>
-            <td>546552</td>
-            <td>2023-05-31</td>
-            <td>Website</td>
-            <td>School</td>
-            <td>£50000</td>
-            <td>Proactis</td>
-            <td><a href="javascript:;">Link</a></td>
-            <td>08-04-2024</td>
-            <td>Status</td>
-            <td>25-11-2014 & 5:00PM</td>
+            <td class="text-primary"><a>{{projectDetails?.projectName}}</a></td>
+            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+            <td>{{projectDetails?.category}}</td>
+            <td>{{projectDetails?.industry}}</td>
+            <td>{{projectDetails?.value}}</td>
+            <td>{{projectDetails?.website}}</td>
+            <td><a href="javascript:;">{{projectDetails?.link}}</a></td>
+            <td>{{projectDetails?.createdAt | date:'dd-MM-YYYY'}}</td>
+            <td>{{projectDetails?.status}}</td>
+            <td>{{projectDetails?.dueDate | date:'dd-MM-yyyy, h:mm a'}}</td>
             <td>
-              <button routerLink="/project-manager/project/close" class="btn btn-sm btn-primary px-4 py-1" style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">Back</button>
+              <button routerLink="/project-manager/project/all" class="btn btn-sm btn-primary px-4 py-1" style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">Back</button>
             </td>
             <td>
 
             </td>
           </tr>
-          <tr class="bg-d3">
-              <td>  </td>
-              <td>
-                  <div class="d-flex flex-column">
-                      <span class="fw-bold mb-3"  style="white-space: nowrap;"> Supplier Name  </span>
-                      <span>   Company Name  </span>
-                  </div>
-              </td>
-              <td>
-                  <div class="d-flex flex-column">
-                      <span class="fw-bold mb-3" style="white-space: nowrap;"> Supplier ID </span>
-                      <span>   416526</span>
-                  </div>
-               </td>
-               <td>
-                  <div class="d-flex flex-column">
-                      <span class="fw-bold mb-3"  style="white-space: nowrap;"> Admin Name</span>
-                      <span>   Ayush</span>
-                  </div>
-               </td>
-               <td>
-                  <div class="d-flex flex-column">
-                      <span class="fw-bold mb-3"  style="white-space: nowrap;"> Status</span>
-                      <span class="d-flex align-items-center"> <i class="bi bi-check-circle-fill text-green me-1"></i>  Closed</span>
-                  </div>
-               </td>
-               <td>
-                  <div class="d-flex flex-column">
-                      <span class="fw-bold mb-3"  style="white-space: nowrap;"> Handover Call date</span>
-                      <span>   12-Jan-2023</span>
-                  </div>
-               </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+          <ng-container *ngIf="projectDetails?.select?.length > 0">
+            <tr class="bg-d3" style="background-color: #b5b2b2;">
+              <td colspan="1"></td>
+              <td  colspan="12" style="background-color: #b5b2b2;">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <!-- <th></th> -->
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name</th>
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID</th>
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Closed On</th>
+                    <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Handover Call date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background-color: #b5b2b2 !important;" *ngFor="let supplier of projectDetails?.select">
+                    <!-- <td></td> -->
+                    <td style="background-color: #b5b2b2 !important;">Company Name</td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
+                    <td style="background-color: #b5b2b2 !important;">Ayush</td>
+                    <td style="background-color: #b5b2b2 !important;">Closed</td>
+                    <td style="background-color: #b5b2b2 !important;">12-Sep-2023</td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date : 'dd-MMM-YYYY'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+            <td colspan="1"></td>
+            </tr>
+            </ng-container>
+            <tr *ngIf="projectDetails?.select?.length == 0">
+              <td colspan="14" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
             </tr>
         </tbody>
       </table>
@@ -90,25 +85,22 @@
       <div class="col-12 d-flex align-items-center justify-content-end mb-4">
         <div class="d-flex align-items-center me-4 ">
           <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a href="question-details.html" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
+          <a  routerLink="/project-manager/project/all" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
         </div>
         <div class="d-flex align-items-center me-4">
           <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a href="question-details.html" class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
+          <a  routerLink="/project-manager/project/all" class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
         </div>
         <div class="d-flex align-items-center me-4">
           <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a href="question-details.html" class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
+          <a  routerLink="/project-manager/project/all" class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View Response</a>
         </div>
       </div>
     </div>
       <div class="row">
           <div class="col-12">
               <h5 class="text-primary">Project Description</h5>
-              <p class="fonts-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
-
-
-              <p class="fonts-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+              <p class="fonts-14">{{projectDetails?.description}}</p>
           </div>
       </div>
       <div class="row mt-5">
@@ -120,40 +112,49 @@
                   <h6 class="text-theme"><strong>Client Detils</strong></h6>
                 </div>
                 <div class="col-lg-7 col-xl-7 col-12">
-                  <p class="p-13 mb-0">Mail ID : abc@gmail.com</p>
-                  <p class="p-13 mb-0">Client Type : Private Sector</p>
-                  <p class="p-13 mb-0">Client Name : XYZ</p>
+                  <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                  <p class="p-13 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                  <p class="p-13 mb-0">Client Name : {{projectDetails?.clientName}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space:nowrap;">
-          <div class="row align-items-center">
-            <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-              <p class="fonts-14 mb-0">FOI Screenshot</p>
-            </div>
-            <div class="col-lg-6 col-xl-6 col-6">
-              <a href="" class="btn btn-small w-100  fonts-14" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
-            </div>
-
+          <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+              <p class="mb-0">FOI Document</p>
           </div>
-          <div class="row align-items-center mt-3">
-            <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-              <p class="fonts-14 mb-0">FOI Document</p>
-            </div>
-            <div class="col-lg-6 col-xl-6 col-6">
-              <a href="" class="btn btn-small fonts-14 w-100"><i class="bi bi-eye-fill"></i> View</a>
-            </div>
-
+          <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+              <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                  <p class="mb-0">No Record Found.</p>
+              </div>
           </div>
-        </div>
+          <ng-container *ngIf="projectDetails?.fois?.length > 0">
+              <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                  <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                      <p class="mb-0">{{foiDocument?.name}}</p>
+                  </div>
+                  <div class="col-lg-4 col-xl-4 col-6">
+                      <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                          data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                              class="bi bi-eye-fill"></i> View</a>
+                  </div>
+                  <div class="col-lg-4 col-xl-4 col-6">
+                      <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                          class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                          Download</a>
+                  </div>
+              </div>
+          </ng-container>
+       </div>
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
             <div class="card-body text-center">
-              <p class="p-13"><strong>Period of Contract: Start Date -  End Date</strong></p>
-              <p class="p-13"><strong>Project Type: Developement</strong></p>
-            </div>
+              <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                      'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                      'MM/dd/yyyy'}}</strong></p>
+              <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
+          </div>
           </div>
         </div>
       </div>
@@ -242,11 +243,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-              <td>35%</td>
-              <td class="text-success">Verified</td>
-              <td>01-02-2014</td>
+            <tr *ngFor="let item of summaryQuestionList">
+              <td width="350">{{item?.question}}</td>
+              <td>{{item?.weightage}}</td>
+              <td>
+                <span class="text-success" *ngIf="item?.verify">Verified</span>
+                <span *ngIf="!item?.verify">Not Verified</span>
+              </td>
+              <td>{{item?.deadline | date : 'DD-MM-YYYY'}}</td>
               <td>Ayush</td>
               <td> dolor sit amet, consectetur......</td>
               <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
@@ -278,3 +282,23 @@
     </div>
   </div>
   </section>
+
+
+  <!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+  </div>
+</div>
