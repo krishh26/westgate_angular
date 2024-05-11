@@ -61,11 +61,11 @@
                             <td>{{supplierDetails?.supplierId?._id}}</td>
                             <td>Ayush</td>
                             <td>Held on: {{supplierDetails?.handoverCall | date:'d MMM y' }}
-                                </td>
+                            </td>
                             <td>
                                 <select class="form-select form-select-sm">
                                     <ng-container *ngFor="let company of supplierDetails?.companySelect">
-                                        <option >{{company}}</option>
+                                        <option>{{company}}</option>
                                     </ng-container>
                                 </select>
                             </td>
@@ -185,9 +185,9 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
-                                'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                                'MM/dd/yyyy'}}</strong></p>
-                        <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
+                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'MM/dd/yyyy'}}</strong></p>
+                            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>
                 </div>
@@ -229,6 +229,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="row">
+                    <p *ngIf="summaryquestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+                </div>
             </div>
         </div>
     </section>
@@ -264,13 +267,16 @@
                                 <td> {{item?.instructions}}</td>
                                 <td>
                                     <a (click)="questionDetails(item)" class="btn-sm btn-primary"><i
-                                        class="bi bi-eye-fill"></i> View Question</a>
+                                            class="bi bi-eye-fill"></i> View Question</a>
                                     <a href="javascript:;" class="btn btn-outline-purewhite"><i
                                             class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <div class="row">
+                        <p *ngIf="summaryquestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+                    </div>
                 </div>
 
             </div>

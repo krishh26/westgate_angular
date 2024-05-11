@@ -21,6 +21,7 @@ export class UkWriterProjectsAllComponent {
   totalRecords: number = pagination.totalRecords;
   searchText: FormControl = new FormControl('');
   loginUser: any;
+  suppliercount :any 
 
   constructor(
     private projectService: ProjectService,
@@ -52,6 +53,9 @@ export class UkWriterProjectsAllComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
+        this.suppliercount = response?.data?.data?.select[0]?.companySelect?.length;
+        console.log(this.suppliercount);
+        
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

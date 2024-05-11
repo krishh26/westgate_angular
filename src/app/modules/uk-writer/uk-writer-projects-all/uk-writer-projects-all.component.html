@@ -43,7 +43,7 @@
                             <td>{{item?.createdAt | date:'MM/dd/yyyy'}}</td>
                             <td>{{item?.status}}</td>
                             <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
-                            <td>2</td>
+                            <td>{{item?.select[0]?.companySelect?.length || 0}}</td>
                             <td>
                                 <a (click)="supplierDetails(item?._id)" class="btn btn-sm btn-primarysm"
                                     title="View Details">View Suppliers</a>
