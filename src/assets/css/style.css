@@ -753,7 +753,7 @@ section {
 
 .bosTeam-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: 100px;
 }
 
 .body-supplier-page {
