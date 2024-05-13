@@ -1,1 +1,458 @@
-<p>project-co-ordinator-details works!</p>
+<main id="main">
+  <section>
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-end">
+        <div class="col-2 text-end">
+          <a routerLink="/project-coordinator/project-coordinator-projects-list" class="btn btn-dark w-100 box-shadow">Back</a>
+        </div>
+      </div>
+
+      <div class="table-responsive mt-5 mb-3">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th width="200px">Project Title</th>
+              <th>BOS ID</th>
+              <th>Publish Date</th>
+              <th>Category</th>
+              <th>Value</th>
+              <th>Status</th>
+              <th>Project Start Date</th>
+              <th>Project End Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="javascript();">{{ projectDetails?.projectName }}</a></td>
+              <td v-align="middle">{{ projectDetails?.BOSID }}</td>
+              <td>{{ projectDetails?.publishDate | date:'YYYY-MM-dd' }}</td>
+              <td>{{ projectDetails?.website }}</td>
+              <td>$ {{projectDetails?.value}}</td>
+              <td><strong class="text-success"> {{ projectDetails?.status }} </strong></td>
+              <td>{{ projectDetails?.periodOfContractStart | date:'YYYY-MM-dd' || '-'}}</td>
+              <td>{{ projectDetails?.periodOfContractEnd | date:'YYYY-MM-dd' || '-'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-responsive mt-5 mb-3">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Supplier Name</th>
+              <th>Supplier ID</th>
+              <th>Admin Name</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let supplier of projectDetails?.select">
+              <tr>
+                <td>Company Name</td>
+                <td>{{supplier?.supplierId}}</td>
+                <td>Ayush</td>
+                <td style="width: 35%;">
+                <a routerLink="/project-coordinator/project-coordinator-chats" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i> Chat</a>
+                <a type="button" class="btn btn-success btn-sm">Initiate Meeting</a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="pt-0 pb-0">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-8 col-xl-8 col-12">
+          <div class="row">
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">Sub-contracting</label>
+               <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>                </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">Economical partnership</label>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">other</label>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-xl-4 col-12">
+          <div class="card bg-primary">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-lg-4 col-xl-4 col-12">
+                  <h6 class="p-12 text-white"><strong>Client Details</strong></h6>
+                </div>
+                <div class="col-lg-7 col-xl-7 col-12">
+                  <p class="p-10 mb-0 text-white">Mail ID : {{projectDetails?.mailID}}</p>
+                  <p class="p-10 mb-0 text-white">Client Type : {{projectDetails?.clientType}}</p>
+                  <p class="p-10 mb-0 text-white">Client Name : {{projectDetails?.clientName}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Project description-->
+      <div class="row mb-4 mt-4">
+        <h4 class="text-theme"><strong>Project Description</strong></h4>
+        <p> {{projectDetails?.description}} </p>
+      </div>
+      <!--client details-->
+      <div class="row mt-5">
+        <div class="col-lg-4 col-xl-4 col-12 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-lg-4 col-xl-4 col-12">
+                  <h6 class="text-theme"><strong>Client Details</strong></h6>
+                </div>
+                <div class="col-lg-7 col-xl-7 col-12">
+                  <p class="p-10 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                  <p class="p-10 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                  <p class="p-10 mb-0">Client Name : {{projectDetails?.clientName}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-xl-4 col-12 mb-4">
+          <!-- <div class="row align-items-center">
+            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+              <p class="mb-0">FIO Screenshot</p>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
+            </div>
+          </div>
+          <div class="row align-items-center mt-3">
+            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+              <p class="mb-0">FIO Document</p>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
+            </div>
+          </div> -->
+          <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+            <p class="mb-0">FOI Document</p>
+          </div>
+          <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+              <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                  <p class="mb-0">No Record Found.</p>
+              </div>
+          </div>
+          <ng-container *ngIf="projectDetails?.fois?.length > 0">
+              <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                  <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                      <p class="mb-0">{{foiDocument?.name}}</p>
+                  </div>
+                  <div class="col-lg-4 col-xl-4 col-6">
+                      <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                          data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                              class="bi bi-eye-fill"></i> View</a>
+                  </div>
+                  <div class="col-lg-4 col-xl-4 col-6">
+                      <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                          class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                          Download</a>
+                  </div>
+              </div>
+          </ng-container>
+        </div>
+        <div class="col-lg-4 col-xl-4 col-12 mb-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                'MM/dd/yyyy'}}</strong></p>
+              <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-dark">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h5 class="text-white mb-4"><strong>Summary Note Questions</strong></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-dark table-borderless" style="background-color: #252525;">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Weightage</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Assign User</th>
+                <th>Add Review Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-primary">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h5 class="text-white mb-4"><strong>Summary Note Questions</strong></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-primary table-borderless" style="background-color: #252525;">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Weightage</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Assign User</th>
+                <th>Add Review Note</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
+                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
+                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
+                <td>35%</td>
+                <td><span class="text-success">Verified</span></td>
+                <td>01-02-2014</td>
+                <td>Ayush</td>
+                <td> dolor sit amet, consectetur......</td>
+                <td>
+                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
+                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <h5 class="mb-3"><strong>Add Supporting docs</strong></h5>
+      <div class="row">
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="form-group" x-data="{ fileName: '' }">
+            <div class="input-group">
+              <input type="file" x-ref="file" name="img[]" class="d-none">
+              <input type="text" class="form-control file-control" placeholder="Upload Image" x-model="fileName">
+              <button class="browse btn btn-primary border-radius6" type="button" x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
+            </div>
+          </div>
+          <div class="form-group" x-data="{ fileName: '' }">
+            <div class="input-group">
+              <input type="file" x-ref="file" name="img[]" class="d-none">
+              <input type="text" class="form-control file-control" placeholder="Upload Image" x-model="fileName">
+              <button class="browse btn btn-primary border-radius6" type="button" x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
+            </div>
+          </div>
+          <div class="form-group" x-data="{ fileName: '' }">
+            <div class="input-group">
+              <input type="file" x-ref="file" name="img[]" class="d-none">
+              <input type="text" class="form-control file-control" placeholder="Upload Image" x-model="fileName">
+              <button class="browse btn btn-primary border-radius6" type="button" x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
+            </div>
+          </div>
+          <div class="form-group" x-data="{ fileName: '' }">
+            <div class="input-group">
+              <input type="file" x-ref="file" name="img[]" class="d-none">
+              <input type="text" class="form-control file-control" placeholder="Upload Image" x-model="fileName">
+              <button class="browse btn btn-primary border-radius6" type="button" x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container-fluid">
+      <h5 class="mb-3"><strong>Add Project Stage <button type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i></button> </strong></h5>
+      <div class="row">
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="row">
+            <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
+              <div class="form-group">
+                <label class="display-block">&nbsp;</label>
+                <input type="text" class="form-control" placeholder="Stage 1">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
+              <div class="form-group">
+                <label class="display-block">&nbsp;</label>
+                <input type="text" class="form-control" placeholder="Stage 2">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
+              <div class="form-group">
+                <label class="display-block">&nbsp;</label>
+                <input type="text" class="form-control" placeholder="Stage 3">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+  </div>
+</div>

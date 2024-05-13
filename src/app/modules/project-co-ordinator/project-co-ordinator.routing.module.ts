@@ -5,6 +5,7 @@ import { ProjectCoOrdinatorHomeComponent } from './project-co-ordinator-home/pro
 import { ProjectCoOrdinatorDetailsComponent } from './project-co-ordinator-details/project-co-ordinator-details.component';
 import { ProjectCoOrdinatorQuestionDetailsComponent } from './project-co-ordinator-question-details/project-co-ordinator-question-details.component';
 import { ProjectCoOrdinatorChatsComponent } from './project-co-ordinator-chats/project-co-ordinator-chats.component';
+import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-project-list/project-co-ordinator-project-list.component';
 
 
 const routes: Routes = [
@@ -13,19 +14,23 @@ const routes: Routes = [
     component: ProjectCoOrdinatorComponent,
     children: [
       {
-        path: "project-co-ordinator-home",
+        path: "project-coordinator-home",
         component: ProjectCoOrdinatorHomeComponent
       },
       {
-        path: "project-co-ordinator-projects-details",
+        path: "project-coordinator-projects-list",
+        component: ProjectCoOrdinatorProjectListComponent
+      },
+      {
+        path: "project-coordinator-projects-details",
         component: ProjectCoOrdinatorDetailsComponent
       },
       {
-        path: "project-co-ordinator-question-details",
+        path: "project-coordinator-question-details",
         component: ProjectCoOrdinatorQuestionDetailsComponent
       },
       {
-        path: "project-co-ordinator-chats",
+        path: "project-coordinator-chats",
         component: ProjectCoOrdinatorChatsComponent
       },
     ]

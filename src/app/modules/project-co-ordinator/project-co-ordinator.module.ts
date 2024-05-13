@@ -11,6 +11,7 @@ import { ProjectCoOrdinatorComponent } from './project-co-ordinator.component';
 import { ProjectCoOrdinatorChatsComponent } from './project-co-ordinator-chats/project-co-ordinator-chats.component';
 import { ProjectCoOrdinatorHeaderComponent } from 'src/app/utility/shared/components/project-co-ordinator-header/project-co-ordinator-header.component';
 import { ProjectCoOrdinateRoutingModule } from './project-co-ordinator.routing.module';
+import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-project-list/project-co-ordinator-project-list.component';
 
 
 
@@ -21,7 +22,8 @@ import { ProjectCoOrdinateRoutingModule } from './project-co-ordinator.routing.m
     ProjectCoOrdinatorDetailsComponent,
     ProjectCoOrdinatorComponent,
     ProjectCoOrdinatorChatsComponent,
-    ProjectCoOrdinatorHeaderComponent
+    ProjectCoOrdinatorHeaderComponent,
+    ProjectCoOrdinatorProjectListComponent
   ],
   imports: [
     CommonModule,

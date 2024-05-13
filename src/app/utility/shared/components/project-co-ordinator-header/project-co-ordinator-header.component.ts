@@ -23,8 +23,8 @@ export class ProjectCoOrdinatorHeaderComponent {
   }
 
   navUrlArr = [
-    { title: 'Home', route: ['/uk-writer/uk-writer-home'] },
-    { title: 'Live Projects', route: ['/uk-writer/uk-writer-projects-all'] },
+    { title: 'Home', route: ['/project-coordinator/project-coordinator-home'] },
+    { title: 'Projects', route: ['/project-coordinator/project-coordinator-projects-list'] },
   ];
 
 

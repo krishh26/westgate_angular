@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/Project-Manager/Project-Manager.module').then(m => m.ProjectManagerModule)
   },
   {
-    path: 'project-co-ordinator',
+    path: 'project-coordinator',
     loadChildren: () => import('./modules/project-co-ordinator/project-co-ordinator.module').then(m => m.ProjectCoOrdinatorModule)
   },
   {
