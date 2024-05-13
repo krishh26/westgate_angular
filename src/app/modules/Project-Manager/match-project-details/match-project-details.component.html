@@ -1,75 +1,78 @@
-<main id="main" class="">
+<main id="main" class>
   <section class="p-0">
-      <div class="table-responsive project-close">
-          <table class="table table-striped align-middle">
-            <thead>
-              <tr>
-                <th width="10%"></th>
-                <th width="12%">Project Title</th>
-                <th width="5%">BOS ID</th>
-                <th width="5%">Publish Date</th>
-                <th width="5%">Category</th>
-                <th width="5%">Industry</th>
-                <th width="5%">Value</th>
-                <th width="5%">Website</th>
-                <th width="5%">Link to notice</th>
-                <th width="8%">Created Date</th>
-                <th width="5%">Status</th>
-                <th width="10%">Due Date & Time</th>
-                <th width="15%"></th>
-                <th  width="10%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td class="text-primary">Provision of MyBedsLife Student Engagement App Support Services</td>
-                <td>546552</td>
-                <td>2023-05-31</td>
-                <td>Website</td>
-                <td>School</td>
-                <td>£50000</td>
-                <td>Proactis</td>
-                <td><a href="javascript:;">Link</a></td>
-                <td>08-04-2024</td>
-                <td>Status</td>
-                <td>25-11-2014 & 5:00PM</td>
-                <td><button class="btn btn-sm btn-dark px-4 py-1" style="white-space: nowrap;font-size: 11px;">Back</button></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-      </div>
+    <div class="table-responsive project-close">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th width="10%"></th>
+            <th width="12%">Project Title</th>
+            <th width="5%">BOS ID</th>
+            <th width="5%">Publish Date</th>
+            <th width="5%">Category</th>
+            <th width="5%">Industry</th>
+            <th width="5%">Value</th>
+            <th width="5%">Website</th>
+            <th width="5%">Link to notice</th>
+            <th width="8%">Created Date</th>
+            <th width="5%">Status</th>
+            <th width="10%">Due Date & Time</th>
+            <th width="15%"></th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td class="text-primary"><a>{{projectDetails?.projectName}}</a></td>
+            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+            <td>{{projectDetails?.category}}</td>
+            <td>{{projectDetails?.industry}}</td>
+            <td>{{projectDetails?.value}}</td>
+            <td>{{projectDetails?.website}}</td>
+            <td><a href="javascript:;">{{projectDetails?.link}}</a></td>
+            <td>{{projectDetails?.createdAt | date:'dd-MM-YYYY'}}</td>
+            <td>{{projectDetails?.status}}</td>
+            <td>{{projectDetails?.dueDate | date:'dd-MM-yyyy, h:mm a'}}</td>
+            <td><button routerLink="/project-manager/project/match"
+                class="btn btn-sm btn-dark px-4 py-1"
+                style="white-space: nowrap;font-size: 11px;">Back</button></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </main><!-- End #main -->
 
 <section class="pt-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h5 class="text-primary">Project Description</h5>
-                <p class="fonts-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
-                <p class="fonts-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
-            </div>
-        </div>
-        <div class="row mt-5">
-          <div class="col-lg-4 col-xl-4 col-12 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col-lg-4 col-xl-4 col-12">
-                    <h6 class="text-theme"><strong>Client Detils</strong></h6>
-                  </div>
-                  <div class="col-lg-7 col-xl-7 col-12">
-                    <p class="p-13 mb-0">Mail ID : abc@gmail.com</p>
-                    <p class="p-13 mb-0">Client Type : Private Sector</p>
-                    <p class="p-13 mb-0">Client Name : XYZ</p>
-                  </div>
-                </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-primary">Project Description</h5>
+        <p class="fonts-14">{{projectDetails?.description}}</p>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-lg-4 col-xl-4 col-12 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-lg-4 col-xl-4 col-12">
+                <h6 class="text-theme"><strong>Client Detils</strong></h6>
+              </div>
+              <div class="col-lg-7 col-xl-7 col-12">
+                <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                <p class="p-13 mb-0">Client Type :
+                  {{projectDetails?.clientType}}</p>
+                <p class="p-13 mb-0">Client Name :
+                  {{projectDetails?.clientName}}</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space:nowrap;">
+        </div>
+      </div>
+      <!-- <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space:nowrap;">
             <div class="row align-items-center">
               <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
                 <p class="fonts-14 mb-0">FOI Screenshot</p>
@@ -88,318 +91,418 @@
               </div>
 
             </div>
+          </div> -->
+      <div
+        class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4"
+        style="white-space:nowrap;">
+        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+          <p class="mb-0">FOI Document</p>
+        </div>
+        <div class="row align-items-center"
+          *ngIf="projectDetails?.fois?.length == 0">
+          <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+            <p class="mb-0">No Record Found.</p>
           </div>
-          <div class="col-lg-4 col-xl-4 col-12 mb-4">
-            <div class="card">
-              <div class="card-body text-center">
-                <p class="p-13"><strong>Period of Contract: Start Date -  End Date</strong></p>
-                <p class="p-13"><strong>Project Type: Developement</strong></p>
-              </div>
+        </div>
+        <ng-container *ngIf="projectDetails?.fois?.length > 0">
+          <div class="row align-items-center"
+            *ngFor="let foiDocument of projectDetails?.fois">
+            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+              <p class="mb-0">{{foiDocument?.name}}</p>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                  class="bi bi-eye-fill"></i> View</a>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-6">
+              <a (click)="download(foiDocument?.link?.url, foiDocument?.name)"
+                target="_blank"
+                class="btn btn-small w-100"><i
+                  class="bi bi-file-earmark-arrow-down-fill"></i>
+                Download</a>
             </div>
           </div>
-        </div>
-    </div>
-</section>
-  <section>
-
-
-      <div class="table-responsive match-detail">
-          <table class="table bg-f9 mb-0 align-middle">
-            <thead>
-              <tr>
-                <th width="100px" style="min-width: 100px;"></th>
-                <th width="12%">Supplier Name</th>
-                <th width="5%">Supplier ID</th>
-                <th width="5%">Admin Name</th>
-                <th width="10%">Company Selection</th>
-                <th width="10%">Handover Call</th>
-                <th width="5%"></th>
-                <th width="100px" style="min-width: 100px;"></th>
-              </tr>
-            </thead>
-            <tbody class="bg-f9 mb-2">
-              <tr>
-                <td></td>
-                <td>Company Name</td>
-                <td>416526</td>
-                <td>Ayush</td>
-                <td>
-                  <select class="form-select-sm fonts-12">
-                      <option>Delphi, Spectrum, Apex, Bigdata</option>
-                      <option>In-Progress</option>
-                  </select>
-                </td>
-                <td>
-                    <div class="btn-group border-1 fonts-12 mb-2" style="background-color: #EAEAEA;" role="group" aria-label="Basic example">
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm  border-0  bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                    </div>
-                    <div class="btn-group border-1 fonts-12 mb-2" role="group" style="background-color: #EAEAEA;" aria-label="Basic example">
-                      <button type="button" class="btn p-1 fonts-12">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                    </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                      <button class="btn btn-sm btn-primary px-4 py-1 me-3" style="white-space: nowrap;font-size: 11px;">View Supplier Response</button>
-                      <button class="btn btn-sm btn-primary px-4 py-1" style="white-space: nowrap;font-size: 11px;">Selected</button>
-                  </div>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-              <td colspan="8" class="inner-table p-0">
-                  <table class="table bg-transparent w-100 mb-0">
-                    <tr>
-                    <td width="156px"></td>
-                    <td colspan="3">
-                        <div class="d-flex align-items-center bg-transparent">
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                        </div>
-                    </td>
-                    <td  colspan="3">
-                      <div class="d-flex align-items-center bg-transparent">
-                          <button class="btn btn-sm btn-success px-5 py-1 me-3" style="white-space: nowrap;font-size: 11px;">Add</button>
-                      </div>
-                    </td>
-                    <td></td>
-                    </tr>
-                </table>
-              </td>
-
-              </tr>
-                <tr class="mb-3">
-                  <td colspan="8" class="p-0">
-                      <table class="table w-100 mb-0">
-                          <tr>
-                              <td width="156px"></td>
-                              <td class="text-danger" style="width: 120px;">
-                                <span class="bg-transparent mt-1">  Drop Reason</span>
-                              </td>
-                              <td colspan="5">
-                                  <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #E6E6E6;" placeholder="Add reason" aria-label="Username" aria-describedby="basic-addon1">
-                              </td>
-                              <td>
-                                <div class="bg-transparent w-auto d-flex align-items-center">
-                                    <button class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3" style="white-space: nowrap;font-size: 11px;">Drop</button>
-                                </div>
-                              </td>
-                              <td></td>
-                           </tr>
-                      </table>
-                  </td>
-              </tr>
-            </tbody>
-
-
-            <tbody class="bg-f9 mb-2">
-              <tr>
-                <td></td>
-                <td>Company Name</td>
-                <td>416526</td>
-                <td>Ayush</td>
-                <td>
-                  <select class="form-select-sm fonts-12">
-                      <option>Delphi, Spectrum, Apex, Bigdata</option>
-                      <option>In-Progress</option>
-                  </select>
-                </td>
-                <td>
-                    <div class="btn-group border-1 fonts-12 mb-2" style="background-color: #EAEAEA;" role="group" aria-label="Basic example">
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm  border-0  bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12" style="height: max-content;">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                    </div>
-                    <div class="btn-group border-1 fonts-12 mb-2" role="group" style="background-color: #EAEAEA;" aria-label="Basic example">
-                      <button type="button" class="btn p-1 fonts-12">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                      <button type="button" class="btn p-1 fonts-12">
-                          <select class="form-select-sm  border-0 bg-transparent fonts-12">
-                              <option>Completed</option>
-                              <option>In-Progress</option>
-                            </select>
-                      </button>
-                    </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                      <button class="btn btn-sm btn-primary px-4 py-1 me-3" style="white-space: nowrap;font-size: 11px;">View Supplier Response</button>
-                      <button class="btn btn-sm btn-primary px-4 py-1" style="white-space: nowrap;font-size: 11px;">Selected</button>
-                  </div>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-              <td colspan="8" class="inner-table p-0">
-                  <table class="table bg-transparent w-100 mb-0">
-                    <tr>
-                    <td width="156px"></td>
-                    <td colspan="3">
-                        <div class="d-flex align-items-center bg-transparent">
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                            <div class="d-flex align-items-center me-2">
-                              <span class="w-space pe-2">Case Study 1</span>
-                              <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i class="bi bi-eye-fill me-2"></i> View</a>
-                            </div>
-                        </div>
-                    </td>
-                    <td  colspan="3">
-                      <div class="d-flex align-items-center bg-transparent">
-                          <button class="btn btn-sm btn-success px-5 py-1 me-3" style="white-space: nowrap;font-size: 11px;">Add</button>
-                      </div>
-                    </td>
-                    <td></td>
-                    </tr>
-                </table>
-              </td>
-
-              </tr>
-                <tr class="mb-3">
-                  <td colspan="8" class="p-0">
-                      <table class="table w-100 mb-0">
-                          <tr>
-                              <td width="156px"></td>
-                              <td class="text-danger" style="width: 120px;">
-                                <span class="bg-transparent mt-1">  Drop Reason</span>
-                              </td>
-                              <td colspan="5">
-                                  <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #E6E6E6;" placeholder="Add reason" aria-label="Username" aria-describedby="basic-addon1">
-                              </td>
-                              <td>
-                                <div class="bg-transparent w-auto d-flex align-items-center">
-                                    <button class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3" style="white-space: nowrap;font-size: 11px;">Drop</button>
-                                </div>
-                              </td>
-                              <td></td>
-                           </tr>
-                      </table>
-                  </td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
-  </section>
-  <section class="bg-dark">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h5 class="text-white fonts-14 mb-2"><strong>Summary Note Questions</strong></h5>
+        </ng-container>
+      </div>
+      <div class="col-lg-4 col-xl-4 col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <p class="p-13"><strong>Period of Contract:
+                {{projectDetails?.periodOfContractStart | date :
+                'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                'MM/dd/yyyy'}}</strong></p>
+            <p class="p-13"><strong>Project Type:
+                {{projectDetails?.projectType}}</strong></p>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12 col-xl-12 col-12 mb-4">
-          <table class="table table-dark table-borderless" style="background-color: #252525;">
-            <thead>
+    </div>
+  </div>
+</section>
+<section>
+
+  <div class="table-responsive match-detail">
+    <table class="table bg-f9 mb-0 align-middle">
+      <thead>
+        <tr>
+          <th width="100px" style="min-width: 100px;"></th>
+          <th width="12%">Supplier Name</th>
+          <th width="5%">Supplier ID</th>
+          <th width="5%">Admin Name</th>
+          <th width="10%">Company Selection</th>
+          <th width="10%">Handover Call</th>
+          <th width="5%"></th>
+          <th width="100px" style="min-width: 100px;"></th>
+        </tr>
+      </thead>
+      <tbody class="bg-f9 mb-2">
+        <tr>
+          <td></td>
+          <td>Company Name</td>
+          <td>416526</td>
+          <td>Ayush</td>
+          <td>
+            <select class="form-select-sm fonts-12">
+              <option>Delphi, Spectrum, Apex, Bigdata</option>
+              <option>In-Progress</option>
+            </select>
+          </td>
+          <td>
+            <div class="btn-group border-1 fonts-12 mb-2"
+              style="background-color: #EAEAEA;" role="group"
+              aria-label="Basic example">
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select class="form-select-sm border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select
+                  class="form-select-sm  border-0  bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+            </div>
+            <div class="btn-group border-1 fonts-12 mb-2" role="group"
+              style="background-color: #EAEAEA;" aria-label="Basic example">
+              <button type="button" class="btn p-1 fonts-12">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-sm btn-primary px-4 py-1 me-3"
+                style="white-space: nowrap;font-size: 11px;">View Supplier
+                Response</button>
+              <button class="btn btn-sm btn-primary px-4 py-1"
+                style="white-space: nowrap;font-size: 11px;">Selected</button>
+            </div>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="8" class="inner-table p-0">
+            <table class="table bg-transparent w-100 mb-0">
               <tr>
-                <th>Question</th>
-                <th>Weightage</th>
-                <th>Status</th>
-                <th>Deadline</th>
-                <th>Assign User</th>
-                <th>Deadline</th>
-                <th>Review Note</th>
-                <th></th>
+                <td width="156px"></td>
+                <td colspan="3">
+                  <div class="d-flex align-items-center bg-transparent">
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                  </div>
+                </td>
+                <td colspan="3">
+                  <div class="d-flex align-items-center bg-transparent">
+                    <button class="btn btn-sm btn-success px-5 py-1 me-3"
+                      style="white-space: nowrap;font-size: 11px;">Add</button>
+                  </div>
+                </td>
+                <td></td>
               </tr>
-            </thead>
-            <tbody>
+            </table>
+          </td>
+
+        </tr>
+        <tr class="mb-3">
+          <td colspan="8" class="p-0">
+            <table class="table w-100 mb-0">
               <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td class="text-success">Verified</td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
+                <td width="156px"></td>
+                <td class="text-danger" style="width: 120px;">
+                  <span class="bg-transparent mt-1"> Drop Reason</span>
+                </td>
+                <td colspan="5">
+                  <input type="text" class="w-100 p-1 px-2 rounded fonts-12"
+                    style="border: 1px solid #E6E6E6;" placeholder="Add reason"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </td>
+                <td>
+                  <div class="bg-transparent w-auto d-flex align-items-center">
+                    <button
+                      class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
+                      style="white-space: nowrap;font-size: 11px;">Drop</button>
+                  </div>
+                </td>
+                <td></td>
               </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody class="bg-f9 mb-2">
+        <tr>
+          <td></td>
+          <td>Company Name</td>
+          <td>416526</td>
+          <td>Ayush</td>
+          <td>
+            <select class="form-select-sm fonts-12">
+              <option>Delphi, Spectrum, Apex, Bigdata</option>
+              <option>In-Progress</option>
+            </select>
+          </td>
+          <td>
+            <div class="btn-group border-1 fonts-12 mb-2"
+              style="background-color: #EAEAEA;" role="group"
+              aria-label="Basic example">
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select class="form-select-sm border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select
+                  class="form-select-sm  border-0  bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12"
+                style="height: max-content;">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+            </div>
+            <div class="btn-group border-1 fonts-12 mb-2" role="group"
+              style="background-color: #EAEAEA;" aria-label="Basic example">
+              <button type="button" class="btn p-1 fonts-12">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+              <button type="button" class="btn p-1 fonts-12">
+                <select
+                  class="form-select-sm  border-0 bg-transparent fonts-12">
+                  <option>Completed</option>
+                  <option>In-Progress</option>
+                </select>
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-sm btn-primary px-4 py-1 me-3"
+                style="white-space: nowrap;font-size: 11px;">View Supplier
+                Response</button>
+              <button class="btn btn-sm btn-primary px-4 py-1"
+                style="white-space: nowrap;font-size: 11px;">Selected</button>
+            </div>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="8" class="inner-table p-0">
+            <table class="table bg-transparent w-100 mb-0">
               <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td>Not Verified</td>
-                <td>01-02-2014</td>
-                <td>Abhi</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
+                <td width="156px"></td>
+                <td colspan="3">
+                  <div class="d-flex align-items-center bg-transparent">
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                    <div class="d-flex align-items-center me-2">
+                      <span class="w-space pe-2">Case Study 1</span>
+                      <a href="javascript:;"
+                        class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                          class="bi bi-eye-fill me-2"></i> View</a>
+                    </div>
+                  </div>
+                </td>
+                <td colspan="3">
+                  <div class="d-flex align-items-center bg-transparent">
+                    <button class="btn btn-sm btn-success px-5 py-1 me-3"
+                      style="white-space: nowrap;font-size: 11px;">Add</button>
+                  </div>
+                </td>
+                <td></td>
               </tr>
+            </table>
+          </td>
+
+        </tr>
+        <tr class="mb-3">
+          <td colspan="8" class="p-0">
+            <table class="table w-100 mb-0">
               <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td>Not Verified</td>
-                <td>01-02-2014</td>
-                <td>Yaqoob</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td><a href="question-details.html" class="btn  rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
+                <td width="156px"></td>
+                <td class="text-danger" style="width: 120px;">
+                  <span class="bg-transparent mt-1"> Drop Reason</span>
+                </td>
+                <td colspan="5">
+                  <input type="text" class="w-100 p-1 px-2 rounded fonts-12"
+                    style="border: 1px solid #E6E6E6;" placeholder="Add reason"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </td>
+                <td>
+                  <div class="bg-transparent w-auto d-flex align-items-center">
+                    <button
+                      class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
+                      style="white-space: nowrap;font-size: 11px;">Drop</button>
+                  </div>
+                </td>
+                <td></td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- <div class="col-lg-5 col-xl-5 col-12 mb-4">
+            </table>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+</section>
+<section class="bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-white fonts-14 mb-2"><strong>Summary Note
+            Questions</strong></h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 col-12 mb-4">
+        <table class="table table-dark table-borderless"
+          style="background-color: #252525;">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Weightage</th>
+              <th>Status</th>
+              <th>Deadline</th>
+              <th>Assign User</th>
+              <th>Deadline</th>
+              <th>Review Note</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="350">1. Project management approach and project team
+                outlined. Resilience – ability to deliver.</td>
+              <td>35%</td>
+              <td class="text-success">Verified</td>
+              <td>01-02-2014</td>
+              <td>Ayush</td>
+              <td> dolor sit amet, consectetur......</td>
+              <td><a href="question-details.html"
+                  class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+            <tr>
+              <td width="350">1. Project management approach and project team
+                outlined. Resilience – ability to deliver.</td>
+              <td>35%</td>
+              <td>Not Verified</td>
+              <td>01-02-2014</td>
+              <td>Abhi</td>
+              <td> dolor sit amet, consectetur......</td>
+              <td><a href="question-details.html"
+                  class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+            <tr>
+              <td width="350">1. Project management approach and project team
+                outlined. Resilience – ability to deliver.</td>
+              <td>35%</td>
+              <td>Not Verified</td>
+              <td>01-02-2014</td>
+              <td>Yaqoob</td>
+              <td> dolor sit amet, consectetur......</td>
+              <td><a href="question-details.html"
+                  class="btn  rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="col-lg-5 col-xl-5 col-12 mb-4">
           <table class="table table-dark table-borderless">
             <thead>
               <tr>
@@ -426,67 +529,83 @@
             </tbody>
           </table>
         </div> -->
+    </div>
+  </div>
+</section>
+
+<section class="bg-primary">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-white fonts-14 mb-2"><strong>Summary Note Questions -
+            UK</strong></h5>
       </div>
     </div>
-    </section>
-    
-    <section class="bg-primary">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <h5 class="text-white fonts-14 mb-2"><strong>Summary Note Questions - UK</strong></h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 col-xl-12 col-12 blue-table mb-4">
-            <table class="table bg-transparent text-white table-borderless">
-              <thead>
-                <tr class="text-white">
-                  <th class="text-white">Question</th>
-                  <th class="text-white">Weightage</th>
-                  <th class="text-white">Status</th>
-                  <th class="text-white">Deadline</th>
-                  <th class="text-white">Assign User</th>
-                  <th class="text-white">Deadline</th>
-                  <th class="text-white">Review Note</th>
-                  <th class="text-white"></th>
-                </tr>
-              </thead>
-              <tbody class="text-white">
-                <tr>
-                  <td class="text-white" width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                  <td class="text-white">35%</td>
-                  <td class="text-white" class="text-success">Verified</td>
-                  <td class="text-white">01-02-2014</td>
-                  <td class="text-white">Ayush</td>
-                  <td class="text-white"> dolor sit amet, consectetur......</td>
-                  <td class="text-white"><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td class="text-white"><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-                <tr>
-                  <td class="text-white" width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                  <td class="text-white">35%</td>
-                  <td class="text-white">Not Verified</td>
-                  <td class="text-white">01-02-2014</td>
-                  <td class="text-white">Abhi</td>
-                  <td class="text-white"> dolor sit amet, consectetur......</td>
-                  <td class="text-white"><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td class="text-white"><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-                <tr>
-                  <td class="text-white" width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                  <td class="text-white">35%</td>
-                  <td class="text-white">Not Verified</td>
-                  <td class="text-white">01-02-2014</td>
-                  <td class="text-white">Yaqoob</td>
-                  <td class="text-white"> dolor sit amet, consectetur......</td>
-                  <td class="text-white"><a href="question-details.html" class="btn  rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td class="text-white"><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- <div class="col-lg-5 col-xl-5 col-12 mb-4">
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 col-12 blue-table mb-4">
+        <table class="table bg-transparent text-white table-borderless">
+          <thead>
+            <tr class="text-white">
+              <th class="text-white">Question</th>
+              <th class="text-white">Weightage</th>
+              <th class="text-white">Status</th>
+              <th class="text-white">Deadline</th>
+              <th class="text-white">Assign User</th>
+              <th class="text-white">Deadline</th>
+              <th class="text-white">Review Note</th>
+              <th class="text-white"></th>
+            </tr>
+          </thead>
+          <tbody class="text-white">
+            <tr>
+              <td class="text-white" width="350">1. Project management approach
+                and project team outlined. Resilience – ability to deliver.</td>
+              <td class="text-white">35%</td>
+              <td class="text-white" class="text-success">Verified</td>
+              <td class="text-white">01-02-2014</td>
+              <td class="text-white">Ayush</td>
+              <td class="text-white"> dolor sit amet, consectetur......</td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+            <tr>
+              <td class="text-white" width="350">1. Project management approach
+                and project team outlined. Resilience – ability to deliver.</td>
+              <td class="text-white">35%</td>
+              <td class="text-white">Not Verified</td>
+              <td class="text-white">01-02-2014</td>
+              <td class="text-white">Abhi</td>
+              <td class="text-white"> dolor sit amet, consectetur......</td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+            <tr>
+              <td class="text-white" width="350">1. Project management approach
+                and project team outlined. Resilience – ability to deliver.</td>
+              <td class="text-white">35%</td>
+              <td class="text-white">Not Verified</td>
+              <td class="text-white">01-02-2014</td>
+              <td class="text-white">Yaqoob</td>
+              <td class="text-white"> dolor sit amet, consectetur......</td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn  rounded bg-white text-dark fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Response</a></td>
+              <td class="text-white"><a href="question-details.html"
+                  class="btn btn-primary rounded fonts-12 w-100"><i
+                    class="bi bi-eye-fill"></i> View Question</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="col-lg-5 col-xl-5 col-12 mb-4">
             <table class="table table-dark table-borderless">
               <thead>
                 <tr>
@@ -513,7 +632,27 @@
               </tbody>
             </table>
           </div> -->
-        </div>
+    </div>
+  </div>
+</section>
+<!-- View Screenshot Modal -->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1"
+  aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document :
+          {{selectedDocument?.name}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
       </div>
-      </section>
-    
+      <div class="modal-body">
+        <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+      </div>
+      <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+    </div>
+  </div>
+</div>
