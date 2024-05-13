@@ -162,12 +162,13 @@
           <tr>
             <td></td>
             <td>Company Name</td>
-            <td>416526</td>
+            <td>{{supplier.supplierId}}</td>
             <td>Ayush</td>
             <td>
               <select class="form-select-sm fonts-12">
-                <option>Delphi, Spectrum, Apex, Bigdata</option>
-                <option>In-Progress</option>
+                <ng-container *ngFor="let company of supplier.companySelect">
+                  <option>{{company}}</option>
+                </ng-container>
               </select>
             </td>
             <td>
@@ -218,7 +219,7 @@
               <div class="row mb-3">
                   <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
                   <div class="col-12">
-                    <input type="date" class="form-control" placeholder="Start Date" style="height: 30px;">
+                    <input type="date" [value]="getDate(supplier.handoverCall)" class="form-control" placeholder="Start Date" style="height: 30px;">
                   </div>
               </div>
             </td>
@@ -262,7 +263,7 @@
                   </td>
                   <td colspan="3">
                     <div class="d-flex align-items-center bg-transparent">
-                      <button class="btn btn-sm btn-success px-5 py-1 me-3"
+                      <button (click)="addSupplier(supplier.supplierId)" class="btn btn-sm btn-success px-5 py-1 me-3"
                         style="white-space: nowrap;font-size: 11px;">Add</button>
                     </div>
                   </td>
