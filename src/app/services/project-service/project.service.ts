@@ -12,7 +12,8 @@ export enum ProjectEndPoint {
   APPLY_PROJECT = "/project/apply",
   SORT_LIST_PROJECT = "/project/sortlist",
   SUMMARYQUESTION_LIST = "/summary-question/list/",
-  QUESTION_DETAILS = '/summary-question/list/'
+  QUESTION_DETAILS = '/summary-question/list/',
+  UPDATE_MANAGER = '/project/update/project-manager/',
 }
 
 @Injectable({
@@ -96,5 +97,11 @@ export class ProjectService {
   projectSortList(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
+  }
+  
+  addSupplier(supplierId:any,payload:any){
+    return this.httpClient
+     .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`,payload, {
+     });
   }
 }

@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
+import { formatDate } from '@angular/common';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-match-project-details',
@@ -22,13 +24,17 @@ export class MatchProjectDetailsComponent {
   selectedDocument: any;
   loginUser: any;
   summaryQuestionList: any
+  myForm: FormGroup | undefined;
+  skills: any;
+  // skills: FormArray;
 
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -40,6 +46,10 @@ export class MatchProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getSummaryQuestion();
+    this.myForm = this.fb.group({
+      skills: this.fb.array([])
+    });
+    this.skills = this.myForm.get('skills') as FormArray;
   }
 
   getProjectDetails() {
@@ -90,5 +100,31 @@ export class MatchProjectDetailsComponent {
         link.click();
         document.body.removeChild(link);
       });
+  }
+
+  getDate(date:any){
+    let formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
+    return formattedDate
+  }
+
+  addSupplier(supplierId:string){
+    let reqPayload:any
+  console.log('supplierId :', supplierId);
+    this.projectService.addSupplier(supplierId, reqPayload).subscribe({next:(res:any)=>{
+    console.log('reqPayload :', reqPayload);
+
+    }})
+  }
+
+  addSkill() {
+    this.skills?.push(this.fb.control(''));
+  }
+  
+  removeSkill(index: number) {
+    this.skills.removeAt(index);
+  }
+  
+  getSkill(index: number) {
+    return this.skills.at(index) as FormControl;
   }
 }
