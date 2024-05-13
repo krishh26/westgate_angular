@@ -15,47 +15,14 @@ body {
 
 a {
   color: #0077DC;
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 a:hover {
   color: #0077DC;
-  text-decoration: none !important;
+  text-decoration: none;
 }
-.fonts-11{font-size: 11px !important;}
-.fonts-12{font-size: 12px !important;}
-.fonts-13{font-size: 13px !important;}
-.fonts-14{font-size: 14px !important;}
-.fonts-20{font-size: 20px;}
 
-
-.text-success{color:#4DFF0F !important}
-
-.bg-white{background-color: #fff;}
-.bg-f9{background-color: #F9F9F9;}
-.bg-transparent{background-color: transparent !important;}
-
-.opacity-7{opacity: 0.7;}
-
-.w-space{white-space: nowrap;}
-
-.match-detail  table td{
-    border-top: 0;
-    border-bottom: 0;
-    background-color: #F9F9F9;
-    vertical-align: top;
-  }
-
-  .match-detail  table th{
-    border-bottom: 0;
-  }
-  tbody::before
-/* {
-  content: '';
-  display: block;
-  height: 15px;
-
-} */
 h1,
 h2,
 h3,
@@ -67,6 +34,9 @@ h6 {
 
 .limegreen {
   color: #DBFF00;
+}
+.p-8{
+  font-size: 8px !important;
 }
 
 .p-13 {
@@ -117,23 +87,8 @@ h6 {
 .text-theme {
   color: #0077DC;
 }
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  width: 90% !important;
-  padding-left: calc(var(--bs-gutter-x)* .5);
-  padding-right: calc(var(--bs-gutter-x)* .5);
-  margin-left: auto;
-  margin-right: auto;
-}
-.mee-auto {
-  margin-right: auto !important;
-}
-.mss-auto {
-  margin-left: auto !important;
-}
-.mb-2 {
-  margin-bottom: 0.5rem !important;
+.display-block{
+  display: block;
 }
 /*--------------------------------------------------------------
 # Preloader
@@ -177,25 +132,17 @@ h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-.body-top{
-  padding-top: 100px;
-}
 #header {
   transition: all 0.5s;
   z-index: 997;
   padding: 15px 0px;
-  position:fixed;
-  width: 100%;
-  top: 0;
-  background: #FFF !important;
-  box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05) !important;
- 
+  /* background-color: #FFF; */
+  /* box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05); */
 }
 
 #header.header-scrolled,
 #header.header-inner-pages {
-  background: #FFF !important;
-  box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05) !important;
+  background: #FFF;
 }
 
 #header .logo {
@@ -252,7 +199,6 @@ h6 {
   transition: 0.3s;
   z-index: 1;
   position: relative;
-  text-decoration: none !important;
 }
 
 .navbar a i,
@@ -277,7 +223,7 @@ h6 {
   margin: 0 auto;
   top: 32%;
   transform: translateY(-50%);
-  /* background-image: url("../../assets/img/img/menu-ball.svg"); */
+  /* background-image: url(../img/menu-ball.svg); */
   width: 42px;
   height: 42px;
   background-size: contain;
@@ -335,8 +281,7 @@ h6 {
   font-size: 14px;
   text-transform: none;
   font-weight: 500;
-  color: #000;
-  text-decoration: none !important;
+  color: #0c3c53;
 }
 
 .navbar .dropdown ul a i {
@@ -524,53 +469,10 @@ h6 {
   object-fit: cover;
   border-radius: 100px;
 }
-.notificationDropdown-box{
-    min-width: 500px !important;
-    max-width: 320px !important;
-    right: 0;
-    top: 68px;
-    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
-    transition: 0.3s;
-    border: none !important;
-}
-ul.notification-list{
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  display: block;
-}
-ul.notification-list li{
-  display: block;
-}
-ul.notification-list a{
-  display: block;
-  cursor: pointer;
-  padding: 15px;
-  border-top: 1px solid #D9D9D9;
-}
+
 /*==========================================
 Button Styling
 ============================================*/
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer !important;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  border-radius: .25rem;
-  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
 .btn-primary {
   background-color: #0077DC;
   color: #FFF;
@@ -578,8 +480,7 @@ Button Styling
   padding: 12px 30px;
   border-color: #0077DC;
   font-weight: 400;
-  cursor: pointer;
-  }
+}
 
 .btn-primary:hover,
 .btn-primary.active {
@@ -589,37 +490,55 @@ Button Styling
 }
 
 .btn-primarysm {
-  background-color: #0077DC !important;
-  color: #FFF !important;
-  border-radius: 6px !important;
-  padding: 0.25rem 0.5rem !important;
-  border-color: #0077DC !important;
-  font-weight: 400 !important;
-  font-size: 0.875rem !important;
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  border-color: #0077DC;
+  font-weight: 400;
+  font-size: 0.875rem;
 }
 
 .btn-primarysm:hover,
 .btn-primarysm.active {
-  background-color: #0077DC !important;
-  color: #FFF !important;
-  border-color: #0077DC !important;
+  background-color: #0077DC;
+  color: #FFF;
+  border-color: #0077DC;
 }
 
 
 .btn-white {
-  background-color: #FFF !important;
-  color: #000 !important;
-  border-radius: 50px !important;
-  padding: 15px 30px !important;
-  border-color: #FFF !important;
-  font-weight: 400 !important;
+  background-color: #FFF;
+  color: #000;
+  border-radius: 50px;
+  padding: 15px 30px;
+  border-color: #FFF;
+  font-weight: 400;
 }
 
 .btn-white:hover,
 .btn-white.active {
-  background-color: #FFF !important;
-  color: #000 !important;
-  border-color: #FFF !important;
+  background-color: #FFF;
+  color: #000;
+  border-color: #FFF;
+}
+
+.btn-view-document {
+  background-color: #FFF;
+  color: #000;
+  border-radius: 4px;
+  padding: 15px 30px;
+  border-color: #FFF;
+  font-weight: 400;
+}
+.btn-view-document:hover, .btn-view-document:focus {
+  background-color: #FFF;
+  color: #000;
+  border-color: #FFF;
+}
+
+.btn-boxshadow{
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
 .btn-outline-white {
@@ -627,6 +546,18 @@ Button Styling
   border-radius: 6px;
   color: #0077DC;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+.btn-outline-purewhite{
+  background-color: transparent;
+  border-radius: 6px;
+  color: #FFFF;
+ border:1px solid #FFFF;
+ padding: 13px 30px
+}
+.btn-outline-purewhite:hover, .btn-outline-purewhite:focus {
+  background-color: transparent;
+  color: #FFFF;
+ border:1px solid #FFFF;
 }
 
 .action-btn {
@@ -643,12 +574,12 @@ Button Styling
 }
 
 .btn-small {
-  background-color: #0077DC !important;
-  color: #FFF !important;
-  border-radius: 100px !important;
-  padding: 5px 15px !important;
-  border-color: #0077DC !important;
-  font-weight: 400 !important;
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 100px;
+  padding: 5px 15px;
+  border-color: #0077DC;
+  font-weight: 400;
 }
 
 .btn-small:hover,
@@ -682,8 +613,6 @@ Button Styling
   left: 0;
   top: 0;
   opacity: 0;
-  display: block;
-  width: 100%;
 }
 
 .explore-btn {
@@ -759,10 +688,6 @@ Button Styling
 .text-dark-gray {
   color: #686868;
 }
-.bg-gray {
-  background-color: #A7A7A7;
-  color: #FFF;
-}
 
 .btn-secondary {
   --bs-btn-color: #fff;
@@ -799,7 +724,21 @@ Button Styling
   border-radius: 6px;
   padding: 12px 30px;
 }
-
+.editbtn {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #FFF;
+  text-align: center;
+  line-height: 22px;
+  color: #000;
+  font-size: 13px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.text-success{
+  color: #2DAE00 !important;
+}
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
@@ -814,19 +753,11 @@ section {
 
 .bosTeam-wrapper {
   position: absolute;
-  bottom: 100px;
+  bottom: 0;
 }
 
-.body-welcome-page {
-  background-image: url("../img/uk-writer-background.png");
-  background-attachment: fixed;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.welcome-page {
-  background-image: url("../../assets/img/bg 1.png");
+.body-supplier-page {
+  background-image: url("../img/supplier-background-image.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -863,7 +794,7 @@ section {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: 100vh;
 }
 /*-------------------------------------------------------
 Form Control CSS
@@ -878,11 +809,11 @@ Form Control CSS
 }
 
 .form-control {
-  padding: .75rem .75rem !important;
+  padding: .75rem .75rem;
 }
 
 .form-select {
-  padding: .75rem .75rem !important;
+  padding: .75rem .75rem;
 }
 
 .form-group .input-icon {
@@ -892,9 +823,9 @@ Form Control CSS
 }
 
 .control-search {
-  border-radius: 32px !important;
-  background-color: #D9D9D9 !important;
-  padding-left: 40px !important;
+  border-radius: 32px;
+  background-color: #D9D9D9;
+  padding-left: 40px;
 }
 
 .profile-avtar{
@@ -939,7 +870,7 @@ Form Control CSS
 Login Page CSS
 -------------------------------------------------------*/
 .body-login {
-  background-image: url("../../assets/img/businesspeople-having-discussion-office.png");
+  background-image: url("../img/silver-border-simple-abstract-background.png");
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
@@ -977,40 +908,9 @@ Login Page CSS
 --------------------------------------------------------------*/
 #footer {
   font-size: 14px;
-  background: #424242;
-  color: #FFF;
-  padding: 60px 0;
+  background: #25380E;
 }
-ul.footernav{
-  margin:0 ;
-  padding: 0;
-  list-style-type: none;
-}
-ul.footernav li{
-  display: block;
-}
-ul.footernav a{
- display: block;
- padding: 5px 0;
- color: #FFFF;
-}
-ul.social-media{
-  margin:0 ;
-  padding: 0;
-  list-style-type: none;
-}
-ul.social-media li{
-  display: inline-block;
-}
-ul.social-media li a{
-  display: block;
-  padding: 5px;
-  color: #FFF;
-  font-size: 1.2rem;
-}
-.border-right-end {
-  border-right: 1px solid #dee2e6 !important;
-}
+
 /*--------------------------------------------------------------
 # Listing CSS
 --------------------------------------------------------------*/
@@ -1054,26 +954,19 @@ ul.project-document li:last-child {
 /*------------------------------------------
 Table CSS
 -------------------------------------------*/
-.table{
-  padding: 0.8rem 0.4rem !important;
-}
 .table>thead th {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  vertical-align: middle;
 }
 
 .table>tbody td {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd)>* {
   background-color: #F9F9F9 !important;
 }
-.table>:not(caption)>*>*{
-  padding: .85rem .5rem !important;
-}
-.project-close> .table>tbody .bg-d3 td{background-color: #d3d3d3;}
+
 .page-link {
   color: #0077DC;
 }
@@ -1086,6 +979,19 @@ Table CSS
   border-color: #FFF;
 }
 
+.table-primary {
+  --bs-table-color: #fff;
+  --bs-table-bg: #0077DC;
+  --bs-table-border-color: #4d5154;
+  --bs-table-striped-bg: #2c3034;
+  --bs-table-striped-color: #fff;
+  --bs-table-active-bg: #373b3e;
+  --bs-table-active-color: #fff;
+  --bs-table-hover-bg: #323539;
+  --bs-table-hover-color: #fff;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
 /*-----------------------------------------
 Page Header
 ------------------------------------------*/
@@ -1135,6 +1041,14 @@ Card Styling
   flex: 1 1 auto;
   padding: 2rem 2rem;
 }
+.card-header-blue{
+  background-color: #0077DC;
+  color: #FFF;
+  border-radius: 100px !important;
+  text-align: center;
+  padding: 15px 15px;
+
+}
 
 .card-gradient1 {
   background: #E9F4FF;
@@ -1168,7 +1082,7 @@ ul.projects-nav-tab li {
 
 ul.projects-nav-tab li a {
   display: block;
-  padding: 5px 110px;
+  padding: 5px 140px;
   border-radius: 100px;
   color: #000;
   text-align: center;
@@ -1177,7 +1091,6 @@ ul.projects-nav-tab li a {
 ul.projects-nav-tab li a.active {
   background-color: #0077DC;
   color: #FFF;
-  text-decoration: none;
 }
 
 ul.projects-nav-tab li:first-child a {
@@ -1363,14 +1276,243 @@ Chat Page
 .Mobile-chatsendBox{
   display: none;
 }
+
+/*=========================================
+Dashboard Page CSS
+==========================================*/
+.ProjectStatistic{
+  display: block;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 30px;
+}
+.ProjectStatistic h2{
+  font-size: 3rem;
+  font-weight: 600;
+  color: #0077DC;
+}
+.ProjectStatistic p{
+ margin-bottom: 0px;
+}
+.full-rounded{
+  border-radius: 100px !important;
+}
+/*Circle Progress bar*/
+.progress {
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  background: none;
+  margin: 0 auto;
+  box-shadow: none;
+  position: relative;
+}
+.progress:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 12px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.progress > span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+.progress .progress-left {
+  left: 0;
+}
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 12px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+  border-color: #0077DC;
+}
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 75px;
+  border-bottom-right-radius: 75px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+.progress .progress-right {
+  right: 0;
+}
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 75px;
+  border-bottom-left-radius: 75px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+.progress .progress-value {
+  display: flex;
+  border-radius: 50%;
+  font-size: 36px;
+  text-align: center;
+  line-height: 20px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-weight: 300;
+  width: 100%;
+}
+.progress .progress-value div {
+  margin-top: 10px;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #0077DC;
+}
+.progress .progress-value span {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+/* This for loop creates the 	necessary css animation names 
+Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+*/
+.progress[data-percentage="10"] .progress-right .progress-bar {
+  animation: loading-1 1.5s linear forwards;
+}
+.progress[data-percentage="10"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress[data-percentage="20"] .progress-right .progress-bar {
+  animation: loading-2 1.5s linear forwards;
+}
+.progress[data-percentage="20"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress[data-percentage="30"] .progress-right .progress-bar {
+  animation: loading-3 1.5s linear forwards;
+}
+.progress[data-percentage="30"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress[data-percentage="40"] .progress-right .progress-bar {
+  animation: loading-4 1.5s linear forwards;
+}
+.progress[data-percentage="40"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress[data-percentage="50"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="50"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress[data-percentage="60"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="60"] .progress-left .progress-bar {
+  animation: loading-1 1.5s linear forwards 1.5s;
+}
+
+.progress[data-percentage="70"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="70"] .progress-left .progress-bar {
+  animation: loading-2 1.5s linear forwards 1.5s;
+}
+
+.progress[data-percentage="80"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="80"] .progress-left .progress-bar {
+  animation: loading-3 1.5s linear forwards 1.5s;
+}
+
+.progress[data-percentage="90"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="90"] .progress-left .progress-bar {
+  animation: loading-4 1.5s linear forwards 1.5s;
+}
+
+.progress[data-percentage="100"] .progress-right .progress-bar {
+  animation: loading-5 1.5s linear forwards;
+}
+.progress[data-percentage="100"] .progress-left .progress-bar {
+  animation: loading-5 1.5s linear forwards 1.5s;
+}
+
+@keyframes loading-1 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(36deg);
+  }
+}
+@keyframes loading-2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(72);
+    transform: rotate(72deg);
+  }
+}
+@keyframes loading-3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(108);
+    transform: rotate(108deg);
+  }
+}
+@keyframes loading-4 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(144);
+    transform: rotate(144deg);
+  }
+}
+@keyframes loading-5 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(180);
+    transform: rotate(180deg);
+  }
+}
+.progress {
+  margin-bottom: 1em;
+}
+
 /*==========================================
 Media Query CSS
 ==========================================*/
 
 @media (max-width: 768px) {
-  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-    width: 100%;
-  }
 
   .navbar a,
   .navbar a:focus {
