@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 export enum ProjectManagerAPIEndPoint {
   DASHBOARD_LIST = '/project/project-manager/dashboard',
+  USER_LIST = '/user/list/',
 }
 
 @Injectable({
@@ -24,4 +25,9 @@ export class ProjectManagerService {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.DASHBOARD_LIST);
   }
+  getUserList(userRoles:string): Observable<any> {
+    return this.httpClient
+     .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST + `?userRoles=${userRoles}`);
+  }
+
 }

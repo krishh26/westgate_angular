@@ -157,18 +157,18 @@
         </tr>
       </thead>
       <tbody class="bg-f9 mb-2">
-        <ng-container *ngFor="let supplier of projectDetails?.select">
+        <ng-container *ngFor="let supplier of userDetail">
           <ng-container class="mb-3">
           <tr>
             <td></td>
-            <td>Company Name</td>
-            <td>{{supplier.supplierId}}</td>
+            <td>{{supplier.name}}</td>
+            <td>{{supplier._id}}</td>
             <td>Ayush</td>
             <td>
-              <select class="form-select-sm fonts-12">
-                <ng-container *ngFor="let company of supplier.companySelect">
-                  <option>{{company}}</option>
-                </ng-container>
+              <select class="form-select-sm fonts-12" [(ngModel)]="selectedSuppliers[supplier._id].company" >
+                <option selected>Supplier company 1</option>
+                <option >Supplier company 2</option>
+                <option >Supplier company 3</option>
               </select>
             </td>
             <td>
@@ -219,7 +219,7 @@
               <div class="row mb-3">
                   <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
                   <div class="col-12">
-                    <input type="date" [value]="getDate(supplier.handoverCall)" class="form-control" placeholder="Start Date" style="height: 30px;">
+                    <input type="date" [(ngModel)]="selectedSuppliers[supplier._id].startDate"  class="form-control" placeholder="Start Date" style="height: 30px;">
                   </div>
               </div>
             </td>
@@ -263,7 +263,7 @@
                   </td>
                   <td colspan="3">
                     <div class="d-flex align-items-center bg-transparent">
-                      <button (click)="addSupplier(supplier.supplierId)" class="btn btn-sm btn-success px-5 py-1 me-3"
+                      <button (click)="addSupplier(supplier._id)" class="btn btn-sm btn-success px-5 py-1 me-3"
                         style="white-space: nowrap;font-size: 11px;">Add</button>
                     </div>
                   </td>

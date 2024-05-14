@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-match-project-details',
@@ -12,7 +13,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./match-project-details.component.scss']
 })
 export class MatchProjectDetailsComponent {
-  
+
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
@@ -24,6 +25,8 @@ export class MatchProjectDetailsComponent {
   selectedDocument: any;
   loginUser: any;
   summaryQuestionList: any
+  userDetail: any
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
   myForm: FormGroup | undefined;
   skills: any;
   // skills: FormArray;
@@ -34,7 +37,8 @@ export class MatchProjectDetailsComponent {
     private router: Router,
     private route: ActivatedRoute,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private projectManagerService: ProjectManagerService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -43,9 +47,12 @@ export class MatchProjectDetailsComponent {
     this.loginUser = this.localStorageService.getLogger();
   }
 
+
+
   ngOnInit(): void {
     this.getProjectDetails();
     this.getSummaryQuestion();
+    this.getUserDetails()
     this.myForm = this.fb.group({
       skills: this.fb.array([])
     });
@@ -66,6 +73,26 @@ export class MatchProjectDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  getUserDetails() {
+    this.projectManagerService.getUserList('SupplierAdmin').subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.userDetail = response?.data;
+        this.selectedSuppliers = this.userDetail.reduce((acc: any, supplier: any) => {
+          acc[supplier._id] = { company: '', startDate: null };
+          return acc;
+        }, {});
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+
   }
 
   getSummaryQuestion() {
@@ -102,28 +129,44 @@ export class MatchProjectDetailsComponent {
       });
   }
 
-  getDate(date:any){
+  getDate(date: any) {
     let formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
     return formattedDate
   }
 
-  addSupplier(supplierId:string){
-    let reqPayload:any
-  console.log('supplierId :', supplierId);
-    this.projectService.addSupplier(supplierId, reqPayload).subscribe({next:(res:any)=>{
-    console.log('reqPayload :', reqPayload);
+  addSupplier(supplierId: string) {
+    const selectedCompany = this.selectedSuppliers[supplierId]?.company;
+    const selectedStartDate = this.selectedSuppliers[supplierId]?.startDate;
+    if (!selectedCompany) {
+      alert('Please select a company');
+      return;
+    }
 
-    }})
+    if (!selectedStartDate) {
+      alert('Please select a start date');
+      return;
+    }
+    console.log(`Adding supplier ${supplierId} with company: ${selectedCompany}, start date: ${selectedStartDate}`);
+    let reqPayload = {
+      select: { supplierId: supplierId, handoverCall: selectedStartDate, companySelect: [selectedCompany] }
+    }
+    this.projectService.addSupplier(this.projectId, reqPayload).subscribe({
+      next: (res: any) => {
+        console.log('reqPayload :', reqPayload);
+
+      }
+    })
   }
+
 
   addSkill() {
     this.skills?.push(this.fb.control(''));
   }
-  
+
   removeSkill(index: number) {
     this.skills.removeAt(index);
   }
-  
+
   getSkill(index: number) {
     return this.skills.at(index) as FormControl;
   }
