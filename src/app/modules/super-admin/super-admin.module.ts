@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
 
 
 
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SuperadminHeaderComponent,
     SuperAdminProjectsAllComponent,
     SuperAdminSupplierComponent,
-    SuperAdminSupplierProjectViewComponent
+    SuperAdminSupplierProjectViewComponent,
+    SuperAdminProjectDetailsComponent
   ],
   imports: [
     CommonModule,
