@@ -22,34 +22,65 @@ a:hover {
   color: #0077DC;
   text-decoration: none !important;
 }
-.fonts-11{font-size: 11px !important;}
-.fonts-12{font-size: 12px !important;}
-.fonts-13{font-size: 13px !important;}
-.fonts-14{font-size: 14px !important;}
-.fonts-20{font-size: 20px;}
+
+.fonts-11 {
+  font-size: 11px !important;
+}
+
+.fonts-12 {
+  font-size: 12px !important;
+}
+
+.fonts-13 {
+  font-size: 13px !important;
+}
+
+.fonts-14 {
+  font-size: 14px !important;
+}
+
+.fonts-20 {
+  font-size: 20px;
+}
 
 
-.text-success{color:#4DFF0F !important}
+.text-success {
+  color: #4DFF0F !important
+}
 
-.bg-white{background-color: #fff;}
-.bg-f9{background-color: #F9F9F9;}
-.bg-transparent{background-color: transparent !important;}
+.bg-white {
+  background-color: #fff;
+}
 
-.opacity-7{opacity: 0.7;}
+.bg-f9 {
+  background-color: #F9F9F9;
+}
 
-.w-space{white-space: nowrap;}
+.bg-transparent {
+  background-color: transparent !important;
+}
 
-.match-detail  table td{
-    border-top: 0;
-    border-bottom: 0;
-    background-color: #F9F9F9;
-    vertical-align: top;
-  }
+.opacity-7 {
+  opacity: 0.7;
+}
 
-  .match-detail  table th{
-    border-bottom: 0;
-  }
-  tbody::before
+.w-space {
+  white-space: nowrap;
+}
+
+.match-detail table td {
+  border-top: 0;
+  border-bottom: 0;
+  background-color: #F9F9F9;
+  vertical-align: top;
+}
+
+.match-detail table th {
+  border-bottom: 0;
+}
+
+tbody::before
+
 /* {
   content: '';
   display: block;
@@ -117,7 +148,14 @@ h6 {
 .text-theme {
   color: #0077DC;
 }
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   width: 90% !important;
@@ -126,15 +164,19 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
+
 .mee-auto {
   margin-right: auto !important;
 }
+
 .mss-auto {
   margin-left: auto !important;
 }
+
 .mb-2 {
   margin-bottom: 0.5rem !important;
 }
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -177,19 +219,20 @@ h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-.body-top{
+.body-top {
   padding-top: 100px;
 }
+
 #header {
   transition: all 0.5s;
   z-index: 997;
   padding: 15px 0px;
-  position:fixed;
+  position: fixed;
   width: 100%;
   top: 0;
   background: #FFF !important;
   box-shadow: 0 4px 10px rgba(4, 13, 41, 0.05) !important;
- 
+
 }
 
 #header.header-scrolled,
@@ -524,30 +567,35 @@ h6 {
   object-fit: cover;
   border-radius: 100px;
 }
-.notificationDropdown-box{
-    min-width: 320px !important;
-    max-width: 320px !important;
-    right: 0;
-    top: 68px;
-    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
-    transition: 0.3s;
-    border: none !important;
+
+.notificationDropdown-box {
+  min-width: 320px !important;
+  max-width: 320px !important;
+  right: 0;
+  top: 68px;
+  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+  transition: 0.3s;
+  border: none !important;
 }
-ul.notification-list{
+
+ul.notification-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
   display: block;
 }
-ul.notification-list li{
+
+ul.notification-list li {
   display: block;
 }
-ul.notification-list a{
+
+ul.notification-list a {
   display: block;
   cursor: pointer;
   padding: 15px;
   border-top: 1px solid #D9D9D9;
 }
+
 /*==========================================
 Button Styling
 ============================================*/
@@ -579,7 +627,7 @@ Button Styling
   border-color: #0077DC;
   font-weight: 400;
   cursor: pointer;
-  }
+}
 
 .btn-primary:hover,
 .btn-primary.active {
@@ -759,6 +807,7 @@ Button Styling
 .text-dark-gray {
   color: #686868;
 }
+
 .bg-gray {
   background-color: #A7A7A7;
   color: #FFF;
@@ -865,6 +914,7 @@ section {
   background-size: cover;
   height: 100%;
 }
+
 /*-------------------------------------------------------
 Form Control CSS
 ---------------------------------------------------------*/
@@ -897,7 +947,7 @@ Form Control CSS
   padding-left: 40px !important;
 }
 
-.profile-avtar{
+.profile-avtar {
   width: 120px;
   height: 120px;
   border-radius: 100%;
@@ -905,11 +955,13 @@ Form Control CSS
   margin-bottom: 15px;
   position: relative;
 }
-.profile-avtar img{
+
+.profile-avtar img {
   width: 100%;
   height: 100%;
   border-radius: 100%;
 }
+
 .input--file {
   right: 0;
   position: absolute;
@@ -935,6 +987,7 @@ Form Control CSS
   width: 32px;
   cursor: pointer;
 }
+
 /*-------------------------------------------------------
 Login Page CSS
 -------------------------------------------------------*/
@@ -981,36 +1034,44 @@ Login Page CSS
   color: #FFF;
   padding: 60px 0;
 }
-ul.footernav{
-  margin:0 ;
+
+ul.footernav {
+  margin: 0;
   padding: 0;
   list-style-type: none;
 }
-ul.footernav li{
+
+ul.footernav li {
   display: block;
 }
-ul.footernav a{
- display: block;
- padding: 5px 0;
- color: #FFFF;
+
+ul.footernav a {
+  display: block;
+  padding: 5px 0;
+  color: #FFFF;
 }
-ul.social-media{
-  margin:0 ;
+
+ul.social-media {
+  margin: 0;
   padding: 0;
   list-style-type: none;
 }
-ul.social-media li{
+
+ul.social-media li {
   display: inline-block;
 }
-ul.social-media li a{
+
+ul.social-media li a {
   display: block;
   padding: 5px;
   color: #FFF;
   font-size: 1.2rem;
 }
+
 .border-right-end {
   border-right: 1px solid #dee2e6 !important;
 }
+
 /*--------------------------------------------------------------
 # Listing CSS
 --------------------------------------------------------------*/
@@ -1054,9 +1115,10 @@ ul.project-document li:last-child {
 /*------------------------------------------
 Table CSS
 -------------------------------------------*/
-.table{
+.table {
   padding: 0.8rem 0.4rem !important;
 }
+
 .table>thead th {
   font-size: 12px;
   font-weight: 600;
@@ -1070,10 +1132,15 @@ Table CSS
 .table-striped>tbody>tr:nth-of-type(odd)>* {
   background-color: #F9F9F9 !important;
 }
-.table>:not(caption)>*>*{
+
+.table>:not(caption)>*>* {
   padding: .85rem .5rem !important;
 }
-.project-close> .table>tbody .bg-d3 td{background-color: #d3d3d3;}
+
+.project-close>.table>tbody .bg-d3 td {
+  background-color: #d3d3d3;
+}
+
 .page-link {
   color: #0077DC;
 }
@@ -1206,42 +1273,50 @@ Chat Page
   width: 100%;
   text-align: center;
 }
+
 #TeamList-sidebar ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-#TeamList-sidebar ul li{
+
+#TeamList-sidebar ul li {
   display: block;
   margin-bottom: 15px;
 }
-#TeamList-sidebar ul li{
+
+#TeamList-sidebar ul li {
   display: block;
 }
-#TeamList-sidebar ul li a{
+
+#TeamList-sidebar ul li a {
   display: block;
   padding: 10px;
   border-radius: 100px;
   text-align: center;
   background-color: #c4e0f7;
-  color: #FFF;  
+  color: #FFF;
 }
-#TeamList-sidebar ul li a.active{
+
+#TeamList-sidebar ul li a.active {
   background-color: #0077dc;
-  color: #FFF;  
+  color: #FFF;
 }
-#chatWindow{
+
+#chatWindow {
   background-color: #ECECEC;
   padding: 30px;
   border-radius: 35px;
   min-height: 600px;
   position: relative;
 }
-.chatHistory{
+
+.chatHistory {
   display: block;
   height: 500px;
   overflow-y: scroll;
 }
+
 .chatHistory ul li {
   display: inline-block;
   clear: both;
@@ -1250,6 +1325,7 @@ Chat Page
   width: calc(100% - 25px);
   font-size: 0.9em;
 }
+
 .chatHistory ul li .sent {
   background: #FFF;
   color: #000;
@@ -1258,15 +1334,16 @@ Chat Page
   max-width: 75%;
   position: relative;
 }
-.chatHistory ul li .sent::before{
+
+.chatHistory ul li .sent::before {
   content: "\F5E3";
-    font-family: "bootstrap-icons";
-    position: absolute;
-    bottom: -9px;
-    left: -22px;
-    transform: rotate(270deg);
-    font-size: 2.5rem;
-    color: #FFF;
+  font-family: "bootstrap-icons";
+  position: absolute;
+  bottom: -9px;
+  left: -22px;
+  transform: rotate(270deg);
+  font-size: 2.5rem;
+  color: #FFF;
 }
 
 .chatHistory ul li .replies {
@@ -1279,48 +1356,62 @@ Chat Page
   position: relative;
   margin-right: 30px;
 }
-.chatHistory ul li .replies::before{
+
+.chatHistory ul li .replies::before {
   content: "\F5E3";
-    font-family: "bootstrap-icons";
-    position: absolute;
-    bottom: -9px;
-    right: -22px;
-    transform: rotate(90deg);
-    font-size: 2.5rem;
-    color: #FFF;
+  font-family: "bootstrap-icons";
+  position: absolute;
+  bottom: -9px;
+  right: -22px;
+  transform: rotate(90deg);
+  font-size: 2.5rem;
+  color: #FFF;
 }
-.chatHistory ul li .replies p, .chatHistory ul li .sent p{
+
+.chatHistory ul li .replies p,
+.chatHistory ul li .sent p {
   margin-bottom: 0px;
 }
-.chatHistory ul li .replies .team-name, .chatHistory ul li .sent .team-name{
+
+.chatHistory ul li .replies .team-name,
+.chatHistory ul li .sent .team-name {
   font-size: 13px;
   color: #0077DC;
   display: block;
   margin-bottom: 0px;
 }
-.chatHistory ul li .replies .recived-time{
+
+.chatHistory ul li .replies .recived-time {
   font-size: 12px;
   color: #D9D9D9;
   display: block;
   margin-bottom: 0px;
 }
-.chatHistory ul li .sent .recived-time{
+
+.chatHistory ul li .sent .recived-time {
   font-size: 12px;
   color: #D9D9D9;
   display: block;
   margin-bottom: 0px;
   text-align: right;
 }
-.chatHistory ul li .sent .recived-time i, .chatHistory ul li .replies .recived-time i{
+
+.chatHistory ul li .sent .recived-time i,
+.chatHistory ul li .replies .recived-time i {
   margin-right: 5px;
 }
-.chatHistory ul li .sent .read-tick, .chatHistory ul li .replies .read-tick {
+
+.chatHistory ul li .sent .read-tick,
+.chatHistory ul li .replies .read-tick {
   color: #0077DC;
 }
-.chatHistory ul li .replies .unread-tick, .chatHistory ul li .sent .unread-tick{
+
+.chatHistory ul li .replies .unread-tick,
+.chatHistory ul li .sent .unread-tick {
   color: #D9D9D9;
 }
-.chatsendBox{
+
+.chatsendBox {
   display: block;
   position: relative;
   background: #FFF;
@@ -1330,19 +1421,23 @@ Chat Page
   min-height: 60px;
   margin-top: 20px;
 }
+
 .bi-send-fill::before {
   content: "\f6b9";
   transform: rotate(45deg);
 }
-.chatsendBox ul.floatingbuttons{
+
+.chatsendBox ul.floatingbuttons {
   margin: 0;
   padding: 0;
   list-style-type: 0;
 }
-.chatsendBox ul.floatingbuttons li{
+
+.chatsendBox ul.floatingbuttons li {
   display: inline-block;
 }
-.chatsendBox ul.floatingbuttons a{
+
+.chatsendBox ul.floatingbuttons a {
   display: block;
   width: 42px;
   height: 42px;
@@ -1355,20 +1450,30 @@ Chat Page
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin-left: 5px;
 }
-.google-meet{
+
+.google-meet {
   position: fixed;
   right: 135px;
   bottom: 110px;
 }
-.Mobile-chatsendBox{
+
+.Mobile-chatsendBox {
   display: none;
 }
+
 /*==========================================
 Media Query CSS
 ==========================================*/
 
 @media (max-width: 768px) {
-  .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+
+  .container,
+  .container-fluid,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
     width: 100%;
   }
 
@@ -1441,63 +1546,282 @@ Media Query CSS
     font-size: 20px;
     font-family: "Potta One", system-ui;
   }
+
   .mob-mb1 {
     margin-bottom: 1rem;
   }
+
   #TeamList-sidebar ul li {
     display: inline-block;
-}
-#chatWindow{
-  padding: 10px;
-}
-.chatHistory ul li .sent, .chatHistory ul li .replies {
-  max-width: 100%;
-}
-.TeamList-sidebar{
-  padding: 0px;
-}
-.chatsendBox{
-  display: none;
-}
-.Mobile-chatsendBox{
-  display: block;
-  position: fixed;
-  background: #FFF;
-  border-radius: 0;
-  padding: 5px;
-  max-height: 110;
-  min-height: 110;
-  margin-top: 20px;
-  bottom: 0;
-}
-.bi-send-fill::before {
-  content: "\f6b9";
-  transform: rotate(45deg);
-}
-.Mobile-chatsendBox ul.floatingbuttons{
-  margin: 0;
-  padding: 0;
-  list-style-type: 0;
-}
-.Mobile-chatsendBox ul.floatingbuttons li{
-  display: inline-block;
-}
-.Mobile-chatsendBox ul.floatingbuttons a{
-  display: block;
-  width: 42px;
-  height: 42px;
-  border-radius: 100px;
-  text-align: center;
-  font-size: 1.5rem;
-  line-height: 45px;
-  color: #0077DC;
-  background-color: #FFF;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  margin-left: 5px;
-}
-.google-meet{
-  position: fixed;
-  right: 15px;
-  top: 60px;
-}
+  }
+
+  #chatWindow {
+    padding: 10px;
+  }
+
+  .chatHistory ul li .sent,
+  .chatHistory ul li .replies {
+    max-width: 100%;
+  }
+
+  .TeamList-sidebar {
+    padding: 0px;
+  }
+
+  .chatsendBox {
+    display: none;
+  }
+
+  .Mobile-chatsendBox {
+    display: block;
+    position: fixed;
+    background: #FFF;
+    border-radius: 0;
+    padding: 5px;
+    max-height: 110;
+    min-height: 110;
+    margin-top: 20px;
+    bottom: 0;
+  }
+
+  .bi-send-fill::before {
+    content: "\f6b9";
+    transform: rotate(45deg);
+  }
+
+  .Mobile-chatsendBox ul.floatingbuttons {
+    margin: 0;
+    padding: 0;
+    list-style-type: 0;
+  }
+
+  .Mobile-chatsendBox ul.floatingbuttons li {
+    display: inline-block;
+  }
+
+  .Mobile-chatsendBox ul.floatingbuttons a {
+    display: block;
+    width: 42px;
+    height: 42px;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 45px;
+    color: #0077DC;
+    background-color: #FFF;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin-left: 5px;
+  }
+
+  .google-meet {
+    position: fixed;
+    right: 15px;
+    top: 60px;
+  }
+
+  .full-rounded {
+    border-radius: 100px !important;
+  }
+
+  /*Circle Progress bar*/
+  .progress {
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+  }
+
+  .progress:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 12px solid #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .progress>span {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+
+  .progress .progress-left {
+    left: 0;
+  }
+
+  .progress .progress-bar {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border-width: 12px;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+    border-color: #0077DC;
+  }
+
+  .progress .progress-left .progress-bar {
+    left: 100%;
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+  }
+
+  .progress .progress-right {
+    right: 0;
+  }
+
+  .progress .progress-right .progress-bar {
+    left: -100%;
+    border-top-left-radius: 75px;
+    border-bottom-left-radius: 75px;
+    border-right: 0;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+  }
+
+  .progress .progress-value {
+    display: flex;
+    border-radius: 50%;
+    font-size: 36px;
+    text-align: center;
+    line-height: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-weight: 300;
+    width: 100%;
+  }
+
+  .progress .progress-value div {
+    margin-top: 10px;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #0077DC;
+  }
+
+  .progress .progress-value span {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  /* This for loop creates the 	necessary css animation names 
+  Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+  */
+  .progress[data-percentage="10"] .progress-right .progress-bar {
+    animation: loading-1 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="10"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="20"] .progress-right .progress-bar {
+    animation: loading-2 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="20"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="30"] .progress-right .progress-bar {
+    animation: loading-3 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="30"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="40"] .progress-right .progress-bar {
+    animation: loading-4 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="40"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="50"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="50"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="60"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="60"] .progress-left .progress-bar {
+    animation: loading-1 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="70"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="70"] .progress-left .progress-bar {
+    animation: loading-2 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="80"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="80"] .progress-left .progress-bar {
+    animation: loading-3 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="90"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="90"] .progress-left .progress-bar {
+    animation: loading-4 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="100"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+
+  .progress[data-percentage="100"] .progress-left .progress-bar {
+    animation: loading-5 1.5s linear forwards 1.5s;
+  }
+
+  @keyframes loading-5 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(180);
+      transform: rotate(180deg);
+    }
+  }
+
+  .progress {
+    margin-bottom: 1em;
+  }
+
+  .card-header-blue {
+    background-color: #0077DC;
+    color: #FFF;
+    border-radius: 100px !important;
+    text-align: center;
+    padding: 15px 15px;
+
+  }
 }
