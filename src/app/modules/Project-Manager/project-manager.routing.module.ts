@@ -8,6 +8,7 @@ import { ProjectManagerMatchProjectListComponent } from './project-manager-match
 import { AllProjectDetailsComponent } from './all-project-details/all-project-details.component';
 import { MatchProjectDetailsComponent } from './match-project-details/match-project-details.component';
 import { ProjectCloseDetailsComponent } from './project-close-details/project-close-details.component';
+import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-detail/project-manager-summary-detail.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: "close-project-details",
         component: ProjectCloseDetailsComponent
+      },
+      {
+        path: "summary-project-details",
+        component: ProjectManagerSummaryDetailComponent
       },
     ]
   },
