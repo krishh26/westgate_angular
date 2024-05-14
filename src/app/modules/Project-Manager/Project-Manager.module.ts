@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ProjectManagerComponent } from './Project-Manager.component';
 import { ProjectManagerRoutingModule } from './project-manager.routing.module';
 import { ProjectManagerHeaderComponent } from 'src/app/utility/shared/components/project-manager-header/project-manager-header.component';
@@ -38,6 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatchProjectDetailsComponent,
     ProjectCloseDetailsComponent
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [DatePipe]
 })
 export class ProjectManagerModule { }
