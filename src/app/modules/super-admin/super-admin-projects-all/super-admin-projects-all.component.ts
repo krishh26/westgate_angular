@@ -64,7 +64,7 @@ export class SuperAdminProjectsAllComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/projects-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
   }
 
   paginate(page: number) {
