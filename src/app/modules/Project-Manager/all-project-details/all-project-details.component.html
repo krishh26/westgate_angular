@@ -173,45 +173,36 @@
         <thead>
           <tr>
             <th>Question</th>
-            <th>Weightage</th>
+            <!-- <th>Weightage</th> -->
             <th>Status</th>
             <th>Deadline</th>
             <th>Assign User</th>
-            <th>Deadline</th>
             <th>Review Note</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-            <td>35%</td>
-            <td class="text-success">Verified</td>
-            <td>01-02-2014</td>
-            <td>Ayush</td>
+          <tr *ngFor="let item of summaryQuestionList">
+            <td width="350">{{item?.question}}</td>
+            <!-- <td>35%</td> -->
+            <td>
+              <span class="text-success" *ngIf="item?.verify">Verified</span>
+              <span *ngIf="!item?.verify">Not Verified</span>
+            </td>
+            <td>
+              <span>
+                {{item?.deadline | date : 'dd-MM-YYYY'}}
+              </span>
+              <a  (click)="editSummaryDate(item?.deadline, item?._id)"  class="editbtn" style="cursor: pointer;"><i
+                data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i></a>
+            </td>
+            <td>Ayush
+              <a  (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                class="bi bi-pencil-fill"></i></a>
+            </td>
             <td> dolor sit amet, consectetur......</td>
-            <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-            <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-          </tr>
-          <tr>
-            <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-            <td>35%</td>
-            <td>Not Verified</td>
-            <td>01-02-2014</td>
-            <td>Abhi</td>
-            <td> dolor sit amet, consectetur......</td>
-            <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-            <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-          </tr>
-          <tr>
-            <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-            <td>35%</td>
-            <td>Not Verified</td>
-            <td>01-02-2014</td>
-            <td>Yaqoob</td>
-            <td> dolor sit amet, consectetur......</td>
-            <td><a href="question-details.html" class="btn  rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-            <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
+            <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View</a></td>
+            <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
           </tr>
         </tbody>
       </table>
@@ -233,48 +224,41 @@
           <thead>
             <tr>
               <th>Question</th>
-              <th>Weightage</th>
+              <!-- <th>Weightage</th>
               <th>Status</th>
               <th>Deadline</th>
               <th>Assign User</th>
-              <th>Deadline</th>
+              <th>Deadline</th> -->
               <th>Review Note</th>
+              <th>Note</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of summaryQuestionList">
               <td width="350">{{item?.question}}</td>
-              <td>{{item?.weightage}}</td>
+              <!-- <td>{{item?.weightage}}</td>
               <td>
                 <span class="text-success" *ngIf="item?.verify">Verified</span>
                 <span *ngIf="!item?.verify">Not Verified</span>
               </td>
-              <td>{{item?.deadline | date : 'DD-MM-YYYY'}}</td>
-              <td>Ayush</td>
-              <td> dolor sit amet, consectetur......</td>
-              <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-              <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-            </tr>
-            <tr>
-              <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-              <td>35%</td>
-              <td>Not Verified</td>
-              <td>01-02-2014</td>
-              <td>Abhi</td>
-              <td> dolor sit amet, consectetur......</td>
-              <td><a href="question-details.html" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-              <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-            </tr>
-            <tr>
-              <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-              <td>35%</td>
-              <td>Not Verified</td>
-              <td>01-02-2014</td>
-              <td>Yaqoob</td>
-              <td> dolor sit amet, consectetur......</td>
-              <td><a href="question-details.html" class="btn  rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-              <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
+              <td>
+                <span>
+                  {{item?.deadline | date : 'dd-MM-YYYY'}}
+                </span>
+                <a  (click)="editSummaryDate(item?.deadline, item?._id)"  class="editbtn" style="cursor: pointer;"><i
+                  data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i></a>
+              </td>
+              <td>Ayush
+                <a  (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                  class="bi bi-pencil-fill"></i></a>
+              </td>
+              <td> dolor sit amet, consectetur......</td> -->
+              <td><a (click)="openSummaryDetail(item)"  class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View</a></td>
+              <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
+              <td>
+                <input type="text" class="form-control" style="height: 2.1rem;"> 
+              </td>
             </tr>
           </tbody>
         </table>
@@ -284,21 +268,36 @@
   </section>
 
 
-  <!-- View Screenshot Modal -->
+  <!-- View Date Modal -->
+<div class="modal fade" id="viewDateModal" tabindex="-1" aria-labelledby="viewDateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="viewDateModalLabel">Deadline </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="date" [value]="selectedDate" class="form-control" placeholder="Date" style="height: 30px;">
+          </div>
+          <button type="button" (click)="saveDeadLineDate()" data-bs-dismiss="modal" class="btn btn-outline-dark me-2" style="margin-bottom: 0.5rem;" class="btn btn-success me-3">Save</button>
+      </div>
+  </div>
+</div>
+
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Screenshot {{selectedDocument?.name}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
               <img [src]="selectedDocument?.link?.url" class="img-fluid" />
           </div>
           <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
       </div>
   </div>
 </div>

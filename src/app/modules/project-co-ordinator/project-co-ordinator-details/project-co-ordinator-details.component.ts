@@ -1,8 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
 
 @Component({
   selector: 'app-project-co-ordinator-details',
@@ -18,14 +20,19 @@ export class ProjectCoOrdinatorDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryQuestionList: any
+  summaryQuestionList: any;
+
+  supportDocument!: FormGroup;
+  projectStage!: FormGroup;
 
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder,
+    private projectCoordinatorService: ProjectCoordinatorService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -35,8 +42,21 @@ export class ProjectCoOrdinatorDetailsComponent {
   }
 
   ngOnInit(): void {
+    this.initializeForm();
     this.getProjectDetails();
     this.getSummaryQuestion();
+    this.addDocument();
+    this.addStage();
+  }
+
+  initializeForm() {
+    this.supportDocument = this.fb.group({
+      document: this.fb.array([])
+    });
+
+    this.projectStage = this.fb.group({
+      stage: this.fb.array([])
+    });
   }
 
   getProjectDetails() {
@@ -87,5 +107,71 @@ export class ProjectCoOrdinatorDetailsComponent {
         link.click();
         document.body.removeChild(link);
       });
+  }
+
+  get document(): FormArray {
+    return this.supportDocument.get("document") as FormArray
+  }
+
+  get stage(): FormArray {
+    return this.projectStage.get("stage") as FormArray
+  }
+
+  newDocument(): FormGroup {
+    return this.fb.group({
+      key: '',
+      url: '',
+    })
+  }
+
+  newStage(): FormGroup {
+    return this.fb.group({
+      text: "",
+      startDate: "",
+      endDate: ""
+    })
+  }
+
+  addDocument() {
+    this.document.push(this.newDocument());
+  }
+
+  addStage() {
+    this.stage.push(this.newStage());
+  }
+
+  removeDocument(i: number) {
+    this.document.removeAt(i);
+  }
+
+  removeStage(i: number) {
+    this.stage.removeAt(i);
+  }
+
+  updateProject() {
+    const data = {
+      supportingDocs: this.supportDocument.value?.document,
+      stages: this.projectStage.value?.stage
+    }
+
+    this.projectCoordinatorService.updateProject(data, this.projectId).subscribe((response) => {
+      if (response?.status) {
+        this.getProjectDetails()
+      }
+    })
+  }
+
+  // Handle the file change event
+  addFiles(event: any, index: number): void {
+    if (event.target.files && event.target.files[0]) {
+      const data = new FormData();
+      data.append('files', event.target.files[0])
+      this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
+        if (response?.status) {
+          this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
+          this.document?.at(index)?.get('key')?.setValue(response?.data?.key)
+        }
+      });
+    }
   }
 }

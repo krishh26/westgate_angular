@@ -6,7 +6,8 @@ import { environment } from 'src/environment/environment';
 
 export enum SummaryEndPoint {
   SUMMARY_ADD = '/summary-question/create',
-  DELETE_SUMMARY = '/summary-question/delete/'
+  DELETE_SUMMARY = '/summary-question/delete/',
+  UPDATE_SUMMARY_DETAIL = '/summary-question/update/'
 }
 
 @Injectable({
@@ -31,4 +32,8 @@ export class SummaryService {
       .delete<any>(this.baseUrl + SummaryEndPoint.DELETE_SUMMARY + summaryId);
   }
 
+  updateSummaryDetail(summaryId:string,payload: any): Observable<any> {
+    return this.httpClient
+     .patch<any>(this.baseUrl + SummaryEndPoint.UPDATE_SUMMARY_DETAIL + `${summaryId}`, payload);
+  }
 }
