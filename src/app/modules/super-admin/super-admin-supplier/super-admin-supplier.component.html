@@ -22,14 +22,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr  *ngFor="let item of manageUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-              <td>Company Name</td>
-              <td v-align="middle">546552</td>
-              <td>Ayush</td>
-              <td>25-11-2014</td>
+            <tr  *ngFor="let item of supplierUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+              <td>{{item?.name}}</td>
+              <td v-align="middle">{{item?._id}}</td>
+              <td>{{item?.userName}}</td>
+              <td>{{item?.doj | date : 'MM/dd/yyyy'}}</td>
               <td>03</td>
               <td>
-                <a href="supplier-project-view.html" class="btn btn-sm btn-primarysm" title="View Details">View
+                <a href="href:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm" title="View Details">View
                   Project</a>
               </td>
             </tr>

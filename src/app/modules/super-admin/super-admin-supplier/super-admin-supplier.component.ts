@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
@@ -12,7 +13,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 export class SuperAdminSupplierComponent {
 
   showLoader: boolean = false;
-  manageUserList: any = [];
+  supplierUserList: any = [];
 
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
@@ -20,6 +21,7 @@ export class SuperAdminSupplierComponent {
 
   constructor(
     private supplierService: SupplierAdminService,
+    private authservice: AuthService,
     private notificationService: NotificationService,
     private router: Router
   ) { }
@@ -30,21 +32,32 @@ export class SuperAdminSupplierComponent {
 
   getManageUserList() {
     this.showLoader = true;
-    this.supplierService.getManageUserList().subscribe((response) => {
-      this.manageUserList = [];
-      this.totalRecords = 0;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.manageUserList = response?.data?.data;
-        this.totalRecords = response?.totalCount;
-      } else {
-        this.notificationService.showError(response?.message);
+    this.authservice.getUserList('SupplierAdmin').subscribe(
+      (response) => {
+        this.supplierUserList = [];
+        this.totalRecords = 0;
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.supplierUserList = response?.data;
+          this.totalRecords = response?.totalCount;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
+
+  projectDetails(projectId: any, item: any) {
+    let data = item;
+    localStorage.setItem('supplierData', JSON.stringify(data))
+    this.router.navigate(['/super-admin/super-admin-supplier-project-view'], { queryParams: { id: projectId } });
+  }
+
+
 
 }

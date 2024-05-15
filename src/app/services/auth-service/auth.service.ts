@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environment/environment';
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export enum AuthEndPoint {
   LOGIN_USER = '/user/login',
   CHANGE_PASSWORD = '/user/change-password/',
-  FORGOT_PASSWORD = '/user/forgot'
+  FORGOT_PASSWORD = '/user/forgot',
+  USER_LIST = '/user/list'
 }
 
 @Injectable({
@@ -35,14 +36,13 @@ export class AuthService {
 
   loginUser(payload: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + AuthEndPoint.LOGIN_USER, payload ,{ headers: this.getHeader() });
+      .post<any>(this.baseUrl + AuthEndPoint.LOGIN_USER, payload, { headers: this.getHeader() });
   }
 
   logout(): void {
     this.localStorageService.clearStorage();
     this.router.navigateByUrl('/');
   }
-
 
   forgotPassword(payload: any): Observable<any> {
     return this.httpClient
@@ -53,5 +53,14 @@ export class AuthService {
     return this.httpClient
       .post<any>(this.baseUrl + AuthEndPoint.CHANGE_PASSWORD, payload);
   }
+
+  getUserList(userRoles: string): Observable<any> {
+    // Construct parameters
+    let params = new HttpParams().set('userRoles', userRoles);
+
+    // Make the GET request with parameters
+    return this.httpClient.get<any>(this.baseUrl + '/user/list', { params: params });
+  }
+
 
 }

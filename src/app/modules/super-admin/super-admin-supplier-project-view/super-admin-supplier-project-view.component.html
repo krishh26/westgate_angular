@@ -3,7 +3,8 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-4 mob-mb1">
-                    <a href="supplier-project-view.html" class="btn btn-outline-secondary w-75 box-shadow">Back</a>
+                    <a routerLink="/super-admin/super-admin-supplier"
+                        class="btn btn-outline-secondary w-75 box-shadow">Back</a>
                 </div>
             </div>
             <div class="table-responsive mt-5 mb-3">
@@ -18,10 +19,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Company Name</td>
-                            <td v-align="middle">546552</td>
-                            <td>Ayush</td>
-                            <td>25-11-2014</td>
+                            <td>{{supplierData?.name}}</td>
+                            <td v-align="middle">{{supplierData?._id}}</td>
+                            <td>{{supplierData?.userName}}</td>
+                            <td>{{supplierData?.doj | date : 'MM/dd/yyyy'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -35,7 +36,8 @@
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input type="search" class="form-control control-search" placeholder="Search">
+                        <input class="form-control control-search" placeholder="Search by BOS ID & Project Title." type="text" [(ngModel)]="searchText"
+                        (input)="searchtext()">
                     </div>
                 </div>
             </div>
@@ -53,54 +55,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
+                        <tr
+                            *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                            <td><a href="javascript:;">{{item?.projectName}}</a></td>
+                            <td v-align="middle">{{item?.BOSID}}</td>
+                            <td>{{item?.publishDate | date: 'MM/dd/yyyy'}}</td>
+                            <td>{{item?.category}}</td>
+                            <td>{{item?.status}}</td>
+                            <td>£{{item?.value}}</td>
                             <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
+                                <a (click)="projectDetails(item?._id)" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
+            <div class="row mt-3 align-items-center">
+                <div class="row">
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
