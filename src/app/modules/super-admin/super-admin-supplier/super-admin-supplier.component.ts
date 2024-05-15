@@ -13,7 +13,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 export class SuperAdminSupplierComponent {
 
   showLoader: boolean = false;
-  manageUserList: any = [];
+  supplierUserList: any = [];
 
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
@@ -34,11 +34,11 @@ export class SuperAdminSupplierComponent {
     this.showLoader = true;
     this.authservice.getUserList('SupplierAdmin').subscribe(
       (response) => {
-        this.manageUserList = [];
+        this.supplierUserList = [];
         this.totalRecords = 0;
         if (response?.status == true) {
           this.showLoader = false;
-          this.manageUserList = response?.data?.data;
+          this.supplierUserList = response?.data;
           this.totalRecords = response?.totalCount;
         } else {
           this.notificationService.showError(response?.message);
