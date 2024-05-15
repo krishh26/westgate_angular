@@ -26,7 +26,7 @@ export class UkWriterProjectsDetailsComponent {
     private router: Router,
     private notificationService: NotificationService,
   ){
-    
+
     this.route.queryParams.subscribe((params) => {
       if(params['id']){
         this.projectID = params['id']

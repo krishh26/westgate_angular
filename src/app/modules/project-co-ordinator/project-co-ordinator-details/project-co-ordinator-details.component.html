@@ -54,7 +54,7 @@
                 <td>{{supplier?.supplierId}}</td>
                 <td>Ayush</td>
                 <td style="width: 35%;">
-                <a routerLink="/project-coordinator/project-coordinator-chats" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i> Chat</a>
+                <a (click)="goToChat()" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i> Chat</a>
                 <a type="button" class="btn btn-success btn-sm">Initiate Meeting</a>
                 </td>
               </tr>
@@ -214,43 +214,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
-                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                </td>
-              </tr>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
-                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                </td>
-              </tr>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
-                  <a href="#" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                </td>
-              </tr>
-
+              <ng-container *ngFor="let question of  summaryQuestionList">
+                <tr *ngIf="question?.summaryQuestionFor == 'Supplier'">
+                  <td width="350">{{ question?.question }}</td>
+                  <td>{{ question?.weightage }} % </td>
+                  <td>
+                    <span *ngIf="question?.verify" class="text-success"> Verified</span>
+                    <span *ngIf="!question?.verify" > Not Verified</span>
+                  </td>
+                  <td> {{ question?.deadline | date:'dd-MM-YYYY' }}</td>
+                  <td>Ayush</td>
+                  <td> {{ question?.comment }} </td>
+                  <td>
+                    <a (click)="questionDetails(question)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                    <a class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                  </td>
+                </tr>
+                </ng-container>
             </tbody>
           </table>
         </div>
@@ -263,7 +243,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h5 class="text-white mb-4"><strong>Summary Note Questions</strong></h5>
+          <h5 class="text-white mb-4"><strong>Summary Note Questions - UK</strong></h5>
         </div>
       </div>
       <div class="row">
@@ -281,42 +261,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
+              <ng-container *ngFor="let questionUk of  summaryQuestionList">
+              <tr *ngIf="questionUk?.summaryQuestionFor == 'UKWriter'">
+                <td width="350">{{ questionUk?.question }}</td>
+                <td>{{ questionUk?.weightage }} % </td>
                 <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
-                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
+                  <span *ngIf="questionUk?.verify" class="text-success"> Verified</span>
+                  <span *ngIf="!questionUk?.verify" > Not Verified</span>
+                </td>
+                <td> {{ questionUk?.deadline | date:'dd-MM-YYYY' }}</td>
+                <td>Ayush</td>
+                <td> {{ questionUk?.comment }} </td>
+                <td>
+                  <a (click)="questionDetails(questionUk)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                  <a class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                 </td>
               </tr>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
-                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
-                </td>
-              </tr>
-              <tr>
-                <td width="350">1. Project management approach and project team outlined. Resilience – ability to deliver.</td>
-                <td>35%</td>
-                <td><span class="text-success">Verified</span></td>
-                <td>01-02-2014</td>
-                <td>Ayush</td>
-                <td> dolor sit amet, consectetur......</td>
-                <td>
-                  <a routerLink="/project-coordinator/project-coordinator-question-details" class="btn btn-view-document btn-boxshadow btn-sm"><i class="bi bi-eye-fill"></i> View Response</a>
-                  <a href="#" class="btn btn-outline-purewhite"><i class="bi bi-file-earmark-arrow-down-fill"></i> Dwonload</a>
-                </td>
-              </tr>
+              </ng-container>
             </tbody>
           </table>
         </div>

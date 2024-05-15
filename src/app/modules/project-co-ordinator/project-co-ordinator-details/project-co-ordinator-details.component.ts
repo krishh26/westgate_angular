@@ -15,7 +15,6 @@ export class ProjectCoOrdinatorDetailsComponent {
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
-  projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
@@ -173,5 +172,14 @@ export class ProjectCoOrdinatorDetailsComponent {
         }
       });
     }
+  }
+
+  questionDetails(details: any) {
+    localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
+    this.router.navigate(['/project-coordinator/project-coordinator-question-details'], { queryParams: { id: details?._id } });
+  }
+
+  goToChat() {
+    this.router.navigate(['/project-coordinator/project-coordinator-chats'], { queryParams: { id: this.projectId } });
   }
 }
