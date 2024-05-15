@@ -66,6 +66,7 @@ export class SuperAdminDashboardComponent {
               labels: day,
               datasets: [
                 {
+                  label: '# Data',
                   data: data,
                   borderWidth: 1,
                 },
