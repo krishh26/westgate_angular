@@ -24,6 +24,7 @@ export class SuperAdminSupplierProjectViewComponent {
   dateDifference: any;
   searchText: any;
   myControl = new FormControl();
+  supplierData: any = []
 
   constructor(
     private projectService: ProjectService,
@@ -32,6 +33,15 @@ export class SuperAdminSupplierProjectViewComponent {
   ) { }
 
   ngOnInit(): void {
+    this.supplierData = localStorage.getItem('supplierData');
+
+    if (this.supplierData) {
+      this.supplierData = JSON.parse(this.supplierData);
+    } else {
+      this.supplierData = []; // Set default value if no data found in localStorage
+    }
+    console.log(this.supplierData);
+
     this.myControl.valueChanges.subscribe((res: any) => {
       let storeTest = res;
       this.searchText = res.toLowerCase();

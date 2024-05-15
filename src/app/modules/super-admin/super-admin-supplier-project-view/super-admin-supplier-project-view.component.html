@@ -19,10 +19,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Company Name</td>
-                            <td v-align="middle">546552</td>
-                            <td>Ayush</td>
-                            <td>25-11-2014</td>
+                            <td>{{supplierData?.name}}</td>
+                            <td v-align="middle">{{supplierData?._id}}</td>
+                            <td>{{supplierData?.userName}}</td>
+                            <td>{{supplierData?.doj | date : 'MM/dd/yyyy'}}</td>
                         </tr>
                     </tbody>
                 </table>
