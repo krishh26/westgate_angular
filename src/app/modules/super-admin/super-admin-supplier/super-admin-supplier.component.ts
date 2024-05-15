@@ -21,7 +21,7 @@ export class SuperAdminSupplierComponent {
 
   constructor(
     private supplierService: SupplierAdminService,
-    private authservice : AuthService,
+    private authservice: AuthService,
     private notificationService: NotificationService,
     private router: Router
   ) { }
@@ -51,7 +51,11 @@ export class SuperAdminSupplierComponent {
       }
     );
   }
-  
-  
+
+  projectDetails(projectId: any) {
+    this.router.navigate(['/super-admin/super-admin-supplier-project-view'], { queryParams: { id: projectId } });
+  }
+
+
 
 }
