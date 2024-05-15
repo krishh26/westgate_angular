@@ -53,46 +53,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>In-Progress</td>
-                            <td>£50000</td>
+                        <tr
+                            *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                            <td><a href="javascript:;">{{item?.projectName}}</a></td>
+                            <td v-align="middle">{{item?.BOSID}}</td>
+                            <td>{{item?.publishDate | date: 'MM/dd/yyyy'}}</td>
+                            <td>{{item?.category}}</td>
+                            <td>{{item?.status}}</td>
+                            <td>£{{item?.value}}</td>
                             <td>
                                 <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
                             </td>
@@ -100,7 +68,13 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="row mt-3 align-items-center">
+                <div class="row">
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
