@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class ProjectManagerSummaryDetailComponent {
 
+  summaryDetail:any
+
+  constructor(){
+    const details = localStorage.getItem('ViewSummary');
+    if(details) {
+      this.summaryDetail = JSON.parse(details);
+    }
+  }
 }
