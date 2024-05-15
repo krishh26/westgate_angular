@@ -100,4 +100,9 @@ export class SuperAdminSupplierProjectViewComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  
+  projectDetails(projectId: any) {
+    // this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
+  }
+
 }

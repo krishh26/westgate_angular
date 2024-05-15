@@ -64,7 +64,7 @@
                             <td>{{item?.status}}</td>
                             <td>£{{item?.value}}</td>
                             <td>
-                                <a href="" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
+                                <a (click)="projectDetails(item?._id)" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
                             </td>
                         </tr>
                     </tbody>
