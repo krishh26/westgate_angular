@@ -124,7 +124,7 @@ export class AllProjectDetailsComponent implements OnInit {
   }
 
   openSummaryDetail(item:any){
-    console.log('item :', item);
+    localStorage.setItem('ViewSummary', JSON.stringify(item));
     this.router.navigate(['/project-manager/project/summary-project-details']);
   }
 }

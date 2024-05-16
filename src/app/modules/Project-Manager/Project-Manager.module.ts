@@ -15,6 +15,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-detail/project-manager-summary-detail.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProjectManagerMatchProjectListComponent,
     AllProjectDetailsComponent,
     MatchProjectDetailsComponent,
-    ProjectCloseDetailsComponent
+    ProjectCloseDetailsComponent,
+    ProjectManagerSummaryDetailComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]

@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./project-co-ordinator-question-details.component.scss']
 })
 export class ProjectCoOrdinatorQuestionDetailsComponent {
+  questionDetails: any = [];
 
+  constructor(){
+    const details = localStorage.getItem('ViewQuestionForCoordinator');
+    if(details) {
+      this.questionDetails = JSON.parse(details);
+    }
+  }
 }

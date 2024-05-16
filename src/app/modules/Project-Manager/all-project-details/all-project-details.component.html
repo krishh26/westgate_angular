@@ -182,7 +182,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of summaryQuestionList">
+          <ng-container *ngFor="let item of summaryQuestionList">
+          <tr  *ngIf="item?.summaryQuestionFor == 'Supplier'">
             <td width="350">{{item?.question}}</td>
             <!-- <td>35%</td> -->
             <td>
@@ -200,10 +201,11 @@
               <a  (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
                 class="bi bi-pencil-fill"></i></a>
             </td>
-            <td> dolor sit amet, consectetur......</td>
+            <td> {{item?.comment}}</td>
             <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View</a></td>
             <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
           </tr>
+        </ng-container>
         </tbody>
       </table>
     </div>
@@ -235,31 +237,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of summaryQuestionList">
+            <ng-container *ngFor="let item of summaryQuestionList">
+            <tr *ngIf="item?.summaryQuestionFor == 'UKWriter'">
               <td width="350">{{item?.question}}</td>
-              <!-- <td>{{item?.weightage}}</td>
-              <td>
-                <span class="text-success" *ngIf="item?.verify">Verified</span>
-                <span *ngIf="!item?.verify">Not Verified</span>
-              </td>
-              <td>
-                <span>
-                  {{item?.deadline | date : 'dd-MM-YYYY'}}
-                </span>
-                <a  (click)="editSummaryDate(item?.deadline, item?._id)"  class="editbtn" style="cursor: pointer;"><i
-                  data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i></a>
-              </td>
-              <td>Ayush
-                <a  (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
-                  class="bi bi-pencil-fill"></i></a>
-              </td>
-              <td> dolor sit amet, consectetur......</td> -->
               <td><a (click)="openSummaryDetail(item)"  class="btn rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View</a></td>
-              <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
               <td>
-                <input type="text" class="form-control" style="height: 2.1rem;"> 
+                <input type="text" class="form-control" style="height: 2.1rem;">
               </td>
             </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>

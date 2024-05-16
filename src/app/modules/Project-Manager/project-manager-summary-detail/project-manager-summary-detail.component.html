@@ -13,27 +13,27 @@
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="card mb-2">
                 <div class="card-body">
-                  <p class="mb-0"> Question Name </p>
+                  <p class="mb-0">{{summaryDetail.questionName}} </p>
                 </div>
               </div>
               <div class="card mb-2">
                 <div class="card-body">
-                  <p class="mb-0"> Question Name </p>
+                  <p class="mb-0">{{summaryDetail.question}} </p>
                 </div>
               </div>
               <div class="card mb-2">
                 <div class="card-body">
-                  <p class="mb-0">  Reference Doscument & Page number </p>
+                  <p class="mb-0">  {{summaryDetail.refrenceDocument}} </p>
                 </div>
               </div>
               <div class="card mb-2">
                 <div class="card-body">
-                  <p class="mb-0"> Weightage </p>
+                  <p class="mb-0"> {{summaryDetail.weightage}} </p>
                 </div>
               </div>
               <div class="card mb-2">
                 <div class="card-body">
-                  <p class="mb-0"> Deadline </p>
+                  <p class="mb-0"> {{summaryDetail.deadline}} </p>
                 </div>
               </div>
             </div>
@@ -41,7 +41,7 @@
               <div class="card">
                 <div class="card-body">
                   <p> <strong>Instructions from West Gate/ Spectrum</strong> </p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa   officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+                  <p>{{summaryDetail.instructions}}</p>
                 </div>
               </div>
             </div>
@@ -49,48 +49,31 @@
               <div class="card">
                 <div class="card-body">
                   <p> <strong>Review Comments</strong> </p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa   officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+                  <p>{{summaryDetail.comment}} </p>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-12"><h6><strong>Supplier Response</strong></h6></div>
-            <div class="row align-items-center">
+            <div *ngFor="let response of summaryDetail.response" class="row align-items-center">
               <div class="col-12">
                 <div class="form-group">
-                  <input type="text" class="form-control" value="V1">
+                  <input type="text" class="form-control" [value]="response.message" disabled>
                 </div>
               </div>
              </div>
              <div class="row align-items-center">
               <div class="col-12">
                 <div class="form-group">
-                  <input type="text" class="form-control" value="Review Comments">
+                  <input type="text" class="form-control" placeholder="Write review here"  [(ngModel)]="reviewData" >
                 </div>
               </div>
              </div>
-             <div class="row align-items-center">
-              <div class="col-12">
-                <div class="form-group">
-                  <input type="text" class="form-control" value="V2">
-                </div>
-              </div>
+             <div>
+               <button type="button" (click)="saveSummaryResponse()" class="btn btn-outline-dark" style="margin-bottom: 0.5rem; width: 10%;" class="btn btn-success me-3">Save</button>
              </div>
-             <div class="row align-items-center">
-              <div class="col-12">
-                <div class="form-group">
-                  <input type="text" class="form-control" value="Review Comments">
-                </div>
-              </div>
-             </div>
-             <div class="row align-items-center">
-              <div class="col-12">
-                <div class="form-group">
-                  <input type="text" class="form-control" value="Final Version">
-                </div>
-              </div>
-             </div>
+
           </div>
         </div>
     </section>
