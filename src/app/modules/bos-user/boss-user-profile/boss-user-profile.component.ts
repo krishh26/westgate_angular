@@ -19,11 +19,11 @@ export class BossUserProfileComponent {
   ) {
     this.userForm = this.fb.group({
       category: [''],
-      userId: [''],
+      _id: [''],
       userName: [''],
-      companyName: [''],
+      email: [''],
       designation: [''],
-      dateOfJoining: ['']
+      doj: ['']
     });
   }
 
