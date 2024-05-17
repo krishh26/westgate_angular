@@ -38,6 +38,12 @@ const routes: Routes = [
     loadChildren: () => import('./modules/super-admin/super-admin.module').then(m => m.SuperAdminModule)
   },
   {
+    path: 'user-profile',
+    loadChildren: () => import('./modules/user-profile/user-profile.module').then(m => m.UserProfileModule
+      
+    )
+  },
+  {
     path: 'login',
     component : LoginComponent
   },
