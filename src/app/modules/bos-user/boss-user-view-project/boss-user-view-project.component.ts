@@ -62,4 +62,19 @@ export class BossUserViewProjectComponent {
   openDocument(data: any) {
     this.selectedDocument = data;
   }
+
+  download(imageUrl: string, fileName: string): void {
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName); // You can customize the filename here
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+  }
+
 }

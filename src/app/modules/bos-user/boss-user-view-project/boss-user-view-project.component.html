@@ -9,7 +9,7 @@
                     </div>
                 </div> -->
                 <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-                    <a routerLink="/boss-user/project-list"  class="btn btn-outline-white w-100"> <i
+                    <a routerLink="/boss-user/project-list" class="btn btn-outline-white w-100"> <i
                             class="bi bi-arrow-left"></i>
                         Back</a>
                 </div>
@@ -71,29 +71,31 @@
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                      <p class="mb-0">FOI Screenshot</p>
+                        <p class="mb-0">FOI Screenshot</p>
                     </div>
                     <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
-                      <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
-                        <p class="mb-0">No Record Found.</p>
-                      </div>
+                        <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                            <p class="mb-0">No Record Found.</p>
+                        </div>
                     </div>
                     <ng-container *ngIf="projectDetails?.fois?.length > 0">
-                    <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
-                      <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                        <p class="mb-0">{{foiDocument?.name}}</p>
-                      </div>
-                      <div class="col-lg-4 col-xl-4 col-6">
-                        <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
-                            class="bi bi-eye-fill"></i> View</a>
-                      </div>
-                      <div class="col-lg-4 col-xl-4 col-6">
-                        <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#fioScreenshot"><i
-                            class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                      </div>
-                    </div>
+                        <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                <p class="mb-0">{{foiDocument?.name}}</p>
+                            </div>
+                            <div class="col-lg-4 col-xl-4 col-6">
+                                <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                                    data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                        class="bi bi-eye-fill"></i> View</a>
+                            </div>
+                            <div class="col-lg-4 col-xl-4 col-6">
+                                <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                                    class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                    Download</a>
+                            </div>
+                        </div>
                     </ng-container>
-                  </div>
+                </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
@@ -128,8 +130,8 @@
     </div>
 </div>
 
-  <!-- Upload FIO Screenshot Modal -->
-  <!-- <div class="modal fade" id="fioScreenshot" tabindex="-1" aria-labelledby="fioScreenshotLabel" aria-hidden="true">
+<!-- Upload FIO Screenshot Modal -->
+<!-- <div class="modal fade" id="fioScreenshot" tabindex="-1" aria-labelledby="fioScreenshotLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
