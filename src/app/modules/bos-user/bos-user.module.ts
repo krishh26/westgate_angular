@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewDocumentComponent } from 'src/app/utility/shared/pop-ups/view-document/view-document.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
+import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bul
     MailScreenshotAddEditComponent,
     BossUserUploadProjectComponent,
     ViewDocumentComponent,
-    BossUserBulkEntryComponent
+    BossUserBulkEntryComponent,
+    BossUserProfileComponent
   ],
   imports: [
     CommonModule,

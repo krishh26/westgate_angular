@@ -9,6 +9,7 @@ import { MailScreenshotAddEditComponent } from './mail-screenshot-add-edit/mail-
 import { FioDocumentListComponent } from './fio-document-list/fio-document-list.component';
 import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-document-add-edit.component';
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
+import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: "boss-user-bulk-entry",
         component: BossUserBulkEntryComponent
+      },
+      {
+        path: "boss-user-profile",
+        component: BossUserProfileComponent
       },
     ]
   },

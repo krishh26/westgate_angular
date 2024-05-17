@@ -9,7 +9,8 @@ export enum AuthEndPoint {
   LOGIN_USER = '/user/login',
   CHANGE_PASSWORD = '/user/change-password/',
   FORGOT_PASSWORD = '/user/forgot',
-  USER_LIST = '/user/list'
+  USER_LIST = '/user/list',
+  USER_DATA = '/user/get'
 }
 
 @Injectable({
@@ -60,6 +61,11 @@ export class AuthService {
 
     // Make the GET request with parameters
     return this.httpClient.get<any>(this.baseUrl + '/user/list', { params: params });
+  }
+
+  getUserdata(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + AuthEndPoint.USER_DATA);
   }
 
 
