@@ -63,7 +63,7 @@ export class BossUserAddProjectComponent {
 
   patchProjectValue() {
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      this.productForm.patchValue(response.data[0])
+      this.productForm.patchValue(response?.data)
     },
       error => {
         this.notificationService.showError(error?.message);
