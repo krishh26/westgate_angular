@@ -30,6 +30,14 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        
+                        <tr>
+                            <td *ngIf="!projectList?.length" colspan="13">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+
                         <tr
                             *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td><a href="javascript:;">{{item?.projectName}}</a></td>

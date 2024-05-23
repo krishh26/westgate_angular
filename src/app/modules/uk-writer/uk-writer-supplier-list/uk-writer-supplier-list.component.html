@@ -26,6 +26,13 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr>
+                            <td *ngIf="!supplierList?.length" colspan="5">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+                        
                         <tr
                         *ngFor="let supplier of supplierList">
                             <td><a href="javascript:;">{{supplier.supplierId?.name}}</a></td>
