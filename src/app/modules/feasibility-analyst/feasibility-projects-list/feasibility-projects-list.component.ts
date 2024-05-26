@@ -57,14 +57,16 @@ export class FeasibilityProjectsListComponent {
         this.projectList = response?.data?.data;
         console.log(this.projectList);
 
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-           
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
+        this.totalRecords = response?.data?.meta_data?.items;
+
+        // this.projectList.forEach((project: any) => {
+        //   const dueDate = new Date(project.dueDate);
+        //   const currentDate = new Date();
+        //   const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+        //   const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+        //   this.dateDifference = formattedDateDifference;
+        // });
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

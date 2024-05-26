@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 
@@ -20,11 +22,25 @@ export class FeasibilityProjectDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
 
+  subContractDocument: any;
+  economicalPartnershipQueryFile: any;
+  economicalPartnershipResponceFile: any;
+
+  documentUploadType : any = {
+    subContractDocument : 'SubContract',
+    economicalPartnershipQuery : 'economicalPartnershipQuery',
+    economicalPartnershipResponse : 'economicalPartnershipResponse'
+  }
+
+  // For check bov
+  subContracting: FormControl = new FormControl();
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private feasibilityService: FeasibilityService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -34,23 +50,12 @@ export class FeasibilityProjectDetailsComponent {
     this.getProjectDetails();
   }
 
-  formatMilliseconds(milliseconds: number): string {
-    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-    return `${days} days`;
-  }
-
-
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
-        const dueDate = new Date(this.projectDetails?.dueDate);
-        const currentDate = new Date();
-        const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-        const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-        this.dateDifference = formattedDateDifference;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -79,8 +84,35 @@ export class FeasibilityProjectDetailsComponent {
       });
   }
 
-  summaryDetail(){
+  summaryDetail() {
     this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
   }
 
+  // upload Sub Contract
+  uploadDocument(event: any, type: string): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+      this.feasibilityService.uploadDocument(data).subscribe((response) => {
+        if (response?.status) {
+          debugger
+          if(type == this.documentUploadType.subContractDocument) {
+            this.subContractDocument = response?.data;
+          }
+          if(type == this.documentUploadType.economicalPartnershipQuery) {
+            this.economicalPartnershipQueryFile = response?.data;
+          }
+          if(type == this.documentUploadType.economicalPartnershipResponse) {
+            this.economicalPartnershipResponceFile = response?.data;
+          }
+          return this.notificationService.showSuccess(response?.message);
+        } else {
+          return this.notificationService.showError(response?.message);
+        }
+      }, (error) => {
+        return this.notificationService.showError(error?.message || "Error while uploading");
+      });
+    }
+  }
 }
