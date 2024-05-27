@@ -25,15 +25,15 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>School <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>£50000 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>Development</td>
+                            <td><a href="javascript:;">{{projectDetails?.projectName}}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.category}} <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                            <td>{{projectDetails?.industry}} <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                            <td>$ {{projectDetails?.value}}<a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                            <td>{{projectDetails?.projectType}}</td>
                             <td>
-                                In-Progress
+                              {{projectDetails?.status}}
                             </td>
                             <td>25-11-2014 & 5:00PM</td>
                             <td>
