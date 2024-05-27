@@ -26,8 +26,13 @@ export class FeasibilityService {
   }
 
   // update project API
-  updateProjectDetails(payload: any, projectId: string): Observable<any> {
+  updateProjectDocs(payload: any, projectId: string): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + FeasibilityEndPoint.DOCUMENT_UPLOAD + projectId, payload);
+  }
+
+  updateProjectDetails(payload: any, projectId: string): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + FeasibilityEndPoint.UPDATE_PROJECT + projectId, payload);
   }
 }

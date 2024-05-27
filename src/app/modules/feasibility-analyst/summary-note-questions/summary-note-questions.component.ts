@@ -152,4 +152,7 @@ export class SummaryNoteQuestionsComponent {
       this.notificationService.showError(error?.message || 'Something went wrong !');
     })
   }
+  detailPage(){
+    this.router.navigate(['/feasibility-user/minimum-eligibility-form'], { queryParams: { id: this.projectId } });
+  }
 }

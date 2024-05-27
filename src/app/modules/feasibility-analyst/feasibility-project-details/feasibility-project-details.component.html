@@ -289,9 +289,32 @@
                                 </div>
                             </li> -->
                         </ul>
-                        <button type="button" class="btn btn-dark btn-sm add-card-btn"><i class="bi bi-plus-lg"></i>
+                        <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn"><i class="bi bi-plus-lg"></i>
                         </button>
                     </div>
+                    <ng-container *ngIf="viewClientDocumentForm">
+                        <div class="d-flex p-2 justify-content-between">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <input type="text" [(ngModel)]="documentName" class="form-control" >
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-4 col-xl-4 col-6">
+                                <a  class="btn btn-small w-100"
+                                    ><i
+                                        class="bi bi-eye-fill"></i> View</a>
+                            </div> -->
+                            <div class="col-lg-4 col-xl-4 col-6" >
+                                    <div class="btn btn-small w-100" >
+                                        <label for="uploadClientDocument" ><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                            Upload </label>
+                                        <input type="file" id="uploadClientDocument" (change)="uploadDocument($event, documentUploadType.clientDocument)" name="myfile" style="height: 1px; width: 1px;">
+                                    </div>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12">
                     <div class="form-group">

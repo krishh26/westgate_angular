@@ -64,4 +64,18 @@ export class MinimumEligibilityFormComponent implements OnInit {
 
     // this.feasibilityService
   }
+
+  submitEligibilityForm(){
+    if (!this.eligibilityForm.valid) {
+      return this.notificationService.showError('Please Fill Form.');
+    }
+    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value,this.projectId).subscribe({
+      next:(res:any) => {
+      this.router.navigate(['/feasibility-user/feasibility-project-list']);
+      },
+      error:(err:any)=>{
+      return this.notificationService.showError('Something went wrong');
+      }
+    })
+  }
 }

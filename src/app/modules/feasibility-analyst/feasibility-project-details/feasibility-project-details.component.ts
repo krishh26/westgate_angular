@@ -21,15 +21,18 @@ export class FeasibilityProjectDetailsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
-
+  clientDocument:any[]= [];
   subContractDocument: any;
   economicalPartnershipQueryFile: any;
   economicalPartnershipResponceFile: any;
+  viewClientDocumentForm:boolean = true;
+  documentName:string = "";
 
   documentUploadType : any = {
     subContractDocument : 'SubContract',
     economicalPartnershipQuery : 'economicalPartnershipQuery',
-    economicalPartnershipResponse : 'economicalPartnershipResponse'
+    economicalPartnershipResponse : 'economicalPartnershipResponse',
+    clientDocument : 'clientDocument'
   }
 
   // For check bov
@@ -96,7 +99,6 @@ export class FeasibilityProjectDetailsComponent {
       data.append('files', file);
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
         if (response?.status) {
-          debugger
           if(type == this.documentUploadType.subContractDocument) {
             this.subContractDocument = response?.data;
           }
@@ -106,6 +108,18 @@ export class FeasibilityProjectDetailsComponent {
           if(type == this.documentUploadType.economicalPartnershipResponse) {
             this.economicalPartnershipResponceFile = response?.data;
           }
+          if(type == this.documentUploadType.clientDocument) {
+            if(!this.documentName){
+              return this.notificationService.showError('Enter a client document Name');
+            }
+            this.clientDocument = response?.data;
+            let objToBePused = {
+              name: this.documentName,
+              file: response?.data
+            }
+            this.projectDetails.clientDocument.push(objToBePused);
+            this.documentName = ""
+          }
           return this.notificationService.showSuccess(response?.message);
         } else {
           return this.notificationService.showError(response?.message);
@@ -114,5 +128,9 @@ export class FeasibilityProjectDetailsComponent {
         return this.notificationService.showError(error?.message || "Error while uploading");
       });
     }
+  }
+
+  hideShowForm(){
+    this.viewClientDocumentForm = !this.viewClientDocumentForm
   }
 }
