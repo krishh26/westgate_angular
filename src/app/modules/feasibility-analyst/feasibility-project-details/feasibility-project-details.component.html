@@ -384,18 +384,48 @@
                             <p><strong>{{item?.name}}</strong></p>
                         </div>
                         <div class="col-lg-6 col-xl-6 col-10" >
-                            <a href="href:;" class="btn btn-primarysm me-2"><i class="bi bi-eye-fill"></i> View</a>
+                            <a href="href:;" class="btn btn-primarysm me-2" 
+                            (click)="viewLoginDetail(item)" data-bs-toggle="modal"
+                            data-bs-target="#loginDetailModal" ><i class="bi bi-eye-fill"></i> View</a>
                             <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
+                                Edit</a>
                         </div>
                     </div>
+                    <ng-container *ngIf="viewLoginForm">
+                        <div class="d-flex p-2 justify-content-between">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <input type="text" [(ngModel)]="loginName" class="form-control" >
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-4 col-xl-4 col-6">
+                                <a  class="btn btn-small w-100"
+                                    ><i
+                                        class="bi bi-eye-fill"></i> View</a>
+                            </div> -->
+                            <div class="col-lg-4 col-xl-4 col-6" >
+                                    <div class="btn btn-small w-100" >
+                                        <label for="uploadLoginDetail"
+                                        
+                                         ><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                            Upload
+                                         </label>
+                                        <input [disabled]="!loginName" data-bs-toggle="modal"
+                                        data-bs-target="#loginDetailModal" id="uploadLoginDetail"  name="myfile" style="height: 0.5px; width: 0.5px;">
+                                    </div>
+                            </div>
+                        </div>
+                    </ng-container>
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xl-6 col-12 text-end">
-                            <button type="button" class="btn btn-sm btn-dark"><i class="bi bi-plus-lg"></i></button>
+                            <button (click)="viewLoginForm = !viewLoginForm" type="button" class="btn btn-sm btn-dark"><i class="bi bi-plus-lg"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
                     <a  (click)="summaryDetail()" class="btn btn-dark w-100">Next</a>
@@ -446,6 +476,49 @@
             </div>
             <div class="modal-body">
                 <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login detail From modal -->
+<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"[formGroup]="loginDetailForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <label >Company Name</label>
+               <input type="text" formControlName="companyName" class="form-control" >
+               <div class="text-danger" style="color: red;"
+               *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+                       Please Company Name
+                </div>
+               <label >Website Link</label>
+               <input type="text" formControlName="link" class="form-control" >
+               <div class="text-danger" style="color: red;"
+               *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+                       Please enter Website Link
+                </div>
+               <label >Login Id</label>
+               <input type="text" formControlName="loginID" class="form-control" >
+               <div class="text-danger" style="color: red;"
+               *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+                       Please enter Login Id
+                </div>
+               <label >Password</label>
+               <input type="text" formControlName="password" class="form-control" >
+               <div class="text-danger" style="color: red;"
+               *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+                       Please enter Password
+                </div>
+               <div class="row justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                    <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close" [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">Add</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>

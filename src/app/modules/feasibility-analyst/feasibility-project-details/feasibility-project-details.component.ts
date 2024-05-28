@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -22,21 +22,35 @@ export class FeasibilityProjectDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   clientDocument:any[]= [];
+  loginDetailDocument:any[]= [];
   subContractDocument: any;
   economicalPartnershipQueryFile: any;
   economicalPartnershipResponceFile: any;
   viewClientDocumentForm:boolean = true;
+  viewLoginForm:boolean = true;
   documentName:string = "";
+  loginName:string = "";
 
   documentUploadType : any = {
     subContractDocument : 'SubContract',
     economicalPartnershipQuery : 'economicalPartnershipQuery',
     economicalPartnershipResponse : 'economicalPartnershipResponse',
-    clientDocument : 'clientDocument'
+    clientDocument : 'clientDocument',
+    loginDetailDocument : 'loginDetailDocument'
   }
 
   // For check bov
   subContracting: FormControl = new FormControl();
+
+  loginDetailControl = {
+    companyName: new FormControl("", Validators.required),
+    link: new FormControl("", Validators.required),
+    loginID: new FormControl("", Validators.required),
+    password: new FormControl("", Validators.required),
+  }
+
+  loginDetailForm:FormGroup = new FormGroup(this.loginDetailControl);
+
 
   constructor(
     private projectService: ProjectService,
@@ -120,6 +134,18 @@ export class FeasibilityProjectDetailsComponent {
             this.projectDetails.clientDocument.push(objToBePused);
             this.documentName = ""
           }
+          if(type == this.documentUploadType.loginDetailDocument) {
+            if(!this.loginName){
+              return this.notificationService.showError('Enter Name');
+            }
+            this.loginDetailDocument = response?.data;
+            let objToBePused = {
+              name: this.loginName,
+              file: response?.data
+            }
+            this.projectDetails.loginDetail.push(objToBePused);
+            this.loginName = ""
+          }
           return this.notificationService.showSuccess(response?.message);
         } else {
           return this.notificationService.showError(response?.message);
@@ -132,5 +158,19 @@ export class FeasibilityProjectDetailsComponent {
 
   hideShowForm(){
     this.viewClientDocumentForm = !this.viewClientDocumentForm
+  }
+
+
+  viewLoginDetail(loginData:any){
+    this.loginDetailForm.patchValue(loginData)
+  }
+
+  addLoginInfo(){
+    const dataToBePushed = {
+      name: this.loginName,
+      data:this.loginDetailForm.value
+    }
+    this.projectDetails.loginDetail.push(dataToBePushed)
+    this.loginName = ''
   }
 }
