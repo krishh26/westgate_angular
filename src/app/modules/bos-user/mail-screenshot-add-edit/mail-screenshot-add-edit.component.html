@@ -30,8 +30,8 @@
                     <div class="col-sm-2">
                         <div class="upload-btn-wrapper">
                             <label for="fileInput" class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                                Document</label>
-                            <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;" (change)="addFiles($event)"/>
+                                Screenshot</label>
+                            <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;" accept="image/png, image/jpeg" (change)="addFiles($event)"/>
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -58,7 +58,7 @@
                             <td>
                                 <a (click)="openDocument(item)" data-bs-toggle="modal" data-bs-target="#ViewScreenshot" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i>
                                     View</a>
-                                <a href="javascript:;" (click)="download(item?.link?.url, item?.projectName)" class="btn btn-small" target="_blank"><i
+                                <a href="javascript:;" (click)="download(item?.link?.url, item?.projectName)" class="btn btn-small" ><i
                                         class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                             </td>
                         </tr>

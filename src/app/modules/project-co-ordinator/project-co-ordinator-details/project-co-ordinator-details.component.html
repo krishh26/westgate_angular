@@ -3,7 +3,8 @@
     <div class="container-fluid">
       <div class="row align-items-center justify-content-end">
         <div class="col-2 text-end">
-          <a routerLink="/project-coordinator/project-coordinator-projects-list" class="btn btn-dark w-100 box-shadow">Back</a>
+          <a routerLink="/project-coordinator/project-coordinator-projects-list"
+            class="btn btn-dark w-100 box-shadow">Back</a>
         </div>
       </div>
 
@@ -54,8 +55,9 @@
                 <td>{{supplier?.supplierId}}</td>
                 <td>Ayush</td>
                 <td style="width: 35%;">
-                <a (click)="goToChat()" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i> Chat</a>
-                <a type="button" class="btn btn-success btn-sm">Initiate Meeting</a>
+                  <a (click)="goToChat()" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i>
+                    Chat</a>
+                  <a type="button" class="btn btn-success btn-sm">Initiate Meeting</a>
                 </td>
               </tr>
             </ng-container>
@@ -72,20 +74,26 @@
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Sub-contracting</label>
-               <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>                </div>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
+                    class="bi bi-eye-fill"></i> View Document</button>
+              </div>
             </div>
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Economical partnership</label>
-                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
-                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
+                    class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
+                    class="bi bi-eye-fill"></i> View Document</button>
               </div>
             </div>
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">other</label>
-                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
-                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
+                    class="bi bi-eye-fill"></i> View Document</button>
+                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
+                    class="bi bi-eye-fill"></i> View Document</button>
               </div>
             </div>
           </div>
@@ -157,34 +165,33 @@
             <p class="mb-0">FOI Document</p>
           </div>
           <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
-              <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
-                  <p class="mb-0">No Record Found.</p>
-              </div>
+            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+              <p class="mb-0">No Record Found.</p>
+            </div>
           </div>
           <ng-container *ngIf="projectDetails?.fois?.length > 0">
-              <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
-                  <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                      <p class="mb-0">{{foiDocument?.name}}</p>
-                  </div>
-                  <div class="col-lg-4 col-xl-4 col-6">
-                      <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
-                          data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
-                              class="bi bi-eye-fill"></i> View</a>
-                  </div>
-                  <div class="col-lg-4 col-xl-4 col-6">
-                      <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
-                          class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
-                          Download</a>
-                  </div>
+            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+              <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                <p class="mb-0">{{foiDocument?.name}}</p>
               </div>
+              <div class="col-lg-4 col-xl-4 col-6">
+                <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
+                  data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+              </div>
+              <div class="col-lg-4 col-xl-4 col-6">
+                <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                  class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                  Download</a>
+              </div>
+            </div>
           </ng-container>
         </div>
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
             <div class="card-body text-center">
               <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
-                'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                'MM/dd/yyyy'}}</strong></p>
+                  'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                  'MM/dd/yyyy'}}</strong></p>
               <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
             </div>
           </div>
@@ -220,21 +227,24 @@
                   <td>{{ question?.weightage }} % </td>
                   <td>
                     <span *ngIf="question?.verify" class="text-success"> Verified</span>
-                    <span *ngIf="!question?.verify" > Not Verified</span>
+                    <span *ngIf="!question?.verify"> Not Verified</span>
                   </td>
                   <td> {{ question?.deadline | date:'dd-MM-YYYY' }}</td>
                   <td>Ayush</td>
                   <td> {{ question?.comment }} </td>
                   <td>
-                    <a (click)="questionDetails(question)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
+                    <a (click)="questionDetails(question)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i>
+                      View Solution</a>
                     <a class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
                   </td>
                 </tr>
-                </ng-container>
+              </ng-container>
             </tbody>
           </table>
         </div>
-
+        <div class="row">
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+        </div>
       </div>
     </div>
   </section>
@@ -262,24 +272,28 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let questionUk of  summaryQuestionList">
-              <tr *ngIf="questionUk?.summaryQuestionFor == 'UKWriter'">
-                <td width="350">{{ questionUk?.question }}</td>
-                <td>{{ questionUk?.weightage }} % </td>
-                <td>
-                  <span *ngIf="questionUk?.verify" class="text-success"> Verified</span>
-                  <span *ngIf="!questionUk?.verify" > Not Verified</span>
-                </td>
-                <td> {{ questionUk?.deadline | date:'dd-MM-YYYY' }}</td>
-                <td>Ayush</td>
-                <td> {{ questionUk?.comment }} </td>
-                <td>
-                  <a (click)="questionDetails(questionUk)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i> View Solution</a>
-                  <a class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                </td>
-              </tr>
+                <tr *ngIf="questionUk?.summaryQuestionFor == 'UKWriter'">
+                  <td width="350">{{ questionUk?.question }}</td>
+                  <td>{{ questionUk?.weightage }} % </td>
+                  <td>
+                    <span *ngIf="questionUk?.verify" class="text-success"> Verified</span>
+                    <span *ngIf="!questionUk?.verify"> Not Verified</span>
+                  </td>
+                  <td> {{ questionUk?.deadline | date:'dd-MM-YYYY' }}</td>
+                  <td>Ayush</td>
+                  <td> {{ questionUk?.comment }} </td>
+                  <td>
+                    <a (click)="questionDetails(questionUk)" class="btn btn-small me-2"><i class="bi bi-eye-fill"></i>
+                      View Solution</a>
+                    <a class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                  </td>
+                </tr>
               </ng-container>
             </tbody>
           </table>
+        </div>
+        <div class="row">
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
         </div>
       </div>
     </div>
@@ -290,11 +304,14 @@
       <div class="row" [formGroup]="supportDocument">
         <div class="col-lg-6 col-xl-6 col-12" formArrayName="document">
           <div *ngFor="let skill of document?.controls; let i=index" class="form-group" x-data="{ fileName: '' }">
-            <div class="input-group"  [formGroupName]="i">
-              <input type="text" class="form-control file-control"  formControlName="key" placeholder="Upload Image" x-model="fileName">
-              <input type="file" x-ref="file" class="d-none" [id]="'fileInput'+ i" name="myfile" style="height: 10px; width: 10px;"
-              (change)="addFiles($event, i)">
-              <label [for]="'fileInput'+ i" class="browse btn btn-primary border-radius6 me-2"  type="button" x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document</label>
+            <div class="input-group" [formGroupName]="i">
+              <input type="text" class="form-control file-control" formControlName="key" placeholder="Upload Image"
+                x-model="fileName">
+              <input type="file" x-ref="file" class="d-none" [id]="'fileInput'+ i" name="myfile"
+                style="height: 10px; width: 10px;" (change)="addFiles($event, i)">
+              <label [for]="'fileInput'+ i" class="browse btn btn-primary border-radius6 me-2" type="button"
+                x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                Document</label>
               <button class="me-2 btn btn-primary" (click)="addDocument()">Add</button>
               <button class="me-2 btn btn-secondary" (click)="removeDocument(i)">Remove</button>
             </div>
@@ -306,7 +323,8 @@
 
   <section>
     <div class="container-fluid">
-      <h5 class="mb-3"><strong>Add Project Stage <button (click)="addStage()" type="button" class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i></button> </strong></h5>
+      <h5 class="mb-3"><strong>Add Project Stage <button (click)="addStage()" type="button"
+            class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i></button> </strong></h5>
       <div class="row" [formGroup]="projectStage">
         <div class="col-lg-8 col-xl-8 col-12" formArrayName="stage">
           <div class="row" *ngFor="let stage of stage?.controls; let i=index" [formGroupName]="i">
@@ -346,21 +364,21 @@
   </section>
 </main>
 
-  <!-- View Screenshot Modal -->
+<!-- View Screenshot Modal -->
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <img [src]="selectedDocument?.link?.url" class="img-fluid" />
-          </div>
-          <!-- <div class="modal-footer">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+      </div>
+      <!-- <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
         </div> -->
-      </div>
+    </div>
   </div>
 </div>

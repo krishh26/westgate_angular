@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export enum SuperAdminEndPoint {
   DASHBOARD_LIST = '/user/admin/dashboard',
   SUPER_Statistics = '/user/admin/suppleir-statictics',
+  CATEGORY_LIST = '/category/list',
+  INDUSTRY_LIST = '/industry/list'
 }
 
 
@@ -34,6 +36,16 @@ export class SuperadminService {
   getsuperstatictics(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SuperAdminEndPoint.SUPER_Statistics);
+  }
+
+  getIndustryList(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SuperAdminEndPoint.INDUSTRY_LIST);
+  }
+
+  getCategoryList(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SuperAdminEndPoint.CATEGORY_LIST);
   }
 
 }

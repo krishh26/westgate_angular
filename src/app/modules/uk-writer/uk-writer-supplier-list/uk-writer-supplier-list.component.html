@@ -9,6 +9,10 @@
                             placeholder="Search by BOS ID & Project Title.">
                     </div>
                 </div>
+                <div class="col-lg-2 col-xl-2 col-12">
+                    <a routerLink="/uk-writer/uk-writer-projects-all"
+                        class="btn btn-outline-secondary w-100 box-shadow">Back</a>
+                </div>
             </div>
             <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
@@ -22,6 +26,13 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr>
+                            <td *ngIf="!supplierList?.length" colspan="5">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+                        
                         <tr
                         *ngFor="let supplier of supplierList">
                             <td><a href="javascript:;">{{supplier.supplierId?.name}}</a></td>
