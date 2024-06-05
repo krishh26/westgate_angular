@@ -1,4 +1,13 @@
 <main id="main">
+    <section class="pb-0" style="padding-top: 10px !important;">
+        <div class="container-fluid text-center">
+            <p style="text-align: center; font-weight: bold;">"We expect our suppliers to upload their case studies, because
+                the projects will be matched according to the case studies. So, having more case studies will help you get
+                more projects."
+            </p>
+        </div>
+    </section>
+
     <section class="casestudy-section">
         <div class="container-fluid">
             <h4 class="text-theme mb-4"><strong>Case Studies</strong></h4>
@@ -39,14 +48,16 @@
 
                     </div> -->
                     <div class="col-lg-4 col-xl-4 col-12 text-end">
-                       <div class="upload-btn-wrapper me-2">
-                        <label for="fileInput" class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                            Upload Document</label>
-                        <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;"
-                            (change)="addFiles($event)" />
-                       </div>
-                       <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ViewTemplate">Template</button>
-                      <button type="submit" class="btn btn-dark me-2">Add</button>
+                        <div class="upload-btn-wrapper me-2">
+                            <label for="fileInput" class="btn-upload-file"><i
+                                    class="bi bi-file-earmark-arrow-up-fill"></i>
+                                Upload Document</label>
+                            <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;"
+                                (change)="addFiles($event)" />
+                        </div>
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#ViewTemplate">Template</button>
+                        <button type="submit" class="btn btn-dark me-2">Add</button>
                     </div>
                 </div>
             </form>
@@ -65,7 +76,8 @@
 
     <section class="p-0">
         <div class="container-fluid">
-            <div class="card card-gradient1 border-radius16 mb-4" *ngFor="let item of caseStudyList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+            <div class="card card-gradient1 border-radius16 mb-4"
+                *ngFor="let item of caseStudyList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-lg-2 col-xl-2 col-12">
@@ -75,9 +87,11 @@
                             <p class="mb-0 p-13">{{item?.name}}</p>
                         </div>
                         <div class="col-lg-3 col-xl-3 col-12 text-center">
-                            <a href="javascript:;" (click)="openDocument(item)" class="btn btn-primary sm" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill" ></i> View</a>
-                            <a href="javascript:;" (click)="download(item?.link?.url, item?.name)" class="btn btn-primarysm me-2"><i
-                                    class="bi bi-file-earmark-arrow-down-fill"></i>
+                            <a href="javascript:;" (click)="openDocument(item)" class="btn btn-primary sm"
+                                data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i>
+                                View</a>
+                            <a href="javascript:;" (click)="download(item?.link?.url, item?.name)"
+                                class="btn btn-primarysm me-2"><i class="bi bi-file-earmark-arrow-down-fill"></i>
                                 Download</a>
                         </div>
                     </div>
@@ -115,19 +129,19 @@
 
 <!--  view template pop-up -->
 <div class="modal fade" id="ViewTemplate" tabindex="-1" aria-labelledby="ViewScreenShotLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="ViewScreenShotLabel">View Template</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <img src="./../../../../assets/img/case-study.png" class="img-fluid" />
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" (click)="triggerDownload()">Download</button>
-          </div>
-      </div>
-  </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenShotLabel">View Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="./../../../../assets/img/case-study.png" class="img-fluid" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="triggerDownload()">Download</button>
+            </div>
+        </div>
+    </div>
 </div>
