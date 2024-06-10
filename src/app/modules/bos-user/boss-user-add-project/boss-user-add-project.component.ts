@@ -30,7 +30,7 @@ export class BossUserAddProjectComponent {
     clientType: new FormControl("", Validators.required),
     clientName: new FormControl("", Validators.required),
 
-    submission: new FormControl("12/9/2002", Validators.required),
+    submission: new FormControl("", Validators.required),
     dueDate: new FormControl("12/9/2001", Validators.required),
   }
 
