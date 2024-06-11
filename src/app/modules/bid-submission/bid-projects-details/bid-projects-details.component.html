@@ -29,15 +29,15 @@
                             <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
                             <td><a>{{projectDetails?.projectName}}</a></td>
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
-                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
                             <td>{{projectDetails?.industry}}</td>
                             <td>{{projectDetails?.value}}</td>
                             <td>{{projectDetails?.website}}</td>
                             <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
-                            <td>{{projectDetails?.createdAt | date:'MM/dd/yyyy'}}</td>
-                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy'}}</td>
-                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                            <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
+                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -197,8 +197,8 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
-                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                                    'MM/dd/yyyy'}}</strong></p>
+                                    'dd/MM/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'dd/MM/yyyy'}}</strong></p>
                             <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>

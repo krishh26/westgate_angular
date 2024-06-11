@@ -23,6 +23,7 @@ import { ProjectNotificationComponent } from './utility/shared/common/project-no
 import { SuperAdminModule } from './modules/super-admin/super-admin.module';
 import { BidSubmissionModule } from './modules/bid-submission/bid-submission.module';
 import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project-co-ordinator.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +56,9 @@ import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project
       preventDuplicates: false,
     }),
   ],
-  providers: [ {
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    {
     provide: HTTP_INTERCEPTORS,
     useClass:APIInterceptor,
     multi: true

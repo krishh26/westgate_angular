@@ -54,15 +54,15 @@
               <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
               <td><a>{{item?.projectName}}</a></td>
               <td v-align="middle">{{item?.BOSID}}</td>
-              <td>{{item?.publishDate | date:'MM/dd/yyyy'}}</td>
+              <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{item?.category}}</td>
               <td>{{item?.industry}}</td>
               <td>{{item?.value}}</td>
               <td>{{item?.website}}</td>
               <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
-              <td>{{item?.createdAt | date:'MM/dd/yyyy'}}</td>
+              <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{dateDifference}}</td>
-              <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+              <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td>
                 <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;" (click)="projectDetails(item?._id)"><i
                     class="bi bi-eye-fill"></i></a>

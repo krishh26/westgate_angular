@@ -33,15 +33,15 @@
                             *ngFor="let item of FOIList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td><a>{{item?.projectName}}</a></td>
                             <td v-align="middle">{{item?.BOSID}}</td>
-                            <td>{{item?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{item?.category}}</td>
                             <td>{{item?.industry}}</td>
                             <td>{{item?.value}}</td>
                             <td>{{item?.website}}</td>
                             <td><a href='{{item?.link}}'>{{item?.link}}</a></td>
-                            <td>{{item?.createdAt | date:'MM/dd/yyyy'}}</td>
+                            <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                             <td>{{dateDifference}}</td>
-                            <td>{{item?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                            <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td>
                                 <a (click)="foiDetails(item?._id)" class="btn btn-primary btn-sm me-2"><i class="bi bi-eye-fill"></i></a>
                                 <a (click)="addFoiDetails(item?._id)" class="btn btn-primary btn-sm"><i

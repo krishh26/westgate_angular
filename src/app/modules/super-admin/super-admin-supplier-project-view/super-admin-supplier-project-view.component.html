@@ -22,7 +22,7 @@
                             <td>{{supplierData?.name}}</td>
                             <td v-align="middle">{{supplierData?._id}}</td>
                             <td>{{supplierData?.userName}}</td>
-                            <td>{{supplierData?.doj | date : 'MM/dd/yyyy'}}</td>
+                            <td>{{supplierData?.doj | date : 'dd/MM/yyyy'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,7 +59,7 @@
                             *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td><a href="javascript:;">{{item?.projectName}}</a></td>
                             <td v-align="middle">{{item?.BOSID}}</td>
-                            <td>{{item?.publishDate | date: 'MM/dd/yyyy'}}</td>
+                            <td>{{item?.publishDate | date: 'dd/MM/yyyy'}}</td>
                             <td>{{item?.category}}</td>
                             <td>{{item?.status}}</td>
                             <td>£{{item?.value}}</td>

@@ -27,9 +27,9 @@
                         <div class="row mb-3">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Submission Due Date</label>
                             <div class="col-sm-8">
-                                
+
                                     <input formControlName="submission" type="date" class="form-control" placeholder="Start Date">
-                                
+
                                 <div class="row mt-2">
                                     <div class="col-6">
                                         <select class="form-select">
@@ -135,10 +135,24 @@
                                     <option disabled selected hidden value="">Website URL</option>
                                     <option value="Proactis">Proactis</option>
                                     <option value="FindmyTender">Find my Tender</option>
-                                    <option value="TendersDirect">Tenders Direct</option>
+                                    <option value="ContractFinder">Contract Finder</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                          <label for="inputEmail3" class="col-sm-4 col-form-label">Notice Reference</label>
+                          <div class="col-sm-8">
+                            <input formControlName="noticeReference" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">CPV Codes</label>
+                        <div class="col-sm-8">
+                          <input formControlName="CPVCodes" type="text" class="form-control">
+                      </div>
+                    </div>
                         <!-- <div class="row mb-3">
                             <div class="col-4">
                                 <a href="javascript:;" class="btn btn-outline-white btn-sm" style="color: #0d6efd;"><i

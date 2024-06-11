@@ -32,6 +32,8 @@ export class BossUserAddProjectComponent {
 
     submission: new FormControl("", Validators.required),
     dueDate: new FormControl("12/9/2001", Validators.required),
+    noticeReference : new FormControl("", Validators.required),
+    CPVCodes : new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -58,7 +60,6 @@ export class BossUserAddProjectComponent {
     if (this.projectId && this.projectId.length) {
       this.patchProjectValue()
     }
-
   }
 
   patchProjectValue() {
@@ -111,8 +112,20 @@ export class BossUserAddProjectComponent {
 
   getCurrentDate(): string {
     const currentDate = new Date();
-    return currentDate.toISOString().substring(0, 10);
+    return this.formatDate(currentDate);
   }
+
+  formatDate(date : any) {
+    const day = date.getDate();
+    const monthNames = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
+
 
   // Submit form
   submitForm() {
