@@ -28,13 +28,13 @@
                             <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
                             <td><a>{{projectDetails?.projectName}}</a></td>
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
-                            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+                            <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
                             <td>{{projectDetails?.industry}}</td>
                             <td>{{projectDetails?.value}}</td>
                             <td>{{projectDetails?.projectType}}</td>
                             <td>{{projectDetails?.status}}</td>
-                            <td>{{projectDetails?.dueDate | date:'MM/dd/yyyy, h:mm a'}}</td>
+                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
@@ -163,8 +163,8 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
-                                    'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                                    'MM/dd/yyyy'}}</strong></p>
+                                    'dd/MM/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                                    'dd/MM/yyyy'}}</strong></p>
                             <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
                         </div>
                     </div>
@@ -201,7 +201,7 @@
                                 <td width="350">{{item?.question}}</td>
                                 <td>{{item?.weightage}}%</td>
                                 <td>{{item?.verify}}</td>
-                                <td>{{item?.deadline | date : 'MM/dd/yyyy'}}</td>
+                                <td>{{item?.deadline | date : 'dd/MM/yyyy'}}</td>
                                 <td>{{item?.response?.message}}</td>
                                 <td><a (click)="questionDetails(item)" class="btn-sm btn-primary"><i
                                             class="bi bi-eye-fill"></i> View Question</a></td>

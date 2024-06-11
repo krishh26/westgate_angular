@@ -26,7 +26,7 @@
               <td>{{item?.name}}</td>
               <td v-align="middle">{{item?._id}}</td>
               <td>{{item?.userName}}</td>
-              <td>{{item?.doj | date : 'MM/dd/yyyy'}}</td>
+              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>03</td>
               <td>
                 <a href="href:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm" title="View Details">View

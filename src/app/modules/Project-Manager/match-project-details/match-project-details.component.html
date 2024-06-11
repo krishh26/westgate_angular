@@ -25,7 +25,7 @@
             <td></td>
             <td class="text-primary"><a>{{projectDetails?.projectName}}</a></td>
             <td v-align="middle">{{projectDetails?.BOSID}}</td>
-            <td>{{projectDetails?.publishDate | date:'MM/dd/yyyy'}}</td>
+            <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
             <td>{{projectDetails?.category}}</td>
             <td>{{projectDetails?.industry}}</td>
             <td>{{projectDetails?.value}}</td>
@@ -130,8 +130,8 @@
           <div class="card-body text-center">
             <p class="p-13"><strong>Period of Contract:
                 {{projectDetails?.periodOfContractStart | date :
-                'MM/dd/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                'MM/dd/yyyy'}}</strong></p>
+                'dd/MM/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                'dd/MM/yyyy'}}</strong></p>
             <p class="p-13"><strong>Project Type:
                 {{projectDetails?.projectType}}</strong></p>
           </div>
