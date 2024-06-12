@@ -30,10 +30,13 @@ export class BossUserAddProjectComponent {
     clientType: new FormControl("", Validators.required),
     clientName: new FormControl("", Validators.required),
 
-    submission: new FormControl("", Validators.required),
-    dueDate: new FormControl("12/9/2001", Validators.required),
-    noticeReference : new FormControl("", Validators.required),
-    CPVCodes : new FormControl("", Validators.required),
+    // submission: new FormControl("", Validators.required),
+    dueDate: new FormControl("", Validators.required),
+    noticeReference: new FormControl("", Validators.required),
+    CPVCodes: new FormControl("", Validators.required),
+    minValue: new FormControl("", Validators.required),
+    maxValue: new FormControl("", Validators.required),
+    bidsubmissiontime: new FormControl("10", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -115,7 +118,7 @@ export class BossUserAddProjectComponent {
     return this.formatDate(currentDate);
   }
 
-  formatDate(date : any) {
+  formatDate(date: any) {
     const day = date.getDate();
     const monthNames = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"

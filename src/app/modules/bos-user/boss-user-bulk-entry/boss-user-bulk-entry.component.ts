@@ -23,60 +23,66 @@ export class BossUserBulkEntryComponent {
 
   onFileChange(event: any) {
     const target: DataTransfer = <DataTransfer>(event.target);
-  
+
     if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-  
+
     const reader: FileReader = new FileReader();
-  
+
     reader.onload = (e: any) => {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-  
+
       /* grab first sheet */
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-  
+
       /* save data */
       let data = <any[][]>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  
+
       // Remove the first row (A1 row) which contains headers
       const headers = data[0];
       data = data.slice(1);
-  
+
       // Filter out empty arrays
       data = data.filter(row => row.length > 0);
-  
+
       // Function to replace null or undefined values with empty strings
       const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
-  
+
       // Map the data to desired JSON format with null values replaced
       const jsonData = data.map(row => {
         return {
-          projectName: replaceNullWithEmptyString(row[0]),
-          category: replaceNullWithEmptyString(row[1]),
-          industry: replaceNullWithEmptyString(row[2]),
-          description: replaceNullWithEmptyString(row[3]),
-          BOSID: replaceNullWithEmptyString(row[4]),
-          publishDate: replaceNullWithEmptyString(row[5]),
-          submission: replaceNullWithEmptyString(row[6]),
-          link: replaceNullWithEmptyString(row[7]),
-          periodOfContractStart: replaceNullWithEmptyString(row[8]),
-          periodOfContractEnd: replaceNullWithEmptyString(row[9]),
-          dueDate: replaceNullWithEmptyString(row[10]),
-          value: replaceNullWithEmptyString(row[11]),
-          projectType: replaceNullWithEmptyString(row[12]),
+          BOSID: replaceNullWithEmptyString(row[0]),
+          projectName: replaceNullWithEmptyString(row[1]),
+          description: replaceNullWithEmptyString(row[2]),
+          noticeReference: replaceNullWithEmptyString(row[3]),
+          dueDate: replaceNullWithEmptyString(row[4]),
+          bidsubmissiontime: replaceNullWithEmptyString(row[5]),
+          minValue: replaceNullWithEmptyString(row[6]),
+          maxValue: replaceNullWithEmptyString(row[7]),
+          publishDate: replaceNullWithEmptyString(row[8]),
+          periodOfContractStart: replaceNullWithEmptyString(row[9]),
+          periodOfContractEnd: replaceNullWithEmptyString(row[10]),
+          CPVCodes: replaceNullWithEmptyString(row[11]),
+          link: replaceNullWithEmptyString(row[12]),
           website: replaceNullWithEmptyString(row[13]),
-          mailID: replaceNullWithEmptyString(row[14]),
-          clientType: replaceNullWithEmptyString(row[15]),
-          clientName: replaceNullWithEmptyString(row[16]),
-          noticeReference: replaceNullWithEmptyString(row[17]),
-          CPVCodes: replaceNullWithEmptyString(row[18])
+          clientType: replaceNullWithEmptyString(row[14]),
+          clientName: replaceNullWithEmptyString(row[15]),
+          projectType: replaceNullWithEmptyString(row[16]),
+          industry: replaceNullWithEmptyString(row[17]),
+          category: replaceNullWithEmptyString(row[18]),
+          mailID: replaceNullWithEmptyString(row[19]),
+
+
+          //submission: replaceNullWithEmptyString(row[6]),
+          // value: replaceNullWithEmptyString(row[11]),
+
         };
       });
-  
+
       console.log(jsonData);
-  
+
       // Now you can make your API call with the processed data
       this.projectService.addProject(jsonData).subscribe(
         (response) => {
@@ -94,9 +100,9 @@ export class BossUserBulkEntryComponent {
         }
       );
     };
-  
+
     reader.readAsBinaryString(target.files[0]);
   }
-  
+
 }
 
