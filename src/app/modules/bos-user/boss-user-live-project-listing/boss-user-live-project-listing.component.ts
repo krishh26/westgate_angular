@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { BossUserBulkEntryComponent } from '../boss-user-bulk-entry/boss-user-bulk-entry.component';
 
 @Component({
   selector: 'app-boss-user-live-project-listing',
@@ -28,7 +30,8 @@ export class BossUserLiveProjectListingComponent {
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
@@ -122,5 +125,10 @@ export class BossUserLiveProjectListingComponent {
     this.getProjectList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  openAddTeamModal() {
+    this.modalService.open(BossUserBulkEntryComponent, { size : 'xl' });
+  }
+
 }
 

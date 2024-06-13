@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -18,7 +19,8 @@ export class BossUserBulkEntryComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private activeModal: NgbActiveModal,
   ) { }
 
   onFileChange(event: any) {
@@ -102,6 +104,10 @@ export class BossUserBulkEntryComponent {
     };
 
     reader.readAsBinaryString(target.files[0]);
+  }
+
+  close() {
+    this.activeModal.close();
   }
 
 }
