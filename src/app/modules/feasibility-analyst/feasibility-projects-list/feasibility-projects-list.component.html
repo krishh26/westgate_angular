@@ -34,18 +34,20 @@
                             <td><a title="{{item?.description}}">{{item?.description | truncate:20:true}}</a></td>
                             <td v-align="middle">{{item?.BOSID}}</td>
                             <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                            
                             <td>
                                 <span *ngIf="!item.isEditing">{{item?.category}}</span>
-                                <select *ngIf="item.isEditing" [(ngModel)]="item.category">
+                                <select *ngIf="item.isEditing" [(ngModel)]="item.category" class="custom-select">
                                     <option *ngFor="let category of categoryList" [value]="category.id">{{category.name}}</option>
                                 </select>
                             </td>
                             <td>
                                 <span *ngIf="!item.isEditing">{{item?.industry}}</span>
-                                <select *ngIf="item.isEditing" [(ngModel)]="item.industry">
+                                <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
                                     <option *ngFor="let industry of industryList" [value]="industry.id">{{industry.name}}</option>
                                 </select>
                             </td>
+
                             <td>
                                 <span *ngIf="!item.isEditing">{{item?.value}}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.value" />
