@@ -53,7 +53,7 @@
                             <!-- Value -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.value }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.value" />
+                                <input *ngIf="item.isEditing" [(ngModel)]="item.value"  (keypress)="NumberOnly($event)"/>
                             </td>
                         
                             <!-- Project Type -->
