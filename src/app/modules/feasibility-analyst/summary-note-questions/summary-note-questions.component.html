@@ -172,38 +172,38 @@
                     <div class="col-lg-4 col-xl-4 col-12">
                         <div class="form-group">
                             <input type="text" class="form-control" formControlName="questionName"
-                                placeholder="PROJECT MANAGEMENT APPROACH">
+                                placeholder="Enter question name">
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
                                 Please enter question name </span>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" rows="6" formControlName="question" placeholder="question"
+                            <textarea class="form-control" rows="6" formControlName="question" placeholder="Enter question "
                                 cols="100"></textarea>
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
                                 Please enter question </span>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-xl-5 col-12">
+                    <!-- <div class="col-lg-5 col-xl-5 col-12">
                         <div class="form-group">
-                            <textarea class="form-control" rows="9" formControlName="comment" placeholder="description"
+                            <textarea class="form-control" rows="9" formControlName="comment" placeholder="Enter description"
                                 cols="100"></textarea>
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['comment'].touched && summaryForm.controls['comment'].errors?.['required']">
                                 Please enter comment </span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-3 col-xl-3 col-12">
                         <div class="form-group">
                             <input type="text" class="form-control" formControlName="refrenceDocument"
-                                placeholder="1 Digital tender 2024 Pg No. 4">
+                                placeholder="Enter document reference name">
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
                                 Please enter refrence document details </span>
                         </div>
                         <div class="form-group">
-                            <input type="number" class="form-control" formControlName="weightage" placeholder="35">
+                            <input type="number" class="form-control" formControlName="weightage" placeholder="Enter weightage">
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
                                 Please enter weightage </span>
@@ -215,13 +215,13 @@
                                 *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
                                 Please enter instructions </span>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <input type="date" class="form-control" formControlName="deadline"
                                 placeholder="deadline date">
                             <span class="text-danger" style="color: red;"
                                 *ngIf="summaryForm.controls['deadline'].touched && summaryForm.controls['deadline'].errors?.['required']">
                                 Please enter deadline </span>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Add</button>
                         </div>
@@ -264,7 +264,7 @@
                 </div>
             </div>
             <div>
-                <a (click)="detailPage()"  class="btn btn-secondary">Next</a>
+                <a (click)="detailPage()" style="float: right;" class="btn btn-secondary">Next</a>
             </div>
         </div>
     </section>
