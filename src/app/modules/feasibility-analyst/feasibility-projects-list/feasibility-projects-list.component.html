@@ -31,7 +31,7 @@
                     <tbody>
                         <tr *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                             <td>{{ item?.projectName }}</td>
-                            <td><a title="{{ item?.description }}">{{ item?.description | truncate:20:true }}</a></td>
+                            <td><a title="{{ item?.description }}">{{ item?.description | truncate:10:true }}</a></td>
                             <td>{{ item?.BOSID }}</td>
                             <td>{{ item?.publishDate | date:'dd/MM/yyyy' }}</td>
                         
@@ -77,12 +77,14 @@
                             <!-- Actions -->
                             <td>
                                 <!-- View Details and Edit buttons -->
-                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)" class="btn btn-primary sm" title="View Details">View Details</a>&nbsp;
-                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)" class="btn btn-secondary sm ml-2" title="Edit">Edit</a>&nbsp;
+                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)" class="btn btn-primary sm me-2" title="View Details"><i
+                                    class="bi bi-eye-fill"></i></a>&nbsp;
+                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)" class="btn btn-secondary sm ml-2" title="Edit"><i
+                                    class="bi bi-pencil-fill"></i></a>&nbsp;
                         
                                 <!-- Save and Cancel buttons -->
-                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-success sm ml-2" title="Save">Save</a>&nbsp;
-                                <a *ngIf="item.isEditing" (click)="toggleEditMode(item)" class="btn btn-warning ml-2" title="Cancel">Cancel</a>
+                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-primary sm" title="Save"><i class="bi bi-check2"></i></a>&nbsp;
+                                <a *ngIf="item.isEditing" (click)="toggleEditMode(item)" class="btn btn-warning ml-2" title="Cancel"><i class="bi bi-x-lg"></i></a>
                             </td>
                         </tr>
                         
