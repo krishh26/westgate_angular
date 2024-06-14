@@ -29,53 +29,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-                            <td>{{item?.projectName}}</td>
-                            <td><a title="{{item?.description}}">{{item?.description | truncate:20:true}}</a></td>
-                            <td v-align="middle">{{item?.BOSID}}</td>
-                            <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-                            
+                        <tr *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                            <td>{{ item?.projectName }}</td>
+                            <td><a title="{{ item?.description }}">{{ item?.description | truncate:20:true }}</a></td>
+                            <td>{{ item?.BOSID }}</td>
+                            <td>{{ item?.publishDate | date:'dd/MM/yyyy' }}</td>
+                        
                             <td>
-                                <span *ngIf="!item.isEditing">{{item?.category}}</span>
+                                <span *ngIf="!item.isEditing">{{ getCategoryName(item.category) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.category" class="custom-select">
-                                    <option *ngFor="let category of categoryList" [value]="category.id">{{category.name}}</option>
+                                  <option value="">Select Category</option>
+                                  <option *ngFor="let category of categoryList" [value]="category._id">{{ category.category }}</option>
                                 </select>
-                            </td>
-                            <td>
-                                <span *ngIf="!item.isEditing">{{item?.industry}}</span>
+                              </td>
+                              <td>
+                                <span *ngIf="!item.isEditing">{{ getIndustryName(item.industry) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
-                                    <option *ngFor="let industry of industryList" [value]="industry.id">{{industry.name}}</option>
+                                  <option value="">Select Industry</option>
+                                  <option *ngFor="let industry of industryList" [value]="industry._id">{{ industry.industry }}</option>
                                 </select>
-                            </td>
-
+                              </td>
+                        
+                            <!-- Value -->
                             <td>
-                                <span *ngIf="!item.isEditing">{{item?.value}}</span>
+                                <span *ngIf="!item.isEditing">{{ item?.value }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.value" />
                             </td>
+                        
+                            <!-- Project Type -->
                             <td>
-                                <span *ngIf="!item.isEditing">{{item?.projectType}}</span>
+                                <span *ngIf="!item.isEditing">{{ item?.projectType }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.projectType" />
                             </td>
+                        
+                            <!-- Status -->
                             <td>
-                                <span *ngIf="!item.isEditing">{{item?.status}}</span>
+                                <span *ngIf="!item.isEditing">{{ item?.status }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.status" />
                             </td>
+                        
+                            <!-- Due Date -->
                             <td>
-                                <span *ngIf="!item.isEditing">{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</span>
+                                <span *ngIf="!item.isEditing">{{ item?.dueDate | date:'dd/MM/yyyy, h:mm a' }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" />
                             </td>
+                        
+                            <!-- Actions -->
                             <td>
-                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)" class="btn btn-primarysm" title="View Details">View Details</a>
-                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)" class="btn btn-secondarysm ml-2" title="Edit">Edit</a>
-                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-successsm ml-2" title="Save">Save</a>
+                                <!-- View Details and Edit buttons -->
+                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)" class="btn btn-primary sm" title="View Details">View Details</a>&nbsp;
+                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)" class="btn btn-secondary sm ml-2" title="Edit">Edit</a>&nbsp;
+                        
+                                <!-- Save and Cancel buttons -->
+                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-success sm ml-2" title="Save">Save</a>&nbsp;
                                 <a *ngIf="item.isEditing" (click)="toggleEditMode(item)" class="btn btn-warning ml-2" title="Cancel">Cancel</a>
                             </td>
                         </tr>
+                        
                     </tbody>
                 </table>
             </div>
-            
-            
+
+
             <div class="row mt-3 align-items-center">
                 <div class="row">
                     <div class="pagination">

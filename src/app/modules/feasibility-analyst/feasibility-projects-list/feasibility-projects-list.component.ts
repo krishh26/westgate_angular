@@ -7,6 +7,19 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 
+interface Project {
+  _id: string;
+  projectName: string;
+  description: string;
+  category: string;
+  industry: string;
+  value: number;
+  projectType: string;
+  status: string;
+  dueDate: Date;
+  // Add other properties as needed
+}
+
 @Component({
   selector: 'app-feasibility-projects-list',
   templateUrl: './feasibility-projects-list.component.html',
@@ -40,48 +53,53 @@ export class FeasibilityProjectsListComponent {
       let storeTest = res;
       this.searchText = res.toLowerCase();
     });
-    this.getcategoryList();
+    this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
 
   }
 
   formatMilliseconds(milliseconds: number): string {
-    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;
   }
 
-  getcategoryList() {
+  getCategoryList() {
     this.showLoader = true;
-    this.superService.getCategoryList().subscribe((response) => {
-      if (response?.message == "category fetched successfully") {
-        this.showLoader = false;
-        this.categoryList = response?.data;
-      } else {
-        // this.notificationService.showError(response?.message);
+    this.superService.getCategoryList().subscribe(
+      (response) => {
+        if (response?.status && response?.message === "category fetched successfully") {
+          this.categoryList = response.data;
+          this.showLoader = false;
+        } else {
+          console.error('Failed to fetch categories:', response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   getIndustryList() {
     this.showLoader = true;
-    this.superService.getIndustryList().subscribe((response) => {
-      if (response?.message == "Industry fetched successfully") {
-        this.showLoader = false;
-        this.industryList = response?.data;
-        console.log(this.industryList);
-      } else {
-        //  this.notificationService.showError(response?.message);
+    this.superService.getIndustryList().subscribe(
+      (response) => {
+        if (response?.status && response?.message === "Industry fetched successfully") {
+          this.industryList = response.data;
+          this.showLoader = false;
+        } else {
+          console.error('Failed to fetch industries:', response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        console.error('Error fetching industries:', error);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   getProjectList() {
@@ -96,17 +114,8 @@ export class FeasibilityProjectsListComponent {
         this.showLoader = false;
         this.projectList = response?.data?.data;
         console.log(this.projectList);
-
         this.totalRecords = response?.data?.meta_data?.items;
 
-        // this.projectList.forEach((project: any) => {
-        //   const dueDate = new Date(project.dueDate);
-        //   const currentDate = new Date();
-        //   const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-
-        //   const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-        //   this.dateDifference = formattedDateDifference;
-        // });
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -122,11 +131,6 @@ export class FeasibilityProjectsListComponent {
     Payload.projectList.keyword = this.searchText || '';
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    // let params = {
-    //   keyword: this.searchText || '',
-    //   page: String(this.page),
-    //   limit: String(this.pagesize),
-    // }
     console.log(Payload.projectList);
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
@@ -169,23 +173,51 @@ export class FeasibilityProjectsListComponent {
   }
 
   editProject(projectId: string) {
-    // Logic to handle editing the project
     console.log('Edit project with ID:', projectId);
-    // You can navigate to an edit page or open a modal for editing
   }
 
   toggleEditMode(item: any) {
     item.isEditing = !item.isEditing;
     if (!item.isEditing) {
-      // Optionally reset any changes here if needed
     }
   }
 
-  saveProject(item: any) {
-    // Logic to save the project changes
-    console.log('Save project:', item);
-    item.isEditing = false;
-    // Optionally, implement actual save logic here (e.g., calling an API to save changes)
+  saveProject(item: Project) {
+    const payload = {
+      projectName: item.projectName,
+      description: item.description,
+      category: item.category,
+      industry: item.industry,
+      value: item.value,
+      projectType: item.projectType,
+      status: item.status,
+      dueDate: item.dueDate
+      // Add other fields as necessary
+    };
+
+    this.projectService.editProject(item._id, payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
+
+  getCategoryName(categoryId: string): string {
+    const foundCategory = this.categoryList.find((category:any) => category._id === categoryId);
+    return foundCategory ? foundCategory.category : '';
+  }
+  
+  getIndustryName(industryId: string): string {
+    const foundIndustry = this.industryList.find((industry:any) => industry._id === industryId);
+    return foundIndustry ? foundIndustry.industry : '';
   }
 
 }
