@@ -13,6 +13,7 @@ import { AddLoginDetailsComponent } from './add-login-details/add-login-details.
 import { FeasibilityProjectsListComponent } from './feasibility-projects-list/feasibility-projects-list.component';
 import { FeasibilityAnalystComponent } from './feasibility-analyst.component';
 import { FeasibilityHeaderComponent } from 'src/app/utility/shared/components/feasibility-header/feasibility-header.component';
+import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
 
 
 
@@ -26,7 +27,8 @@ import { FeasibilityHeaderComponent } from 'src/app/utility/shared/components/fe
         SummaryNoteQuestionsComponent,
         AddLoginDetailsComponent,
         FeasibilityProjectsListComponent,
-        FeasibilityHeaderComponent
+        FeasibilityHeaderComponent,
+        TruncatePipe 
     ],
     imports: [
         CommonModule,

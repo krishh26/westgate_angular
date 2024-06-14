@@ -32,7 +32,9 @@
                         <tr
                             *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td><a>{{item?.projectName}}</a></td>
-                            <td><a>{{item?.description}}</a></td>
+
+                            <td><a title="{{item?.description}}">{{item?.description | truncate:20:true}}</a></td>
+
                             <td v-align="middle">{{item?.BOSID}}</td>
                             <!-- <td>Website <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
                             </td> -->
