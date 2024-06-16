@@ -61,9 +61,12 @@
                             <div class="form-group">
                                 <label class="display-block">Sub-contracting</label>
                                 <div class="upload-btn-wrapper">
-                                    <label for="subContract" class="btn-upload-file padding-lr-5"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                    <label for="subContract" class="btn-upload-file padding-lr-5"><i
+                                            class="bi bi-file-earmark-arrow-up-fill"></i>
                                         Upload Query Image</label>
-                                    <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px;" accept="image/*" (change)="uploadDocument($event, documentUploadType.subContractDocument)" />
+                                    <input id="subContract" type="file" name="subContract"
+                                        style="height: 5px; width: 5px;" accept="image/*"
+                                        (change)="uploadDocument($event, documentUploadType.subContractDocument)" />
                                 </div>
                             </div>
                         </div>
@@ -71,9 +74,12 @@
                             <div class="form-group">
                                 <label class="display-block">Economical partnership</label>
                                 <div class="upload-btn-wrapper">
-                                    <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                    <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i
+                                            class="bi bi-file-earmark-arrow-up-fill"></i>
                                         Upload Query Image</label>
-                                    <input type="file" id="economicalQuryDocument" name="economicalQuryDocument" style="height: 5px; width: 5px;" (change)="uploadDocument($event, documentUploadType.economicalPartnershipQuery)">
+                                    <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
+                                        style="height: 5px; width: 5px;"
+                                        (change)="uploadDocument($event, documentUploadType.economicalPartnershipQuery)">
                                 </div>
                             </div>
                         </div>
@@ -116,9 +122,12 @@
                         <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
                             <div class="form-group">
                                 <div class="upload-btn-wrapper">
-                                    <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                    <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
+                                            class="bi bi-file-earmark-arrow-up-fill"></i>
                                         Upload Response</label>
-                                    <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px;" (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)">
+                                    <input type="file" id="economicalResponseDocument" name="myfile"
+                                        style="height: 5px; width: 5px;"
+                                        (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)">
                                 </div>
                             </div>
                         </div>
@@ -193,7 +202,8 @@
                             </div>
                         </div>
                         <ng-container *ngIf="projectDetails?.mailScreenshots?.length > 0">
-                            <div class="row align-items-center" *ngFor="let foiScreenshot of projectDetails?.mailScreenshots">
+                            <div class="row align-items-center"
+                                *ngFor="let foiScreenshot of projectDetails?.mailScreenshots">
                                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                                     <p class="mb-0">{{foiScreenshot?.name}}</p>
                                 </div>
@@ -230,7 +240,8 @@
                                             class="bi bi-eye-fill"></i> View</a>
                                 </div>
                                 <div class="col-lg-4 col-xl-4 col-6">
-                                    <a style="padding-left: 0 !important; padding-right: 0px !important;" (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                                    <a style="padding-left: 0 !important; padding-right: 0px !important;"
+                                        (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
                                         class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
                                         Download</a>
                                 </div>
@@ -241,12 +252,38 @@
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
-                            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
-                                    'dd/MM/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
-                                    'dd/MM/yyyy'}}</strong></p>
-                            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
+                            <ng-container *ngIf="!isEditing; else editMode">
+                                <p class="p-13">
+                                    <strong>
+                                        Period of Contract: {{ projectDetails?.periodOfContractStart | date:
+                                        'dd/MM/yyyy' }} - {{ projectDetails?.periodOfContractEnd | date: 'dd/MM/yyyy' }}
+                                    </strong>
+                                </p>
+                                <p class="p-13">
+                                    <strong>Project Type: {{ projectDetails?.projectType }}</strong>
+                                </p>
+                                <a class="btn btn-secondary sm ml-2" (click)="toggleEdit()"><i
+                                    class="bi bi-pencil-fill"></i></a>
+                            </ng-container>
+                            <ng-template #editMode>
+                                <p class="p-13">
+                                  <strong>
+                                    Period of Contract:
+                                    <input type="date" [(ngModel)]="projectDetails.periodOfContractStart" /> -
+                                    <input type="date" [(ngModel)]="projectDetails.periodOfContractEnd" />
+                                  </strong>
+                                </p>
+                                <p class="p-13">
+                                  <strong>
+                                    Project Type: <input type="text" [(ngModel)]="projectDetails.projectType" />
+                                  </strong>
+                                </p>
+                                <a class="btn btn-primary sm" title="Save" (click)="saveChanges()"><i class="bi bi-check2"></i></a>&nbsp;
+                                <a class="btn btn-warning ml-2" title="Cancel" (click)="toggleEdit()"><i class="bi bi-x-lg"></i></a>
+                              </ng-template>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!--Documents-->
@@ -269,8 +306,9 @@
                                             data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i
                                                 class="bi bi-eye-fill"></i>
                                             View</a>
-                                        <a href="href:;" (click)="download(item?.link?.url, item?.name)" target="_blank" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                                        <a href="href:;" (click)="download(item?.link?.url, item?.name)" target="_blank"
+                                            class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                            Download</a>
                                     </div>
                                 </div>
                             </li>
@@ -289,7 +327,8 @@
                                 </div>
                             </li> -->
                         </ul>
-                        <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn"><i class="bi bi-plus-lg"></i>
+                        <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn"><i
+                                class="bi bi-plus-lg"></i>
                         </button>
                     </div>
                     <ng-container *ngIf="viewClientDocumentForm">
@@ -297,7 +336,7 @@
                             <div class="row align-items-center">
                                 <div class="col-9">
                                     <div class="form-group">
-                                        <input type="text" [(ngModel)]="documentName" class="form-control" >
+                                        <input type="text" [(ngModel)]="documentName" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -306,12 +345,14 @@
                                     ><i
                                         class="bi bi-eye-fill"></i> View</a>
                             </div> -->
-                            <div class="col-lg-4 col-xl-4 col-6" >
-                                    <div class="btn btn-small w-100" >
-                                        <label for="uploadClientDocument" ><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                            Upload </label>
-                                        <input type="file" id="uploadClientDocument" (change)="uploadDocument($event, documentUploadType.clientDocument)" name="myfile" style="height: 1px; width: 1px;">
-                                    </div>
+                            <div class="col-lg-4 col-xl-4 col-6">
+                                <div class="btn btn-small w-100">
+                                    <label for="uploadClientDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload </label>
+                                    <input type="file" id="uploadClientDocument"
+                                        (change)="uploadDocument($event, documentUploadType.clientDocument)"
+                                        name="myfile" style="height: 1px; width: 1px;">
+                                </div>
                             </div>
                         </div>
                     </ng-container>
@@ -388,10 +429,10 @@
                         <div class="col-lg-6 col-xl-6 col-12">
                             <p><strong>{{item?.name}}</strong></p>
                         </div>
-                        <div class="col-lg-6 col-xl-6 col-10" >
-                            <a href="href:;" class="btn btn-primarysm me-2" 
-                            (click)="viewLoginDetail(item)" data-bs-toggle="modal"
-                            data-bs-target="#loginDetailModal" ><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="col-lg-6 col-xl-6 col-10">
+                            <a href="href:;" class="btn btn-primarysm me-2" (click)="viewLoginDetail(item)"
+                                data-bs-toggle="modal" data-bs-target="#loginDetailModal"><i class="bi bi-eye-fill"></i>
+                                View</a>
                             <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                                 Edit</a>
                         </div>
@@ -401,7 +442,7 @@
                             <div class="row align-items-center">
                                 <div class="col-9">
                                     <div class="form-group">
-                                        <input type="text" [(ngModel)]="loginName" class="form-control" >
+                                        <input type="text" [(ngModel)]="loginName" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -410,22 +451,22 @@
                                     ><i
                                         class="bi bi-eye-fill"></i> View</a>
                             </div> -->
-                            <div class="col-lg-4 col-xl-4 col-6" >
-                                    <div class="btn btn-small w-100" >
-                                        <label for="uploadLoginDetail"
-                                        
-                                         ><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                            Upload
-                                         </label>
-                                        <input [disabled]="!loginName" data-bs-toggle="modal"
-                                        data-bs-target="#loginDetailModal" id="uploadLoginDetail"  name="myfile" style="height: 0.5px; width: 0.5px;">
-                                    </div>
+                            <div class="col-lg-4 col-xl-4 col-6">
+                                <div class="btn btn-small w-100">
+                                    <label for="uploadLoginDetail"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload
+                                    </label>
+                                    <input [disabled]="!loginName" data-bs-toggle="modal"
+                                        data-bs-target="#loginDetailModal" id="uploadLoginDetail" name="myfile"
+                                        style="height: 0.5px; width: 0.5px;">
+                                </div>
                             </div>
                         </div>
                     </ng-container>
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xl-6 col-12 text-end">
-                            <button (click)="viewLoginForm = !viewLoginForm" type="button" class="btn btn-sm btn-dark"><i class="bi bi-plus-lg"></i></button>
+                            <button (click)="viewLoginForm = !viewLoginForm" type="button"
+                                class="btn btn-sm btn-dark"><i class="bi bi-plus-lg"></i></button>
                         </div>
                     </div>
                 </div>
@@ -433,7 +474,7 @@
 
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a  (click)="summaryDetail()" class="btn btn-dark w-100">Next</a>
+                    <a (click)="summaryDetail()" class="btn btn-dark w-100">Next</a>
                 </div>
             </div>
         </div>
@@ -488,42 +529,43 @@
 
 <!-- Login detail From modal -->
 <div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"[formGroup]="loginDetailForm">
+    <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               <label >Company Name</label>
-               <input type="text" formControlName="companyName" class="form-control" >
-               <div class="text-danger" style="color: red;"
-               *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
-                       Please Company Name
+                <label>Company Name</label>
+                <input type="text" formControlName="companyName" class="form-control">
+                <div class="text-danger" style="color: red;"
+                    *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+                    Please Company Name
                 </div>
-               <label >Website Link</label>
-               <input type="text" formControlName="link" class="form-control" >
-               <div class="text-danger" style="color: red;"
-               *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
-                       Please enter Website Link
+                <label>Website Link</label>
+                <input type="text" formControlName="link" class="form-control">
+                <div class="text-danger" style="color: red;"
+                    *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+                    Please enter Website Link
                 </div>
-               <label >Login Id</label>
-               <input type="text" formControlName="loginID" class="form-control" >
-               <div class="text-danger" style="color: red;"
-               *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
-                       Please enter Login Id
+                <label>Login Id</label>
+                <input type="text" formControlName="loginID" class="form-control">
+                <div class="text-danger" style="color: red;"
+                    *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+                    Please enter Login Id
                 </div>
-               <label >Password</label>
-               <input type="text" formControlName="password" class="form-control" >
-               <div class="text-danger" style="color: red;"
-               *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
-                       Please enter Password
+                <label>Password</label>
+                <input type="text" formControlName="password" class="form-control">
+                <div class="text-danger" style="color: red;"
+                    *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+                    Please enter Password
                 </div>
-               <div class="row justify-content-end">
-                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close" [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">Add</button>
+                <div class="row justify-content-end">
+                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                        <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close"
+                            [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">Add</button>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>

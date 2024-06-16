@@ -30,6 +30,7 @@ export class FeasibilityProjectDetailsComponent {
   viewLoginForm:boolean = true;
   documentName:string = "";
   loginName:string = "";
+  isEditing = false;
 
   documentUploadType : any = {
     subContractDocument : 'SubContract',
@@ -173,4 +174,32 @@ export class FeasibilityProjectDetailsComponent {
     this.projectDetails.loginDetail.push(dataToBePushed)
     this.loginName = ''
   }
+
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+  }
+
+  saveChanges() {
+    const payload = {
+      periodOfContractStart: this.projectDetails.periodOfContractStart,
+      periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+      projectType: this.projectDetails.projectType
+    };
+
+    this.projectService.editProject(this.projectDetails._id, payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
 }
+
