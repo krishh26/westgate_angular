@@ -23,6 +23,9 @@ export class SummaryNoteQuestionsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
+  isEditMode: boolean = false;
+  currentSummaryId: number | null = null;
+
   summary = {
     questionName: new FormControl("", Validators.required),
     question: new FormControl("", Validators.required),
@@ -54,7 +57,7 @@ export class SummaryNoteQuestionsComponent {
 
   ngOnInit(): void {
     this.getProjectDetails();
-    this.getSummaryList()
+    this.getSummaryList();
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -111,6 +114,7 @@ export class SummaryNoteQuestionsComponent {
     });
   }
 
+
   submitForm() {
     this.summaryForm.markAllAsTouched();
     if (this.summaryForm.invalid) {
@@ -120,29 +124,67 @@ export class SummaryNoteQuestionsComponent {
     console.log('Form Value:', this.summaryForm.value);  // Debugging line
 
     this.showLoader = true;
-    this.summaryService.addSummary(this.summaryForm.value).subscribe({
-      next: (response) => {
-        if (response?.status === true) {
-          this.showLoader = false;
-          this.getSummaryList();
-          this.notificationService.showSuccess('question add successfully !');
-          window.location.reload();
-         
-        } else {
-          this.notificationService.showError(response?.message);
+    if (this.isEditMode && this.currentSummaryId !== null) {
+      // Update existing summary
+      this.summaryService.updateSummaryDetail(this.currentSummaryId.toString(), this.summaryForm.value).subscribe({
+        next: (response) => {
+          if (response?.status === true) {
+            this.showLoader = false;
+            this.getSummaryList();
+            this.resetForm();
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        error: (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      },
-      error: (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
+      });
+    } else {
+      // Add new summary
+      this.summaryService.addSummary(this.summaryForm.value).subscribe({
+        next: (response) => {
+          if (response?.status === true) {
+            this.showLoader = false;
+            this.getSummaryList();
+            this.resetForm();
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        error: (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      });
+    }
+  }
+
+
+  resetForm() {
+    this.summaryForm.reset();
+    this.isEditMode = false;
+    this.currentSummaryId = null;
+  }
+
+  editSummary(summary: any) {
+    this.isEditMode = true;
+    this.currentSummaryId = summary;
+    console.log(this.currentSummaryId);
+    
+    this.summaryForm.patchValue({
+      summaryQuestionFor: summary.summaryQuestionFor,
+      questionName: summary.questionName,
+      question: summary.question,
+      refrenceDocument: summary.refrenceDocument,
+      weightage: summary.weightage,
+      instructions: summary.instructions
     });
   }
 
-  editSummary(details: any) {
-    console.log('adasdadadadadasdasd', details)
-  }
 
 
   deleteSummary(summaryId?: string) {

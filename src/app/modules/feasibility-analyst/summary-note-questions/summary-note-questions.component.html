@@ -149,7 +149,7 @@
     </section>
     <section class="bg-dark">
         <div class="container">
-          
+
             <form [formGroup]="summaryForm" (ngSubmit)="submitForm()">
                 <div class="form-group">
                   <div class="row">
@@ -159,12 +159,12 @@
                     <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                          name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
+                               name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
                         <label class="form-check-label" for="inlineRadio1">Supplier</label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                          name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
+                               name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
                         <label class="form-check-label" for="inlineRadio2">UK Writer</label>
                       </div>
                     </div>
@@ -176,38 +176,42 @@
                     <div class="form-group">
                       <input type="text" class="form-control" formControlName="questionName" placeholder="Enter question name">
                       <span class="text-danger"
-                        *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
-                        Please enter question name </span>
+                            *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
+                        Please enter question name
+                      </span>
                     </div>
                     <div class="form-group">
                       <textarea class="form-control" rows="6" formControlName="question" placeholder="Enter question"></textarea>
                       <span class="text-danger"
-                        *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
-                        Please enter question </span>
+                            *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
+                        Please enter question
+                      </span>
                     </div>
                   </div>
                   <div class="col-lg-3 col-xl-3 col-12">
                     <div class="form-group">
-                      <input type="text" class="form-control" formControlName="refrenceDocument"
-                        placeholder="Enter document reference name">
+                      <input type="text" class="form-control" formControlName="refrenceDocument" placeholder="Enter document reference name">
                       <span class="text-danger"
-                        *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
-                        Please enter reference document details </span>
+                            *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
+                        Please enter reference document details
+                      </span>
                     </div>
                     <div class="form-group">
                       <input type="number" class="form-control" formControlName="weightage" placeholder="Enter weightage">
                       <span class="text-danger"
-                        *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
-                        Please enter weightage </span>
+                            *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
+                        Please enter weightage
+                      </span>
                     </div>
                     <div class="form-group">
                       <input type="text" class="form-control" formControlName="instructions" placeholder="instructions">
                       <span class="text-danger"
-                        *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
-                        Please enter instructions </span>
+                            *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
+                        Please enter instructions
+                      </span>
                     </div>
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary">Add</button>
+                      <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
                     </div>
                   </div>
                 </div>
