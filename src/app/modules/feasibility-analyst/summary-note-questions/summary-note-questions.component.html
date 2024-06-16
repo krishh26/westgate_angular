@@ -149,93 +149,75 @@
     </section>
     <section class="bg-dark">
         <div class="container">
+          
             <form [formGroup]="summaryForm" (ngSubmit)="submitForm()">
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
-                            <p class="mb-0">Summary Note Questions</p>
-                        </div>
-                        <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
-                                <label class="form-check-label" for="inlineRadio1">Supplier</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
-                                <label class="form-check-label" for="inlineRadio2">UK Writer</label>
-                            </div>
-                        </div>
+                  <div class="row">
+                    <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
+                      <p class="mb-0">Summary Note Questions</p>
                     </div>
+                    <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
+                          name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
+                        <label class="form-check-label" for="inlineRadio1">Supplier</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
+                          name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
+                        <label class="form-check-label" for="inlineRadio2">UK Writer</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
+              
                 <div class="row">
-                    <div class="col-lg-4 col-xl-4 col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="questionName"
-                                placeholder="Enter question name">
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
-                                Please enter question name </span>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="6" formControlName="question" placeholder="Enter question "
-                                cols="100"></textarea>
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
-                                Please enter question </span>
-                        </div>
+                  <div class="col-lg-4 col-xl-4 col-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" formControlName="questionName" placeholder="Enter question name">
+                      <span class="text-danger"
+                        *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
+                        Please enter question name </span>
                     </div>
-                    <!-- <div class="col-lg-5 col-xl-5 col-12">
-                        <div class="form-group">
-                            <textarea class="form-control" rows="9" formControlName="comment" placeholder="Enter description"
-                                cols="100"></textarea>
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['comment'].touched && summaryForm.controls['comment'].errors?.['required']">
-                                Please enter comment </span>
-                        </div>
-                    </div> -->
-                    <div class="col-lg-3 col-xl-3 col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="refrenceDocument"
-                                placeholder="Enter document reference name">
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
-                                Please enter refrence document details </span>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" formControlName="weightage" placeholder="Enter weightage">
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
-                                Please enter weightage </span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="instructions"
-                                placeholder="instructions">
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
-                                Please enter instructions </span>
-                        </div>
-                        <!-- <div class="form-group">
-                            <input type="date" class="form-control" formControlName="deadline"
-                                placeholder="deadline date">
-                            <span class="text-danger" style="color: red;"
-                                *ngIf="summaryForm.controls['deadline'].touched && summaryForm.controls['deadline'].errors?.['required']">
-                                Please enter deadline </span>
-                        </div> -->
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </div>
+                    <div class="form-group">
+                      <textarea class="form-control" rows="6" formControlName="question" placeholder="Enter question"></textarea>
+                      <span class="text-danger"
+                        *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
+                        Please enter question </span>
                     </div>
+                  </div>
+                  <div class="col-lg-3 col-xl-3 col-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" formControlName="refrenceDocument"
+                        placeholder="Enter document reference name">
+                      <span class="text-danger"
+                        *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
+                        Please enter reference document details </span>
+                    </div>
+                    <div class="form-group">
+                      <input type="number" class="form-control" formControlName="weightage" placeholder="Enter weightage">
+                      <span class="text-danger"
+                        *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
+                        Please enter weightage </span>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" formControlName="instructions" placeholder="instructions">
+                      <span class="text-danger"
+                        *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
+                        Please enter instructions </span>
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                  </div>
                 </div>
-            </form>
-
+              </form>
+              
 
             <!--Addedd Question-->
             <div class="row">
                 <div class="col-12">
-                    <p><strong>Addedd Question</strong></p>
+                    <p><strong>Added Questions</strong></p>
                     <div class="table-responsive">
                         <table class="table table-dark table-borderless">
                             <thead>
@@ -252,10 +234,10 @@
                                         <strong>{{summary.weightage}}</strong>
                                     </td>
                                     <td>
-                                        <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill">
-                                                View Instructions</i></a>
+                                        <!-- <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill">
+                                                View Instructions</i></a> -->
                                         <a (click)="editSummary(summary?._id)" class="btn btn-outline-secondary"><i
-                                                class="bi bi-pencil-fill"> Edit</i></a>
+                                                class="bi bi-pencil-fill"></i></a>&nbsp;
                                         <a (click)="deleteSummary(summary?._id)" class="btn btn-outline-secondary"><i
                                                 class="bi bi-x-circle"></i></a>
                                     </td>

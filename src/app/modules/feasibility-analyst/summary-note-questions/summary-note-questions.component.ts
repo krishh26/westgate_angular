@@ -28,11 +28,11 @@ export class SummaryNoteQuestionsComponent {
     question: new FormControl("", Validators.required),
     instructions: new FormControl("", Validators.required),
     weightage: new FormControl("", Validators.required),
-    comment: new FormControl("", Validators.required),
+    //comment: new FormControl("", Validators.required),
     refrenceDocument: new FormControl("", Validators.required),
     projectId: new FormControl("", Validators.required),
     summaryQuestionFor: new FormControl("", Validators.required),
-    deadline: new FormControl("", Validators.required),
+    // deadline: new FormControl("", Validators.required),
   }
 
   summaryForm: FormGroup;
@@ -68,11 +68,6 @@ export class SummaryNoteQuestionsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
-        // const dueDate = new Date(this.projectDetails?.dueDate);
-        // const currentDate = new Date();
-        // const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-        // const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-        // this.dateDifference = formattedDateDifference;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -94,7 +89,7 @@ export class SummaryNoteQuestionsComponent {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', fileName); // You can customize the filename here
+        link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -118,21 +113,30 @@ export class SummaryNoteQuestionsComponent {
 
   submitForm() {
     this.summaryForm.markAllAsTouched();
-    if (!this.summaryForm.valid) {
-      return this.notificationService.showError('Please Fill All Summary Details.')
+    if (this.summaryForm.invalid) {
+      return this.notificationService.showError('Please Fill All Summary Details.');
     }
-    this.summaryService.addSummary(this.summaryForm.value).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.getSummaryList();
-        this.summaryForm.reset();
-      } else {
-        this.notificationService.showError(response?.message);
+
+    console.log('Form Value:', this.summaryForm.value);  // Debugging line
+
+    this.showLoader = true;
+    this.summaryService.addSummary(this.summaryForm.value).subscribe({
+      next: (response) => {
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.getSummaryList();
+          this.notificationService.showSuccess('question add successfully !');
+          window.location.reload();
+         
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      error: (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
     });
   }
 
@@ -143,16 +147,16 @@ export class SummaryNoteQuestionsComponent {
 
   deleteSummary(summaryId?: string) {
     this.summaryService.deleteSummary(summaryId).subscribe((response) => {
-      if(response?.status == true) {
+      if (response?.status == true) {
         this.getSummaryList();
       } else {
-          this.notificationService.showError(response?.message || 'Error');
+        this.notificationService.showError(response?.message || 'Error');
       }
     }, (error) => {
       this.notificationService.showError(error?.message || 'Something went wrong !');
     })
   }
-  detailPage(){
+  detailPage() {
     this.router.navigate(['/feasibility-user/minimum-eligibility-form'], { queryParams: { id: this.projectId } });
   }
 }
