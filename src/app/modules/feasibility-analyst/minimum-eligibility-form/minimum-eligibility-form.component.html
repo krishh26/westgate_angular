@@ -11,7 +11,8 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th width="200px">Project Title</th>
+                            <th width="100px">Project Title</th>
+                            <th width="150px">Project Description</th>
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
@@ -26,11 +27,12 @@
                     <tbody>
                         <tr>
                             <td><a href="javascript:;">{{projectDetails?.projectName}}</a></td>
+                            <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | truncate:10:true }}</a></td>
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
-                            <td>{{projectDetails?.category}} <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>{{projectDetails?.industry}} <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td>$ {{projectDetails?.value}}<a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                            <td>{{projectDetails?.category}} <a href="javascript:;"></a></td>
+                            <td>{{projectDetails?.industry}} <a href="javascript:;"></a></td>
+                            <td>$ {{projectDetails?.value}}<a href="javascript:;"></a></td>
                             <td>{{projectDetails?.projectType}}</td>
                             <td>
                               {{projectDetails?.status}}
