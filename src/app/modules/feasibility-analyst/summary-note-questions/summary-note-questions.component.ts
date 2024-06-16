@@ -149,6 +149,7 @@ export class SummaryNoteQuestionsComponent {
     this.summaryService.deleteSummary(summaryId).subscribe((response) => {
       if (response?.status == true) {
         this.getSummaryList();
+        this.notificationService.showSuccess('question delete successfully !');
       } else {
         this.notificationService.showError(response?.message || 'Error');
       }
