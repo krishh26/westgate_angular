@@ -103,6 +103,12 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   summaryDetail() {
+    if(!this.projectDetails?.clientDocument.length){
+      return this.notificationService.showError('Upload Client Document');
+    }
+    if(!this.projectDetails?.loginDetail.length){
+      return this.notificationService.showError('Upload Login Detail');
+    }
     this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
   }
 

@@ -121,7 +121,6 @@ export class SummaryNoteQuestionsComponent {
       return this.notificationService.showError('Please Fill All Summary Details.');
     }
 
-    console.log('Form Value:', this.summaryForm.value);  // Debugging line
 
     this.showLoader = true;
     if (this.isEditMode && this.currentSummaryId !== null) {
@@ -164,8 +163,9 @@ export class SummaryNoteQuestionsComponent {
   }
 
 
-  resetForm() {
+  resetForm() {    
     this.summaryForm.reset();
+    this.summaryForm.controls['projectId'].setValue(this.projectId)
     this.isEditMode = false;
     this.currentSummaryId = null;
   }
