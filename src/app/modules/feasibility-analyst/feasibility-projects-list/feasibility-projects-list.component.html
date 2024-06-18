@@ -29,6 +29,13 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr>
+                            <td *ngIf="!projectList?.length" colspan="11">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+
                         <tr *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                             <td>{{ item?.projectName }}</td>
                             <td><a title="{{ item?.description }}">{{ item?.description | truncate:10:true }}</a></td>
