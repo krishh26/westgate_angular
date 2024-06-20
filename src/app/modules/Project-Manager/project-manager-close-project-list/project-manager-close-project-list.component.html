@@ -1,58 +1,72 @@
 <main id="main" class="">
   <section class="p-0">
-      <div class="table-responsive project-close">
-          <table class="table table-striped align-middle">
-            <thead>
+    <div class="table-responsive project-close">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th width="10%"></th>
+            <th width="10%">Project Title</th>
+            <th width="10%">Project Description</th>
+            <th width="5%">BOS ID</th>
+            <th width="5%">Publish Date</th>
+            <th width="5%">Category</th>
+            <th width="5%">Industry</th>
+            <th width="5%">Value</th>
+            <th width="5%">Website</th>
+            <th width="5%">Link to notice</th>
+            <th width="8%">Created Date</th>
+            <th width="5%">Status</th>
+            <th width="10%">Due Date & Time</th>
+            <th width="15%"></th>
+            <th width="12%"></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td *ngIf="!projectList?.length" colspan="14">
+              <app-no-record-found></app-no-record-found>
+            </td>
+          </tr>
+
+          <ng-container *ngFor="let item of projectList">
+            <tr>
+              <td></td>
+              <td class="text-primary"><a>{{item?.projectName}}</a></td>
+              <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+              <td v-align="middle">{{item?.BOSID}}</td>
+              <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+              <td>{{item?.category}}</td>
+              <td>{{item?.industry}}</td>
+              <td>{{item?.value}}</td>
+              <td>{{item?.website}}</td>
+              <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
+              <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
+              <td>{{item?.status}}</td>
+              <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+              <td>
+                <button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1"
+                  style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">View Matched
+                  Suppliers</button>
+              </td>
+              <td></td>
+            </tr>
+            <ng-container *ngIf="item?.select?.length > 0">
               <tr>
-                <th width="10%"></th>
-                <th width="12%">Project Title</th>
-                <th width="5%">BOS ID</th>
-                <th width="5%">Publish Date</th>
-                <th width="5%">Category</th>
-                <th width="5%">Industry</th>
-                <th width="5%">Value</th>
-                <th width="5%">Website</th>
-                <th width="5%">Link to notice</th>
-                <th width="8%">Created Date</th>
-                <th width="5%">Status</th>
-                <th width="10%">Due Date & Time</th>
-                <th width="15%"></th>
-                <th  width="12%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let item of projectList">
-              <tr>
-                <td></td>
-                <td  class="text-primary"><a>{{item?.projectName}}</a></td>
-                <td v-align="middle">{{item?.BOSID}}</td>
-                <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-                <td>{{item?.category}}</td>
-                <td>{{item?.industry}}</td>
-                <td>{{item?.value}}</td>
-                <td>{{item?.website}}</td>
-                <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
-                <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
-                <td>{{item?.status}}</td>
-                <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                <td>
-                  <button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1" style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">View Matched Suppliers</button>
-                </td>
-                <td></td>
-                </tr>
-                <ng-container *ngIf="item?.select?.length > 0">
-                <tr>
-                <td  colspan="14" style="background-color: #b5b2b2;">
+                <td colspan="14" style="background-color: #b5b2b2;">
                   <table class="table table-striped align-middle">
                     <thead>
                       <tr>
                         <!-- <th></th> -->
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name</th>
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID</th>
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Closed On</th>
-                        <th class="fw-bold mb-3"  style="white-space: nowrap; background-color: #b5b2b2;">Handover Call date</th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name
+                        </th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID
+                        </th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Closed On</th>
+                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call
+                          date</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -63,18 +77,19 @@
                         <td style="background-color: #b5b2b2 !important;">Ayush</td>
                         <td style="background-color: #b5b2b2 !important;">Closed</td>
                         <td style="background-color: #b5b2b2 !important;">12-Sep-2023</td>
-                        <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date : 'dd-MMM-YYYY'}}</td>
+                        <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date :
+                          'dd-MMM-YYYY'}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </td>
-                </tr>
-                </ng-container>
-                <tr *ngIf="item?.select?.length == 0">
-                  <td colspan="14" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
-                </tr>
-              </ng-container>
-              <!-- <tr class="bg-d3" *ngFor="let supplier of item?.select">
+              </tr>
+            </ng-container>
+            <tr *ngIf="item?.select?.length == 0">
+              <td colspan="14" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
+            </tr>
+          </ng-container>
+          <!-- <tr class="bg-d3" *ngFor="let supplier of item?.select">
 
 
                   <td>  </td>
@@ -129,9 +144,9 @@
                   <td colspan="14"> No Records.</td>
                 </tr>
               </ng-container> -->
-            
-            </tbody>
-          </table>
-        </div>
+
+        </tbody>
+      </table>
+    </div>
   </section>
 </main>

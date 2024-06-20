@@ -31,70 +31,78 @@
                     <tbody>
 
                         <tr>
-                            <td *ngIf="!projectList?.length" colspan="11">
+                            <td *ngIf="!projectList?.length" colspan="14">
                                 <app-no-record-found></app-no-record-found>
                             </td>
                         </tr>
 
-                        <tr *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                        <tr
+                            *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                             <td>{{ item?.projectName }}</td>
-                            <td><a title="{{ item?.description }}">{{ item?.description | truncate:10:true }}</a></td>
+                            <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
                             <td>{{ item?.BOSID }}</td>
                             <td>{{ item?.publishDate | date:'dd/MM/yyyy' }}</td>
-                        
+
                             <td>
                                 <span *ngIf="!item.isEditing">{{ getCategoryName(item.category) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.category" class="custom-select">
-                                  <option value="">Select Category</option>
-                                  <option *ngFor="let category of categoryList" [value]="category._id">{{ category.category }}</option>
+                                    <option value="">Select Category</option>
+                                    <option *ngFor="let category of categoryList" [value]="category._id">{{
+                                        category.category }}</option>
                                 </select>
-                              </td>
-                              <td>
+                            </td>
+                            <td>
                                 <span *ngIf="!item.isEditing">{{ getIndustryName(item.industry) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
-                                  <option value="">Select Industry</option>
-                                  <option *ngFor="let industry of industryList" [value]="industry._id">{{ industry.industry }}</option>
+                                    <option value="">Select Industry</option>
+                                    <option *ngFor="let industry of industryList" [value]="industry._id">{{
+                                        industry.industry }}</option>
                                 </select>
-                              </td>
-                        
+                            </td>
+
                             <!-- Value -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.value }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.value"  (keypress)="NumberOnly($event)"/>
+                                <input *ngIf="item.isEditing" [(ngModel)]="item.value"
+                                    (keypress)="NumberOnly($event)" />
                             </td>
-                        
+
                             <!-- Project Type -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.projectType }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.projectType" />
                             </td>
-                        
+
                             <!-- Status -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.status }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.status" />
                             </td>
-                        
+
                             <!-- Due Date -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.dueDate | date:'dd/MM/yyyy, h:mm a' }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" />
                             </td>
-                        
+
                             <!-- Actions -->
                             <td>
                                 <!-- View Details and Edit buttons -->
-                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)" class="btn btn-primary sm me-2" title="View Details"><i
-                                    class="bi bi-eye-fill"></i></a>&nbsp;
-                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)" class="btn btn-secondary sm ml-2" title="Edit"><i
-                                    class="bi bi-pencil-fill"></i></a>&nbsp;
-                        
+                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)"
+                                    class="btn btn-primary sm me-2" title="View Details"><i
+                                        class="bi bi-eye-fill"></i></a>&nbsp;
+                                <a *ngIf="!item.isEditing" (click)="toggleEditMode(item)"
+                                    class="btn btn-secondary sm ml-2" title="Edit"><i
+                                        class="bi bi-pencil-fill"></i></a>&nbsp;
+
                                 <!-- Save and Cancel buttons -->
-                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-primary sm" title="Save"><i class="bi bi-check2"></i></a>&nbsp;
-                                <a *ngIf="item.isEditing" (click)="toggleEditMode(item)" class="btn btn-warning ml-2" title="Cancel"><i class="bi bi-x-lg"></i></a>
+                                <a *ngIf="item.isEditing" (click)="saveProject(item)" class="btn btn-primary sm"
+                                    title="Save"><i class="bi bi-check2"></i></a>&nbsp;
+                                <a *ngIf="item.isEditing" (click)="toggleEditMode(item)" class="btn btn-warning ml-2"
+                                    title="Cancel"><i class="bi bi-x-lg"></i></a>
                             </td>
                         </tr>
-                        
+
                     </tbody>
                 </table>
             </div>
