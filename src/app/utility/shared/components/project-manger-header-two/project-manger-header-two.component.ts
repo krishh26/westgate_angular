@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
@@ -13,9 +14,17 @@ export class ProjectMangerHeaderTwoComponent {
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
+    public router: Router,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
+
+  navUrlArr = [
+    { route: '/project-manager/project/all', title: 'All' },
+    { route: '/project-manager/project/match', title: 'Matched' },
+    { route: '/project-manager/project/close', title: 'Closed' }
+  ];
+
 
   logout(): void {
     this.authService.logout();
