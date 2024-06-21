@@ -12,6 +12,8 @@ export class SupplierDashboardValueComponent {
 
   supplierdashboardlist: any = [];
   showLoader: boolean = false;
+  projectValue: any = [];
+  projectCount: any = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -30,7 +32,10 @@ export class SupplierDashboardValueComponent {
     this.supplierService.getDashboardList().subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
-        this.supplierdashboardlist = response?.data;
+        this.projectValue = response?.data?.projectValue;
+        this.projectCount = response?.data?.projectCount;
+        console.log(this.projectValue);
+        
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
