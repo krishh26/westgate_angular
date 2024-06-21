@@ -15,6 +15,7 @@ export class SupplierHeaderComponent implements OnInit {
   loginUser: any;
   clicked: boolean = false;
   projectNotificationList: any = [];
+  projectNotificationCount: any = [];
   routerSubscription: Subscription | null = null;
 
   constructor(
@@ -36,7 +37,7 @@ export class SupplierHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNotificationList();
-
+    this.getNotificationcount();
 
     //this.firstFourNotifications = this.projectNotificationList.slice(0, 4);
 
@@ -69,6 +70,7 @@ export class SupplierHeaderComponent implements OnInit {
       this.routerSubscription.unsubscribe();
     }
   }
+  
   // get list notification
   getNotificationList() {
     this.projectNotificationService.getNotificationList().subscribe((response) => {
@@ -82,4 +84,19 @@ export class SupplierHeaderComponent implements OnInit {
       return this.notificationService.showError(error?.message || 'Something Went Wrong!');
     })
   }
+
+    // get list notification
+    getNotificationcount() {
+      this.projectNotificationService.getNotificationNotification().subscribe((response) => {
+        this.projectNotificationCount = [];
+        if (response?.status) {
+          this.projectNotificationCount = response?.data;
+        } else {
+          return this.notificationService.showError(response?.message || 'Something Went Wrong!');
+        }
+      }, (error) => {
+        return this.notificationService.showError(error?.message || 'Something Went Wrong!');
+      })
+    }
+
 }

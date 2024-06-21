@@ -51,7 +51,7 @@
       <ul class="d-block">
         <li class="nav-link noarrowdrop">
           <a style="cursor: pointer;" id="notificationDropdown" (click)="toggleDropdown()" data-toggle="dropdown">
-            <i class="bi bi-bell" style="font-size: 17px;"></i> <span class="count-badge">5</span>
+            <i class="bi bi-bell" style="font-size: 17px;"></i> <span class="count-badge">{{projectNotificationCount?.unreadNotifications}}</span>
           </a>
           <div #notificationDiv class="dropdown-menu dropdown-menu-right navbar-dropdown notificationDropdown-box"
             aria-labelledby="notificationDropdown" [ngClass]="{'show-menu': clicked}">

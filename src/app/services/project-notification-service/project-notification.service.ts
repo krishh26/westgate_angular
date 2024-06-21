@@ -10,6 +10,7 @@ export enum ProjectNotificationAPIEndPoints {
   DELETE_SINGLE_NOTIFICATION = "/notification/delete/",
   MARK_AS_MULTIPLE_NOTIFICATION = "/notification/mart-read",
   DELETE_MULTIPLE_NOTIFICATION = "/notification/delete",
+  NOTIFICATION_COUNT = '/notification/count'
 }
 
 @Injectable({
@@ -28,6 +29,11 @@ export class ProjectNotificationService {
   getNotificationList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectNotificationAPIEndPoints.NOTIFICATION_LIST);
+  }
+
+  getNotificationNotification(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + ProjectNotificationAPIEndPoints.NOTIFICATION_COUNT);
   }
 
   // create project notification
