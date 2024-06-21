@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -14,6 +15,7 @@ export class SupplierHeaderComponent implements OnInit {
   loginUser: any;
   clicked: boolean = false;
   projectNotificationList: any = [];
+  routerSubscription: Subscription | null = null;
 
   constructor(
     private authService: AuthService,
@@ -34,12 +36,39 @@ export class SupplierHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNotificationList();
+
+
+    //this.firstFourNotifications = this.projectNotificationList.slice(0, 4);
+
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.closeDropdown();
+      }
+    });
+
+  }
+
+  get firstFourNotifications() {
+    return this.projectNotificationList.slice(0, 4);
   }
 
   logout(): void {
     this.authService.logout();
   }
 
+  toggleDropdown() {
+    this.clicked = !this.clicked;
+  }
+
+  closeDropdown() {
+    this.clicked = false;
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
   // get list notification
   getNotificationList() {
     this.projectNotificationService.getNotificationList().subscribe((response) => {
