@@ -28,7 +28,8 @@
       <div>
         <ul>
           <li class="dropdown"><a class="nav-link d-flex align-items-center" href="javascript:;">
-              <i class="bi bi-person-fill text-primary me-2" style="font-size: 1.5rem;"></i>{{loginUser?.userName}}
+              <i class="bi bi-person-fill text-primary me-2" style="font-size: 1.5rem;"></i>
+              <span>{{loginUser?.userName}}</span>  <i class="bi bi-chevron-down"></i>
             </a>
             <ul>
               <li><a routerLink="/project-manager/dashboard">Profile Seting</a></li>

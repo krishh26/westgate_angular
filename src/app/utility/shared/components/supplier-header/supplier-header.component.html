@@ -1,9 +1,8 @@
 <!-- ======= Header ======= -->
 <header id="header">
   <div class="container-fluid d-flex align-items-center">
-    <a routerLink="supplier-admin/supplier-home" class="logo mee-auto"><img src="assets/img/newlogoo.png" alt="" style="max-height: 64px;"
-        class="img-fluid"></a>
-    <nav id="navbar" class="navbar">
+    <a routerLink="supplier-admin/supplier-home" class="logo mee-auto"><img src="assets/img/newlogoo.png" alt="" class="img-fluid"></a>
+    <nav id="navbar" class="navbar w-100">
       <!-- <ul>
           <li><a class="nav-link active" routerLink="/supplier-admin/supplier-dashboard-header">Dashboard</a></li>
 
@@ -26,8 +25,7 @@
           </li>
 
         </ul> -->
-      <ul>
-
+      <ul class="mx-auto">
         <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
           <a [class.active]="(item.route.includes(router.url))" class="nav-link " data-toggle="tab"
             [routerLink]="item.route">
@@ -42,9 +40,16 @@
                     <span class="count"></span>
               </a>
           </li> -->
+             
+      </ul>      
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+    <!-- .navbar -->
+    <nav class="navbar">
+      <ul class="d-block">   
         <li class="nav-link noarrowdrop">
           <a style="cursor: pointer;" id="notificationDropdown" (click)="clicked = !clicked" data-toggle="dropdown">
-            <i class="bi bi-bell" style="font-size: 17px;"></i> <span class="count"></span>
+            <i class="bi bi-bell" style="font-size: 17px;"></i> <span class="count-badge">5</span>
           </a>
           <div #notificationDiv class="dropdown-menu dropdown-menu-right navbar-dropdown notificationDropdown-box"
             aria-labelledby="notificationDropdown" [ngClass]="{'': !clicked, 'show-menu': clicked}">
@@ -54,44 +59,41 @@
                   <p class="mb-0 p-12">Notifications</p>
                 </div>
                 <div class="col-4">
-                  <a routerLink="/supplier-admin/notification">view All</a>
+                  <a routerLink="/supplier-admin/notification" style="font-size: 12px;">View all</a>
                 </div>
               </div>
             </div>
             <ul class="notification-list">
-              <li>
-                <a *ngFor="let item of projectNotificationList; let index = index">
+              <li *ngFor="let item of projectNotificationList; let index = index">
+                <a>
                   <ng-container *ngIf="index < 4">
-                    <div class="preview-item-content">
-                      <p>{{item?.title}}</p>
-                      <h6 class="preview-subject font-weight-normal">{{item?.discription}}</h6>
-                      <p class="font-weight-light small-text mb-0 text-muted">
-                        {{item?.updatedAt | date:'dd/MM/yyyy, h:mm a'}}
-                      </p>
-                    </div>
+                    <p class="mb-0">{{item?.title}}</p>
+                    <p class="mb-0 preview-subject font-weight-normal p-12">{{item?.discription}}</p>
+                    <p class="mb-0 font-weight-light small-text mb-0 text-muted p-12">
+                      {{item?.updatedAt | date:'dd/MM/yyyy, h:mm a'}}
+                    </p>
                   </ng-container>
                 </a>
               </li>
             </ul>
-
-
           </div>
-        </li>
+        </li>  
+      </ul>
+    </nav>
+    <nav class="navbar">
+      <ul class="d-block"> 
         <li class="dropdown"><a href="javascript:;">
             <div class="login-avtar">
               <img src="assets/img/face1.jpg" />
             </div>
-            <span>{{loginUser?.userName}}</span> <i class="bi bi-chevron-down"></i>
+            <span class="mobile-hide">{{loginUser?.userName}}</span> <i class="bi bi-chevron-down"></i>
           </a>
           <ul>
             <li><a routerLink="/supplier-admin/supplier-user-profile">Profile Seting</a></li>
             <li><a style="cursor: pointer;" (click)="logout()">Logout</a></li>
           </ul>
         </li>
-
       </ul>
-      <i class="bi bi-list mobile-nav-toggle"></i>
     </nav>
-    <!-- .navbar -->
   </div>
 </header><!-- End Header -->
