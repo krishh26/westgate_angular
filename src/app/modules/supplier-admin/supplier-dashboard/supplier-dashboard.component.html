@@ -1,265 +1,252 @@
 <main id="main">
-    <section class="dashboard-section">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Total Projects in my category</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-blue"><strong>{{supplierdashboardlist?.totalProjects}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/total-projects-in-category" class="explore-btn bg-blue w-100">Explore</a>
-                </div>
-
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Awarded</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-green"><strong>{{supplierdashboardlist?.totalAwarded}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-green w-100">Explore</a>
-                </div>
-
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Total matched</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-teal"><strong>{{supplierdashboardlist?.matchedProjects}}</strong>
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
-                </div>
-
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Not Awarded</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-brown"><strong>{{supplierdashboardlist?.totalNotAwarded}}</strong>
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-brown w-100">Explore</a>
-                </div>
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Total Submitted</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-light-purple">
-                                        <strong>{{supplierdashboardlist?.totalSubmit}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-light-purple w-100">Explore</a>
-                </div>
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>In Submission</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-dark-gray">
-                                        <strong>{{supplierdashboardlist?.totalInSubmition}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-dark-gray w-100">Explore</a>
-                </div>
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>In Solution</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-dark-gray">
-                                        <strong>{{supplierdashboardlist?.totalInReview}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-dark-gray w-100">Explore</a>
-                </div>
-                <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>In Review</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-dark-gray">
-                                        <strong>{{supplierdashboardlist?.totalInReview}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-dark-gray w-100">Explore</a>
-                </div>
-                <div class="col-12 mb-5">
-                    <div class="statistic-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <p><strong>Expired History</strong></p>
-                                </div>
-                                <div class="col-4">
-                                    <h2 class="text-dark-gray">
-                                        <strong>{{supplierdashboardlist?.totalExpired}}</strong></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/supplier-admin/projects-applied" class="explore-btn bg-gray w-100">Explore</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div id="chat-button">
-      <a  data-bs-toggle="modal" data-bs-target="#ViewTemplate">
-        <i class="bi bi-chat"></i>
-      </a>
-    </div>
-</main>
-
-<!--  view template pop-up -->
-<div class="modal fade" id="ViewTemplate" tabindex="-1" aria-labelledby="ViewScreenShotLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-          <!-- <div class="modal-header">
-              <h5 class="modal-title" id="ViewScreenShotLabel">Chat</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div> -->
-          <div class="modal-body">
-            <div class="col-12">
-              <div id="chatWindow">
-                <div class="chatHistory">
-                  <ul>
-                    <li>
-                      <div class="sent">
-                        <p class="team-name">Team A</p>
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                        <p class="recived-time"><span class="read-tick"><i class="bi bi-check2-all"></i></span>3:15PM</p>
+  <section class="dashboard-section">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12">
+                  <h5>History</h5>
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Total Projects</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-blue">
+                                          <strong>{{projectCount?.totalProjects}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                    </li>
-                    <li>
-                      <div class="replies">
-                        <p class="team-name">Team B</p>
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                        <p class="recived-time"><span class="unread-tick"><i class="bi bi-check2-all"></i></span>Just Now</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="sent">
-                        <p class="team-name">Team A</p>
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                        <p class="recived-time"><span class="read-tick"><i class="bi bi-check2-all"></i></span>3:15PM</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="replies">
-                        <p class="team-name">Team B</p>
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                        <p class="recived-time"><span class="unread-tick"><i class="bi bi-check2-all"></i></span>Just Now</p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div class="chatsendBox">
-                  <div class="row align-items-center">
-                    <div class="col-lg-9 col-xl-9 col-12">
-                      <div class="row align-items-center">
-                        <div class="col-auto text-center">
-                          <button type="button" class="btn text-theme"><i class="bi bi-mic-fill"></i></button>
-                        </div>
-                        <div class="col-9 p-0">
-                          <input type="text" class="form-control border-0 ps-0" placeholder="Enter your text here!">
-                        </div>
-                        <div class="col-auto text-center">
-                          <button type="button" class="btn text-theme"><i class="bi bi-send-fill p-22"></i></button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 col-xl-3 col-12">
-                      <ul class="floatingbuttons">
-                        <!-- <li><a href="javascript:;"><i class="bi bi-paperclip"></i></a></li>
-                        <li><a href="javascript:;"><i class="bi bi-at"></i></a></li>
-                        <li><a href="javascript:;"><i class="bi bi-emoji-smile-fill"></i></a></li>
-                        <li><a href="javascript:;"><i class="bi bi-play-circle-fill"></i></a></li> -->
-                      </ul>
-                    </div>
+                      <a href="/supplier-admin/total-projects-in-category"
+                          class="explore-btn bg-blue w-100">Explore</a>
                   </div>
-                </div>
-                <!-- <a href="javascript:;" class="google-meet"><img src="assets/img/google-meet.svg"/></a> -->
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Total Projects in my category</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-blue">
+                                          <strong>{{projectCount?.totalProjectInCategory}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/total-projects-in-category"
+                          class="explore-btn bg-blue w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Total matched</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.matchedProjects}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Shortlisted</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.sortListed}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Dropped Projects</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.drop}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Awarded</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-green">
+                                          <strong>{{projectCount?.totalAwarded}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-applied" class="explore-btn bg-green w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Not Awarded</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-brown">
+                                          <strong>{{projectCount?.totalNotAwarded}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-applied" class="explore-btn bg-brown w-100">Explore</a>
+                  </div>
               </div>
-              <div class="Mobile-chatsendBox">
-                <div class="row align-items-center">
-                  <div class="col-lg-9 col-xl-9 col-12">
-                    <div class="row align-items-center">
-                      <div class="col-2 text-center">
-                        <button type="button" class="btn text-theme"><i class="bi bi-mic-fill"></i></button>
+
+              <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12">
+                  <h5>Current</h5>
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>In-solution</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-blue">
+                                          <strong>{{projectCount?.totalInSolution}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                      <div class="col-8 p-0">
-                        <input type="text" class="form-control border-0 ps-0" placeholder="Enter your text here!">
-                      </div>
-                      <div class="col-2 text-center">
-                        <button type="button" class="btn text-theme"><i class="bi bi-send-fill p-22"></i></button>
-                      </div>
-                    </div>
+                      <a href="/supplier-admin/total-projects-in-category"
+                          class="explore-btn bg-blue w-100">Explore</a>
                   </div>
-                  <div class="col-lg-3 col-xl-3 col-12">
-                    <!-- <ul class="floatingbuttons">
-                      <li><a href="javascript:;"><i class="bi bi-paperclip"></i></a></li>
-                      <li><a href="javascript:;"><i class="bi bi-at"></i></a></li>
-                      <li><a href="javascript:;"><i class="bi bi-emoji-smile-fill"></i></a></li>
-                      <li><a href="javascript:;"><i class="bi bi-play-circle-fill"></i></a></li>
-                    </ul> -->
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>In-Review</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-blue">
+                                          <strong>{{projectCount?.totalInReview}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/total-projects-in-category"
+                          class="explore-btn bg-blue w-100">Explore</a>
                   </div>
-                </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>In-submission</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.totalInSubmition}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>UK Expert-Writing</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.UKExpertWritingsValue}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>UK Expert-Review</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-teal">
+                                          <strong>{{projectCount?.UKExpertReviewValue}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-matched" class="explore-btn bg-teal w-100">Explore</a>
+                  </div>
+
+                  <div class="col-12 mb-5">
+                      <div class="statistic-card">
+                          <div class="card-body">
+                              <div class="row align-items-center">
+                                  <div class="col-8">
+                                      <p><strong>Submitted</strong></p>
+                                  </div>
+                                  <div class="col-4">
+                                      <h2 class="text-green">
+                                          <strong>{{projectCount?.totalSubmit}}</strong>
+                                      </h2>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <a href="/supplier-admin/projects-applied" class="explore-btn bg-green w-100">Explore</a>
+                  </div>
               </div>
-            </div>
+
           </div>
-          <!-- <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Download</button>
-          </div> -->
       </div>
-  </div>
-</div>
-
-
+  </section>
+</main>
