@@ -5,7 +5,8 @@
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <div class="form-group mb-0">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input type="search" [formControl]="searchText"  class="form-control control-search" placeholder="Search by BOS ID & Project Title.">
+            <input type="search" [formControl]="searchText" class="form-control control-search"
+              placeholder="Search by BOS ID & Project Title.">
           </div>
         </div>
       </div>
@@ -27,7 +28,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+
+            <tr>
+              <td *ngIf="!projectList?.length" colspan="11">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
               <td><a>{{item?.projectName}}</a></td>
               <td v-align="middle">{{item?.BOSID}}</td>
               <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
@@ -39,8 +48,8 @@
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
               <td>
-                <a class="btn btn-sm btn-primary m-1"
-                    title="View Details" (click)="projectDetails(item?._id)">View Details</a>
+                <a class="btn btn-sm btn-primary m-1" title="View Details" (click)="projectDetails(item?._id)">View
+                  Details</a>
                 <a class="btn btn-sm btn-secondary m-1" title="Shortlist">Remove</a>
               </td>
             </tr>
@@ -50,9 +59,9 @@
 
       <div class="row mt-3 align-items-center">
         <div class="row">
-            <div class="pagination">
-                <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
-            </div>
+          <div class="pagination">
+            <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+          </div>
         </div>
       </div>
     </div>

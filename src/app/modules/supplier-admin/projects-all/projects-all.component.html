@@ -5,7 +5,8 @@
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <div class="form-group mb-0">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input type="search" [formControl]="searchText" class="form-control control-search" placeholder="Search by BOS ID & Project Title.">
+            <input type="search" [formControl]="searchText" class="form-control control-search"
+              placeholder="Search by BOS ID & Project Title.">
           </div>
         </div>
       </div>
@@ -27,7 +28,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+
+            <tr>
+              <td *ngIf="!projectList?.length" colspan="11">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
               <td><a>{{item?.projectName}}</a></td>
               <td v-align="middle">{{item?.BOSID}}</td>
               <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
@@ -39,11 +48,13 @@
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
               <td>
-                <a class="btn btn-sm btn-primarysm"
-                    title="View Details" (click)="projectDetails(item?._id)">View Details</a>
+                <a class="btn btn-sm btn-primarysm" title="View Details" (click)="projectDetails(item?._id)">View
+                  Details</a>
 
-                <a *ngIf="item?.sortListUserId?.length > 0" class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlisted</a>
-                <a *ngIf="item?.sortListUserId?.length == 0" (click)="sortListProject(item?._id)" class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlist</a>
+                <a *ngIf="item?.sortListUserId?.length > 0" class="btn btn-sm btn-dark m-1"
+                  title="Shortlist">Shortlisted</a>
+                <a *ngIf="item?.sortListUserId?.length == 0" (click)="sortListProject(item?._id)"
+                  class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlist</a>
               </td>
             </tr>
           </tbody>
@@ -56,7 +67,7 @@
             <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
           </div>
         </div>
-    </div>
+      </div>
     </div>
   </section>
 </main>
