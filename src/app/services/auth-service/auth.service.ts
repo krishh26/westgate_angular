@@ -63,10 +63,8 @@ export class AuthService {
     return this.httpClient.get<any>(this.baseUrl + '/user/list', { params: params });
   }
 
-  getUserdata(): Observable<any> {
+  getUserData(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + AuthEndPoint.USER_DATA);
   }
-
-
 }

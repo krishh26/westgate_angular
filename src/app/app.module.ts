@@ -24,6 +24,7 @@ import { SuperAdminModule } from './modules/super-admin/super-admin.module';
 import { BidSubmissionModule } from './modules/bid-submission/bid-submission.module';
 import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project-co-ordinator.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +51,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     NgbModule,
     ProjectManagerModule,
     UkWriterModule,
+    NgSelectModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',

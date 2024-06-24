@@ -1,5 +1,6 @@
+import { NotificationService } from './../../../services/notification/notification.service';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
@@ -8,55 +9,75 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
   styleUrls: ['./boss-user-profile.component.scss']
 })
 export class BossUserProfileComponent {
-
   userData!: any;
-  userForm: FormGroup;
+  skills :any[] = [
+    {
+      id : 1,
+      name : "Organization"
+    },
+    {
+      id : 2,
+      name : "Creativity"
+    },
+    {
+      id : 3,
+      name : "Leadership"
+    },
+    {
+      id : 4,
+      name : "Team Building"
+    },
+    {
+      id : 5,
+      name : "SEO"
+    },
+    {
+      id : 6,
+      name : "Social Media"
+    },
+    {
+      id : 7,
+      name : "Content Management"
+    },
+    {
+      id : 8,
+      name : "Data Analysis"
+    }
+  ]
 
+  userDataForm = {
+    name: new FormControl("", [Validators.required,]),
+    location: new FormControl("", [Validators.required]),
+    email : new FormControl("", [Validators.required]),
+    phoneNumber : new FormControl("", [Validators.required]),
+    jobTitle : new FormControl("", [Validators.required]),
+    professionalSkill : new FormControl("", [Validators.required]),
+    reportTo : new FormControl("", [Validators.required]),
+    manages : new FormControl("", [Validators.required]),
+  };
+
+  userForm = new FormGroup(this.userDataForm, []);
 
   constructor(
-    private authservice: AuthService,
-    private fb: FormBuilder
-  ) {
-    this.userForm = this.fb.group({
-      category: [''],
-      _id: [''],
-      userName: [''],
-      email: [''],
-      designation: [''],
-      doj: ['']
-    });
-  }
+    private authService: AuthService,
+    private notificationService : NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.getUserDetails();
   }
 
   getUserDetails(): void {
-    this.authservice.getUserdata().subscribe((response: any) => {
+    this.authService.getUserData().subscribe((response: any) => {
       if (response?.status) {
-        this.userData = response?.data;
-        console.log(this.userData?.email);
-        
-        this.userForm.patchValue({
-          category: this.userData?.category,
-          _id: this.userData?._id,
-          userName: this.userData?.userName,
-          email: this.userData?.email,
-          designation: this.userData?.designation,
-          doj: this.userData?.doj
-        });
+        console.log('Chnages DOne');
       }
+    }, (error) => {
+      this.notificationService.showError(error?.error?.message || 'Error');
     });
   }
 
-  onSubmit(): void {
-    // if (this.userForm.valid) {
-    //   this.authService.updateUserdata(this.userForm.value).subscribe(response => {
-    //     console.log('Data updated successfully:', response);
-    //     alert('Profile updated successfully!');
-    //   }, error => {
-    //     console.error('Error updating data:', error);
-    //   });
-    // }
+  onSubmit() {
+    console.log('Submit Data');
   }
 }
