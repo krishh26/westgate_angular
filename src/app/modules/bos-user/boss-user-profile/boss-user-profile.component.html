@@ -105,38 +105,70 @@
             <div class="form-group">
               <label>Employee Name</label>
               <input type="text" class="form-control" formControlName="name"/>
+              <span class="text-danger"
+              *ngIf="userForm.controls.name?.touched && userForm.controls.name?.errors?.['required']">Please
+            Enter name</span>
             </div>
 
             <div class="form-group">
               <label>Location</label>
               <input type="text" class="form-control" formControlName="location"/>
+              <span class="text-danger"
+              *ngIf="userForm.controls.location?.touched && userForm.controls.location?.errors?.['required']">Please
+              Enter location</span>
             </div>
 
             <div class="form-group">
               <label>Email</label>
               <input type="email" class="form-control" formControlName="email" readonly/>
+              <span class="text-danger"
+              *ngIf="userForm.controls.email?.touched && userForm.controls.email?.errors?.['required']">Please
+              Enter email</span>
             </div>
 
             <div class="form-group">
               <label>Phone Number</label>
               <input type="text" class="form-control" formControlName="phoneNumber" />
+              <span class="text-danger"
+              *ngIf="userForm.controls.phoneNumber?.touched && userForm.controls.phoneNumber?.errors?.['required']">Please
+              Enter phoneNumber</span>
             </div>
 
             <div class="form-group">
               <label>Job Title</label>
               <input type="text" class="form-control" formControlName="jobTitle"/>
+              <span class="text-danger"
+              *ngIf="userForm.controls.jobTitle?.touched && userForm.controls.jobTitle?.errors?.['required']">Please
+              Enter jobTitle</span>
             </div>
 
             <div class="form-group">
               <label>Profession Skills</label>
               <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option" [items]="skills"
-              bindLabel="name" [multiple]="true" bindValue="id" formControlName="sector">
+              bindLabel="name" [multiple]="true" bindValue="id" formControlName="professionalSkill">
               </ng-select>
-              <!-- <span class="text-danger"
-                *ngIf="step2Form.controls.sector?.touched && step2Form.controls.sector?.errors?.['required']">Please
-              select sector</span> -->
+              <span class="text-danger"
+                *ngIf="userForm.controls.professionalSkill?.touched && userForm.controls.professionalSkill?.errors?.['required']">Please
+              select professionalSkill</span>
             </div>
-
+            <div class="form-group">
+              <label>Report to </label>
+              <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option" [items]="reportToData"
+              bindLabel="name" [multiple]="true" bindValue="id" formControlName="reportTo">
+              </ng-select>
+              <span class="text-danger"
+                *ngIf="userForm.controls.reportTo?.touched && userForm.controls.reportTo?.errors?.['required']">Please
+              select Report To</span>
+            </div>
+            <div class="form-group">
+              <label>Manages</label>
+              <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option" [items]="managesData"
+              bindLabel="name" [multiple]="true" bindValue="id" formControlName="manages">
+              </ng-select>
+              <span class="text-danger"
+              *ngIf="userForm.controls.manages?.touched && userForm.controls.manages?.errors?.['required']">Please
+            select manages</span>
+            </div>
             <!-- <div class="form-group">
               <label>My Category</label>
               <select class="form-select" formControlName="role">
@@ -168,7 +200,7 @@
                 </button> -->
                 <!-- <input type="file" name="myfile" /> -->
               </div>
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="submit" class="btn btn-primary" >Update</button>
             </div>
           </form>
         </div>

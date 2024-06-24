@@ -18,6 +18,7 @@ import { ViewDocumentComponent } from 'src/app/utility/shared/pop-ups/view-docum
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    NgSelectModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

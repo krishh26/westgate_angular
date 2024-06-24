@@ -44,6 +44,34 @@ export class BossUserProfileComponent {
       name : "Data Analysis"
     }
   ]
+  managesData :any[] = [
+    {
+      id : 1,
+      name : "Graphic designers"
+    },
+    {
+      id : 2,
+      name : "Copy Writers"
+    },
+    {
+      id : 3,
+      name : "social media marketing manager"
+    },
+  ]
+  reportToData :any[] = [
+    {
+      id : 1,
+      name : "User 1"
+    },
+    {
+      id : 2,
+      name : "User 2"
+    },
+    {
+      id : 3,
+      name : "User 3"
+    },
+  ]
 
   userDataForm = {
     name: new FormControl("", [Validators.required,]),
@@ -71,6 +99,8 @@ export class BossUserProfileComponent {
     this.authService.getUserData().subscribe((response: any) => {
       if (response?.status) {
         console.log('Chnages DOne');
+        this.userData = response.data
+        this.userForm.controls['email'].setValue(response.data.email)
       }
     }, (error) => {
       this.notificationService.showError(error?.error?.message || 'Error');
@@ -78,6 +108,17 @@ export class BossUserProfileComponent {
   }
 
   onSubmit() {
-    console.log('Submit Data');
+    if(!this.userForm.valid) {
+      this.userForm.markAllAsTouched();
+      return
+    }
+    console.log('this.userForm.value :', this.userForm.value);
+    this.authService.updateUser(this.userData._id,this.userForm.value).subscribe((response: any) => {
+      if (response?.status) {
+      console.log('response :', response);
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.error?.message || 'Error');
+    });
   }
 }

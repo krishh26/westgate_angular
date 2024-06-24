@@ -10,7 +10,8 @@ export enum AuthEndPoint {
   CHANGE_PASSWORD = '/user/change-password/',
   FORGOT_PASSWORD = '/user/forgot',
   USER_LIST = '/user/list',
-  USER_DATA = '/user/get'
+  USER_DATA = '/user/get',
+  UPDATE_USER = '/user/update',
 }
 
 @Injectable({
@@ -66,5 +67,10 @@ export class AuthService {
   getUserData(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + AuthEndPoint.USER_DATA);
+  }
+  
+  updateUser(userId:string,payload: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + AuthEndPoint.UPDATE_USER + `/${userId}`, payload);
   }
 }
