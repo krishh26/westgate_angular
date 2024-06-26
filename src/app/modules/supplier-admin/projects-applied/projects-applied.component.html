@@ -5,7 +5,8 @@
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <div class="form-group mb-0">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control control-search" placeholder="Search by BOS ID & Project Title." [formControl]="searchText">
+            <input type="search" class="form-control control-search" placeholder="Search by BOS ID & Project Title."
+              [formControl]="searchText">
           </div>
         </div>
         <div class="col-lg-2 col-xl-2 col-12">
@@ -34,7 +35,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+
+            <tr>
+              <td *ngIf="!projectList?.length" colspan="11">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
               <td><a>{{item?.projectName}}</a></td>
               <td v-align="middle">{{item?.BOSID}}</td>
               <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
@@ -45,8 +54,10 @@
               <td>{{item?.status}}</td>
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td>
-                <a class="btn btn-sm btn-primary m-1" title="View Details" (click)="projectDetails(item?._id)">View Details</a>
-                <a routerLink="/supplier-admin/chat" class="btn btn-sm btn-primary m-1" title="Shortlist"><i class="bi bi-chat-dots"></i> Chat</a>
+                <a class="btn btn-sm btn-primary m-1" title="View Details" (click)="projectDetails(item?._id)">View
+                  Details</a>
+                <a routerLink="/supplier-admin/chat" class="btn btn-sm btn-primary m-1" title="Shortlist"><i
+                    class="bi bi-chat-dots"></i> Chat</a>
               </td>
             </tr>
           </tbody>
@@ -55,9 +66,9 @@
 
       <div class="row mt-3 align-items-center">
         <div class="row">
-            <div class="pagination">
-                <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
-            </div>
+          <div class="pagination">
+            <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+          </div>
         </div>
       </div>
     </div>

@@ -24,6 +24,13 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr>
+                            <td *ngIf="!manageUserList?.length" colspan="8">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+
                         <tr
                             *ngFor="let item of manageUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                             <td>
