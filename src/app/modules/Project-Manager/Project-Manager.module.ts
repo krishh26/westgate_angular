@@ -16,6 +16,8 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-detail/project-manager-summary-detail.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ProjectMangerProfileComponent } from './project-manger-profile/project-manger-profile.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,8 @@ import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    NgSelectModule
   ],
   declarations: [
     ProjectManagerComponent,
@@ -38,7 +41,8 @@ import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-
     AllProjectDetailsComponent,
     MatchProjectDetailsComponent,
     ProjectCloseDetailsComponent,
-    ProjectManagerSummaryDetailComponent
+    ProjectManagerSummaryDetailComponent,
+    ProjectMangerProfileComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]

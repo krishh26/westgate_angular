@@ -16,8 +16,8 @@
             class="btn btn-sm btn-secondary fonts-12 rounded-pill px-4">Closed</button></li> -->
         <ul>
           <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
-            <button [ngClass]="{'btn btn-sm fonts-12 rounded-pill px-4 me-3': true, 
-                               'btn-primary': router.url.includes(item.route), 
+            <button [ngClass]="{'btn btn-sm fonts-12 rounded-pill px-4 me-3': true,
+                               'btn-primary': router.url.includes(item.route),
                                'btn-secondary': !router.url.includes(item.route)}" [routerLink]="item.route">
               <span>{{ item.title }}</span>
             </button>
@@ -32,7 +32,7 @@
               <span>{{loginUser?.userName}}</span>  <i class="bi bi-chevron-down"></i>
             </a>
             <ul>
-              <li><a routerLink="/project-manager/dashboard">Profile Seting</a></li>
+              <li><a href="javascript:;" routerLink="/project-manager/profile">Profile Setting</a></li>
               <li><a style="cursor: pointer;" (click)="logout()">Logout</a></li>
             </ul>
           </li>

@@ -13,9 +13,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writer-supplier-list.component';
-
-
-
+import { UkWriterProfileComponent } from './uk-writer-profile/uk-writer-profile.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   declarations: [
     UkWriterComponent,
@@ -26,7 +25,8 @@ import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writ
     UkWriterProjectsDetailsComponent,
     UkWriterQuestionDetailsEditComponent,
     UkWriterQuestionDetailsEditComponent,
-    UkWriterSupplierListComponent
+    UkWriterSupplierListComponent,
+    UkWriterProfileComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +35,8 @@ import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writ
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    UkWriterRoutingModule
+    UkWriterRoutingModule,
+    NgSelectModule
   ]
 })
 export class UkWriterModule { }

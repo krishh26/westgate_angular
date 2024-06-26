@@ -14,9 +14,8 @@ import { FeasibilityProjectsListComponent } from './feasibility-projects-list/fe
 import { FeasibilityAnalystComponent } from './feasibility-analyst.component';
 import { FeasibilityHeaderComponent } from 'src/app/utility/shared/components/feasibility-header/feasibility-header.component';
 import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
-
-
-
+import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -28,7 +27,8 @@ import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
         AddLoginDetailsComponent,
         FeasibilityProjectsListComponent,
         FeasibilityHeaderComponent,
-        TruncatePipe 
+        TruncatePipe,
+        FeasibilityProfileComponent
     ],
     imports: [
         CommonModule,
@@ -38,6 +38,7 @@ import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
+        NgSelectModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

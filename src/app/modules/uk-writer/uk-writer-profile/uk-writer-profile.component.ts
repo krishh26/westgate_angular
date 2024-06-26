@@ -1,14 +1,14 @@
-import { NotificationService } from './../../../services/notification/notification.service';
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
-  selector: 'app-boss-user-profile',
-  templateUrl: './boss-user-profile.component.html',
-  styleUrls: ['./boss-user-profile.component.scss']
+  selector: 'app-uk-writer-profile',
+  templateUrl: './uk-writer-profile.component.html',
+  styleUrls: ['./uk-writer-profile.component.scss']
 })
-export class BossUserProfileComponent {
+export class UkWriterProfileComponent implements OnInit {
   userData!: any;
   skills: any[] = [
     {

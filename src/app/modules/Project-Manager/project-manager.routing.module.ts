@@ -9,6 +9,7 @@ import { AllProjectDetailsComponent } from './all-project-details/all-project-de
 import { MatchProjectDetailsComponent } from './match-project-details/match-project-details.component';
 import { ProjectCloseDetailsComponent } from './project-close-details/project-close-details.component';
 import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-detail/project-manager-summary-detail.component';
+import { ProjectMangerProfileComponent } from './project-manger-profile/project-manger-profile.component';
 
 const routes: Routes = [
   {
@@ -50,9 +51,13 @@ const routes: Routes = [
     ]
   },
   {
+    path: "profile",
+    component: ProjectMangerProfileComponent
+  },
+  {
     path: "**",
     pathMatch: "full",
-    redirectTo: ""
+    redirectTo: "dashboard"
   }
 ];
 

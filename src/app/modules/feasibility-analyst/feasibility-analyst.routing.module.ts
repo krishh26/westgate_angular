@@ -7,6 +7,7 @@ import { MinimumEligibilityFormComponent } from './minimum-eligibility-form/mini
 import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-note-questions.component';
 import { FeasibilityLoginDetailsComponent } from './feasibility-login-details/feasibility-login-details.component';
 import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
+import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
 
 const routes: Routes = [
     {
@@ -36,6 +37,10 @@ const routes: Routes = [
             {
                 path: "add-login-detail",
                 component: AddLoginDetailsComponent
+            },
+            {
+              path: "profile",
+              component: FeasibilityProfileComponent
             },
         ]
     },

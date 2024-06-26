@@ -8,6 +8,7 @@ import { UkWriterProjectsDetailsComponent } from './uk-writer-projects-details/u
 import { UkWriterProjectsAllComponent } from './uk-writer-projects-all/uk-writer-projects-all.component';
 import { UkWriterMatchedProjectsComponent } from './uk-writer-matched-projects/uk-writer-matched-projects.component';
 import { UkWriterSupplierListComponent } from './uk-writer-supplier-list/uk-writer-supplier-list.component';
+import { UkWriterProfileComponent } from './uk-writer-profile/uk-writer-profile.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: "uk-writer-supplier-list",
         component: UkWriterSupplierListComponent
+      },
+      {
+        path: "profile",
+        component: UkWriterProfileComponent
       },
     ]
   },
