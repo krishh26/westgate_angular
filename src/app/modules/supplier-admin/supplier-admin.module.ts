@@ -31,7 +31,7 @@ import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-
 import { FooterComponent } from 'src/app/utility/shared/components/footer/footer.component';
 import { ProjectDetailsForAppliedComponent } from './project-details-for-applied/project-details-for-applied.component';
 import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -71,6 +71,7 @@ import { QuestionAnswerDetailsComponent } from './question-answer-details/questi
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgSelectModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

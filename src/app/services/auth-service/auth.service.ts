@@ -11,6 +11,7 @@ export enum AuthEndPoint {
   FORGOT_PASSWORD = '/user/forgot',
   USER_LIST = '/user/list',
   USER_DATA = '/user/get',
+  SUPPLIER_USER_DATA = "/web-user/get",
   UPDATE_USER = '/user/update',
 }
 
@@ -68,7 +69,13 @@ export class AuthService {
     return this.httpClient
       .get<any>(this.baseUrl + AuthEndPoint.USER_DATA);
   }
-  
+
+  // Function to get supplier admin data
+  getSupplierAdminUserData(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + AuthEndPoint.SUPPLIER_USER_DATA);
+  }
+
   updateUser(userId:string,payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + AuthEndPoint.UPDATE_USER + `/${userId}`, payload);
