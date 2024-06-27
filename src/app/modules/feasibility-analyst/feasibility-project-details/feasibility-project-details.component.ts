@@ -21,23 +21,26 @@ export class FeasibilityProjectDetailsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
-  clientDocument:any[]= [];
-  loginDetailDocument:any[]= [];
+  clientDocument: any[] = [];
+  loginDetailDocument: any[] = [];
   subContractDocument: any;
   economicalPartnershipQueryFile: any;
   economicalPartnershipResponceFile: any;
-  viewClientDocumentForm:boolean = true;
-  viewLoginForm:boolean = true;
-  documentName:string = "";
-  loginName:string = "";
+  viewClientDocumentForm: boolean = true;
+  viewLoginForm: boolean = true;
+  documentName: string = "";
+  loginName: string = "";
   isEditing = false;
+  status: string = "Expired";
+  statusComment: FormControl = new FormControl('');
+  failStatusReason: FormControl = new FormControl('');
 
-  documentUploadType : any = {
-    subContractDocument : 'SubContract',
-    economicalPartnershipQuery : 'economicalPartnershipQuery',
-    economicalPartnershipResponse : 'economicalPartnershipResponse',
-    clientDocument : 'clientDocument',
-    loginDetailDocument : 'loginDetailDocument'
+  documentUploadType: any = {
+    subContractDocument: 'SubContract',
+    economicalPartnershipQuery: 'economicalPartnershipQuery',
+    economicalPartnershipResponse: 'economicalPartnershipResponse',
+    clientDocument: 'clientDocument',
+    loginDetailDocument: 'loginDetailDocument'
   }
 
   // For check bov
@@ -50,8 +53,7 @@ export class FeasibilityProjectDetailsComponent {
     password: new FormControl("", Validators.required),
   }
 
-  loginDetailForm:FormGroup = new FormGroup(this.loginDetailControl);
-
+  loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
 
   constructor(
     private projectService: ProjectService,
@@ -74,6 +76,8 @@ export class FeasibilityProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.status = this.projectDetails?.status;
+        this.statusComment.setValue(this.projectDetails?.statusComment);
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -82,6 +86,10 @@ export class FeasibilityProjectDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  statusChange(status: string) {
+    this.status = status;
   }
 
   openDocument(data: any) {
@@ -103,10 +111,10 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   summaryDetail() {
-    if(!this.projectDetails?.clientDocument.length){
+    if (!this.projectDetails?.clientDocument.length) {
       return this.notificationService.showError('Upload Client Document');
     }
-    if(!this.projectDetails?.loginDetail.length){
+    if (!this.projectDetails?.loginDetail.length) {
       return this.notificationService.showError('Upload Login Detail');
     }
     this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
@@ -120,17 +128,17 @@ export class FeasibilityProjectDetailsComponent {
       data.append('files', file);
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
         if (response?.status) {
-          if(type == this.documentUploadType.subContractDocument) {
+          if (type == this.documentUploadType.subContractDocument) {
             this.subContractDocument = response?.data;
           }
-          if(type == this.documentUploadType.economicalPartnershipQuery) {
+          if (type == this.documentUploadType.economicalPartnershipQuery) {
             this.economicalPartnershipQueryFile = response?.data;
           }
-          if(type == this.documentUploadType.economicalPartnershipResponse) {
+          if (type == this.documentUploadType.economicalPartnershipResponse) {
             this.economicalPartnershipResponceFile = response?.data;
           }
-          if(type == this.documentUploadType.clientDocument) {
-            if(!this.documentName){
+          if (type == this.documentUploadType.clientDocument) {
+            if (!this.documentName) {
               return this.notificationService.showError('Enter a client document Name');
             }
             this.clientDocument = response?.data;
@@ -141,8 +149,8 @@ export class FeasibilityProjectDetailsComponent {
             this.projectDetails.clientDocument.push(objToBePused);
             this.documentName = ""
           }
-          if(type == this.documentUploadType.loginDetailDocument) {
-            if(!this.loginName){
+          if (type == this.documentUploadType.loginDetailDocument) {
+            if (!this.loginName) {
               return this.notificationService.showError('Enter Name');
             }
             this.loginDetailDocument = response?.data;
@@ -163,19 +171,19 @@ export class FeasibilityProjectDetailsComponent {
     }
   }
 
-  hideShowForm(){
+  hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
   }
 
 
-  viewLoginDetail(loginData:any){
+  viewLoginDetail(loginData: any) {
     this.loginDetailForm.patchValue(loginData)
   }
 
-  addLoginInfo(){
+  addLoginInfo() {
     const dataToBePushed = {
       name: this.loginName,
-      data:this.loginDetailForm.value
+      data: this.loginDetailForm.value
     }
     this.projectDetails.loginDetail.push(dataToBePushed)
     this.loginName = ''
@@ -186,10 +194,21 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   saveChanges() {
+    if (this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') {
+      return this.notificationService.showError('Please Enter Status Comment');
+    }
+
+    if (this.status == 'Expired') {
+      return this.notificationService.showError('Please Select Status Comment');
+    }
+
     const payload = {
       periodOfContractStart: this.projectDetails.periodOfContractStart,
       periodOfContractEnd: this.projectDetails.periodOfContractEnd,
-      projectType: this.projectDetails.projectType
+      projectType: this.projectDetails.projectType,
+      status: this.status || "",
+      statusComment: this.statusComment?.value || "",
+      failStatusReason: [this.failStatusReason?.value]
     };
 
     this.projectService.editProject(this.projectDetails._id, payload).subscribe(

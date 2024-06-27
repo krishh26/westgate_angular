@@ -59,7 +59,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-9 col-xl-9 col-12">
                     <div class="row">
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
                                 <label class="display-block">Sub-contracting</label>
                                 <div class="upload-btn-wrapper">
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
                                 <label class="display-block">Economical partnership</label>
                                 <div class="upload-btn-wrapper">
@@ -85,9 +85,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
-                                <label class="display-block">other</label>
+                                <label class="display-block">Other</label>
+                                <br>
                                 <div class="upload-btn-wrapper">
                                     <label class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                                         Upload Query Image</label>
@@ -95,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <!-- <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
                             <div class="form-group">
                                 <label class="display-block">&nbsp;</label>
                                 <div class="upload-btn-wrapper">
@@ -106,10 +107,10 @@
                                     <input type="file" name="myfile" style="height: 5px; width: 5px;">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row">
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-check form-check-inline mt-3">
                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
                                     value="option1">
@@ -121,7 +122,7 @@
                                 <label class="form-check-label" for="inlineRadio2">No</label>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
                                 <div class="upload-btn-wrapper">
                                     <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
@@ -133,7 +134,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
                                 <div class="upload-btn-wrapper">
                                     <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
@@ -142,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+                        <!-- <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
                             <div class="form-group">
                                 <div class="upload-btn-wrapper">
                                     <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
@@ -150,7 +151,7 @@
                                     <input type="file" name="myfile" style="height: 5px; width: 5px;">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-3 col-xl-3 col-12">
@@ -363,35 +364,35 @@
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="option1">
+                                value="InProgress" (change)="statusChange('InProgress')" [checked]="status == 'InProgress'" >
                             <label class="form-check-label" for="inlineRadio1">In-Progress</label>
                         </div>
-                        <input type="text" class="form-control" placeholder="Comments for In-Progress" />
+                        <input *ngIf="this.status == 'InProgress'" type="text" class="form-control" placeholder="Comments for In-Progress" [formControl]="statusComment" />
                     </div>
                     <div class="form-group">
                         <div class="row align-items-center">
                             <div class="col-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                        id="inlineRadio1" value="option1">
+                                        id="inlineRadio1" value="InHold" (change)="statusChange('InHold')" [checked]="status == 'InHold'">
                                     <label class="form-check-label" for="inlineRadio1">In-Hold</label>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6" *ngIf="this.status == 'InHold'">
                                 <input type="date" class="form-control" placeholder="Date" />
                             </div>
-                            <div class="col-12">
-                                <input type="text" class="form-control" placeholder="Comments for In-Hold" />
+                            <div class="col-12" *ngIf="this.status == 'InHold'">
+                                <input type="text" class="form-control" placeholder="Comments for In-Hold" [formControl]="statusComment"/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="option1">
+                                value="Won" (change)="statusChange('Won')" [checked]="status == 'Won'">
                             <label class="form-check-label text-success" for="inlineRadio1">Pass</label>
                         </div>
-                        <input type="text" class="form-control" placeholder="Comments for Pass" />
+                        <input *ngIf="this.status == 'Won'" type="text" class="form-control" placeholder="Comments for Pass" [formControl]="statusComment"/>
                     </div>
                 </div>
 
@@ -402,28 +403,28 @@
                             <div class="col-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                        id="inlineRadio1" value="option1">
+                                        id="inlineRadio1" value="Expired" (change)="statusChange('Expired')"  [checked]="status == 'Expired'">
                                     <label class="form-check-label text-danger" for="inlineRadio1">Fail</label>
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="col-8" *ngIf="this.status == 'Expired'">
                                 <div class="upload-btn-wrapper">
-                                    <button class="btn-upload-file"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                        Upload Document</button>
-                                    <input type="file" name="myfile">
+                                    <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload Document</label>
+                                    <input type="file" name="myfile" id="failedReson" style="height: 5px; width: 5px;">
                                 </div>
                             </div>
-                            <div class="col-12 mt-3">
-                                <select class="form-select">
+                            <div class="col-12 mt-3" *ngIf="this.status == 'Expired'">
+                                <select class="form-select" [formControl]="failStatusReason">
                                     <option  disabled selected hidden value="">Select Failed Reason</option>
-                                    <option value="accreditation">Accreditation</option>
-                                    <option value="timeconstraints">Time Constraints</option>
-                                    <option value="certification">Certification</option>
-                                    <option value="casestudy">Casestudy</option>
-                                    <option value="cerficationsfromsubcontractor">Cerfications from Subcontractor</option>
-                                    <option value="deliveryofgoodshardware">Delivery of goods/Hardware</option>
-                                    <option value="financialconditions">Financial Conditions</option>
-                                    <option value="notrelated">Not related</option>
+                                    <option value="Accreditation">Accreditation</option>
+                                    <option value="Time Constraints">Time Constraints</option>
+                                    <option value="Certification">Certification</option>
+                                    <option value="Case Study">Case Study</option>
+                                    <option value="Certifications from Subcontractor">Certifications from Subcontractor</option>
+                                    <option value="Delivery of goods/Hardware">Delivery of goods/Hardware</option>
+                                    <option value="Financial Conditions">Financial Conditions</option>
+                                    <option value="Not related">Not related</option>
                                 </select>
                             </div>
                         </div>
