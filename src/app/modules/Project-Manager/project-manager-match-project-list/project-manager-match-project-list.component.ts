@@ -35,7 +35,8 @@ export class ProjectManagerMatchProjectListComponent implements OnInit{
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    // Payload.projectList.match = 'perfect';
+    Payload.projectList.status = '';
+    Payload.projectList.sortlist = false;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = 0;

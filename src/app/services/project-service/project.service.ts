@@ -98,7 +98,7 @@ export class ProjectService {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
   }
-  
+
   addSupplier(supplierId:any,payload:any){
     return this.httpClient
      .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`,payload, {

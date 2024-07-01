@@ -55,7 +55,7 @@ const routes: Routes = [
         component: PmCaseStudiesComponent
       },
       {
-        path: "shortlisted-projects",
+        path: "shortlisted",
         component: PmShortlistedProjectsComponent
       },
     ]

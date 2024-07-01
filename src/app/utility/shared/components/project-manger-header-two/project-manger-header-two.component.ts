@@ -22,7 +22,8 @@ export class ProjectMangerHeaderTwoComponent {
   navUrlArr = [
     { route: '/project-manager/project/all', title: 'All' },
     { route: '/project-manager/project/match', title: 'Matched' },
-    { route: '/project-manager/project/close', title: 'Closed' }
+    { route: '/project-manager/project/close', title: 'Closed' },
+    { route: '/project-manager/project/shortlisted', title: 'SortListed' }
   ];
 
 
