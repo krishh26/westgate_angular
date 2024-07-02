@@ -20,6 +20,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ProjectMangerProfileComponent } from './project-manger-profile/project-manger-profile.component';
 import { PmShortlistedProjectsComponent } from 'src/app/modules/Project-Manager/pm-shortlisted-projects/pm-shortlisted-projects.component';
 import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-studies/pm-case-studies.component';
+import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-
     ProjectManagerSummaryDetailComponent,
     ProjectMangerProfileComponent,
     PmShortlistedProjectsComponent,
-    PmCaseStudiesComponent
+    PmCaseStudiesComponent,
+    SummaryNotesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]

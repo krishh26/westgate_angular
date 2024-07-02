@@ -170,4 +170,8 @@ export class MatchProjectDetailsComponent {
   getSkill(index: number) {
     return this.skills.at(index) as FormControl;
   }
+
+  goToSummaryDetails() {
+    this.router.navigate(['/project-manager/project/summary-notes'], { queryParams: { id: this.projectId } });
+  }
 }
