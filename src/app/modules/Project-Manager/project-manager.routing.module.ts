@@ -12,6 +12,7 @@ import { ProjectManagerSummaryDetailComponent } from './project-manager-summary-
 import { ProjectMangerProfileComponent } from './project-manger-profile/project-manger-profile.component';
 import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-studies/pm-case-studies.component';
 import { PmShortlistedProjectsComponent } from 'src/app/modules/Project-Manager/pm-shortlisted-projects/pm-shortlisted-projects.component';
+import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: "shortlisted",
         component: PmShortlistedProjectsComponent
+      },
+      {
+        path: "summary-notes",
+        component: SummaryNotesComponent
       },
     ]
   },
