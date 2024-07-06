@@ -30,6 +30,10 @@ export class MatchProjectDetailsComponent {
   myForm: FormGroup | undefined;
   skills: any;
   // skills: FormArray;
+  companyDetails: any = [
+    "Delphi Services Limited", "Spectrum IT Hub Limited", "Apex IT Solutions", "Big Data Limited", "Saiwen"
+  ]
+
 
   constructor(
     private projectService: ProjectService,
@@ -46,8 +50,6 @@ export class MatchProjectDetailsComponent {
 
     this.loginUser = this.localStorageService.getLogger();
   }
-
-
 
   ngOnInit(): void {
     this.getProjectDetails();
@@ -157,7 +159,6 @@ export class MatchProjectDetailsComponent {
       }
     })
   }
-
 
   addSkill() {
     this.skills?.push(this.fb.control(''));

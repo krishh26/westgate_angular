@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -19,7 +19,8 @@ export class SummaryNotesComponent implements OnInit {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private router : Router
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -49,5 +50,10 @@ export class SummaryNotesComponent implements OnInit {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  openSummaryDetail(item:any){
+    localStorage.setItem('ViewSummary', JSON.stringify(item));
+    this.router.navigate(['/project-manager/project/summary-project-details']);
   }
 }

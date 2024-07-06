@@ -56,7 +56,7 @@
 </main>
 <!-- End #main -->
 
-<section class="pt-4">
+<section class="pt-4" style="padding-bottom: 10px;">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -172,16 +172,8 @@
     </div>
   </div>
 </section>
-<div>
-  <button
-    (click)="goToSummaryDetails()"
-    class="btn btn-sm btn-primary px-4 py-1 me-3"
-    style="white-space: nowrap; font-size: 11px"
-  >
-    Add Summary Details
-  </button>
-</div>
-<section>
+
+<section style="padding-top: 10px; padding-bottom: 10px;">
   <div class="table-responsive match-detail">
     <table class="table bg-f9 mb-0 align-middle">
       <thead>
@@ -209,9 +201,9 @@
                   class="form-select-sm fonts-12"
                   [(ngModel)]="selectedSuppliers[supplier._id].company"
                 >
-                  <option selected>Supplier company 1</option>
-                  <option>Supplier company 2</option>
-                  <option>Supplier company 3</option>
+                  <ng-container *ngFor="let company of companyDetails">
+                    <option [value]="company">{{ company }}</option>
+                  </ng-container>
                 </select>
               </td>
               <td>
@@ -230,12 +222,12 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <button
+                  <!-- <button
                     class="btn btn-sm btn-primary px-4 py-1 me-3"
                     style="white-space: nowrap; font-size: 11px"
                   >
                     View Supplier Response
-                  </button>
+                  </button> -->
                   <button
                     class="btn btn-sm btn-primary px-4 py-1"
                     style="white-space: nowrap; font-size: 11px"
@@ -281,13 +273,13 @@
                     </td>
                     <td colspan="3">
                       <div class="d-flex align-items-center bg-transparent">
-                        <button
+                        <!-- <button
                           (click)="addSupplier(supplier._id)"
                           class="btn btn-sm btn-success px-5 py-1 me-3"
                           style="white-space: nowrap; font-size: 11px"
                         >
                           Add
-                        </button>
+                        </button> -->
                       </div>
                     </td>
                     <td></td>
@@ -336,6 +328,15 @@
     </table>
   </div>
 </section>
+<div style="display: flex; align-items: end; justify-content: end;">
+  <button
+    (click)="goToSummaryDetails()"
+    class="btn btn-sm btn-primary px-4 py-1 me-3"
+    style="white-space: nowrap; font-size: 11px"
+  >
+    Add Summary Details
+  </button>
+</div>
 
 <!-- View Screenshot Modal -->
 <div

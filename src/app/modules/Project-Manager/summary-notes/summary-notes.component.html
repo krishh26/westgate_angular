@@ -25,6 +25,7 @@
             </tr>
           </thead>
           <tbody>
+            <ng-container *ngIf="summaryQuestionList?.length else noRecordForSupplier">
             <ng-container *ngFor="let item of summaryQuestionList">
               <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
                 <td class="text-white" width="350">{{ item?.question }}</td>
@@ -42,21 +43,26 @@
                 </td>
                 <td class="text-white">Ayush</td>
                 <td class="text-white">
-                  <a
-                    href="question-details.html"
+                  <button
+                    (click)="openSummaryDetail(item)"
                     class="btn rounded bg-white text-dark fonts-12 w-100"
-                    ><i class="bi bi-eye-fill"></i> View Response</a
-                  >
+                    ><i class="bi bi-eye-fill"></i> View Response</button>
                 </td>
                 <td class="text-white">
-                  <a
-                    href="question-details.html"
+                  <button (click)="openSummaryDetail(item)"
                     class="btn btn-primary rounded fonts-12 w-100"
-                    ><i class="bi bi-eye-fill"></i> View Question</a
-                  >
+                    ><i class="bi bi-eye-fill"></i> View Question</button>
                 </td>
               </tr>
             </ng-container>
+          </ng-container>
+          <ng-template #noRecordForSupplier>
+            <tr>
+              <td colspan="6" style="text-align: center;">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+          </ng-template>
           </tbody>
         </table>
       </div>
@@ -115,6 +121,7 @@
             </tr>
           </thead>
           <tbody class="text-dark">
+            <ng-container *ngIf="summaryQuestionList?.length else noRecordForUk">
             <ng-container *ngFor="let item of summaryQuestionList">
               <tr *ngIf="item?.summaryQuestionFor == 'UKWriter'">
                 <td class="text-dark" width="350">{{ item?.question }}</td>
@@ -131,22 +138,27 @@
                   {{ item?.createdAt | date : "dd-MM-YYY" }}
                 </td>
                 <td class="text-dark">Ayush</td>
-                <td class="text-dark">
-                  <a
-                    href="question-details.html"
+                <td class="text-white">
+                  <button
+                    (click)="openSummaryDetail(item)"
                     class="btn rounded bg-white text-dark fonts-12 w-100"
-                    ><i class="bi bi-eye-fill"></i> View Response</a
-                  >
+                    ><i class="bi bi-eye-fill"></i> View Response</button>
                 </td>
                 <td class="text-white">
-                  <a
-                    href="question-details.html"
+                  <button (click)="openSummaryDetail(item)"
                     class="btn btn-primary rounded fonts-12 w-100"
-                    ><i class="bi bi-eye-fill"></i> View Question</a
-                  >
+                    ><i class="bi bi-eye-fill"></i> View Question</button>
                 </td>
               </tr>
             </ng-container>
+          </ng-container>
+          <ng-template #noRecordForUk>
+            <tr>
+              <td colspan="7" style="text-align: center;">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+          </ng-template>
           </tbody>
         </table>
       </div>
