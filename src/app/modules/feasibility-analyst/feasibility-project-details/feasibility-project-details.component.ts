@@ -34,17 +34,20 @@ export class FeasibilityProjectDetailsComponent {
   status: string = "Expired";
   statusComment: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
+  FeasibilityOtherDocuments: any = [];
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
     economicalPartnershipResponse: 'economicalPartnershipResponse',
     clientDocument: 'clientDocument',
-    loginDetailDocument: 'loginDetailDocument'
+    loginDetailDocument: 'loginDetailDocument',
+    otherQueryDocument: 'otherQueryDocument',
+    otherDocument: 'otherDocument'
   }
 
   // For check bov
-  subContracting: FormControl = new FormControl();
+  subContracting: boolean = true;
 
   loginDetailControl = {
     companyName: new FormControl("", Validators.required),
@@ -77,6 +80,7 @@ export class FeasibilityProjectDetailsComponent {
         this.showLoader = false;
         this.projectDetails = response?.data;
         this.status = this.projectDetails?.status;
+        this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
       } else {
         this.notificationService.showError(response?.message);
@@ -90,6 +94,15 @@ export class FeasibilityProjectDetailsComponent {
 
   statusChange(status: string) {
     this.status = status;
+  }
+
+  // Function for subcontract
+  subContactChange(value: string) {
+    if (value == 'true') {
+      this.subContracting = true;
+    } else {
+      this.subContracting = false;
+    }
   }
 
   openDocument(data: any) {
@@ -110,14 +123,17 @@ export class FeasibilityProjectDetailsComponent {
       });
   }
 
-  summaryDetail() {
+  summaryDetail(type: string) {
     if (!this.projectDetails?.clientDocument.length) {
       return this.notificationService.showError('Upload Client Document');
     }
     if (!this.projectDetails?.loginDetail.length) {
       return this.notificationService.showError('Upload Login Detail');
     }
-    this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+    this.saveChanges();
+    if (type == 'next') {
+      this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+    }
   }
 
   // upload Sub Contract
@@ -161,6 +177,15 @@ export class FeasibilityProjectDetailsComponent {
             this.projectDetails.loginDetail.push(objToBePused);
             this.loginName = ""
           }
+          if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
+            // this.loginDetailDocument = response?.data;
+            let objToBePused = {
+              name: this.loginName,
+              file: response?.data
+            }
+            this.FeasibilityOtherDocuments.push(objToBePused);
+            this.loginName = ""
+          }
           return this.notificationService.showSuccess(response?.message);
         } else {
           return this.notificationService.showError(response?.message);
@@ -174,7 +199,6 @@ export class FeasibilityProjectDetailsComponent {
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
   }
-
 
   viewLoginDetail(loginData: any) {
     this.loginDetailForm.patchValue(loginData)
@@ -208,7 +232,13 @@ export class FeasibilityProjectDetailsComponent {
       projectType: this.projectDetails.projectType,
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
-      failStatusReason: [this.failStatusReason?.value]
+      failStatusReason: [this.failStatusReason?.value] || "",
+      subContracting: this.subContracting || "",
+      loginDetail: this.projectDetails.loginDetail || "",
+      FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
+      economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
+      economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+      subContractDocument: this.subContractDocument || [],
     };
 
     this.projectService.editProject(this.projectDetails._id, payload).subscribe(

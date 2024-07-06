@@ -26,34 +26,36 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let item of summaryQuestionList">
-            <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
-              <td class="text-white" width="350">{{ item?.question }}</td>
-              <td class="text-white">{{ item?.weightage }}%</td>
-              <td class="text-white">
-                <ng-container *ngIf="!item?.verify">
-                  Not Verified
-                </ng-container>
-                <ng-container class="text-success" *ngIf="item?.verify">
-                  Verified
-                </ng-container>
-              </td>
-              <td class="text-white"> {{ item?.createdAt | date : 'dd-MM-YYY' }} </td>
-              <td class="text-white">Ayush</td>
-              <td class="text-white">
-                <a
-                  href="question-details.html"
-                  class="btn rounded bg-white text-dark fonts-12 w-100"
-                  ><i class="bi bi-eye-fill"></i> View Response</a
-                >
-              </td>
-              <td class="text-white">
-                <a
-                  href="question-details.html"
-                  class="btn btn-primary rounded fonts-12 w-100"
-                  ><i class="bi bi-eye-fill"></i> View Question</a
-                >
-              </td>
-            </tr>
+              <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
+                <td class="text-white" width="350">{{ item?.question }}</td>
+                <td class="text-white">{{ item?.weightage }}%</td>
+                <td class="text-white">
+                  <ng-container *ngIf="!item?.verify">
+                    Not Verified
+                  </ng-container>
+                  <ng-container class="text-success" *ngIf="item?.verify">
+                    Verified
+                  </ng-container>
+                </td>
+                <td class="text-white">
+                  {{ item?.createdAt | date : "dd-MM-YYY" }}
+                </td>
+                <td class="text-white">Ayush</td>
+                <td class="text-white">
+                  <a
+                    href="question-details.html"
+                    class="btn rounded bg-white text-dark fonts-12 w-100"
+                    ><i class="bi bi-eye-fill"></i> View Response</a
+                  >
+                </td>
+                <td class="text-white">
+                  <a
+                    href="question-details.html"
+                    class="btn btn-primary rounded fonts-12 w-100"
+                    ><i class="bi bi-eye-fill"></i> View Question</a
+                  >
+                </td>
+              </tr>
             </ng-container>
           </tbody>
         </table>
@@ -125,7 +127,9 @@
                     Verified
                   </ng-container>
                 </td>
-                <td class="text-dark"> {{ item?.createdAt | date : 'dd-MM-YYY' }} </td>
+                <td class="text-dark">
+                  {{ item?.createdAt | date : "dd-MM-YYY" }}
+                </td>
                 <td class="text-dark">Ayush</td>
                 <td class="text-dark">
                   <a
@@ -142,37 +146,10 @@
                   >
                 </td>
               </tr>
-              </ng-container>
+            </ng-container>
           </tbody>
         </table>
       </div>
-      <!-- <div class="col-lg-5 col-xl-5 col-12 mb-4">
-            <table class="table table-dark table-borderless">
-              <thead>
-                <tr>
-                  <th>Review Note</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> dolor sit amet, consectetur......</td>
-                  <td><a href="question-details.html" class="btn btn-small rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td><a href="question-details.html" class="btn btn-small rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-                <tr>
-                  <td> dolor sit amet, consectetur......</td>
-                  <td><a href="question-details.html" class="btn btn-small rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td><a href="question-details.html" class="btn btn-small  rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-                <tr>
-                  <td> dolor sit amet, consectetur......</td>
-                  <td><a href="question-details.html" class="btn btn-small rounded bg-white text-dark fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Response</a></td>
-                  <td><a href="question-details.html" class="btn btn-small rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
     </div>
   </div>
 </section>

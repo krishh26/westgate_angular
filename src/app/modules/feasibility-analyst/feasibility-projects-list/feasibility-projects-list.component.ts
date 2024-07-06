@@ -40,6 +40,7 @@ export class FeasibilityProjectsListComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
+  statusList: any = ["Awaiting", "InHold", "Pass", "Fail"];
 
   constructor(
     private projectService: ProjectService,
@@ -56,7 +57,6 @@ export class FeasibilityProjectsListComponent {
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
-
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -178,8 +178,6 @@ export class FeasibilityProjectsListComponent {
 
   toggleEditMode(item: any) {
     item.isEditing = !item.isEditing;
-    if (!item.isEditing) {
-    }
   }
 
   saveProject(item: Project) {
@@ -199,7 +197,8 @@ export class FeasibilityProjectsListComponent {
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
-          window.location.reload();
+          // window.location.reload();
+          this.getProjectList();
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
@@ -211,17 +210,17 @@ export class FeasibilityProjectsListComponent {
   }
 
   getCategoryName(categoryId: string): string {
-    const foundCategory = this.categoryList.find((category:any) => category._id === categoryId);
+    const foundCategory = this.categoryList.find((category: any) => category._id === categoryId);
     return foundCategory ? foundCategory.category : '';
   }
-  
+
   getIndustryName(industryId: string): string {
-    const foundIndustry = this.industryList.find((industry:any) => industry._id === industryId);
+    const foundIndustry = this.industryList.find((industry: any) => industry._id === industryId);
     return foundIndustry ? foundIndustry.industry : '';
   }
 
-   // Number only validation
-   NumberOnly(event: any): boolean {
+  // Number only validation
+  NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;

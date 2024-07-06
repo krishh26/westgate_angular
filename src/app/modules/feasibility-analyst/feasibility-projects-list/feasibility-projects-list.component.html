@@ -76,13 +76,18 @@
                             <!-- Status -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.status }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.status" />
+                                <!-- <input *ngIf="item.isEditing" [(ngModel)]="item.status" /> -->
+                                <select *ngIf="item.isEditing" [(ngModel)]="item.status" class="custom-select">
+                                  <!-- <option value="">Select Industry</option> -->
+                                  <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
+                              </select>
+
                             </td>
 
                             <!-- Due Date -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.dueDate | date:'dd/MM/yyyy, h:mm a' }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" />
+                                <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" type="date" [value]="item?.dueDate" />
                             </td>
 
                             <!-- Actions -->
