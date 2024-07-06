@@ -150,10 +150,11 @@
                 <input
                   class="form-check-input"
                   type="radio"
-                  name="inlineRadioOptions"
+                  name="inlineRadioOptionsForSubContract"
                   id="inlineRadio1"
                   value="true"
                   [checked]="subContracting === true"
+                  (change)="subContactChange('true')"
                 />
                 <label class="form-check-label" for="inlineRadio1">Yes</label>
               </div>
@@ -161,10 +162,11 @@
                 <input
                   class="form-check-input"
                   type="radio"
-                  name="inlineRadioOptions"
-                  id="inlineRadio1"
+                  name="inlineRadioOptionsForSubContract"
+                  id="inlineRadio2"
                   value="true"
                   [checked]="subContracting === false"
+                  (change)="subContactChange('false')"
                 />
                 <label class="form-check-label" for="inlineRadio2">No</label>
               </div>
@@ -190,14 +192,18 @@
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <div class="upload-btn-wrapper">
-                  <button class="btn-upload-file">
+                  <label class="btn-upload-file"
+                    for="otherDocument1"
+                  >
                     <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Document
-                  </button>
+                  </label>
                   <input
                     type="file"
                     name="myfile"
                     style="height: 5px; width: 5px"
+                    id="otherDocument1"
+                    (change)="uploadDocument($event, documentUploadType.otherDocument)"
                   />
                 </div>
               </div>
@@ -530,13 +536,13 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="inlineRadioOptions"
-                id="inlineRadio1"
+                name="inlineRadioOptionsForComment"
+                id="comment1"
                 value="InProgress"
                 (change)="statusChange('InProgress')"
                 [checked]="status == 'InProgress'"
               />
-              <label class="form-check-label" for="inlineRadio1"
+              <label class="form-check-label" for="comment1"
                 >In-Progress</label
               >
             </div>
@@ -555,13 +561,13 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio1"
+                    name="inlineRadioOptionsForComment"
+                    id="comment2"
                     value="InHold"
                     (change)="statusChange('InHold')"
                     [checked]="status == 'InHold'"
                   />
-                  <label class="form-check-label" for="inlineRadio1"
+                  <label class="form-check-label" for="comment2"
                     >In-Hold</label
                   >
                 </div>
@@ -584,13 +590,13 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="inlineRadioOptions"
-                id="inlineRadio1"
+                name="inlineRadioOptionsForComment"
+                id="comment3"
                 value="Won"
                 (change)="statusChange('Won')"
                 [checked]="status == 'Won'"
               />
-              <label class="form-check-label text-success" for="inlineRadio1"
+              <label class="form-check-label text-success" for="comment3"
                 >Pass</label
               >
             </div>
@@ -612,13 +618,13 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio1"
+                    name="inlineRadioOptionsForComment"
+                    id="comment4"
                     value="Expired"
                     (change)="statusChange('Expired')"
                     [checked]="status == 'Expired'"
                   />
-                  <label class="form-check-label text-danger" for="inlineRadio1"
+                  <label class="form-check-label text-danger" for="comment4"
                     >Fail</label
                   >
                 </div>

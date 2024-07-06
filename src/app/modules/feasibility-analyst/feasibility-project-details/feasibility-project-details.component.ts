@@ -144,15 +144,31 @@ export class FeasibilityProjectDetailsComponent {
       data.append('files', file);
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
         if (response?.status) {
+          // Sub-contract document
           if (type == this.documentUploadType.subContractDocument) {
             this.subContractDocument = response?.data;
           }
+
+          // Economical partnership query document
           if (type == this.documentUploadType.economicalPartnershipQuery) {
             this.economicalPartnershipQueryFile = response?.data;
           }
+
+          // Other query document
+          if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
+            let objToBePused = {
+              name: this.loginName,
+              file: response?.data
+            }
+            this.FeasibilityOtherDocuments.push(objToBePused);
+            this.loginName = ""
+          }
+
+          // economical partner ship response document
           if (type == this.documentUploadType.economicalPartnershipResponse) {
             this.economicalPartnershipResponceFile = response?.data;
           }
+
           if (type == this.documentUploadType.clientDocument) {
             if (!this.documentName) {
               return this.notificationService.showError('Enter a client document Name');
@@ -177,15 +193,7 @@ export class FeasibilityProjectDetailsComponent {
             this.projectDetails.loginDetail.push(objToBePused);
             this.loginName = ""
           }
-          if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
-            // this.loginDetailDocument = response?.data;
-            let objToBePused = {
-              name: this.loginName,
-              file: response?.data
-            }
-            this.FeasibilityOtherDocuments.push(objToBePused);
-            this.loginName = ""
-          }
+
           return this.notificationService.showSuccess(response?.message);
         } else {
           return this.notificationService.showError(response?.message);
@@ -218,7 +226,7 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   saveChanges() {
-    if (this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') {
+    if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
       return this.notificationService.showError('Please Enter Status Comment');
     }
 
@@ -227,18 +235,19 @@ export class FeasibilityProjectDetailsComponent {
     }
 
     const payload = {
+      subContractDocument: this.subContractDocument || [],
+      economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+      FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
+      economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
       periodOfContractStart: this.projectDetails.periodOfContractStart,
       periodOfContractEnd: this.projectDetails.periodOfContractEnd,
       projectType: this.projectDetails.projectType,
+      subContracting: this.subContracting || "",
+
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
       failStatusReason: [this.failStatusReason?.value] || "",
-      subContracting: this.subContracting || "",
       loginDetail: this.projectDetails.loginDetail || "",
-      FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-      economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
-      economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
-      subContractDocument: this.subContractDocument || [],
     };
 
     this.projectService.editProject(this.projectDetails._id, payload).subscribe(
