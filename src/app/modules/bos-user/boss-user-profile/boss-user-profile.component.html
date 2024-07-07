@@ -128,10 +128,10 @@
 
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="text" class="form-control" formControlName="phoneNumber" />
-              <span class="text-danger"
+              <input type="text" class="form-control" formControlName="phoneNumber" (keypress)="NumberOnly($event)" minlength="10" maxlength="10"/>
+              <span class="text-danger" 
               *ngIf="userForm.controls.phoneNumber?.touched && userForm.controls.phoneNumber?.errors?.['required']">Please
-              Enter phoneNumber</span>
+              Enter phone number</span>
             </div>
 
             <div class="form-group">

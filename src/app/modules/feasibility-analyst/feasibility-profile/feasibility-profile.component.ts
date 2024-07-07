@@ -116,10 +116,19 @@ export class FeasibilityProfileComponent implements OnInit {
     }
     this.authService.updateUser(this.userData._id, this.userForm.value).subscribe((response: any) => {
       if (response?.status) {
-        console.log('response :', response);
+        this.notificationService.showSuccess(response?.message);
       }
     }, (error) => {
       this.notificationService.showError(error?.error?.message || 'Error');
     });
   }
+
+  NumberOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
 }
