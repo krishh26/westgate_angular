@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-boss-user-view-project',
   templateUrl: './boss-user-view-project.component.html',
@@ -22,7 +24,8 @@ export class BossUserViewProjectComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -61,6 +64,7 @@ export class BossUserViewProjectComponent {
 
   openDocument(data: any) {
     this.selectedDocument = data;
+    console.log(this.selectedDocument?.link?.url);
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -76,5 +80,26 @@ export class BossUserViewProjectComponent {
         document.body.removeChild(link);
       });
   }
+
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 
 }
