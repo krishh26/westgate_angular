@@ -597,7 +597,9 @@
           Please enter Login Id
         </div>
         <label>Password</label>
-        <input type="text" formControlName="password" class="form-control" />
+        <input [type]="password" formControlName="password" class="form-control" />
+        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
+        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
           Please enter Password

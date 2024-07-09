@@ -36,6 +36,8 @@ export class FeasibilityProjectDetailsComponent {
   statusComment: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
+  password = 'password';
+  showPassword = false;
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -74,6 +76,16 @@ export class FeasibilityProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
   }
+
+  public showHidePass(): void {
+    if (this.password === 'password') {
+        this.password = 'text';
+        this.showPassword = true;
+    } else {
+        this.password = 'password';
+        this.showPassword = false;
+    }
+}
 
   getProjectDetails() {
     this.showLoader = true;
