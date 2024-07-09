@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FoiService } from 'src/app/services/foi-service/foi.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ViewDocumentComponent } from 'src/app/utility/shared/pop-ups/view-document/view-document.component';
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-fio-document-add-edit',
   templateUrl: './fio-document-add-edit.component.html',
@@ -31,7 +31,8 @@ export class FioDocumentAddEditComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer
   ) {
     this.route.queryParams.subscribe((params) => {
       this.foiId = params['id'];
@@ -80,7 +81,7 @@ export class FioDocumentAddEditComponent implements OnInit {
     data.append('name', this.documentForm?.controls?.name?.value || '');
     data.append('projectId', this.documentForm.controls.projectId?.value || '');
     this.documentForm.markAllAsTouched();
-    if(!this.imageToUpload) {
+    if (!this.imageToUpload) {
       return this.notificationService.showError('Please upload image');
     }
     if (!this.documentForm.valid) {
@@ -91,7 +92,7 @@ export class FioDocumentAddEditComponent implements OnInit {
         this.getFoiDocumentList();
         this.documentForm.reset();
         this.imageToUpload = null;
-        this.notificationService.showSuccess('Add FOI Document successfully !');
+        this.notificationService.showSuccess('Add FOI Document successfully!');
       } else {
         this.notificationService.showError(response?.message);
       }
@@ -99,4 +100,25 @@ export class FioDocumentAddEditComponent implements OnInit {
       this.notificationService.showError(error?.message);
     });
   }
+
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 }

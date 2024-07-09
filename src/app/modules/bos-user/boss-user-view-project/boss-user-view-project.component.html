@@ -17,12 +17,14 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th width="200px">Project Title</th>
+                            <th width="100px">Project Title</th>
+                            <th width="150px">Project Description</th>
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
-                            <th>Value</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
                             <th>Website</th>
                             <th>Link to notice</th>
                             <th>Created Date</th>
@@ -34,11 +36,14 @@
                         <tr>
                             <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
                             <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10
+                                    }}</a></td>
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
                             <td>{{projectDetails?.industry}}</td>
-                            <td>{{projectDetails?.value}}</td>
+                            <td>{{projectDetails?.minValue}}</td>
+                            <td>{{projectDetails?.maxValue}}</td>
                             <td>{{projectDetails?.website}}</td>
                             <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
                             <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>

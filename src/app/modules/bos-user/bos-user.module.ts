@@ -19,6 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxExtendedPdfViewerModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })
