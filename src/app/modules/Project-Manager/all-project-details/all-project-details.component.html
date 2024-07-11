@@ -5,41 +5,43 @@
         <tr>
           <th width="12%"></th>
           <th width="12%">Project Title</th>
+          <th width="5%">Project Description</th>
           <th width="5%">BOS ID</th>
           <th width="5%">Publish Date</th>
           <th width="5%">Category</th>
           <th width="5%">Industry</th>
-          <th width="5%">Value</th>
+          <th width="5%">Min Value</th>
+          <th width="5%">Max Value</th>
           <th width="5%">Website</th>
           <th width="5%">Link to notice</th>
           <th width="8%">Created Date</th>
           <th width="5%">Status</th>
           <th width="10%">Due Date & Time</th>
-          <th width="15%"></th>
+          <th width="15%">Action</th>
           <th width="12%"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td></td>
-          <td class="text-primary"><a>{{projectDetails?.projectName}}</a></td>
+          <td><a (click)="projectDetails(projectDetails?._id)" href="javascript:;">{{projectDetails?.projectName}}</a>
+          </td>
+          <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
           <td v-align="middle">{{projectDetails?.BOSID}}</td>
           <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
           <td>{{projectDetails?.category}}</td>
           <td>{{projectDetails?.industry}}</td>
-          <td>{{projectDetails?.value}}</td>
+          <td>{{projectDetails?.minValue}}</td>
+          <td>{{projectDetails?.maxValue}}</td>
           <td>{{projectDetails?.website}}</td>
           <td><a href="javascript:;">{{projectDetails?.link}}</a></td>
           <td>{{projectDetails?.createdAt | date:'dd-MM-YYYY'}}</td>
           <td>{{projectDetails?.status}}</td>
           <td>{{projectDetails?.dueDate | date:'dd-MM-yyyy, h:mm a'}}</td>
           <td>
-            <button routerLink="/project-manager/project/all" class="btn btn-sm btn-primary px-4 py-1"
-              >Back</button>
+            <button routerLink="/project-manager/project/all" class="btn btn-sm btn-primary px-4 py-1">Back</button>
           </td>
-          <td>
-
-          </td>
+          <td></td>
         </tr>
         <ng-container *ngIf="projectDetails?.select?.length > 0">
           <tr class="bg-d3" style="background-color: #b5b2b2;">

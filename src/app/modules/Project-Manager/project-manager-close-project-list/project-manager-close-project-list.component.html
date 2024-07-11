@@ -11,44 +11,44 @@
             <th width="5%">Publish Date</th>
             <th width="5%">Category</th>
             <th width="5%">Industry</th>
-            <th width="5%">Value</th>
+            <th width="5%">Min Value</th>
+            <th width="5%">Max Value</th>
             <th width="5%">Website</th>
             <th width="5%">Link to notice</th>
             <th width="8%">Created Date</th>
             <th width="5%">Status</th>
             <th width="10%">Due Date & Time</th>
-            <th width="15%"></th>
-            <th width="12%"></th>
+            <th width="15%">Action</th>
+            <th width="10%"></th>
           </tr>
         </thead>
         <tbody>
 
           <tr>
-            <td *ngIf="!projectList?.length" colspan="14">
+            <td *ngIf="!projectList?.length" colspan="15">
               <app-no-record-found></app-no-record-found>
             </td>
           </tr>
 
           <ng-container *ngFor="let item of projectList">
             <tr>
-              <td></td>
-              <td class="text-primary"><a>{{item?.projectName}}</a></td>
+              <td> </td>
+              <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
               <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
               <td v-align="middle">{{item?.BOSID}}</td>
               <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{item?.category}}</td>
               <td>{{item?.industry}}</td>
-              <td>{{item?.value}}</td>
+              <td>{{item?.minValue}}</td>
+              <td>{{item?.maxValue}}</td>
               <td>{{item?.website}}</td>
               <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
               <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{item?.status}}</td>
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-              <td>
-                <button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1"
-                  style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">View Matched
-                  Suppliers</button>
-              </td>
+              <td><button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1 fonts-12"
+                  style="white-space: nowrap;">View Project Details</button></td>
+              <td></td>
               <td></td>
             </tr>
             <ng-container *ngIf="item?.select?.length > 0">
@@ -86,7 +86,7 @@
               </tr>
             </ng-container>
             <tr *ngIf="item?.select?.length == 0">
-              <td colspan="14" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
+              <td colspan="16" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
             </tr>
           </ng-container>
           <!-- <tr class="bg-d3" *ngFor="let supplier of item?.select">

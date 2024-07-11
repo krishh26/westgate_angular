@@ -4,27 +4,28 @@
       <table class="table table-striped align-middle">
         <thead>
           <tr>
-            <th width="10%"></th>
-            <th width="10%">Project Title</th>
-            <th width="10%">Project Description</th>
+            <th width="12%"></th>
+            <th width="12%">Project Title</th>
+            <th width="5%">Project Description</th>
             <th width="5%">BOS ID</th>
             <th width="5%">Publish Date</th>
             <th width="5%">Category</th>
             <th width="5%">Industry</th>
-            <th width="5%">Value</th>
+            <th width="5%">Min Value</th>
+            <th width="5%">Max Value</th>
             <th width="5%">Website</th>
             <th width="5%">Link to notice</th>
             <th width="8%">Created Date</th>
             <th width="5%">Status</th>
             <th width="10%">Due Date & Time</th>
-            <th width="15%"></th>
+            <th width="15%">Action</th>
             <th width="12%"></th>
           </tr>
         </thead>
         <tbody>
 
           <tr>
-            <td *ngIf="!projectList?.length" colspan="14">
+            <td *ngIf="!projectList?.length" colspan="15">
               <app-no-record-found></app-no-record-found>
             </td>
           </tr>
@@ -32,13 +33,14 @@
           <tr
             *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
             <td> </td>
-            <td class="text-primary"><a>{{item?.projectName}}</a></td>
+            <td><a href="javascript:;">{{item?.projectName}}</a></td>
             <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
             <td v-align="middle">{{item?.BOSID}}</td>
             <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
             <td>{{item?.category}}</td>
             <td>{{item?.industry}}</td>
-            <td>{{item?.value}}</td>
+            <td>{{item?.minValue}}</td>
+            <td>{{item?.maxValue}}</td>
             <td>{{item?.website}}</td>
             <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
             <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
