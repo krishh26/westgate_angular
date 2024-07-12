@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-3 col-xl-3 col-12 text-end">
-                    <a href="project-list.html" class="btn btn-outline-secondary me-2 box-shadow">+ Add Project</a>
+                    <!-- <a href="project-list.html" class="btn btn-outline-secondary me-2 box-shadow">+ Add Project</a> -->
                     <a href="project-list.html" class="btn btn-outline-secondary box-shadow">Back</a>
                 </div>
             </div>
@@ -12,37 +12,39 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th width="200px">Project Title</th>
+                            <th width="100px">Project Title</th>
+                            <th width="150px">Project Description</th>
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
-                            <th>Value</th>
-                            <th>Status</th>
-                            <th>Project Start Date</th>
-                            <th>Project End Date</th>
-                            <th>Status</th>
-                            <th>Assignee</th>
+                            <th>Industry</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
+                            <th>Website</th>
+                            <th width="100px">Link to notice</th>
+                            <th>Created Date</th>
+                            <th>Time Due (Mail)</th>
+                            <th>Due Date & Time</th>
+                            <!-- <th>Assignee</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td>
-                            <td v-align="middle">546552</td>
-                            <td>2023-05-31</td>
-                            <td>Website</td>
-                            <td>£50000</td>
-                            <td>
-                                In-Solution
-                            </td>
-                            <td>2023-05-31</td>
-                            <td>2023-05-31</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option>Awaiting(D) In-Progress, In-Hold, Doc not found</option>
-                                </select>
-                            </td>
-                            <td><span class="text-theme">Ayushs</span> <a href="javascript:;" class="editbtn"><i
-                                        class="bi bi-pencil-fill"></i></a></td>
+                            <td><a (click)="projectDetails(projectDetails?._id)"
+                                    href="javascript:;">{{projectDetails?.projectName}}</a></td>
+                            <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10
+                                    }}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
+                            <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{projectDetails?.category}}</td>
+                            <td>{{projectDetails?.industry}}</td>
+                            <td>{{projectDetails?.minValue}}</td>
+                            <td>{{projectDetails?.maxValue}}</td>
+                            <td>{{projectDetails?.website}}</td>
+                            <td><a href='{{projectDetails?.link}}' target="_blank">{{projectDetails?.link}}</a></td>
+                            <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
+                            <td>{{dateDifference}}</td>
+                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -149,34 +151,29 @@
                                 <div class="col-lg-4 col-xl-4 col-12">
                                     <h6 class="p-12 text-white"><strong>Client Detils</strong></h6>
                                 </div>
-                                <div class="col-lg-8 col-xl-8 col-12">
-                                    <p class="p-10 mb-0 text-white">Mail ID : abc@gmail.com</p>
-                                    <p class="p-10 mb-0 text-white">Client Type : Private Sector</p>
-                                    <p class="p-10 mb-0 text-white">Client Name : XYZ</p>
+                                <div class="col-lg-7 col-xl-7 col-12">
+                                    <p class="p-10 mb-0 text-white">
+                                        Mail ID : {{ projectDetails?.mailID }}
+                                    </p>
+                                    <p class="p-10 mb-0 text-white">
+                                        Client Type : {{ projectDetails?.clientType }}
+                                    </p>
+                                    <p class="p-10 mb-0 text-white">
+                                        Client Name : {{ projectDetails?.clientName }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <!--Project description-->
             <div class="row mb-4 mt-4">
                 <h4 class="text-theme"><strong>Project Description</strong></h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex
-                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                    eu fugiat
-                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit
-                    anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit
-                    esse cillum dolore eu fugiat nulla pariatur. </p>
+                <p>{{ projectDetails?.description }}</p>
             </div>
+
             <!--client details-->
             <div class="row mt-5">
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
@@ -187,9 +184,15 @@
                                     <h6 class="text-theme"><strong>Client Detils</strong></h6>
                                 </div>
                                 <div class="col-lg-7 col-xl-7 col-12">
-                                    <p class="p-13 mb-0">Mail ID : abc@gmail.com</p>
-                                    <p class="p-13 mb-0">Client Type : Private Sector</p>
-                                    <p class="p-13 mb-0">Client Name : XYZ</p>
+                                    <p class="p-13 mb-0">
+                                        Mail ID : {{ projectDetails?.mailID }}
+                                    </p>
+                                    <p class="p-13 mb-0">
+                                        Client Type : {{ projectDetails?.clientType }}
+                                    </p>
+                                    <p class="p-13 mb-0">
+                                        Client Name : {{ projectDetails?.clientName }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -198,36 +201,110 @@
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                            <p class="mb-0">FIO Screenshot</p>
+                            <p class="mb-0">FOI Screenshot</p>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="row align-items-center" *ngIf="projectDetails?.mailScreenshots?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100" data-bs-toggle="modal"
-                                data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
+                        <ng-container *ngIf="projectDetails?.mailScreenshots?.length > 0">
+                            <div class="row align-items-center"
+                                *ngFor="let foiScreenshot of projectDetails?.mailScreenshots">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{ foiScreenshot?.name }}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiScreenshot)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="
+                                download(foiScreenshot?.link?.url, foiScreenshot?.name)
+                              " target="_blank" class="btn btn-small w-100"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <div class="row align-items-center mt-3">
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                            <p class="mb-0">FIO Document</p>
+                            <p class="mb-0">FOI Document</p>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
+                        <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-6">
-                            <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload</a>
-                        </div>
+                        <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{ foiDocument?.name }}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a style="
+                                padding-left: 0 !important;
+                                padding-right: 0px !important;
+                              " (click)="
+                                download(foiDocument?.link?.url, foiDocument?.name)
+                              " target="_blank" class="btn btn-small w-100"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body text-center">
-                            <p class="p-13"><strong>Period of Contract: Start Date - End Date</strong></p>
-                            <p class="p-13"><strong>Project Type: Developement</strong></p>
+                            <ng-container *ngIf="!isEditing; else editMode">
+                                <p class="p-13">
+                                    <strong>
+                                        Period of Contract:
+                                        {{
+                                        projectDetails?.periodOfContractStart
+                                        | date : "dd/MM/yyyy"
+                                        }}
+                                        -
+                                        {{
+                                        projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy"
+                                        }}
+                                    </strong>
+                                </p>
+                                <p class="p-13">
+                                    <strong>Project Type: {{ projectDetails?.projectType }}</strong>
+                                </p>
+                                <a class="btn btn-secondary sm ml-2" (click)="toggleEdit()"><i
+                                        class="bi bi-pencil-fill"></i></a>
+                            </ng-container>
+                            <ng-template #editMode>
+                                <p class="p-13">
+                                    <strong>
+                                        Period of Contract:
+                                        <input type="date" [(ngModel)]="projectDetails.periodOfContractStart" />
+                                        -
+                                        <input type="date" [(ngModel)]="projectDetails.periodOfContractEnd" />
+                                    </strong>
+                                </p>
+                                <p class="p-13">
+                                    <strong>
+                                        Project Type:
+                                        <input type="text" [(ngModel)]="projectDetails.projectType" />
+                                    </strong>
+                                </p>
+                                <a class="btn btn-primary sm" title="Save" (click)="saveChanges()"><i
+                                        class="bi bi-check2"></i></a>&nbsp;
+                                <a class="btn btn-warning ml-2" title="Cancel" (click)="toggleEdit()"><i
+                                        class="bi bi-x-lg"></i></a>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -248,81 +325,53 @@
                     <h5>Client Documents</h5>
                     <div class="card">
                         <ul class="project-document">
-                            <li>
+                            <li *ngFor="let item of projectDetails?.clientDocument">
                                 <div class="row">
                                     <div class="col-5 text-center">
-                                        <p class="mb-0">ITT <a href="javascript:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i>
-                                            Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">SQ <a href="javascript:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i>
-                                            Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">T&amp;C <a href="javascript:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i>
-                                            Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Specification <a href="javascript:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a>
+                                        <p class="mb-0">
+                                            {{ item?.name }}
+                                            <!-- <a href="href:;" class="editbtn"
+                                    ><i class="bi bi-pencil-fill"></i
+                                  ></a> -->
                                         </p>
                                     </div>
                                     <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i>
-                                            Download</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-5 text-center">
-                                        <p class="mb-0">Notice <a href="javascript:;" class="editbtn"><i
-                                                    class="bi bi-pencil-fill"></i></a></p>
-                                    </div>
-                                    <div class="col-7 text-center">
-                                        <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                                        <a href="javascript:;" class="btn btn-primarysm"><i
-                                                class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
+                                            data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i
+                                                class="bi bi-eye-fill"></i>
+                                            View</a>
+                                        <a href="href:;" (click)="download(item?.link?.url, item?.name)"
+                                            class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
                                             Download</a>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                        <button type="button" class="btn btn-dark btn-sm add-card-btn"><i
-                                class="bi bi-plus-lg"></i></button>
+                        <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
                     </div>
+                    <ng-container *ngIf="viewClientDocumentForm">
+                        <div class="d-flex p-2 justify-content-between">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <input type="text" [(ngModel)]="documentName" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-xl-4 col-6">
+                                <div class="btn btn-small w-100">
+                                    <label for="uploadClientDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                                        Upload
+                                    </label>
+                                    <input type="file" id="uploadClientDocument" (change)="
+                                  uploadDocument($event, documentUploadType.clientDocument)
+                                " name="myfile" style="height: 1px; width: 1px" />
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12">
                     <div class="form-group">
@@ -394,7 +443,8 @@
                         </div>
                         <div class="col-lg-6 col-xl-6 col-10">
                             <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                            <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            <a href="javascript:;" class="btn btn-primarysm"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i>
                                 Download</a>
                         </div>
                     </div>
@@ -404,7 +454,8 @@
                         </div>
                         <div class="col-lg-6 col-xl-6 col-10">
                             <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                            <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            <a href="javascript:;" class="btn btn-primarysm"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i>
                                 Download</a>
                         </div>
                     </div>
@@ -414,7 +465,8 @@
                         </div>
                         <div class="col-lg-6 col-xl-6 col-10">
                             <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"></i> View</a>
-                            <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            <a href="javascript:;" class="btn btn-primarysm"><i
+                                    class="bi bi-file-earmark-arrow-down-fill"></i>
                                 Download</a>
                         </div>
                     </div>
@@ -456,86 +508,118 @@
     </section>
     <section class="bg-dark">
         <div class="container">
-            <div class="form-group">
+            <form [formGroup]="summaryForm" (ngSubmit)="submitForm()">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
+                            <p class="mb-0">Summary Note Questions</p>
+                        </div>
+                        <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
+                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
+                                <label class="form-check-label" for="inlineRadio1">Supplier</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
+                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
+                                <label class="form-check-label" for="inlineRadio2">UK Writer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
-                    <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
-                        <p class="mb-0">Summary Note Questions</p>
-                    </div>
-                    <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="option1">
-                            <label class="form-check-label" for="inlineRadio1">Supplier</label>
+                    <div class="col-lg-4 col-xl-4 col-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="questionName"
+                                placeholder="Enter question name">
+                            <span class="text-danger"
+                                *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
+                                Please enter question name
+                            </span>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                value="option2">
-                            <label class="form-check-label" for="inlineRadio2">UK Writer</label>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="6" formControlName="question"
+                                placeholder="Enter question"></textarea>
+                            <span class="text-danger"
+                                *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
+                                Please enter question
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="refrenceDocument"
+                                placeholder="Enter document reference name">
+                            <span class="text-danger"
+                                *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
+                                Please enter reference document details
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="weightage"
+                                placeholder="Enter weightage">
+                            <span class="text-danger"
+                                *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
+                                Please enter weightage
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" formControlName="instructions"
+                                placeholder="instructions">
+                            <span class="text-danger"
+                                *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
+                                Please enter instructions
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-xl-4 col-12">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="PROJECT MANAGEMENT APPROACH">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" rows="5"
-                            cols="100">Project management approach and project team outlined.  Resilience – ability to deliver.</textarea>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-xl-5 col-12">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="8"
-                            cols="100">In your response to the Technical questions, please do not:   reference your answers from one response to another, even where there is commonality, unless specifically allowed;   include publicity material of any kind e.g. brochures and web references;   include any extraneous information which has not been specifically requested including, for example, any sales literature, standard terms of trading etc.;   include any embedded document or use Adobe and similar text packaging.</textarea>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xl-3 col-12">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="1 Digital tender 2024 Pg No. 4">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="35">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </div>
-            </div>
+            </form>
+
 
             <!--Addedd Question-->
             <div class="row">
                 <div class="col-12">
-                    <p><strong>Addedd Question</strong></p>
+                    <p><strong>Added Questions</strong></p>
                     <div class="table-responsive">
                         <table class="table table-dark table-borderless">
                             <thead>
                                 <tr>
+                                    <td>Summary Note Questions For </td>
+                                    <th>Question Name</th>
                                     <th>Question</th>
+                                    <th>Document Ref. Name</th>
                                     <th>Weightage</th>
+                                    <th>Instructions</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Project management approach and project team outlined. Resilience – ability to
-                                        deliver.</td>
+                                <tr *ngFor="let summary of summaryquestionList">
+                                    <td>{{summary.summaryQuestionFor}}</td>
+                                    <td>{{summary.questionName}}</td>
+                                    <td>{{summary.question}}</td>
+                                    <td>{{summary.refrenceDocument}}</td>
+                                    <td><strong>{{summary.weightage}}</strong></td>
+                                    <td>{{summary.instructions}}</td>
                                     <td>
-                                        <strong>35%</strong>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:;" class="btn btn-primarysm me-2" style="padding:0.5rem 1rem;"><i
-                                                class="bi bi-eye-fill">
-                                                View Instructions</i></a>
-                                        <a href="javascript:;" class="btn btn-outline-secondary bnt-sm me-2"><i
-                                                class="bi bi-pencil-fill">
-                                                Edit</i></a>
-                                        <a href="javascript:;" class="btn btn-outline-secondary bnt-sm"><i
+                                        <a (click)="editSummary(summary?._id)" class="btn btn-outline-secondary"><i
+                                                class="bi bi-pencil-fill"></i></a>&nbsp;
+                                        <a (click)="deleteSummary(summary?._id)" class="btn btn-outline-secondary"><i
                                                 class="bi bi-x-circle"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="row">
+                            <p *ngIf="summaryquestionList?.length == 0" style="text-align: center;"> No Record Found !
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -852,14 +936,17 @@
                                     deliver.</td>
                                 <td>35%</td>
                                 <td><span class="text-success">Verified</span></td>
-                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                            class="bi bi-pencil-fill"></i></a></td>
+                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                </td>
                                 <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                             class="bi bi-pencil-fill"></i></a></td>
                                 <td>
                                     <a href="question-answer-details.html" class="btn btn-small-white me-2"><i
                                             class="bi bi-eye-fill"></i> View Solution</a>
-                                    <a href="javascript:;" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                    <a href="javascript:;" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
                                         Download</a>
                                 </td>
                             </tr>
@@ -869,14 +956,17 @@
                                     deliver.</td>
                                 <td>35%</td>
                                 <td><span class="text-success">Verified</span></td>
-                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                            class="bi bi-pencil-fill"></i></a></td>
+                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                </td>
                                 <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                             class="bi bi-pencil-fill"></i></a></td>
                                 <td>
                                     <a href="question-answer-details.html" class="btn btn-small-white me-2"><i
                                             class="bi bi-eye-fill"></i> View Solution</a>
-                                    <a href="javascript:;" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                    <a href="javascript:;" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
                                         Download</a>
                                 </td>
                             </tr>
@@ -886,14 +976,17 @@
                                     deliver.</td>
                                 <td>35%</td>
                                 <td><span class="text-success">Verified</span></td>
-                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
-                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                            class="bi bi-pencil-fill"></i></a></td>
+                                <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                </td>
                                 <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                             class="bi bi-pencil-fill"></i></a></td>
                                 <td>
                                     <a href="question-answer-details.html" class="btn btn-small-white me-2"><i
                                             class="bi bi-eye-fill"></i> View Solution</a>
-                                    <a href="javascript:;" class="btn btn-small"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                                    <a href="javascript:;" class="btn btn-small"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
                                         Download</a>
                                 </td>
                             </tr>
@@ -935,9 +1028,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -953,9 +1048,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -971,9 +1068,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1023,9 +1122,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1041,9 +1142,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1059,9 +1162,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1105,9 +1210,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1123,9 +1230,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1141,9 +1250,11 @@
                                         deliver.</td>
                                     <td>35%</td>
                                     <td><span class="text-success">Verified</span></td>
-                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a>
+                                    <td>01-02-2014 <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a>
                                     </td>
-                                    <td>Ayush <a href="javascript:;" class="editbtn"><i class="bi bi-pencil-fill"></i></a></td>
+                                    <td>Ayush <a href="javascript:;" class="editbtn"><i
+                                                class="bi bi-pencil-fill"></i></a></td>
                                     <td> dolor sit amet, consectetur...... <a href="javascript:;" class="editbtn"><i
                                                 class="bi bi-pencil-fill"></i></a></td>
                                     <td>
@@ -1173,60 +1284,6 @@
                 </div>
             </div>
             <h5 class="mb-3"><strong>Add Supporting docs</strong></h5>
-            <!-- <div class="row">
-                <div class="col-lg-6 col-xl-6 col-12">
-                    <div class="form-group" x-data="{ fileName: '' }">
-                        <div class="input-group">
-                            <input type="file" x-ref="file" @change="fileName = $event.target.files[0].name"
-                                name="img[]" class="d-none">
-                            <input type="text" class="form-control file-control" placeholder="Upload Image"
-                                x-model="fileName">
-                            <button class="browse btn btn-primary border-radius6" type="button"
-                                x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload
-                                Document</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group" x-data="{ fileName: '' }">
-                        <div class="input-group">
-                            <input type="file" x-ref="file" @change="fileName = $refs.file.files[0].name" name="img[]"
-                                class="d-none">
-                            <input type="text" class="form-control file-control" placeholder="Upload Image"
-                                x-model="fileName">
-                            <button class="browse btn btn-primary border-radius6" type="button"
-                                x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload
-                                Document</button>
-                        </div>
-                    </div>
-                    <div class="form-group" x-data="{ fileName: '' }">
-                        <div class="input-group">
-                            <input type="file" x-ref="file" @change="fileName = $refs.file.files[0].name" name="img[]"
-                                class="d-none">
-                            <input type="text" class="form-control file-control" placeholder="Upload Image"
-                                x-model="fileName">
-                            <button class="browse btn btn-primary border-radius6" type="button"
-                                x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload
-                                Document</button>
-                        </div>
-                    </div>
-                    <div class="form-group" x-data="{ fileName: '' }">
-                        <div class="input-group">
-                            <input type="file" x-ref="file" @change="fileName = $refs.file.files[0].name" name="img[]"
-                                class="d-none">
-                            <input type="text" class="form-control file-control" placeholder="Upload Image"
-                                x-model="fileName">
-                            <button class="browse btn btn-primary border-radius6" type="button"
-                                x-on:click.prevent="$refs.file.click()"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload
-                                Document</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div> -->
         </div>
     </section>
     <section>
@@ -1393,3 +1450,80 @@
 
 
 </main><!-- End #main -->
+
+<!-- View Document Modal -->
+<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login detail From modal -->
+<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Company Name</label>
+                <input type="text" formControlName="companyName" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+                    Please Company Name
+                </div>
+                <label>Website Link</label>
+                <input type="text" formControlName="link" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+                    Please enter Website Link
+                </div>
+                <label>Login Id</label>
+                <input type="text" formControlName="loginID" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+                    Please enter Login Id
+                </div>
+                <label>Password</label>
+                <input [type]="password" formControlName="password" class="form-control" />
+                <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i
+                        class="bi bi-eye-fill"></i></span>
+                <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i
+                        class="bi bi-eye-slash-fill"></i></span>
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+                    Please enter Password
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                        <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close"
+                            [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

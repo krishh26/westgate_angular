@@ -79,13 +79,13 @@ export class FeasibilityProjectDetailsComponent {
 
   public showHidePass(): void {
     if (this.password === 'password') {
-        this.password = 'text';
-        this.showPassword = true;
+      this.password = 'text';
+      this.showPassword = true;
     } else {
-        this.password = 'password';
-        this.showPassword = false;
+      this.password = 'password';
+      this.showPassword = false;
     }
-}
+  }
 
   getProjectDetails() {
     this.showLoader = true;

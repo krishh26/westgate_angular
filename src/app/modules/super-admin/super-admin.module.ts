@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuperAdminComponent } from './super-admin.component';
 import { SuperadminHeaderComponent } from 'src/app/utility/shared/components/superadmin-header/superadmin-header.component';
@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -30,7 +31,9 @@ import { SuperAdminProjectDetailsComponent } from './super-admin-project-details
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    SuperAdminRoutingModule
-  ]
+    SuperAdminRoutingModule,
+    NgSelectModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SuperAdminModule { }
