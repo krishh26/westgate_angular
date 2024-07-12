@@ -26,6 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.2",
     "jwt-decode": "^4.0.0",
+    "moment": "^2.30.1",
     "ngx-extended-pdf-viewer": "^21.0.0-alpha.6",
     "ngx-pagination": "^6.0.3",
     "ngx-toastr": "^18.0.0",

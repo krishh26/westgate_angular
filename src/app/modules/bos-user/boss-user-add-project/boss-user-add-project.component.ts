@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -16,7 +17,7 @@ export class BossUserAddProjectComponent {
   addEditProjectForm = {
     projectName: new FormControl("", Validators.required),
     BOSID: new FormControl("", Validators.required),
-    publishDate: new FormControl(this.getCurrentDate(), Validators.required),
+    publishDate: new FormControl(moment(new Date()).format('dd-MM-YYYY'), Validators.required),
     website: new FormControl("", Validators.required),
     category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
@@ -29,6 +30,8 @@ export class BossUserAddProjectComponent {
     mailID: new FormControl("", Validators.required),
     clientType: new FormControl("", Validators.required),
     clientName: new FormControl("", Validators.required),
+    bidsubmissionhour: new FormControl("", Validators.required),
+    bidsubmissionminute: new FormControl("", Validators.required),
 
     // submission: new FormControl("", Validators.required),
     dueDate: new FormControl("", Validators.required),
@@ -63,6 +66,15 @@ export class BossUserAddProjectComponent {
     if (this.projectId && this.projectId.length) {
       this.patchProjectValue()
     }
+  }
+
+  // Number only validation
+  NumberOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
   patchProjectValue() {
@@ -113,21 +125,21 @@ export class BossUserAddProjectComponent {
     });
   }
 
-  getCurrentDate(): string {
-    const currentDate = new Date();
-    return this.formatDate(currentDate);
-  }
+  // getCurrentDate(): string {
+  //   const currentDate = new Date();
+  //   return this.formatDate(currentDate);
+  // }
 
-  formatDate(date: any) {
-    const day = date.getDate();
-    const monthNames = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
-    const month = monthNames[date.getMonth()];
-    const year = date.getFullYear();
+  // formatDate(date: any) {
+  //   const day = date.getDate();
+  //   const monthNames = [
+  //     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  //   ];
+  //   const month = monthNames[date.getMonth()];
+  //   const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
-  }
+  //   return `${day}-${month}-${year}`;
+  // }
 
 
   // Submit form
