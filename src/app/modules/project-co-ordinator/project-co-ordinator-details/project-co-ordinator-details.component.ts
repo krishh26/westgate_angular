@@ -154,12 +154,18 @@ export class ProjectCoOrdinatorDetailsComponent {
       supportingDocs: this.supportDocument.value?.document,
       stages: this.projectStage.value?.stage
     }
-
     this.projectCoordinatorService.updateProject(data, this.projectId).subscribe((response) => {
-      if (response?.status) {
-        this.getProjectDetails()
+      if (response?.status == true) {
+        this.getProjectDetails();
+        this.notificationService.showSuccess('', 'Project Update Successfully.');
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
       }
-    })
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
   }
 
   // Handle the file change event
