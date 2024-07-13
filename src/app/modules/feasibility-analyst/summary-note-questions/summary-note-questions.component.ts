@@ -163,7 +163,7 @@ export class SummaryNoteQuestionsComponent {
   }
 
 
-  resetForm() {    
+  resetForm() {
     this.summaryForm.reset();
     this.summaryForm.controls['projectId'].setValue(this.projectId)
     this.isEditMode = false;
@@ -172,9 +172,7 @@ export class SummaryNoteQuestionsComponent {
 
   editSummary(summary: any) {
     this.isEditMode = true;
-    this.currentSummaryId = summary;
-    console.log(this.currentSummaryId);
-    
+    this.currentSummaryId = summary?._id;
     this.summaryForm.patchValue({
       summaryQuestionFor: summary.summaryQuestionFor,
       questionName: summary.questionName,
