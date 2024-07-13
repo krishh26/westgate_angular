@@ -14,6 +14,7 @@ export class MinimumEligibilityFormComponent implements OnInit {
   projectId: any;
   projectDetails: any;
   showLoader: boolean = false;
+  showSuccess: boolean = false;
 
   eligibility = {
     caseStudyRequired: new FormControl("", Validators.required),
@@ -46,6 +47,7 @@ export class MinimumEligibilityFormComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.showSuccess = false;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -57,24 +59,22 @@ export class MinimumEligibilityFormComponent implements OnInit {
   }
 
   submit() {
-    console.log('project status', this.eligibilityForm.value);
     if (!this.eligibilityForm.valid) {
       return this.notificationService.showError('Please Fill Form.');
     }
-
-    // this.feasibilityService
   }
 
-  submitEligibilityForm(){
+  submitEligibilityForm() {
     if (!this.eligibilityForm.valid) {
       return this.notificationService.showError('Please Fill Form.');
     }
-    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value,this.projectId).subscribe({
-      next:(res:any) => {
-      this.router.navigate(['/feasibility-user/feasibility-project-list']);
+    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value, this.projectId).subscribe({
+      next: (res: any) => {
+        this.showSuccess = true;
+        // this.router.navigate(['/feasibility-user/feasibility-project-list']);
       },
-      error:(err:any)=>{
-      return this.notificationService.showError('Something went wrong');
+      error: (err: any) => {
+        return this.notificationService.showError('Something went wrong');
       }
     })
   }

@@ -159,12 +159,12 @@
                         <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier">
+                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier" [checked]="summaryForm.get('summaryQuestionFor')?.value == 'Supplier'">
                                 <label class="form-check-label" for="inlineRadio1">Supplier</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter">
+                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter" [checked]="summaryForm.get('summaryQuestionFor')?.value == 'UKWriter'">
                                 <label class="form-check-label" for="inlineRadio2">UK Writer</label>
                             </div>
                         </div>
@@ -252,7 +252,7 @@
                                     <td>
                                         <!-- <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill">
                                                 View Instructions</i></a> -->
-                                        <a (click)="editSummary(summary?._id)" class="btn btn-outline-secondary"><i
+                                        <a (click)="editSummary(summary)" class="btn btn-outline-secondary"><i
                                                 class="bi bi-pencil-fill"></i></a>&nbsp;
                                         <a (click)="deleteSummary(summary?._id)" class="btn btn-outline-secondary"><i
                                                 class="bi bi-x-circle"></i></a>
