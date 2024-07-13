@@ -65,30 +65,25 @@
                   <label for="subContract" class="btn-upload-file padding-lr-5"><i
                       class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Query Image</label>
-                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px"
-                    accept="image/*" (change)="
-                      uploadDocument(
-                        $event,
-                        documentUploadType.subContractDocument
-                      )
-                    " />
+                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
+                      uploadDocument($event,documentUploadType.subContractDocument)" />
+                    <br>
+                  <img *ngIf="subContractDocument?.url" [src]="subContractDocument?.url" alt="" style="height: 100px; width: 100px;">
                 </div>
               </div>
             </div>
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Economical partnership</label>
+                <br>
                 <div class="upload-btn-wrapper">
                   <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i
                       class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Query Image</label>
                   <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
-                    style="height: 5px; width: 5px" (change)="
-                      uploadDocument(
-                        $event,
-                        documentUploadType.economicalPartnershipQuery
-                      )
-                    " />
+                    style="height: 5px; width: 5px" (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
+                  <br>
+                  <img *ngIf="economicalPartnershipQueryFile?.url" [src]="economicalPartnershipQueryFile?.url" alt="" style="height: 100px; width: 100px;">
                 </div>
               </div>
             </div>
@@ -102,7 +97,11 @@
                     Query Image</label>
                   <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
-                </div>
+                    <br>
+                    <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+                      <img  *ngIf="document?.type == documentUploadType.otherQueryDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;">
+                    </ng-container>
+                  </div>
               </div>
             </div>
           </div>
@@ -127,6 +126,8 @@
                     Response</label>
                   <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
+                  <br>
+                  <img *ngIf="economicalPartnershipResponceFile?.url" [src]="economicalPartnershipResponceFile?.url" alt="" style="height: 100px; width: 100px;">
                 </div>
               </div>
             </div>
@@ -139,6 +140,10 @@
                   </label>
                   <input type="file" name="myfile" style="height: 5px; width: 5px" id="otherDocument1"
                     (change)="uploadDocument($event, documentUploadType.otherDocument)" />
+                  <br>
+                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+                    <img  *ngIf="document?.type == documentUploadType.otherDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;">
+                  </ng-container>
                 </div>
               </div>
             </div>

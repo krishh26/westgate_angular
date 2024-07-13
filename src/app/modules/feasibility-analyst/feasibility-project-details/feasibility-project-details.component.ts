@@ -172,6 +172,7 @@ export class FeasibilityProjectDetailsComponent {
           if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
             let objToBePused = {
               name: this.loginName,
+              type : type,
               file: response?.data
             }
             this.FeasibilityOtherDocuments.push(objToBePused);
@@ -257,7 +258,7 @@ export class FeasibilityProjectDetailsComponent {
       periodOfContractEnd: this.projectDetails.periodOfContractEnd,
       projectType: this.projectDetails.projectType,
       subContracting: this.subContracting || "",
-
+      clientDocument : this.projectDetails?.clientDocument || [],
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
       failStatusReason: [this.failStatusReason?.value] || "",
@@ -269,7 +270,7 @@ export class FeasibilityProjectDetailsComponent {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
-          window.location.reload();
+          this.getProjectDetails();
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
