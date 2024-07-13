@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-project-co-ordinator-details',
@@ -31,7 +32,8 @@ export class ProjectCoOrdinatorDetailsComponent {
     private route: ActivatedRoute,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-    private projectCoordinatorService: ProjectCoordinatorService
+    private projectCoordinatorService: ProjectCoordinatorService,
+    private sanitizer: DomSanitizer
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -182,4 +184,25 @@ export class ProjectCoOrdinatorDetailsComponent {
   goToChat() {
     this.router.navigate(['/project-coordinator/project-coordinator-chats'], { queryParams: { id: this.projectId } });
   }
+
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 }

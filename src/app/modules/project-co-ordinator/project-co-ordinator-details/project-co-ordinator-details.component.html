@@ -139,52 +139,63 @@
           </div>
         </div>
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
-          <!-- <div class="row align-items-center">
+          <div class="row align-items-center">
             <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-              <p class="mb-0">FIO Screenshot</p>
+              <p class="mb-0">FOI Screenshot</p>
             </div>
-            <div class="col-lg-4 col-xl-4 col-6">
-              <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+            <div class="row align-items-center" *ngIf="projectDetails?.mailScreenshots?.length == 0">
+              <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                <p class="mb-0">No Record Found.</p>
+              </div>
             </div>
-            <div class="col-lg-4 col-xl-4 col-6">
-              <a href="" class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#fioScreenshot"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
-            </div>
+            <ng-container *ngIf="projectDetails?.mailScreenshots?.length > 0">
+              <div class="row align-items-center" *ngFor="let foiScreenshot of projectDetails?.mailScreenshots">
+                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                  <p class="mb-0">{{ foiScreenshot?.name }}</p>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-6">
+                  <a (click)="openDocument(foiScreenshot)" class="btn btn-small w-100" data-bs-toggle="modal"
+                    data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-6">
+                  <a (click)="
+                      download(foiScreenshot?.link?.url, foiScreenshot?.name)
+                    " target="_blank" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                    Download</a>
+                </div>
+              </div>
+            </ng-container>
           </div>
           <div class="row align-items-center mt-3">
             <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-              <p class="mb-0">FIO Document</p>
+              <p class="mb-0">FOI Document</p>
             </div>
-            <div class="col-lg-4 col-xl-4 col-6">
-              <a href="" class="btn btn-small w-100"><i class="bi bi-eye-fill"></i> View</a>
+            <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+              <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                <p class="mb-0">No Record Found.</p>
+              </div>
             </div>
-            <div class="col-lg-4 col-xl-4 col-6">
-              <a href="" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload</a>
-            </div>
-          </div> -->
-          <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-            <p class="mb-0">FOI Document</p>
+            <ng-container *ngIf="projectDetails?.fois?.length > 0">
+              <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                  <p class="mb-0">{{ foiDocument?.name }}</p>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-6">
+                  <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
+                    data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View</a>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-6">
+                  <a style="
+                      padding-left: 0 !important;
+                      padding-right: 0px !important;
+                    " (click)="
+                      download(foiDocument?.link?.url, foiDocument?.name)
+                    " target="_blank" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                    Download</a>
+                </div>
+              </div>
+            </ng-container>
           </div>
-          <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
-            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
-              <p class="mb-0">No Record Found.</p>
-            </div>
-          </div>
-          <ng-container *ngIf="projectDetails?.fois?.length > 0">
-            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
-              <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                <p class="mb-0">{{foiDocument?.name}}</p>
-              </div>
-              <div class="col-lg-4 col-xl-4 col-6">
-                <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
-                  data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
-              </div>
-              <div class="col-lg-4 col-xl-4 col-6">
-                <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
-                  class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
-                  Download</a>
-              </div>
-            </div>
-          </ng-container>
         </div>
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
@@ -364,21 +375,44 @@
   </section>
 </main>
 
-<!-- View Screenshot Modal -->
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ViewScreenshotLabel">FOI Document : {{selectedDocument?.name}}</h5>
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          FOI Screenshot : {{ selectedDocument?.name }}
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <img [src]="selectedDocument?.link?.url" class="img-fluid" />
       </div>
-      <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

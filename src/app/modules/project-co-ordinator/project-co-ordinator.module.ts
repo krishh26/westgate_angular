@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -12,6 +12,7 @@ import { ProjectCoOrdinatorChatsComponent } from './project-co-ordinator-chats/p
 import { ProjectCoOrdinatorHeaderComponent } from 'src/app/utility/shared/components/project-co-ordinator-header/project-co-ordinator-header.component';
 import { ProjectCoOrdinateRoutingModule } from './project-co-ordinator.routing.module';
 import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-project-list/project-co-ordinator-project-list.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -32,7 +33,9 @@ import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-p
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    ProjectCoOrdinateRoutingModule
-  ]
+    ProjectCoOrdinateRoutingModule,
+    NgSelectModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProjectCoOrdinatorModule { }
