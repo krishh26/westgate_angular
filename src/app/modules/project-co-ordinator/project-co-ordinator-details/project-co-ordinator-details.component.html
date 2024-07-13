@@ -12,26 +12,37 @@
         <table class="table table-striped align-middle">
           <thead>
             <tr>
-              <th width="200px">Project Title</th>
-              <th>BOS ID</th>
+              <th width="100px">Project Title</th>
+              <th width="150px">Project Description</th>
+              <th >BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
-              <th>Value</th>
-              <th>Status</th>
-              <th>Project Start Date</th>
-              <th>Project End Date</th>
+              <th>Industry</th>
+              <th>Min Value</th>
+              <th>Max Value</th>
+              <th>Website</th>
+              <th width="100px">Link to notice</th>
+              <th>Created Date</th>
+              <th>Time Due (Mail)</th>
+              <th>Due Date & Time</th>
+              <!-- <th>Action</th> -->
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><a href="javascript();">{{ projectDetails?.projectName }}</a></td>
-              <td v-align="middle">{{ projectDetails?.BOSID }}</td>
-              <td>{{ projectDetails?.publishDate | date:'YYYY-MM-dd' }}</td>
-              <td>{{ projectDetails?.website }}</td>
-              <td>$ {{projectDetails?.value}}</td>
-              <td><strong class="text-success"> {{ projectDetails?.status }} </strong></td>
-              <td>{{ projectDetails?.periodOfContractStart | date:'YYYY-MM-dd' || '-'}}</td>
-              <td>{{ projectDetails?.periodOfContractEnd | date:'YYYY-MM-dd' || '-'}}</td>
+              <td><a (click)="projectDetails(projectDetails?._id)" href="javascript:;">{{projectDetails?.projectName}}</a></td>
+              <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
+              <td v-align="middle">{{projectDetails?.BOSID}}</td>
+              <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
+              <td>{{projectDetails?.category}}</td>
+              <td>{{projectDetails?.industry}}</td>
+              <td>{{projectDetails?.minValue}}</td>
+              <td>{{projectDetails?.maxValue}}</td>
+              <td >{{projectDetails?.website}}</td>
+              <td><a href='{{projectDetails?.link}}' target="_blank">{{projectDetails?.link}}</a></td>
+              <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
+              <td>{{dateDifference}}</td>
+              <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
             </tr>
           </tbody>
         </table>
