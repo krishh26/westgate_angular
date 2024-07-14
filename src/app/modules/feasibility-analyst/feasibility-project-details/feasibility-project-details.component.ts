@@ -250,8 +250,8 @@ export class FeasibilityProjectDetailsComponent {
       return this.notificationService.showError('Please Select Status Comment');
     }
 
-    const payload = {
-      subContractDocument: this.subContractDocument || [],
+    let payload : any = {
+      subContractingfile: this.subContractDocument || [],
       economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
       FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
       economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
@@ -262,11 +262,14 @@ export class FeasibilityProjectDetailsComponent {
       clientDocument : this.projectDetails?.clientDocument || [],
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
-      failStatusReason: [this.failStatusReason?.value] || "",
       loginDetail: this.projectDetails.loginDetail || "",
     };
 
-    this.projectService.editProject(this.projectDetails._id, payload).subscribe(
+    if(this.failStatusReason?.value) {
+      payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+    }
+
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
