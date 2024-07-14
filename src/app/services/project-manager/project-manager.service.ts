@@ -6,6 +6,7 @@ import { environment } from 'src/environment/environment';
 export enum ProjectManagerAPIEndPoint {
   DASHBOARD_LIST = '/project/project-manager/dashboard',
   USER_LIST = '/user/list/',
+  DROP_USER = 'project/update/project-manager/'
 }
 
 @Injectable({
@@ -25,9 +26,13 @@ export class ProjectManagerService {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.DASHBOARD_LIST);
   }
-  getUserList(userRoles:string): Observable<any> {
+  getUserList(userRoles: string): Observable<any> {
     return this.httpClient
-     .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST + `?userRoles=${userRoles}`);
+      .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST + `?userRoles=${userRoles}`);
   }
 
+  dropUser(payload: any, id: string): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectManagerAPIEndPoint.DROP_USER + id, payload);
+  }
 }

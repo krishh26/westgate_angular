@@ -19,7 +19,6 @@ export class MatchProjectDetailsComponent {
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
-  projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
@@ -29,11 +28,21 @@ export class MatchProjectDetailsComponent {
   selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
   myForm: FormGroup | undefined;
   skills: any;
+  selectedSupplier: any;
   // skills: FormArray;
   companyDetails: any = [
-    "Delphi Services Limited", "Spectrum IT Hub Limited", "Apex IT Solutions", "Big Data Limited", "Saiwen"
+    {
+      name: "Delphi Services Limited"
+    }, {
+      name: "Spectrum IT Hub Limited"
+    }, {
+      name: "Apex IT Solutions"
+    }, {
+      name: "Big Data Limited"
+    }, {
+      name: "Saiwen"
+    }
   ]
-
 
   constructor(
     private projectService: ProjectService,
@@ -94,7 +103,31 @@ export class MatchProjectDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
 
+  dropUser(details: any) {
+    console.log('this is testing data', details);
+    if (!details?.reason) {
+      return this.notificationService.showError('Please enter reason');
+    }
+
+    const data = {
+      dropUser: {
+        userId: details?._id,
+        reason: details?.reason
+      }
+    }
+
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      if (response?.status == 200) {
+        this.notificationService.showSuccess(response?.message || 'Drop user successfully');
+        this.getUserDetails();
+      } else {
+        return this.notificationService.showError('Try after some time.');
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Error.')
+    })
   }
 
   getSummaryQuestion() {
@@ -174,5 +207,27 @@ export class MatchProjectDetailsComponent {
 
   goToSummaryDetails() {
     this.router.navigate(['/project-manager/project/summary-notes'], { queryParams: { id: this.projectId } });
+  }
+
+  selectSupplier(supplier: any) {
+    this.selectedSupplier = supplier
+
+    if (!this.selectedSupplier) {
+      return this.notificationService.showError('please select supplier');
+    }
+    console.log('sadsdd',supplier);
+
+    const data = {
+      select: {
+        supplierId: this.selectedSupplier?._id,
+        companySelect: supplier.company,
+        handoverCall: supplier.startDate
+      }
+    }
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      this.notificationService.showSuccess('Successfully select user')
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Something went wrong');
+    });
   }
 }
