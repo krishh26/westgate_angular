@@ -192,12 +192,13 @@
                   <span>
                     {{item?.deadline | date : 'dd-MM-YYYY'}}
                   </span>
-                  <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"><i
-                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i></a>
+                  <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
+                  <!-- <i
+                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
                 <td>Ayush
-                  <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
-                      class="bi bi-pencil-fill"></i></a>
+                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                      class="bi bi-pencil-fill"></i></a> -->
                 </td>
                 <td> {{item?.comment}}</td>
                 <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
