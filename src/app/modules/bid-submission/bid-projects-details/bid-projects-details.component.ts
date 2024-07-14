@@ -84,7 +84,7 @@ export class BidProjectsDetailsComponent {
 
   questionDetails(details: any) {
     localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
-    // this.router.navigate(['/project-coordinator/project-coordinator-question-details'], { queryParams: { id: details?._id } });
+     this.router.navigate(['bid-submission/bid-question-details'], { queryParams: { id: details?._id } });
   }
 
   getProjectDetails() {

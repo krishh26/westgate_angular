@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class BidQuestionDetailsUkComponent {
 
+  questionDetails: any = [];
+
+  constructor(){
+    const details = localStorage.getItem('ViewQuestionForCoordinator');
+    if(details) {
+      this.questionDetails = JSON.parse(details);
+    }
+  }
+
 }

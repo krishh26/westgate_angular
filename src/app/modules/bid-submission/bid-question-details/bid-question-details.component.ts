@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./bid-question-details.component.scss']
 })
 export class BidQuestionDetailsComponent {
+  questionDetails: any = [];
+
+  constructor(){
+    const details = localStorage.getItem('ViewQuestionForCoordinator');
+    if(details) {
+      this.questionDetails = JSON.parse(details);
+    }
+  }
 
 }
