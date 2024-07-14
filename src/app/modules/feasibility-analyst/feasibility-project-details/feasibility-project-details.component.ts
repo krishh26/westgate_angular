@@ -22,6 +22,7 @@ export class FeasibilityProjectDetailsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
+  uploadedDocument : any;
   clientDocument: any[] = [];
   loginDetailDocument: any[] = [];
   subContractDocument: any;
@@ -38,6 +39,7 @@ export class FeasibilityProjectDetailsComponent {
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
+  failStatusImage: any;
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -46,7 +48,8 @@ export class FeasibilityProjectDetailsComponent {
     clientDocument: 'clientDocument',
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
-    otherDocument: 'otherDocument'
+    otherDocument: 'otherDocument',
+    failStatusImage : "failStatusImage"
   }
 
   // For check bov
@@ -97,11 +100,11 @@ export class FeasibilityProjectDetailsComponent {
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
 
-
         this.subContractDocument =  this.projectDetails?.subContractingfile || null;
         this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
         this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
         this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments ||null;
+        this.failStatusImage = this.projectDetails?.failStatusImage || null;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -127,6 +130,11 @@ export class FeasibilityProjectDetailsComponent {
 
   openDocument(data: any) {
     this.selectedDocument = data;
+  }
+
+  // Function to be used for showing uploaded document
+  openUploadedDocument(data: any) {
+    this.uploadedDocument = data;
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -184,6 +192,10 @@ export class FeasibilityProjectDetailsComponent {
             }
             this.FeasibilityOtherDocuments.push(objToBePused);
             this.loginName = ""
+          }
+
+          if(type == this.documentUploadType.failStatusImage) {
+            this.failStatusImage = response?.data;
           }
 
           // economical partner ship response document
@@ -269,6 +281,7 @@ export class FeasibilityProjectDetailsComponent {
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
       loginDetail: this.projectDetails.loginDetail || "",
+      failStatusImage : this.failStatusImage || ""
     };
 
     if(this.failStatusReason?.value) {

@@ -56,4 +56,8 @@ export class SummaryNotesComponent implements OnInit {
     localStorage.setItem('ViewSummary', JSON.stringify(item));
     this.router.navigate(['/project-manager/project/summary-project-details']);
   }
+
+  backPage() {
+    this.router.navigate(['/project-manager/project/match-project-details'], { queryParams: { id: this.projectId } });
+  }
 }
