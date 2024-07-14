@@ -6,7 +6,7 @@ import { environment } from 'src/environment/environment';
 export enum ProjectManagerAPIEndPoint {
   DASHBOARD_LIST = '/project/project-manager/dashboard',
   USER_LIST = '/user/list/',
-  DROP_USER = 'project/update/project-manager/'
+  DROP_USER = '/project/update/project-manager/'
 }
 
 @Injectable({
