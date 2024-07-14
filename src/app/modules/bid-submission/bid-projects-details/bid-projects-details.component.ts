@@ -4,6 +4,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UkWriterService } from 'src/app/services/uk-writer/uk-writer.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-bid-projects-details',
   templateUrl: './bid-projects-details.component.html',
@@ -25,35 +26,7 @@ export class BidProjectsDetailsComponent {
   supplierId: string = '';
   documents: any[] = [];
   // selectedDocument: any;
-
-  subContractingfile = {
-    key: "files/1720947517673_dog1.jpg",
-    url: "https://wgih.blob.core.windows.net/wgit/files/1720947517673_dog1.jpg"
-  };
-
-  economicalPartnershipQueryFile = {
-    key: "files/1720947520170_dog2.jpg",
-    url: "https://wgih.blob.core.windows.net/wgit/files/1720947520170_dog2.jpg"
-  };
-
-  FeasibilityOtherDocuments = [
-    {
-      name: "kishan_FeasibailityUser@gmail.com",
-      type: "otherQueryDocument",
-      file: {
-        key: "files/1720947523322_dog3.jpg",
-        url: "https://wgih.blob.core.windows.net/wgit/files/1720947523322_dog3.jpg"
-      }
-    },
-    {
-      name: "",
-      type: "otherDocument",
-      file: {
-        key: "files/1720947529850_dog3.jpg",
-        url: "https://wgih.blob.core.windows.net/wgit/files/1720947529850_dog3.jpg"
-      }
-    }
-  ];
+  productForm!: FormGroup;
 
   constructor(
     private projectService: ProjectService,
@@ -62,6 +35,7 @@ export class BidProjectsDetailsComponent {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private ukwriterService: UkWriterService,
+    private fb: FormBuilder,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -75,6 +49,10 @@ export class BidProjectsDetailsComponent {
     this.getProjectDetails();
     this.getSummaryQuestion();
     // this.getSupplierDetails()
+    this.productForm = this.fb.group({
+      // other form controls
+      waitingForResult: [false]  // Add this line
+    });
   }
 
   viewDocument(document: any) {
@@ -134,12 +112,12 @@ export class BidProjectsDetailsComponent {
   processDocuments() {
     if (this.projectDetails) {
       console.log(this.projectDetails.subContractingfile);
-      
+
       this.documents = [
         { label: 'Sub-contracting', file: this.projectDetails.subContractingfile },
         { label: 'Economical partnership', file: this.projectDetails.economicalPartnershipQueryFile },
         { label: 'Economical partnership response', file: this.projectDetails.economicalPartnershipResponceFile },
-        ...this.projectDetails.FeasibilityOtherDocuments.map((doc:any) => ({
+        ...this.projectDetails.FeasibilityOtherDocuments.map((doc: any) => ({
           label: doc.name || 'Other Document',
           file: doc.file
         }))
@@ -203,5 +181,23 @@ export class BidProjectsDetailsComponent {
     }
   }
 
-
+  onSubmit(): void {
+    if (this.projectId) {
+      this.showLoader = true;
+      this.projectService.editProject(this.projectId, this.productForm.value).subscribe(
+        (response) => {
+          if (response.status) {
+            this.notificationService.showSuccess('', 'Project updated successfully.');
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
+    }
+  }
 }
