@@ -96,6 +96,12 @@ export class FeasibilityProjectDetailsComponent {
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
+
+
+        this.subContractDocument =  this.projectDetails?.subContractingfile || null;
+        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
+        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
+        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments ||null;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -246,7 +252,7 @@ export class FeasibilityProjectDetailsComponent {
       return this.notificationService.showError('Please Enter Status Comment');
     }
 
-    if (this.status == 'Expired') {
+    if (this.status == 'Expired' && !this.failStatusReason?.value) {
       return this.notificationService.showError('Please Select Status Comment');
     }
 
