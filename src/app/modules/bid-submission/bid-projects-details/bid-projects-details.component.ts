@@ -22,7 +22,38 @@ export class BidProjectsDetailsComponent {
   selectedDocument: any;
   summaryQuestionList: any;
   supplierDetails: any = [];
-  supplierId: string = ''
+  supplierId: string = '';
+  documents: any[] = [];
+  // selectedDocument: any;
+
+  subContractingfile = {
+    key: "files/1720947517673_dog1.jpg",
+    url: "https://wgih.blob.core.windows.net/wgit/files/1720947517673_dog1.jpg"
+  };
+
+  economicalPartnershipQueryFile = {
+    key: "files/1720947520170_dog2.jpg",
+    url: "https://wgih.blob.core.windows.net/wgit/files/1720947520170_dog2.jpg"
+  };
+
+  FeasibilityOtherDocuments = [
+    {
+      name: "kishan_FeasibailityUser@gmail.com",
+      type: "otherQueryDocument",
+      file: {
+        key: "files/1720947523322_dog3.jpg",
+        url: "https://wgih.blob.core.windows.net/wgit/files/1720947523322_dog3.jpg"
+      }
+    },
+    {
+      name: "",
+      type: "otherDocument",
+      file: {
+        key: "files/1720947529850_dog3.jpg",
+        url: "https://wgih.blob.core.windows.net/wgit/files/1720947529850_dog3.jpg"
+      }
+    }
+  ];
 
   constructor(
     private projectService: ProjectService,
@@ -43,7 +74,13 @@ export class BidProjectsDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getSummaryQuestion();
-   // this.getSupplierDetails()
+    // this.getSupplierDetails()
+  }
+
+  viewDocument(document: any) {
+    this.selectedDocument = document;
+    console.log(this.selectedDocument?.url);
+
   }
 
   getSupplierDetails() {
@@ -75,7 +112,7 @@ export class BidProjectsDetailsComponent {
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status == true) {
+      if (response?.status === true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
         const dueDate = new Date(this.projectDetails?.dueDate);
@@ -83,6 +120,7 @@ export class BidProjectsDetailsComponent {
         const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
         const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
         this.dateDifference = formattedDateDifference;
+        this.processDocuments();
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -91,6 +129,22 @@ export class BidProjectsDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  processDocuments() {
+    if (this.projectDetails) {
+      console.log(this.projectDetails.subContractingfile);
+      
+      this.documents = [
+        { label: 'Sub-contracting', file: this.projectDetails.subContractingfile },
+        { label: 'Economical partnership', file: this.projectDetails.economicalPartnershipQueryFile },
+        { label: 'Economical partnership response', file: this.projectDetails.economicalPartnershipResponceFile },
+        ...this.projectDetails.FeasibilityOtherDocuments.map((doc:any) => ({
+          label: doc.name || 'Other Document',
+          file: doc.file
+        }))
+      ];
+    }
   }
 
   getSummaryQuestion() {
@@ -107,10 +161,6 @@ export class BidProjectsDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
-  }
-
-  openDocument(data: any) {
-    this.selectedDocument = data;
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -147,6 +197,11 @@ export class BidProjectsDetailsComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  openDocument(document: any) {
+    if (document?.url) {
+      window.open(document.url, '_blank');
+    }
+  }
 
 
 }

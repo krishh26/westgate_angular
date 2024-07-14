@@ -90,31 +90,18 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 col-xl-8 col-12">
                     <div class="row">
-                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-                            <div class="form-group">
-                                <label class="display-block">Sub-contracting</label>
-                                <button type="button"
-                                    class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
-                                        class="bi bi-eye-fill"></i> View Document</button>
-                            </div>
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12" *ngFor="let doc of documents">
+                          <div class="form-group">
+                            <label class="display-block">{{ doc.label }}</label>
+                            <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3" 
+                                    (click)="openDocument(doc.file)">
+                              <i class="bi bi-eye-fill"></i> View Document
+                            </button>
+                          </div>
                         </div>
-                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-                            <div class="form-group">
-                                <label class="display-block">Economical partnership</label>
-                                <button type="button"
-                                    class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
-                                        class="bi bi-eye-fill"></i> View Document</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-                            <div class="form-group">
-                                <label class="display-block">other</label>
-                                <button type="button"
-                                    class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"><i
-                                        class="bi bi-eye-fill"></i> View Document</button>
-                            </div>
-                        </div>
-                    </div>
+                      </div>
+                      
+                    
                 </div>
                 <div class="col-lg-4 col-xl-4 col-12">
                     <div class="card bg-primary">
@@ -386,6 +373,29 @@
                         style="width: 100%; height: 600px;"></iframe>
                     <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url"
                         class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewDocumentModal1" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="ViewDocumentModalLabel">View Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isPdf(selectedDocument?.url); else otherFormats">
+                    <ngx-extended-pdf-viewer [src]="selectedDocument?.url" useBrowserLocale="true" height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #otherFormats>
+                    <iframe *ngIf="isWordOrExcel(selectedDocument?.url)" [src]="getDocumentViewerUrl(selectedDocument?.url)" style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(selectedDocument?.url)" [src]="selectedDocument?.url" class="img-fluid" />
                 </ng-template>
             </div>
             <div class="modal-footer">
