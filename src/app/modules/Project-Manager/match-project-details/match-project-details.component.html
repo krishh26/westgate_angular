@@ -197,14 +197,22 @@
               <td>{{ supplier._id }}</td>
               <td>Ayush</td>
               <td>
-                <select
+                <div class="form-group">
+                  <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option" [items]="companyDetails"
+                  bindLabel="name" [multiple]="true" bindValue="name"
+                  [(ngModel)]="supplier['company']"
+                  >
+                  </ng-select>
+                </div>
+
+                <!-- <select
                   class="form-select-sm fonts-12"
                   [(ngModel)]="selectedSuppliers[supplier._id].company"
                 >
                   <ng-container *ngFor="let company of companyDetails">
                     <option [value]="company">{{ company }}</option>
                   </ng-container>
-                </select>
+                </select> -->
               </td>
               <td>
                 <div class="row mb-3">
@@ -212,7 +220,7 @@
                   <div class="col-12">
                     <input
                       type="date"
-                      [(ngModel)]="selectedSuppliers[supplier._id].startDate"
+                      [(ngModel)]="supplier.startDate"
                       class="form-control"
                       placeholder="Start Date"
                       style="height: 30px"
@@ -228,11 +236,11 @@
                   >
                     View Supplier Response
                   </button> -->
-                  <button
+                  <button (click)="selectSupplier(supplier)"
                     class="btn btn-sm btn-primary px-4 py-1"
                     style="white-space: nowrap; font-size: 11px"
                   >
-                    Selected
+                    {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
                   </button>
                 </div>
               </td>
@@ -302,6 +310,7 @@
                         style="border: 1px solid #e6e6e6"
                         placeholder="Add reason"
                         aria-label="Username"
+                        [(ngModel)]="supplier['reason']"
                         aria-describedby="basic-addon1"
                       />
                     </td>
@@ -309,7 +318,7 @@
                       <div
                         class="bg-transparent w-auto d-flex align-items-center"
                       >
-                        <button
+                        <button (click)="dropUser(supplier)"
                           class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
                           style="white-space: nowrap; font-size: 11px"
                         >

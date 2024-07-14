@@ -96,6 +96,12 @@ export class FeasibilityProjectDetailsComponent {
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
+
+
+        this.subContractDocument =  this.projectDetails?.subContractingfile || null;
+        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
+        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
+        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments ||null;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -144,7 +150,8 @@ export class FeasibilityProjectDetailsComponent {
     if (!this.projectDetails?.loginDetail.length) {
       return this.notificationService.showError('Upload Login Detail');
     }
-    this.saveChanges();
+    this.saveChanges(type);
+
     if (type == 'next') {
       this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
     }
@@ -240,17 +247,17 @@ export class FeasibilityProjectDetailsComponent {
     this.isEditing = !this.isEditing;
   }
 
-  saveChanges() {
+  saveChanges(type?: string) {
     if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
       return this.notificationService.showError('Please Enter Status Comment');
     }
 
-    if (this.status == 'Expired') {
+    if (this.status == 'Expired' && !this.failStatusReason?.value) {
       return this.notificationService.showError('Please Select Status Comment');
     }
 
-    const payload = {
-      subContractDocument: this.subContractDocument || [],
+    let payload : any = {
+      subContractingfile: this.subContractDocument || [],
       economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
       FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
       economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
@@ -261,16 +268,22 @@ export class FeasibilityProjectDetailsComponent {
       clientDocument : this.projectDetails?.clientDocument || [],
       status: this.status || "",
       statusComment: this.statusComment?.value || "",
-      failStatusReason: [this.failStatusReason?.value] || "",
       loginDetail: this.projectDetails.loginDetail || "",
     };
 
-    this.projectService.editProject(this.projectDetails._id, payload).subscribe(
+    if(this.failStatusReason?.value) {
+      payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+    }
+
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
           this.getProjectDetails();
+          if(type == 'save') {
+            this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+          }
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
