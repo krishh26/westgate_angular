@@ -13,14 +13,16 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th width="200px">Project Title</th>
+                            <th width="100px">Project Title</th>
+                            <th width="150px">Project Description</th>
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
-                            <th>Value</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
                             <th>Website</th>
-                            <th>Link Notice</th>
+                            <th>Link to Notice</th>
                             <th>Created Date</th>
                             <th>Status</th>
                             <th>Due Date &amp; Time</th>
@@ -32,11 +34,13 @@
                             *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
 
                             <td><a href="javascript:;">{{item?.projectName}}</a></td>
+                            <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
                             <td v-align="middle">{{item?.BOSID}}</td>
                             <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{item?.category}}</td>
                             <td>{{item?.industry}}</td>
-                            <td>£{{item?.value}}</td>
+                            <td>£ {{item?.minValue}}</td>
+                            <td>£ {{item?.maxValue}}</td>
                             <td>{{item?.website}}</td>
                             <td><a href="javascript:;">{{item?.link}}</a></td>
                             <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>

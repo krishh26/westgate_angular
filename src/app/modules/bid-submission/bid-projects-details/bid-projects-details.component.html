@@ -3,7 +3,8 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-3">
-                    <a routerLink="/bid-submission/bid-projects-all" class="btn btn-outline-secondary w-100 box-shadow">Back</a>
+                    <a routerLink="/bid-submission/bid-projects-all"
+                        class="btn btn-outline-secondary w-100 box-shadow">Back</a>
                 </div>
             </div>
 
@@ -11,12 +12,14 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th width="200px">Project Title</th>
+                            <th width="100px">Project Title</th>
+                            <th width="150px">Project Description</th>
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
-                            <th>Value</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
                             <th>Website</th>
                             <th>Link to Notice</th>
                             <th>Created Date</th>
@@ -28,11 +31,13 @@
                         <tr>
                             <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
                             <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
                             <td>{{projectDetails?.industry}}</td>
-                            <td>{{projectDetails?.value}}</td>
+                            <td>£ {{projectDetails?.minValue}}</td>
+                            <td>£ {{projectDetails?.maxValue}}</td>
                             <td>{{projectDetails?.website}}</td>
                             <td><a href='{{projectDetails?.link}}'>{{projectDetails?.link}}</a></td>
                             <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
@@ -65,16 +70,16 @@
                     <tbody>
                         <ng-container *ngFor="let supplier of projectDetails?.select">
                             <tr>
-                              <td>Company Name</td>
-                              <td>{{supplier?.supplierId}}</td>
-                              <td>Ayush</td>
-                              <!-- <td style="width: 35%;">
+                                <td>Company Name</td>
+                                <td>{{supplier?.supplierId}}</td>
+                                <td>Ayush</td>
+                                <!-- <td style="width: 35%;">
                                 <a (click)="goToChat()" class="btn btn-sm btn-primary me-2"><i class="bi bi-chat-dots me-1"></i>
                                   Chat</a>
                                 <a type="button" class="btn btn-success btn-sm">Initiate Meeting</a>
                               </td> -->
                             </tr>
-                          </ng-container>
+                        </ng-container>
                     </tbody>
                 </table>
             </div>
