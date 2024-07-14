@@ -19,7 +19,6 @@ export class SummaryNoteQuestionsComponent {
   projectDetails: any = [];
   summaryquestionList: any = [];
   projectId: string = '';
-  projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
@@ -183,8 +182,6 @@ export class SummaryNoteQuestionsComponent {
     });
   }
 
-
-
   deleteSummary(summaryId?: string) {
     this.summaryService.deleteSummary(summaryId).subscribe((response) => {
       if (response?.status == true) {
@@ -197,7 +194,12 @@ export class SummaryNoteQuestionsComponent {
       this.notificationService.showError(error?.message || 'Something went wrong !');
     })
   }
+
   detailPage() {
     this.router.navigate(['/feasibility-user/minimum-eligibility-form'], { queryParams: { id: this.projectId } });
+  }
+
+  backPage() {
+    this.router.navigate(['/feasibility-user/feasibility-project-detail'], { queryParams: { id: this.projectId } });
   }
 }

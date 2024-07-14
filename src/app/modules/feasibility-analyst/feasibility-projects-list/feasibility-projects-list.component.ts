@@ -40,7 +40,18 @@ export class FeasibilityProjectsListComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
-  statusList: any = ["Awaiting", "InHold", "Pass", "Fail"];
+  statusList: any = [
+    "InSolution3rdParty",
+    "InSolution",
+    "InReviewWestGate",
+    "InReviewSHU",
+    "InReview3rdParty",
+    "InSubmission",
+    "WaitingForResult",
+    "Awarded",
+    "NotAwarded",
+    "Won"
+  ];
 
   constructor(
     private projectService: ProjectService,
