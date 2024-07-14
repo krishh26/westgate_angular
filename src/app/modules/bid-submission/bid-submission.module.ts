@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BidSubmissionComponent } from './bid-submission.component';
 import { BidSubmissonHomeComponent } from './bid-submisson-home/bid-submisson-home.component';
@@ -14,6 +14,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { BidSubmissionHeaderComponent } from 'src/app/utility/shared/components/bid-submission-header/bid-submission-header.component';
 import { BidHeaderComponent } from 'src/app/utility/shared/components/bid-header/bid-header.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { BidHeaderComponent } from 'src/app/utility/shared/components/bid-header
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgSelectModule
   ],
   declarations: [
     BidSubmissionComponent,
@@ -35,6 +37,7 @@ import { BidHeaderComponent } from 'src/app/utility/shared/components/bid-header
     BidQuestionDetailsComponent,
     BidSubmissionHeaderComponent,
     BidHeaderComponent
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BidSubmissionModule { }
