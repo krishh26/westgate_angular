@@ -96,6 +96,8 @@ export class ProjectsDetailsComponent {
 
   openDocument(data: any) {
     this.selectedDocument = data;
+    console.log(this.selectedDocument);
+    
   }
 
   download(imageUrl: string, fileName: string): void {

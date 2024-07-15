@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DomSanitizer , SafeResourceUrl} from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
@@ -26,7 +27,8 @@ export class CaseStudiesComponent {
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   casestudyForm = {
@@ -142,4 +144,27 @@ export class CaseStudiesComponent {
       URL.revokeObjectURL(downloadLink.href);
     }
   }
+
+  
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+
 }
