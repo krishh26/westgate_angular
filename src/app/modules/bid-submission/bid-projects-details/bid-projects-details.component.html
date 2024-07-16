@@ -104,7 +104,7 @@
                         <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12" *ngFor="let doc of documents">
                             <div class="form-group">
                                 <label class="display-block">{{ doc.label }}</label>
-                                <button type="button" class="btn btn-view-document btn-boxshadow text-dark w-100 mb-3"
+                                <button type="button" class="btn btn-primary btn-view-document btn-boxshadow text-dark w-100 mb-3" data-bs-toggle="modal" data-bs-target="#ViewDocuments"
                                     (click)="openDocument(doc.file)">
                                     <i class="bi bi-eye-fill"></i> View Document
                                 </button>
@@ -393,24 +393,24 @@
     </div>
 </div>
 
-<div class="modal fade" id="ViewDocumentModal1" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocumets"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: space-between;">
-                <h5 class="modal-title" id="ViewDocumentModalLabel">View Documents</h5>
+                <h5 class="modal-title" id="viewDocumets">View Documents</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <ng-container *ngIf="isPdf(selectedDocument?.url); else otherFormats">
-                    <ngx-extended-pdf-viewer [src]="selectedDocument?.url" useBrowserLocale="true"
+            <div class="modal-body" style="text-align: center;">
+                <ng-container *ngIf="isPdf(uploadedDocument?.url); else noDocuments">
+                    <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
                         height="600px"></ngx-extended-pdf-viewer>
                 </ng-container>
-                <ng-template #otherFormats>
-                    <iframe *ngIf="isWordOrExcel(selectedDocument?.url)"
-                        [src]="getDocumentViewerUrl(selectedDocument?.url)"
+                <ng-template #noDocuments>
+                    <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
+                        [src]="getDocumentViewerUrl(uploadedDocument?.url)"
                         style="width: 100%; height: 600px;"></iframe>
-                    <img *ngIf="isImage(selectedDocument?.url)" [src]="selectedDocument?.url" class="img-fluid" />
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
                 </ng-template>
             </div>
             <div class="modal-footer">

@@ -7,6 +7,7 @@ import { BidProjectsDetailsComponent } from './bid-projects-details/bid-projects
 import { BidProjectsAllComponent } from './bid-projects-all/bid-projects-all.component';
 import { BidMatchedProjectsComponent } from './bid-matched-projects/bid-matched-projects.component';
 import { BidQuestionDetailsComponent } from './bid-question-details/bid-question-details.component';
+import { BidSubmissionProfileComponent } from './bid-submission-profile/bid-submission-profile.component';
 
 const routes: Routes = [
     {
@@ -37,6 +38,10 @@ const routes: Routes = [
                 path: "bid-question-details",
                 component: BidQuestionDetailsComponent
             },
+            {
+              path: "profile-setting",
+              component: BidSubmissionProfileComponent
+          },
         ]
     },
     {

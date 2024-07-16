@@ -23,7 +23,8 @@ export class ProjectsDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryquestionList: any
+  summaryquestionList :any;
+  uploadedDocument : any;
 
   constructor(
     private projectService: ProjectService,
@@ -113,8 +114,9 @@ export class ProjectsDetailsComponent {
 
 
   openDocument(data: any) {
-    this.selectedDocument = data;
-    console.log(this.selectedDocument?.file?.url);
+    this.uploadedDocument = data;
+    console.log(this.selectedDocument);
+
   }
 
   download(imageUrl: string, fileName: string): void {

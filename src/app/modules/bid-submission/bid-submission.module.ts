@@ -15,6 +15,7 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { BidSubmissionHeaderComponent } from 'src/app/utility/shared/components/bid-submission-header/bid-submission-header.component';
 import { BidHeaderComponent } from 'src/app/utility/shared/components/bid-header/bid-header.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BidSubmissionProfileComponent } from './bid-submission-profile/bid-submission-profile.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BidMatchedProjectsComponent,
     BidQuestionDetailsComponent,
     BidSubmissionHeaderComponent,
-    BidHeaderComponent
+    BidHeaderComponent,
+    BidSubmissionProfileComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
