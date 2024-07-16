@@ -37,7 +37,10 @@
                             <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
+                                <a *ngIf="projectDetails?.sortListUserId?.length > 0" style="background-color: darkgray;"
+                                    class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlisted</a>
+                                  <a *ngIf="projectDetails?.sortListUserId?.length == 0" (click)="sortListProject(projectDetails?._id)"
+                                    class="btn btn-sm btn-dark m-1" title="Shortlist">Shortlist</a>
                             </td>
                         </tr>
                     </tbody>
