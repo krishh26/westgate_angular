@@ -1209,97 +1209,84 @@
             </div>
         </section>
     </section>
+
+
     <section class="p-0">
         <div class="bg-light-gray p-2 text-center">
             Project Co-Ordinator
         </div>
     </section>
+
+
     <section>
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 text-end">
-                    <a href="javascript:;" class="btn btn-success">Initiate Meeting</a>
-                </div>
-            </div>
             <h5 class="mb-3"><strong>Add Supporting docs</strong></h5>
+            <div class="row" [formGroup]="supportDocument">
+                <div class="col-lg-6 col-xl-6 col-12" formArrayName="document">
+                    <div *ngFor="let skill of document?.controls; let i=index" class="form-group"
+                        x-data="{ fileName: '' }">
+                        <div class="input-group" [formGroupName]="i">
+                            <input type="text" class="form-control file-control" formControlName="key"
+                                placeholder="Upload Image" x-model="fileName">
+                            <input type="file" x-ref="file" class="d-none" [id]="'fileInput'+ i" name="myfile"
+                                style="height: 10px; width: 10px;" (change)="addFiles($event, i)">
+                            <label [for]="'fileInput'+ i" class="browse btn btn-primary border-radius6 me-2"
+                                type="button" x-on:click.prevent="$refs.file.click()"><i
+                                    class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                                Document</label>
+                            <button class="me-2 btn btn-primary" (click)="addDocument()">Add</button>
+                            <button class="me-2 btn btn-secondary" (click)="removeDocument(i)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
     <section>
         <div class="container-fluid">
-            <h5 class="mb-3"><strong>Add Project Stage <button type="button" class="btn btn-dark btn-sm"><i
-                            class="bi bi-plus-lg"></i></button> </strong></h5>
-            <div class="row">
-                <div class="col-lg-6 col-xl-6 col-12">
-                    <div class="row">
-                        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
+            <h5 class="mb-3"><strong>Add Project Stage <button (click)="addStage()" type="button"
+                        class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i></button> </strong></h5>
+            <div class="row" [formGroup]="projectStage">
+                <div class="col-lg-8 col-xl-8 col-12" formArrayName="stage">
+                    <div class="row" *ngFor="let stage of stage?.controls; let i=index" [formGroupName]="i">
+                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-group">
                                 <label class="display-block">&nbsp;</label>
-                                <input type="text" class="form-control" placeholder="Stage 1">
+                                <input type="text" formControlName="text" class="form-control" placeholder="Stage 1">
                             </div>
                         </div>
                         <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
                             <div class="form-group">
                                 <label>Start Date</label>
-                                <input type="date" class="form-control">
+                                <input type="date" formControlName="startDate" class="form-control">
                             </div>
                         </div>
                         <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
                             <div class="form-group">
                                 <label>End Date</label>
-                                <input type="date" class="form-control">
+                                <input type="date" formControlName="endDate" class="form-control">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label class="display-block">&nbsp;</label>
-                                <input type="text" class="form-control" placeholder="Stage 2">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                <input type="date" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
-                            <div class="form-group">
-                                <label>End Date</label>
-                                <input type="date" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label class="display-block">&nbsp;</label>
-                                <input type="text" class="form-control" placeholder="Stage 3">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                <input type="date" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
-                            <div class="form-group">
-                                <label>End Date</label>
-                                <input type="date" class="form-control">
+                        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12">
+                            <div class="form-group d-flex align-items-center">
+                                <button (click)="removeStage(i)" class="btn btn-secondary sm">Remove</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-success" (click)="updateProject()">Submit</button>
                 </div>
             </div>
         </div>
     </section>
-    <section>
+
+
+    <!-- <section>
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-lg-9 col-xl-9 col-md-12 col-sm-12 col-12">
@@ -1384,10 +1371,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
-</main><!-- End #main -->
+</main>
 
 <!-- View Document Modal -->
 <div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
