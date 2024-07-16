@@ -44,6 +44,9 @@ export class SuperAdminProjectDetailsComponent {
   isEditMode: boolean = false;
   currentSummaryId: number | null = null;
   loginUser: any;
+  uploadedDocument: any;
+  failStatusImage: any;
+  showSuccess: boolean = false;
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -52,11 +55,13 @@ export class SuperAdminProjectDetailsComponent {
     clientDocument: 'clientDocument',
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
-    otherDocument: 'otherDocument'
+    otherDocument: 'otherDocument',
+    failStatusImage: "failStatusImage"
   }
 
   // For check bov
   subContracting: boolean = true;
+  eligibilityForm: FormGroup;
 
   loginDetailControl = {
     companyName: new FormControl("", Validators.required),
@@ -64,6 +69,13 @@ export class SuperAdminProjectDetailsComponent {
     loginID: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
   }
+
+  eligibility = {
+    caseStudyRequired: new FormControl("", Validators.required),
+    certifications: new FormControl("", Validators.required),
+    policy: new FormControl("", Validators.required),
+  }
+
 
   summary = {
     questionName: new FormControl("", Validators.required),
@@ -94,6 +106,7 @@ export class SuperAdminProjectDetailsComponent {
     });
     this.loginUser = this.localStorageService.getLogger();
     this.summaryForm = new FormGroup(this.summary);
+    this.eligibilityForm = new FormGroup(this.eligibility);
     this.summaryForm.controls['projectId'].setValue(this.projectId)
   }
 
@@ -222,6 +235,12 @@ export class SuperAdminProjectDetailsComponent {
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
+
+        this.subContractDocument = this.projectDetails?.subContractingfile || null;
+        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
+        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
+        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments || null;
+        this.failStatusImage = this.projectDetails?.failStatusImage || null;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -321,6 +340,12 @@ export class SuperAdminProjectDetailsComponent {
             this.projectDetails.clientDocument.push(objToBePused);
             this.documentName = ""
           }
+
+          if (type == this.documentUploadType.failStatusImage) {
+            this.failStatusImage = response?.data;
+          }
+
+
           if (type == this.documentUploadType.loginDetailDocument) {
             if (!this.loginName) {
               return this.notificationService.showError('Enter Name');
@@ -343,6 +368,8 @@ export class SuperAdminProjectDetailsComponent {
       });
     }
   }
+
+
 
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
@@ -388,6 +415,7 @@ export class SuperAdminProjectDetailsComponent {
       statusComment: this.statusComment?.value || "",
       failStatusReason: [this.failStatusReason?.value] || "",
       loginDetail: this.projectDetails.loginDetail || "",
+      failStatusImage: this.failStatusImage || ""
     };
 
     this.projectService.editProject(this.projectDetails._id, payload).subscribe(
@@ -439,6 +467,32 @@ export class SuperAdminProjectDetailsComponent {
       }
     }, (error) => {
       return this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
+
+
+  // Function to be used for showing uploaded document
+  openUploadedDocument(data: any) {
+    this.uploadedDocument = data;
+  }
+
+  submitEligibility() {
+    if (!this.eligibilityForm.valid) {
+      return this.notificationService.showError('Please Fill Form.');
+    }
+  }
+
+  submitEligibilityForm() {
+    if (!this.eligibilityForm.valid) {
+      return this.notificationService.showError('Please Fill Form.');
+    }
+    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value, this.projectId).subscribe({
+      next: (res: any) => {
+        this.notificationService.showSuccess('Project update successfully');
+      },
+      error: (err: any) => {
+        return this.notificationService.showError('Something went wrong');
+      }
     })
   }
 
