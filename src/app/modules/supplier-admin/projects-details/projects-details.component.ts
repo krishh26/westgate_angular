@@ -73,6 +73,24 @@ export class ProjectsDetailsComponent {
     });
   }
 
+
+  sortListProject(projectId: string) {
+    const payload = {
+      userId: this.loginUser.id,
+      projectId: projectId
+    }
+    this.projectService.projectSortList(payload).subscribe((response) => {
+      if (response?.status) {
+        this.notificationService.showSuccess(response?.message);
+        this.getProjectDetails();
+      } else {
+        return this.notificationService.showError(response?.message);
+      }
+    }, (error) => {
+      return this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
+
   getSummaryQuestion() {
     this.showLoader = true;
     this.projectService.getSummaryQuestionList(this.projectId).subscribe((response) => {

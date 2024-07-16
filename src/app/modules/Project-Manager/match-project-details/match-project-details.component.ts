@@ -119,7 +119,7 @@ export class MatchProjectDetailsComponent {
     }
 
     this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
-      if (response?.status == 200) {
+      if (response?.status == true) {
         this.notificationService.showSuccess(response?.message || 'Drop user successfully');
         this.getUserDetails();
       } else {

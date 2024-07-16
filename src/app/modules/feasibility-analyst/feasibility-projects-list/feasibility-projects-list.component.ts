@@ -41,16 +41,14 @@ export class FeasibilityProjectsListComponent {
   categoryList: any = [];
   industryList: any = [];
   statusList: any = [
-    "InSolution3rdParty",
-    "InSolution",
-    "InReviewWestGate",
-    "InReviewSHU",
-    "InReview3rdParty",
-    "InSubmission",
-    "WaitingForResult",
-    "Awarded",
-    "NotAwarded",
-    "Won"
+    "Awaiting",
+    "⁠Documents not found",
+    "⁠Dropped",
+    "⁠Dropped after feasibility",
+    "⁠Failed",
+    "⁠Handovered to other supplier",
+    "⁠Passed",
+    "⁠Submitted"
   ];
 
   constructor(

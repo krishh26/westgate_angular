@@ -15,8 +15,6 @@ import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-p
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ProjectCordinatorProfileComponent } from './project-cordinator-profile/project-cordinator-profile.component';
 
-
-
 @NgModule({
   declarations: [
     ProjectCoOrdinatorQuestionDetailsComponent,

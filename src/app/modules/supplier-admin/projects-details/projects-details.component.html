@@ -37,7 +37,12 @@
                             <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
                             <td>
-                                <a href="javascript:;" class="btn btn-sm btn-dark" title="Shortlist">Shortlist</a>
+                                <a *ngIf="projectDetails?.sortListUserId?.length > 0"
+                                    style="background-color: darkgray;" class="btn btn-sm btn-dark m-1"
+                                    title="Shortlist">Shortlisted</a>
+                                <a *ngIf="projectDetails?.sortListUserId?.length == 0"
+                                    (click)="sortListProject(projectDetails?._id)" class="btn btn-sm btn-dark m-1"
+                                    title="Shortlist">Shortlist</a>
                             </td>
                         </tr>
                     </tbody>
@@ -63,18 +68,18 @@
                     <div class="card">
                         <ul class="project-document">
                             <ng-container *ngIf="projectDetails?.clientDocument?.length > 0">
-                                <li *ngFor="let clientDocument of projectDetails?.clientDocument">
+                                <li *ngFor="let clientdocument of projectDetails?.clientDocument">
                                     <div class="row">
                                         <div class="col-5 text-center">
-                                            <p class="mb-0">{{clientDocument?.name}}</p>
+                                            <p class="mb-0">{{clientdocument?.name}}</p>
                                         </div>
                                         <div class="col-7 text-center">
                                             <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
                                                 data-bs-target="#ViewDocuments"
-                                                (click)="openDocument(clientDocument?.file)"><i class="bi bi-eye-fill"></i>
+                                                (click)="openDocument(clientdocument?.file)"><i class="bi bi-eye-fill"></i>
                                                 View</a>
                                             <a href="href:;"
-                                                (click)="download(clientDocument?.link?.url, clientDocument?.name)"
+                                                (click)="download(clientdocument?.file?.url, clientdocument?.name)"
                                                 class="btn btn-primarysm"><i
                                                     class="bi bi-file-earmark-arrow-down-fill"></i>
                                                 Download</a>
@@ -231,7 +236,7 @@
             <button class="btn btn-primary w-25" (click)="applyProject()">Apply</button>
         </div>
     </section>
-</main><!-- End #main -->
+</main>
 
 <!-- View Document Modal -->
 <div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
@@ -252,6 +257,36 @@
                         [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
                         style="width: 100%; height: 600px;"></iframe>
                     <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url"
+                        class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Document -->
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="viewDocument">Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isPdf(uploadedDocument?.url); else noDocument">
+                    <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #noDocument>
+                    <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
+                        [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url"
                         class="img-fluid" />
                 </ng-template>
             </div>
