@@ -6,6 +6,7 @@ import { ProjectCoOrdinatorDetailsComponent } from './project-co-ordinator-detai
 import { ProjectCoOrdinatorQuestionDetailsComponent } from './project-co-ordinator-question-details/project-co-ordinator-question-details.component';
 import { ProjectCoOrdinatorChatsComponent } from './project-co-ordinator-chats/project-co-ordinator-chats.component';
 import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-project-list/project-co-ordinator-project-list.component';
+import { ProjectCordinatorProfileComponent } from './project-cordinator-profile/project-cordinator-profile.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: "project-coordinator-chats",
         component: ProjectCoOrdinatorChatsComponent
+      },
+      {
+        path: "project-coordinator-profile",
+        component: ProjectCordinatorProfileComponent
       },
     ]
   },

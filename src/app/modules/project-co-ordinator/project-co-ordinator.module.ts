@@ -13,6 +13,7 @@ import { ProjectCoOrdinatorHeaderComponent } from 'src/app/utility/shared/compon
 import { ProjectCoOrdinateRoutingModule } from './project-co-ordinator.routing.module';
 import { ProjectCoOrdinatorProjectListComponent } from './project-co-ordinator-project-list/project-co-ordinator-project-list.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ProjectCordinatorProfileComponent } from './project-cordinator-profile/project-cordinator-profile.component';
 
 
 
@@ -24,7 +25,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ProjectCoOrdinatorComponent,
     ProjectCoOrdinatorChatsComponent,
     ProjectCoOrdinatorHeaderComponent,
-    ProjectCoOrdinatorProjectListComponent
+    ProjectCoOrdinatorProjectListComponent,
+    ProjectCordinatorProfileComponent
   ],
   imports: [
     CommonModule,
