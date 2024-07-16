@@ -75,8 +75,8 @@
                                         </div>
                                         <div class="col-7 text-center">
                                             <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
-                                                data-bs-target="#ViewClientDocumentModal"
-                                                (click)="openDocument(clientdocument)"><i class="bi bi-eye-fill"></i>
+                                                data-bs-target="#ViewDocuments"
+                                                (click)="openDocument(clientdocument?.file)"><i class="bi bi-eye-fill"></i>
                                                 View</a>
                                             <a href="href:;"
                                                 (click)="download(clientdocument?.file?.url, clientdocument?.name)"
@@ -107,7 +107,9 @@
                                         </div>
                                         <div class="col-7 text-center">
                                             <a href="javascript:;" class="btn btn-primarysm"><i
-                                                    class="bi bi-eye-fill"></i>
+                                                    class="bi bi-eye-fill" data-bs-toggle="modal"
+                                                    data-bs-target="#ViewDocuments"
+                                                    (click)="openDocument(westGetDocument?.file)"></i>
                                                 View</a>
                                             <a href="javascript:;" class="btn btn-primarysm"><i
                                                     class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
@@ -265,31 +267,61 @@
     </div>
 </div>
 
-<div class="modal fade" id="ViewClientDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+
+<!-- Document -->
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ViewClientDocLabel">
-                    Client Document : {{ selectedDocument?.name }}
-                </h5>
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="viewDocument">Document</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-body">
-                    <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
-                        <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
-                            height="600px"></ngx-extended-pdf-viewer>
-                    </ng-container>
-                    <ng-template #otherFormats>
-                        <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
-                            [src]="getDocumentViewerUrl(selectedDocument?.file?.url)"
-                            style="width: 100%; height: 600px;"></iframe>
-                        <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url"
-                            class="img-fluid" />
-                    </ng-template>
-                </div>
-                <!-- <img [src]="selectedDocument?.file?.url" class="img-fluid" /> -->
+                <ng-container *ngIf="isPdf(uploadedDocument?.url); else noDocument">
+                    <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #noDocument>
+                    <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
+                        [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url"
+                        class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Document -->
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="viewDocument">Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isPdf(uploadedDocument?.url); else noDocument">
+                    <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #noDocument>
+                    <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
+                        [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url"
+                        class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

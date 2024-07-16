@@ -25,7 +25,7 @@ export class BidProjectsDetailsComponent {
   supplierDetails: any = [];
   supplierId: string = '';
   documents: any[] = [];
-  // selectedDocument: any;
+  uploadedDocument: any;
   productForm!: FormGroup;
 
   constructor(
@@ -112,7 +112,6 @@ export class BidProjectsDetailsComponent {
   processDocuments() {
     if (this.projectDetails) {
       console.log(this.projectDetails.subContractingfile);
-
       this.documents = [
         { label: 'Sub-contracting', file: this.projectDetails.subContractingfile },
         { label: 'Economical partnership', file: this.projectDetails.economicalPartnershipQueryFile },
@@ -176,9 +175,11 @@ export class BidProjectsDetailsComponent {
   }
 
   openDocument(document: any) {
-    if (document?.url) {
-      window.open(document.url, '_blank');
-    }
+    console.log('asdasd', document);
+    this.uploadedDocument = document;
+    // if (document?.url) {
+    //   window.open(document.url, '_blank');
+    // }
   }
 
   onSubmit(): void {
