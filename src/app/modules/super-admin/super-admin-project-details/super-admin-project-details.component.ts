@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SummaryService } from 'src/app/services/summary/summary.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-super-admin-project-details',
@@ -47,6 +48,10 @@ export class SuperAdminProjectDetailsComponent {
   uploadedDocument: any;
   failStatusImage: any;
   showSuccess: boolean = false;
+  userDetail: any
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
+  myForm: FormGroup | undefined;
+  selectedSupplier: any;
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -58,6 +63,20 @@ export class SuperAdminProjectDetailsComponent {
     otherDocument: 'otherDocument',
     failStatusImage: "failStatusImage"
   }
+
+  companyDetails: any = [
+    {
+      name: "Delphi Services Limited"
+    }, {
+      name: "Spectrum IT Hub Limited"
+    }, {
+      name: "Apex IT Solutions"
+    }, {
+      name: "Big Data Limited"
+    }, {
+      name: "Saiwen"
+    }
+  ]
 
   // For check bov
   subContracting: boolean = true;
@@ -99,20 +118,71 @@ export class SuperAdminProjectDetailsComponent {
     private feasibilityService: FeasibilityService,
     private sanitizer: DomSanitizer,
     private summaryService: SummaryService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder,
+    private projectManagerService: ProjectManagerService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
+    this.myForm = this.fb.group({
+      skills: this.fb.array([])
+    });
     this.loginUser = this.localStorageService.getLogger();
     this.summaryForm = new FormGroup(this.summary);
     this.eligibilityForm = new FormGroup(this.eligibility);
-    this.summaryForm.controls['projectId'].setValue(this.projectId)
+    this.summaryForm.controls['projectId'].setValue(this.projectId);
+
   }
 
   ngOnInit(): void {
     this.getProjectDetails();
     this.getSummaryList();
+    this.getUserDetails();
+  }
+
+  getUserDetails() {
+    this.projectManagerService.getUserList('SupplierAdmin').subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.userDetail = response?.data;
+        this.selectedSuppliers = this.userDetail.reduce((acc: any, supplier: any) => {
+          acc[supplier._id] = { company: '', startDate: null };
+          return acc;
+        }, {});
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  dropUser(details: any) {
+    console.log('this is testing data', details);
+    if (!details?.reason) {
+      return this.notificationService.showError('Please enter reason');
+    }
+
+    const data = {
+      dropUser: {
+        userId: details?._id,
+        reason: details?.reason
+      }
+    }
+
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.notificationService.showSuccess(response?.message || 'Drop user successfully');
+        this.getUserDetails();
+      } else {
+        return this.notificationService.showError('Try after some time.');
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Error.')
+    })
   }
 
   getSummaryList() {
@@ -127,6 +197,28 @@ export class SuperAdminProjectDetailsComponent {
     }, (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
+    });
+  }
+
+  selectSupplier(supplier: any) {
+    this.selectedSupplier = supplier
+
+    if (!this.selectedSupplier) {
+      return this.notificationService.showError('please select supplier');
+    }
+    console.log('sadsdd',supplier);
+
+    const data = {
+      select: {
+        supplierId: this.selectedSupplier?._id,
+        companySelect: supplier.company,
+        handoverCall: supplier.startDate
+      }
+    }
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      this.notificationService.showSuccess('Successfully select user')
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Something went wrong');
     });
   }
 

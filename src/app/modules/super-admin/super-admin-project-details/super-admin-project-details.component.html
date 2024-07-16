@@ -692,279 +692,158 @@
     <section>
         <div class="container-fluid">
             <form [formGroup]="eligibilityForm" (ngSubmit)="submitEligibility()">
-              <div class="row">
-                  <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                      <div class="form-group">
-                          <label>Case Study Numbers</label>
-                          <input type="number" class="form-control" formControlName="caseStudyRequired">
-                      </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                      <div class="form-group">
-                          <label>Certifications</label>
-                          <input type="text" class="form-control" formControlName="certifications">
-                      </div>
-                  </div>
-                  <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                      <div class="form-group">
-                          <label>Policy</label>
-                          <input type="text" class="form-control" formControlName="policy">
-                      </div>
-                  </div>
-              </div>
-            </form>
-              <div class="row">
-                <div class="col-12 text-center">
-                  <button type="submit" (click)="submitEligibilityForm()" class="btn btn-dark">Submit</button>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Case Study Numbers</label>
+                            <input type="number" class="form-control" formControlName="caseStudyRequired">
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Certifications</label>
+                            <input type="text" class="form-control" formControlName="certifications">
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Policy</label>
+                            <input type="text" class="form-control" formControlName="policy">
+                        </div>
+                    </div>
                 </div>
-              </div>
+            </form>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button type="submit" (click)="submitEligibilityForm()" class="btn btn-dark">Submit</button>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section>
-        <div class="bg-light-gray p-2 text-center mb-4">
-            Project Manager
-        </div>
-        <div class="container-fluid">
-            <div class="row mb-3 justify-content-end align-items-center">
-                <label for="websitelink" class="col-sm-2 col-form-label text-theme">Add Selcted Supplier ID</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="websitelink">
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-whiteshadow box-shadow text-danger">Drop Remaining</button>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead>
-                        <th>Supplier Name</th>
-                        <th>Supplier ID</th>
-                        <th>Admin Name</th>
-                        <th>Company Selection</th>
-                        <th>Handover call</th>
-                        <th></th>
-                    </thead>
-                    <tbody class="tbody-borer-10">
-                        <tr class="gray-row">
-                            <td>Company Name</td>
-                            <td>416526</td>
-                            <td>Ayush</td>
-                            <td>
-                                <select class="form-select-sm">
-                                    <option>Delphi, Spectrum, Apex, Bigdata</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select-sm mb-2">
-                                    <option>Day</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Month</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Year</option>
-                                </select>
-                                <br>
-                                <select class="form-select-sm">
-                                    <option>Hour</option>
-                                </select>
-                                <select class="form-select-sm">
-                                    <option>Minute</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primarysm">View Supplier Response</a>
-                                <a href="javascript:;" class="btn btn-primarysm">Selected</a>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td colspan="4">
-                                <div class="row">
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
+    <section style="padding-top: 10px; padding-bottom: 10px;">
+        <div class="table-responsive match-detail">
+            <table class="table bg-f9 mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th width="100px" style="min-width: 100px"></th>
+                        <th width="12%">Supplier Name</th>
+                        <th width="5%">Supplier ID</th>
+                        <th width="5%">Admin Name</th>
+                        <th width="10%">Company Selection</th>
+                        <th width="10%">Handover Call</th>
+                        <th width="5%"></th>
+                        <th width="100px" style="min-width: 100px"></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-f9 mb-2">
+                    <ng-container *ngFor="let supplier of userDetail">
+                        <ng-container class="mb-3">
+                            <tr>
+                                <td></td>
+                                <td>{{ supplier.name }}</td>
+                                <td>{{ supplier._id }}</td>
+                                <td>Ayush</td>
+                                <td>
+                                    <div class="form-group">
+                                        <ng-select style="padding: 0px !important;"
+                                            class="form-select custom-ng-select-option" [items]="companyDetails"
+                                            bindLabel="name" [multiple]="true" bindValue="name"
+                                            [(ngModel)]="supplier['company']">
+                                        </ng-select>
                                     </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
+
+                                    <!-- <select
+                        class="form-select-sm fonts-12"
+                        [(ngModel)]="selectedSuppliers[supplier._id].company"
+                      >
+                        <ng-container *ngFor="let company of companyDetails">
+                          <option [value]="company">{{ company }}</option>
+                        </ng-container>
+                      </select> -->
+                                </td>
+                                <td>
+                                    <div class="row mb-3">
+                                        <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
+                                        <div class="col-12">
+                                            <input type="date" [(ngModel)]="supplier.startDate" class="form-control"
+                                                placeholder="Start Date" style="height: 30px" />
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <!-- <button
+                          class="btn btn-sm btn-primary px-4 py-1 me-3"
+                          style="white-space: nowrap; font-size: 11px"
+                        >
+                          View Supplier Response
+                        </button> -->
+                                        <button (click)="selectSupplier(supplier)"
+                                            class="btn btn-sm btn-primary px-4 py-1"
+                                            style="white-space: nowrap; font-size: 11px">
+                                            {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
+                                        </button>
                                     </div>
-                                </div>
-                            </td>
-                            <td colspan="2">
-                                <button type="button" class="btn btn-success btn-sm">Add</button>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td>
-                                <span class="text-danger">Drop Reason</span>
-                            </td>
-                            <td colspan="4">
-                                <input type="text" class="form-control" placeholder="Add reason">
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-whiteshadow text-danger">Drop</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody class="tbody-borer-10">
-                        <tr class="gray-row">
-                            <td>Company Name</td>
-                            <td>416526</td>
-                            <td>Ayush</td>
-                            <td>
-                                <select class="form-select-sm">
-                                    <option>Delphi, Spectrum, Apex, Bigdata</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select-sm mb-2">
-                                    <option>Day</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Month</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Year</option>
-                                </select>
-                                <br>
-                                <select class="form-select-sm">
-                                    <option>Hour</option>
-                                </select>
-                                <select class="form-select-sm">
-                                    <option>Minute</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primarysm">View Supplier Response</a>
-                                <a href="javascript:;" class="btn btn-primarysm">Selected</a>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td colspan="4">
-                                <div class="row">
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td colspan="2">
-                                <button type="button" class="btn btn-success btn-sm">Add</button>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td>
-                                <span class="text-danger">Drop Reason</span>
-                            </td>
-                            <td colspan="4">
-                                <input type="text" class="form-control" placeholder="Add reason">
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-whiteshadow text-danger">Drop</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody class="tbody-borer-10">
-                        <tr class="gray-row">
-                            <td>Company Name</td>
-                            <td>416526</td>
-                            <td>Ayush</td>
-                            <td>
-                                <select class="form-select-sm">
-                                    <option>Delphi, Spectrum, Apex, Bigdata</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select-sm mb-2">
-                                    <option>Day</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Month</option>
-                                </select>
-                                <select class="form-select-sm mb-2">
-                                    <option>Year</option>
-                                </select>
-                                <br>
-                                <select class="form-select-sm">
-                                    <option>Hour</option>
-                                </select>
-                                <select class="form-select-sm">
-                                    <option>Minute</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primarysm">View Supplier Response</a>
-                                <a href="javascript:;" class="btn btn-primarysm">Selected</a>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td colspan="4">
-                                <div class="row">
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                    <div class="col-sm-4 mob-mb1">
-                                        <span>Case Study 1</span>
-                                        <a href="javascript:;" class="btn btn-primarysm full-rounded"><i
-                                                class="bi bi-eye-fill"></i> View
-                                            Instructions</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td colspan="2">
-                                <button type="button" class="btn btn-success btn-sm">Add</button>
-                            </td>
-                        </tr>
-                        <tr class="gray-row">
-                            <td>
-                                <span class="text-danger">Drop Reason</span>
-                            </td>
-                            <td colspan="4">
-                                <input type="text" class="form-control" placeholder="Add reason">
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-whiteshadow text-danger">Drop</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="inner-table p-0">
+                                    <table class="table bg-transparent w-100 mb-0">
+                                        <tr>
+                                            <td width="156px"></td>
+                                            <td colspan="3">
+                                                <div class="d-flex align-items-center bg-transparent">
+                                                    <div class="d-flex align-items-center me-2">
+                                                        <span class="w-space pe-2">Case Study 1</span>
+                                                        <a href="javascript:;"
+                                                            class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"><i
+                                                                class="bi bi-eye-fill me-2"></i> View</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td colspan="3">
+                                                <div class="d-flex align-items-center bg-transparent">
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="mb-3">
+                                <td colspan="8" class="p-0">
+                                    <table class="table w-100 mb-0">
+                                        <tr>
+                                            <td width="156px"></td>
+                                            <td class="text-danger" style="width: 120px">
+                                                <span class="bg-transparent mt-1"> Drop Reason</span>
+                                            </td>
+                                            <td colspan="5">
+                                                <input type="text" class="w-100 p-1 px-2 rounded fonts-12"
+                                                    style="border: 1px solid #e6e6e6" placeholder="Add reason"
+                                                    aria-label="Username" [(ngModel)]="supplier['reason']"
+                                                    aria-describedby="basic-addon1" />
+                                            </td>
+                                            <td>
+                                                <div class="bg-transparent w-auto d-flex align-items-center">
+                                                    <button (click)="dropUser(supplier)"
+                                                        class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
+                                                        style="white-space: nowrap; font-size: 11px">
+                                                        Drop
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </table>
         </div>
     </section>
 
