@@ -21,9 +21,10 @@ export class ProjectCoOrdinatorDetailsComponent {
   selectedDocument: any;
   loginUser: any;
   summaryQuestionList: any;
-
+  documents: any[] = [];
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
+  uploadedDocument: any;
 
   constructor(
     private projectService: ProjectService,
@@ -66,6 +67,7 @@ export class ProjectCoOrdinatorDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.processDocuments();
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -74,6 +76,20 @@ export class ProjectCoOrdinatorDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  processDocuments() {
+    if (this.projectDetails) {
+      this.documents = [
+        { label: 'Sub-contracting', file: this.projectDetails.subContractingfile },
+        { label: 'Economical partnership', file: this.projectDetails.economicalPartnershipQueryFile },
+        { label: 'Economical partnership response', file: this.projectDetails.economicalPartnershipResponceFile },
+        ...this.projectDetails.FeasibilityOtherDocuments.map((doc: any) => ({
+          label: doc.name || 'Other Document',
+          file: doc.file
+        }))
+      ];
+    }
   }
 
   getSummaryQuestion() {
@@ -94,6 +110,10 @@ export class ProjectCoOrdinatorDetailsComponent {
 
   openDocument(data: any) {
     this.selectedDocument = data;
+  }
+
+  openUploadedDocument(document: any) {
+    this.uploadedDocument = document;
   }
 
   download(imageUrl: string, fileName: string): void {
