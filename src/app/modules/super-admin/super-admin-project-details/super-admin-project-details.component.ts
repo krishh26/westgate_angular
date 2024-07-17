@@ -53,7 +53,7 @@ export class SuperAdminProjectDetailsComponent {
   selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
   myForm: FormGroup | undefined;
   selectedSupplier: any;
-
+  summaryQuestionList: any;
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
 
@@ -289,6 +289,27 @@ export class SuperAdminProjectDetailsComponent {
     this.summaryForm.controls['projectId'].setValue(this.projectId)
     this.isEditMode = false;
     this.currentSummaryId = null;
+  }
+
+  getSummaryQuestion() {
+    this.showLoader = true;
+    this.projectService.getSummaryQuestionList(this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.summaryQuestionList = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  questionDetails(details: any) {
+    localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
+     this.router.navigate(['bid-submission/bid-question-details'], { queryParams: { id: details?._id } });
   }
 
   editSummary(summary: any) {
