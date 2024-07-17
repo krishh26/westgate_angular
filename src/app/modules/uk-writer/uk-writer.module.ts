@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UkWriterComponent } from './uk-writer.component';
 import { UkWriterHomeComponent } from './uk-writer-home/uk-writer-home.component';
@@ -37,6 +37,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgbModule,
     UkWriterRoutingModule,
     NgSelectModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UkWriterModule { }
