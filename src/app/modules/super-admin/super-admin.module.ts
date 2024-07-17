@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
 
 
 
@@ -22,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SuperAdminProjectsAllComponent,
     SuperAdminSupplierComponent,
     SuperAdminSupplierProjectViewComponent,
-    SuperAdminProjectDetailsComponent
+    SuperAdminProjectDetailsComponent,
+    SuperAdminSupplierDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,7 @@ import { SuperAdminProjectsAllComponent } from './super-admin-projects-all/super
 import { SuperAdminSupplierComponent } from './super-admin-supplier/super-admin-supplier.component';
 import { SuperAdminSupplierProjectViewComponent } from './super-admin-supplier-project-view/super-admin-supplier-project-view.component';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
+import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
 
 
 
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: "super-admin-project-details",
         component: SuperAdminProjectDetailsComponent
+      },
+      {
+        path: "super-admin-supplier-project-details",
+        component: SuperAdminSupplierDetailsComponent
       },
     ]
   },
