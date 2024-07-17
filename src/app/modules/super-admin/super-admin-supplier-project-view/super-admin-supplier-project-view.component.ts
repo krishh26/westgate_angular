@@ -102,7 +102,7 @@ export class SuperAdminSupplierProjectViewComponent {
 
   
   projectDetails(projectId: any) {
-    // this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
+     this.router.navigate(['/super-admin/super-admin-supplier-project-details'], { queryParams: { id: projectId } });
   }
 
 }

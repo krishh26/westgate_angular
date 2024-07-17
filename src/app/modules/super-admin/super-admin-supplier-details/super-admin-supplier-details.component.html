@@ -16,11 +16,11 @@
                           <th>Category</th>
                           <th>Industry</th>
                           <th>Value</th>
-                          <th>Project Type</th>
+                          <!-- <th>Project Type</th>
                           <th>Status</th>
-                          <th>Due Date &amp; Time</th>
-                          <th></th>
-                          <th>Action</th>
+                          <th>Due Date &amp; Time</th> -->
+                          <!-- <th></th> -->
+                          <!-- <th>Action</th> -->
                       </tr>
                   </thead>
                   <tbody>
@@ -32,18 +32,18 @@
                           <td>{{projectDetails?.category}}</td>
                           <td>{{projectDetails?.industry}}</td>
                           <td>{{projectDetails?.value}}</td>
-                          <td>{{projectDetails?.projectType}}</td>
+                          <!-- <td>{{projectDetails?.projectType}}</td>
                           <td>{{projectDetails?.status}}</td>
-                          <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                          <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
-                          <td>
+                          <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td> -->
+                          <!-- <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td> -->
+                          <!-- <td>
                               <a *ngIf="projectDetails?.sortListUserId?.length > 0"
                                   style="background-color: darkgray;" class="btn btn-sm btn-dark m-1"
                                   title="Shortlist">Shortlisted</a>
                               <a *ngIf="projectDetails?.sortListUserId?.length == 0"
                                   (click)="sortListProject(projectDetails?._id)" class="btn btn-sm btn-dark m-1"
                                   title="Shortlist">Shortlist</a>
-                          </td>
+                          </td> -->
                       </tr>
                   </tbody>
               </table>
