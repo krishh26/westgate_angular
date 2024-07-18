@@ -39,11 +39,8 @@
             <td>{{ projectDetails?.status }}</td>
             <td>{{ projectDetails?.dueDate | date : "dd-MM-yyyy, h:mm a" }}</td>
             <td>
-              <button
-                routerLink="/project-manager/project/match"
-                class="btn btn-sm btn-dark px-4 py-1"
-                style="white-space: nowrap; font-size: 11px"
-              >
+              <button routerLink="/project-manager/project/match" class="btn btn-sm btn-dark px-4 py-1"
+                style="white-space: nowrap; font-size: 11px">
                 Back
               </button>
             </td>
@@ -105,45 +102,27 @@
 
             </div>
           </div> -->
-      <div
-        class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4"
-        style="white-space: nowrap"
-      >
+      <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space: nowrap">
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <p class="mb-0">FOI Document</p>
         </div>
-        <div
-          class="row align-items-center"
-          *ngIf="projectDetails?.fois?.length == 0"
-        >
+        <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
           <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
             <p class="mb-0">No Record Found.</p>
           </div>
         </div>
         <ng-container *ngIf="projectDetails?.fois?.length > 0">
-          <div
-            class="row align-items-center"
-            *ngFor="let foiDocument of projectDetails?.fois"
-          >
+          <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
             <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
               <p class="mb-0">{{ foiDocument?.name }}</p>
             </div>
             <div class="col-lg-4 col-xl-4 col-6">
-              <a
-                (click)="openDocument(foiDocument)"
-                class="btn btn-small w-100"
-                data-bs-toggle="modal"
-                data-bs-target="#ViewScreenshot"
-                ><i class="bi bi-eye-fill"></i> View</a
-              >
+              <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
+                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
             </div>
             <div class="col-lg-4 col-xl-4 col-6">
-              <a
-                (click)="download(foiDocument?.link?.url, foiDocument?.name)"
-                target="_blank"
-                class="btn btn-small w-100"
-                ><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a
-              >
+              <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
+                class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
             </div>
           </div>
         </ng-container>
@@ -152,16 +131,14 @@
         <div class="card">
           <div class="card-body text-center">
             <p class="p-13">
-              <strong
-                >Period of Contract:
+              <strong>Period of Contract:
                 {{
-                  projectDetails?.periodOfContractStart | date : "dd/MM/yyyy"
+                projectDetails?.periodOfContractStart | date : "dd/MM/yyyy"
                 }}
                 -
                 {{
-                  projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy"
-                }}</strong
-              >
+                projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy"
+                }}</strong>
             </p>
             <p class="p-13">
               <strong>Project Type: {{ projectDetails?.projectType }}</strong>
@@ -198,10 +175,9 @@
               <td>Ayush</td>
               <td>
                 <div class="form-group">
-                  <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option" [items]="companyDetails"
-                  bindLabel="name" [multiple]="true" bindValue="name"
-                  [(ngModel)]="supplier['company']"
-                  >
+                  <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
+                    [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
+                    [(ngModel)]="supplier['company']">
                   </ng-select>
                 </div>
 
@@ -218,13 +194,8 @@
                 <div class="row mb-3">
                   <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
                   <div class="col-12">
-                    <input
-                      type="date"
-                      [(ngModel)]="supplier.startDate"
-                      class="form-control"
-                      placeholder="Start Date"
-                      style="height: 30px"
-                    />
+                    <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
+                      style="height: 30px" />
                   </div>
                 </div>
               </td>
@@ -236,10 +207,8 @@
                   >
                     View Supplier Response
                   </button> -->
-                  <button (click)="selectSupplier(supplier)"
-                    class="btn btn-sm btn-primary px-4 py-1"
-                    style="white-space: nowrap; font-size: 11px"
-                  >
+                  <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
+                    style="white-space: nowrap; font-size: 11px">
                     {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
                   </button>
                 </div>
@@ -251,15 +220,13 @@
                 <table class="table bg-transparent w-100 mb-0">
                   <tr>
                     <td width="156px"></td>
-                    <td colspan="3">
+                    <td colspan="3" *ngFor="let casestudy of casestudylist">
                       <div class="d-flex align-items-center bg-transparent">
-                        <div class="d-flex align-items-center me-2">
-                          <span class="w-space pe-2">Case Study 1</span>
-                          <a
-                            href="javascript:;"
-                            class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
-                            ><i class="bi bi-eye-fill me-2"></i> View</a
-                          >
+                        <div class="d-flex align-items-center me-1">
+                          <span class="w-space pe-2">{{casestudy?.name}}</span>
+                          <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
+                            (click)="openDocument(casestudy)" data-bs-toggle="modal" data-bs-target="#ViewCaseModal"><i
+                              class="bi bi-eye-fill me-2"></i> View</a>
                         </div>
                       </div>
                     </td>
@@ -288,24 +255,15 @@
                       <span class="bg-transparent mt-1"> Drop Reason</span>
                     </td>
                     <td colspan="5">
-                      <input
-                        type="text"
-                        class="w-100 p-1 px-2 rounded fonts-12"
-                        style="border: 1px solid #e6e6e6"
-                        placeholder="Add reason"
-                        aria-label="Username"
-                        [(ngModel)]="supplier['reason']"
-                        aria-describedby="basic-addon1"
-                      />
+                      <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
+                        placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
+                        aria-describedby="basic-addon1" />
                     </td>
                     <td>
-                      <div
-                        class="bg-transparent w-auto d-flex align-items-center"
-                      >
+                      <div class="bg-transparent w-auto d-flex align-items-center">
                         <button (click)="dropUser(supplier)"
                           class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
-                          style="white-space: nowrap; font-size: 11px"
-                        >
+                          style="white-space: nowrap; font-size: 11px">
                           Drop
                         </button>
                       </div>
@@ -322,35 +280,21 @@
   </div>
 </section>
 <div style="display: flex; align-items: end; justify-content: end;">
-  <button
-    (click)="goToSummaryDetails()"
-    class="btn btn-sm btn-primary px-4 py-1 me-3"
-    style="white-space: nowrap; font-size: 11px"
-  >
+  <button (click)="goToSummaryDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3"
+    style="white-space: nowrap; font-size: 12px">
     Add Summary Details
   </button>
 </div>
 
 <!-- View Screenshot Modal -->
-<div
-  class="modal fade"
-  id="ViewScreenshot"
-  tabindex="-1"
-  aria-labelledby="ViewScreenshotLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewScreenshotLabel">
           FOI Document : {{ selectedDocument?.name }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <img [src]="selectedDocument?.link?.url" class="img-fluid" />
@@ -359,6 +303,32 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
         </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- View Document Modal -->
+<div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">Case Study ({{selectedDocument?.name}})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

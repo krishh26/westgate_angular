@@ -56,6 +56,7 @@ export class SuperAdminProjectDetailsComponent {
   summaryQuestionList: any;
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
+  casestudylist : any =[];
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -360,6 +361,7 @@ export class SuperAdminProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.casestudylist = response?.data?.casestudy;
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);

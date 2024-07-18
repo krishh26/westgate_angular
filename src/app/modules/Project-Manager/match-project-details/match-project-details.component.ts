@@ -6,7 +6,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { formatDate } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-match-project-details',
   templateUrl: './match-project-details.component.html',
@@ -29,6 +29,7 @@ export class MatchProjectDetailsComponent {
   myForm: FormGroup | undefined;
   skills: any;
   selectedSupplier: any;
+  casestudylist : any =[];
   // skills: FormArray;
   companyDetails: any = [
     {
@@ -51,7 +52,8 @@ export class MatchProjectDetailsComponent {
     private route: ActivatedRoute,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-    private projectManagerService: ProjectManagerService
+    private projectManagerService: ProjectManagerService,
+    private sanitizer: DomSanitizer
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -76,6 +78,7 @@ export class MatchProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.casestudylist = response?.data?.casestudy
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -230,4 +233,26 @@ export class MatchProjectDetailsComponent {
       this.notificationService.showError(error?.message || 'Something went wrong');
     });
   }
+
+  
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 }
