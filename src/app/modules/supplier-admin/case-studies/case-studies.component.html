@@ -30,7 +30,7 @@
                             <div class="col-sm-10">
                                 <select class="form-select" formControlName="category">
                                     <option value="">Select Category</option>
-                                    <option *ngFor="let category of categoryList" [value]="category._id">{{
+                                    <option *ngFor="let category of categoryList" [value]="category.category">{{
                                         category.category }}</option>
                                 </select>
                             </div>

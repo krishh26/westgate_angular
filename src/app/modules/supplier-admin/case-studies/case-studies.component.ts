@@ -94,6 +94,7 @@ export class CaseStudiesComponent {
   }
 
   addCaseStudy() {
+    debugger
     const data = new FormData();
     data.append('name', this.caseForm.controls.name.value || '');
     data.append('category', this.caseForm.controls.category.value || '');
