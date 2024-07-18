@@ -17,7 +17,8 @@
               <th>BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
-              <th>Value</th>
+              <th>Min Value</th>
+              <th>Max Value</th>
               <th>Status</th>
               <th>Project Start Date</th>
               <th>Project End Date</th>
@@ -31,7 +32,8 @@
               <td v-align="middle">{{item?.BOSID}}</td>
               <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{item?.category}}</td>
-              <td>{{item?.value}}</td>
+              <td>£ {{item?.minValue}}</td>
+              <td>£ {{item?.maxValue}}</td>
               <td>{{item?.status}}</td>
               <td>{{item?.periodOfContractStart | date:'dd/MM/yyyy'}}</td>
               <td>{{item?.periodOfContractEnd | date:'dd/MM/yyyy'}}</td>
