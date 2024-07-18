@@ -44,7 +44,7 @@ export class FioDocumentListComponent {
     Payload.projectList.limit = String(this.pagesize);
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.FOIList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.FOIList = response?.data?.data;
@@ -72,7 +72,7 @@ export class FioDocumentListComponent {
     Payload.projectList.limit = String(this.pagesize);
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.FOIList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.FOIList = response?.data?.data;

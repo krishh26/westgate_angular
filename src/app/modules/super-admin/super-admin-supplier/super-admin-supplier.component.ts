@@ -35,7 +35,7 @@ export class SuperAdminSupplierComponent {
     this.authservice.getUserList('SupplierAdmin').subscribe(
       (response) => {
         this.supplierUserList = [];
-        this.totalRecords = 0;
+        this.totalRecords = response?.data?.meta_data?.items;
         if (response?.status == true) {
           this.showLoader = false;
           this.supplierUserList = response?.data;

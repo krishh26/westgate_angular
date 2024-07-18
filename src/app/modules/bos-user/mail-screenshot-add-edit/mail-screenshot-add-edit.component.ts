@@ -50,7 +50,7 @@ export class MailScreenshotAddEditComponent {
     Payload.mailSSList.limit = String(this.pagesize);
     this.mailService.getMailSSList(Payload.mailSSList).subscribe((response) => {
       this.mailList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.mailList = response?.data?.data;

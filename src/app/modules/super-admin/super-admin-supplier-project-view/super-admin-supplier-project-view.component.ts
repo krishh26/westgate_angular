@@ -56,7 +56,7 @@ export class SuperAdminSupplierProjectViewComponent {
     Payload.projectList.limit = String(this.pagesize);
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
@@ -79,7 +79,7 @@ export class SuperAdminSupplierProjectViewComponent {
     console.log(Payload.projectList);
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;

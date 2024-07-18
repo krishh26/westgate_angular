@@ -38,7 +38,7 @@ export class PmShortlistedProjectsComponent {
     Payload.projectList.sortlist = true;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;

@@ -50,7 +50,7 @@ export class UkWriterSupplierListComponent {
     this.showLoader = true;
     this.ukwriterService.getSupplierList(this.projectID).subscribe((response:any) => {
       this.supplierList = []; // Initialize supplierList as an array
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         // Assuming response.data[0] is an array of suppliers

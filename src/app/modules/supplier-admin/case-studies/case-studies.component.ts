@@ -76,7 +76,7 @@ export class CaseStudiesComponent {
     this.showLoader = true;
     this.supplierService.getCaseStudyList().subscribe((response) => {
       this.caseStudyList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.caseStudyList = response?.data?.data;

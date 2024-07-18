@@ -33,7 +33,7 @@ export class ManageUserComponent {
     this.showLoader = true;
     this.supplierService.getManageUserList().subscribe((response) => {
       this.manageUserList = [];
-      this.totalRecords = 0;
+      this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.manageUserList = response?.data?.data;
