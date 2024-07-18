@@ -17,11 +17,12 @@
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
-                            <th>Value</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
                             <th>Project Type</th>
                             <th>Status</th>
                             <th>Due Date &amp; Time</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -32,17 +33,18 @@
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}} <a href="javascript:;"></a></td>
                             <td>{{projectDetails?.industry}} <a href="javascript:;"></a></td>
-                            <td>$ {{projectDetails?.value}}<a href="javascript:;"></a></td>
+                            <td>£ {{projectDetails?.minValue}}</td>
+                            <td>£ {{projectDetails?.maxValue}}</td>
                             <td>{{projectDetails?.projectType}}</td>
                             <td>
                               {{projectDetails?.status}}
                             </td>
-                            <td>25-11-2014 & 5:00PM</td>
-                            <td>
+                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                            <!-- <td>
                                 <select class="form-select form-select-sm">
                                     <option>In-Progress, In Hold</option>
                                 </select>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>

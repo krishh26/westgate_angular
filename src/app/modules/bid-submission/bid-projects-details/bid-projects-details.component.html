@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <br/>
+                <br />
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 text-end">
@@ -104,7 +104,9 @@
                         <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12" *ngFor="let doc of documents">
                             <div class="form-group">
                                 <label class="display-block">{{ doc.label }}</label>
-                                <button type="button" class="btn btn-primary btn-view-document btn-boxshadow text-dark w-100 mb-3" data-bs-toggle="modal" data-bs-target="#ViewDocuments"
+                                <button type="button"
+                                    class="btn btn-primary btn-view-document btn-boxshadow text-dark w-100 mb-3"
+                                    data-bs-toggle="modal" data-bs-target="#ViewDocuments"
                                     (click)="openDocument(doc.file)">
                                     <i class="bi bi-eye-fill"></i> View Document
                                 </button>
@@ -327,10 +329,11 @@
                             </ng-container>
                         </tbody>
                     </table>
+                    <div class="row">
+                        <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+                    </div>
                 </div>
-                <div class="row">
-                    <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
-                </div>
+               
             </div>
         </div>
     </section>
@@ -393,8 +396,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocumets"
-    aria-hidden="true">
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocumets" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: space-between;">
