@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
@@ -24,12 +25,14 @@ export class CaseStudiesComponent {
   imageSrc: any;
   selectedDocument: any;
   selectedCasestudy: any;
+  categoryList: any = [];
 
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private superService: SuperadminService
   ) { }
 
   casestudyForm = {
@@ -43,16 +46,31 @@ export class CaseStudiesComponent {
 
   ngOnInit(): void {
     this.getCaseStudiesList();
-    const staticpath = "./../../../../assets/wordfile/CaseStudyTemplate.docx";
-    const baseUrl = "https://wgih.blob.core.windows.net/wgit/caseStudy/";
-    const fileName = staticpath.split('/').pop(); // Extract the file name from the static path
-    const uniqueIdentifier = "casestudy"; // You can use a unique identifier if needed
-    const fileExtension = ".docx"; // Assuming the file extension is .docx
-    const dynamicUrl = `${baseUrl}${uniqueIdentifier}${fileExtension}`;
-    this.selectedCasestudy = dynamicUrl;
+    this.getCategoryList();
+    this.selectedCasestudy = 'https://wgih.blob.core.windows.net/wgit/files/1721291012439_CaseStudyTemplate.docx';
     console.log(this.selectedCasestudy);
 
   }
+
+  getCategoryList() {
+    this.showLoader = true;
+    this.superService.getCategoryList().subscribe(
+      (response) => {
+        if (response?.status && response?.message === "category fetched successfully") {
+          this.categoryList = response.data;
+          this.showLoader = false;
+        } else {
+          console.error('Failed to fetch categories:', response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   getCaseStudiesList() {
     this.showLoader = true;
