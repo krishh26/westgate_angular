@@ -94,7 +94,6 @@ export class CaseStudiesComponent {
   }
 
   addCaseStudy() {
-    debugger
     const data = new FormData();
     data.append('name', this.caseForm.controls.name.value || '');
     data.append('category', this.caseForm.controls.category.value || '');
@@ -104,7 +103,7 @@ export class CaseStudiesComponent {
     this.supplierService.addCaseStudy(data).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
-        this.notificationService.showSuccess('Reply add successfully.');
+        this.notificationService.showSuccess('Case-Study add successfully.');
         window.location.reload();
       } else {
         this.notificationService.showError(response?.message);
