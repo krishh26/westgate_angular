@@ -78,7 +78,7 @@ export class MatchProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
-        this.casestudylist = response?.data?.casestudy
+        this.casestudylist = response?.data?.casestudy;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
