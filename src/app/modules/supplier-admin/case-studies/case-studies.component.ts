@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer , SafeResourceUrl} from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
@@ -22,7 +22,8 @@ export class CaseStudiesComponent {
   totalRecords: number = pagination.totalRecords;
   imageToUpload: any;
   imageSrc: any;
-  selectedDocument : any;
+  selectedDocument: any;
+  selectedCasestudy: any;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -42,6 +43,15 @@ export class CaseStudiesComponent {
 
   ngOnInit(): void {
     this.getCaseStudiesList();
+    const staticpath = "./../../../../assets/wordfile/CaseStudyTemplate.docx";
+    const baseUrl = "https://wgih.blob.core.windows.net/wgit/caseStudy/";
+    const fileName = staticpath.split('/').pop(); // Extract the file name from the static path
+    const uniqueIdentifier = "casestudy"; // You can use a unique identifier if needed
+    const fileExtension = ".docx"; // Assuming the file extension is .docx
+    const dynamicUrl = `${baseUrl}${uniqueIdentifier}${fileExtension}`;
+    this.selectedCasestudy = dynamicUrl;
+    console.log(this.selectedCasestudy);
+
   }
 
   getCaseStudiesList() {
@@ -127,7 +137,7 @@ export class CaseStudiesComponent {
 
 
   triggerDownload() {
-    var file : string = './../../../../assets/img/case-study.png';
+    var file: string = './../../../../assets/img/case-study.png';
     const downloadLink = document.createElement('a');
 
     if (typeof file === 'string') {
@@ -145,7 +155,7 @@ export class CaseStudiesComponent {
     }
   }
 
-  
+
   isPdf(url: string): boolean {
     return url?.endsWith('.pdf') || false;
   }
