@@ -65,7 +65,7 @@
                   <label for="subContract" class="btn-upload-file padding-lr-5"><i
                       class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Query Image</label>
-                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
+                    <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
                       uploadDocument($event,documentUploadType.subContractDocument)" />
                     <br>
                     <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
@@ -426,11 +426,11 @@
               <div class="col-4">
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment4"
-                    value="Expired" (change)="statusChange('Expired')" [checked]="status == 'Expired'" />
+                    value="Fail" (change)="statusChange('Fail')" [checked]="status == 'Fail'" />
                   <label class="form-check-label text-danger" for="comment4">Fail</label>
                 </div>
               </div>
-              <div class="col-8" *ngIf="this.status == 'Expired'">
+              <div class="col-8" *ngIf="this.status == 'Fail'">
                 <div class="upload-btn-wrapper">
                   <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                     Upload
@@ -438,10 +438,12 @@
                   <!-- <input type="file" name="myfile" id="failedReson" style="height: 5px; width: 5px" /> -->
                   <input type="file" id="failedReson" name="failedReson"
                   style="height: 5px; width: 5px" (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
-                  <img *ngIf="failStatusImage?.url" [src]="failStatusImage?.url" alt="" style="height: 100px; width: 100px;">
+                  <!-- <img *ngIf="failStatusImage?.url" [src]="failStatusImage?.url" alt="" style="height: 100px; width: 100px;"> -->
+                  <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)" class="btn btn-small w-100" data-bs-toggle="modal"
+                  data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
                 </div>
               </div>
-              <div class="col-12 mt-3" *ngIf="this.status == 'Expired'">
+              <div class="col-12 mt-3" *ngIf="this.status == 'Fail'">
                 <select class="form-select" [formControl]="failStatusReason">
                   <option disabled selected hidden value="">
                     Select Failed Reason
@@ -603,7 +605,7 @@
         <h5 class="modal-title" id="ViewUploadedDocumentModal">Document</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="text-align: center;">
         <ng-container *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument">
           <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
             height="600px"></ngx-extended-pdf-viewer>
