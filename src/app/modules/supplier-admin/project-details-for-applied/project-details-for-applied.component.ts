@@ -42,6 +42,23 @@ export class ProjectDetailsForAppliedComponent {
     this.getSummaryQuestion()
   }
 
+  sortListProject(projectId: string) {
+    const payload = {
+      userId: this.loginUser.id,
+      projectId: projectId
+    }
+    this.projectService.projectSortList(payload).subscribe((response) => {
+      if (response?.status) {
+        this.notificationService.showSuccess(response?.message);
+        this.getProjectDetails();
+      } else {
+        return this.notificationService.showError(response?.message);
+      }
+    }, (error) => {
+      return this.notificationService.showError(error?.message || 'Something went wrong !');
+    })
+  }
+
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
