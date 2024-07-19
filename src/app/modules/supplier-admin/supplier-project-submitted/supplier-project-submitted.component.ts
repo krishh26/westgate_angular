@@ -39,8 +39,8 @@ export class SupplierProjectSubmittedComponent {
     Payload.projectList.keyword = String(this.searchText?.value) || "";
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.applied = true;
-    Payload.projectList.sortlist = false;
+    Payload.projectList.applied =false ;
+    Payload.projectList.status =String('Submitted') ;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
