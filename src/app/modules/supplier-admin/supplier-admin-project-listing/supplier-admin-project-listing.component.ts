@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-supplier-admin-project-listing',
@@ -8,8 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class SupplierAdminProjectListingComponent implements OnInit {
   activeComponent: number = 2;  // 1 : Matched Project , 2 : All Project, 3: Shortlisted, 4: Applied Projects
 
-  ngOnInit(): void {
+  constructor(
+    private route : ActivatedRoute
+  ){}
 
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.activeComponent = Number(params['type'] || 2)
+    });
   }
 
   changeComponent(componentNumber: number) {

@@ -39,8 +39,8 @@ export class SupplierProjectSubmittedComponent {
     Payload.projectList.keyword = String(this.searchText?.value) || "";
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.applied =false ;
-    Payload.projectList.status =String('Submitted') ;
+    Payload.projectList.applied = false;
+    Payload.projectList.status = String('Submitted');
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -58,7 +58,7 @@ export class SupplierProjectSubmittedComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/supplier-admin/projects-details-for-applied'], { queryParams: { id: projectId } });
+    this.router.navigate(['/supplier-admin/projects-details-for-applied'], { queryParams: { id: projectId, type: 5 } });
   }
 
   paginate(page: number) {

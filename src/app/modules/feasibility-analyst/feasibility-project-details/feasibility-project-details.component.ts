@@ -22,7 +22,7 @@ export class FeasibilityProjectDetailsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
-  uploadedDocument : any;
+  uploadedDocument: any;
   clientDocument: any[] = [];
   loginDetailDocument: any[] = [];
   subContractDocument: any;
@@ -49,7 +49,7 @@ export class FeasibilityProjectDetailsComponent {
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
     otherDocument: 'otherDocument',
-    failStatusImage : "failStatusImage"
+    failStatusImage: "failStatusImage"
   }
 
   // For check bov
@@ -100,10 +100,10 @@ export class FeasibilityProjectDetailsComponent {
         this.subContracting = this.projectDetails?.subContracting;
         this.statusComment.setValue(this.projectDetails?.statusComment);
 
-        this.subContractDocument =  this.projectDetails?.subContractingfile || null;
+        this.subContractDocument = this.projectDetails?.subContractingfile || null;
         this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
         this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
-        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments ||null;
+        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments || null;
         this.failStatusImage = this.projectDetails?.failStatusImage || null;
       } else {
         this.notificationService.showError(response?.message);
@@ -187,14 +187,14 @@ export class FeasibilityProjectDetailsComponent {
           if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
             let objToBePused = {
               name: this.loginName,
-              type : type,
+              type: type,
               file: response?.data
             }
             this.FeasibilityOtherDocuments.push(objToBePused);
             this.loginName = ""
           }
 
-          if(type == this.documentUploadType.failStatusImage) {
+          if (type == this.documentUploadType.failStatusImage) {
             this.failStatusImage = response?.data;
           }
 
@@ -259,42 +259,52 @@ export class FeasibilityProjectDetailsComponent {
     this.isEditing = !this.isEditing;
   }
 
-  saveChanges(type?: string) {
-    if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
-      return this.notificationService.showError('Please Enter Status Comment');
+  saveChanges(type?: string, contractEdit?: boolean) {
+    let payload: any = {}
+    if (!contractEdit) {
+      if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
+        return this.notificationService.showError('Please Enter Status Comment');
+      }
+
+      if (this.status == 'Expired' && !this.failStatusReason?.value) {
+        return this.notificationService.showError('Please Select Status Comment');
+      }
+
+      payload = {
+        subContractingfile: this.subContractDocument || [],
+        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+        FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
+        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
+        periodOfContractStart: this.projectDetails.periodOfContractStart,
+        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+        projectType: this.projectDetails.projectType,
+        subContracting: this.subContracting || "",
+        clientDocument: this.projectDetails?.clientDocument || [],
+        status: this.status || "",
+        statusComment: this.statusComment?.value || "",
+        loginDetail: this.projectDetails.loginDetail || "",
+        failStatusImage: this.failStatusImage || ""
+      };
+
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
     }
 
-    if (this.status == 'Expired' && !this.failStatusReason?.value) {
-      return this.notificationService.showError('Please Select Status Comment');
+    if (contractEdit) {
+      payload = {
+        periodOfContractStart: this.projectDetails.periodOfContractStart,
+        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+        projectType: this.projectDetails.projectType,
+      }
     }
-
-    let payload : any = {
-      subContractingfile: this.subContractDocument || [],
-      economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
-      FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-      economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
-      periodOfContractStart: this.projectDetails.periodOfContractStart,
-      periodOfContractEnd: this.projectDetails.periodOfContractEnd,
-      projectType: this.projectDetails.projectType,
-      subContracting: this.subContracting || "",
-      clientDocument : this.projectDetails?.clientDocument || [],
-      status: this.status || "",
-      statusComment: this.statusComment?.value || "",
-      loginDetail: this.projectDetails.loginDetail || "",
-      failStatusImage : this.failStatusImage || ""
-    };
-
-    if(this.failStatusReason?.value) {
-      payload['failStatusReason'] = [this.failStatusReason?.value] || [];
-    }
-
     this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
           this.getProjectDetails();
-          if(type == 'save') {
+          if (type == 'save') {
             this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
           }
         } else {

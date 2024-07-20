@@ -59,7 +59,7 @@ export class ProjectsShortlistedComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId, type: 3 } });
   }
 
   paginate(page: number) {

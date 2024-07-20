@@ -59,7 +59,7 @@ export class SupplierProjectWorkInProgressComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/supplier-admin/projects-details-for-applied'], { queryParams: { id: projectId } });
+    this.router.navigate(['/supplier-admin/projects-details-for-applied'], { queryParams: { id: projectId, type: 4 } });
   }
 
   paginate(page: number) {

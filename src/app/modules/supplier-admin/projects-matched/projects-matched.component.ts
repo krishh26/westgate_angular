@@ -81,7 +81,7 @@ export class ProjectsMatchedComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/supplier-admin/projects-details'], { queryParams: { id: projectId , type : 1 } });
   }
 
   paginate(page: number) {

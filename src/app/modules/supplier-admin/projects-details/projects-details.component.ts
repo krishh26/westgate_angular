@@ -1,7 +1,6 @@
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Observer } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -23,8 +22,9 @@ export class ProjectsDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryquestionList :any;
-  uploadedDocument : any;
+  summaryquestionList: any;
+  uploadedDocument: any;
+  pageType: number = 2;
 
   constructor(
     private projectService: ProjectService,
@@ -35,7 +35,8 @@ export class ProjectsDetailsComponent {
     private sanitizer: DomSanitizer
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.projectId = params['id']
+      this.projectId = params['id'];
+      this.pageType = params['type'] || 2;
     });
 
     this.loginUser = this.localStorageService.getLogger();
@@ -51,6 +52,9 @@ export class ProjectsDetailsComponent {
     return `${days} days`;
   }
 
+  backPage() {
+    this.router.navigate(['/supplier-admin/project-list'], { queryParams: { type: Number(this.pageType) } });
+  }
 
   getProjectDetails() {
     this.showLoader = true;

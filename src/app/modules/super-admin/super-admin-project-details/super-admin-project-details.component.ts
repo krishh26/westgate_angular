@@ -56,7 +56,7 @@ export class SuperAdminProjectDetailsComponent {
   summaryQuestionList: any;
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
-  casestudylist : any =[];
+  casestudylist: any = [];
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -145,6 +145,8 @@ export class SuperAdminProjectDetailsComponent {
     this.getProjectDetails();
     this.getSummaryList();
     this.getUserDetails();
+    this.initializeForm();
+    this.addDocument();
   }
 
   initializeForm() {
@@ -222,7 +224,7 @@ export class SuperAdminProjectDetailsComponent {
     if (!this.selectedSupplier) {
       return this.notificationService.showError('please select supplier');
     }
-    console.log('sadsdd',supplier);
+    console.log('sadsdd', supplier);
 
     const data = {
       select: {
@@ -310,7 +312,7 @@ export class SuperAdminProjectDetailsComponent {
 
   questionDetails(details: any) {
     localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
-     this.router.navigate(['bid-submission/bid-question-details'], { queryParams: { id: details?._id } });
+    this.router.navigate(['bid-submission/bid-question-details'], { queryParams: { id: details?._id } });
   }
 
   editSummary(summary: any) {
@@ -343,7 +345,6 @@ export class SuperAdminProjectDetailsComponent {
   detailPage() {
     this.router.navigate(['/feasibility-user/minimum-eligibility-form'], { queryParams: { id: this.projectId } });
   }
-
 
   public showHidePass(): void {
     if (this.password === 'password') {
@@ -499,8 +500,6 @@ export class SuperAdminProjectDetailsComponent {
     }
   }
 
-
-
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
   }
@@ -600,7 +599,6 @@ export class SuperAdminProjectDetailsComponent {
     })
   }
 
-
   // Function to be used for showing uploaded document
   openUploadedDocument(data: any) {
     this.uploadedDocument = data;
@@ -684,20 +682,17 @@ export class SuperAdminProjectDetailsComponent {
     });
   }
 
-    // Handle the file change event
-    addFiles(event: any, index: number): void {
-      if (event.target.files && event.target.files[0]) {
-        const data = new FormData();
-        data.append('files', event.target.files[0])
-        this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
-          if (response?.status) {
-            this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
-            this.document?.at(index)?.get('key')?.setValue(response?.data?.key)
-          }
-        });
-      }
+  // Handle the file change event
+  addFiles(event: any, index: number): void {
+    if (event.target.files && event.target.files[0]) {
+      const data = new FormData();
+      data.append('files', event.target.files[0])
+      this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
+        if (response?.status) {
+          this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
+          this.document?.at(index)?.get('key')?.setValue(response?.data?.key)
+        }
+      });
     }
-
-
-
+  }
 }

@@ -21,7 +21,8 @@ export class ProjectDetailsForAppliedComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryquestionList: any
+  summaryquestionList: any;
+  pageType : number = 2;
 
   constructor(
     private projectService: ProjectService,
@@ -31,7 +32,8 @@ export class ProjectDetailsForAppliedComponent {
     private localStorageService: LocalStorageService
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.projectId = params['id']
+      this.projectId = params['id'];
+      this.pageType = params['type'] || 2;
     });
 
     this.loginUser = this.localStorageService.getLogger();
@@ -64,6 +66,9 @@ export class ProjectDetailsForAppliedComponent {
     return `${days} days`;
   }
 
+  backPage() {
+    this.router.navigate(['/supplier-admin/project-list'], { queryParams: { type: Number(this.pageType) } });
+  }
 
   getProjectDetails() {
     this.showLoader = true;
