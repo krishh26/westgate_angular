@@ -91,6 +91,7 @@ export class BossUserBulkEntryComponent {
             this.showLoader = false;
             console.log('1', res?.status);
             this.notificationService.showSuccess(res?.message);
+            window.location.reload();
             this.router.navigate(['/boss-user/project-list']);
           } else {
             console.log('1', res?.status);

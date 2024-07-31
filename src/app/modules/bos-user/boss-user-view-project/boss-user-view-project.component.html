@@ -172,7 +172,7 @@
       </div>
       <div class="modal-body">
         <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url"
             height="600px"></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormats>

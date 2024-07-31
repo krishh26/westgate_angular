@@ -92,6 +92,7 @@ export class FioDocumentAddEditComponent implements OnInit {
         this.getFoiDocumentList();
         this.documentForm.reset();
         this.imageToUpload = null;
+        window.location.reload();
         this.notificationService.showSuccess('Add FOI Document successfully!');
       } else {
         this.notificationService.showError(response?.message);
