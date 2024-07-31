@@ -473,7 +473,7 @@
           <h4 class="text-theme mb-4"><strong>Login Details</strong></h4>
         </div>
         <div class="col-lg-4 col-xl-4 col-12">
-          <div class="row align-items-center" *ngFor="let item of projectDetails?.loginDetail">
+          <div class="row align-items-center" *ngFor="let item of projectDetails?.loginDetail; let i = index ;">
             <div class="col-lg-6 col-xl-6 col-12">
               <p>
                 <strong>{{ item?.name }}</strong>
@@ -482,7 +482,8 @@
             <div class="col-lg-6 col-xl-6 col-10">
               <a href="href:;" class="btn btn-primarysm me-2" (click)="viewLoginDetail(item)" data-bs-toggle="modal"
                 data-bs-target="#loginDetailModal"><i class="bi bi-eye-fill"></i> View</a>
-              <a href="href:;" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i> Edit</a>
+              <a href="href:;" data-bs-toggle="modal" (click)="editLoginDetail(item,i)"
+              data-bs-target="#loginDetailModal" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i> Edit</a>
             </div>
           </div>
           <ng-container *ngIf="viewLoginForm">
@@ -499,7 +500,7 @@
                   <label for="uploadLoginDetail"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                     Upload
                   </label>
-                  <input [disabled]="!loginName" data-bs-toggle="modal" data-bs-target="#loginDetailModal"
+                  <input [disabled]="!loginName" data-bs-toggle="modal" (click)="openLoginDetail()" data-bs-target="#loginDetailModal"
                     id="uploadLoginDetail" name="myfile" style="height: 0.5px; width: 0.5px" />
                 </div>
               </div>
@@ -633,33 +634,35 @@
       </div>
       <div class="modal-body">
         <label>Company Name</label>
-        <input type="text" formControlName="companyName" class="form-control" />
+        <input [readonly]="loginModalMode" type="text" formControlName="companyName" class="form-control" />
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
-          Please Company Name
+          Please enter Company Name
         </div>
         <label>Website Link</label>
-        <input type="text" formControlName="link" class="form-control" />
+        <input [readonly]="loginModalMode" type="text" formControlName="link" class="form-control" />
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
           Please enter Website Link
         </div>
         <label>Login Id</label>
-        <input type="text" formControlName="loginID" class="form-control" />
+        <input [readonly]="loginModalMode" type="text" formControlName="loginID" class="form-control" />
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
           Please enter Login Id
         </div>
         <label>Password</label>
-        <input [type]="password" formControlName="password" class="form-control" />
-        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
-        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
+        <div style="position: relative;">
+          <input [readonly]="loginModalMode" [type]="password" formControlName="password" class="form-control" />
+          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
+          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
+        </div>
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
           Please enter Password
         </div>
-        <div class="row justify-content-end">
-          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+        <div *ngIf="!loginModalMode" class="row justify-content-end">
+          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end mt-3">
             <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close"
               [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">
               Add

@@ -54,12 +54,14 @@ export class FeasibilityProjectDetailsComponent {
 
   // For check bov
   subContracting: boolean = true;
+  loginModalMode: boolean = true;
 
   loginDetailControl = {
     companyName: new FormControl("", Validators.required),
     link: new FormControl("", Validators.required),
     loginID: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
+    id: new FormControl(""),
   }
 
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
@@ -243,15 +245,29 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   viewLoginDetail(loginData: any) {
-    this.loginDetailForm.patchValue(loginData)
+    this.loginModalMode = true
+    this.loginDetailForm.patchValue(loginData.data)
   }
 
+  openLoginDetail(){
+    this.loginModalMode = false
+    this.loginDetailForm.reset()
+  }
+  editLoginDetail(loginData:any,i:number){
+    this.loginModalMode = false
+    this.loginDetailForm.patchValue(loginData.data)
+    this.loginDetailForm.controls['id'].setValue(i)
+  }
   addLoginInfo() {
     const dataToBePushed = {
       name: this.loginName,
       data: this.loginDetailForm.value
     }
-    this.projectDetails.loginDetail.push(dataToBePushed)
+    if(this.projectDetails.loginDetail[this.loginDetailForm.value['id']]){
+      this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data = dataToBePushed.data
+    }else{
+      this.projectDetails.loginDetail.push(dataToBePushed)
+    }
     this.loginName = ''
   }
 
