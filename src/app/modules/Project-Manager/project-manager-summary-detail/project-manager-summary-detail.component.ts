@@ -47,6 +47,5 @@ export class ProjectManagerSummaryDetailComponent {
     } else {
       this.router.navigate(['/project-manager/project/all']);
     }
-
   }
 }
