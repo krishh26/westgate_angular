@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SummaryService } from 'src/app/services/summary/summary.service';
 
@@ -9,24 +10,23 @@ import { SummaryService } from 'src/app/services/summary/summary.service';
 })
 export class ProjectManagerSummaryDetailComponent {
 
-  summaryDetail:any
-  reviewData:any
+  summaryDetail: any
+  reviewData: any
   showLoader: boolean = false;
 
   constructor(
     private summaryService: SummaryService,
     private notificationService: NotificationService,
-  ){
+    private router: Router
+  ) {
     const details = localStorage.getItem('ViewSummary');
-    console.log('details :', details);
-    if(details) {
+    if (details) {
       this.summaryDetail = JSON.parse(details);
     }
   }
-  saveSummaryResponse(){
-    console.log('Review:', this.reviewData);
-    let data= {type:'review', message: this.reviewData}
-    this.summaryService.addSummaryReview(this.summaryDetail._id,data).subscribe((response) => {
+  saveSummaryResponse() {
+    let data = { type: 'review', message: this.reviewData }
+    this.summaryService.addSummaryReview(this.summaryDetail._id, data).subscribe((response) => {
       if (response?.status == true) {
         this.summaryDetail?.response.push(data)
         this.reviewData = ''
@@ -39,5 +39,14 @@ export class ProjectManagerSummaryDetailComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  back() {
+    if (this?.summaryDetail?.projectId) {
+      this.router.navigate(['/project-manager/project/details'], { queryParams: { id: this?.summaryDetail?.projectId } });
+    } else {
+      this.router.navigate(['/project-manager/project/all']);
+    }
+
   }
 }

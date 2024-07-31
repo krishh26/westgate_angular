@@ -88,11 +88,12 @@
   <div class="container">
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-end mb-4">
-        <div class="d-flex align-items-center me-4 ">
-          <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a routerLink="/project-manager/project/all" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"><i
-              class="bi bi-eye-fill"></i> View Response</a>
-        </div>
+        <div class="d-flex align-items-center me-4 " *ngFor="let casestudy of projectDetails?.casestudy">
+          <ng-container *ngIf="casestudy?.name">
+            <p class="fonts-12 mb-0 me-2">{{casestudy?.name}}</p>
+            <a (click)="openDocument(casestudy)"  class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"  data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View Response</a>
+          </ng-container>
+          </div>
       </div>
     </div>
     <div class="row">
@@ -178,9 +179,8 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="summaryQuestionList?.length > 0">
             <ng-container *ngFor="let item of summaryQuestionList">
-
               <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
                 <td width="350">{{item?.question}}</td>
                 <!-- <td>35%</td> -->
@@ -209,7 +209,7 @@
           </tbody>
         </table>
         <div class="row">
-          <p *ngIf="summaryQuestionList?.length == 0 || []" style="text-align: center;"> No Record Found !</p>
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
         </div>
       </div>
     </div>
@@ -229,13 +229,11 @@
           <thead>
             <tr>
               <th>Question</th>
-              <!-- <th>Weightage</th>
+              <!-- <th>Weightage</th> -->
               <th>Status</th>
               <th>Deadline</th>
               <th>Assign User</th>
-              <th>Deadline</th> -->
               <th>Review Note</th>
-              <th>Note</th>
               <th></th>
             </tr>
           </thead>
@@ -243,17 +241,32 @@
             <ng-container *ngFor="let item of summaryQuestionList">
               <tr *ngIf="item?.summaryQuestionFor == 'UKWriter'">
                 <td width="350">{{item?.question}}</td>
+                <!-- <td>35%</td> -->
+                <td>
+                  <span class="text-success" *ngIf="item?.verify">Verified</span>
+                  <span *ngIf="!item?.verify">Not Verified</span>
+                </td>
+                <td>
+                  <span>
+                    {{item?.deadline | date : 'dd-MM-YYYY'}}
+                  </span>
+                  <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
+                  <!-- <i
+                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
+                </td>
+                <td>Ayush
+                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                      class="bi bi-pencil-fill"></i></a> -->
+                </td>
+                <td> {{item?.comment}}</td>
                 <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
                       class="bi bi-eye-fill"></i> View</a></td>
-                <td>
-                  <input type="text" class="form-control" style="height: 2.1rem;">
-                </td>
-              </tr>
+                <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
             </ng-container>
           </tbody>
         </table>
         <div class="row">
-          <p *ngIf="summaryQuestionList?.length == 0 || []" style="text-align: center;"> No Record Found !</p>
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
         </div>
       </div>
     </div>
