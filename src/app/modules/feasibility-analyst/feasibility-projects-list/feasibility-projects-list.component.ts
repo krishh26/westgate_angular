@@ -13,7 +13,8 @@ interface Project {
   description: string;
   category: string;
   industry: string;
-  value: number;
+  minValue: number;
+  maxValue: number
   projectType: string;
   status: string;
   dueDate: Date;
@@ -195,7 +196,8 @@ export class FeasibilityProjectsListComponent {
       description: item.description,
       category: item.category,
       industry: item.industry,
-      value: item.value,
+      minValue: item.minValue,
+      maxValue: item.maxValue,
       projectType: item.projectType,
       status: item.status,
       dueDate: item.dueDate

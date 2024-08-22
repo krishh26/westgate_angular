@@ -24,7 +24,8 @@
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
-                            <th>Value</th>
+                            <th>Min value (GBP)</th>
+                            <th>Max value (GBP)</th>
                             <th>Project Type</th>
                             <th>Status</th>
                             <th>Due Date &amp; Time</th>
@@ -65,9 +66,19 @@
                             </td>
 
                             <!-- Value -->
-                            <td>
+                            <!-- <td>
                                 <span *ngIf="!item.isEditing">{{ item?.value }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.value"
+                                    (keypress)="NumberOnly($event)" />
+                            </td> -->
+                            <td>£
+                                <span *ngIf="!item.isEditing">{{ item?.minValue }}</span>
+                                <input *ngIf="item.isEditing" [(ngModel)]="item.minValue"
+                                    (keypress)="NumberOnly($event)" />
+                            </td>
+                            <td>£
+                                <span *ngIf="!item.isEditing">{{ item?.maxValue }}</span>
+                                <input *ngIf="item.isEditing" [(ngModel)]="item.maxValue"
                                     (keypress)="NumberOnly($event)" />
                             </td>
 
