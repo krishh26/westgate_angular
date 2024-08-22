@@ -52,17 +52,19 @@
                                 <span *ngIf="!item.isEditing">{{ getCategoryName(item.category) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.category" class="custom-select">
                                     <option value="">Select Category</option>
-                                    <option *ngFor="let category of categoryList" [value]="category._id">{{
+                                    <option *ngFor="let category of categoryList" [value]="category.category">{{
                                         category.category }}</option>
                                 </select>
+                               <span *ngIf="item?.category && !item.isEditing">{{ item?.category }}</span>
                             </td>
                             <td>
                                 <span *ngIf="!item.isEditing">{{ getIndustryName(item.industry) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
                                     <option value="">Select Industry</option>
-                                    <option *ngFor="let industry of industryList" [value]="industry._id">{{
+                                    <option *ngFor="let industry of industryList" [value]="industry.industry">{{
                                         industry.industry }}</option>
                                 </select>
+                                <span *ngIf="item?.industry && !item.isEditing">{{ item?.industry }}</span>
                             </td>
 
                             <!-- Value -->

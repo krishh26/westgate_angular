@@ -203,7 +203,6 @@ export class FeasibilityProjectsListComponent {
       dueDate: item.dueDate
       // Add other fields as necessary
     };
-
     this.projectService.editProject(item._id, payload).subscribe(
       (response) => {
         if (response?.status === true) {
