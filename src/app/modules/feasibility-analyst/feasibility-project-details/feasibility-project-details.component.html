@@ -9,8 +9,7 @@
           </div>
         </div>
         <div class="col-lg-2 col-xl-2 col-12">
-          <a routerLink="/feasibility-user/feasibility-project-list"
-          class="btn btn-primary text-dark">Back</a>
+          <a routerLink="/feasibility-user/feasibility-project-list" class="btn btn-primary text-dark">Back</a>
         </div>
       </div>
 
@@ -21,7 +20,7 @@
             <tr>
               <th width="100px">Project Title</th>
               <th width="150px">Project Description</th>
-              <th >BOS ID</th>
+              <th>BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
               <th>Industry</th>
@@ -37,7 +36,8 @@
           </thead>
           <tbody>
             <tr>
-              <td><a (click)="projectDetails(projectDetails?._id)" href="javascript:;">{{projectDetails?.projectName}}</a></td>
+              <td><a (click)="projectDetails(projectDetails?._id)"
+                  href="javascript:;">{{projectDetails?.projectName}}</a></td>
               <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
               <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
@@ -45,7 +45,7 @@
               <td>{{projectDetails?.industry}}</td>
               <td>{{projectDetails?.minValue}}</td>
               <td>{{projectDetails?.maxValue}}</td>
-              <td >{{projectDetails?.website}}</td>
+              <td>{{projectDetails?.website}}</td>
               <td><a href='{{projectDetails?.link}}' target="_blank">{{projectDetails?.link}}</a></td>
               <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{dateDifference}}</td>
@@ -65,11 +65,12 @@
                   <label for="subContract" class="btn-upload-file padding-lr-5"><i
                       class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Query Image</label>
-                    <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
+                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
                       uploadDocument($event,documentUploadType.subContractDocument)" />
-                    <br>
-                    <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
-                    data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
+                  <br>
+                  <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
 
                   <!-- <img *ngIf="subContractDocument?.url" [src]="subContractDocument?.url" alt="" style="height: 100px; width: 100px;"> -->
                 </div>
@@ -84,10 +85,12 @@
                       class="bi bi-file-earmark-arrow-up-fill"></i> Upload
                     Query Image</label>
                   <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
-                    style="height: 5px; width: 5px" (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
+                    style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
                   <br>
-                  <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100" data-bs-toggle="modal"
-                    data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
+                  <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
                   <!-- <img *ngIf="economicalPartnershipQueryFile?.url" [src]="economicalPartnershipQueryFile?.url" alt="" style="height: 100px; width: 100px;"> -->
                 </div>
               </div>
@@ -102,16 +105,17 @@
                     Query Image</label>
                   <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
-                    <br>
-                    <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+                  <br>
+                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
 
-                      <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
-                        <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100" data-bs-toggle="modal"
-                      data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
-                      </ng-container>
-                      <!-- <img  *ngIf="document?.type == documentUploadType.otherQueryDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;"> -->
+                    <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
+                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                        View</a>
                     </ng-container>
-                  </div>
+                    <!-- <img  *ngIf="document?.type == documentUploadType.otherQueryDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;"> -->
+                  </ng-container>
+                </div>
               </div>
             </div>
           </div>
@@ -137,8 +141,9 @@
                   <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
                   <br>
-                    <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100" data-bs-toggle="modal"
-                  data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
+                  <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
 
                   <!-- <img *ngIf="economicalPartnershipResponceFile?.url" [src]="economicalPartnershipResponceFile?.url" alt="" style="height: 100px; width: 100px;"> -->
                 </div>
@@ -156,8 +161,9 @@
                   <br>
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
                     <ng-container *ngIf="document?.type == documentUploadType.otherDocument">
-                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100" data-bs-toggle="modal"
-                  data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
+                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                        View</a>
                     </ng-container>
                     <!-- <img  *ngIf="document?.type == documentUploadType.otherDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;"> -->
                   </ng-container>
@@ -349,8 +355,8 @@
                     <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
                       data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i class="bi bi-eye-fill"></i>
                       View</a>
-                      <a href="href:;" (click)="download(item?.file?.url, item?.name)"
-                      class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                    <a href="href:;" (click)="download(item?.file?.url, item?.name)" class="btn btn-primarysm"><i
+                        class="bi bi-file-earmark-arrow-down-fill"></i>
                       Download</a>
                   </div>
                 </div>
@@ -415,7 +421,7 @@
                 (change)="statusChange('Won')" [checked]="status == 'Won'" />
               <label class="form-check-label text-success" for="comment3">Pass</label>
             </div>
-            <input *ngIf="this.status == 'Won'" type="text" class="form-control" placeholder="Comments for Pass"
+            <input *ngIf="this.status == 'Passed'" type="text" class="form-control" placeholder="Comments for Pass"
               [formControl]="statusComment" />
           </div>
         </div>
@@ -436,11 +442,12 @@
                     Upload
                     Document</label>
                   <!-- <input type="file" name="myfile" id="failedReson" style="height: 5px; width: 5px" /> -->
-                  <input type="file" id="failedReson" name="failedReson"
-                  style="height: 5px; width: 5px" (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
+                  <input type="file" id="failedReson" name="failedReson" style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
                   <!-- <img *ngIf="failStatusImage?.url" [src]="failStatusImage?.url" alt="" style="height: 100px; width: 100px;"> -->
-                  <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)" class="btn btn-small w-100" data-bs-toggle="modal"
-                  data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i> View</a>
+                  <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)"
+                    class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i
+                      class="bi bi-eye-fill"></i> View</a>
                 </div>
               </div>
               <div class="col-12 mt-3" *ngIf="this.status == 'Fail'">
@@ -483,7 +490,8 @@
               <a href="href:;" class="btn btn-primarysm me-2" (click)="viewLoginDetail(item)" data-bs-toggle="modal"
                 data-bs-target="#loginDetailModal"><i class="bi bi-eye-fill"></i> View</a>
               <a href="href:;" data-bs-toggle="modal" (click)="editLoginDetail(item,i)"
-              data-bs-target="#loginDetailModal" class="btn btn-primarysm"><i class="bi bi-file-earmark-arrow-up-fill"></i> Edit</a>
+                data-bs-target="#loginDetailModal" class="btn btn-primarysm"><i
+                  class="bi bi-file-earmark-arrow-up-fill"></i> Edit</a>
             </div>
           </div>
           <ng-container *ngIf="viewLoginForm">
@@ -500,8 +508,9 @@
                   <label for="uploadLoginDetail"><i class="bi bi-file-earmark-arrow-up-fill"></i>
                     Upload
                   </label>
-                  <input [disabled]="!loginName" data-bs-toggle="modal" (click)="openLoginDetail()" data-bs-target="#loginDetailModal"
-                    id="uploadLoginDetail" name="myfile" style="height: 0.5px; width: 0.5px" />
+                  <input [disabled]="!loginName" data-bs-toggle="modal" (click)="openLoginDetail()"
+                    data-bs-target="#loginDetailModal" id="uploadLoginDetail" name="myfile"
+                    style="height: 0.5px; width: 0.5px" />
                 </div>
               </div>
             </div>
@@ -563,8 +572,8 @@
           <ng-template #otherFormats>
             <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
               [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px;"></iframe>
-              <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
-            </ng-template>
+            <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+          </ng-template>
         </div>
         <!-- <img [src]="selectedDocument?.file?.url" class="img-fluid" /> -->
       </div>
@@ -612,8 +621,8 @@
             height="600px"></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormatsForDocument>
-          <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
-            [src]="getDocumentViewerUrl(uploadedDocument?.url)" style="width: 100%; height: 600px;"></iframe>
+          <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)" [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+            style="width: 100%; height: 600px;"></iframe>
           <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
         </ng-template>
       </div>
@@ -654,8 +663,10 @@
         <label>Password</label>
         <div style="position: relative;">
           <input [readonly]="loginModalMode" [type]="password" formControlName="password" class="form-control" />
-          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
-          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
+          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;"
+            *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
+          <span class="showicon" style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;"
+            *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
         </div>
         <div class="text-danger" style="color: red"
           *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
