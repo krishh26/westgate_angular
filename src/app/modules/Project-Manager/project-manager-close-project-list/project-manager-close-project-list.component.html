@@ -1,152 +1,166 @@
-<main id="main" class="">
-  <section class="p-0">
-    <div class="table-responsive project-close">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th width="10%"></th>
-            <th width="10%">Project Title</th>
-            <th width="10%">Project Description</th>
-            <th width="5%">BOS ID</th>
-            <th width="5%">Publish Date</th>
-            <th width="5%">Category</th>
-            <th width="5%">Industry</th>
-            <th width="5%">Min value (GBP)</th>
-            <th width="5%">Max value (GBP)</th>
-            <th width="5%">Website</th>
-            <th width="5%">Link to notice</th>
-            <th width="8%">Created Date</th>
-            <th width="5%">Status</th>
-            <th width="10%">Due Date & Time</th>
-            <th width="15%">Action</th>
-            <th width="10%"></th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <tr>
-            <td *ngIf="!projectList?.length" colspan="15">
-              <app-no-record-found></app-no-record-found>
-            </td>
-          </tr>
-
-          <ng-container *ngFor="let item of projectList">
+<main id="main">
+  <section>
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+          <div class="form-group mb-0">
+            <span class="input-icon"><i class="bi bi-search"></i></span>
+            <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
+              (input)="searchtext()">
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive project-close">
+        <table class="table table-striped align-middle">
+          <thead>
             <tr>
-              <td> </td>
-              <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
-              <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
-              <td v-align="middle">{{item?.BOSID}}</td>
-              <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-              <td>{{item?.category}}</td>
-              <td>{{item?.industry}}</td>
-              <td>{{item?.minValue}}</td>
-              <td>{{item?.maxValue}}</td>
-              <td>{{item?.website}}</td>
-              <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
-              <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{item?.status}}</td>
-              <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-              <td><button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1 fonts-12"
-                  style="white-space: nowrap;">View Project Details</button></td>
-              <td></td>
-              <td></td>
+              <th width="10%"></th>
+              <th width="10%">Project Title</th>
+              <th width="10%">Project Description</th>
+              <th width="5%">BOS ID</th>
+              <th width="5%">Publish Date</th>
+              <th width="5%">Category</th>
+              <th width="5%">Industry</th>
+              <th width="5%">Min value (GBP)</th>
+              <th width="5%">Max value (GBP)</th>
+              <th width="5%">Website</th>
+              <th width="5%">Link to notice</th>
+              <th width="8%">Created Date</th>
+              <th width="5%">Status</th>
+              <th width="10%">Due Date & Time</th>
+              <th width="15%">Action</th>
+              <th width="10%"></th>
             </tr>
-            <ng-container *ngIf="item?.select?.length > 0">
+          </thead>
+          <tbody>
+
+            <tr>
+              <td *ngIf="!projectList?.length" colspan="15">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <ng-container *ngFor="let item of projectList">
               <tr>
-                <td colspan="14" style="background-color: #b5b2b2;">
-                  <table class="table table-striped align-middle">
-                    <thead>
-                      <tr>
-                        <!-- <th></th> -->
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name
-                        </th>
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID
-                        </th>
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Closed On</th>
-                        <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call
-                          date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style="background-color: #b5b2b2 !important;" *ngFor="let supplier of item?.select">
-                        <!-- <td></td> -->
-                        <td style="background-color: #b5b2b2 !important;">Company Name</td>
-                        <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
-                        <td style="background-color: #b5b2b2 !important;">Ayush</td>
-                        <td style="background-color: #b5b2b2 !important;">Closed</td>
-                        <td style="background-color: #b5b2b2 !important;">12-Sep-2023</td>
-                        <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date :
-                          'dd-MMM-YYYY'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
+                <td> </td>
+                <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
+                <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+                <td v-align="middle">{{item?.BOSID}}</td>
+                <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{item?.category}}</td>
+                <td>{{item?.industry}}</td>
+                <td>{{item?.minValue}}</td>
+                <td>{{item?.maxValue}}</td>
+                <td>{{item?.website}}</td>
+                <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
+                <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td>{{item?.status}}</td>
+                <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                <td><button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1 fonts-12"
+                    style="white-space: nowrap;">View Project Details</button></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <ng-container *ngIf="item?.select?.length > 0">
+                <tr>
+                  <td colspan="14" style="background-color: #b5b2b2;">
+                    <table class="table table-striped align-middle">
+                      <thead>
+                        <tr>
+                          <!-- <th></th> -->
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name
+                          </th>
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID
+                          </th>
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name
+                          </th>
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Closed On
+                          </th>
+                          <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call
+                            date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr style="background-color: #b5b2b2 !important;" *ngFor="let supplier of item?.select">
+                          <!-- <td></td> -->
+                          <td style="background-color: #b5b2b2 !important;">Company Name</td>
+                          <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
+                          <td style="background-color: #b5b2b2 !important;">Ayush</td>
+                          <td style="background-color: #b5b2b2 !important;">Closed</td>
+                          <td style="background-color: #b5b2b2 !important;">12-Sep-2023</td>
+                          <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date :
+                            'dd-MMM-YYYY'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr *ngIf="item?.select?.length == 0">
+                <td colspan="16" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
               </tr>
             </ng-container>
-            <tr *ngIf="item?.select?.length == 0">
-              <td colspan="16" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
-            </tr>
-          </ng-container>
-          <!-- <tr class="bg-d3" *ngFor="let supplier of item?.select">
-
-
-                  <td>  </td>
-                  <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3"  style="white-space: nowrap;"> Supplier Name  </span>
-                          <span>   Company Name  </span>
-                      </div>
-                  </td>
-                  <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3" style="white-space: nowrap;"> Supplier ID </span>
-                          <span>{{supplier?.supplierId}}</span>
-                      </div>
-                   </td>
-                   <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3"  style="white-space: nowrap;"> Admin Name</span>
-                          <span>   Ayush</span>
-                      </div>
-                   </td>
-                   <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3"  style="white-space: nowrap;"> Status</span>
-                          <span class="d-flex align-items-center"> <i class="bi bi-check-circle-fill text-green me-1"></i>  Closed</span>
-                      </div>
-                   </td>
-                   <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3"  style="white-space: nowrap;"> Closed On</span>
-                          <span  style="white-space: nowrap;">   12-Sep-2023</span>
-                      </div>
-                   </td>
-                   <td>
-                      <div class="d-flex flex-column">
-                          <span class="fw-bold mb-3"  style="white-space: nowrap;"> Handover Call date</span>
-                          <span> {{supplier?.handoverCall | date : 'dd-MMM-YYYY'}} </span>
-                      </div>
-                   </td>
-
-                   <td><button class="btn btn-sm btn-primary" style="white-space: nowrap;">View Matched Suppliers</button></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-              </tr>
-              <ng-container *ngIf="item?.select?.length == 0">
-                <tr>
-                  <td colspan="14"> No Records.</td>
+            <!-- <tr class="bg-d3" *ngFor="let supplier of item?.select">
+  
+  
+                    <td>  </td>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3"  style="white-space: nowrap;"> Supplier Name  </span>
+                            <span>   Company Name  </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3" style="white-space: nowrap;"> Supplier ID </span>
+                            <span>{{supplier?.supplierId}}</span>
+                        </div>
+                     </td>
+                     <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3"  style="white-space: nowrap;"> Admin Name</span>
+                            <span>   Ayush</span>
+                        </div>
+                     </td>
+                     <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3"  style="white-space: nowrap;"> Status</span>
+                            <span class="d-flex align-items-center"> <i class="bi bi-check-circle-fill text-green me-1"></i>  Closed</span>
+                        </div>
+                     </td>
+                     <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3"  style="white-space: nowrap;"> Closed On</span>
+                            <span  style="white-space: nowrap;">   12-Sep-2023</span>
+                        </div>
+                     </td>
+                     <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold mb-3"  style="white-space: nowrap;"> Handover Call date</span>
+                            <span> {{supplier?.handoverCall | date : 'dd-MMM-YYYY'}} </span>
+                        </div>
+                     </td>
+  
+                     <td><button class="btn btn-sm btn-primary" style="white-space: nowrap;">View Matched Suppliers</button></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
-              </ng-container> -->
+                <ng-container *ngIf="item?.select?.length == 0">
+                  <tr>
+                    <td colspan="14"> No Records.</td>
+                  </tr>
+                </ng-container> -->
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </section>
 </main>

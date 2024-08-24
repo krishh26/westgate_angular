@@ -18,6 +18,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit{
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   searchText: any;
+  myControl = new FormControl();
 
   constructor(
     private projectService: ProjectService,
@@ -26,6 +27,10 @@ export class ProjectManagerMatchProjectListComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
+    this.myControl.valueChanges.subscribe((res: any) => {
+      let storeTest = res;
+      this.searchText = res.toLowerCase();
+    });
     this.getProjectList();
   }
 
@@ -44,6 +49,29 @@ export class ProjectManagerMatchProjectListComponent implements OnInit{
         this.showLoader = false;
         this.projectList = response?.data?.data;
      
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  searchtext() {
+    this.showLoader = true;
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    console.log(Payload.projectList);
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      this.totalRecords = response?.data?.meta_data?.items;
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectList = response?.data?.data;
+        console.log(this.projectList);
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

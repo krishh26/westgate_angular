@@ -54,6 +54,29 @@ export class ProjectManagerCloseProjectListComponent {
     });
   }
 
+  searchtext() {
+    this.showLoader = true;
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    console.log(Payload.projectList);
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      this.totalRecords = response?.data?.meta_data?.items;
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectList = response?.data?.data;
+        console.log(this.projectList);
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
   projectDetails(projectId: any) {
     this.router.navigate(['/project-manager/project/close-project-details'], { queryParams: { id: projectId } });
   }
