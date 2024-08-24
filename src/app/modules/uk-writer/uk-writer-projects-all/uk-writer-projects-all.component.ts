@@ -55,7 +55,7 @@ export class UkWriterProjectsAllComponent {
         this.projectList = response?.data?.data;
         this.suppliercount = response?.data?.data?.select[0]?.companySelect?.length;
         console.log(this.suppliercount);
-        window.location.reload();
+     
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

@@ -44,7 +44,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
         this.showLoader = false;
         this.projectList = response?.data?.data;
         console.log('this.projectList', this.projectList);
-        window.location.reload();
+       
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

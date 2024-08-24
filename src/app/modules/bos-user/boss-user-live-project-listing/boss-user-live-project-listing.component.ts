@@ -68,7 +68,7 @@ export class BossUserLiveProjectListingComponent {
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
-        window.location.reload();
+        
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

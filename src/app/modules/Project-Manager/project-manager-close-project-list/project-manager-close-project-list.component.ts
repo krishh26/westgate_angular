@@ -42,7 +42,7 @@ export class ProjectManagerCloseProjectListComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        window.location.reload();
+       
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
