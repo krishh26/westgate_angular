@@ -21,7 +21,7 @@ export class UkWriterProjectsAllComponent {
   totalRecords: number = pagination.totalRecords;
   searchText: FormControl = new FormControl('');
   loginUser: any;
-  suppliercount :any 
+  suppliercount: any
 
   constructor(
     private projectService: ProjectService,
@@ -55,7 +55,7 @@ export class UkWriterProjectsAllComponent {
         this.projectList = response?.data?.data;
         this.suppliercount = response?.data?.data?.select[0]?.companySelect?.length;
         console.log(this.suppliercount);
-        
+        window.location.reload();
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -68,7 +68,7 @@ export class UkWriterProjectsAllComponent {
 
   supplierDetails(projectId: any) {
     this.router.navigate(['/uk-writer/uk-writer-supplier-list'], { queryParams: { id: projectId } });
-    localStorage.setItem('UKprojectID' ,projectId )
+    localStorage.setItem('UKprojectID', projectId)
   }
 
   paginate(page: number) {

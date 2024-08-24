@@ -61,6 +61,7 @@ export class SuperAdminSupplierProjectViewComponent {
         this.showLoader = false;
         this.projectList = response?.data?.data;
         console.log(this.projectList);
+        window.location.reload();
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

@@ -125,7 +125,7 @@ export class FeasibilityProjectsListComponent {
         this.projectList = response?.data?.data;
         console.log(this.projectList);
         this.totalRecords = response?.data?.meta_data?.items;
-
+        window.location.reload();
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
