@@ -20,12 +20,13 @@
                             <th>BOS ID</th>
                             <th width="150px">Project Title</th>
                             <th width="150px">Project Description</th>
-
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
                             <th>Min value (GBP)</th>
                             <th>Max value (GBP)</th>
+                            <th>Website</th>
+                            <th width="100px">Link to notice</th>
                             <th>Project Type</th>
                             <th>Status</th>
                             <th>Due Date &amp; Time</th>
@@ -55,8 +56,9 @@
                                     <option *ngFor="let category of categoryList" [value]="category.category">{{
                                         category.category }}</option>
                                 </select>
-                               <span *ngIf="item?.category && !item.isEditing">{{ item?.category }}</span>
+                                <span *ngIf="item?.category && !item.isEditing">{{ item?.category }}</span>
                             </td>
+
                             <td>
                                 <span *ngIf="!item.isEditing">{{ getIndustryName(item.industry) }}</span>
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
@@ -67,48 +69,40 @@
                                 <span *ngIf="item?.industry && !item.isEditing">{{ item?.industry }}</span>
                             </td>
 
-                            <!-- Value -->
-                            <!-- <td>
-                                <span *ngIf="!item.isEditing">{{ item?.value }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.value"
-                                    (keypress)="NumberOnly($event)" />
-                            </td> -->
                             <td>£
                                 <span *ngIf="!item.isEditing">{{ item?.minValue }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.minValue"
                                     (keypress)="NumberOnly($event)" />
                             </td>
+
                             <td>£
                                 <span *ngIf="!item.isEditing">{{ item?.maxValue }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.maxValue"
                                     (keypress)="NumberOnly($event)" />
                             </td>
 
-                            <!-- Project Type -->
+                            <td>{{item?.website}}</td>
+                            <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
+
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.projectType }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.projectType" />
                             </td>
 
-                            <!-- Status -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.status }}</span>
-                                <!-- <input *ngIf="item.isEditing" [(ngModel)]="item.status" /> -->
                                 <select *ngIf="item.isEditing" [(ngModel)]="item.status" class="custom-select">
-                                    <!-- <option value="">Select Industry</option> -->
                                     <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
                                 </select>
 
                             </td>
 
-                            <!-- Due Date -->
                             <td>
                                 <span *ngIf="!item.isEditing">{{ item?.dueDate | date:'dd/MM/yyyy, h:mm a' }}</span>
                                 <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" type="date"
                                     [value]="item?.dueDate" />
                             </td>
 
-                            <!-- Actions -->
                             <td>
                                 <!-- View Details and Edit buttons -->
                                 <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)"

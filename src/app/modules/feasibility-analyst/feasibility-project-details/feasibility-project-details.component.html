@@ -18,9 +18,9 @@
         <table class="table table-striped align-middle">
           <thead>
             <tr>
+              <th>BOS ID</th>
               <th width="100px">Project Title</th>
               <th width="150px">Project Description</th>
-              <th>BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
               <th>Industry</th>
@@ -36,10 +36,10 @@
           </thead>
           <tbody>
             <tr>
+              <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td><a (click)="projectDetails(projectDetails?._id)"
                   href="javascript:;">{{projectDetails?.projectName}}</a></td>
               <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
-              <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{projectDetails?.category}}</td>
               <td>{{projectDetails?.industry}}</td>
