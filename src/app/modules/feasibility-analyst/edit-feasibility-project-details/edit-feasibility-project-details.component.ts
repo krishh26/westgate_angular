@@ -151,8 +151,8 @@ export class EditFeasibilityProjectDetailsComponent implements OnInit {
     if (this.projectId) {
       this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
         if (response.status) {
-          this.notificationService.showSuccess('' , 'Project updated successfully.');
-          this.router.navigate(['/boss-user/project-list']);
+          this.notificationService.showSuccess('', 'Project updated successfully.');
+          this.router.navigate(['/feasibility-user/feasibility-project-list']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -166,8 +166,8 @@ export class EditFeasibilityProjectDetailsComponent implements OnInit {
       this.projectService.addProject(payload).subscribe((response) => {
         if (response?.status == true) {
           this.showLoader = false;
-          this.notificationService.showSuccess('' , 'Project added successfully.');
-          this.router.navigate(['/boss-user/project-list']);
+          this.notificationService.showSuccess('', 'Project added successfully.');
+          this.router.navigate(['/feasibility-user/feasibility-project-list']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

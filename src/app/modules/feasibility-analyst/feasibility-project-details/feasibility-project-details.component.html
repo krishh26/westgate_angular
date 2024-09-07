@@ -18,38 +18,41 @@
         <table class="table table-striped align-middle">
           <thead>
             <tr>
-              <th>BOS ID</th>
               <th width="100px">Project Title</th>
-              <th width="150px">Project Description</th>
+              <th>Project Description</th>
+              <th>BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
               <th>Industry</th>
               <th>Min value (GBP)</th>
               <th>Max value (GBP)</th>
               <th>Website</th>
-              <th width="100px">Link to notice</th>
+              <th>Link to notice</th>
               <th>Created Date</th>
-              <th>Time Due (Mail)</th>
               <th>Due Date & Time</th>
-              <!-- <th>Action</th> -->
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td><a (click)="projectDetails(projectDetails?._id)"
-                  href="javascript:;">{{projectDetails?.projectName}}</a></td>
+                  href="javascript:;">{{projectDetails?.projectName}}</a>
+              </td>
               <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
+              <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{projectDetails?.category}}</td>
               <td>{{projectDetails?.industry}}</td>
-              <td>{{projectDetails?.minValue}}</td>
-              <td>{{projectDetails?.maxValue}}</td>
-              <td>{{projectDetails?.website}}</td>
+              <td>£ {{projectDetails?.minValue}}</td>
+              <td>£ {{projectDetails?.maxValue}}</td>
+              <td><a>{{projectDetails?.website}}</a></td>
               <td><a href='{{projectDetails?.link}}' target="_blank">{{projectDetails?.link}}</a></td>
               <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{dateDifference}}</td>
               <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+              <td>
+                <a (click)="editProjectDetails(projectDetails?._id)" class="btn btn-secondary sm ml-2" title="Edit"><i
+                    class="bi bi-pencil-fill"></i></a>&nbsp;
+              </td>
             </tr>
           </tbody>
         </table>
@@ -417,8 +420,8 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment3" value="Passed"
-                (change)="statusChange('Passed')" [checked]="status == 'Passed'" />
+              <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment3"
+                value="Passed" (change)="statusChange('Passed')" [checked]="status == 'Passed'" />
               <label class="form-check-label text-success" for="comment3">Pass</label>
             </div>
             <input *ngIf="this.status == 'Passed'" type="text" class="form-control" placeholder="Comments for Pass"

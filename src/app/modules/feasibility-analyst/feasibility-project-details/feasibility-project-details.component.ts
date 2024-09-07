@@ -92,6 +92,10 @@ export class FeasibilityProjectDetailsComponent {
     }
   }
 
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
+  }
+
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
@@ -249,11 +253,11 @@ export class FeasibilityProjectDetailsComponent {
     this.loginDetailForm.patchValue(loginData.data)
   }
 
-  openLoginDetail(){
+  openLoginDetail() {
     this.loginModalMode = false
     this.loginDetailForm.reset()
   }
-  editLoginDetail(loginData:any,i:number){
+  editLoginDetail(loginData: any, i: number) {
     this.loginModalMode = false
     this.loginDetailForm.patchValue(loginData.data)
     this.loginDetailForm.controls['id'].setValue(i)
@@ -263,9 +267,9 @@ export class FeasibilityProjectDetailsComponent {
       name: this.loginName,
       data: this.loginDetailForm.value
     }
-    if(this.projectDetails.loginDetail[this.loginDetailForm.value['id']]){
+    if (this.projectDetails.loginDetail[this.loginDetailForm.value['id']]) {
       this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data = dataToBePushed.data
-    }else{
+    } else {
       this.projectDetails.loginDetail.push(dataToBePushed)
     }
     this.loginName = ''
