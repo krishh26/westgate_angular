@@ -38,7 +38,6 @@
               <th>Website</th>
               <th>Link to notice</th>
               <th>Created Date</th>
-              <th>Time Due (Mail)</th>
               <th>Due Date & Time</th>
               <th>Action</th>
             </tr>
@@ -64,7 +63,6 @@
               <td><a>{{item?.website}}</a></td>
               <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
               <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{dateDifference}}</td>
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td>
                 <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;" (click)="projectDetails(item?._id)"><i
