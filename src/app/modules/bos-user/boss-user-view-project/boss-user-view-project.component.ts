@@ -18,7 +18,7 @@ export class BossUserViewProjectComponent {
   projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
-  selectedDocument : any;
+  selectedDocument: any;
 
   constructor(
     private projectService: ProjectService,
@@ -60,6 +60,10 @@ export class BossUserViewProjectComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: projectId } });
   }
 
   openDocument(data: any) {
