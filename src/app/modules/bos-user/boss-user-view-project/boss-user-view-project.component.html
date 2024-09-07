@@ -44,8 +44,6 @@
               <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
               <td>
-                <!-- <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
-                  (click)="projectDetails(projectDetails?._id)"><i class="bi bi-eye-fill"></i></a> -->
                 <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                   (click)="editProjectDetails(projectDetails?._id)"><i class="bi bi-pencil-fill"></i></a>
               </td>
@@ -54,9 +52,20 @@
         </table>
       </div>
 
-      <!--Project details-->
-      <h4 class="text-theme"><strong>Project Description</strong></h4>
-      <p>{{projectDetails?.description}} </p>
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Project Description</strong></p>
+        </div>
+      </section><br>
+
+      <p>{{ projectDetails?.description }}</p>
+
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Client & FOI Detils</strong></p>
+        </div>
+      </section>
+
       <div class="row mt-5">
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
