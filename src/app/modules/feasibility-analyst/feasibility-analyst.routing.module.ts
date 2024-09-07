@@ -8,6 +8,7 @@ import { SummaryNoteQuestionsComponent } from './summary-note-questions/summary-
 import { FeasibilityLoginDetailsComponent } from './feasibility-login-details/feasibility-login-details.component';
 import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
 import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
+import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
 
 const routes: Routes = [
     {
@@ -41,6 +42,10 @@ const routes: Routes = [
             {
               path: "profile",
               component: FeasibilityProfileComponent
+            },
+            {
+                path: "edit-feasibility-project-details",
+                component: EditFeasibilityProjectDetailsComponent
             },
         ]
     },

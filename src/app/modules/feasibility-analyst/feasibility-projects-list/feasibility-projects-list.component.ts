@@ -125,7 +125,7 @@ export class FeasibilityProjectsListComponent {
         this.projectList = response?.data?.data;
         console.log(this.projectList);
         this.totalRecords = response?.data?.meta_data?.items;
-        
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -173,7 +173,7 @@ export class FeasibilityProjectsListComponent {
   }
 
   editProjectDetails(projectId: any) {
-    this.router.navigate(['/boss-user/add-project'], { queryParams: { id: projectId } });
+    this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
   }
 
   paginate(page: number) {

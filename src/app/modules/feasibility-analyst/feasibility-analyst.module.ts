@@ -16,6 +16,7 @@ import { FeasibilityHeaderComponent } from 'src/app/utility/shared/components/fe
 import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
 import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         FeasibilityProjectsListComponent,
         FeasibilityHeaderComponent,
         TruncatePipe,
-        FeasibilityProfileComponent
+        FeasibilityProfileComponent,
+        EditFeasibilityProjectDetailsComponent
     ],
     imports: [
         CommonModule,
