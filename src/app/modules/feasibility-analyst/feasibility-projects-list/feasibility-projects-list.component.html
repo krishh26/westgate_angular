@@ -2,7 +2,6 @@
     <section>
         <div class="container-fluid">
             <div class="row align-items-center justify-content-between">
-
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
@@ -10,7 +9,6 @@
                             [(ngModel)]="searchText" (input)="searchtext()">
                     </div>
                 </div>
-
             </div>
 
             <div class="table-responsive mt-5 mb-3">
@@ -42,7 +40,8 @@
 
                         <tr
                             *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                            <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
+                            <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a>
+                            </td>
                             <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
                             <td v-align="middle">{{item?.BOSID}}</td>
                             <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
@@ -70,11 +69,9 @@
                                     title="Cancel"><i class="bi bi-x-lg"></i></a>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
-
 
             <div class="row mt-3 align-items-center">
                 <div class="row">
@@ -85,5 +82,4 @@
             </div>
         </div>
     </section>
-
-</main><!-- End #main -->
+</main>
