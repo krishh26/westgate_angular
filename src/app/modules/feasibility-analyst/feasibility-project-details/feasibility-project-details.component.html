@@ -417,8 +417,8 @@
           </div>
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment3" value="Won"
-                (change)="statusChange('Won')" [checked]="status == 'Won'" />
+              <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment3" value="Passed"
+                (change)="statusChange('Passed')" [checked]="status == 'Passed'" />
               <label class="form-check-label text-success" for="comment3">Pass</label>
             </div>
             <input *ngIf="this.status == 'Passed'" type="text" class="form-control" placeholder="Comments for Pass"

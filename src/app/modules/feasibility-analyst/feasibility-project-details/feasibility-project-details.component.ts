@@ -278,7 +278,7 @@ export class FeasibilityProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {}
     if (!contractEdit) {
-      if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
+      if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
         return this.notificationService.showError('Please Enter Status Comment');
       }
 
