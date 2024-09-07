@@ -17,19 +17,18 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
+                            <th width="100px">Project Title</th>
+                            <th>Project Description</th>
                             <th>BOS ID</th>
-                            <th width="150px">Project Title</th>
-                            <th width="150px">Project Description</th>
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
                             <th>Min value (GBP)</th>
                             <th>Max value (GBP)</th>
                             <th>Website</th>
-                            <th width="100px">Link to notice</th>
-                            <th>Project Type</th>
-                            <th>Status</th>
-                            <th>Due Date &amp; Time</th>
+                            <th>Link to notice</th>
+                            <th>Created Date</th>
+                            <th>Due Date & Time</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -43,66 +42,18 @@
 
                         <tr
                             *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                            <td>{{ item?.BOSID }}</td>
-                            <td>{{ item?.projectName }}</td>
+                            <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
                             <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
-
-                            <td>{{ item?.publishDate | date:'dd/MM/yyyy' }}</td>
-
-                            <td>
-                                <span *ngIf="!item.isEditing">{{ getCategoryName(item.category) }}</span>
-                                <select *ngIf="item.isEditing" [(ngModel)]="item.category" class="custom-select">
-                                    <option value="">Select Category</option>
-                                    <option *ngFor="let category of categoryList" [value]="category.category">{{
-                                        category.category }}</option>
-                                </select>
-                                <span *ngIf="item?.category && !item.isEditing">{{ item?.category }}</span>
-                            </td>
-
-                            <td>
-                                <span *ngIf="!item.isEditing">{{ getIndustryName(item.industry) }}</span>
-                                <select *ngIf="item.isEditing" [(ngModel)]="item.industry" class="custom-select">
-                                    <option value="">Select Industry</option>
-                                    <option *ngFor="let industry of industryList" [value]="industry.industry">{{
-                                        industry.industry }}</option>
-                                </select>
-                                <span *ngIf="item?.industry && !item.isEditing">{{ item?.industry }}</span>
-                            </td>
-
-                            <td>£
-                                <span *ngIf="!item.isEditing">{{ item?.minValue }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.minValue"
-                                    (keypress)="NumberOnly($event)" />
-                            </td>
-
-                            <td>£
-                                <span *ngIf="!item.isEditing">{{ item?.maxValue }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.maxValue"
-                                    (keypress)="NumberOnly($event)" />
-                            </td>
-
-                            <td>{{item?.website}}</td>
+                            <td v-align="middle">{{item?.BOSID}}</td>
+                            <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{item?.category}}</td>
+                            <td>{{item?.industry}}</td>
+                            <td>£ {{item?.minValue}}</td>
+                            <td>£ {{item?.maxValue}}</td>
+                            <td><a>{{item?.website}}</a></td>
                             <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
-
-                            <td>
-                                <span *ngIf="!item.isEditing">{{ item?.projectType }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.projectType" />
-                            </td>
-
-                            <td>
-                                <span *ngIf="!item.isEditing">{{ item?.status }}</span>
-                                <select *ngIf="item.isEditing" [(ngModel)]="item.status" class="custom-select">
-                                    <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
-                                </select>
-
-                            </td>
-
-                            <td>
-                                <span *ngIf="!item.isEditing">{{ item?.dueDate | date:'dd/MM/yyyy, h:mm a' }}</span>
-                                <input *ngIf="item.isEditing" [(ngModel)]="item.dueDate" type="date"
-                                    [value]="item?.dueDate" />
-                            </td>
-
+                            <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
+                            <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td>
                                 <!-- View Details and Edit buttons -->
                                 <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)"
