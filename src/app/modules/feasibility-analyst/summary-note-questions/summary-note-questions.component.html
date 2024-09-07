@@ -1,6 +1,6 @@
 <main id="main">
     <section>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
@@ -9,8 +9,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-xl-2 col-12">
-                    <a (click)="backPage()"
-                    class="btn btn-primary text-dark">Back</a>
+                    <a (click)="backPage()" class="btn btn-primary text-dark">Back</a>
                 </div>
             </div>
 
@@ -18,50 +17,56 @@
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th>BOS ID</th>
                             <th width="100px">Project Title</th>
-                            <th width="150px">Project Description</th>
+                            <th>Project Description</th>
+                            <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
                             <th>Industry</th>
                             <th>Min value (GBP)</th>
                             <th>Max value (GBP)</th>
-                            <th>Project Type</th>
-                            <th>Status</th>
-                            <th>Due Date &amp; Time</th>
-                            <!-- <th>Action</th> -->
+                            <th>Website</th>
+                            <th>Link to notice</th>
+                            <th>Created Date</th>
+                            <th>Due Date & Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
-                            <!-- <td><a href="javascript:;">Provision of MyBedsLife Student Engagement App Support Services</a></td> -->
-                            <td><a>{{projectDetails?.projectName}}</a></td>
+                            <td><a (click)="projectDetails(projectDetails?._id)"
+                                    href="javascript:;">{{projectDetails?.projectName}}</a>
+                            </td>
                             <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10
-                            }}</a></td>
+                                    }}</a></td>
+                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
                             <td>{{projectDetails?.industry}}</td>
                             <td>£ {{projectDetails?.minValue}}</td>
                             <td>£ {{projectDetails?.maxValue}}</td>
-                            <td>{{projectDetails?.projectType}}</td>
-                            <td>{{projectDetails?.status}}</td>
+                            <td><a>{{projectDetails?.website}}</a></td>
+                            <td><a href='{{projectDetails?.link}}' target="_blank">{{projectDetails?.link}}</a></td>
+                            <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                            <!-- <td>
-                                <select class="form-select form-select-sm">
-                                    <option>In-Progress</option>
-                                    <option> In Hold</option>
-                                </select>
-                            </td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <!--Project description-->
-            <div class="row mb-4 mt-4">
-                <h4 class="text-theme"><strong>Project Description</strong></h4>
-                <p>{{projectDetails?.description}}</p>
-            </div>
+
+            <section class="pageheader bg-dark">
+                <div class="container text-center">
+                    <p><strong>Project Description</strong></p>
+                </div>
+            </section><br>
+
+            <p>{{ projectDetails?.description }}</p>
+
+            <section class="pageheader bg-dark">
+                <div class="container text-center">
+                    <p><strong>Client & FOI Detils</strong></p>
+                </div>
+            </section><br>
+
             <!--client details-->
             <div class="row mt-5">
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
@@ -149,14 +154,23 @@
                     </div>
                 </div>
             </div>
-            <!--Documents-->
+
+            <section class="pageheader bg-dark">
+                <div class="container text-center">
+                    <p><strong>Summary Note Questions</strong></p>
+                </div>
+            </section><br>
+
         </div>
     </section>
+
+
+
+
     <section class="bg-dark">
         <div class="container">
-
             <form [formGroup]="summaryForm" (ngSubmit)="submitForm()">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <div class="row">
                         <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
                             <p class="mb-0">Summary Note Questions</p>
@@ -164,67 +178,19 @@
                         <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier" [checked]="summaryForm.get('summaryQuestionFor')?.value == 'Supplier'">
+                                    name="summaryQuestionFor" id="inlineRadio1" value="Supplier"
+                                    [checked]="summaryForm.get('summaryQuestionFor')?.value == 'Supplier'">
                                 <label class="form-check-label" for="inlineRadio1">Supplier</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
-                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter" [checked]="summaryForm.get('summaryQuestionFor')?.value == 'UKWriter'">
+                                    name="summaryQuestionFor" id="inlineRadio2" value="UKWriter"
+                                    [checked]="summaryForm.get('summaryQuestionFor')?.value == 'UKWriter'">
                                 <label class="form-check-label" for="inlineRadio2">UK Writer</label>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-4 col-xl-4 col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="questionName"
-                                placeholder="Enter question name">
-                            <span class="text-danger"
-                                *ngIf="summaryForm.controls['questionName'].touched && summaryForm.controls['questionName'].errors?.['required']">
-                                Please enter question name
-                            </span>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="6" formControlName="question"
-                                placeholder="Enter question"></textarea>
-                            <span class="text-danger"
-                                *ngIf="summaryForm.controls['question'].touched && summaryForm.controls['question'].errors?.['required']">
-                                Please enter question
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-xl-3 col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="refrenceDocument"
-                                placeholder="Enter document reference name">
-                            <span class="text-danger"
-                                *ngIf="summaryForm.controls['refrenceDocument'].touched && summaryForm.controls['refrenceDocument'].errors?.['required']">
-                                Please enter reference document details
-                            </span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="weightage"
-                                placeholder="Enter weightage">
-                            <span class="text-danger"
-                                *ngIf="summaryForm.controls['weightage'].touched && summaryForm.controls['weightage'].errors?.['required']">
-                                Please enter weightage
-                            </span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="instructions"
-                                placeholder="instructions">
-                            <span class="text-danger"
-                                *ngIf="summaryForm.controls['instructions'].touched && summaryForm.controls['instructions'].errors?.['required']">
-                                Please enter instructions
-                            </span>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
-                        </div>
-                    </div>
-                </div>
+                </div> -->
             </form>
 
 
