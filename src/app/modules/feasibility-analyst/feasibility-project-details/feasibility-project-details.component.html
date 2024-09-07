@@ -58,154 +58,14 @@
         </table>
       </div>
 
-      <div class="row align-items-center">
-        <div class="col-lg-9 col-xl-9 col-12">
-          <div class="row">
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-group">
-                <label class="display-block">Sub-contracting</label> <br>
-                <div class="upload-btn-wrapper">
-                  <label for="subContract" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Query Image</label>
-                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
-                      uploadDocument($event,documentUploadType.subContractDocument)" />
-                  <br>
-                  <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
-
-                  <!-- <img *ngIf="subContractDocument?.url" [src]="subContractDocument?.url" alt="" style="height: 100px; width: 100px;"> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-group">
-                <label class="display-block">Economical partnership</label>
-                <br>
-                <div class="upload-btn-wrapper">
-                  <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Query Image</label>
-                  <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
-                    style="height: 5px; width: 5px"
-                    (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
-                  <br>
-                  <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
-                  <!-- <img *ngIf="economicalPartnershipQueryFile?.url" [src]="economicalPartnershipQueryFile?.url" alt="" style="height: 100px; width: 100px;"> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-group">
-                <label class="display-block">Other</label>
-                <br />
-                <div class="upload-btn-wrapper">
-                  <label class="btn-upload-file" for="otherDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    Upload
-                    Query Image</label>
-                  <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
-                    (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
-                  <br>
-                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
-
-                    <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
-                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
-                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                        View</a>
-                    </ng-container>
-                    <!-- <img  *ngIf="document?.type == documentUploadType.otherQueryDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;"> -->
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-check form-check-inline mt-3">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForSubContract" id="inlineRadio1"
-                  value="true" [checked]="subContracting === true" (change)="subContactChange('true')" />
-                <label class="form-check-label" for="inlineRadio1">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForSubContract" id="inlineRadio2"
-                  value="true" [checked]="subContracting === false" (change)="subContactChange('false')" />
-                <label class="form-check-label" for="inlineRadio2">No</label>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-group">
-                <div class="upload-btn-wrapper">
-                  <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Response</label>
-                  <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
-                    (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
-                  <br>
-                  <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
-
-                  <!-- <img *ngIf="economicalPartnershipResponceFile?.url" [src]="economicalPartnershipResponceFile?.url" alt="" style="height: 100px; width: 100px;"> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
-              <div class="form-group">
-                <div class="upload-btn-wrapper">
-                  <label class="btn-upload-file" for="otherDocument1">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Document
-                  </label>
-                  <input type="file" name="myfile" style="height: 5px; width: 5px" id="otherDocument1"
-                    (change)="uploadDocument($event, documentUploadType.otherDocument)" />
-                  <br>
-                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
-                    <ng-container *ngIf="document?.type == documentUploadType.otherDocument">
-                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
-                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                        View</a>
-                    </ng-container>
-                    <!-- <img  *ngIf="document?.type == documentUploadType.otherDocument" [src]="document?.file?.url" alt="" style="height: 100px; width: 100px;"> -->
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Project Description</strong></p>
         </div>
-        <div class="col-lg-3 col-xl-3 col-12">
-          <div class="card bg-primary">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-lg-4 col-xl-4 col-12">
-                  <h6 class="p-12 text-white">
-                    <strong>Client Detils</strong>
-                  </h6>
-                </div>
-                <div class="col-lg-7 col-xl-7 col-12">
-                  <p class="p-10 mb-0 text-white">
-                    Mail ID : {{ projectDetails?.mailID }}
-                  </p>
-                  <p class="p-10 mb-0 text-white">
-                    Client Type : {{ projectDetails?.clientType }}
-                  </p>
-                  <p class="p-10 mb-0 text-white">
-                    Client Name : {{ projectDetails?.clientName }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </section><br>
 
-      <!--Project description-->
-      <div class="row mb-4 mt-4">
-        <h4 class="text-theme"><strong>Project Description</strong></h4>
-        <p>{{ projectDetails?.description }}</p>
-      </div>
+      <p>{{ projectDetails?.description }}</p>
+
 
       <!--client details-->
       <div class="row mt-5">
@@ -252,8 +112,9 @@
                 </div>
                 <div class="col-lg-4 col-xl-4 col-6">
                   <a (click)="
-                      download(foiScreenshot?.link?.url, foiScreenshot?.name)
-                    " target="_blank" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            download(foiScreenshot?.link?.url, foiScreenshot?.name)
+                          " target="_blank" class="btn btn-small w-100"><i
+                      class="bi bi-file-earmark-arrow-down-fill"></i>
                     Download</a>
                 </div>
               </div>
@@ -279,11 +140,12 @@
                 </div>
                 <div class="col-lg-4 col-xl-4 col-6">
                   <a style="
-                      padding-left: 0 !important;
-                      padding-right: 0px !important;
-                    " (click)="
-                      download(foiDocument?.link?.url, foiDocument?.name)
-                    " target="_blank" class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            padding-left: 0 !important;
+                            padding-right: 0px !important;
+                          " (click)="
+                            download(foiDocument?.link?.url, foiDocument?.name)
+                          " target="_blank" class="btn btn-small w-100"><i
+                      class="bi bi-file-earmark-arrow-down-fill"></i>
                     Download</a>
                 </div>
               </div>
@@ -295,16 +157,8 @@
             <div class="card-body text-center">
               <ng-container *ngIf="!isEditing; else editMode">
                 <p class="p-13">
-                  <strong>
-                    Period of Contract:
-                    {{
-                    projectDetails?.periodOfContractStart
-                    | date : "dd/MM/yyyy"
-                    }}
-                    -
-                    {{
-                    projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy"
-                    }}
+                  <strong> Period of Contract: {{ projectDetails?.periodOfContractStart | date : "dd/MM/yyyy" }} -
+                    {{projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy" }}
                   </strong>
                 </p>
                 <p class="p-13">
@@ -335,11 +189,160 @@
           </div>
         </div>
       </div>
-      <!--Documents-->
-      <div class="row mb-4">
-        <div class="col-12">
-          <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
+
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Upload Sub-contracting</strong></p>
         </div>
+      </section><br>
+
+      <div class="row align-items-center">
+        <div class="col-lg-9 col-xl-9 col-12">
+          <div class="row">
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">Sub-contracting</label> <br>
+                <div class="upload-btn-wrapper">
+                  <label for="subContract" class="btn-upload-file padding-lr-5"><i
+                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    Query Image</label>
+                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
+                      uploadDocument($event,documentUploadType.subContractDocument)" />
+                  <br>
+                  <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">Economical partnership</label>
+                <br>
+                <div class="upload-btn-wrapper">
+                  <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i
+                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    Query Image</label>
+                  <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
+                    style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
+                  <br>
+                  <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <label class="display-block">Other</label>
+                <br />
+                <div class="upload-btn-wrapper">
+                  <label class="btn-upload-file" for="otherDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
+                    Upload
+                    Query Image</label>
+                  <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
+                  <br>
+                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+
+                    <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
+                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                        View</a>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-check form-check-inline mt-3">
+                <input class="form-check-input" type="radio" name="inlineRadioOptionsForSubContract" id="inlineRadio1"
+                  value="true" [checked]="subContracting === true" (change)="subContactChange('true')" />
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptionsForSubContract" id="inlineRadio2"
+                  value="true" [checked]="subContracting === false" (change)="subContactChange('false')" />
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <div class="upload-btn-wrapper">
+                  <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
+                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    Response</label>
+                  <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
+                  <br>
+                  <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                    View</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
+              <div class="form-group">
+                <div class="upload-btn-wrapper">
+                  <label class="btn-upload-file" for="otherDocument1">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    Document
+                  </label>
+                  <input type="file" name="myfile" style="height: 5px; width: 5px" id="otherDocument1"
+                    (change)="uploadDocument($event, documentUploadType.otherDocument)" />
+                  <br>
+                  <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+                    <ng-container *ngIf="document?.type == documentUploadType.otherDocument">
+                      <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
+                        View</a>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xl-3 col-12">
+          <div class="card bg-primary">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-lg-4 col-xl-4 col-12">
+                  <h6 class="p-12 text-white">
+                    <strong>Add Comment</strong>
+                  </h6>
+                </div>
+                <div class="col-lg-7 col-xl-7 col-12">
+                  <p class="p-10 mb-0 text-white">
+                    Mail ID : {{ projectDetails?.mailID }}
+                  </p>
+                  <p class="p-10 mb-0 text-white">
+                    Client Type : {{ projectDetails?.clientType }}
+                  </p>
+                  <p class="p-10 mb-0 text-white">
+                    Client Name : {{ projectDetails?.clientName }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Documents-->
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Documents</strong></p>
+        </div>
+      </section><br>
+
+      <div class="row mb-4">
+        <!-- <div class="col-12">
+          <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
+        </div> -->
         <div class="col-lg-5 col-xl-5 col-12 mob-mb1">
           <h5>Client Documents</h5>
           <div class="card">
@@ -349,9 +352,6 @@
                   <div class="col-5 text-center">
                     <p class="mb-0">
                       {{ item?.name }}
-                      <!-- <a href="href:;" class="editbtn"
-                        ><i class="bi bi-pencil-fill"></i
-                      ></a> -->
                     </p>
                   </div>
                   <div class="col-7 text-center">
@@ -442,12 +442,9 @@
               <div class="col-8" *ngIf="this.status == 'Fail'">
                 <div class="upload-btn-wrapper">
                   <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    Upload
-                    Document</label>
-                  <!-- <input type="file" name="myfile" id="failedReson" style="height: 5px; width: 5px" /> -->
+                    Upload Document</label>
                   <input type="file" id="failedReson" name="failedReson" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
-                  <!-- <img *ngIf="failStatusImage?.url" [src]="failStatusImage?.url" alt="" style="height: 100px; width: 100px;"> -->
                   <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)"
                     class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i
                       class="bi bi-eye-fill"></i> View</a>
@@ -478,10 +475,14 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <h4 class="text-theme mb-4"><strong>Login Details</strong></h4>
+
+      <section class="pageheader bg-dark">
+        <div class="container text-center">
+          <p><strong>Login Details</strong></p>
         </div>
+      </section><br>
+
+      <div class="row">
         <div class="col-lg-4 col-xl-4 col-12">
           <div class="row align-items-center" *ngFor="let item of projectDetails?.loginDetail; let i = index ;">
             <div class="col-lg-6 col-xl-6 col-12">
@@ -532,9 +533,6 @@
         <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
           <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
         </div>
-        <!-- <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-          <a (click)="summaryDetail('next')" class="btn btn-dark w-100">Next</a>
-        </div> -->
       </div>
     </div>
   </section>
@@ -584,6 +582,7 @@
   </div>
 </div>
 
+
 <div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -609,6 +608,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" id="ViewUploadedDocument" tabindex="-1" aria-labelledby="ViewUploadedDocumentModal"
   aria-hidden="true">
@@ -636,7 +636,7 @@
   </div>
 </div>
 
-<!-- Login detail From modal -->
+
 <div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
     <div class="modal-content">
