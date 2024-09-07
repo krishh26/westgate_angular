@@ -54,11 +54,9 @@
                             <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                             <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                             <td>
-                                <a *ngIf="!item.isEditing" (click)="projectDetails(item?._id)"
-                                    class="btn btn-primary sm me-2" title="View Details"><i
-                                        class="bi bi-eye-fill"></i></a>&nbsp;
-                                <a *ngIf="!item.isEditing" (click)="editProjectDetails(item)"
-                                    class="btn btn-secondary sm ml-2" title="Edit"><i
+                                <a (click)="projectDetails(item?._id)" class="btn btn-primary sm me-2"
+                                    title="View Details"><i class="bi bi-eye-fill"></i></a>&nbsp;
+                                <a (click)="editProjectDetails(item?._id)" class="btn btn-secondary sm ml-2" title="Edit"><i
                                         class="bi bi-pencil-fill"></i></a>&nbsp;
                             </td>
                         </tr>
