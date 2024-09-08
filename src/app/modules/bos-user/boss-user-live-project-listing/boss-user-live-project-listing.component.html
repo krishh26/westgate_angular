@@ -1,104 +1,160 @@
 <main id="main">
   <section>
     <div class="container-fluid">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-          <div class="form-group mb-0">
-            <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
-              (input)="searchtext()">
+      <div class="row">
+
+        <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
+          <div id="profile-menu-nav"><br><br>
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Category</h6>
+              <!-- <select class="form-control dropdown-filter" name="category">
+                <option value="" selected hidden>Select a category</option>
+                <option *ngFor="let category of categoryList">{{
+                  category?.category }}</option>
+              </select> -->
+
+              <ng-select style="padding: 0px !important;" placeholder="Select Category"
+                class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
+                [multiple]="true" bindValue="_id">
+              </ng-select>
+
+            </div>
+
+            <div class="sort-widget">
+              <div class="sort-widget mb-3">
+                <h6 class="p-600">Industry</h6>
+                <!-- <select class="form-control dropdown-filter" name="industry">
+                  <option value="" selected hidden>Select a industry</option>
+                  <option *ngFor="let industry of industryList">
+                    {{ industry?.industry }}</option>
+                </select> -->
+
+                <ng-select style="padding: 0px !important;" placeholder="Select Industry"
+                  class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
+                  [multiple]="true" bindValue="_id">
+                </ng-select>
+
+              </div>
+            </div>
+
+            <div class="sort-widget">
+              <div class="sort-widget mb-3">
+                <h6 class="p-600">Project Type</h6>
+                <select class="form-control dropdown-filter">
+                  <option disabled selected hidden value="">Select Project Type</option>
+                  <option value="Development">Development</option>
+                  <option value="Product">Product</option>
+                  <option value="Service">Service</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sort-widget">
+              <div class="sort-widget mb-3">
+                <h6 class="p-600">Client Type</h6>
+                <select class="form-control dropdown-filter">
+                  <option disabled selected hidden value="">Select Client Type</option>
+                  <option value="PublicSector">Public Sector</option>
+                  <option value="PrivateSector">Private Sector</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="sort-widget">
+              <p class="p-600 p-14">Experience</p>
+              <input type="range" class="form-range" min="0" max="50" id="customRange2">
+              <p> <span>0 Years</span><span class="float-end">50 Years</span></p>
+            </div>
           </div>
         </div>
-        <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-          <nav id="navbar" class="navbar">
-            <ul>
-              <li class="dropdown">
-                <span class="btn btn-outline-white w-100">+ Add Project</span>
+
+        <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
+          <div class="row align-items-center justify-content-between">
+            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+              <div class="form-group mb-0">
+                <span class="input-icon"><i class="bi bi-search"></i></span>
+                <input class="form-control control-search" placeholder="Search" type="text" [(ngModel)]="searchText"
+                  (input)="searchtext()">
+              </div>
+            </div>
+            <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
+              <nav id="navbar" class="navbar">
                 <ul>
-                  <li><a routerLink="/boss-user/add-project">Single Entry</a></li>
-                  <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                  <li class="dropdown">
+                    <span class="btn btn-outline-white w-100">+ Add Project</span>
+                    <ul>
+                      <li><a routerLink="/boss-user/add-project">Single Entry</a></li>
+                      <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                    </ul>
+                  </li>
                 </ul>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div class="table-responsive mt-5 mb-3">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th width="100px">Project Title</th>
-              <th>Project Description</th>
-              <th>BOS ID</th>
-              <th>Publish Date</th>
-              <th>Category</th>
-              <th>Industry</th>
-              <th>Min value (GBP)</th>
-              <th>Max value (GBP)</th>
-              <th>Website</th>
-              <th>Link to notice</th>
-              <th>Created Date</th>
-              <th>Due Date & Time</th>
-              <th [width]="120">Action</th>
-            </tr>
-          </thead>
-          <tbody>
+              </nav>
+            </div>
+          </div>
+          <div class="table-responsive mt-5 mb-3">
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th width="100px">Project Title</th>
+                  <th>Project Description</th>
+                  <th>BOS ID</th>
+                  <th>Publish Date</th>
+                  <th>Category</th>
+                  <th>Industry</th>
+                  <th>Min value (GBP)</th>
+                  <th>Max value (GBP)</th>
+                  <th>Website</th>
+                  <th>Link to notice</th>
+                  <th>Created Date</th>
+                  <th>Due Date & Time</th>
+                  <th [width]="120">Action</th>
+                </tr>
+              </thead>
+              <tbody>
 
-            <tr>
-              <td *ngIf="!projectList?.length" colspan="14">
-                <app-no-record-found></app-no-record-found>
-              </td>
-            </tr>
+                <tr>
+                  <td *ngIf="!projectList?.length" colspan="14">
+                    <app-no-record-found></app-no-record-found>
+                  </td>
+                </tr>
 
-            <tr
-              *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-              <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
-              <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
-              <td v-align="middle">{{item?.BOSID}}</td>
-              <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-              <td>{{item?.category}}</td>
-              <td>{{item?.industry}}</td>
-              <td>£ {{item?.minValue}}</td>
-              <td>£ {{item?.maxValue}}</td>
-              <td><a>{{item?.website}}</a></td>
-              <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
-              <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-              <td>
-                <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;" (click)="projectDetails(item?._id)"><i
-                    class="bi bi-eye-fill"></i></a>
-                <a class="btn btn-primary btn-sm" style="cursor: pointer;" (click)="editProjectDetails(item?._id)"><i
-                    class="bi bi-pencil-fill"></i></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="row mt-3 align-items-center">
-        <div class="row">
-          <div class="pagination">
-            <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                <tr
+                  *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                  <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
+                  <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+                  <td v-align="middle">{{item?.BOSID}}</td>
+                  <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                  <td>{{item?.category}}</td>
+                  <td>{{item?.industry}}</td>
+                  <td>£ {{item?.minValue}}</td>
+                  <td>£ {{item?.maxValue}}</td>
+                  <td><a>{{item?.website}}</a></td>
+                  <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
+                  <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
+                  <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                  <td>
+                    <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
+                      (click)="projectDetails(item?._id)"><i class="bi bi-eye-fill"></i></a>
+                    <a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                      (click)="editProjectDetails(item?._id)"><i class="bi bi-pencil-fill"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-3 align-items-center">
+            <div class="row">
+              <div class="pagination">
+                <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- <nav>
-        <ul class="pagination justify-content-end">
-          <li class="page-item disabled">
-            <span class="page-link">Previous</span>
-          </li>
-          <li class="page-item"><a class="page-link" href="javascript:;">1</a></li>
-          <li class="page-item active" aria-current="page">
-            <span class="page-link">2</span>
-          </li>
-          <li class="page-item"><a class="page-link" href="javascript:;">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:;">Next</a>
-          </li>
-        </ul>
-      </nav> -->
 
+      </div>
     </div>
   </section>
 
 
-</main><!-- End #main -->
+</main>

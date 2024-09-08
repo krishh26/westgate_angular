@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../boss-user-bulk-entry/boss-user-bulk-entry.component';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
 @Component({
   selector: 'app-boss-user-live-project-listing',
@@ -17,7 +18,8 @@ export class BossUserLiveProjectListingComponent {
 
   showLoader: boolean = false;
   projectList: any = [];
-
+  categoryList: any = [];
+  industryList: any = [];
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
@@ -32,6 +34,7 @@ export class BossUserLiveProjectListingComponent {
     private notificationService: NotificationService,
     private router: Router,
     private modalService: NgbModal,
+    private superService: SuperadminService
   ) { }
 
   ngOnInit(): void {
@@ -39,12 +42,47 @@ export class BossUserLiveProjectListingComponent {
       let storeTest = res;
       this.searchText = res.toLowerCase();
     });
+    this.getcategoryList();
+    this.getIndustryList();
     this.getProjectList();
   }
 
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
+  }
+
+  getcategoryList() {
+    this.showLoader = true;
+    this.superService.getCategoryList().subscribe((response) => {
+      if (response?.message == "category fetched successfully") {
+        this.showLoader = false;
+        this.categoryList = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  getIndustryList() {
+    this.showLoader = true;
+    this.superService.getIndustryList().subscribe((response) => {
+      if (response?.message == "Industry fetched successfully") {
+        this.showLoader = false;
+        this.industryList = response?.data;
+        console.log(this.industryList);
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
   }
 
   getProjectList() {
@@ -64,11 +102,11 @@ export class BossUserLiveProjectListingComponent {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-           
+
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
-        
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -97,7 +135,7 @@ export class BossUserLiveProjectListingComponent {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-           
+
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
@@ -128,7 +166,7 @@ export class BossUserLiveProjectListingComponent {
   }
 
   openAddTeamModal() {
-    this.modalService.open(BossUserBulkEntryComponent, { size : 'xl' });
+    this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
   }
 
 }

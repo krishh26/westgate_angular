@@ -99,9 +99,11 @@ h6 {
 .limegreen {
   color: #DBFF00;
 }
+
 .p-12 {
   font-size: 12px !important;
 }
+
 .p-13 {
   font-size: 13px !important;
 }
@@ -599,22 +601,25 @@ ul.notification-list a {
   padding: 15px;
   border-top: 1px solid #D9D9D9;
 }
+
 ul.notification-list a:hover {
- color: #000 !important;
+  color: #000 !important;
 }
-.count-badge{
+
+.count-badge {
   position: absolute;
-    top: 0;
-    right: 0px;
-    width: 20px;
-    height: 20px;
-    background: #fb5959;
-    border-radius: 100px;
-    font-size: 11px;
-    color: #FFF;
-    line-height: 20px;
-    text-align: center;
+  top: 0;
+  right: 0px;
+  width: 20px;
+  height: 20px;
+  background: #fb5959;
+  border-radius: 100px;
+  font-size: 11px;
+  color: #FFF;
+  line-height: 20px;
+  text-align: center;
 }
+
 /*==========================================
 Button Styling
 ============================================*/
@@ -830,6 +835,11 @@ Button Styling
 .bg-gray {
   background-color: #A7A7A7;
   color: #FFF;
+}
+
+.bg-grays {
+  background-color: #E5E4E2;
+  border-radius: 22px;
 }
 
 .btn-secondary {
@@ -1898,19 +1908,24 @@ Media Query CSS
   .desktop-hide {
     display: none;
   }
-  .mobile-hide{
+
+  .mobile-hide {
     display: none;
   }
-  .desktop-pt200{
+
+  .desktop-pt200 {
     padding-top: 0px;
   }
-  #header .logo img{
+
+  #header .logo img {
     max-height: 150px !important;
   }
-  .navbar .dropdown ul{
+
+  .navbar .dropdown ul {
     left: -100px;
   }
-  .notificationDropdown-box{
+
+  .notificationDropdown-box {
     right: -90px;
   }
 }
