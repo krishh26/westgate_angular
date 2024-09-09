@@ -24,6 +24,7 @@ import { SuperAdminModule } from './modules/super-admin/super-admin.module';
 import { BidSubmissionModule } from './modules/bid-submission/bid-submission.module';
 import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project-co-ordinator.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NgxSpinnerModule } from 'ngx-spinner';
 // import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
       positionClass: 'toast-top-right',
       preventDuplicates: false,
     }),
+    NgxSpinnerModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

@@ -17,6 +17,7 @@ import { TruncatePipe } from 'src/app/utility/shared/constant/truncate.pipe';
 import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-proje
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
-        NgSelectModule
+        NgSelectModule,
+        NgxSpinnerModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

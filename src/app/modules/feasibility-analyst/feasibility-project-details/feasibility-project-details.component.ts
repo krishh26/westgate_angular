@@ -5,6 +5,7 @@ import { FeasibilityService } from 'src/app/services/feasibility-user/feasibilit
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-feasibility-project-details',
@@ -72,14 +73,15 @@ export class FeasibilityProjectDetailsComponent {
     private router: Router,
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
   }
   ngOnInit(): void {
-    this.getProjectDetails();
+
   }
 
   public showHidePass(): void {
@@ -171,13 +173,19 @@ export class FeasibilityProjectDetailsComponent {
     }
   }
 
-  // upload Sub Contract
   uploadDocument(event: any, type: string): void {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const data = new FormData();
       data.append('files', file);
+
+      // Show the spinner before starting the upload
+      this.spinner.show();
+
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
+        // Hide the spinner after the upload completes
+        this.spinner.hide();
+
         if (response?.status) {
           // Sub-contract document
           if (type == this.documentUploadType.subContractDocument) {
@@ -191,20 +199,20 @@ export class FeasibilityProjectDetailsComponent {
 
           // Other query document
           if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
-            let objToBePused = {
+            let objToBePushed = {
               name: this.loginName,
               type: type,
               file: response?.data
-            }
-            this.FeasibilityOtherDocuments.push(objToBePused);
-            this.loginName = ""
+            };
+            this.FeasibilityOtherDocuments.push(objToBePushed);
+            this.loginName = "";
           }
 
           if (type == this.documentUploadType.failStatusImage) {
             this.failStatusImage = response?.data;
           }
 
-          // economical partner ship response document
+          // Economical partnership response document
           if (type == this.documentUploadType.economicalPartnershipResponse) {
             this.economicalPartnershipResponceFile = response?.data;
           }
@@ -214,24 +222,25 @@ export class FeasibilityProjectDetailsComponent {
               return this.notificationService.showError('Enter a client document Name');
             }
             this.clientDocument = response?.data;
-            let objToBePused = {
+            let objToBePushed = {
               name: this.documentName,
               file: response?.data
-            }
-            this.projectDetails.clientDocument.push(objToBePused);
-            this.documentName = ""
+            };
+            this.projectDetails.clientDocument.push(objToBePushed);
+            this.documentName = "";
           }
+
           if (type == this.documentUploadType.loginDetailDocument) {
             if (!this.loginName) {
               return this.notificationService.showError('Enter Name');
             }
             this.loginDetailDocument = response?.data;
-            let objToBePused = {
+            let objToBePushed = {
               name: this.loginName,
               file: response?.data
-            }
-            this.projectDetails.loginDetail.push(objToBePused);
-            this.loginName = ""
+            };
+            this.projectDetails.loginDetail.push(objToBePushed);
+            this.loginName = "";
           }
 
           return this.notificationService.showSuccess(response?.message);
@@ -239,10 +248,13 @@ export class FeasibilityProjectDetailsComponent {
           return this.notificationService.showError(response?.message);
         }
       }, (error) => {
+        // Hide the spinner in case of an error as well
+        this.spinner.hide();
         return this.notificationService.showError(error?.message || "Error while uploading");
       });
     }
   }
+
 
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm

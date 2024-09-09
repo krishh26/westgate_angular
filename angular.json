@@ -29,8 +29,9 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [            
+            "styles": [
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/assets/vendor/bootstrap/css/bootstrap.css",
               "src/assets/vendor/bootstrap/css/bootstrap.min.css",
               "src/assets/vendor/bootstrap/css/bootstrap.rtl.css",
