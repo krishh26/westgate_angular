@@ -6,6 +6,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-project-co-ordinator-details',
@@ -34,7 +35,8 @@ export class ProjectCoOrdinatorDetailsComponent {
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
     private projectCoordinatorService: ProjectCoordinatorService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -193,7 +195,10 @@ export class ProjectCoOrdinatorDetailsComponent {
     if (event.target.files && event.target.files[0]) {
       const data = new FormData();
       data.append('files', event.target.files[0])
+      this.spinner.show();
+
       this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
+        this.spinner.hide();
         if (response?.status) {
           this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
           this.document?.at(index)?.get('key')?.setValue(response?.data?.key)

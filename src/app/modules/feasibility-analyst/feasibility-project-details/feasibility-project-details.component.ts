@@ -179,11 +179,9 @@ export class FeasibilityProjectDetailsComponent {
       const data = new FormData();
       data.append('files', file);
 
-      // Show the spinner before starting the upload
       this.spinner.show();
 
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
-        // Hide the spinner after the upload completes
         this.spinner.hide();
 
         if (response?.status) {

@@ -9,6 +9,7 @@ import { SummaryService } from 'src/app/services/summary/summary.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-super-admin-project-details',
@@ -127,6 +128,7 @@ export class SuperAdminProjectDetailsComponent {
     private fb: FormBuilder,
     private projectManagerService: ProjectManagerService,
     private projectCoordinatorService: ProjectCoordinatorService,
+    private spinner: NgxSpinnerService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -432,7 +434,9 @@ export class SuperAdminProjectDetailsComponent {
       const file = event.target.files[0];
       const data = new FormData();
       data.append('files', file);
+      this.spinner.show();
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
+        this.spinner.hide();
         if (response?.status) {
           // Sub-contract document
           if (type == this.documentUploadType.subContractDocument) {
@@ -686,8 +690,10 @@ export class SuperAdminProjectDetailsComponent {
   addFiles(event: any, index: number): void {
     if (event.target.files && event.target.files[0]) {
       const data = new FormData();
-      data.append('files', event.target.files[0])
+      data.append('files', event.target.files[0]);
+      this.spinner.show();
       this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
+        this.spinner.hide();
         if (response?.status) {
           this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
           this.document?.at(index)?.get('key')?.setValue(response?.data?.key)
