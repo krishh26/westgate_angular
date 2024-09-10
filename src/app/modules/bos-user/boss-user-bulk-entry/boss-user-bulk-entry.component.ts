@@ -87,11 +87,13 @@ export class BossUserBulkEntryComponent {
       });
 
       console.log(jsonData);
-      // Create an object with the "data" key
       const payload = {
         data: jsonData
       };
-      // Now you can make your API call with the processed data
+
+      // console.log(jsonData);
+      // return
+
       this.projectService.addProject(payload).subscribe(
         (res) => {
           if (res?.status == true) {
