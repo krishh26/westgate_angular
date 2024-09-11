@@ -7,58 +7,42 @@
           <div id="profile-menu-nav"><br><br>
             <div class="sort-widget mb-3">
               <h6 class="p-600">Category</h6>
-              <!-- <select class="form-control dropdown-filter" name="category">
-                <option value="" selected hidden>Select a category</option>
-                <option *ngFor="let category of categoryList">{{
-                  category?.category }}</option>
-              </select> -->
-
               <ng-select style="padding: 0px !important;" placeholder="Select Category"
                 class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
                 [multiple]="true" bindValue="_id">
               </ng-select>
-
             </div>
 
             <div class="sort-widget">
               <div class="sort-widget mb-3">
                 <h6 class="p-600">Industry</h6>
-                <!-- <select class="form-control dropdown-filter" name="industry">
-                  <option value="" selected hidden>Select a industry</option>
-                  <option *ngFor="let industry of industryList">
-                    {{ industry?.industry }}</option>
-                </select> -->
-
                 <ng-select style="padding: 0px !important;" placeholder="Select Industry"
                   class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
                   [multiple]="true" bindValue="_id">
                 </ng-select>
-
               </div>
             </div>
 
             <div class="sort-widget">
               <div class="sort-widget mb-3">
                 <h6 class="p-600">Project Type</h6>
-                <select class="form-control dropdown-filter">
-                  <option disabled selected hidden value="">Select Project Type</option>
-                  <option value="Development">Development</option>
-                  <option value="Product">Product</option>
-                  <option value="Service">Service</option>
-                </select>
+                <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
+                  class="form-select custom-ng-select-option" [items]="projectTypeList" bindLabel="projectType"
+                  [multiple]="true" bindValue="value">
+                </ng-select>
               </div>
             </div>
 
             <div class="sort-widget">
               <div class="sort-widget mb-3">
                 <h6 class="p-600">Client Type</h6>
-                <select class="form-control dropdown-filter">
-                  <option disabled selected hidden value="">Select Client Type</option>
-                  <option value="PublicSector">Public Sector</option>
-                  <option value="PrivateSector">Private Sector</option>
-                </select>
+                <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
+                  class="form-select custom-ng-select-option" [items]="clientTypeList" bindLabel="clientType"
+                  [multiple]="true" bindValue="value">
+                </ng-select>
               </div>
             </div>
+
 
 
             <div class="sort-widget">

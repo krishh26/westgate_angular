@@ -28,6 +28,15 @@ export class BossUserLiveProjectListingComponent {
   dateDifference: any;
   searchText: any;
   myControl = new FormControl();
+  projectTypeList = [
+    { projectType: 'Development', value: 'Development' },
+    { projectType: 'Product', value: 'Product' },
+    { projectType: 'Service', value: 'Service' }
+  ];
+  clientTypeList = [
+    { clientType: 'Public Sector', value: 'PublicSector' },
+    { clientType: 'Private Sector', value: 'PrivateSector' }
+  ];
 
   constructor(
     private projectService: ProjectService,
