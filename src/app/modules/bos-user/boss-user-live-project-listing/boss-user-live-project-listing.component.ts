@@ -8,6 +8,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-boss-user-live-project-listing',
@@ -28,6 +29,12 @@ export class BossUserLiveProjectListingComponent {
   dateDifference: any;
   searchText: any;
   myControl = new FormControl();
+  minValue: number = 50;
+  maxValue: number = 200;
+  options: Options = {
+    floor: 0,
+    ceil: 250
+  };
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },

@@ -26,6 +26,7 @@ import { ProjectCoOrdinatorModule } from './modules/project-co-ordinator/project
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,16 +59,17 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       positionClass: 'toast-top-right',
       preventDuplicates: false,
     }),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxSliderModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass:APIInterceptor,
-    multi: true
-}],
+      provide: HTTP_INTERCEPTORS,
+      useClass: APIInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

@@ -20,7 +20,7 @@ import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bul
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -46,6 +46,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    NgxSliderModule,
     NgxExtendedPdfViewerModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
