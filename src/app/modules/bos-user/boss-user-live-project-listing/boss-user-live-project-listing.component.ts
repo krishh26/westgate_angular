@@ -29,17 +29,24 @@ export class BossUserLiveProjectListingComponent {
   dateDifference: any;
   searchText: any;
   myControl = new FormControl();
-  minValue: number = 50;
+  minValue: number = 0;
   maxValue: number = 200;
   options: Options = {
     floor: 0,
-    ceil: 250
+    ceil: 500000
   };
+
+  selectedCategories: any[] = [];
+  selectedIndustries: any[] = [];
+  selectedProjectTypes: any[] = [];
+  selectedClientTypes: any[] = [];
+
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
     { projectType: 'Service', value: 'Service' }
   ];
+
   clientTypeList = [
     { clientType: 'Public Sector', value: 'PublicSector' },
     { clientType: 'Private Sector', value: 'PrivateSector' }
@@ -135,10 +142,24 @@ export class BossUserLiveProjectListingComponent {
 
   searchtext() {
     this.showLoader = true;
+
+    // Get selected values and convert them into a comma-separated string
+    const selectedCategories = this.categoryList.map((item: any) => item._id).join(',');
+    const selectedIndustries = this.industryList.map((item: any) => item._id).join(',');
+    const selectedProjectTypes = this.projectTypeList.map((item: any) => item.value).join(',');
+    const selectedClientTypes = this.clientTypeList.map((item: any) => item.value).join(',');
+
+    // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.category = selectedCategories;
+    Payload.projectList.industry = selectedIndustries;
+    Payload.projectList.projectType = selectedProjectTypes;
+    Payload.projectList.clientType = selectedClientTypes;
+
     console.log(Payload.projectList);
+
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -164,8 +185,6 @@ export class BossUserLiveProjectListingComponent {
       this.showLoader = false;
     });
   }
-
-
 
   projectDetails(projectId: any) {
     this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });

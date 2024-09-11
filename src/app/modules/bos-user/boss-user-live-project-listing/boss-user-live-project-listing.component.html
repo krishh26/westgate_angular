@@ -5,54 +5,52 @@
 
         <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
           <div id="profile-menu-nav"><br><br>
+
+            <!-- Category Dropdown -->
             <div class="sort-widget mb-3">
               <h6 class="p-600">Category</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Category"
                 class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
-                [multiple]="true" bindValue="_id">
+                [multiple]="true" bindValue="_id" [(ngModel)]="selectedCategories" (change)="searchtext()">
               </ng-select>
             </div>
 
-            <div class="sort-widget">
-              <div class="sort-widget mb-3">
-                <h6 class="p-600">Industry</h6>
-                <ng-select style="padding: 0px !important;" placeholder="Select Industry"
-                  class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
-                  [multiple]="true" bindValue="_id">
-                </ng-select>
-              </div>
+            <!-- Industry Dropdown -->
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Industry</h6>
+              <ng-select style="padding: 0px !important;" placeholder="Select Industry"
+                class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
+                [multiple]="true" bindValue="_id" [(ngModel)]="selectedIndustries" (change)="searchtext()">
+              </ng-select>
             </div>
 
-            <div class="sort-widget">
-              <div class="sort-widget mb-3">
-                <h6 class="p-600">Project Type</h6>
-                <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
-                  class="form-select custom-ng-select-option" [items]="projectTypeList" bindLabel="projectType"
-                  [multiple]="true" bindValue="value">
-                </ng-select>
-              </div>
+            <!-- Project Type Dropdown -->
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Project Type</h6>
+              <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
+                class="form-select custom-ng-select-option" [items]="projectTypeList" bindLabel="projectType"
+                [multiple]="true" bindValue="value" [(ngModel)]="selectedProjectTypes" (change)="searchtext()">
+              </ng-select>
             </div>
 
-            <div class="sort-widget">
-              <div class="sort-widget mb-3">
-                <h6 class="p-600">Client Type</h6>
-                <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
-                  class="form-select custom-ng-select-option" [items]="clientTypeList" bindLabel="clientType"
-                  [multiple]="true" bindValue="value">
-                </ng-select>
-              </div>
+            <!-- Client Type Dropdown -->
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Client Type</h6>
+              <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
+                class="form-select custom-ng-select-option" [items]="clientTypeList" bindLabel="clientType"
+                [multiple]="true" bindValue="value" [(ngModel)]="selectedClientTypes" (change)="searchtext()">
+              </ng-select>
             </div>
 
-
-
+            <!-- Slider for Value (GBP) -->
             <div class="sort-widget">
               <h6 class="p-600">Value (GBP)</h6>
-              <!-- <p>Min value: <input type="number" [(ngModel)]="minValue"></p>
-              <p>Max value: <input type="number" [(ngModel)]="maxValue"></p> -->
               <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
             </div>
+
           </div>
         </div>
+
 
         <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
           <div class="row align-items-center justify-content-between">

@@ -1,3 +1,4 @@
+import { Options } from '@angular-slider/ngx-slider/options';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -50,6 +51,29 @@ export class FeasibilityProjectsListComponent {
     "⁠Handovered to other supplier",
     "⁠Passed",
     "⁠Submitted"
+  ];
+
+  minValue: number = 0;
+  maxValue: number = 200;
+  options: Options = {
+    floor: 0,
+    ceil: 500000
+  };
+
+  selectedCategories: any[] = [];
+  selectedIndustries: any[] = [];
+  selectedProjectTypes: any[] = [];
+  selectedClientTypes: any[] = [];
+
+  projectTypeList = [
+    { projectType: 'Development', value: 'Development' },
+    { projectType: 'Product', value: 'Product' },
+    { projectType: 'Service', value: 'Service' }
+  ];
+
+  clientTypeList = [
+    { clientType: 'Public Sector', value: 'PublicSector' },
+    { clientType: 'Private Sector', value: 'PrivateSector' }
   ];
 
   constructor(
@@ -138,10 +162,24 @@ export class FeasibilityProjectsListComponent {
 
   searchtext() {
     this.showLoader = true;
-    Payload.projectList.keyword = this.searchText || '';
+
+    // Get selected values and convert them into a comma-separated string
+    const selectedCategories = this.categoryList.map((item: any) => item._id).join(',');
+    const selectedIndustries = this.industryList.map((item: any) => item._id).join(',');
+    const selectedProjectTypes = this.projectTypeList.map((item: any) => item.value).join(',');
+    const selectedClientTypes = this.clientTypeList.map((item: any) => item.value).join(',');
+
+    // Update payload with filters
+    Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.category = selectedCategories;
+    Payload.projectList.industry = selectedIndustries;
+    Payload.projectList.projectType = selectedProjectTypes;
+    Payload.projectList.clientType = selectedClientTypes;
+
     console.log(Payload.projectList);
+
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -154,7 +192,7 @@ export class FeasibilityProjectsListComponent {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          console.log(`Date difference for project ${dateDifference}`);
+
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
@@ -167,7 +205,6 @@ export class FeasibilityProjectsListComponent {
       this.showLoader = false;
     });
   }
-
   projectDetails(projectId: any) {
     this.router.navigate(['/feasibility-user/feasibility-project-detail'], { queryParams: { id: projectId } });
   }

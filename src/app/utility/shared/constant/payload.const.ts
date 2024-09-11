@@ -7,7 +7,11 @@ export const Payload = {
         applied: false,
         sortlist: false,
         match: "",
-        status: ""
+        status: "",
+        category: '',
+        industry: '',
+        projectType: '',
+        clientType: '',
     },
 
     mailSSList: {
@@ -16,7 +20,7 @@ export const Payload = {
         limit: '10',
     },
 
-     Project : {
+    Project: {
         _id: "",
         projectName: "",
         description: "",
@@ -27,6 +31,6 @@ export const Payload = {
         status: "",
         dueDate: Date,
         // Add other properties as needed
-      }
+    }
 
 }

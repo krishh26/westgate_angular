@@ -31,7 +31,12 @@ export class ProjectService {
     this.projectid = localStorage.getItem('projectID')
   }
 
-  getProjectList(params: { keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string, status: string }): Observable<any> {
+  getProjectList(params: {
+    keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string, status: string, category?: string,
+    industry?: string,
+    projectType?: string,
+    clientType?: string,
+  }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
     let queryParams = new HttpParams();
@@ -49,6 +54,18 @@ export class ProjectService {
     }
     if (params?.status) {
       queryParams = queryParams.set('status', params?.status);
+    }
+    if (params?.category) {
+      queryParams = queryParams.set('category', params?.category);
+    }
+    if (params?.industry) {
+      queryParams = queryParams.set('industry', params?.industry);
+    }
+    if (params?.projectType) {
+      queryParams = queryParams.set('projectType', params?.projectType);
+    }
+    if (params?.clientType) {
+      queryParams = queryParams.set('clientType', params?.clientType);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
@@ -99,9 +116,9 @@ export class ProjectService {
       .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
   }
 
-  addSupplier(supplierId:any,payload:any){
+  addSupplier(supplierId: any, payload: any) {
     return this.httpClient
-     .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`,payload, {
-     });
+      .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`, payload, {
+      });
   }
 }

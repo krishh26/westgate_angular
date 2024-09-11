@@ -18,7 +18,7 @@ import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-p
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
     declarations: [
         FeasibilityAnalystComponent,
@@ -42,7 +42,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         ReactiveFormsModule,
         NgbModule,
         NgSelectModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        NgxSliderModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
