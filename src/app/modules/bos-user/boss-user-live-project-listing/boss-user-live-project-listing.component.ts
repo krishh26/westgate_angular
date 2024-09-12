@@ -52,10 +52,10 @@ export class BossUserLiveProjectListingComponent {
     { clientType: 'Private Sector', value: 'PrivateSector' }
   ];
 
-  publishStartDate : FormControl = new FormControl('')
-  publishEndDate : FormControl = new FormControl('')
-  submissionStartDate : FormControl = new FormControl('')
-  submissionEndDate : FormControl = new FormControl('')
+  publishStartDate : FormControl = new FormControl('');
+  publishEndDate : FormControl = new FormControl('');
+  submissionStartDate : FormControl = new FormControl('');
+  submissionEndDate : FormControl = new FormControl('');
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -87,7 +87,7 @@ export class BossUserLiveProjectListingComponent {
       }else{
         this.searchtext()
       }
-    })
+    });
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -127,6 +127,64 @@ export class BossUserLiveProjectListingComponent {
       this.showLoader = false;
     });
   }
+
+  
+  isDesc: boolean = false;
+  column: string = 'publishDate';
+
+  sort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
+  createddatesort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
+  duedatesort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
 
   getProjectList() {
     this.showLoader = true;
