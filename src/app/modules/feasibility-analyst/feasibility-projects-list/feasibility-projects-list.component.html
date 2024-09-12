@@ -46,6 +46,14 @@
                             </ng-select>
                         </div>
 
+                        <div class="sort-widget mb-3">
+                            <h6 class="p-600">Publish Date Range</h6>
+                        </div>
+
+                        <div class="sort-widget mb-3">
+                            <h6 class="p-600">Submission due date</h6>
+                        </div>
+
                         <!-- Slider for Value (GBP) -->
                         <div class="sort-widget">
                             <h6 class="p-600">Value (GBP)</h6>
@@ -85,16 +93,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-    
+
                                 <tr>
                                     <td *ngIf="!projectList?.length" colspan="14">
                                         <app-no-record-found></app-no-record-found>
                                     </td>
                                 </tr>
-    
+
                                 <tr
                                     *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                                    <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a>
+                                    <td><a (click)="projectDetails(item?._id)"
+                                            href="javascript:;">{{item?.projectName}}</a>
                                     </td>
                                     <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
                                     <td v-align="middle">{{item?.BOSID}}</td>
