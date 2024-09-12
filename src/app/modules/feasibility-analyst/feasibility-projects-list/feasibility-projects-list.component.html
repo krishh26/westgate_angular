@@ -66,30 +66,33 @@
                 <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                          <div class="form-group mb-0">
-                            <span class="input-icon"><i class="bi bi-search"></i></span>
-                            <input class="form-control control-search"
-                              placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text"
-                              [(ngModel)]="searchText" (input)="searchtext()">
-                          </div>
+                            <div class="form-group mb-0">
+                                <span class="input-icon"><i class="bi bi-search"></i></span>
+                                <input class="form-control control-search"
+                                    placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference"
+                                    type="text" [(ngModel)]="searchText" (input)="searchtext()">
+                            </div>
                         </div>
-                      </div>
+                    </div>
                     <div class="table-responsive mt-5 mb-3">
                         <table class="table table-striped align-middle">
                             <thead>
                                 <tr>
-                                    <th width="100px">Project Title</th>
+                                    <th [width]="200">Project Title</th>
                                     <th>Project Description</th>
                                     <th>BOS ID</th>
-                                    <th>Publish Date</th>
+                                    <th style="cursor: pointer;" (click)="sort('publishDate')">Publish Date <i
+                                            class="bi bi-sort-up"></i></th>
                                     <th>Category</th>
                                     <th>Industry</th>
                                     <th>Min value (GBP)</th>
                                     <th>Max value (GBP)</th>
                                     <th>Website</th>
                                     <th>Link to notice</th>
-                                    <th>Created Date</th>
-                                    <th>Due Date & Time</th>
+                                    <th style="cursor: pointer;" (click)="createddatesort('createdAt')">Created Date <i
+                                            class="bi bi-sort-up"></i></th>
+                                    <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
+                                            class="bi bi-sort-up"></i></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
