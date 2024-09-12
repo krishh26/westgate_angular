@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { Form, FormControl, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepicker, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
@@ -52,6 +52,10 @@ export class BossUserLiveProjectListingComponent {
     { clientType: 'Private Sector', value: 'PrivateSector' }
   ];
 
+  publishStartDate : FormControl = new FormControl('')
+  publishEndDate : FormControl = new FormControl('')
+  submissionStartDate : FormControl = new FormControl('')
+  submissionEndDate : FormControl = new FormControl('')
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -68,6 +72,22 @@ export class BossUserLiveProjectListingComponent {
     this.getcategoryList();
     this.getIndustryList();
     this.getProjectList();
+    this.publishEndDate.valueChanges.subscribe((res: any) => {
+      if(!this.publishStartDate.value){
+        this.notificationService.showError('Please select a Publish start date');
+        return
+      }else{
+        this.searchtext()
+      }
+    });
+    this.submissionEndDate.valueChanges?.subscribe((res: any) => {
+      if(!this.submissionStartDate.value){
+        this.notificationService.showError('Please select a Submission start date');
+        return
+      }else{
+        this.searchtext()
+      }
+    })
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -143,20 +163,16 @@ export class BossUserLiveProjectListingComponent {
   searchtext() {
     this.showLoader = true;
 
-    // Get selected values and convert them into a comma-separated string
-    const selectedCategories = this.categoryList.map((item: any) => item._id).join(',');
-    const selectedIndustries = this.industryList.map((item: any) => item._id).join(',');
-    const selectedProjectTypes = this.projectTypeList.map((item: any) => item.value).join(',');
-    const selectedClientTypes = this.clientTypeList.map((item: any) => item.value).join(',');
-
     // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.category = selectedCategories;
-    Payload.projectList.industry = selectedIndustries;
-    Payload.projectList.projectType = selectedProjectTypes;
-    Payload.projectList.clientType = selectedClientTypes;
+    Payload.projectList.category = this.selectedCategories.join(',');
+    Payload.projectList.industry = this.selectedIndustries.join(',');
+    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
+    Payload.projectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
+    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
 
     console.log(Payload.projectList);
 

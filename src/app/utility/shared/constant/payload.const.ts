@@ -12,6 +12,8 @@ export const Payload = {
         industry: '',
         projectType: '',
         clientType: '',
+        publishDateRange: '',
+        SubmissionDueDateRange: '',
     },
 
     mailSSList: {
