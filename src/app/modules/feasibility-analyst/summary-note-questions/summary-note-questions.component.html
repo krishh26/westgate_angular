@@ -157,6 +157,44 @@
 
             <section class="pageheader bg-dark">
                 <div class="container text-center">
+                    <p><strong>Minimum Eligibility Form</strong></p>
+                </div>
+            </section>
+
+            <section>
+                <div class="container">
+                    <form [formGroup]="eligibilityForm" (ngSubmit)="submiteligibilityForm()">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Case Study Numbers</label>
+                                    <input type="number" class="form-control" formControlName="caseStudyRequired">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Certifications</label>
+                                    <input type="text" class="form-control" formControlName="certifications">
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Policy</label>
+                                    <input type="text" class="form-control" formControlName="policy">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" (click)="submiteligibilityForm()" class="btn btn-dark">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pageheader bg-dark">
+                <div class="container text-center">
                     <p><strong>Upload Summary Doc</strong></p>
                 </div>
             </section><br>
@@ -169,7 +207,7 @@
 
     <section class="bg-dark">
         <div class="container">
-            <form [formGroup]="uploaddocform" (ngSubmit)="submitEligibilityForm()">
+            <form [formGroup]="uploaddocform" (ngSubmit)="submituploaddocform()">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">

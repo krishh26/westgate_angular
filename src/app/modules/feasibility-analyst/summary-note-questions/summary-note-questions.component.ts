@@ -25,19 +25,23 @@ export class SummaryNoteQuestionsComponent {
   selectedDocument: any;
   isEditMode: boolean = false;
   currentSummaryId: number | null = null;
-  // uploaddocform: FormGroup | undefined;
   showSuccess: boolean = false;
+  eligibilityForm: FormGroup;
+
+  eligibility = {
+    caseStudyRequired: new FormControl("", Validators.required),
+    certifications: new FormControl("", Validators.required),
+    policy: new FormControl("", Validators.required),
+  }
 
   summary = {
     questionName: new FormControl("", Validators.required),
     question: new FormControl("", Validators.required),
     instructions: new FormControl("", Validators.required),
     weightage: new FormControl("", Validators.required),
-    //comment: new FormControl("", Validators.required),
     refrenceDocument: new FormControl("", Validators.required),
     projectId: new FormControl("", Validators.required),
     summaryQuestionFor: new FormControl("", Validators.required),
-    // deadline: new FormControl("", Validators.required),
   }
 
   uploaddocform: FormGroup;
@@ -51,11 +55,10 @@ export class SummaryNoteQuestionsComponent {
     private feasibilityService: FeasibilityService,
   ) {
     this.uploaddocform = new FormGroup(this.summary);
+    this.eligibilityForm = new FormGroup(this.eligibility);
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
-    // this.summaryForm = new FormGroup(this.summary);
-    // this.summaryForm.controls['projectId'].setValue(this.projectId)
   }
 
   ngOnInit(): void {
@@ -64,7 +67,7 @@ export class SummaryNoteQuestionsComponent {
   }
 
   formatMilliseconds(milliseconds: number): string {
-    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;
   }
 
@@ -117,15 +120,28 @@ export class SummaryNoteQuestionsComponent {
     });
   }
 
+  submiteligibilityForm() {
+    if (!this.eligibilityForm.valid) {
+      return this.notificationService.showError('Please Fill Form.');
+    }
+    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value, this.projectId).subscribe({
+      next: (res: any) => {
+        this.showSuccess = true;
+        this.notificationService.showSuccess(res?.message);
+      },
+      error: (err: any) => {
+        return this.notificationService.showError('Something went wrong');
+      }
+    })
+  }
 
-  submitEligibilityForm() {
+
+  submituploaddocform() {
     if (!this.uploaddocform.valid) {
       return this.notificationService.showError('Please Fill Form.');
     }
     this.feasibilityService.updateProjectDetails(this.uploaddocform.value, this.projectId).subscribe({
       next: (res: any) => {
-
-        // this.router.navigate(['/feasibility-user/feasibility-project-list']);
       },
       error: (err: any) => {
         return this.notificationService.showError('Something went wrong');
