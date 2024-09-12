@@ -136,6 +136,63 @@ export class FeasibilityProjectsListComponent {
     );
   }
 
+  isDesc: boolean = false;
+  column: string = 'publishDate';
+
+  sort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
+  createddatesort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
+  duedatesort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
   getProjectList() {
     this.showLoader = true;
     Payload.projectList.keyword = this.searchText;
