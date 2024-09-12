@@ -42,6 +42,14 @@
               </ng-select>
             </div>
 
+            <div class="sort-widget">
+              <h6 class="p-600">Publish Date Range</h6>
+            </div>
+
+            <div class="sort-widget">
+              <h6 class="p-600">Submission Due Date Range</h6>
+            </div>
+
             <!-- Slider for Value (GBP) -->
             <div class="sort-widget">
               <h6 class="p-600">Value (GBP)</h6>
@@ -57,8 +65,9 @@
             <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
               <div class="form-group mb-0">
                 <span class="input-icon"><i class="bi bi-search"></i></span>
-                <input class="form-control control-search" placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text" [(ngModel)]="searchText"
-                  (input)="searchtext()">
+                <input class="form-control control-search"
+                  placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text"
+                  [(ngModel)]="searchText" (input)="searchtext()">
               </div>
             </div>
             <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
