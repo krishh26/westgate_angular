@@ -52,10 +52,10 @@ export class BossUserLiveProjectListingComponent {
     { clientType: 'Private Sector', value: 'PrivateSector' }
   ];
 
-  publishStartDate : FormControl = new FormControl('');
-  publishEndDate : FormControl = new FormControl('');
-  submissionStartDate : FormControl = new FormControl('');
-  submissionEndDate : FormControl = new FormControl('');
+  publishStartDate: FormControl = new FormControl('');
+  publishEndDate: FormControl = new FormControl('');
+  submissionStartDate: FormControl = new FormControl('');
+  submissionEndDate: FormControl = new FormControl('');
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -73,18 +73,18 @@ export class BossUserLiveProjectListingComponent {
     this.getIndustryList();
     this.getProjectList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
-      if(!this.publishStartDate.value){
+      if (!this.publishStartDate.value) {
         this.notificationService.showError('Please select a Publish start date');
         return
-      }else{
+      } else {
         this.searchtext()
       }
     });
     this.submissionEndDate.valueChanges?.subscribe((res: any) => {
-      if(!this.submissionStartDate.value){
+      if (!this.submissionStartDate.value) {
         this.notificationService.showError('Please select a Submission start date');
         return
-      }else{
+      } else {
         this.searchtext()
       }
     });
@@ -128,7 +128,6 @@ export class BossUserLiveProjectListingComponent {
     });
   }
 
-  
   isDesc: boolean = false;
   column: string = 'publishDate';
 

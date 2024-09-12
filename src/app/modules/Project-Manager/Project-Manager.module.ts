@@ -21,7 +21,7 @@ import { ProjectMangerProfileComponent } from './project-manger-profile/project-
 import { PmShortlistedProjectsComponent } from 'src/app/modules/Project-Manager/pm-shortlisted-projects/pm-shortlisted-projects.component';
 import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-studies/pm-case-studies.component';
 import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +31,8 @@ import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxSliderModule
   ],
   declarations: [
     ProjectManagerComponent,
