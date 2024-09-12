@@ -46,64 +46,44 @@
               <h6 class="p-600">Publish Date Range</h6>
               <form class="row row-cols-sm-auto">
                 <div class="col-6">
-                  <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="yyyy-mm-dd"
-                      name="dp"
-                      [formControl]="publishStartDate"
-                      ngbDatepicker
-                      #d="ngbDatepicker"
-                    />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                  <div class="input-group mb-2">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="publishStartDate"
+                      ngbDatepicker #d="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="yyyy-mm-dd"
-                      name="dp"
-                      [formControl]="publishEndDate"
-                      ngbDatepicker
-                      #d1="ngbDatepicker"
-                    />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button"></button>
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="publishEndDate"
+                      ngbDatepicker #d1="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
               </form>
-            </div>
+            </div><br>
             <div class="sort-widget">
               <h6 class="p-600">Submission Due Date Range</h6>
               <form class="row row-cols-sm-auto">
                 <div class="col-6">
-                  <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="yyyy-mm-dd"
-                      name="dp"
-                      [formControl]="submissionStartDate"
-                      ngbDatepicker
-                      #d2="ngbDatepicker"
-                    />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+                  <div class="input-group mb-2">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="submissionStartDate"
+                      ngbDatepicker #d2="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="yyyy-mm-dd"
-                      name="dp"
-                      [formControl]="submissionEndDate"
-                      ngbDatepicker
-                      #d3="ngbDatepicker"
-                    />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()" type="button"></button>
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="submissionEndDate"
+                      ngbDatepicker #d3="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
               </form>
-            </div>
+            </div><br>
             <!-- Slider for Value (GBP) -->
             <div class="sort-widget">
               <h6 class="p-600">Value (GBP)</h6>
