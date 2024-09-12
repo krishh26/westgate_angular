@@ -81,7 +81,7 @@ export class FeasibilityProjectDetailsComponent {
     });
   }
   ngOnInit(): void {
-
+    this.getProjectDetails();
   }
 
   public showHidePass(): void {

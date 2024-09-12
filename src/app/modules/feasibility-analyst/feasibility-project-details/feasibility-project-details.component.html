@@ -35,8 +35,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><a (click)="projectDetails(projectDetails?._id)"
-                  href="javascript:;">{{projectDetails?.projectName}}</a>
+              <td><a href="javascript:;">{{projectDetails?.projectName}}</a>
               </td>
               <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
               <td v-align="middle">{{projectDetails?.BOSID}}</td>
@@ -687,11 +686,6 @@
     </div>
   </div>
 </div>
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
