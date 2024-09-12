@@ -198,6 +198,7 @@
       <div class="row align-items-center">
         <div class="col-lg-9 col-xl-9 col-12">
           <div class="row">
+
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Sub-contracting</label> <br>
@@ -208,12 +209,14 @@
                   <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
                       uploadDocument($event,documentUploadType.subContractDocument)" />
                   <br>
+                  <p>{{subContractDocument?.fileName}}</p>
                   <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100"
                     data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
                     View</a>
                 </div>
               </div>
             </div>
+
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Economical partnership</label>
@@ -226,25 +229,26 @@
                     style="height: 5px; width: 5px"
                     (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
                   <br>
+                  <p>{{economicalPartnershipQueryFile?.fileName}}</p>
                   <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
                     data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
                     View</a>
                 </div>
               </div>
             </div>
+
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Other</label>
                 <br />
                 <div class="upload-btn-wrapper">
                   <label class="btn-upload-file" for="otherDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    Upload
-                    Query Image</label>
+                    Upload Query Image</label>
                   <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
                   <br>
+                  <p>{{documentUploadType?.otherQueryDocument?.fileName}}</p>
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
-
                     <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
                       <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
                         data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
@@ -254,6 +258,7 @@
                 </div>
               </div>
             </div>
+
           </div>
           <div class="row">
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
@@ -272,11 +277,11 @@
               <div class="form-group">
                 <div class="upload-btn-wrapper">
                   <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Response</label>
+                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload Response</label>
                   <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
                   <br>
+                  <p>{{economicalPartnershipResponceFile?.fileName}}</p>
                   <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
                     data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
                     View</a>
@@ -287,13 +292,13 @@
               <div class="form-group">
                 <div class="upload-btn-wrapper">
                   <label class="btn-upload-file" for="otherDocument1">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Document
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Document
                   </label>
                   <input type="file" name="myfile" style="height: 5px; width: 5px" id="otherDocument1"
                     (change)="uploadDocument($event, documentUploadType.otherDocument)" />
                   <br>
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
+                    <p>{{documentUploadType.otherDocument?.fileName}}</p>
                     <ng-container *ngIf="document?.type == documentUploadType.otherDocument">
                       <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
                         data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
@@ -306,24 +311,12 @@
           </div>
         </div>
         <div class="col-lg-3 col-xl-3 col-12">
-          <div class="card bg-primary">
+          <div class="card ">
             <div class="card-body">
               <div class="row align-items-center">
-                <div class="col-lg-4 col-xl-4 col-12">
-                  <h6 class="p-12 text-white">
-                    <strong>Add Comment</strong>
-                  </h6>
-                </div>
-                <div class="col-lg-7 col-xl-7 col-12">
-                  <p class="p-10 mb-0 text-white">
-                    Mail ID : {{ projectDetails?.mailID }}
-                  </p>
-                  <p class="p-10 mb-0 text-white">
-                    Client Type : {{ projectDetails?.clientType }}
-                  </p>
-                  <p class="p-10 mb-0 text-white">
-                    Client Name : {{ projectDetails?.clientName }}
-                  </p>
+                <div class="col-lg-12 col-xl-12 col-12">
+                  <textarea formControlName="comment" placeholder="Enter Comment" class="form-control" rows="3"
+                    cols="100"></textarea>
                 </div>
               </div>
             </div>

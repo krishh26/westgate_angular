@@ -33,6 +33,7 @@ export class FeasibilityProjectDetailsComponent {
   viewLoginForm: boolean = true;
   documentName: string = "";
   loginName: string = "";
+  comment : string = '';
   isEditing = false;
   status: string = "Expired";
   statusComment: FormControl = new FormControl('');
@@ -143,6 +144,8 @@ export class FeasibilityProjectDetailsComponent {
   // Function to be used for showing uploaded document
   openUploadedDocument(data: any) {
     this.uploadedDocument = data;
+    console.log(this.uploadedDocument);
+    
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -309,6 +312,7 @@ export class FeasibilityProjectDetailsComponent {
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
         subContracting: this.subContracting || "",
+        comment : this.comment || "",
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || "",
         statusComment: this.statusComment?.value || "",
