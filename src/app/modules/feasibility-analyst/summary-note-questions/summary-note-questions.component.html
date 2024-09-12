@@ -193,45 +193,6 @@
                 </div>
             </form>
 
-
-            <!--Addedd Question-->
-            <div class="row">
-                <div class="col-12">
-                    <p><strong>Added Questions</strong></p>
-                    <div class="table-responsive">
-                        <table class="table table-dark table-borderless">
-                            <thead>
-                                <tr>
-                                    <td>Summary Note Questions For </td>
-                                    <th>Question Name</th>
-                                    <th>Question</th>
-                                    <th>Document Ref. Name</th>
-                                    <th>Weightage</th>
-                                    <th>Instructions</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let summary of summaryquestionList">
-                                    <td>{{summary.summaryQuestionFor}}</td>
-                                    <td>{{summary.questionName}}</td>
-                                    <td>{{summary.question}}</td>
-                                    <td>{{summary.refrenceDocument}}</td>
-                                    <td><strong>{{summary.weightage}}</strong></td>
-                                    <td>{{summary.instructions}}</td>
-                                    <td>
-                                        <a (click)="editSummary(summary)" class="btn btn-outline-secondary"><i
-                                                class="bi bi-pencil-fill"></i></a>&nbsp;
-                                        <a (click)="deleteSummary(summary?._id)" class="btn btn-outline-secondary"><i
-                                                class="bi bi-x-circle"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
             <div>
                 <a (click)="detailPage()" style="float: right;" class="btn btn-secondary">Next</a>
             </div>
