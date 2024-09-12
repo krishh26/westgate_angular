@@ -157,7 +157,7 @@
 
             <section class="pageheader bg-dark">
                 <div class="container text-center">
-                    <p><strong>Summary Note Questions</strong></p>
+                    <p><strong>Upload Summary Doc</strong></p>
                 </div>
             </section><br>
 
@@ -169,8 +169,8 @@
 
     <section class="bg-dark">
         <div class="container">
-            <form [formGroup]="summaryForm" (ngSubmit)="submitForm()">
-                <!-- <div class="form-group">
+            <form [formGroup]="uploaddocform" (ngSubmit)="submitEligibilityForm()">
+                <div class="form-group">
                     <div class="row">
                         <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-12">
                             <p class="mb-0">Summary Note Questions</p>
@@ -179,18 +179,18 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
                                     name="summaryQuestionFor" id="inlineRadio1" value="Supplier"
-                                    [checked]="summaryForm.get('summaryQuestionFor')?.value == 'Supplier'">
+                                    [checked]="uploaddocform.get('summaryQuestionFor')?.value == 'Supplier'">
                                 <label class="form-check-label" for="inlineRadio1">Supplier</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" formControlName="summaryQuestionFor" type="radio"
                                     name="summaryQuestionFor" id="inlineRadio2" value="UKWriter"
-                                    [checked]="summaryForm.get('summaryQuestionFor')?.value == 'UKWriter'">
+                                    [checked]="uploaddocform.get('summaryQuestionFor')?.value == 'UKWriter'">
                                 <label class="form-check-label" for="inlineRadio2">UK Writer</label>
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </form>
 
 
@@ -221,8 +221,6 @@
                                     <td><strong>{{summary.weightage}}</strong></td>
                                     <td>{{summary.instructions}}</td>
                                     <td>
-                                        <!-- <a href="javascript:;" class="btn btn-primarysm ms-4"><i class="bi bi-eye-fill">
-                                                View Instructions</i></a> -->
                                         <a (click)="editSummary(summary)" class="btn btn-outline-secondary"><i
                                                 class="bi bi-pencil-fill"></i></a>&nbsp;
                                         <a (click)="deleteSummary(summary?._id)" class="btn btn-outline-secondary"><i
