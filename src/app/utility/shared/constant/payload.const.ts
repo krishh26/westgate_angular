@@ -14,6 +14,7 @@ export const Payload = {
         clientType: '',
         publishDateRange: '',
         SubmissionDueDateRange: '',
+        valueRange : '',
     },
 
     mailSSList: {

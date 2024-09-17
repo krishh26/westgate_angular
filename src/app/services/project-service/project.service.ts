@@ -38,6 +38,7 @@ export class ProjectService {
     clientType?: string,
     publishDateRange?: string,
     SubmissionDueDateRange?: string,
+    valueRange? : any
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -74,6 +75,9 @@ export class ProjectService {
     }
     if (params?.SubmissionDueDateRange) {
       queryParams = queryParams.set('SubmissionDueDateRange', params?.SubmissionDueDateRange);
+    }
+    if (params?.valueRange) {
+      queryParams = queryParams.set('valueRange', params?.valueRange);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
