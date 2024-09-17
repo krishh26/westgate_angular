@@ -186,12 +186,12 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   // get project listing
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.status = '';
-    Payload.projectList.sortlist = false;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+    Payload.pmAllProjectList.keyword = this.searchText;
+    Payload.pmAllProjectList.page = String(this.page);
+    Payload.pmAllProjectList.limit = String(this.pagesize);
+    Payload.pmAllProjectList.status = '';
+    Payload.pmAllProjectList.sortlist = false;
+    this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
@@ -220,19 +220,18 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
 
   searchtext() {
     this.showLoader = true;
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.category = this.selectedCategories.join(',');
-    Payload.projectList.industry = this.selectedIndustries.join(',');
-    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
-    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
+    Payload.pmAllProjectList.keyword = this.searchText;
+    Payload.pmAllProjectList.page = String(this.page);
+    Payload.pmAllProjectList.limit = String(this.pagesize);
+    Payload.pmAllProjectList.category = this.selectedCategories.join(',');
+    Payload.pmAllProjectList.industry = this.selectedIndustries.join(',');
+    Payload.pmAllProjectList.projectType = this.selectedProjectTypes.join(',');
+    Payload.pmAllProjectList.clientType = this.selectedClientTypes.join(',');
+    Payload.pmAllProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
+    Payload.pmAllProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
+    Payload.pmAllProjectList.valueRange = this.minValue + '-' + this.maxValue;
 
-    console.log(Payload.projectList);
-
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+    this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
@@ -265,8 +264,13 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-
   projectDetails(projectId: any) {
     this.router.navigate(['/project-manager/project/details'], { queryParams: { id: projectId } });
+  }
+
+  changeRange() {
+    if (this.maxValue >= this.minValue) {
+      this.searchtext();
+    }
   }
 }
