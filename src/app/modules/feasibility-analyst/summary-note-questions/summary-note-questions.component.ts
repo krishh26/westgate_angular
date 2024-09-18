@@ -5,6 +5,8 @@ import { FeasibilityService } from 'src/app/services/feasibility-user/feasibilit
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SummaryService } from 'src/app/services/summary/summary.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-summary-note-questions',
@@ -27,6 +29,21 @@ export class SummaryNoteQuestionsComponent {
   currentSummaryId: number | null = null;
   showSuccess: boolean = false;
   eligibilityForm: FormGroup;
+  viewClientDocumentForm: boolean = true;
+  commentName: string = "";
+  projectComment: any[] = [];
+  isEditing = false;
+
+  documentUploadType: any = {
+    subContractDocument: 'SubContract',
+    economicalPartnershipQuery: 'economicalPartnershipQuery',
+    economicalPartnershipResponse: 'economicalPartnershipResponse',
+    projectComment: 'projectComment',
+    loginDetailDocument: 'loginDetailDocument',
+    otherQueryDocument: 'otherQueryDocument',
+    otherDocument: 'otherDocument',
+    failStatusImage: "failStatusImage"
+  }
 
   eligibility = {
     caseStudyRequired: new FormControl("", Validators.required),
@@ -53,6 +70,8 @@ export class SummaryNoteQuestionsComponent {
     private route: ActivatedRoute,
     private summaryService: SummaryService,
     private feasibilityService: FeasibilityService,
+    private spinner: NgxSpinnerService,
+    private sanitizer: DomSanitizer,
   ) {
     this.uploaddocform = new FormGroup(this.summary);
     this.eligibilityForm = new FormGroup(this.eligibility);
@@ -86,6 +105,11 @@ export class SummaryNoteQuestionsComponent {
       this.showLoader = false;
     });
   }
+
+  hideShowForm() {
+    this.viewClientDocumentForm = !this.viewClientDocumentForm
+  }
+
 
   openDocument(data: any) {
     this.selectedDocument = data;
@@ -190,4 +214,106 @@ export class SummaryNoteQuestionsComponent {
   backPage() {
     this.router.navigate(['/feasibility-user/feasibility-project-detail'], { queryParams: { id: this.projectId } });
   }
+
+  summaryDetail(type: string) {
+    // Check if there are comments or documents added
+    if (!this.projectDetails?.projectComment?.length) {
+      return this.notificationService.showError('Please add comment and document');
+    }
+
+    // Call saveChanges after ensuring there is a comment and file
+    this.saveChanges(type);
+
+    // If type is 'next', navigate to the next route
+    if (type === 'next') {
+      this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+    }
+  }
+
+  uploadDocument(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+      this.spinner.show();
+
+      this.feasibilityService.uploadDocument(data).subscribe((response) => {
+        this.spinner.hide();
+        debugger
+        if (response?.status) {
+          if (!this.commentName) {
+            return this.notificationService.showError('Enter a client document name');
+          }
+
+          // Add the uploaded file and comment to projectComment array
+          let objToBePushed = {
+            comment: this.commentName,
+            file: response?.data
+          };
+          this.projectDetails.projectComment.push(objToBePushed);
+          this.commentName = ""; // Clear the comment input
+          this.notificationService.showSuccess(response?.message);
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      }, (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.message || 'Error while uploading');
+      });
+    }
+  }
+
+
+  saveChanges(type?: string, contractEdit?: boolean) {
+    let payload: any = {}
+    if (!contractEdit) {
+      payload = {
+        projectComment: this.projectDetails?.projectComment || [],
+      };
+    }
+
+    if (contractEdit) {
+      payload = {
+        projectComment: this.projectDetails?.projectComment || [],
+      }
+    }
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails();
+          if (type == 'save') {
+            this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+          }
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
+
+  isPdf(url: string): boolean {
+    return url?.endsWith('.pdf') || false;
+  }
+
+  isWordOrExcel(url: string): boolean {
+    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+  }
+
+  isImage(url: string): boolean {
+    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (this.isWordOrExcel(url)) {
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 }

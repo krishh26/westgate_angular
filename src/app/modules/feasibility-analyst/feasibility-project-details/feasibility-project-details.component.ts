@@ -218,6 +218,7 @@ export class FeasibilityProjectDetailsComponent {
             this.economicalPartnershipResponceFile = response?.data;
           }
 
+          //client document
           if (type == this.documentUploadType.clientDocument) {
             if (!this.documentName) {
               return this.notificationService.showError('Enter a client document Name');
