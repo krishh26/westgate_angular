@@ -202,7 +202,7 @@
     </section>
 
     <div class="container">
-        <form [formGroup]="uploaddocform" (ngSubmit)="submituploaddocform()">
+        <form  (ngSubmit)="submituploaddocform()">
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
@@ -238,7 +238,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <div class="form-group">
-                                            <input type="text" [(ngModel)]="commentName" placeholder="Enter Comment" class="form-control" />
+                                            <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{standalone: true}" placeholder="Enter Comment" class="form-control" />
                                         </div>
                                     </div>
                                 </div>

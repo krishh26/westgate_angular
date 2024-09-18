@@ -239,7 +239,6 @@ export class SummaryNoteQuestionsComponent {
 
       this.feasibilityService.uploadDocument(data).subscribe((response) => {
         this.spinner.hide();
-        debugger
         if (response?.status) {
           if (!this.commentName) {
             return this.notificationService.showError('Enter a client document name');

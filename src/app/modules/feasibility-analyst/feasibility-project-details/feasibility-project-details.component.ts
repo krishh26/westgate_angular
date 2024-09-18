@@ -37,6 +37,7 @@ export class FeasibilityProjectDetailsComponent {
   isEditing = false;
   status: string = "Expired";
   statusComment: FormControl = new FormControl('');
+  statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
   password = 'password';
@@ -67,7 +68,7 @@ export class FeasibilityProjectDetailsComponent {
   }
 
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
-
+  commentData: any[] = []
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -107,8 +108,8 @@ export class FeasibilityProjectDetailsComponent {
         this.projectDetails = response?.data;
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
-        this.statusComment.setValue(this.projectDetails?.statusComment);
-
+        // this.statusComment.setValue(this.projectDetails?.statusComment);
+        this.commentData = this.projectDetails?.statusComment
         this.subContractDocument = this.projectDetails?.subContractingfile || null;
         this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
         this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
@@ -126,6 +127,27 @@ export class FeasibilityProjectDetailsComponent {
 
   statusChange(status: string) {
     this.status = status;
+    this.commentData = []
+    this.statusComment.reset()
+  }
+
+  pushStatus(){
+    if(!this.statusComment.value){
+      this.notificationService.showError('Please enter status comment')
+      return;
+    }
+    if(!this.statusDate.value){
+      this.notificationService.showError('Please enter Date')
+      return;
+    }
+    this.commentData.push({
+      comment: this.statusComment.value,
+      date: this.statusDate.value,
+      status: this.status,
+    })
+    this.statusComment.reset()
+    this.statusDate.reset()
+
   }
 
   // Function for subcontract
@@ -296,12 +318,20 @@ export class FeasibilityProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {}
     if (!contractEdit) {
-      if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
-        return this.notificationService.showError('Please Enter Status Comment');
-      }
+      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
+      //   return this.notificationService.showError('Please Enter Status Comment');
+      // }
 
-      if (this.status == 'Expired' && !this.failStatusReason?.value) {
-        return this.notificationService.showError('Please Select Status Comment');
+      // if (this.status == 'Expired' && !this.failStatusReason?.value) {
+      //   return this.notificationService.showError('Please Select Status Comment');
+      // }
+
+      if(this.statusComment.value && this.statusDate.value){
+        this.commentData.push({
+          comment: this.statusComment.value,
+          date: this.statusDate.value,
+          status: this.status,
+        })
       }
 
       payload = {
@@ -316,7 +346,7 @@ export class FeasibilityProjectDetailsComponent {
         comment : this.comment || "",
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || "",
-        statusComment: this.statusComment?.value || "",
+        statusComment: this.commentData,
         loginDetail: this.projectDetails.loginDetail || "",
         failStatusImage: this.failStatusImage || ""
       };
