@@ -58,6 +58,12 @@ export class ProjectCloseDetailsComponent {
     });
   }
 
+  questionDetails(details: any) {
+    localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
+     this.router.navigate(['bid-submission/bid-question-details'], { queryParams: { id: details?._id } });
+  }
+
+
   getSummaryQuestion() {
     this.showLoader = true;
     this.projectService.getSummaryQuestionList(this.projectId).subscribe((response) => {
