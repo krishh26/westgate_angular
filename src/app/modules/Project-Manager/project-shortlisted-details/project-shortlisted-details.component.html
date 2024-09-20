@@ -5,6 +5,7 @@
         <tr>
           <th width="12%"></th>
           <th width="12%">Project Title</th>
+          <th width="5%">Project Description</th>
           <th width="5%">BOS ID</th>
           <th width="5%">Publish Date</th>
           <th width="5%">Category</th>
@@ -23,6 +24,7 @@
         <tr>
           <td></td>
           <td class="text-primary"><a>{{projectDetails?.projectName}}</a></td>
+          <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
           <td v-align="middle">{{projectDetails?.BOSID}}</td>
           <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
           <td>{{projectDetails?.category}}</td>
@@ -88,27 +90,17 @@
     </table>
   </div>
 </section>
+
 <section>
   <div class="container">
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-end mb-4">
-        <div class="d-flex align-items-center me-4 ">
-          <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a routerLink="/project-manager/project/all" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"><i
-              class="bi bi-eye-fill"></i> View Response</a>
-        </div>
-        <div class="d-flex align-items-center me-4">
-          <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a routerLink="/project-manager/project/all"
-            class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View
-            Response</a>
-        </div>
-        <div class="d-flex align-items-center me-4">
-          <p class="fonts-12 mb-0 me-2">Case Study 1</p>
-          <a routerLink="/project-manager/project/all"
-            class="btn btn-primary rounded-pill  px-2 py-1 fonts-12 w-auto"><i class="bi bi-eye-fill"></i> View
-            Response</a>
-        </div>
+        <div class="d-flex align-items-center me-4 " *ngFor="let casestudy of projectDetails?.casestudy">
+          <ng-container *ngIf="casestudy?.name">
+            <p class="fonts-12 mb-0 me-2">{{casestudy?.name}}</p>
+            <a (click)="openDocument(casestudy)"  class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"  data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View Response</a>
+          </ng-container>
+          </div>
       </div>
     </div>
     <div class="row">
@@ -177,6 +169,7 @@
     </div>
   </div>
 </section>
+
 <section class="bg-dark">
   <div class="container">
     <div class="row">
@@ -296,6 +289,33 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
         </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- View Document Modal -->
+<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
