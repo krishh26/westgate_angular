@@ -91,8 +91,8 @@
                         <!-- Slider for Value (GBP) -->
                         <div class="sort-widget">
                             <h6 class="p-600">Value (GBP)</h6>
-                            <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
-                        </div>
+                            <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="changeRange()"></ngx-slider>
+                          </div>
 
                     </div>
                 </div>
