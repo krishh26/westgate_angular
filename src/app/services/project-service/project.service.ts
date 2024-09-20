@@ -14,6 +14,7 @@ export enum ProjectEndPoint {
   SUMMARYQUESTION_LIST = "/summary-question/list/",
   QUESTION_DETAILS = '/summary-question/list/',
   UPDATE_MANAGER = '/project/update/project-manager/',
+  UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status'
 }
 
 @Injectable({
@@ -38,7 +39,7 @@ export class ProjectService {
     clientType?: string,
     publishDateRange?: string,
     SubmissionDueDateRange?: string,
-    valueRange? : any
+    valueRange?: any
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -121,6 +122,11 @@ export class ProjectService {
   projectApply(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.APPLY_PROJECT, payload);
+  }
+
+  changeProjectSupplierStatus(payload: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.UPDATE_PROJECTMANAGER_SUPPLIER_STATUS, payload);
   }
 
   projectSortList(payload: any): Observable<any> {

@@ -23,9 +23,19 @@ export class AllProjectDetailsComponent implements OnInit {
   currentDate: Date = new Date();
   selectedDocument: any;
   loginUser: any;
-  summaryQuestionList: any
-  selectedDate:any 
-  summaryId:any 
+  summaryQuestionList: any;
+  selectedDate: any;
+  summaryId: any;
+  statusList: string[] = [
+    'In solution',
+    'In-review',
+    'In-Submission',
+    'Submitted',
+    'Awarded',
+    'Not awarded',
+    'Dropped'
+  ];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -98,19 +108,19 @@ export class AllProjectDetailsComponent implements OnInit {
       });
   }
 
-  editSummaryDate(date:any,summaryId:string){
+  editSummaryDate(date: any, summaryId: string) {
     this.summaryId = summaryId
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd', 'en-US');
   }
 
-  editUserName(){
-      console.log('editUserName :');
+  editUserName() {
+    console.log('editUserName :');
   }
-  saveDeadLineDate(){
-    let payload ={
-      deadline : this.selectedDate
+  saveDeadLineDate() {
+    let payload = {
+      deadline: this.selectedDate
     }
-    this.summaryService.updateSummaryDetail(this.summaryId,payload).subscribe((response) => {
+    this.summaryService.updateSummaryDetail(this.summaryId, payload).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
         this.getSummaryQuestion()
@@ -124,7 +134,33 @@ export class AllProjectDetailsComponent implements OnInit {
     });
   }
 
-  openSummaryDetail(item:any){
+  onStatusChange(supplier: any) {
+    const payload = {
+      projectId: this.projectDetails?._id,
+      supplierId: supplier?.supplierId,
+      supplierStatus: supplier?.supplierDetails?.status
+    };
+
+    this.changeSupplierStatus(payload);
+  }
+
+  changeSupplierStatus(payload: any) {
+    this.projectService.changeProjectSupplierStatus(payload).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.notificationService.showSuccess(response?.message);
+        this.getSummaryQuestion();
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  openSummaryDetail(item: any) {
     localStorage.setItem('ViewSummary', JSON.stringify(item));
     this.router.navigate(['/project-manager/project/summary-project-details']);
   }

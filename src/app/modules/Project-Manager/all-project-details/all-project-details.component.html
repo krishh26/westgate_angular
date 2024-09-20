@@ -39,7 +39,7 @@
           <td>{{projectDetails?.status}}</td>
           <td>{{projectDetails?.dueDate | date:'dd-MM-yyyy, h:mm a'}}</td>
           <td>
-            <button routerLink="/project-manager/project/all"  class="btn btn-primary text-dark px-4 py-1">Back</button>
+            <button routerLink="/project-manager/project/all" class="btn btn-primary text-dark px-4 py-1">Back</button>
           </td>
           <td></td>
         </tr>
@@ -55,19 +55,22 @@
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
-                    <!-- <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Closed On</th> -->
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call date
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr style="background-color: #b5b2b2 !important;" *ngFor="let supplier of projectDetails?.select">
-                    <!-- <td></td> -->
-                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.name}}</td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.companyName}}</td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
-                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.admin}}</td>
-                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.status}}</td>
-                    <!-- <td style="background-color: #b5b2b2 !important;">12-Sep-2023</td> -->
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.name}}</td>
+                    <td style="background-color: #b5b2b2 !important;">
+                      <select [(ngModel)]="supplier.supplierStatus" class="form-control"
+                        (change)="onStatusChange(supplier)">
+                        <option disabled selected hidden value="">Select Status</option>
+                        <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+                      </select>
+                    </td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date : 'dd-MMM-YYYY'}}
                     </td>
                   </tr>
@@ -92,9 +95,11 @@
         <div class="d-flex align-items-center me-4 " *ngFor="let casestudy of projectDetails?.casestudy">
           <ng-container *ngIf="casestudy?.name">
             <p class="fonts-12 mb-0 me-2">{{casestudy?.name}}</p>
-            <a (click)="openDocument(casestudy)"  class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"  data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View Response</a>
+            <a (click)="openDocument(casestudy)" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"
+              data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View
+              Response</a>
           </ng-container>
-          </div>
+        </div>
       </div>
     </div>
     <div class="row">
