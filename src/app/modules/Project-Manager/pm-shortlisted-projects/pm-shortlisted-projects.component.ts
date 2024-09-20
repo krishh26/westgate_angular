@@ -135,7 +135,7 @@ export class PmShortlistedProjectsComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/project-manager/project/close-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/project-manager/project/shortlisted-project-details'], { queryParams: { id: projectId } });
   }
 
   getcategoryList() {

@@ -13,6 +13,7 @@ import { ProjectMangerProfileComponent } from './project-manger-profile/project-
 import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-studies/pm-case-studies.component';
 import { PmShortlistedProjectsComponent } from 'src/app/modules/Project-Manager/pm-shortlisted-projects/pm-shortlisted-projects.component';
 import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
+import { ProjectShortlistedDetailsComponent } from './project-shortlisted-details/project-shortlisted-details.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: "close-project-details",
         component: ProjectCloseDetailsComponent
+      },
+      {
+        path: "shortlisted-project-details",
+        component: ProjectShortlistedDetailsComponent
       },
       {
         path: "summary-project-details",
