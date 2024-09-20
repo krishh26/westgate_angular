@@ -134,7 +134,7 @@
                 <tr
                   *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                   <td> </td>
-                  <td><a href="javascript:;">{{item?.projectName}}</a></td>
+                  <td><a href="javascript:;" (click)="projectDetails(item?._id)">{{item?.projectName}}</a></td>
                   <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
                   <td v-align="middle">{{item?.BOSID}}</td>
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>

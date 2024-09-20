@@ -170,9 +170,9 @@
           <ng-container class="mb-3">
             <tr>
               <td></td>
-              <td>{{ supplier.name }}</td>
+              <td>{{ supplier.companyName }}</td>
               <td>{{ supplier._id }}</td>
-              <td>Ayush</td>
+              <td>{{supplier?.name}}</td>
               <td>
                 <div class="form-group">
                   <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
@@ -285,6 +285,7 @@
     Add Summary Details
   </button>
 </div>
+<br>
 
 <!-- View Screenshot Modal -->
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
