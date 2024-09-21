@@ -33,7 +33,13 @@ export class ProjectService {
   }
 
   getProjectList(params: {
-    keyword: string, page: string, limit: string, applied: boolean, sortlist: boolean, match: string, status: string, category?: string,
+    keyword: string, page: string,
+    limit: string,
+    applied: boolean,
+    sortlist: boolean,
+    match: string,
+    status: string,
+    category?: string,
     industry?: string,
     projectType?: string,
     clientType?: string,
