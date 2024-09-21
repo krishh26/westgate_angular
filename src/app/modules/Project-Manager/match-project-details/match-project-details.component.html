@@ -39,7 +39,7 @@
             <td>{{ projectDetails?.status }}</td>
             <td>{{ projectDetails?.dueDate | date : "dd-MM-yyyy, h:mm a" }}</td>
             <td>
-              <button routerLink="/project-manager/project/match"  class="btn btn-primary text-dark px-4 py-1"
+              <button routerLink="/project-manager/project/match" class="btn btn-primary text-dark px-4 py-1"
                 style="white-space: nowrap; font-size: 11px">
                 Back
               </button>
@@ -55,12 +55,15 @@
 
 <section class="pt-4" style="padding-bottom: 10px;">
   <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h5 class="text-primary">Project Description</h5>
-        <p class="fonts-14">{{ projectDetails?.description }}</p>
+
+    <section class="pageheader bg-dark">
+      <div class="container text-center">
+        <p><strong>Project Description</strong></p>
       </div>
-    </div>
+    </section><br>
+
+    <p>{{ projectDetails?.description }}</p>
+
     <div class="row mt-5">
       <div class="col-lg-4 col-xl-4 col-12 mb-4">
         <div class="card">
@@ -151,141 +154,152 @@
 </section>
 
 <section style="padding-top: 10px; padding-bottom: 10px;">
-  <div class="table-responsive match-detail">
-    <table class="table bg-f9 mb-0 align-middle">
-      <thead>
-        <tr>
-          <th width="100px" style="min-width: 100px"></th>
-          <th width="12%">Supplier Name</th>
-          <th width="5%">Supplier ID</th>
-          <th width="5%">Admin Name</th>
-          <th width="10%">Company Selection</th>
-          <th width="10%">Handover Call</th>
-          <th width="5%"></th>
-          <th width="100px" style="min-width: 100px"></th>
-        </tr>
-      </thead>
-      <tbody class="bg-f9 mb-2">
-        <ng-container *ngFor="let supplier of userDetail">
-          <ng-container class="mb-3">
-            <tr>
-              <td></td>
-              <td>{{ supplier.companyName }}</td>
-              <td>{{ supplier._id }}</td>
-              <td>{{supplier?.name}}</td>
-              <td>
-                <div class="form-group">
-                  <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
-                    [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
-                    [(ngModel)]="supplier['company']">
-                  </ng-select>
-                </div>
 
-                <!-- <select
-                  class="form-select-sm fonts-12"
-                  [(ngModel)]="selectedSuppliers[supplier._id].company"
-                >
-                  <ng-container *ngFor="let company of companyDetails">
-                    <option [value]="company">{{ company }}</option>
-                  </ng-container>
-                </select> -->
-              </td>
-              <td>
-                <div class="row mb-3">
-                  <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
-                  <div class="col-12">
-                    <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
-                      style="height: 30px" />
+  <div class="container">
+
+    <section class="pageheader bg-dark">
+      <div class="container text-center">
+        <p><strong>Supplier Details</strong></p>
+      </div>
+    </section><br>
+
+    <div class="table-responsive match-detail">
+      <table class="table bg-f9 mb-0 align-middle">
+        <thead>
+          <tr>
+            <th width="100px" style="min-width: 100px"></th>
+            <th width="12%">Supplier Name</th>
+            <th width="5%">Supplier ID</th>
+            <th width="5%">Admin Name</th>
+            <th width="10%">Company Selection</th>
+            <th width="10%">Handover Call</th>
+            <th width="5%"></th>
+            <th width="100px" style="min-width: 100px"></th>
+          </tr>
+        </thead>
+        <tbody class="bg-f9 mb-2">
+          <ng-container *ngFor="let supplier of userDetail">
+            <ng-container class="mb-3">
+              <tr>
+                <td></td>
+                <td>{{ supplier.companyName }}</td>
+                <td>{{ supplier._id }}</td>
+                <td>{{supplier?.name}}</td>
+                <td>
+                  <div class="form-group">
+                    <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
+                      [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
+                      [(ngModel)]="supplier['company']">
+                    </ng-select>
                   </div>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <!-- <button
-                    class="btn btn-sm btn-primary px-4 py-1 me-3"
-                    style="white-space: nowrap; font-size: 11px"
+
+                  <!-- <select
+                    class="form-select-sm fonts-12"
+                    [(ngModel)]="selectedSuppliers[supplier._id].company"
                   >
-                    View Supplier Response
-                  </button> -->
-                  <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
-                    style="white-space: nowrap; font-size: 11px">
-                    {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
-                  </button>
-                </div>
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td colspan="8" class="inner-table p-0">
-                <table class="table bg-transparent w-100 mb-0">
-                  <tr>
-                    <td width="156px"></td>
-                    <td colspan="3" *ngFor="let casestudy of casestudylist">
-                      <div class="d-flex align-items-center bg-transparent">
-                        <div class="d-flex align-items-center me-1">
-                          <span class="w-space pe-2">{{casestudy?.name}}</span>
-                          <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
-                            (click)="openDocument(casestudy)" data-bs-toggle="modal" data-bs-target="#ViewCaseModal"><i
-                              class="bi bi-eye-fill me-2"></i> View</a>
+                    <ng-container *ngFor="let company of companyDetails">
+                      <option [value]="company">{{ company }}</option>
+                    </ng-container>
+                  </select> -->
+                </td>
+                <td>
+                  <div class="row mb-3">
+                    <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
+                    <div class="col-12">
+                      <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
+                        style="height: 30px" />
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <!-- <button
+                      class="btn btn-sm btn-primary px-4 py-1 me-3"
+                      style="white-space: nowrap; font-size: 11px"
+                    >
+                      View Supplier Response
+                    </button> -->
+                    <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
+                      style="white-space: nowrap; font-size: 11px">
+                      {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
+                    </button>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="8" class="inner-table p-0">
+                  <table class="table bg-transparent w-100 mb-0">
+                    <tr>
+                      <td width="156px"></td>
+                      <td colspan="3" *ngFor="let casestudy of casestudylist">
+                        <div class="d-flex align-items-center bg-transparent">
+                          <div class="d-flex align-items-center me-1">
+                            <span class="w-space pe-2">{{casestudy?.name}}</span>
+                            <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
+                              (click)="openDocument(casestudy)" data-bs-toggle="modal"
+                              data-bs-target="#ViewCaseModal"><i class="bi bi-eye-fill me-2"></i> View</a>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td colspan="3">
-                      <div class="d-flex align-items-center bg-transparent">
-                        <!-- <button
-                          (click)="addSupplier(supplier._id)"
-                          class="btn btn-sm btn-success px-5 py-1 me-3"
-                          style="white-space: nowrap; font-size: 11px"
-                        >
-                          Add
-                        </button> -->
-                      </div>
-                    </td>
-                    <td></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr class="mb-3">
-              <td colspan="8" class="p-0">
-                <table class="table w-100 mb-0">
-                  <tr>
-                    <td width="156px"></td>
-                    <td class="text-danger" style="width: 120px">
-                      <span class="bg-transparent mt-1"> Drop Reason</span>
-                    </td>
-                    <td colspan="5">
-                      <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
-                        placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
-                        aria-describedby="basic-addon1" />
-                    </td>
-                    <td>
-                      <div class="bg-transparent w-auto d-flex align-items-center">
-                        <button (click)="dropUser(supplier)"
-                          class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
-                          style="white-space: nowrap; font-size: 11px">
-                          Drop
-                        </button>
-                      </div>
-                    </td>
-                    <td></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+                      </td>
+                      <td colspan="3">
+                        <div class="d-flex align-items-center bg-transparent">
+                          <!-- <button
+                            (click)="addSupplier(supplier._id)"
+                            class="btn btn-sm btn-success px-5 py-1 me-3"
+                            style="white-space: nowrap; font-size: 11px"
+                          >
+                            Add
+                          </button> -->
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr class="mb-3">
+                <td colspan="8" class="p-0">
+                  <table class="table w-100 mb-0">
+                    <tr>
+                      <td width="156px"></td>
+                      <td class="text-danger" style="width: 120px">
+                        <span class="bg-transparent mt-1"> Drop Reason</span>
+                      </td>
+                      <td colspan="5">
+                        <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
+                          placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
+                          aria-describedby="basic-addon1" />
+                      </td>
+                      <td>
+                        <div class="bg-transparent w-auto d-flex align-items-center">
+                          <button (click)="dropUser(supplier)"
+                            class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
+                            style="white-space: nowrap; font-size: 11px">
+                            Drop
+                          </button>
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+    <div style="display: flex; align-items: end; justify-content: end;">
+      <button (click)="goToSummaryDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3"
+        style="white-space: nowrap; font-size: 12px">
+        Add Summary Details
+      </button>
+    </div>
+    <br>
   </div>
+
 </section>
-<div style="display: flex; align-items: end; justify-content: end;">
-  <button (click)="goToSummaryDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3"
-    style="white-space: nowrap; font-size: 12px">
-    Add Summary Details
-  </button>
-</div>
-<br>
 
 <!-- View Screenshot Modal -->
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
