@@ -76,7 +76,8 @@
                                         <div class="col-7 text-center">
                                             <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
                                                 data-bs-target="#ViewDocuments"
-                                                (click)="openDocument(clientdocument?.file)"><i class="bi bi-eye-fill"></i>
+                                                (click)="openDocument(clientdocument?.file)"><i
+                                                    class="bi bi-eye-fill"></i>
                                                 View</a>
                                             <a href="href:;"
                                                 (click)="download(clientdocument?.file?.url, clientdocument?.name)"
@@ -106,9 +107,8 @@
                                             <p class="mb-0">Project Notice</p>
                                         </div>
                                         <div class="col-7 text-center">
-                                            <a href="javascript:;" class="btn btn-primarysm"><i
-                                                    class="bi bi-eye-fill" data-bs-toggle="modal"
-                                                    data-bs-target="#ViewDocuments"
+                                            <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"
+                                                    data-bs-toggle="modal" data-bs-target="#ViewDocuments"
                                                     (click)="openDocument(westGetDocument?.file)"></i>
                                                 View</a>
                                             <a href="javascript:;" class="btn btn-primarysm"><i
@@ -203,22 +203,20 @@
                     <table class="table table-dark table-borderless" style="background-color: #252525;">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Question Name</th>
+                                <th>Question Description</th>
                                 <th>Weightage</th>
                                 <th>Status</th>
-                                <th>Deadline</th>
-                                <th>Review Note</th>
                                 <th></th>
                             </tr>
 
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of summaryquestionList">
+                                <td width="250">{{item?.questionName}}</td>
                                 <td width="350">{{item?.question}}</td>
                                 <td>{{item?.weightage}}%</td>
                                 <td>{{item?.verify}}</td>
-                                <td>{{item?.deadline | date : 'dd/MM/yyyy'}}</td>
-                                <td>{{item?.response?.message}}</td>
                                 <td><a (click)="questionDetails(item)" class="btn-sm btn-primary"><i
                                             class="bi bi-eye-fill"></i> View Question</a></td>
                             </tr>
@@ -269,8 +267,7 @@
 
 
 <!-- Document -->
-<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument"
-    aria-hidden="true">
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: space-between;">
@@ -286,8 +283,7 @@
                     <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
                         [src]="getDocumentViewerUrl(uploadedDocument?.url)"
                         style="width: 100%; height: 600px;"></iframe>
-                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url"
-                        class="img-fluid" />
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
                 </ng-template>
             </div>
             <div class="modal-footer">
@@ -299,8 +295,7 @@
 
 
 <!-- Document -->
-<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument"
-    aria-hidden="true">
+<div class="modal fade" id="ViewDocuments" tabindex="-1" aria-labelledby="viewDocument" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: space-between;">
@@ -316,8 +311,7 @@
                     <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
                         [src]="getDocumentViewerUrl(uploadedDocument?.url)"
                         style="width: 100%; height: 600px;"></iframe>
-                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url"
-                        class="img-fluid" />
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
                 </ng-template>
             </div>
             <div class="modal-footer">
