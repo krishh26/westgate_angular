@@ -61,7 +61,7 @@
               <td>{{item?.projectType}}</td>
               <td>{{item?.status}}</td>
               <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-              <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/{{item?.matchedCaseStudy}})</td>
+              <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td>
               <td>
                 <a class="btn btn-sm btn-primary m-1" title="View Details" (click)="projectDetails(item?._id)">View
                   Details</a>

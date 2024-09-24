@@ -65,7 +65,7 @@
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.companyName}}</td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.name}}</td>
-                    <td style="background-color: #b5b2b2 !important;"><i class="bi bi-check-circle-fill text-success"></i> CS(3/{{supplier?.matchedCaseStudy}})</td>
+                    <td style="background-color: #b5b2b2 !important;"><i class="bi bi-check-circle-fill text-success"></i> CS({{supplier?.matchedCaseStudy}}/3)</td>
                     <td style="background-color: #b5b2b2 !important;">
                       <select [(ngModel)]="supplier.supplierDetails.status" class="form-control"
                         (change)="onStatusChange(supplier)">
