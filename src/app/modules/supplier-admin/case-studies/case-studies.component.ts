@@ -47,7 +47,7 @@ export class CaseStudiesComponent {
   ngOnInit(): void {
     this.getCaseStudiesList();
     this.getCategoryList();
-    this.selectedCasestudy = 'https://wgih.blob.core.windows.net/wgit/files/1721291012439_CaseStudyTemplate.docx';
+    this.selectedCasestudy = 'https://f005.backblazeb2.com/file/west-get-it-hub-1/caseStudy/1727203790532_Historical Data.xlsx';
     console.log(this.selectedCasestudy);
 
   }
