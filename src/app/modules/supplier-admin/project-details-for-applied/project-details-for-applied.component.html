@@ -21,7 +21,7 @@
                             <th>Project Type</th>
                             <th>Status</th>
                             <th>Due Date &amp; Time</th>
-                            <th></th>
+                            <!-- <th></th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,7 +38,7 @@
                             <td>{{projectDetails?.projectType}}</td>
                             <td>{{projectDetails?.status}}</td>
                             <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                            <td><i class="bi bi-check-circle-fill text-success"></i> CS(3/3)</td>
+                            <!-- <td><i class="bi bi-check-circle-fill text-success"></i> CS({{projectDetails?.matchedCaseStudy}}/3)</td> -->
                             <td>
                                 <a *ngIf="projectDetails?.sortListUserId?.length > 0"
                                     style="background-color: darkgray;" class="btn btn-sm btn-dark m-1"
