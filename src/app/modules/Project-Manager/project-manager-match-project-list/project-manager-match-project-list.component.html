@@ -10,7 +10,7 @@
               <h6 class="p-600">Category</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Category"
                 class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
-                [multiple]="true" bindValue="_id" [(ngModel)]="selectedCategories" (change)="searchtext()">
+                [multiple]="true" bindValue="category" [(ngModel)]="selectedCategories" (change)="searchtext()">
               </ng-select>
             </div>
 
@@ -19,7 +19,7 @@
               <h6 class="p-600">Industry</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Industry"
                 class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
-                [multiple]="true" bindValue="_id" [(ngModel)]="selectedIndustries" (change)="searchtext()">
+                [multiple]="true" bindValue="industry" [(ngModel)]="selectedIndustries" (change)="searchtext()">
               </ng-select>
             </div>
 
@@ -86,9 +86,9 @@
             <!-- Slider for Value (GBP) -->
             <div class="sort-widget">
               <h6 class="p-600">Value (GBP)</h6>
-              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"
-                (userChange)="changeRange()"></ngx-slider>
+              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="changeRange()"></ngx-slider>
             </div>
+
           </div>
         </div>
         <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">

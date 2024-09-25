@@ -21,11 +21,12 @@ export class ProjectManagerCloseProjectListComponent {
   searchText: any;
 
   minValue: number = 0;
-  maxValue: number = 200;
+  maxValue: number = 50000000;
   options: Options = {
     floor: 0,
-    ceil: 500000
+    ceil: 50000000
   };
+
 
   categoryList: any = [];
   industryList: any = [];

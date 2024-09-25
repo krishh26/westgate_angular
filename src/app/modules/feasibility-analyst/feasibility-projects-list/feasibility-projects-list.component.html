@@ -5,97 +5,93 @@
             <div class="row">
                 <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
                     <div id="profile-menu-nav"><br><br>
-
-                        <!-- Category Dropdown -->
-                        <div class="sort-widget mb-3">
-                            <h6 class="p-600">Category</h6>
-                            <ng-select style="padding: 0px !important;" placeholder="Select Category"
-                                class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
-                                [multiple]="true" bindValue="_id" [(ngModel)]="selectedCategories"
-                                (change)="searchtext()">
-                            </ng-select>
-                        </div>
-
-                        <!-- Industry Dropdown -->
-                        <div class="sort-widget mb-3">
-                            <h6 class="p-600">Industry</h6>
-                            <ng-select style="padding: 0px !important;" placeholder="Select Industry"
-                                class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
-                                [multiple]="true" bindValue="_id" [(ngModel)]="selectedIndustries"
-                                (change)="searchtext()">
-                            </ng-select>
-                        </div>
-
-                        <!-- Project Type Dropdown -->
-                        <div class="sort-widget mb-3">
-                            <h6 class="p-600">Project Type</h6>
-                            <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
-                                class="form-select custom-ng-select-option" [items]="projectTypeList"
-                                bindLabel="projectType" [multiple]="true" bindValue="value"
-                                [(ngModel)]="selectedProjectTypes" (change)="searchtext()">
-                            </ng-select>
-                        </div>
-
-                        <!-- Client Type Dropdown -->
-                        <div class="sort-widget mb-3">
-                            <h6 class="p-600">Client Type</h6>
-                            <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
-                                class="form-select custom-ng-select-option" [items]="clientTypeList"
-                                bindLabel="clientType" [multiple]="true" bindValue="value"
-                                [(ngModel)]="selectedClientTypes" (change)="searchtext()">
-                            </ng-select>
-                        </div>
-
-                        <div class="sort-widget">
-                            <h6 class="p-600">Publish Date Range</h6>
-                            <form class="row row-cols-sm-auto">
-                                <div class="col-6">
-                                    <div class="input-group mb-2">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                            [formControl]="publishStartDate" ngbDatepicker #d="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
-                                            type="button"></button>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                            [formControl]="publishEndDate" ngbDatepicker #d1="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
-                                            type="button"></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div><br>
-                        <div class="sort-widget">
-                            <h6 class="p-600">Submission Due Date Range</h6>
-                            <form class="row row-cols-sm-auto">
-                                <div class="col-6">
-                                    <div class="input-group mb-2">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                            [formControl]="submissionStartDate" ngbDatepicker #d2="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
-                                            type="button"></button>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                            [formControl]="submissionEndDate" ngbDatepicker #d3="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()"
-                                            type="button"></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div><br>
-                        <!-- Slider for Value (GBP) -->
-                        <div class="sort-widget">
-                            <h6 class="p-600">Value (GBP)</h6>
-                            <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="changeRange()"></ngx-slider>
+          
+                      <!-- Category Dropdown -->
+                      <div class="sort-widget mb-3">
+                        <h6 class="p-600">Category</h6>
+                        <ng-select style="padding: 0px !important;" placeholder="Select Category"
+                          class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
+                          [multiple]="true" bindValue="category" [(ngModel)]="selectedCategories" (change)="searchtext()">
+                        </ng-select>
+                      </div>
+          
+                      <!-- Industry Dropdown -->
+                      <div class="sort-widget mb-3">
+                        <h6 class="p-600">Industry</h6>
+                        <ng-select style="padding: 0px !important;" placeholder="Select Industry"
+                          class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
+                          [multiple]="true" bindValue="industry" [(ngModel)]="selectedIndustries" (change)="searchtext()">
+                        </ng-select>
+                      </div>
+          
+                      <!-- Project Type Dropdown -->
+                      <div class="sort-widget mb-3">
+                        <h6 class="p-600">Project Type</h6>
+                        <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
+                          class="form-select custom-ng-select-option" [items]="projectTypeList" bindLabel="projectType"
+                          [multiple]="true" bindValue="value" [(ngModel)]="selectedProjectTypes" (change)="searchtext()">
+                        </ng-select>
+                      </div>
+          
+                      <!-- Client Type Dropdown -->
+                      <div class="sort-widget mb-3">
+                        <h6 class="p-600">Client Type</h6>
+                        <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
+                          class="form-select custom-ng-select-option" [items]="clientTypeList" bindLabel="clientType"
+                          [multiple]="true" bindValue="value" [(ngModel)]="selectedClientTypes" (change)="searchtext()">
+                        </ng-select>
+                      </div>
+          
+                      <div class="sort-widget">
+                        <h6 class="p-600">Publish Date Range</h6>
+                        <form class="row row-cols-sm-auto">
+                          <div class="col-6">
+                            <div class="input-group mb-2">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="publishStartDate"
+                                ngbDatepicker #d="ngbDatepicker" />
+                              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                                type="button"></button>
+                            </div>
                           </div>
-
+                          <div class="col-6">
+                            <div class="input-group">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="publishEndDate"
+                                ngbDatepicker #d1="ngbDatepicker" />
+                              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                                type="button"></button>
+                            </div>
+                          </div>
+                        </form>
+                      </div><br>
+                      <div class="sort-widget">
+                        <h6 class="p-600">Submission Due Date Range</h6>
+                        <form class="row row-cols-sm-auto">
+                          <div class="col-6">
+                            <div class="input-group mb-2">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="submissionStartDate"
+                                ngbDatepicker #d2="ngbDatepicker" />
+                              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                                type="button"></button>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="input-group">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="submissionEndDate"
+                                ngbDatepicker #d3="ngbDatepicker" />
+                              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()"
+                                type="button"></button>
+                            </div>
+                          </div>
+                        </form>
+                      </div><br>
+                      <!-- Slider for Value (GBP) -->
+                      <div class="sort-widget">
+                        <h6 class="p-600">Value (GBP)</h6>
+                        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="changeRange()"></ngx-slider>
+                      </div>
+          
                     </div>
-                </div>
+                  </div>
 
                 <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
                     <div class="row align-items-center justify-content-between">
