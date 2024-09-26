@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th width="100px">Project Title</th>
-              <th>Project Description</th>
+              <!-- <th>Project Description</th> -->
               <th>BOS ID</th>
               <th>Publish Date</th>
               <th>Category</th>
@@ -32,7 +32,7 @@
             <tr>
               <td><a (click)="projectDetails(projectDetails?._id)"
                   href="javascript:;">{{projectDetails?.projectName}}</a></td>
-              <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
+              <!-- <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td> -->
               <td v-align="middle">{{projectDetails?.BOSID}}</td>
               <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
               <td>{{projectDetails?.category}}</td>

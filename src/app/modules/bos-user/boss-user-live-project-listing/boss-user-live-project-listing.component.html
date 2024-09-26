@@ -87,7 +87,8 @@
             <!-- Slider for Value (GBP) -->
             <div class="sort-widget">
               <h6 class="p-600">Value (GBP)</h6>
-              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="changeRange()"></ngx-slider>
+              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"
+                (userChange)="changeRange()"></ngx-slider>
             </div>
 
           </div>
@@ -101,7 +102,7 @@
                 <span class="input-icon"><i class="bi bi-search"></i></span>
                 <input class="form-control control-search"
                   placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text"
-                  [(ngModel)]="searchText" (input)="searchtext()">
+                  [(ngModel)]="searchText" (input)="searchtext()"><i class="bi bi-info-circle-fill"></i>
               </div>
             </div>
             <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
