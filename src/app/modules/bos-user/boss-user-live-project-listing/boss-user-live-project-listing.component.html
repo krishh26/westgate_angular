@@ -137,7 +137,7 @@
                       class="bi bi-sort-up"></i></th>
                   <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                       class="bi bi-sort-up"></i></th>
-                  <th [width]="120">Action</th>
+                  <th [width]="120"></th>
                 </tr>
               </thead>
               <tbody>
@@ -163,8 +163,8 @@
                   <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>
-                    <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
-                      (click)="projectDetails(item?._id)"><i class="bi bi-eye-fill"></i></a>
+                    <!-- <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
+                      (click)="projectDetails(item?._id)"><i class="bi bi-eye-fill"></i></a> -->&nbsp;&nbsp;
                     <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                       (click)="editProjectDetails(item?._id)"><i class="bi bi-pencil-fill"></i></a>
                   </td>

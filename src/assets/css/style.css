@@ -1193,6 +1193,7 @@ Page Header
 
 .pageheader p {
   margin-bottom: 0px;
+  margin-left: -100px !important;
 }
 
 .page-title {
