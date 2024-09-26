@@ -72,7 +72,7 @@
       <div class="row mt-3 align-items-center">
         <div class="row">
           <div class="pagination">
-            <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)"></pagination-controls>
           </div>
         </div>
       </div>

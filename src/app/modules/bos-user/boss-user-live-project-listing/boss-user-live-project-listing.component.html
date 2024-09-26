@@ -191,12 +191,11 @@
           <div class="row mt-3 align-items-center">
             <div class="row">
               <div class="pagination">
-                <pagination-controls (pageChange)="paginate($event)"></pagination-controls>
+                <pagination-controls (pageChange)="paginate($event)"  [idMaxSize]="100"></pagination-controls>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
