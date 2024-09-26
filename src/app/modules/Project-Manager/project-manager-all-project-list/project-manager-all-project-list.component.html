@@ -123,7 +123,7 @@
               <thead>
                 <tr>
                   <th width="100px">Project Title</th>
-                  <th>Project Description</th>
+                  <!-- <th>Project Description</th> -->
                   <th>BOS ID</th>
                   <th style="cursor: pointer;" (click)="sort('publishDate')">Publish Date <i class="bi bi-sort-up"></i>
                   </th>
@@ -151,7 +151,7 @@
                 <tr
                   *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                   <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
-                  <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+                  <!-- <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td> -->
                   <td v-align="middle">{{item?.BOSID}}</td>
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.category}}</td>

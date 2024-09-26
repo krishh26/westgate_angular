@@ -109,7 +109,7 @@
                             <thead>
                                 <tr>
                                     <th [width]="200">Project Title</th>
-                                    <th>Project Description</th>
+                                    <!-- <th>Project Description</th> -->
                                     <th>BOS ID</th>
                                     <th style="cursor: pointer;" (click)="sort('publishDate')">Publish Date <i
                                             class="bi bi-sort-up"></i></th>
@@ -139,7 +139,7 @@
                                     <td><a (click)="projectDetails(item?._id)"
                                             href="javascript:;">{{item?.projectName}}</a>
                                     </td>
-                                    <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+                                    <!-- <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td> -->
                                     <td v-align="middle">{{item?.BOSID}}</td>
                                     <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{item?.category}}</td>
