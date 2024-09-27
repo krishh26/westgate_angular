@@ -148,6 +148,7 @@
                       class="bi bi-sort-up"></i></th>
                   <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                       class="bi bi-sort-up"></i></th>
+                  <th>Status</th>
                   <th>Compatibility</th>
                   <th [width]="120"></th>
                 </tr>
@@ -174,6 +175,7 @@
                   <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
                   <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                  <td>{{item?.status}}</td>
                   <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td>
                   <td>
                     <!-- <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
