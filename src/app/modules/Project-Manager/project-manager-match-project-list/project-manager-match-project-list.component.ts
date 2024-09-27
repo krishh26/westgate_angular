@@ -41,10 +41,19 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     { clientType: 'Private Sector', value: 'PrivateSector' }
   ];
 
+  statusList = [
+    { value: 'Awaiting', status: 'Awaiting' },
+    { value: 'InProgress', status: 'In-Progress' },
+    { value: 'InHold', status: 'In Hold' },
+    { value: 'Pass', status: 'Pass' },
+    { value: 'Fail', status: 'Fail' }
+  ];
+
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
+  selectedStatuses: any[] = [];
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
@@ -118,6 +127,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     Payload.pmMatchProjectList.industry = this.selectedIndustries.join(',');
     Payload.pmMatchProjectList.projectType = this.selectedProjectTypes.join(',');
     Payload.pmMatchProjectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.status = this.selectedStatuses.join(',')
     Payload.pmMatchProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmMatchProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmMatchProjectList.valueRange = this.minValue + '-' + this.maxValue;

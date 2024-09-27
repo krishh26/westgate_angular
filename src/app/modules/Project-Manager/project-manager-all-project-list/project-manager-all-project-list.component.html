@@ -42,6 +42,15 @@
               </ng-select>
             </div>
 
+            <!-- Status Dropdown -->
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Status</h6>
+              <ng-select style="padding: 0px !important;" placeholder="Select Status"
+                class="form-select custom-ng-select-option" [items]="statusList" bindLabel="status" [multiple]="true"
+                bindValue="value" [(ngModel)]="selectedStatuses" (change)="searchtext()">
+              </ng-select>
+            </div>
+
             <div class="sort-widget">
               <h6 class="p-600">Publish Date Range</h6>
               <form class="row row-cols-sm-auto">

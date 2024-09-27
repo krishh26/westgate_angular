@@ -38,6 +38,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   selectedIndustries: any[] = [];
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
+  selectedStatuses: any[] = [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -48,6 +49,14 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   clientTypeList = [
     { clientType: 'Public Sector', value: 'PublicSector' },
     { clientType: 'Private Sector', value: 'PrivateSector' }
+  ];
+
+  statusList = [
+    { value: 'Awaiting', status: 'Awaiting' },
+    { value: 'InProgress', status: 'In-Progress' },
+    { value: 'InHold', status: 'In Hold' },
+    { value: 'Pass', status: 'Pass' },
+    { value: 'Fail', status: 'Fail' }
   ];
 
   publishStartDate: FormControl = new FormControl('');
@@ -229,6 +238,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     Payload.pmAllProjectList.industry = this.selectedIndustries.join(',');
     Payload.pmAllProjectList.projectType = this.selectedProjectTypes.join(',');
     Payload.pmAllProjectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.status = this.selectedStatuses.join(',')
     Payload.pmAllProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmAllProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmAllProjectList.valueRange = this.minValue + '-' + this.maxValue;
