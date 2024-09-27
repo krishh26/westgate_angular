@@ -33,7 +33,7 @@ export class FeasibilityProjectDetailsComponent {
   viewLoginForm: boolean = true;
   documentName: string = "";
   loginName: string = "";
-  comment : string = '';
+  comment: string = '';
   isEditing = false;
   status: string = "Expired";
   statusComment: FormControl = new FormControl('');
@@ -131,12 +131,12 @@ export class FeasibilityProjectDetailsComponent {
     this.statusComment.reset()
   }
 
-  pushStatus(){
-    if(!this.statusComment.value){
+  pushStatus() {
+    if (!this.statusComment.value) {
       this.notificationService.showError('Please enter status comment')
       return;
     }
-    if(!this.statusDate.value){
+    if (!this.statusDate.value) {
       this.notificationService.showError('Please enter Date')
       return;
     }
@@ -167,7 +167,7 @@ export class FeasibilityProjectDetailsComponent {
   openUploadedDocument(data: any) {
     this.uploadedDocument = data;
     console.log(this.uploadedDocument);
-    
+
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -279,6 +279,42 @@ export class FeasibilityProjectDetailsComponent {
     }
   }
 
+  removeDocument(type: string): void {
+    if (type === this.documentUploadType.subContractDocument) {
+      this.subContractDocument = null; // Clear the uploaded document
+    }
+    if (type === this.documentUploadType.economicalPartnershipQuery) {
+      this.economicalPartnershipQueryFile = null;
+    }
+    if (type === this.documentUploadType.failStatusImage) {
+      this.failStatusImage = null;
+    }
+    // if (type === this.documentUploadType.clientDocument) {
+    //   this.clientDocument = null;
+    // }
+    // if (type === this.documentUploadType.loginDetailDocument) {
+    //   this.loginDetailDocument = null;
+    // }
+
+    if (type === this.documentUploadType.economicalPartnershipResponse) {
+      this.economicalPartnershipResponceFile = null; // Clear the uploaded document
+      this.notificationService.showSuccess("Document removed successfully.");
+    }
+
+    // Add any additional logic for other document types
+    this.notificationService.showSuccess("Document removed successfully.");
+  }
+
+  removeOtherDocument(document: any): void {
+    // Remove the document from the FeasibilityOtherDocuments array
+    const index = this.FeasibilityOtherDocuments.indexOf(document);
+    if (index > -1) {
+      this.FeasibilityOtherDocuments.splice(index, 1); // Remove the document from the array
+      this.notificationService.showSuccess("Document removed successfully.");
+    }
+  }
+
+
 
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
@@ -326,7 +362,7 @@ export class FeasibilityProjectDetailsComponent {
       //   return this.notificationService.showError('Please Select Status Comment');
       // }
 
-      if(this.statusComment.value && this.statusDate.value){
+      if (this.statusComment.value && this.statusDate.value) {
         this.commentData.push({
           comment: this.statusComment.value,
           date: this.statusDate.value,
@@ -343,7 +379,7 @@ export class FeasibilityProjectDetailsComponent {
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
         subContracting: this.subContracting || "",
-        comment : this.comment || "",
+        comment: this.comment || "",
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || "",
         statusComment: this.commentData,

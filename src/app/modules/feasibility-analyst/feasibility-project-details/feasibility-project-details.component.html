@@ -209,61 +209,92 @@
               <div class="form-group">
                 <label class="display-block">Sub-contracting</label> <br>
                 <div class="upload-btn-wrapper">
-                  <label for="subContract" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Query Image</label>
-                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px" (change)="
-                      uploadDocument($event,documentUploadType.subContractDocument)" />
+                  <label for="subContract" class="btn-upload-file padding-lr-5">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Query Image
+                  </label>
+                  <input id="subContract" type="file" name="subContract" style="height: 5px; width: 5px"
+                    (change)="uploadDocument($event, documentUploadType.subContractDocument)" />
                   <br>
-                  <p>{{subContractDocument?.fileName}}</p>
-                  <a (click)="openUploadedDocument(subContractDocument)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
+                  <p>{{ subContractDocument?.fileName }}</p>
+
+                  <a *ngIf="subContractDocument" (click)="openUploadedDocument(subContractDocument)"
+                    class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument">
+                    <i class="bi bi-eye-fill"></i> View
+                  </a>
+
+                  <!-- Remove button -->
+                  <button *ngIf="subContractDocument" (click)="removeDocument(documentUploadType.subContractDocument)"
+                    class="btn btn-danger w-100 mt-2">
+                    <i class="bi bi-trash-fill"></i> Remove
+                  </button>
                 </div>
               </div>
             </div>
+
 
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Economical partnership</label>
                 <br>
                 <div class="upload-btn-wrapper">
-                  <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                    Query Image</label>
+                  <label for="economicalQuryDocument" class="btn-upload-file padding-lr-5">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Query Image
+                  </label>
                   <input type="file" id="economicalQuryDocument" name="economicalQuryDocument"
                     style="height: 5px; width: 5px"
-                    (change)="uploadDocument($event,documentUploadType.economicalPartnershipQuery)" />
+                    (change)="uploadDocument($event, documentUploadType.economicalPartnershipQuery)" />
                   <br>
-                  <p>{{economicalPartnershipQueryFile?.fileName}}</p>
-                  <a (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
+                  <p>{{ economicalPartnershipQueryFile?.fileName }}</p>
+
+                  <a *ngIf="economicalPartnershipQueryFile"
+                    (click)="openUploadedDocument(economicalPartnershipQueryFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument">
+                    <i class="bi bi-eye-fill"></i> View
+                  </a>
+
+                  <!-- Remove button -->
+                  <button *ngIf="economicalPartnershipQueryFile"
+                    (click)="removeDocument(documentUploadType.economicalPartnershipQuery)"
+                    class="btn btn-danger w-100 mt-2">
+                    <i class="bi bi-trash-fill"></i> Remove
+                  </button>
                 </div>
               </div>
             </div>
+
 
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <label class="display-block">Other</label>
                 <br />
                 <div class="upload-btn-wrapper">
-                  <label class="btn-upload-file" for="otherDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    Upload Query Image</label>
+                  <label class="btn-upload-file" for="otherDocument">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Query Image
+                  </label>
                   <input type="file" name="myfile" id="otherDocument" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.otherQueryDocument)" />
                   <br>
-                  <p>{{documentUploadType?.otherQueryDocument?.fileName}}</p>
+                  <p>{{ documentUploadType?.otherQueryDocument?.fileName }}</p>
+
+                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
-                    <ng-container *ngIf="document?.type == documentUploadType.otherQueryDocument">
+                    <ng-container *ngIf="document?.type === documentUploadType.otherQueryDocument">
+                      <!-- View button -->
                       <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
-                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                        View</a>
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument">
+                        <i class="bi bi-eye-fill"></i> View
+                      </a>
+
+                      <!-- Remove button -->
+                      <button (click)="removeOtherDocument(document)" class="btn btn-danger w-100 mt-2">
+                        <i class="bi bi-trash-fill"></i> Remove
+                      </button>
                     </ng-container>
                   </ng-container>
                 </div>
               </div>
             </div>
+
 
           </div>
           <div class="row">
@@ -279,21 +310,36 @@
                 <label class="form-check-label" for="inlineRadio2">No</label>
               </div>
             </div>
+
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <div class="upload-btn-wrapper">
-                  <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5"><i
-                      class="bi bi-file-earmark-arrow-up-fill"></i> Upload Response</label>
+                  <label for="economicalResponseDocument" class="btn-upload-file padding-lr-5">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload Response
+                  </label>
                   <input type="file" id="economicalResponseDocument" name="myfile" style="height: 5px; width: 5px"
                     (change)="uploadDocument($event, documentUploadType.economicalPartnershipResponse)" />
                   <br>
-                  <p>{{economicalPartnershipResponceFile?.fileName}}</p>
-                  <a (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
-                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                    View</a>
+                  <p *ngIf="economicalPartnershipResponceFile">{{ economicalPartnershipResponceFile?.fileName }}</p>
+
+                  <!-- View button -->
+                  <a *ngIf="economicalPartnershipResponceFile"
+                    (click)="openUploadedDocument(economicalPartnershipResponceFile)" class="btn btn-small w-100"
+                    data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument">
+                    <i class="bi bi-eye-fill"></i> View
+                  </a>
+
+                  <!-- Remove button -->
+                  <button *ngIf="economicalPartnershipResponceFile"
+                    (click)="removeDocument(documentUploadType.economicalPartnershipResponse)"
+                    class="btn btn-danger w-100 mt-2">
+                    <i class="bi bi-trash-fill"></i> Remove
+                  </button>
                 </div>
               </div>
             </div>
+
+
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
               <div class="form-group">
                 <div class="upload-btn-wrapper">
@@ -303,17 +349,29 @@
                   <input type="file" name="myfile" style="height: 5px; width: 5px" id="otherDocument1"
                     (change)="uploadDocument($event, documentUploadType.otherDocument)" />
                   <br>
+
+                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
-                    <p>{{documentUploadType.otherDocument?.fileName}}</p>
-                    <ng-container *ngIf="document?.type == documentUploadType.otherDocument">
+                    <ng-container *ngIf="document?.type === documentUploadType.otherDocument">
+                      <!-- Display document file name -->
+                      <p>{{ document.file?.fileName }}</p>
+
+                      <!-- View button -->
                       <a (click)="openUploadedDocument(document?.file)" class="btn btn-small w-100"
-                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i class="bi bi-eye-fill"></i>
-                        View</a>
+                        data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument">
+                        <i class="bi bi-eye-fill"></i> View
+                      </a>
+
+                      <!-- Remove button -->
+                      <button (click)="removeOtherDocument(document)" class="btn btn-danger w-100 mt-2">
+                        <i class="bi bi-trash-fill"></i> Remove
+                      </button>
                     </ng-container>
                   </ng-container>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
         <div class="col-lg-3 col-xl-3 col-12">
@@ -372,7 +430,8 @@
               <div class="row align-items-center">
                 <div class="col-9">
                   <div class="form-group">
-                    <input type="text" [(ngModel)]="documentName" placeholder="Enter Document Name" class="form-control" />
+                    <input type="text" [(ngModel)]="documentName" placeholder="Enter Document Name"
+                      class="form-control" />
                   </div>
                 </div>
               </div>
@@ -401,19 +460,19 @@
               </div>
 
               <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'InProgress' && commentData?.length">
-                  <div class="d-flex gap-3" *ngFor="let item of commentData">
-                    <input disabled type="date" [value]="item.date" class="form-control"   placeholder="Date" />
-                    <input disabled type="text" [value]="item.comment" class="form-control"
-                      placeholder="Comments for In-Progress"  />
-                  </div>
+                <div class="d-flex gap-3" *ngFor="let item of commentData">
+                  <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
+                  <input disabled type="text" [value]="item.comment" class="form-control"
+                    placeholder="Comments for In-Progress" />
+                </div>
               </div>
               <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'InProgress'">
                 <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
                 <input *ngIf="this.status == 'InProgress'" type="text" class="form-control"
                   placeholder="Comments for In-Progress" [formControl]="statusComment" />
-                  <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                    <i class="bi bi-plus-lg"></i>
-                  </button>
+                <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -429,18 +488,18 @@
               </div>
               <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'InHold' && commentData?.length">
                 <div class="d-flex gap-3" *ngFor="let item of commentData">
-                  <input disabled type="date" [value]="item.date" class="form-control"   placeholder="Date" />
+                  <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
                   <input disabled type="text" [value]="item.comment" class="form-control"
-                    placeholder="Comments for In-Hold"  />
+                    placeholder="Comments for In-Hold" />
                 </div>
               </div>
               <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'InHold'">
                 <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-                <input type="text" class="form-control"
-                  placeholder="Comments for In-Hold" [formControl]="statusComment" />
-                  <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                    <i class="bi bi-plus-lg"></i>
-                  </button>
+                <input type="text" class="form-control" placeholder="Comments for In-Hold"
+                  [formControl]="statusComment" />
+                <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -456,19 +515,18 @@
               </div>
               <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'Passed' && commentData?.length">
                 <div class="d-flex gap-3" *ngFor="let item of commentData">
-                  <input disabled type="date" [value]="item.date" class="form-control"   placeholder="Date" />
+                  <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
                   <input disabled type="text" [value]="item.comment" class="form-control"
-                    placeholder="Comments for Pass"  />
+                    placeholder="Comments for Pass" />
                 </div>
               </div>
 
               <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'Passed'">
                 <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-                <input type="text" class="form-control"
-                  placeholder="Comments for Pass" [formControl]="statusComment" />
-                  <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                    <i class="bi bi-plus-lg"></i>
-                  </button>
+                <input type="text" class="form-control" placeholder="Comments for Pass" [formControl]="statusComment" />
+                <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -486,18 +544,17 @@
               </div>
               <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'Fail' && commentData?.length">
                 <div class="d-flex gap-3" *ngFor="let item of commentData">
-                  <input disabled type="date" [value]="item.date" class="form-control"   placeholder="Date" />
+                  <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
                   <input disabled type="text" [value]="item.comment" class="form-control"
-                    placeholder="Comments for Fail"  />
+                    placeholder="Comments for Fail" />
                 </div>
               </div>
               <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'Fail'">
                 <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-                <input type="text" class="form-control"
-                  placeholder="Comments for Fail" [formControl]="statusComment" />
-                  <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                    <i class="bi bi-plus-lg"></i>
-                  </button>
+                <input type="text" class="form-control" placeholder="Comments for Fail" [formControl]="statusComment" />
+                <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
               </div>
               <div class="col-12 d-flex gap-3" *ngIf="this.status == 'Fail'">
                 <!-- <div>
