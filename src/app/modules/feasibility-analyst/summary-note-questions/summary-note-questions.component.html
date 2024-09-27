@@ -165,7 +165,7 @@
                 <div class="container">
                     <form [formGroup]="eligibilityForm" (ngSubmit)="submiteligibilityForm()">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Case Study Numbers</label>
                                     <input type="number" class="form-control" formControlName="caseStudyRequired">
@@ -177,7 +177,7 @@
                                     <input type="text" class="form-control" formControlName="certifications">
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Policy</label>
                                     <input type="text" class="form-control" formControlName="policy">
@@ -205,7 +205,7 @@
         <form  (ngSubmit)="submituploaddocform()">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                    <div class="col-lg-11 col-xl-11 col-12 mob-mb1">
                         <h5>Upload Summary Documents</h5>
                         <div class="card">
                             <ul class="project-document">
@@ -236,13 +236,13 @@
                         <ng-container *ngIf="viewClientDocumentForm">
                             <div class="d-flex p-2 justify-content-between">
                                 <div class="row align-items-center">
-                                    <div class="col-9">
+                                    <div class="col-12">
                                         <div class="form-group">
                                             <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{standalone: true}" placeholder="Enter Comment" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-xl-4 col-6">
+                                <div class="col-lg-2 col-xl-2 col-6">
                                     <div class="btn btn-small w-100">
                                         <label for="uploadClientDocument"><i
                                                 class="bi bi-file-earmark-arrow-up-fill"></i> Upload
@@ -261,7 +261,7 @@
 
         <div class="row justify-content-end">
             <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+                <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a><br><br>
             </div>
         </div>
     </div>
