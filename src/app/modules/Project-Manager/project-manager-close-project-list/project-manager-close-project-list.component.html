@@ -41,8 +41,8 @@
               </ng-select>
             </div>
 
-             <!-- Status Dropdown -->
-             <div class="sort-widget mb-3">
+            <!-- Status Dropdown -->
+            <div class="sort-widget mb-3">
               <h6 class="p-600">Status</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Status"
                 class="form-select custom-ng-select-option" [items]="statusList" bindLabel="status" [multiple]="true"
@@ -119,8 +119,9 @@
             <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
               <div class="form-group mb-0">
                 <span class="input-icon"><i class="bi bi-search"></i></span>
-                <input class="form-control control-search" placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text" [(ngModel)]="searchText"
-                  (input)="searchtext()">
+                <input class="form-control control-search"
+                  placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference" type="text"
+                  [(ngModel)]="searchText" (input)="searchtext()">
               </div>
             </div>
             <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer;">
@@ -141,7 +142,8 @@
                   <th width="5%">Industry</th>
                   <th width="5%">Min value (GBP)</th>
                   <th width="5%">Max value (GBP)</th>
-                  <th width="5%">Website</th>
+                  <!-- <th width="5%">Website</th> -->
+                  <th width="5%">Matched / Shortlisted</th>
                   <th width="5%">Link to notice</th>
                   <th width="8%">Created Date</th>
                   <th width="5%">Status</th>
@@ -169,7 +171,8 @@
                     <td>{{item?.industry}}</td>
                     <td>{{item?.minValue}}</td>
                     <td>{{item?.maxValue}}</td>
-                    <td>{{item?.website}}</td>
+                    <!-- <td>{{item?.website}}</td> -->
+                    <td>Matched / Shortlisted</td>
                     <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
                     <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                     <td>{{item?.status}}</td>

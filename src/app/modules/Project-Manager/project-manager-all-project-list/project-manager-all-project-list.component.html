@@ -158,7 +158,8 @@
                   <th>Industry</th>
                   <th>Min value (GBP)</th>
                   <th>Max value (GBP)</th>
-                  <th>Website</th>
+                  <!-- <th>Website</th> -->
+                  <th>Matched / Shortlisted</th>
                   <th>Link to notice</th>
                   <th style="cursor: pointer;" (click)="createddatesort('createdAt')">Created Date <i
                       class="bi bi-sort-up"></i></th>
@@ -185,7 +186,8 @@
                   <td>{{item?.industry}}</td>
                   <td>£ {{item?.minValue}}</td>
                   <td>£ {{item?.maxValue}}</td>
-                  <td><a>{{item?.website}}</a></td>
+                  <!-- <td><a>{{item?.website}}</a></td> -->
+                  <td>Matched / Shortlisted</td>
                   <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
                   <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
