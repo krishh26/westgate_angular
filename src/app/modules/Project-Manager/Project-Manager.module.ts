@@ -23,6 +23,8 @@ import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-
 import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ProjectShortlistedDetailsComponent } from './project-shortlisted-details/project-shortlisted-details.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all-project-details.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { ProjectShortlistedDetailsComponent } from './project-shortlisted-detail
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
-    NgxSliderModule
+    NgxSliderModule,
+    NgxExtendedPdfViewerModule
   ],
   declarations: [
     ProjectManagerComponent,
@@ -51,7 +54,8 @@ import { ProjectShortlistedDetailsComponent } from './project-shortlisted-detail
     PmShortlistedProjectsComponent,
     PmCaseStudiesComponent,
     SummaryNotesComponent,
-    ProjectShortlistedDetailsComponent
+    ProjectShortlistedDetailsComponent,
+    NewAllProjectDetailsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]

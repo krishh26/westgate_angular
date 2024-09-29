@@ -277,7 +277,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/project-manager/project/details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/project-manager/project/project-all-details'], { queryParams: { id: projectId } });
   }
 
   changeRange() {
