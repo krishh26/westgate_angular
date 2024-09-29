@@ -25,6 +25,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ProjectShortlistedDetailsComponent } from './project-shortlisted-details/project-shortlisted-details.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all-project-details.component';
+import { ExpiredProjectListComponent } from './expired-project-list/expired-project-list.component';
+import { ExpiredProjectDetailsComponent } from './expired-project-details/expired-project-details.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -55,7 +58,9 @@ import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all
     PmCaseStudiesComponent,
     SummaryNotesComponent,
     ProjectShortlistedDetailsComponent,
-    NewAllProjectDetailsComponent
+    NewAllProjectDetailsComponent,
+    ExpiredProjectListComponent,
+    ExpiredProjectDetailsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]

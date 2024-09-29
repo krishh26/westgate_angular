@@ -1,19 +1,21 @@
-import { Options } from '@angular-slider/ngx-slider';
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { Form, FormControl, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepicker, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
-import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
-  selector: 'app-project-manager-all-project-list',
-  templateUrl: './project-manager-all-project-list.component.html',
-  styleUrls: ['./project-manager-all-project-list.component.scss']
+  selector: 'app-expired-project-list',
+  templateUrl: './expired-project-list.component.html',
+  styleUrls: ['./expired-project-list.component.css']
 })
-export class ProjectManagerAllProjectListComponent implements OnInit {
+export class ExpiredProjectListComponent implements OnInit {
+
   showLoader: boolean = false;
   projectList: any = [];
   categoryList: any = [];
@@ -32,7 +34,6 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     floor: 0,
     ceil: 50000000
   };
-
 
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -63,11 +64,11 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
   submissionEndDate: FormControl = new FormControl('');
-
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
+    private modalService: NgbModal,
     private superService: SuperadminService
   ) { }
 
@@ -76,8 +77,8 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
       let storeTest = res;
       this.searchText = res.toLowerCase();
     });
-    this.getIndustryList();
     this.getcategoryList();
+    this.getIndustryList();
     this.getProjectList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
@@ -192,58 +193,12 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     });
   };
 
-
-  // get project listing
   getProjectList() {
     this.showLoader = true;
-    Payload.pmAllProjectList.keyword = this.searchText;
-    Payload.pmAllProjectList.page = String(this.page);
-    Payload.pmAllProjectList.limit = String(this.pagesize);
-    Payload.pmAllProjectList.status = '';
-    Payload.pmAllProjectList.sortlist = false;
-    // Payload.pmAllProjectList.match = 'partial';
-    this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-        console.log('this.projectList', this.projectList);
-
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
-
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
-  }
-
-  searchtext() {
-    this.showLoader = true;
-    Payload.pmAllProjectList.keyword = this.searchText;
-    Payload.pmAllProjectList.page = String(this.page);
-    Payload.pmAllProjectList.limit = String(this.pagesize);
-    Payload.pmAllProjectList.category = this.selectedCategories.join(',');
-    Payload.pmAllProjectList.industry = this.selectedIndustries.join(',');
-    Payload.pmAllProjectList.projectType = this.selectedProjectTypes.join(',');
-    Payload.pmAllProjectList.clientType = this.selectedClientTypes.join(',');
-    Payload.pmAllProjectList.status = this.selectedStatuses.join(',')
-    Payload.pmAllProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
-    Payload.pmAllProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
-    Payload.pmAllProjectList.valueRange = this.minValue + '-' + this.maxValue;
-
-    this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
@@ -270,14 +225,60 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     });
   }
 
+  searchtext() {
+    this.showLoader = true;
+
+    // Update payload with filters
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.category = this.selectedCategories.join(',');
+    Payload.projectList.industry = this.selectedIndustries.join(',');
+    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
+    Payload.projectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.status = this.selectedStatuses.join(',')
+    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
+    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
+    Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
+
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      this.totalRecords = response?.data?.meta_data?.items;
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectList = response?.data?.data;
+        console.log(this.projectList);
+
+        this.projectList.forEach((project: any) => {
+          const dueDate = new Date(project.dueDate);
+          const currentDate = new Date();
+          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+          this.dateDifference = formattedDateDifference;
+        });
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  projectDetails(projectId: any) {
+    this.router.navigate(['/project-manager/project/expired-project-details'], { queryParams: { id: projectId } });
+  }
+
   paginate(page: number) {
     this.page = page;
     this.getProjectList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  projectDetails(projectId: any) {
-    this.router.navigate(['/project-manager/project/project-all-details'], { queryParams: { id: projectId } });
+  openAddTeamModal() {
+    //this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
   }
 
   changeRange() {
@@ -286,3 +287,4 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     }
   }
 }
+
