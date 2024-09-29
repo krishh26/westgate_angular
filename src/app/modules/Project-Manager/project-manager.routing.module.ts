@@ -14,6 +14,7 @@ import { PmCaseStudiesComponent } from 'src/app/modules/Project-Manager/pm-case-
 import { PmShortlistedProjectsComponent } from 'src/app/modules/Project-Manager/pm-shortlisted-projects/pm-shortlisted-projects.component';
 import { SummaryNotesComponent } from './summary-notes/summary-notes.component';
 import { ProjectShortlistedDetailsComponent } from './project-shortlisted-details/project-shortlisted-details.component';
+import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all-project-details.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: "details",
         component: AllProjectDetailsComponent
+      },
+      {
+        path: "project-all-details",
+        component: NewAllProjectDetailsComponent
       },
       {
         path: "match-project-details",
