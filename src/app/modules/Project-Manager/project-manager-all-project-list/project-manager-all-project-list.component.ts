@@ -18,6 +18,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   projectList: any = [];
   categoryList: any = [];
   industryList: any = [];
+  supplierList: any = [];
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
@@ -39,6 +40,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedSuppliers: any[] = [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -79,6 +81,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     this.getIndustryList();
     this.getcategoryList();
     this.getProjectList();
+    this.getsupplierList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
         this.notificationService.showError('Please select a Publish start date');
@@ -108,6 +111,22 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
       if (response?.message == "category fetched successfully") {
         this.showLoader = false;
         this.categoryList = response?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  getsupplierList() {
+    this.showLoader = true;
+    this.superService.getSupplierList().subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.supplierList = response?.data?.data;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -238,7 +257,8 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     Payload.pmAllProjectList.industry = this.selectedIndustries.join(',');
     Payload.pmAllProjectList.projectType = this.selectedProjectTypes.join(',');
     Payload.pmAllProjectList.clientType = this.selectedClientTypes.join(',');
-    Payload.pmAllProjectList.status = this.selectedStatuses.join(',')
+    Payload.pmAllProjectList.status = this.selectedStatuses.join(',');
+    Payload.pmAllProjectList.supplierId = this.selectedSuppliers.join(',');
     Payload.pmAllProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmAllProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmAllProjectList.valueRange = this.minValue + '-' + this.maxValue;

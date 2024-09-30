@@ -40,6 +40,7 @@ export class ProjectService {
     match: string,
     status: string,
     category?: string,
+    supplierId?: string,
     industry?: string,
     projectType?: string,
     clientType?: string,
@@ -67,6 +68,9 @@ export class ProjectService {
     }
     if (params?.category) {
       queryParams = queryParams.set('category', params?.category);
+    }
+    if (params?.supplierId) {
+      queryParams = queryParams.set('supplierId', params?.supplierId);
     }
     if (params?.industry) {
       queryParams = queryParams.set('industry', params?.industry);
