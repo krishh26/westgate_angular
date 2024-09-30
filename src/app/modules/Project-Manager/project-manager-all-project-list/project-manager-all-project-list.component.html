@@ -210,7 +210,7 @@
                   <td>£ {{item?.minValue}}</td>
                   <td>£ {{item?.maxValue}}</td>
                   <!-- <td><a>{{item?.website}}</a></td> -->
-                  <td>Matched / Shortlisted</td>
+                  <td>{{item?.matchedSupplierCount}} / {{item?.sortListUserId?.length}}</td>
                   <td><a href='{{item?.link}}' target="_blank">{{item?.link}}</a></td>
                   <td>{{item?.status}}</td>
                   <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
