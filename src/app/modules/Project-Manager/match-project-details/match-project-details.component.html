@@ -1,68 +1,120 @@
-<main id="main" class>
-  <section class="p-0">
-    <div class="table-responsive project-close">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th width="10%"></th>
-            <th width="12%">Project Title</th>
-            <th width="5%">BOS ID</th>
-            <th width="5%">Publish Date</th>
-            <th width="5%">Category</th>
-            <th width="5%">Industry</th>
-            <th width="5%">Value</th>
-            <th width="5%">Website</th>
-            <th width="5%">Link to notice</th>
-            <th width="8%">Created Date</th>
-            <th width="5%">Status</th>
-            <th width="10%">Due Date & Time</th>
-            <th width="15%"></th>
-            <th width="10%"></th>
+<section class="p-0">
+  <div class="table-responsive project-close">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th width="12%"></th>
+          <th width="12%">Project Title</th>
+          <th width="5%">Project Description</th>
+          <th width="5%">BOS ID</th>
+          <th width="5%">Publish Date</th>
+          <th width="5%">Category</th>
+          <th width="5%">Industry</th>
+          <th width="5%">Min value (GBP)</th>
+          <th width="5%">Max value (GBP)</th>
+          <th width="5%">Website</th>
+          <th width="5%">Link to notice</th>
+          <th width="8%">Created Date</th>
+          <th width="5%">Status</th>
+          <th width="10%">Due Date & Time</th>
+          <th width="15%">Action</th>
+          <th width="12%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td><a (click)="projectDetails(projectDetails?._id)" href="javascript:;">{{projectDetails?.projectName}}</a>
+          </td>
+          <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td>
+          <td v-align="middle">{{projectDetails?.BOSID}}</td>
+          <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
+          <td>{{projectDetails?.category}}</td>
+          <td>{{projectDetails?.industry}}</td>
+          <td>{{projectDetails?.minValue}}</td>
+          <td>{{projectDetails?.maxValue}}</td>
+          <td>{{projectDetails?.website}}</td>
+          <td><a href="javascript:;">{{projectDetails?.link}}</a></td>
+          <td>{{projectDetails?.createdAt | date:'dd-MM-YYYY'}}</td>
+          <td>{{projectDetails?.status}}</td>
+          <td>{{projectDetails?.dueDate | date:'dd-MM-yyyy, h:mm a'}}</td>
+          <td>
+            <button routerLink="/project-manager/project/all" class="btn btn-primary text-dark px-4 py-1">Back</button>
+          </td>
+          <td></td>
+        </tr>
+        <ng-container *ngIf="projectDetails?.select?.length > 0">
+          <tr class="bg-d3" style="background-color: #b5b2b2;">
+            <td colspan="1"></td>
+            <td colspan="12" style="background-color: #b5b2b2;">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <!-- <th></th> -->
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name</th>
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID</th>
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
+                    <th  class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Compatibility</th>
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background-color: #b5b2b2 !important;" *ngFor="let supplier of projectDetails?.select">
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.companyName}}</td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.name}}</td>
+                    <td style="background-color: #b5b2b2 !important;"><i class="bi bi-check-circle-fill text-success"></i> CS({{supplier?.matchedCaseStudy}}/3)</td>
+                    <td style="background-color: #b5b2b2 !important;">
+                      <select [(ngModel)]="supplier.supplierDetails.status" class="form-control"
+                        (change)="onStatusChange(supplier)">
+                        <option disabled selected hidden value="">Select Status</option>
+                        <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+                      </select>
+                    </td>
+                    <td style="background-color: #b5b2b2 !important;">{{supplier?.handoverCall | date : 'dd-MMM-YYYY'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td class="text-primary">
-              <a>{{ projectDetails?.projectName }}</a>
-            </td>
-            <td v-align="middle">{{ projectDetails?.BOSID }}</td>
-            <td>{{ projectDetails?.publishDate | date : "dd/MM/yyyy" }}</td>
-            <td>{{ projectDetails?.category }}</td>
-            <td>{{ projectDetails?.industry }}</td>
-            <td>{{ projectDetails?.value }}</td>
-            <td>{{ projectDetails?.website }}</td>
-            <td>
-              <a href="javascript:;">{{ projectDetails?.link }}</a>
-            </td>
-            <td>{{ projectDetails?.createdAt | date : "dd-MM-YYYY" }}</td>
-            <td>{{ projectDetails?.status }}</td>
-            <td>{{ projectDetails?.dueDate | date : "dd-MM-yyyy, h:mm a" }}</td>
-            <td>
-              <button routerLink="/project-manager/project/match" class="btn btn-primary text-dark px-4 py-1"
-                style="white-space: nowrap; font-size: 11px">
-                Back
-              </button>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-</main>
-<!-- End #main -->
+        </ng-container>
+        <tr *ngIf="projectDetails?.select?.length == 0">
+          <td colspan="14" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-<section class="pt-4" style="padding-bottom: 10px;">
+<section>
   <div class="container">
+    <div class="row">
+      <div class="col-12 d-flex align-items-center justify-content-end mb-4">
+        <div class="d-flex align-items-center me-4 " *ngFor="let casestudy of projectDetails?.casestudy">
+          <ng-container *ngIf="casestudy?.name">
+            <p class="fonts-12 mb-0 me-2">{{casestudy?.name}}</p>
+            <a (click)="openDocument(casestudy)" class="btn btn-primary rounded-pill px-2 py-1 fonts-12 w-auto"
+              data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View
+              Response</a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
 
     <section class="pageheader bg-dark">
-      <div class="container ">
+      <div class="container">
         <p><strong>Project Description</strong></p>
       </div>
     </section><br>
 
     <p>{{ projectDetails?.description }}</p>
+
 
     <div class="row mt-5">
       <div class="col-lg-4 col-xl-4 col-12 mb-4">
@@ -73,39 +125,15 @@
                 <h6 class="text-theme"><strong>Client Detils</strong></h6>
               </div>
               <div class="col-lg-7 col-xl-7 col-12">
-                <p class="p-13 mb-0">Mail ID : {{ projectDetails?.mailID }}</p>
-                <p class="p-13 mb-0">
-                  Client Type : {{ projectDetails?.clientType }}
-                </p>
-                <p class="p-13 mb-0">
-                  Client Name : {{ projectDetails?.clientName }}
-                </p>
+                <p class="p-13 mb-0">Mail ID : {{projectDetails?.mailID}}</p>
+                <p class="p-13 mb-0">Client Type : {{projectDetails?.clientType}}</p>
+                <p class="p-13 mb-0">Client Name : {{projectDetails?.clientName}}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space:nowrap;">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-                <p class="fonts-14 mb-0">FOI Screenshot</p>
-              </div>
-              <div class="col-lg-6 col-xl-6 col-6">
-                <a href="" class="btn btn-small w-100  fonts-14" data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
-              </div>
-
-            </div>
-            <div class="row align-items-center mt-3">
-              <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-                <p class="fonts-14 mb-0">FOI Document</p>
-              </div>
-              <div class="col-lg-6 col-xl-6 col-6">
-                <a href="" class="btn btn-small fonts-14 w-100"><i class="bi bi-eye-fill"></i> View</a>
-              </div>
-
-            </div>
-          </div> -->
-      <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space: nowrap">
+      <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center flex-column mb-4" style="white-space:nowrap;">
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <p class="mb-0">FOI Document</p>
         </div>
@@ -116,16 +144,17 @@
         </div>
         <ng-container *ngIf="projectDetails?.fois?.length > 0">
           <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
-            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-              <p class="mb-0">{{ foiDocument?.name }}</p>
+            <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
+              <p class="mb-0">{{foiDocument?.name}}</p>
             </div>
             <div class="col-lg-4 col-xl-4 col-6">
               <a (click)="openDocument(foiDocument)" class="btn btn-small w-100" data-bs-toggle="modal"
-                data-bs-target="#ViewScreenshot"><i class="bi bi-eye-fill"></i> View</a>
+                data-bs-target="#ViewDocumentModal"><i class="bi bi-eye-fill"></i> View</a>
             </div>
-            <div class="col-lg-4 col-xl-4 col-6">
+            <div class="col-lg-6 col-xl-6 col-6">
               <a (click)="download(foiDocument?.link?.url, foiDocument?.name)" target="_blank"
-                class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                class="btn btn-small w-100"><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                Download</a>
             </div>
           </div>
         </ng-container>
@@ -133,19 +162,10 @@
       <div class="col-lg-4 col-xl-4 col-12 mb-4">
         <div class="card">
           <div class="card-body text-center">
-            <p class="p-13">
-              <strong>Period of Contract:
-                {{
-                projectDetails?.periodOfContractStart | date : "dd/MM/yyyy"
-                }}
-                -
-                {{
-                projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy"
-                }}</strong>
-            </p>
-            <p class="p-13">
-              <strong>Project Type: {{ projectDetails?.projectType }}</strong>
-            </p>
+            <p class="p-13"><strong>Period of Contract: {{projectDetails?.periodOfContractStart | date :
+                'dd/MM/yyyy'}} - {{projectDetails?.periodOfContractEnd | date :
+                'dd/MM/yyyy'}}</strong></p>
+            <p class="p-13"><strong>Project Type: {{projectDetails?.projectType}}</strong></p>
           </div>
         </div>
       </div>
@@ -153,181 +173,147 @@
   </div>
 </section>
 
-<section style="padding-top: 10px; padding-bottom: 10px;">
 
+<section class="bg-dark">
   <div class="container">
-
-    <section class="pageheader bg-dark">
-      <div class="container ">
-        <p><strong>Supplier Details</strong></p>
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-white fonts-14 mb-2"><strong>Summary Note Questions</strong></h5>
       </div>
-    </section><br>
-
-    <div class="table-responsive match-detail">
-      <table class="table bg-f9 mb-0 align-middle">
-        <thead>
-          <tr>
-            <th width="100px" style="min-width: 100px"></th>
-            <th width="12%">Supplier Name</th>
-            <th width="5%">Supplier ID</th>
-            <th width="5%">Admin Name</th>
-            <th width="10%">Company Selection</th>
-            <th width="10%">Handover Call</th>
-            <th width="5%"></th>
-            <th width="100px" style="min-width: 100px"></th>
-          </tr>
-        </thead>
-        <tbody class="bg-f9 mb-2">
-          <ng-container *ngFor="let supplier of userDetail">
-            <ng-container class="mb-3">
-              <tr>
-                <td></td>
-                <td>{{ supplier.companyName }}</td>
-                <td>{{ supplier._id }}</td>
-                <td>{{supplier?.name}}</td>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 col-12 mb-4">
+        <table class="table table-dark table-borderless" style="background-color: #252525;">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <!-- <th>Weightage</th> -->
+              <th>Status</th>
+              <th>Deadline</th>
+              <th>Assign User</th>
+              <th>Review Note</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="summaryQuestionList?.length > 0">
+            <ng-container *ngFor="let item of summaryQuestionList">
+              <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
+                <td width="350">{{item?.question}}</td>
+                <!-- <td>35%</td> -->
                 <td>
-                  <div class="form-group">
-                    <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
-                      [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
-                      [(ngModel)]="supplier['company']">
-                    </ng-select>
-                  </div>
-
-                  <!-- <select
-                    class="form-select-sm fonts-12"
-                    [(ngModel)]="selectedSuppliers[supplier._id].company"
-                  >
-                    <ng-container *ngFor="let company of companyDetails">
-                      <option [value]="company">{{ company }}</option>
-                    </ng-container>
-                  </select> -->
+                  <span class="text-success" *ngIf="item?.verify">Verified</span>
+                  <span *ngIf="!item?.verify">Not Verified</span>
                 </td>
                 <td>
-                  <div class="row mb-3">
-                    <!-- <label for="inputEmail3" class="col-sm-4 col-form-label">Contract Period</label> -->
-                    <div class="col-12">
-                      <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
-                        style="height: 30px" />
-                    </div>
-                  </div>
+                  <span>
+                    {{item?.deadline | date : 'dd-MM-YYYY'}}
+                  </span>
+                  <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
+                  <!-- <i
+                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <!-- <button
-                      class="btn btn-sm btn-primary px-4 py-1 me-3"
-                      style="white-space: nowrap; font-size: 11px"
-                    >
-                      View Supplier Response
-                    </button> -->
-                    <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
-                      style="white-space: nowrap; font-size: 11px">
-                      {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
-                    </button>
-                  </div>
+                <td>Ayush
+                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                      class="bi bi-pencil-fill"></i></a> -->
                 </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td colspan="8" class="inner-table p-0">
-                  <table class="table bg-transparent w-100 mb-0">
-                    <tr>
-                      <td width="156px"></td>
-                      <td colspan="3" *ngFor="let casestudy of casestudylist">
-                        <div class="d-flex align-items-center bg-transparent">
-                          <div class="d-flex align-items-center me-1">
-                            <span class="w-space pe-2">{{casestudy?.name}}</span>
-                            <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
-                              (click)="openDocument(casestudy)" data-bs-toggle="modal"
-                              data-bs-target="#ViewCaseModal"><i class="bi bi-eye-fill me-2"></i> View</a>
-                          </div>
-                        </div>
-                      </td>
-                      <td colspan="3">
-                        <div class="d-flex align-items-center bg-transparent">
-                          <!-- <button
-                            (click)="addSupplier(supplier._id)"
-                            class="btn btn-sm btn-success px-5 py-1 me-3"
-                            style="white-space: nowrap; font-size: 11px"
-                          >
-                            Add
-                          </button> -->
-                        </div>
-                      </td>
-                      <td></td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <tr class="mb-3">
-                <td colspan="8" class="p-0">
-                  <table class="table w-100 mb-0">
-                    <tr>
-                      <td width="156px"></td>
-                      <td class="text-danger" style="width: 120px">
-                        <span class="bg-transparent mt-1"> Drop Reason</span>
-                      </td>
-                      <td colspan="5">
-                        <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
-                          placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
-                          aria-describedby="basic-addon1" />
-                      </td>
-                      <td>
-                        <div class="bg-transparent w-auto d-flex align-items-center">
-                          <button (click)="dropUser(supplier)"
-                            class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
-                            style="white-space: nowrap; font-size: 11px">
-                            Drop
-                          </button>
-                        </div>
-                      </td>
-                      <td></td>
-                    </tr>
-                  </table>
-                </td>
+                <td> {{item?.comment}}</td>
+                <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                      class="bi bi-eye-fill"></i> View</a></td>
+                <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
               </tr>
             </ng-container>
-          </ng-container>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <div class="row">
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+        </div>
+      </div>
     </div>
-    <div style="display: flex; align-items: end; justify-content: end;">
-      <button (click)="goToSummaryDetails()" class="btn btn-sm btn-primary px-4 py-1 me-3"
-        style="white-space: nowrap; font-size: 12px">
-        Add Summary Details
-      </button>
-    </div>
-    <br>
   </div>
-
 </section>
 
-<!-- View Screenshot Modal -->
-<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+<section class="" style="background-color: #0047AB;">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-white fonts-14 mb-2"><strong>Summary Note Questions - UK</strong></h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 col-12 blue-table mb-4">
+        <table class="table bg-transparent table-borderless">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <!-- <th>Weightage</th> -->
+              <th>Status</th>
+              <th>Deadline</th>
+              <th>Assign User</th>
+              <th>Review Note</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of summaryQuestionList">
+              <tr *ngIf="item?.summaryQuestionFor == 'UKWriter'">
+                <td width="350">{{item?.question}}</td>
+                <!-- <td>35%</td> -->
+                <td>
+                  <span class="text-success" *ngIf="item?.verify">Verified</span>
+                  <span *ngIf="!item?.verify">Not Verified</span>
+                </td>
+                <td>
+                  <span>
+                    {{item?.deadline | date : 'dd-MM-YYYY'}}
+                  </span>
+                  <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
+                  <!-- <i
+                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
+                </td>
+                <td>Ayush
+                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
+                      class="bi bi-pencil-fill"></i></a> -->
+                </td>
+                <td> {{item?.comment}}</td>
+                <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
+                      class="bi bi-eye-fill"></i> View</a></td>
+                <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="row">
+          <p *ngIf="summaryQuestionList?.length == 0" style="text-align: center;"> No Record Found !</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- View Date Modal -->
+<div class="modal fade" id="viewDateModal" tabindex="-1" aria-labelledby="viewDateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ViewScreenshotLabel">
-          FOI Document : {{ selectedDocument?.name }}
-        </h5>
+        <h5 class="modal-title" id="viewDateModalLabel">Deadline </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+        <input type="date" [value]="selectedDate" class="form-control" placeholder="Date" style="height: 30px;">
       </div>
-      <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+      <button type="button" (click)="saveDeadLineDate()" data-bs-dismiss="modal" class="btn btn-outline-dark me-2"
+        style="margin-bottom: 0.5rem;" class="btn btn-success me-3">Save</button>
     </div>
   </div>
 </div>
 
 <!-- View Document Modal -->
-<div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header" style="display: flex; justify-content: space-between;">
-        <h5 class="modal-title" id="ViewDocumentModalLabel">Case Study ({{selectedDocument?.name}})</h5>
+        <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
