@@ -229,7 +229,7 @@ export class ShortlistedSupplierProjectListComponent implements OnInit {
     Payload.pmShortlistsupplierProjectList.status = '';
     Payload.pmShortlistsupplierProjectList.sortlist = false;
     Payload.pmShortlistsupplierProjectList.match = 'partial';
-    Payload.pmShortlistsupplierProjectList.selectedSupplier = false;
+    Payload.pmShortlistsupplierProjectList.selectedSupplier = true;
     this.projectService.getProjectList(Payload.pmShortlistsupplierProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -306,7 +306,7 @@ export class ShortlistedSupplierProjectListComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/project-manager/project/project-all-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/project-manager/project/shortlisted-supplier-project-details'], { queryParams: { id: projectId } });
   }
 
   changeRange() {
