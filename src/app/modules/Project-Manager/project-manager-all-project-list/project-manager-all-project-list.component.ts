@@ -58,7 +58,15 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
     { value: 'Pass', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' }
+    { value: 'Fail', status: 'Fail' },
+
+    { value: 'InSolution', status: 'In solution' },
+    { value: 'InReviewWestGate', status: 'In-review' },
+    { value: 'InSubmission', status: 'In-Submission' },
+    { value: 'Submitted', status: 'Submitted' },
+    { value: 'Awarded', status: 'Awarded' },
+    { value: 'NotAwarded', status: 'Not awarded' },
+    { value: 'Dropped', status: 'Dropped' }
   ];
 
   publishStartDate: FormControl = new FormControl('');

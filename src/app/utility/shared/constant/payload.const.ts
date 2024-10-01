@@ -50,6 +50,7 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
+    supplierId: ''
   },
 
   pmCloseProjectList: {
@@ -84,6 +85,7 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
+    supplierId: ''
   },
 
   mailSSList: {

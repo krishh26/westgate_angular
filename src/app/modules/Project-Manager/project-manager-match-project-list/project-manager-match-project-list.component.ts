@@ -20,7 +20,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
   totalRecords: number = pagination.totalRecords;
   searchText: any;
   myControl = new FormControl();
-
+  supplierList: any = [];
   minValue: number = 0;
   maxValue: number = 50000000;
   options: Options = {
@@ -46,14 +46,24 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
     { value: 'Pass', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' }
+    { value: 'Fail', status: 'Fail' },
+
+    { value: 'InSolution', status: 'In solution' },
+    { value: 'InReviewWestGate', status: 'In-review' },
+    { value: 'InSubmission', status: 'In-Submission' },
+    { value: 'Submitted', status: 'Submitted' },
+    { value: 'Awarded', status: 'Awarded' },
+    { value: 'NotAwarded', status: 'Not awarded' },
+    { value: 'Dropped', status: 'Dropped' }
   ];
+  
 
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedSuppliers: any[] = [];
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
@@ -75,6 +85,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     this.getIndustryList();
     this.getcategoryList();
     this.getProjectList();
+    this.getsupplierList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
         this.notificationService.showError('Please select a Publish start date');
@@ -119,6 +130,22 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     });
   }
 
+  getsupplierList() {
+    this.showLoader = true;
+    this.superService.getSupplierList().subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.supplierList = response?.data?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
   searchtext() {
     this.showLoader = true;
     Payload.pmMatchProjectList.keyword = this.searchText;
@@ -128,7 +155,8 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     Payload.pmMatchProjectList.industry = this.selectedIndustries.join(',');
     Payload.pmMatchProjectList.projectType = this.selectedProjectTypes.join(',');
     Payload.pmMatchProjectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
+    Payload.pmMatchProjectList.status = this.selectedStatuses.join(',');
+    Payload.pmMatchProjectList.supplierId = this.selectedSuppliers.join(',');
     Payload.pmMatchProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmMatchProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmMatchProjectList.valueRange = this.minValue + '-' + this.maxValue;

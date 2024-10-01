@@ -19,7 +19,7 @@ export class PmShortlistedProjectsComponent {
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   searchText: any;
-
+  supplierList: any = [];
   minValue: number = 0;
   maxValue: number = 50000000;
   options: Options = {
@@ -45,7 +45,15 @@ export class PmShortlistedProjectsComponent {
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
     { value: 'Pass', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' }
+    { value: 'Fail', status: 'Fail' },
+
+    { value: 'InSolution', status: 'In solution' },
+    { value: 'InReviewWestGate', status: 'In-review' },
+    { value: 'InSubmission', status: 'In-Submission' },
+    { value: 'Submitted', status: 'Submitted' },
+    { value: 'Awarded', status: 'Awarded' },
+    { value: 'NotAwarded', status: 'Not awarded' },
+    { value: 'Dropped', status: 'Dropped' }
   ];
 
   selectedCategories: any[] = [];
@@ -53,6 +61,7 @@ export class PmShortlistedProjectsComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedSuppliers: any[] = [];
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
@@ -69,6 +78,7 @@ export class PmShortlistedProjectsComponent {
     this.getIndustryList();
     this.getcategoryList();
     this.getProjectList();
+    this.getsupplierList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
         this.notificationService.showError('Please select a Publish start date');
@@ -95,6 +105,7 @@ export class PmShortlistedProjectsComponent {
     Payload.pmShortlistProjectList.limit = String(this.pagesize);
     Payload.pmShortlistProjectList.status = '';
     Payload.pmShortlistProjectList.sortlist = true;
+    Payload.pmAllProjectList.match = 'partial';
     this.projectService.getProjectList(Payload.pmShortlistProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -122,7 +133,8 @@ export class PmShortlistedProjectsComponent {
     Payload.pmShortlistProjectList.industry = this.selectedIndustries.join(',');
     Payload.pmShortlistProjectList.projectType = this.selectedProjectTypes.join(',');
     Payload.pmShortlistProjectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
+    Payload.pmShortlistProjectList.status = this.selectedStatuses.join(',');
+    Payload.pmShortlistProjectList.supplierId = this.selectedSuppliers.join(',');
     Payload.pmShortlistProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmShortlistProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmShortlistProjectList.valueRange = this.minValue + '-' + this.maxValue;
@@ -143,6 +155,23 @@ export class PmShortlistedProjectsComponent {
       this.showLoader = false;
     });
   }
+
+  getsupplierList() {
+    this.showLoader = true;
+    this.superService.getSupplierList().subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.supplierList = response?.data?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
 
   projectDetails(projectId: any) {
     this.router.navigate(['/project-manager/project/shortlisted-project-details'], { queryParams: { id: projectId } });
