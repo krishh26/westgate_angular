@@ -32,7 +32,26 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: ''
+    supplierId: '',
+  },
+
+  pmShortlistsupplierProjectList: {
+    keyword: '',
+    page: '1',
+    limit: '10',
+    applied: false,
+    sortlist: false,
+    match: "",
+    status: "",
+    category: '',
+    industry: '',
+    projectType: '',
+    clientType: '',
+    publishDateRange: '',
+    SubmissionDueDateRange: '',
+    valueRange: '',
+    supplierId: '',
+    selectedSupplier : false
   },
 
   pmMatchProjectList: {
