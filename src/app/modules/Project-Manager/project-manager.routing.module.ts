@@ -17,6 +17,8 @@ import { ProjectShortlistedDetailsComponent } from './project-shortlisted-detail
 import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all-project-details.component';
 import { ExpiredProjectListComponent } from './expired-project-list/expired-project-list.component';
 import { ExpiredProjectDetailsComponent } from './expired-project-details/expired-project-details.component';
+import { ShortlistedSupplierProjectDetailsComponent } from './shortlisted-supplier-project-details/shortlisted-supplier-project-details.component';
+import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-project-list/shortlisted-supplier-project-list.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,14 @@ const routes: Routes = [
       {
         path: "expired-project-details",
         component: ExpiredProjectDetailsComponent
+      },
+      {
+        path: "shortlisted-supplier-project-details",
+        component: ShortlistedSupplierProjectDetailsComponent
+      },
+      {
+        path: "shortlisted-supplier-project-list",
+        component: ShortlistedSupplierProjectListComponent
       },
       {
         path: "match",

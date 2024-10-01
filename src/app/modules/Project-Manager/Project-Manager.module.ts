@@ -27,6 +27,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NewAllProjectDetailsComponent } from './new-all-project-details/new-all-project-details.component';
 import { ExpiredProjectListComponent } from './expired-project-list/expired-project-list.component';
 import { ExpiredProjectDetailsComponent } from './expired-project-details/expired-project-details.component';
+import { ShortlistedSupplierProjectDetailsComponent } from './shortlisted-supplier-project-details/shortlisted-supplier-project-details.component';
+import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-project-list/shortlisted-supplier-project-list.component';
 
 @NgModule({
   imports: [
@@ -60,7 +62,9 @@ import { ExpiredProjectDetailsComponent } from './expired-project-details/expire
     ProjectShortlistedDetailsComponent,
     NewAllProjectDetailsComponent,
     ExpiredProjectListComponent,
-    ExpiredProjectDetailsComponent
+    ExpiredProjectDetailsComponent,
+    ShortlistedSupplierProjectDetailsComponent,
+    ShortlistedSupplierProjectListComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe]
