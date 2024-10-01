@@ -54,7 +54,7 @@
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier Name</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Supplier ID</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Admin Name</th>
-                    <th  class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Compatibility</th>
+                    <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Compatibility</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Status</th>
                     <th class="fw-bold mb-3" style="white-space: nowrap; background-color: #b5b2b2;">Handover Call date
                     </th>
@@ -65,7 +65,8 @@
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.companyName}}</td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierId}}</td>
                     <td style="background-color: #b5b2b2 !important;">{{supplier?.supplierDetails?.name}}</td>
-                    <td style="background-color: #b5b2b2 !important;"><i class="bi bi-check-circle-fill text-success"></i> CS({{supplier?.matchedCaseStudy}}/3)</td>
+                    <td style="background-color: #b5b2b2 !important;"><i
+                        class="bi bi-check-circle-fill text-success"></i> CS({{supplier?.matchedCaseStudy}}/3)</td>
                     <td style="background-color: #b5b2b2 !important;">
                       <select [(ngModel)]="supplier.supplierDetails.status" class="form-control"
                         (change)="onStatusChange(supplier)">
@@ -190,7 +191,7 @@
               <!-- <th>Weightage</th> -->
               <th>Status</th>
               <th>Deadline</th>
-              <th>Assign User</th>
+              <!-- <th>Assign User</th> -->
               <th>Review Note</th>
               <th></th>
             </tr>
@@ -212,7 +213,7 @@
                   <!-- <i
                       data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
-                <td>Ayush
+                <td>
                   <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
                       class="bi bi-pencil-fill"></i></a> -->
                 </td>
@@ -248,7 +249,7 @@
               <!-- <th>Weightage</th> -->
               <th>Status</th>
               <th>Deadline</th>
-              <th>Assign User</th>
+              <!-- <th>Assign User</th> -->
               <th>Review Note</th>
               <th></th>
             </tr>
@@ -270,7 +271,7 @@
                   <!-- <i
                       data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
-                <td>Ayush
+                <td>
                   <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
                       class="bi bi-pencil-fill"></i></a> -->
                 </td>
