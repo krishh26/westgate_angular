@@ -32,7 +32,7 @@ import { FooterComponent } from 'src/app/utility/shared/components/footer/footer
 import { ProjectDetailsForAppliedComponent } from './project-details-for-applied/project-details-for-applied.component';
 import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -71,7 +71,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxSliderModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
