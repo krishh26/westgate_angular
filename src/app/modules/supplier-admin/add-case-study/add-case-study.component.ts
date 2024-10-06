@@ -15,31 +15,16 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class AddCaseStudyComponent {
 
   addEditProjectForm = {
-    projectName: new FormControl("", Validators.required),
-    BOSID: new FormControl("", Validators.required),
-    publishDate: new FormControl(moment(new Date()).format('dd-MM-YYYY'), Validators.required),
-    website: new FormControl("", Validators.required),
+    clientname: new FormControl("", Validators.required),
+    resourcesused: new FormControl("", Validators.required),
+    contractvalue: new FormControl("", Validators.required),
     category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
     description: new FormControl("", Validators.required),
-    link: new FormControl("", Validators.required),
-    periodOfContractStart: new FormControl("", Validators.required),
-    periodOfContractEnd: new FormControl("", Validators.required),
-    value: new FormControl("", Validators.required),
-    projectType: new FormControl("", Validators.required),
-    mailID: new FormControl("", Validators.required),
-    clientType: new FormControl("", Validators.required),
-    clientName: new FormControl("", Validators.required),
-    bidsubmissionhour: new FormControl("", Validators.required),
-    bidsubmissionminute: new FormControl("", Validators.required),
-
-    // submission: new FormControl("", Validators.required),
-    dueDate: new FormControl("", Validators.required),
-    noticeReference: new FormControl("", Validators.required),
-    CPVCodes: new FormControl("", Validators.required),
-    minValue: new FormControl("", Validators.required),
-    maxValue: new FormControl("", Validators.required),
-    bidsubmissiontime: new FormControl("10", Validators.required),
+    maintenance: new FormControl("", Validators.required),
+    technology: new FormControl("", Validators.required),
+    type: new FormControl("", Validators.required),
+    startdate: new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -68,7 +53,6 @@ export class AddCaseStudyComponent {
     }
   }
 
-  // Number only validation
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -94,18 +78,13 @@ export class AddCaseStudyComponent {
         this.showLoader = false;
         this.categoryList = response?.data;
       } else {
-        // this.notificationService.showError(response?.message);
+        this.notificationService.showError(response?.message);
         this.showLoader = false;
       }
     }, (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
-  }
-
-  onDropdownChange(event: any) {
-    // this.selectedProjectId = event.target.value;
-    // this.getProjectRemark()
   }
 
   getIndustryList() {
@@ -116,7 +95,7 @@ export class AddCaseStudyComponent {
         this.industryList = response?.data;
         console.log(this.industryList);
       } else {
-        //  this.notificationService.showError(response?.message);
+        this.notificationService.showError(response?.message);
         this.showLoader = false;
       }
     }, (error) => {
@@ -125,24 +104,6 @@ export class AddCaseStudyComponent {
     });
   }
 
-  // getCurrentDate(): string {
-  //   const currentDate = new Date();
-  //   return this.formatDate(currentDate);
-  // }
-
-  // formatDate(date: any) {
-  //   const day = date.getDate();
-  //   const monthNames = [
-  //     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  //   ];
-  //   const month = monthNames[date.getMonth()];
-  //   const year = date.getFullYear();
-
-  //   return `${day}-${month}-${year}`;
-  // }
-
-
-  // Submit form
   submitForm() {
     this.showLoader = true;
     let payload = {
@@ -152,7 +113,7 @@ export class AddCaseStudyComponent {
       this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
         if (response.status) {
           this.notificationService.showSuccess('', 'Project updated successfully.');
-          this.router.navigate(['/boss-user/project-list']);
+          this.router.navigate(['/supplier-admin/case-studies-list']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -167,7 +128,7 @@ export class AddCaseStudyComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.notificationService.showSuccess('', 'Project added successfully.');
-          this.router.navigate(['/boss-user/project-list']);
+          this.router.navigate(['/supplier-admin/case-studies-list']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
