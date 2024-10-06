@@ -54,6 +54,10 @@ const routes: Routes = [
         component: SupplierAdminProjectListingComponent
       },
       {
+        path: "add-casestudy",
+        component: AddCaseStudyComponent
+      },
+      {
         path: "supplier-dashboard",
         component: SupplierDashboardComponent
       },
