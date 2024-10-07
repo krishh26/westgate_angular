@@ -16,16 +16,17 @@ export class AddCaseStudyComponent {
 
   addEditProjectForm = {
     projectApplicationName: new FormControl("", Validators.required),
-    category: new FormControl("", Validators.required),
+    domainCategory: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
     type: new FormControl("", Validators.required),
     date: new FormControl("", Validators.required),
     resourcesUsed: new FormControl("", Validators.required),
     clientName: new FormControl("", Validators.required),
     contractValue: new FormControl("", Validators.required),
-
-    technology: new FormControl("", Validators.required),
-    startdate: new FormControl("", Validators.required),
+    description: new FormControl("", Validators.required),
+    technologies: new FormControl("", Validators.required),
+    maintenance: new FormControl("", Validators.required),
+    contractDuration: new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
