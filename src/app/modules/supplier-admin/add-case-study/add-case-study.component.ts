@@ -15,14 +15,15 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class AddCaseStudyComponent {
 
   addEditProjectForm = {
-    name: new FormControl("", Validators.required),
+    projectApplicationName: new FormControl("", Validators.required),
     category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
     type: new FormControl("", Validators.required),
     date: new FormControl("", Validators.required),
-    contractvalue: new FormControl("", Validators.required),
-    description: new FormControl("", Validators.required),
-    maintenance: new FormControl("", Validators.required),
+    resourcesUsed: new FormControl("", Validators.required),
+    clientName: new FormControl("", Validators.required),
+    contractValue: new FormControl("", Validators.required),
+
     technology: new FormControl("", Validators.required),
     startdate: new FormControl("", Validators.required),
   }
