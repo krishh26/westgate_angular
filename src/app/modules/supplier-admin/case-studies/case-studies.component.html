@@ -11,47 +11,7 @@
     </section>
 
     <section class="casestudy-section">
-        <div class="container-fluid">
-            <button type="button" routerLink="/supplier-admin/add-casestudy" class="btn btn-primary me-2" >ADD CASE STUDY</button>
-            <h4 class="text-theme mb-4"><strong>Case Studies</strong></h4>
-            <form [formGroup]="caseForm" (ngSubmit)="addCaseStudy()">
-                <div class="row">
-                    <div class="col-lg-4 col-xl-4 col-12">
-                        <div class="row mb-3">
-                            <label for="colFormLabel" class="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" placeholder=" name" formControlName="name"
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-12">
-                        <div class="row mb-2">
-                            <label for="colFormLabel" class="col-sm-2 col-form-label">Category</label>
-                            <div class="col-sm-10">
-                                <select class="form-select" formControlName="category">
-                                    <option value="">Select Category</option>
-                                    <option *ngFor="let category of categoryList" [value]="category.category">{{
-                                        category.category }}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-12 text-end">
-                        <div class="upload-btn-wrapper me-2">
-                            <label for="fileInput" class="btn-upload-file"><i
-                                    class="bi bi-file-earmark-arrow-up-fill"></i>
-                                Upload Document</label>
-                            <input type="file" id="fileInput" name="myfile" style="height: 10px; width: 10px;"
-                                (change)="addFiles($event)" accept=".xls,.xlsx" />
-                        </div>
-                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                            data-bs-target="#ViewTemplate">Template</button>
-                        <button type="submit" class="btn btn-dark me-2">Add</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        <button type="button" routerLink="/supplier-admin/add-casestudy" class="btn btn-primary me-2" >ADD CASE STUDY</button>
     </section>
 
     <section class="p-0">
