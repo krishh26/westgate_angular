@@ -26,6 +26,8 @@ import { SupplierProjectWorkInProgressComponent } from './supplier-project-work-
 import { ProjectNotificationComponent } from 'src/app/utility/shared/common/project-notification/project-notification.component';
 import { ProjectDetailsForAppliedComponent } from './project-details-for-applied/project-details-for-applied.component';
 import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
+import { ProjectListDashboardComponent } from './project-list-dashboard/project-list-dashboard.component';
+import { ProjectDetailsDahboardComponent } from './project-details-dahboard/project-details-dahboard.component';
 
 
 const routes: Routes = [
@@ -49,6 +51,18 @@ const routes: Routes = [
       //   path: "projects-matched",
       //   component: ProjectsMatchedComponent
       // },
+      {
+        path: "project-list",
+        component: SupplierAdminProjectListingComponent
+      },
+      {
+        path: "dashboard-project-list",
+        component: ProjectListDashboardComponent
+      },
+      {
+        path: "dashboard-project-detail",
+        component: ProjectDetailsDahboardComponent
+      },
       {
         path: "project-list",
         component: SupplierAdminProjectListingComponent

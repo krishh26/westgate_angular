@@ -33,6 +33,8 @@ import { ProjectDetailsForAppliedComponent } from './project-details-for-applied
 import { QuestionAnswerDetailsComponent } from './question-answer-details/question-answer-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ProjectListDashboardComponent } from './project-list-dashboard/project-list-dashboard.component';
+import { ProjectDetailsDahboardComponent } from './project-details-dahboard/project-details-dahboard.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     SupplierProjectWorkInProgressComponent,
     FooterComponent,
     ProjectDetailsForAppliedComponent,
-    QuestionAnswerDetailsComponent
+    QuestionAnswerDetailsComponent,
+    ProjectListDashboardComponent,
+    ProjectDetailsDahboardComponent
   ],
   imports: [
     CommonModule,
