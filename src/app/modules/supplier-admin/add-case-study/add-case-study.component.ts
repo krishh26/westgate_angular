@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 
 @Component({
   selector: 'app-add-case-study',
@@ -15,8 +16,8 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class AddCaseStudyComponent {
 
   addEditProjectForm = {
-    projectApplicationName: new FormControl("", Validators.required),
-    domainCategory: new FormControl("", Validators.required),
+    name: new FormControl("", Validators.required),
+    category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
     type: new FormControl("", Validators.required),
     date: new FormControl("", Validators.required),
@@ -40,7 +41,8 @@ export class AddCaseStudyComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private supplierService: SupplierAdminService
   ) {
   }
 
@@ -106,28 +108,23 @@ export class AddCaseStudyComponent {
     });
   }
 
+
   submitForm() {
     this.showLoader = true;
-    let payload = {
-      data: this.productForm.value
+
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append all form values to the FormData object
+    for (const key in this.productForm.value) {
+      if (this.productForm.value.hasOwnProperty(key)) {
+        formData.append(key, this.productForm.value[key]);
+      }
     }
-    if (this.projectId) {
-      this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
-        if (response.status) {
-          this.notificationService.showSuccess('', 'Project updated successfully.');
-          this.router.navigate(['/supplier-admin/case-studies-list']);
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-        error => {
-          this.notificationService.showError(error?.message);
-          this.showLoader = false;
-        })
-    } else {
-      this.projectService.addProject(payload).subscribe((response) => {
-        if (response?.status == true) {
+
+    this.supplierService.addCaseStudy(formData).subscribe(
+      (response) => {
+        if (response?.status === true) {
           this.showLoader = false;
           this.notificationService.showSuccess('', 'Project added successfully.');
           this.router.navigate(['/supplier-admin/case-studies-list']);
@@ -135,10 +132,12 @@ export class AddCaseStudyComponent {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
-      }, (error) => {
+      },
+      (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
-      });
-    }
+      }
+    );
   }
+
 }
