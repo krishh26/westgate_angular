@@ -71,7 +71,6 @@ export class CaseStudiesComponent {
     );
   }
 
-
   getCaseStudiesList() {
     this.showLoader = true;
     this.supplierService.getCaseStudyList().subscribe((response) => {
