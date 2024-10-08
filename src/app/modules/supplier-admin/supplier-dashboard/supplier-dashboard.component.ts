@@ -36,7 +36,7 @@ export class SupplierDashboardComponent {
         this.projectValue = response?.data?.projectValue;
         this.projectCount = response?.data?.projectCount;
         console.log(this.projectValue);
-        
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -45,6 +45,11 @@ export class SupplierDashboardComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  navigateToProjectList(status: string) {
+    // Navigate to the desired route with 'status=Pass' query param
+    this.router.navigate(['/supplier-admin/dashboard-project-list'], { queryParams: { status: 'Pass', category: status } });
   }
 
 }

@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12">
                     <h5 style="text-align: center;">History</h5><br />
-                    <div class="col-12 mb-5">
+
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -22,7 +23,7 @@
                         <a class="explore-btn bg-blue w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Total Projects in my category')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -40,7 +41,7 @@
                         <a class="explore-btn bg-success w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Matched')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -58,7 +59,7 @@
                         <a class="explore-btn bg-teal w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Shortlisted')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -76,7 +77,7 @@
                         <a class="explore-btn bg-info w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Dropped')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -94,7 +95,7 @@
                         <a class="explore-btn bg-warning w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Awarded')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -112,7 +113,7 @@
                         <a class="explore-btn bg-green w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('NotAwarded')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -133,7 +134,8 @@
 
                 <div class="col-lg-6 col-xl-6 col-sm-6 col-md-6 col-12">
                     <h5 style="text-align: center;">Current</h5><br />
-                    <div class="col-12 mb-5">
+
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('In-solution')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -151,7 +153,7 @@
                         <a class="explore-btn bg-blue w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('In-review')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -169,7 +171,7 @@
                         <a class="explore-btn bg-success w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('InSubmission')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -187,7 +189,7 @@
                         <a class="explore-btn bg-teal w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('UK Expert-Writing')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -205,7 +207,7 @@
                         <a class="explore-btn bg-info w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('UK Expert-Review')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -223,7 +225,7 @@
                         <a class="explore-btn bg-warning w-100"></a>
                     </div>
 
-                    <div class="col-12 mb-5">
+                    <div class="col-12 mb-5" (click)="navigateToProjectList('Submitted')">
                         <div class="statistic-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -232,7 +234,7 @@
                                     </div>
                                     <div class="col-4">
                                         <h2 class="text-green">
-                                            <strong>{{projectCount?.totalSubmit}}</strong>
+                                            <strong>{{projectCount?.totalSubmitted}}</strong>
                                         </h2>
                                     </div>
                                 </div>
@@ -241,7 +243,6 @@
                         <a class="explore-btn bg-green w-100"></a>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
