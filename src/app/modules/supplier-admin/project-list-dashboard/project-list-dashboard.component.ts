@@ -40,7 +40,7 @@ export class ProjectListDashboardComponent implements OnInit {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-
+  status: any
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -70,7 +70,13 @@ export class ProjectListDashboardComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private superService: SuperadminService
-  ) { }
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      this.status = navigation.extras.state['status'];
+      const category = navigation.extras.state['category'];
+    }
+  }
 
   ngOnInit(): void {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -198,6 +204,7 @@ export class ProjectListDashboardComponent implements OnInit {
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.status = this.status || ''
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

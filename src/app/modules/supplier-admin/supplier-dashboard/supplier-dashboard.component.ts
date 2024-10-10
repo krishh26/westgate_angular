@@ -48,8 +48,8 @@ export class SupplierDashboardComponent {
   }
 
   navigateToProjectList(status: string) {
-    // Navigate to the desired route with 'status=Pass' query param
-    this.router.navigate(['/supplier-admin/dashboard-project-list'], { queryParams: { status: 'Pass', category: status } });
+    this.router.navigate(['/supplier-admin/dashboard-project-list'], { state: { status: status } });
   }
+  
 
 }
