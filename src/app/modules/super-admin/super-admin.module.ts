@@ -13,6 +13,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 
@@ -34,7 +36,9 @@ import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-detai
     ReactiveFormsModule,
     NgbModule,
     SuperAdminRoutingModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxSliderModule,
+    NgxExtendedPdfViewerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
