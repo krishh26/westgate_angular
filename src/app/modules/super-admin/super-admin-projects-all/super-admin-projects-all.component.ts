@@ -2,6 +2,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime } from 'rxjs';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -9,6 +10,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 
 @Component({
   selector: 'app-super-admin-projects-all',
@@ -68,7 +70,8 @@ export class SuperAdminProjectsAllComponent {
     private notificationService: NotificationService,
     private router: Router,
     private localStorageService: LocalStorageService,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private modalService: NgbModal,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -97,6 +100,14 @@ export class SuperAdminProjectsAllComponent {
         this.searchtext()
       }
     });
+  }
+
+  openAddTeamModal() {
+    this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
+  }
+
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/super-admin/super-admin-add-project'], { queryParams: { id: projectId } });
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -137,7 +148,6 @@ export class SuperAdminProjectsAllComponent {
     });
   }
 
-
   getProjectList() {
     this.showLoader = true;
     Payload.projectList.keyword = this.searchText;
@@ -172,8 +182,6 @@ export class SuperAdminProjectsAllComponent {
 
   searchtext() {
     this.showLoader = true;
-
-    // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
@@ -233,7 +241,6 @@ export class SuperAdminProjectsAllComponent {
     });
   };
 
-  
   createddatesort(property: any) {
     this.isDesc = !this.isDesc;
     this.column = property;
@@ -252,7 +259,6 @@ export class SuperAdminProjectsAllComponent {
     });
   };
 
-  
   duedatesort(property: any) {
     this.isDesc = !this.isDesc;
     this.column = property;
@@ -270,7 +276,6 @@ export class SuperAdminProjectsAllComponent {
       }
     });
   };
-
 
   projectDetails(projectId: any) {
     this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });

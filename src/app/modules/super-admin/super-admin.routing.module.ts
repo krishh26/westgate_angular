@@ -7,6 +7,7 @@ import { SuperAdminSupplierComponent } from './super-admin-supplier/super-admin-
 import { SuperAdminSupplierProjectViewComponent } from './super-admin-supplier-project-view/super-admin-supplier-project-view.component';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
 import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
+import { SuperadminAddProjectComponent } from './superadmin-add-project/superadmin-add-project.component';
 
 
 
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: "super-admin-supplier-project-details",
         component: SuperAdminSupplierDetailsComponent
+      },
+      {
+        path: "super-admin-add-project",
+        component: SuperadminAddProjectComponent
       },
     ]
   },
