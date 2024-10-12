@@ -126,13 +126,23 @@
           <div class="statistic-card">
             <div class="card-body">
               <h5 class="text-theme"><strong>Suppliers Statistics</strong></h5>
-              <p class="p-13">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              <p>Last Week</p>
-              <!-- <canvas id="barChart"></canvas> -->
-              <div>
-                <canvas id="canvas">{{chart}}</canvas>
+              <div class="table-responsive mt-5 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Supplier Name</th>
+                      <th>Last Login</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let item of supplierUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                      <td>{{item?.name}}</td>
+                      <td>{{ item?.lastLogin ? (item.lastLogin | date : 'dd/MM/yyyy') : '-' }}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
