@@ -29,9 +29,9 @@ export class SuperadminService {
     this.baseUrl = environment.baseUrl;
   }
 
-  getDashboardList(): Observable<any> {
+  getDashboardList(params: any): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.DASHBOARD_LIST);
+      .get<any>(this.baseUrl + SuperAdminEndPoint.DASHBOARD_LIST, { params });
   }
 
   getsuperstatictics(): Observable<any> {

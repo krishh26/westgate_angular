@@ -6,21 +6,30 @@
           <h4 class="text-theme"><strong>Welcome Admin !</strong></h4>
         </div>
         <div class="col-12">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="radio-button" id="radioDaily" value="option1">
-            <label class="form-check-label" for="radioDaily">Daily</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="radio-button" id="radioWeekly" value="option2">
-            <label class="form-check-label" for="radioWeekly">Weekly</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="radio-button" id="radioMonthly" value="option3">
-            <label class="form-check-label" for="radioMonthly">Monthly</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="radio-button" id="radioYearly" value="option4">
-            <label class="form-check-label" for="radioYearly">Yearly</label>
+          <div class="col-12">
+            <div class="col-12">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radio-button" id="radioDaily" value="daily"
+                  (change)="onDurationChange('daily')">
+                <label class="form-check-label" for="radioDaily">Daily</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radio-button" id="radioWeekly" value="weekly"
+                  (change)="onDurationChange('weekly')">
+                <label class="form-check-label" for="radioWeekly">Weekly</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radio-button" id="radioMonthly" value="monthly"
+                  (change)="onDurationChange('monthly')">
+                <label class="form-check-label" for="radioMonthly">Monthly</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radio-button" id="radioYearly" value="yearly"
+                  (change)="onDurationChange('yearly')">
+                <label class="form-check-label" for="radioYearly">Yearly</label>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

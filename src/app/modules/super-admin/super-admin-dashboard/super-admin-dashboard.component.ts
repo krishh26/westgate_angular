@@ -15,7 +15,7 @@ export class SuperAdminDashboardComponent {
   superstatictics: any = [];
   showLoader: boolean = false;
   chart: any = [];
-
+  selectedDuration: string = 'daily'; // Default value
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -25,13 +25,19 @@ export class SuperAdminDashboardComponent {
   }
 
   ngOnInit(): void {
-    this.getProjectDetails();
+    this.getProjectDetails('daily');
     this.getSuperStatictics();
   }
 
-  getProjectDetails() {
+  onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
+    this.selectedDuration = duration;  // Update the selectedDuration with the chosen value
+    this.getProjectDetails(duration);  // Now call getProjectDetails with the updated duration
+  }
+
+  // Pass selectedDuration in the API call
+  getProjectDetails(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.showLoader = true;
-    this.superService.getDashboardList().subscribe((response) => {
+    this.superService.getDashboardList({ duration: this.selectedDuration }).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
         this.superdashboardlist = response?.data;
