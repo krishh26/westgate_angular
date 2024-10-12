@@ -16,6 +16,7 @@ import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-detai
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
+import { SuperadminAddProjectComponent } from './superadmin-add-project/superadmin-add-project.component';
 
 
 
@@ -28,7 +29,8 @@ import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admi
     SuperAdminSupplierProjectViewComponent,
     SuperAdminProjectDetailsComponent,
     SuperAdminSupplierDetailsComponent,
-    SuperAdminDashboardComponent
+    SuperAdminDashboardComponent,
+    SuperadminAddProjectComponent
   ],
   imports: [
     CommonModule,
