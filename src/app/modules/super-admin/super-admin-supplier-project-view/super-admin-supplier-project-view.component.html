@@ -3,8 +3,7 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-4 mob-mb1">
-                    <a routerLink="/super-admin/super-admin-supplier"
-                    class="btn btn-primary text-dark">Back</a>
+                    <a routerLink="/super-admin/super-admin-supplier" class="btn btn-primary text-dark">Back</a>
                 </div>
             </div>
             <div class="table-responsive mt-5 mb-3">
@@ -36,14 +35,14 @@
                 <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input class="form-control control-search" placeholder="Search by BOS ID & Project Title." type="text" [(ngModel)]="searchText"
-                        (input)="searchtext()">
+                        <input class="form-control control-search" placeholder="Search by BOS ID & Project Title."
+                            type="text" [(ngModel)]="searchText" (input)="searchtext()">
                     </div>
                 </div>
                 <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer;">
                     <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
-                      title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
-                  </div>
+                        title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
+                </div>
             </div>
             <div class="table-responsive mt-5 mb-3">
                 <table class="table table-borderless table-transparent align-middle">
@@ -53,8 +52,10 @@
                             <th>BOS ID</th>
                             <th>Launch Date</th>
                             <th>Category</th>
+                            <th>Industry</th>
                             <th>Status</th>
-                            <th>value</th>
+                            <th>Min value (GBP)</th>
+                            <th>Max value (GBP)</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -65,10 +66,13 @@
                             <td v-align="middle">{{item?.BOSID}}</td>
                             <td>{{item?.publishDate | date: 'dd/MM/yyyy'}}</td>
                             <td>{{item?.category}}</td>
+                            <td>{{item?.industry}}</td>
                             <td>{{item?.status}}</td>
-                            <td>£{{item?.value}}</td>
+                            <td>£ {{item?.minValue}}</td>
+                            <td>£ {{item?.maxValue}}</td>
                             <td>
-                                <a (click)="projectDetails(item?._id)" class="btn btn-sm btn-link" title="View Details">View Project Detils ></a>
+                                <a (click)="projectDetails(item?._id)" class="btn btn-sm btn-link"
+                                    title="View Details">View Project Detils ></a>
                             </td>
                         </tr>
                     </tbody>
