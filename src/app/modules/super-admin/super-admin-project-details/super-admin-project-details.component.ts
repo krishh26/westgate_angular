@@ -470,7 +470,7 @@ export class SuperAdminProjectDetailsComponent {
     this.saveChanges(type);
 
     if (type == 'next') {
-      this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+      this.router.navigate(['/super-admin/super-admin-projects-all'], { queryParams: { id: this.projectId } });
     }
   }
 
