@@ -38,8 +38,6 @@ export class SuperAdminProjectDetailsComponent {
   loginName: string = "";
   isEditing = false;
   status: string = "Expired";
-  statusComment: FormControl = new FormControl('');
-  failStatusReason: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
@@ -58,6 +56,11 @@ export class SuperAdminProjectDetailsComponent {
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
   casestudylist: any = [];
+  statusComment: FormControl = new FormControl('');
+  statusDate: FormControl = new FormControl('');
+  failStatusReason: FormControl = new FormControl('');
+  commentData: any[] = [];
+  comment: string = '';
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -83,6 +86,7 @@ export class SuperAdminProjectDetailsComponent {
       name: "Saiwen"
     }
   ]
+  loginModalMode: boolean = true;
 
   // For check bov
   subContracting: boolean = true;
@@ -159,6 +163,47 @@ export class SuperAdminProjectDetailsComponent {
     this.projectStage = this.fb.group({
       stage: this.fb.array([])
     });
+  }
+
+  removeOtherDocument(document: any): void {
+    // Remove the document from the FeasibilityOtherDocuments array
+    const index = this.FeasibilityOtherDocuments.indexOf(document);
+    if (index > -1) {
+      this.FeasibilityOtherDocuments.splice(index, 1); // Remove the document from the array
+      this.notificationService.showSuccess("Document removed successfully.");
+    }
+  }
+
+
+  openLoginDetail() {
+    this.loginModalMode = false
+    this.loginDetailForm.reset()
+  }
+
+
+  editLoginDetail(loginData: any, i: number) {
+    this.loginModalMode = false
+    this.loginDetailForm.patchValue(loginData.data)
+    this.loginDetailForm.controls['id'].setValue(i)
+  }
+
+  pushStatus() {
+    if (!this.statusComment.value) {
+      this.notificationService.showError('Please enter status comment')
+      return;
+    }
+    if (!this.statusDate.value) {
+      this.notificationService.showError('Please enter Date')
+      return;
+    }
+    this.commentData.push({
+      comment: this.statusComment.value,
+      date: this.statusDate.value,
+      status: this.status,
+    })
+    this.statusComment.reset()
+    this.statusDate.reset()
+
   }
 
   getUserDetails() {
@@ -422,7 +467,8 @@ export class SuperAdminProjectDetailsComponent {
     if (!this.projectDetails?.loginDetail.length) {
       return this.notificationService.showError('Upload Login Detail');
     }
-    this.saveChanges();
+    this.saveChanges(type);
+
     if (type == 'next') {
       this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
     }
@@ -525,38 +571,63 @@ export class SuperAdminProjectDetailsComponent {
     this.isEditing = !this.isEditing;
   }
 
-  saveChanges() {
-    if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Won') && !this.statusComment?.value) {
-      return this.notificationService.showError('Please Enter Status Comment');
+  saveChanges(type?: string, contractEdit?: boolean) {
+    let payload: any = {}
+    if (!contractEdit) {
+      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
+      //   return this.notificationService.showError('Please Enter Status Comment');
+      // }
+
+      // if (this.status == 'Expired' && !this.failStatusReason?.value) {
+      //   return this.notificationService.showError('Please Select Status Comment');
+      // }
+
+      if (this.statusComment.value && this.statusDate.value) {
+        this.commentData.push({
+          comment: this.statusComment.value,
+          date: this.statusDate.value,
+          status: this.status,
+        })
+      }
+
+      payload = {
+        subContractingfile: this.subContractDocument || [],
+        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+        FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
+        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
+        periodOfContractStart: this.projectDetails.periodOfContractStart,
+        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+        projectType: this.projectDetails.projectType,
+        subContracting: this.subContracting || "",
+        comment: this.comment || "",
+        clientDocument: this.projectDetails?.clientDocument || [],
+        status: this.status || "",
+        statusComment: this.commentData,
+        loginDetail: this.projectDetails.loginDetail || "",
+        failStatusImage: this.failStatusImage || ""
+      };
+
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
     }
 
-    if (this.status == 'Expired') {
-      return this.notificationService.showError('Please Select Status Comment');
+    if (contractEdit) {
+      payload = {
+        periodOfContractStart: this.projectDetails.periodOfContractStart,
+        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+        projectType: this.projectDetails.projectType,
+      }
     }
-
-    const payload = {
-      subContractDocument: this.subContractDocument || [],
-      economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
-      FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-      economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
-      periodOfContractStart: this.projectDetails.periodOfContractStart,
-      periodOfContractEnd: this.projectDetails.periodOfContractEnd,
-      projectType: this.projectDetails.projectType,
-      subContracting: this.subContracting || "",
-
-      status: this.status || "",
-      statusComment: this.statusComment?.value || "",
-      failStatusReason: [this.failStatusReason?.value] || "",
-      loginDetail: this.projectDetails.loginDetail || "",
-      failStatusImage: this.failStatusImage || ""
-    };
-
-    this.projectService.editProject(this.projectDetails._id, payload).subscribe(
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
-          window.location.reload();
+          this.getProjectDetails();
+          if (type == 'save') {
+            this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+          }
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
