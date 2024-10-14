@@ -16,7 +16,7 @@ export class SuperAdminSupplierComponent {
 
   showLoader: boolean = false;
   supplierUserList: any = [];
-
+  switchFlag : boolean = false;
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
@@ -50,6 +50,7 @@ export class SuperAdminSupplierComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.supplierUserList = response?.data;
+          this.switchFlag = this.supplierUserList.active
           this.totalRecords = response?.totalCount;
         } else {
           this.notificationService.showError(response?.message);
