@@ -49,7 +49,7 @@ export class SupplierProjectSubmittedComponent {
     { value: 'Awaiting', status: 'Awaiting' },
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
-    { value: 'Pass', status: 'Pass' },
+    { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
 
     { value: 'InSolution', status: 'InSolution' },

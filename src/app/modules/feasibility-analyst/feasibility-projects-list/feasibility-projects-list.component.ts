@@ -82,7 +82,7 @@ export class FeasibilityProjectsListComponent {
     { value: 'Awaiting', status: 'Awaiting' },
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
-    { value: 'Pass', status: 'Pass' },
+    { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' }
   ];
 
