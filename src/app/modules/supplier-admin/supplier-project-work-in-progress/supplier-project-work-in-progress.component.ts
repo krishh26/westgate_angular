@@ -193,7 +193,7 @@ export class SupplierProjectWorkInProgressComponent {
 
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = String(this.searchText?.value) || "";
+    Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.applied = true;

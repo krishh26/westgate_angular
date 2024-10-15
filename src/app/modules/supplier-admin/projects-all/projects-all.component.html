@@ -140,7 +140,7 @@
                   <th>Project Type</th>
                   <th>Status</th>
                   <th>Due Date &amp; Time</th>
-                  <th>Compatibility</th>
+                  <!-- <th>Compatibility</th> -->
                   <th>Action</th>
                 </tr>
               </thead>
@@ -165,7 +165,7 @@
                   <td>{{item?.projectType}}</td>
                   <td>{{item?.status}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                  <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td>
+                  <!-- <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td> -->
                   <td>
                     <a class="btn btn-sm btn-primarysm" title="View Details" (click)="projectDetails(item?._id)">View
                       Details</a>

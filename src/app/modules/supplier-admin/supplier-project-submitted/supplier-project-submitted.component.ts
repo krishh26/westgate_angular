@@ -20,7 +20,7 @@ export class SupplierProjectSubmittedComponent {
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   searchText: any;
-  
+
   minValue: number = 0;
   maxValue: number = 50000000;
   options: Options = {
@@ -191,7 +191,7 @@ export class SupplierProjectSubmittedComponent {
 
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = String(this.searchText?.value) || "";
+    Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.applied = false;
@@ -202,7 +202,7 @@ export class SupplierProjectSubmittedComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-     
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;

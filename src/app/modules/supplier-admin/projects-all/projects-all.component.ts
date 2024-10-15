@@ -141,13 +141,12 @@ export class ProjectsAllComponent implements OnInit {
 
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = String(this.searchText?.value) || "";
+    Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.applied = false;
     Payload.projectList.sortlist = false;
     Payload.projectList.status = 'Passed';
-    Payload.projectList.match = 'partial';
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
