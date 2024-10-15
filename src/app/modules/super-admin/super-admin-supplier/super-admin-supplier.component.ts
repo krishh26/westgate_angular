@@ -33,11 +33,24 @@ export class SuperAdminSupplierComponent {
     this.getManageUserList();
   }
 
-  // Handle switch toggle
   onToggleSwitch(item: any) {
-    if (item.isActive) {
-      // Switch is turned off, open modal for comment
+    if (!item.active) {
       this.openCommentModal(item);
+    } else {
+      const payload = {
+        active: true // Set the active field to true when the switch is turned on
+      }
+      this.authservice.updateUser(item._id, payload).subscribe(
+        (response: any) => {
+          if (response?.status) {
+            this.notificationService.showSuccess(response?.message);
+            //   this.activeModal.close();
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.error?.message || 'Error');
+        }
+      );
     }
   }
 
@@ -50,6 +63,7 @@ export class SuperAdminSupplierComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.supplierUserList = response?.data;
+          console.log(this.supplierUserList);
           this.totalRecords = response?.totalCount;
         } else {
           this.notificationService.showError(response?.message);
@@ -63,6 +77,7 @@ export class SuperAdminSupplierComponent {
     );
   }
 
+
   projectDetails(projectId: any, item: any) {
     let data = item;
     localStorage.setItem('supplierData', JSON.stringify(data))
@@ -71,14 +86,10 @@ export class SuperAdminSupplierComponent {
 
   openCommentModal(item: any) {
     const modalRef = this.modalService.open(SuperadminCommentModalComponent, { centered: true });
-    modalRef.componentInstance.supplier = item; // Pass supplier data to the modal
-
+    modalRef.componentInstance.supplier = item;
     modalRef.result.then((comment) => {
-      // This will be called when modal is closed with a comment
       console.log('Comment received:', comment);
-      // Handle the comment (e.g., save it or update the supplier)
     }).catch((err) => {
-      // Handle modal dismiss if needed
       console.log('Modal dismissed');
     });
   }

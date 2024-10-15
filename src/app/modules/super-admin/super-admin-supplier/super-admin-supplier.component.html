@@ -20,7 +20,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+            <tr
+              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{item?.name}}</td>
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>
@@ -31,7 +32,7 @@
               </td>
               <td>
                 <label class="switch">
-                  <input type="checkbox" [(ngModel)]="item.isActive" (ngModelChange)="onToggleSwitch(item)">
+                  <input type="checkbox" [(ngModel)]="item.active" (ngModelChange)="onToggleSwitch(item)">
                   <span class="slider round"></span>
                 </label>
               </td>
