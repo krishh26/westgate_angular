@@ -127,6 +127,35 @@ export class CaseStudiesComponent {
     }
   }
 
+  // Add this method to handle file changes
+  onFileChange(event: any, caseStudy: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      this.uploadDocument(file, caseStudy);
+    }
+  }
+
+  // Method to upload the case study document
+  uploadDocument(file: File, caseStudy: any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('caseStudyId', caseStudy._id); // Assuming each case study has an ID
+
+    this.showLoader = true;
+    this.supplierService.addCaseStudy(formData).subscribe((response) => {
+      if (response.status === true) {
+        this.notificationService.showSuccess('Document uploaded successfully.');
+        this.getCaseStudiesList(); // Reload the case studies to show updates
+      } else {
+        this.notificationService.showError(response.message);
+      }
+      this.showLoader = false;
+    }, (error) => {
+      this.notificationService.showError(error.message);
+      this.showLoader = false;
+    });
+  }
+
   paginate(page: number) {
     this.page = page;
     this.getCaseStudiesList();

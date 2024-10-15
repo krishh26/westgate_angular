@@ -38,6 +38,7 @@
                                     <th>Contract Value</th>
                                     <th>Resources Used</th>
                                     <th>Client Name</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,6 +63,16 @@
                                     <td>{{item?.contractValue}}</td>
                                     <td>{{item?.resourcesUsed}}</td>
                                     <td>{{item?.clientName}}</td>
+                                    <td>
+                                        <span class="btn btn-primary btn-sm">
+                                            <label for="uploadClientDocument"><i
+                                                    class="bi bi-file-earmark-arrow-up-fill"></i>
+                                            </label>
+                                            <input type="file" id="uploadClientDocument" (change)="
+                                                onFileChange($event, item.clientDocument)
+                                              " name="myfile" style="height: 1px; width: 1px" />
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
