@@ -111,17 +111,12 @@ export class AddCaseStudyComponent {
 
   submitForm() {
     this.showLoader = true;
-
-    // Create a new FormData object
     const formData = new FormData();
-
-    // Append all form values to the FormData object
     for (const key in this.productForm.value) {
       if (this.productForm.value.hasOwnProperty(key)) {
         formData.append(key, this.productForm.value[key]);
       }
     }
-
     this.supplierService.addCaseStudy(formData).subscribe(
       (response) => {
         if (response?.status === true) {
