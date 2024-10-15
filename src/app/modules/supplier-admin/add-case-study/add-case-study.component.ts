@@ -110,6 +110,12 @@ export class AddCaseStudyComponent {
 
 
   submitForm() {
+    if (this.productForm.invalid) {
+      // Mark all controls as touched to trigger validation messages
+      this.productForm.markAllAsTouched();
+      return;
+    }
+  
     this.showLoader = true;
     const formData = new FormData();
     for (const key in this.productForm.value) {
@@ -117,6 +123,7 @@ export class AddCaseStudyComponent {
         formData.append(key, this.productForm.value[key]);
       }
     }
+  
     this.supplierService.addCaseStudy(formData).subscribe(
       (response) => {
         if (response?.status === true) {
@@ -134,5 +141,6 @@ export class AddCaseStudyComponent {
       }
     );
   }
+  
 
 }
