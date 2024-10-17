@@ -27,7 +27,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     floor: 0,
     ceil: 50000000
   };
-
+  dateDifference: any;
   categoryList: any = [];
   industryList: any = [];
   projectTypeList = [
@@ -104,6 +104,11 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     });
   }
 
+  formatMilliseconds(milliseconds: number): string {
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    return `${days} days`;
+  }
+
   // get project listing
   getProjectList() {
     this.showLoader = true;
@@ -119,6 +124,15 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
+
+        this.projectList.forEach((project: any) => {
+          const dueDate = new Date(project.dueDate);
+          const currentDate = new Date();
+          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+          this.dateDifference = formattedDateDifference;
+        });
 
       } else {
         this.notificationService.showError(response?.message);
