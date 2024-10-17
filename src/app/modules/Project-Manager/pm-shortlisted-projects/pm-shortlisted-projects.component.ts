@@ -26,7 +26,7 @@ export class PmShortlistedProjectsComponent {
     floor: 0,
     ceil: 50000000
   };
-
+  isExpired: boolean = false;
   categoryList: any = [];
   industryList: any = [];
   projectTypeList = [
@@ -138,7 +138,7 @@ export class PmShortlistedProjectsComponent {
     Payload.pmShortlistProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmShortlistProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmShortlistProjectList.valueRange = this.minValue + '-' + this.maxValue;
-
+    Payload.pmShortlistProjectList.expired = this.isExpired;
     this.projectService.getProjectList(Payload.pmShortlistProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

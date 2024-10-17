@@ -15,6 +15,7 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
+    expired: false
   },
 
   pmAllProjectList: {
@@ -32,7 +33,7 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: '',
+    supplierId: '', expired: false
   },
 
   pmShortlistsupplierProjectList: {
@@ -51,7 +52,7 @@ export const Payload = {
     SubmissionDueDateRange: '',
     valueRange: '',
     supplierId: '',
-    selectedSupplier : false
+    selectedSupplier: false
   },
 
   pmMatchProjectList: {
@@ -69,7 +70,8 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: ''
+    supplierId: '',
+    expired:false
   },
 
   pmCloseProjectList: {
@@ -104,7 +106,8 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: ''
+    supplierId: '',
+    expired: false
   },
 
   mailSSList: {

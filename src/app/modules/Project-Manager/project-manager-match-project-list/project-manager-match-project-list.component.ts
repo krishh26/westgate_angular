@@ -35,7 +35,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     { projectType: 'Product', value: 'Product' },
     { projectType: 'Service', value: 'Service' }
   ];
-
+  isExpired: boolean = false;
   clientTypeList = [
     { clientType: 'Public Sector', value: 'PublicSector' },
     { clientType: 'Private Sector', value: 'PrivateSector' }
@@ -174,7 +174,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     Payload.pmMatchProjectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.pmMatchProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmMatchProjectList.valueRange = this.minValue + '-' + this.maxValue;
-
+    Payload.pmMatchProjectList.expired = this.isExpired;
     this.projectService.getProjectList(Payload.pmMatchProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

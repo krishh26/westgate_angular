@@ -48,6 +48,7 @@ export class ProjectService {
     SubmissionDueDateRange?: string,
     valueRange?: any,
     selectedSupplier?: boolean // Add this line
+    expired?: boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -93,6 +94,8 @@ export class ProjectService {
     }
     if (params?.selectedSupplier) { // Add this condition
       queryParams = queryParams.set('selectedSupplier', params?.selectedSupplier);
+    } if (params?.expired) { // Add this condition
+      queryParams = queryParams.set('expired', params?.expired);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }

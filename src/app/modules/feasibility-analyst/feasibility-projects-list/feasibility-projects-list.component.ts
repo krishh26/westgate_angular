@@ -31,7 +31,7 @@ export class FeasibilityProjectsListComponent {
 
   showLoader: boolean = false;
   projectList: any = [];
-
+  isExpired: boolean = false;
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
@@ -265,7 +265,7 @@ export class FeasibilityProjectsListComponent {
     Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
     console.log(Payload.projectList);
-
+    Payload.projectList.expired = this.isExpired;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
