@@ -22,7 +22,7 @@ export class SuperAdminDashboardComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-
+  categoryWise:any = []
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -45,20 +45,31 @@ export class SuperAdminDashboardComponent {
 
   getProjectDetails(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.showLoader = true;
-    this.superService.getDashboardList({ duration: this.selectedDuration }).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.superdashboardlist = response?.data;
-      } else {
-        this.notificationService.showError(response?.message);
+    this.superService.getDashboardList({ duration: this.selectedDuration }).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          
+          // Store the superdashboard list data
+          this.superdashboardlist = response?.data;
+  
+          // Convert categoryWise object to an array of {name, totalProjects}
+          this.categoryWise = Object.keys(response?.data?.categoryWise || {}).map(key => {
+            return { name: key, totalProjects: response.data.categoryWise[key] };
+          });
+          
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
-
+  
   getSuperStatictics() {
     this.showLoader = true;
     this.superService.getsuperstatictics().subscribe(
@@ -66,12 +77,13 @@ export class SuperAdminDashboardComponent {
         if (response?.status == true) {
           this.showLoader = false;
           const responseData = response?.data;
-          this.superstatictics = Object.keys(responseData).map((date) => {
-            return {
-              day: responseData[date].day,
-              data: responseData[date].data
-            };
+          
+          // Convert categoryWise object to an array of {name, totalProjects}
+          this.categoryWise = Object.keys(responseData.categoryWise).map(key => {
+            return { name: key, totalProjects: responseData.categoryWise[key] };
           });
+  
+          // Set up chart data if necessary (this part was unchanged)
           const day = this.superstatictics.map((project: any) => project?.day);
           const data = this.superstatictics.map((project: any) => project?.data);
           this.chart = new Chart('canvas', {
@@ -105,6 +117,7 @@ export class SuperAdminDashboardComponent {
       }
     );
   }
+  
 
   getManageUserList() {
     this.showLoader = true;
