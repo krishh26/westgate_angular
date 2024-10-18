@@ -134,6 +134,13 @@
                     </tr>
                   </thead>
                   <tbody>
+
+                    <tr>
+                      <td *ngIf="!supplierUserList?.length" colspan="3">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+
                     <tr
                       *ngFor="let item of supplierUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                       <td>{{item?.name}}</td>
@@ -165,6 +172,13 @@
                   </tr>
                 </thead>
                 <tbody>
+
+                  <tr>
+                    <td *ngIf="!categoryWise?.length" colspan="2">
+                      <app-no-record-found></app-no-record-found>
+                    </td>
+                  </tr>
+
                   <tr
                     *ngFor="let item of categoryWise | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                     <td>{{ item?.name }}</td>
