@@ -33,6 +33,7 @@ export class SummaryNoteQuestionsComponent {
   commentName: string = "";
   projectComment: any[] = [];
   isEditing = false;
+  frontendMinimunEligibility : any = [];
 
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -96,6 +97,7 @@ export class SummaryNoteQuestionsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.frontendMinimunEligibility = this.projectDetails?.eligibilityForm;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -145,10 +147,12 @@ export class SummaryNoteQuestionsComponent {
   }
 
   submiteligibilityForm() {
-    if (!this.eligibilityForm.valid) {
-      return this.notificationService.showError('Please Fill Form.');
+    if (this.frontendMinimunEligibility?.length == 0) {
+      // this.frontendMinimunEligibility.push(this.eligibilityForm.value);
+      // this.eligibilityForm.reset();
+      return this.notificationService.showError('Please Add Eligibility In List.');
     }
-    this.feasibilityService.updateProjectDetails(this.eligibilityForm.value, this.projectId).subscribe({
+    this.feasibilityService.updateProjectDetails({eligibilityForm : this.frontendMinimunEligibility}, this.projectId).subscribe({
       next: (res: any) => {
         this.showSuccess = true;
         this.notificationService.showSuccess(res?.message);
@@ -157,6 +161,14 @@ export class SummaryNoteQuestionsComponent {
         return this.notificationService.showError('Something went wrong');
       }
     })
+  }
+
+  addNewFrontendMinimunEligibility() {
+    if (!this.eligibilityForm.valid) {
+      return this.notificationService.showError('Please Fill Form.');
+    }
+    this.frontendMinimunEligibility.push(this.eligibilityForm.value);
+    this.eligibilityForm.reset();
   }
 
 
