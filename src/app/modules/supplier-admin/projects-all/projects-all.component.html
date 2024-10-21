@@ -126,12 +126,17 @@
 
         <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
           <div class="row align-items-center justify-content-between">
-            <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+            <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
               <div class="form-group mb-0">
                 <span class="input-icon"><i class="bi bi-search"></i></span>
-                <input type="search" [formControl]="searchText" class="form-control control-search"
-                  placeholder="Search by BOS ID & Project Title.">
+                <input class="form-control control-search"
+                  placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+                  type="text" [(ngModel)]="searchText" (input)="searchtext()">
               </div>
+            </div>
+            <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer;">
+              <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
+                title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
           </div>
           <div class="table-responsive mt-5 mb-3">
