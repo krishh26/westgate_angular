@@ -431,6 +431,8 @@ export class SuperAdminProjectDetailsComponent {
 
   statusChange(status: string) {
     this.status = status;
+    this.commentData = []
+    this.statusComment.reset()
   }
 
   // Function for subcontract
@@ -574,14 +576,6 @@ export class SuperAdminProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {}
     if (!contractEdit) {
-      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
-      //   return this.notificationService.showError('Please Enter Status Comment');
-      // }
-
-      // if (this.status == 'Expired' && !this.failStatusReason?.value) {
-      //   return this.notificationService.showError('Please Select Status Comment');
-      // }
-
       if (this.statusComment.value && this.statusDate.value) {
         this.commentData.push({
           comment: this.statusComment.value,
@@ -626,7 +620,7 @@ export class SuperAdminProjectDetailsComponent {
           this.isEditing = false;
           this.getProjectDetails();
           if (type == 'save') {
-            this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+            this.router.navigate(['/super-admin/super-admin-projects-all'], { queryParams: { id: this.projectId } });
           }
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');

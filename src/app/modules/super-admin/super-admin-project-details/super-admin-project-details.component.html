@@ -417,17 +417,15 @@
                 </div>
             </div>
 
-            <!--Documents-->
             <section class="pageheader bg-dark">
                 <div class="container ">
                     <p><strong>Documents</strong></p>
                 </div>
             </section><br>
-
             <div class="row mb-4">
                 <!-- <div class="col-12">
-              <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
-            </div> -->
+                  <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
+                </div> -->
                 <div class="col-lg-5 col-xl-5 col-12 mob-mb1">
                     <h5>Client Documents</h5>
                     <div class="card">
@@ -471,8 +469,8 @@
                                         Upload
                                     </label>
                                     <input type="file" id="uploadClientDocument" (change)="
-                          uploadDocument($event, documentUploadType.clientDocument)
-                        " name="myfile" style="height: 1px; width: 1px" />
+                              uploadDocument($event, documentUploadType.clientDocument)
+                            " name="myfile" style="height: 1px; width: 1px" />
                                 </div>
                             </div>
                         </div>
@@ -602,89 +600,10 @@
                                 </button>
                             </div>
                             <div class="col-12 d-flex gap-3" *ngIf="this.status == 'Fail'">
-                                <!-- <div>
-                      <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                        Upload Document</label>
-                      <input type="file" id="failedReson" name="failedReson" style="height: 5px; width: 5px"
-                        (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
-                      <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)"
-                        class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i
-                          class="bi bi-eye-fill"></i> View</a>
-                    </div>
-                    <div>
-                      <select class="form-select" [formControl]="failStatusReason">
-                        <option disabled selected hidden value="">
-                          Select Failed Reason
-                        </option>
-                        <option value="Accreditation">Accreditation</option>
-                        <option value="Time Constraints">Time Constraints</option>
-                        <option value="Certification">Certification</option>
-                        <option value="Case Study">Case Study</option>
-                        <option value="Certifications from Subcontractor">
-                          Certifications from Subcontractor
-                        </option>
-                        <option value="Delivery of goods/Hardware">
-                          Delivery of goods/Hardware
-                        </option>
-                        <option value="Financial Conditions">
-                          Financial Conditions
-                        </option>
-                        <option value="Not related">Not related</option>
-                      </select>
-                    </div>
-                    <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                      <i class="bi bi-plus-lg"></i>
-                    </button> -->
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- <div class="col-lg-3 col-xl-3 col-12">
-              <div class="form-group">
-                <div class="row align-items-center">
-                  <div class="col-4">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment4"
-                        value="Fail" (change)="statusChange('Fail')" [checked]="status == 'Fail'" />
-                      <label class="form-check-label text-danger" for="comment4">Fail</label>
-                    </div>
-                  </div>
-                  <div class="col-8" *ngIf="this.status == 'Fail'">
-                    <div class="upload-btn-wrapper">
-                      <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                        Upload Document</label>
-                      <input type="file" id="failedReson" name="failedReson" style="height: 5px; width: 5px"
-                        (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
-                      <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)"
-                        class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i
-                          class="bi bi-eye-fill"></i> View</a>
-                    </div>
-                  </div>
-                  <div class="col-12 mt-3" *ngIf="this.status == 'Fail'">
-                    <select class="form-select" [formControl]="failStatusReason">
-                      <option disabled selected hidden value="">
-                        Select Failed Reason
-                      </option>
-                      <option value="Accreditation">Accreditation</option>
-                      <option value="Time Constraints">Time Constraints</option>
-                      <option value="Certification">Certification</option>
-                      <option value="Case Study">Case Study</option>
-                      <option value="Certifications from Subcontractor">
-                        Certifications from Subcontractor
-                      </option>
-                      <option value="Delivery of goods/Hardware">
-                        Delivery of goods/Hardware
-                      </option>
-                      <option value="Financial Conditions">
-                        Financial Conditions
-                      </option>
-                      <option value="Not related">Not related</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div> -->
             </div>
 
             <section class="pageheader bg-dark">
