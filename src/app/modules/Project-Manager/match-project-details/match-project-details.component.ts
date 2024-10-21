@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SummaryService } from 'src/app/services/summary/summary.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 @Component({
   selector: 'app-match-project-details',
   templateUrl: './match-project-details.component.html',
@@ -27,6 +28,11 @@ export class MatchProjectDetailsComponent {
   summaryQuestionList: any;
   selectedDate: any;
   summaryId: any;
+  casestudylist: any = [];
+  selectedSupplier: any;
+  userDetail: any;
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
+
   statusList: string[] = [
     'In solution',
     'In-review',
@@ -37,6 +43,20 @@ export class MatchProjectDetailsComponent {
     'Dropped'
   ];
 
+  companyDetails: any = [
+    {
+      name: "Delphi Services Limited"
+    }, {
+      name: "Spectrum IT Hub Limited"
+    }, {
+      name: "Apex IT Solutions"
+    }, {
+      name: "Big Data Limited"
+    }, {
+      name: "Saiwen"
+    }
+  ]
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -45,7 +65,8 @@ export class MatchProjectDetailsComponent {
     private localStorageService: LocalStorageService,
     private summaryService: SummaryService,
     private datePipe: DatePipe,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private projectManagerService: ProjectManagerService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -57,6 +78,7 @@ export class MatchProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getSummaryQuestion();
+    this.getUserDetails();
   }
 
   getProjectDetails() {
@@ -65,6 +87,7 @@ export class MatchProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.casestudylist = response?.data?.casestudy;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -74,6 +97,73 @@ export class MatchProjectDetailsComponent {
       this.showLoader = false;
     });
   }
+
+  getUserDetails() {
+    this.projectManagerService.getUserList('SupplierAdmin').subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.userDetail = response?.data;
+        this.selectedSuppliers = this.userDetail.reduce((acc: any, supplier: any) => {
+          acc[supplier._id] = { company: '', startDate: null };
+          return acc;
+        }, {});
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  selectSupplier(supplier: any) {
+    this.selectedSupplier = supplier
+
+    if (!this.selectedSupplier) {
+      return this.notificationService.showError('please select supplier');
+    }
+    console.log('sadsdd', supplier);
+
+    const data = {
+      select: {
+        supplierId: this.selectedSupplier?._id,
+        companySelect: supplier.company,
+        handoverCall: supplier.startDate
+      }
+    }
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      this.notificationService.showSuccess('Successfully select user')
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Something went wrong');
+    });
+  }
+
+  dropUser(details: any) {
+    console.log('this is testing data', details);
+    if (!details?.reason) {
+      return this.notificationService.showError('Please enter reason');
+    }
+
+    const data = {
+      dropUser: {
+        userId: details?._id,
+        reason: details?.reason
+      }
+    }
+
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.notificationService.showSuccess(response?.message || 'Drop user successfully');
+        //this.getUserDetails();
+      } else {
+        return this.notificationService.showError('Try after some time.');
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Error.')
+    })
+  }
+
 
   getSummaryQuestion() {
     this.showLoader = true;
