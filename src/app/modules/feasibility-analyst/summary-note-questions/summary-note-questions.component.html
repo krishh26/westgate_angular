@@ -185,12 +185,46 @@
                             </div>
                         </div>
                     </form>
+                    <div  class="row">
+                      <div class="col-12 text-center">
+                        <button type="button" (click)="addNewFrontendMinimunEligibility()" class="btn btn-dark" style="margin-left: 2px;">Add Eligibility</button>
+                      </div>
+                    </div>
+                    <div class="table-responsive mt-5 mb-3">
+                      <table class="table table-striped align-middle">
+                        <thead>
+                          <tr>
+                            <th>Case Study Numbers</th>
+                            <th>Certifications</th>
+                            <th>Policy</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let item of frontendMinimunEligibility">
+                            <tr>
+                              <td>{{item?.caseStudyRequired}}</td>
+                              <td>{{item?.certifications}}</td>
+                              <td>{{item?.policy}}</td>
+                            </tr>
+                          </ng-container>
+                          <!-- <ng-container *ngFor="let item of projectDetails?.eligibilityForm">
+                            <tr>
+                              <td>{{item?.caseStudyRequired}}</td>
+                              <td>{{item?.certifications}}</td>
+                              <td>{{item?.policy}}</td>
+                            </tr>
+                          </ng-container> -->
+                        </tbody>
+                      </table>
+                    </div>
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button type="submit" (click)="submiteligibilityForm()" class="btn btn-dark">Submit</button>
+                            <button type="submit" (click)="submiteligibilityForm()" class="btn btn-dark" style="margin-right: 2px;">Submit</button>
+                            <!-- <button type="button" (click)="addNewFrontendMinimunEligibility()" class="btn btn-dark" style="margin-left: 2px;">Add Eligibility</button> -->
                         </div>
                     </div>
                 </div>
+
             </section>
 
             <section class="pageheader bg-dark">
