@@ -14,7 +14,7 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 })
 export class MatchProjectDetailsComponent {
 
- 
+
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
