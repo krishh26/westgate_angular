@@ -51,11 +51,11 @@ export class ProjectsAllComponent implements OnInit {
   ];
 
   statusList = [
-    { value: 'Awaiting', status: 'Awaiting' },
-    { value: 'InProgress', status: 'In-Progress' },
-    { value: 'InHold', status: 'In Hold' },
-    { value: 'Passed', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' },
+    // { value: 'Awaiting', status: 'Awaiting' },
+    // { value: 'InProgress', status: 'In-Progress' },
+    // { value: 'InHold', status: 'In Hold' },
+    // { value: 'Passed', status: 'Pass' },
+    // { value: 'Fail', status: 'Fail' },
 
     { value: 'InSolution', status: 'InSolution' },
     { value: 'InReview', status: 'InReview' },
