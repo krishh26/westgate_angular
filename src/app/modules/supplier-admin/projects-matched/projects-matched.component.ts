@@ -55,12 +55,12 @@ export class ProjectsMatchedComponent implements OnInit {
     // { value: 'Passed', status: 'Pass' },
     // { value: 'Fail', status: 'Fail' },
 
-    { value: 'InSolution', status: 'InSolution' },
-    { value: 'InReview', status: 'InReview' },
-    { value: 'Submitted', status: 'Submitted' },
-    { value: 'InSubmission', status: 'InSubmission' },
-    { value: 'Awarded', status: 'Awarded' },
-    { value: 'NotAwarded', status: 'NotAwarded' },
+    { value: 'InSolution', supplierStatus: 'InSolution' },
+    { value: 'InReview', supplierStatus: 'InReview' },
+    { value: 'Submitted', supplierStatus: 'Submitted' },
+    { value: 'InSubmission', supplierStatus: 'InSubmission' },
+    { value: 'Awarded', supplierStatus: 'Awarded' },
+    { value: 'NotAwarded', supplierStatus: 'NotAwarded' },
 
   ];
   categoryList: any = [];
@@ -125,7 +125,8 @@ export class ProjectsMatchedComponent implements OnInit {
     Payload.projectList.industry = this.selectedIndustries.join(',');
     Payload.projectList.projectType = this.selectedProjectTypes.join(',');
     Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
+    Payload.projectList.status = this.selectedStatuses.join(',');
+    Payload.projectList.supplierStatus = this.selectedStatuses.join(',');
     Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
