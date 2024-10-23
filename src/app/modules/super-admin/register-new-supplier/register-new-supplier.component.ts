@@ -40,7 +40,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       technologyStack: ['', [Validators.required,]],
       licensingDetails: ['', Validators.required],
       IP_Patents: ['', Validators.required],
-
+      password: ['', Validators.required],
       employeeCount: ['', Validators.required],
       cybersecurityPractices: ['', Validators.required]
     });
