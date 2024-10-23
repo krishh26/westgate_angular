@@ -18,6 +18,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
 import { SuperadminAddProjectComponent } from './superadmin-add-project/superadmin-add-project.component';
 import { SuperadminCommentModalComponent } from './superadmin-comment-modal/superadmin-comment-modal.component';
+import { RegisterNewSupplierComponent } from './register-new-supplier/register-new-supplier.component';
 
 
 
@@ -32,7 +33,8 @@ import { SuperadminCommentModalComponent } from './superadmin-comment-modal/supe
     SuperAdminSupplierDetailsComponent,
     SuperAdminDashboardComponent,
     SuperadminAddProjectComponent,
-    SuperadminCommentModalComponent
+    SuperadminCommentModalComponent,
+    RegisterNewSupplierComponent
   ],
   imports: [
     CommonModule,

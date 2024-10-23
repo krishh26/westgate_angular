@@ -48,11 +48,11 @@ export class SupplierProjectWorkInProgressComponent {
 
   isExpired: boolean = false;
   statusList = [
-    { value: 'Awaiting', status: 'Awaiting' },
-    { value: 'InProgress', status: 'In-Progress' },
-    { value: 'InHold', status: 'In Hold' },
-    { value: 'Passed', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' },
+    // { value: 'Awaiting', status: 'Awaiting' },
+    // { value: 'InProgress', status: 'In-Progress' },
+    // { value: 'InHold', status: 'In Hold' },
+    // { value: 'Passed', status: 'Pass' },
+    // { value: 'Fail', status: 'Fail' },
 
     { value: 'InSolution', status: 'InSolution' },
     { value: 'InReview', status: 'InReview' },
@@ -217,7 +217,7 @@ export class SupplierProjectWorkInProgressComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/supplier-admin/projects-details-for-applied'], { queryParams: { id: projectId, type: 4 } });
+    this.router.navigate(['supplier-admin/projects-details'], { queryParams: { id: projectId, type: 4 } });
   }
 
   paginate(page: number) {
