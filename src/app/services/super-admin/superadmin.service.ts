@@ -10,7 +10,8 @@ export enum SuperAdminEndPoint {
   SUPER_Statistics = '/user/admin/suppleir-statictics',
   CATEGORY_LIST = '/category/list',
   INDUSTRY_LIST = '/industry/list',
-  SUPPLIER_LIST = '/user/suplier/list'
+  SUPPLIER_LIST = '/user/suplier/list',
+  SUPPLIER_REGISTER = '/web-user/register',
 }
 
 
@@ -52,6 +53,11 @@ export class SuperadminService {
   getSupplierList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SuperAdminEndPoint.SUPPLIER_LIST);
+  }
+
+  supplierregister(payload: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + SuperAdminEndPoint.SUPPLIER_REGISTER, payload);
   }
 
 }

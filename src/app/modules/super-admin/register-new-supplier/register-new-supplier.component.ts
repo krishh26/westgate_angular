@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Patterns } from 'src/app/utility/shared/constant/validation-patterns.const';
 
 @Component({
   selector: 'app-register-new-supplier',
@@ -8,44 +11,55 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterNewSupplierComponent implements OnInit {
   companyForm!: FormGroup;
+  showLoader: boolean = false;
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private superadminService: SuperadminService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
     this.companyForm = this.fb.group({
       companyName: ['', Validators.required],
-      companyWebsite: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      yearOfEstablishment: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
-      gstRegistrationNumber: ['', Validators.required],
+      website: ['', [Validators.required,]],
+      yearOfEstablishment: ['', [Validators.required,]],
+      registerNumber: ['', Validators.required],
       typeOfCompany: ['', Validators.required],
-      industrySector: ['', Validators.required],
+      "⁠industry_Sector": ['', Validators.required],
       companyAddress: ['', Validators.required],
-      emailAddress: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
-      customerSupportContact: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
-      vatOrGstNumber: ['', Validators.required],
-      companyDirectorsOwners: ['', Validators.required],
+      developerOrEngineerTeams: ['', [Validators.required]],
+      dataPrivacyPolicies: ['', [Validators.required,]],
+      securityCertifications: ['', [Validators.required,]],
+      email: ['', [Validators.required, Validators.pattern(Patterns.email)]],
+      number: ['', Validators.required],
+      customerSupportContact: ['', [Validators.required, Validators.pattern(Patterns.mobile)]],
+      VATOrGSTNumber: ['', Validators.required],
+      companyDirectors_Owners: ['', Validators.required],
       complianceCertifications: ['', Validators.required],
-      productsServicesOffered: ['', Validators.required],
-      technologyStack: ['', Validators.required],
+      products_ServicesOffered: ['', Validators.required],
+      technologyStack: ['', [Validators.required,]],
       licensingDetails: ['', Validators.required],
-      ipPatents: ['', Validators.required],
-      employeeCount: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      developerEngineerTeams: ['', Validators.required],
-      dataPrivacyPolicies: ['', Validators.required],
-      securityCertifications: ['', Validators.required],
+      IP_Patents: ['', Validators.required],
+
+      employeeCount: ['', Validators.required],
       cybersecurityPractices: ['', Validators.required]
     });
   }
 
   submitForm() {
-    if (this.companyForm.valid) {
-      console.log(this.companyForm.value);
-      // Here you can handle the form submission, e.g., send it to an API
-    } else {
-      console.log("Form is not valid");
-    }
+    this.superadminService.supplierregister(this.companyForm.value).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.notificationService.showSuccess('', 'Supplier admin added successfully.');
+        window.location.reload()
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
   }
 
   NumberOnly(event: any): boolean {

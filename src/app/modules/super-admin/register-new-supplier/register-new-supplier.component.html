@@ -1,21 +1,28 @@
 <main id="main">
   <section>
     <div class="container-fluid">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+          <div class="form-group mb-0">
+            <!-- <span class="input-icon"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control control-search" placeholder="Search"> -->
+            <h4 class="text-theme"><strong>Register New Supplier</strong></h4>
+          </div><br>
+        </div>
+      </div>
       <form [formGroup]="companyForm" (ngSubmit)="submitForm()">
         <div class="row">
           <div class="col-lg-6 col-xl-6 col-12">
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Company Name</label>
               <div class="col-sm-8">
-                <input formControlName="companyName" class="form-control" 
-                  placeholder="Enter company name">
+                <input formControlName="companyName" class="form-control" placeholder="Enter company name">
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Company Website</label>
               <div class="col-sm-8">
-                <input formControlName="companyWebsite" type="text" class="form-control"
-                  placeholder="Enter company website">
+                <input formControlName="website" type="text" class="form-control" placeholder="Enter company website">
               </div>
             </div>
             <div class="row mb-3">
@@ -28,7 +35,7 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Registration Number</label>
               <div class="col-sm-8">
-                <input formControlName="gstRegistrationNumber" type="text" class="form-control"
+                <input formControlName="registerNumber" type="text" class="form-control"
                   placeholder="Enter GST/Registration number">
               </div>
             </div>
@@ -42,7 +49,7 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Industry/Sector</label>
               <div class="col-sm-8">
-                <input formControlName="industrySector" type="text" class="form-control"
+                <input formControlName="⁠industry_Sector" type="text" class="form-control"
                   placeholder="Enter industry/sector">
               </div>
             </div>
@@ -57,7 +64,7 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
               <div class="col-sm-8">
-                <input formControlName="developerEngineerTeams" type="text" class="form-control"
+                <input formControlName="developerOrEngineerTeams" type="text" class="form-control"
                   placeholder="Enter developer/engineer">
               </div>
             </div>
@@ -82,8 +89,7 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Email Address</label>
                   <div class="col-sm-8">
-                    <input formControlName="emailAddress" type="text" class="form-control"
-                      placeholder="Enter email address">
+                    <input formControlName="email" type="text" class="form-control" placeholder="Enter email address">
                   </div>
                 </div>
               </div>
@@ -91,8 +97,8 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Phone Number</label>
                   <div class="col-sm-8">
-                    <input formControlName="phoneNumber" type="text" class="form-control"
-                      placeholder="Enter phone number">
+                    <input formControlName="number" type="text" class="form-control" placeholder="Enter phone number"
+                      [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)">
                   </div>
                 </div>
               </div>
@@ -101,7 +107,8 @@
               <label for="inputEmail3" class="col-sm-2 col-form-label">Customer Support Contact</label>
               <div class="col-sm-10">
                 <input formControlName="customerSupportContact" class="form-control"
-                  placeholder="Enter customer support contact">
+                  placeholder="Enter customer support contact" (keypress)="NumberOnly($event)" [maxlength]="10"
+                  [minlength]="10">
               </div>
             </div>
             <div class="row">
@@ -109,7 +116,7 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">VAT or GST Number</label>
                   <div class="col-sm-8">
-                    <input formControlName="vatOrGstNumber" type="text" class="form-control"
+                    <input formControlName="VATOrGSTNumber" type="text" class="form-control"
                       placeholder="Enter VAT or GST number">
                   </div>
                 </div>
@@ -118,7 +125,7 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Company Directors/Owners</label>
                   <div class="col-sm-8">
-                    <input formControlName="companyDirectorsOwners" type="text" class="form-control"
+                    <input formControlName="companyDirectors_Owners" type="text" class="form-control"
                       placeholder="Enter company directors">
                   </div>
                 </div>
@@ -138,7 +145,7 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-2 col-form-label">Products/Services Offered</label>
               <div class="col-sm-10">
-                <input formControlName="productsServicesOffered" type="email" class="form-control"
+                <input formControlName="products_ServicesOffered" type="email" class="form-control"
                   placeholder="Enter products/services offered">
               </div>
             </div>
@@ -163,7 +170,7 @@
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">IP/Patents</label>
                   <div class="col-sm-8">
-                    <input formControlName="ipPatents" type="text" class="form-control" placeholder="Enter IP/patents">
+                    <input formControlName="IP_Patents" type="text" class="form-control" placeholder="Enter IP/patents">
                   </div>
                 </div>
               </div>
