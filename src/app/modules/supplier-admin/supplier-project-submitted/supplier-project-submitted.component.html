@@ -46,8 +46,8 @@
             <div class="sort-widget mb-3">
               <h6 class="p-600">Status</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Status"
-                class="form-select custom-ng-select-option" [items]="statusList" bindLabel="supplierStatus" [multiple]="true"
-                bindValue="value" [(ngModel)]="selectedStatuses" (change)="searchtext()">
+                class="form-select custom-ng-select-option" [items]="statusList" bindLabel="supplierStatus"
+                [multiple]="true" bindValue="value" [(ngModel)]="selectedStatuses" (change)="searchtext()">
               </ng-select>
             </div>
 
@@ -149,6 +149,7 @@
                   <th>Max value (GBP)</th>
                   <th>Project Type</th>
                   <th>Status</th>
+                  <th>Supplier Status</th>
                   <th>Due Date &amp; Time</th>
                   <th>Action</th>
                 </tr>
@@ -174,6 +175,7 @@
                   <td>{{item?.maxValue}}</td>
                   <td>{{item?.projectType}}</td>
                   <td>{{item?.status}}</td>
+                  <td>{{item?.supplierStatus}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>
                     <a class="btn btn-sm btn-primary m-1" title="View Details" (click)="projectDetails(item?._id)">View

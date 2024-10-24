@@ -238,7 +238,7 @@
 </section>
 
 
-<section class="bg-dark">
+<!-- <section class="bg-dark">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -251,10 +251,8 @@
           <thead>
             <tr>
               <th>Question</th>
-              <!-- <th>Weightage</th> -->
               <th>Status</th>
               <th>Deadline</th>
-              <!-- <th>Assign User</th> -->
               <th>Review Note</th>
               <th></th>
             </tr>
@@ -263,7 +261,6 @@
             <ng-container *ngFor="let item of summaryQuestionList">
               <tr *ngIf="item?.summaryQuestionFor == 'Supplier'">
                 <td width="350">{{item?.question}}</td>
-                <!-- <td>35%</td> -->
                 <td>
                   <span class="text-success" *ngIf="item?.verify">Verified</span>
                   <span *ngIf="!item?.verify">Not Verified</span>
@@ -273,17 +270,12 @@
                     {{item?.deadline | date : 'dd-MM-YYYY'}}
                   </span>
                   <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
-                  <!-- <i
-                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
                 <td>
-                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
-                      class="bi bi-pencil-fill"></i></a> -->
                 </td>
                 <td> {{item?.comment}}</td>
                 <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
                       class="bi bi-eye-fill"></i> View</a></td>
-                <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
               </tr>
             </ng-container>
           </tbody>
@@ -294,9 +286,9 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
-<section class="" style="background-color: #0047AB;">
+<!-- <section class="" style="background-color: #0047AB;">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -309,10 +301,8 @@
           <thead>
             <tr>
               <th>Question</th>
-              <!-- <th>Weightage</th> -->
               <th>Status</th>
               <th>Deadline</th>
-              <!-- <th>Assign User</th> -->
               <th>Review Note</th>
               <th></th>
             </tr>
@@ -321,7 +311,6 @@
             <ng-container *ngFor="let item of summaryQuestionList">
               <tr *ngIf="item?.summaryQuestionFor == 'UKWriter'">
                 <td width="350">{{item?.question}}</td>
-                <!-- <td>35%</td> -->
                 <td>
                   <span class="text-success" *ngIf="item?.verify">Verified</span>
                   <span *ngIf="!item?.verify">Not Verified</span>
@@ -331,17 +320,12 @@
                     {{item?.deadline | date : 'dd-MM-YYYY'}}
                   </span>
                   <a (click)="editSummaryDate(item?.deadline, item?._id)" class="editbtn" style="cursor: pointer;"></a>
-                  <!-- <i
-                      data-bs-toggle="modal" data-bs-target="#viewDateModal" class="bi bi-pencil-fill"></i> -->
                 </td>
                 <td>
-                  <!-- <a (click)="editUserName()" class="editbtn" style="cursor: pointer;"><i
-                      class="bi bi-pencil-fill"></i></a> -->
                 </td>
                 <td> {{item?.comment}}</td>
                 <td><a (click)="openSummaryDetail(item)" class="btn rounded bg-white text-dark fonts-12 w-100"><i
                       class="bi bi-eye-fill"></i> View</a></td>
-                <!-- <td><a href="question-details.html" class="btn btn-primary rounded fonts-12 w-100"><i class="bi bi-eye-fill"></i> View Question</a></td> -->
             </ng-container>
           </tbody>
         </table>
@@ -351,7 +335,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ViewCaseModal Modal -->
 <div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
