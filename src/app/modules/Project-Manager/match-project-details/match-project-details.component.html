@@ -131,109 +131,112 @@
 </section>
 
 <section style="padding-top: 10px; padding-bottom: 10px;">
-  <div class="table-responsive match-detail">
-    <table class="table bg-f9 mb-0 align-middle">
-      <thead>
-        <tr>
-          <th width="100px" style="min-width: 100px"></th>
-          <th width="12%">Supplier Name</th>
-          <th width="5%">Supplier ID</th>
-          <th width="5%">Admin Name</th>
-          <th width="10%">Company Selection</th>
-          <th width="10%">Handover Call</th>
-          <th width="5%"></th>
-          <th width="100px" style="min-width: 100px"></th>
-        </tr>
-      </thead>
-      <tbody class="bg-f9 mb-2">
-        <ng-container *ngFor="let supplier of userDetail">
-          <ng-container class="mb-3">
-            <tr>
-              <td></td>
-              <td>{{ supplier.companyName }}</td>
-              <td>{{ supplier._id }}</td>
-              <td>{{supplier.name}}</td>
-              <td>
-                <div class="form-group">
-                  <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
-                    [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
-                    [(ngModel)]="supplier['company']">
-                  </ng-select>
-                </div>
-              </td>
-              <td>
-                <div class="row mb-3">
-                  <div class="col-12">
-                    <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
-                      style="height: 30px" />
+
+  <div class="container-fluid">
+    <div class="table-responsive match-detail">
+      <table class="table table-striped mb-0 align-middle">
+        <thead>
+          <tr>
+            <th width="100px" style="min-width: 100px"></th>
+            <th width="12%">Supplier Name</th>
+            <th width="5%">Supplier ID</th>
+            <th width="5%">Admin Name</th>
+            <th width="10%">Company Selection</th>
+            <th width="10%">Handover Call</th>
+            <th width="5%"></th>
+            <th width="100px" style="min-width: 100px"></th>
+          </tr>
+        </thead>
+        <tbody class="bg-f9 mb-2">
+          <ng-container *ngFor="let supplier of userDetail">
+            <ng-container class="mb-3">
+              <tr>
+                <td></td>
+                <td>{{ supplier.companyName }}</td>
+                <td>{{ supplier._id }}</td>
+                <td>{{supplier.name}}</td>
+                <td>
+                  <div class="form-group">
+                    <ng-select style="padding: 0px !important;" class="form-select custom-ng-select-option"
+                      [items]="companyDetails" bindLabel="name" [multiple]="true" bindValue="name"
+                      [(ngModel)]="supplier['company']">
+                    </ng-select>
                   </div>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
-                    style="white-space: nowrap; font-size: 11px">
-                    {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
-                  </button>
-                </div>
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td colspan="8" class="inner-table p-0">
-                <table class="table bg-transparent w-100 mb-0">
-                  <tr>
-                    <td width="156px"></td>
-                    <td colspan="3" *ngFor="let casestudy of casestudylist">
-                      <div class="d-flex align-items-center bg-transparent">
-                        <div class="d-flex align-items-center me-1">
-                          <span class="w-space pe-2">{{casestudy?.name}}</span>
-                          <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
-                            (click)="openDocument(casestudy)" data-bs-toggle="modal" data-bs-target="#ViewCaseModal"><i
-                              class="bi bi-eye-fill me-2"></i> View</a>
+                </td>
+                <td>
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <input type="date" [(ngModel)]="supplier.startDate" class="form-control" placeholder="Start Date"
+                        style="height: 30px" />
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <button (click)="selectSupplier(supplier)" class="btn btn-sm btn-primary px-4 py-1"
+                      style="white-space: nowrap; font-size: 11px">
+                      {{ supplier?._id == selectedSupplier?._id ? 'Selected' : 'Select'}}
+                    </button>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="8" class="inner-table p-0">
+                  <table class="table bg-transparent w-100 mb-0">
+                    <tr>
+                      <td width="156px"></td>
+                      <td colspan="3" *ngFor="let casestudy of casestudylist">
+                        <div class="d-flex align-items-center bg-transparent">
+                          <div class="d-flex align-items-center me-1">
+                            <span class="w-space pe-2">{{casestudy?.name}}</span>
+                            <a href="javascript:;" class="btn btn-primary fonts-12 rounded-pill px-4 py-1 w-space"
+                              (click)="openDocument(casestudy)" data-bs-toggle="modal"
+                              data-bs-target="#ViewCaseModal"><i class="bi bi-eye-fill me-2"></i> View</a>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td colspan="3">
-                      <div class="d-flex align-items-center bg-transparent">
-                      </div>
-                    </td>
-                    <td></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr class="mb-3">
-              <td colspan="8" class="p-0">
-                <table class="table w-100 mb-0">
-                  <tr>
-                    <td width="156px"></td>
-                    <td class="text-danger" style="width: 120px">
-                      <span class="bg-transparent mt-1"> Drop Reason</span>
-                    </td>
-                    <td colspan="5">
-                      <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
-                        placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
-                        aria-describedby="basic-addon1" />
-                    </td>
-                    <td>
-                      <div class="bg-transparent w-auto d-flex align-items-center">
-                        <button (click)="dropUser(supplier)"
-                          class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
-                          style="white-space: nowrap; font-size: 11px">
-                          Drop
-                        </button>
-                      </div>
-                    </td>
-                    <td></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+                      </td>
+                      <td colspan="3">
+                        <div class="d-flex align-items-center bg-transparent">
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr class="mb-3">
+                <td colspan="8" class="p-0">
+                  <table class="table w-100 mb-0">
+                    <tr>
+                      <td width="156px"></td>
+                      <td class="text-danger" style="width: 120px">
+                        <span class="bg-transparent mt-1"> Drop Reason</span>
+                      </td>
+                      <td colspan="5">
+                        <input type="text" class="w-100 p-1 px-2 rounded fonts-12" style="border: 1px solid #e6e6e6"
+                          placeholder="Add reason" aria-label="Username" [(ngModel)]="supplier['reason']"
+                          aria-describedby="basic-addon1" />
+                      </td>
+                      <td>
+                        <div class="bg-transparent w-auto d-flex align-items-center">
+                          <button (click)="dropUser(supplier)"
+                            class="btn btn-outline-white btn-white bg-white text-danger rounded px-5 py-1 me-3"
+                            style="white-space: nowrap; font-size: 11px">
+                            Drop
+                          </button>
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
