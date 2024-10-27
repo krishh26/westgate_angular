@@ -159,7 +159,7 @@
                   <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                       class="bi bi-sort-up"></i></th>
                   <th>Status</th>
-                  <th>Compatibility</th>
+                  <th>Matched / Shortlisted</th>
                   <th [width]="120"></th>
                 </tr>
               </thead>
@@ -186,7 +186,8 @@
                   <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>{{item?.status}}</td>
-                  <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td>
+                  <td>{{item?.matchedSupplierCount}} / {{item?.sortListUserId?.length}}</td>
+                  <!-- <td><i class="bi bi-check-circle-fill text-success"></i> CS({{item?.matchedCaseStudy}}/3)</td> -->
                   <td>
                     <!-- <a class="btn btn-primary btn-sm me-2" style="cursor: pointer;"
                       (click)="projectDetails(item?._id)"><i class="bi bi-eye-fill"></i></a> -->&nbsp;&nbsp;

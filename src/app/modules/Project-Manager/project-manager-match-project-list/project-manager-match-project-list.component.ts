@@ -56,7 +56,7 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     { value: 'NotAwarded', status: 'Not awarded' },
     { value: 'Dropped', status: 'Dropped' }
   ];
-  
+
 
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -115,9 +115,9 @@ export class ProjectManagerMatchProjectListComponent implements OnInit {
     Payload.pmMatchProjectList.keyword = this.searchText;
     Payload.pmMatchProjectList.page = String(this.page);
     Payload.pmMatchProjectList.limit = String(this.pagesize);
-    Payload.pmMatchProjectList.status = '';
+    Payload.pmMatchProjectList.status = 'Passed';
     Payload.pmMatchProjectList.sortlist = false;
-    Payload.pmAllProjectList.match = 'partial';
+    Payload.pmMatchProjectList.match = 'partial';
     this.projectService.getProjectList(Payload.pmMatchProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

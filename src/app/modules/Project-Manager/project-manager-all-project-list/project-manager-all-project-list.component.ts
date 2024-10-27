@@ -228,7 +228,7 @@ export class ProjectManagerAllProjectListComponent implements OnInit {
     Payload.pmAllProjectList.limit = String(this.pagesize);
     Payload.pmAllProjectList.status = '';
     Payload.pmAllProjectList.sortlist = false;
-    Payload.pmAllProjectList.match = 'partial';
+    // Payload.pmAllProjectList.match = 'partial';
     this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
