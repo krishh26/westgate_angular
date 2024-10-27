@@ -34,7 +34,9 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: '', expired: false
+    supplierId: '', 
+    expired: false,
+    selectedSupplier : false
   },
 
   pmShortlistsupplierProjectList: {

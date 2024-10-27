@@ -272,6 +272,8 @@ export class ShortlistedSupplierProjectListComponent implements OnInit {
     Payload.pmAllProjectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.pmAllProjectList.valueRange = this.minValue + '-' + this.maxValue;
     Payload.pmAllProjectList.expired = this.isExpired;
+    Payload.pmAllProjectList.match = 'partial';
+    Payload.pmAllProjectList.selectedSupplier = true;
     this.projectService.getProjectList(Payload.pmAllProjectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
