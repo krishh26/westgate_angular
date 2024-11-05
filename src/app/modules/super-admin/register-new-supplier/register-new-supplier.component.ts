@@ -20,7 +20,7 @@ export class RegisterNewSupplierComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyForm = this.fb.group({
-      companyName: [''],
+      name: [''],
       website: [''],
       yearOfEstablishment: [''],
       registerNumber: [''],
