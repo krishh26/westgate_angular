@@ -23,10 +23,10 @@ export class ProjectsShortlistedComponent implements OnInit {
   searchText: any;
   
   minValue: number = 0;
-  maxValue: number = 50000000;
+  maxValue: number = 99999999999999999;
   options: Options = {
     floor: 0,
-    ceil: 50000000
+    ceil: 99999999999999999
   };
   isExpired: boolean = false;
   selectedCategories: any[] = [];
