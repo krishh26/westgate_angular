@@ -21,6 +21,7 @@ import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -47,7 +48,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     NgbModule,
     NgSelectModule,
     NgxSliderModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    NgxSpinnerModule
   ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA]
 })

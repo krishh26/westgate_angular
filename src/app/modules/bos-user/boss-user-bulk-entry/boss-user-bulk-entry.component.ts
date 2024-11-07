@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -21,37 +22,38 @@ export class BossUserBulkEntryComponent {
     private router: Router,
     private superService: SuperadminService,
     private activeModal: NgbActiveModal,
+    private spinner: NgxSpinnerService
   ) { }
 
   onFileChange(event: any) {
     const target: DataTransfer = <DataTransfer>(event.target);
-  
+
     if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-  
+
     const reader: FileReader = new FileReader();
-  
+
     reader.onload = (e: any) => {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-  
+
       /* grab first sheet */
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-  
+
       /* save data */
       let data = <any[][]>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  
+
       // Remove the first row (A1 row) which contains headers
       const headers = data[0];
       data = data.slice(1);
-  
+
       // Filter out empty arrays
       data = data.filter(row => row.length > 0);
-  
+
       // Function to replace null or undefined values with empty strings
       const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
-  
+
       // Function to convert Excel date serial to human-readable date
       const convertExcelDate = (serial: number) => {
         const excelEpoch = new Date(Date.UTC(1900, 0, 1)); // Excel epoch starts on 1900-01-01
@@ -59,7 +61,7 @@ export class BossUserBulkEntryComponent {
         excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
         return excelEpoch.toISOString().split('T')[0]; // Convert to ISO string and remove time
       };
-  
+
       // Map the data to desired JSON format with null values replaced
       const jsonData = data.map(row => {
         return {
@@ -85,38 +87,41 @@ export class BossUserBulkEntryComponent {
           mailID: replaceNullWithEmptyString(row[19]),
         };
       });
-  
+
       console.log(jsonData);
       const payload = {
         data: jsonData
       };
-
+      this.spinner.show();
       this.projectService.addProject(payload).subscribe(
         (res) => {
+          this.spinner.hide();
           if (res?.status == true) {
             this.showLoader = false;
             console.log('1', res?.status);
             console.log(res);
-  
+
             this.notificationService.showSuccess(res?.message);
             window.location.reload();
             this.router.navigate(['/boss-user/project-list']);
           } else {
+            this.spinner.hide();
             console.log('1', res?.status);
             this.notificationService.showError(res?.message);
             this.showLoader = false;
           }
         },
         (error) => {
+          this.spinner.hide();
           this.notificationService.showError(error?.error?.message);
           this.showLoader = false;
         }
       );
     };
-  
+
     reader.readAsBinaryString(target.files[0]);
   }
-  
+
   close() {
     this.activeModal.close();
   }
