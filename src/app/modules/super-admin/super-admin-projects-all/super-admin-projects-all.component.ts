@@ -313,6 +313,10 @@ export class SuperAdminProjectsAllComponent {
     }
   }
 
+  deleteBulkSupplier() {
+    
+  }
+
   deleteProject(id: any) {
     Swal.fire({
       title: 'Are you sure?',

@@ -51,8 +51,8 @@
               </ng-select>
             </div>
 
-             <!-- Expired Project Checkbox -->
-             <div class="sort-widget mb-3">
+            <!-- Expired Project Checkbox -->
+            <div class="sort-widget mb-3">
               <h6 class="p-600">Expired Project</h6>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="expiredProject" [(ngModel)]="isExpired"
@@ -140,6 +140,9 @@
                 title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
             <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
+              <button (click)="deleteBulkSupplier()" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"> Delete
+                  Bulk</i>
+              </button>
               <nav id="navbar" class="navbar">
                 <ul>
                   <li class="dropdown">
@@ -202,8 +205,9 @@
                   <td>
                     <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                       (click)="editProjectDetails(item?._id)"><i class="bi bi-pencil-fill"></i></a>
-                      &nbsp;&nbsp;
-                      <a (click)="deleteProject(item?._id)" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i> </a>
+                    &nbsp;&nbsp;
+                    <a (click)="deleteProject(item?._id)" class="btn btn-danger btn-sm"><i
+                        class="bi bi-trash3-fill"></i> </a>
                   </td>
                 </tr>
               </tbody>

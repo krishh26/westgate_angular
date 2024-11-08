@@ -6,6 +6,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { SuperadminCommentModalComponent } from '../superadmin-comment-modal/superadmin-comment-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-super-admin-supplier',
@@ -52,6 +53,35 @@ export class SuperAdminSupplierComponent {
         }
       );
     }
+  }
+
+  deleteSupplier(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.supplierService.deleteSupplierUser(id).subscribe((response: any) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('Supplier successfully deleted');
+            this.getManageUserList();
+          } else {
+            this.showLoader = false;
+            this.notificationService.showError(response?.message);
+          }
+        }, (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
   }
 
   getManageUserList() {

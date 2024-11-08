@@ -13,7 +13,8 @@ export enum SupplierAdminEndPoint {
   ADD_USER = '/user/suplier/register',
   CASE_STUDY_LIST = '/case-study/list',
   ADD_CASE_STUDY = '/case-study/create',
-  DELETE_USER = '/user/delete/'
+  DELETE_USER = '/user/delete/',
+  DELETE_SUPPLIER_USER = '/user/delete'
 }
 
 @Injectable({
@@ -56,10 +57,10 @@ export class SupplierAdminService {
       .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_USER, payload);
   }
 
-  // deleteUser(params: { id: string }): Observable<any> {
-  //   return this.httpClient
-  //     .post<any>(this.baseUrl + SupplierAdminEndPoint.DELETE_USER, payload);
-  // }
+  deleteSupplierUser(id: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + SupplierAdminEndPoint.DELETE_SUPPLIER_USER + '?id=' + id);
+  }
 
   deleteUser(params: { id: string }): Observable<any> {
     const url = `${this.baseUrl}${SupplierAdminEndPoint.DELETE_USER}`;
