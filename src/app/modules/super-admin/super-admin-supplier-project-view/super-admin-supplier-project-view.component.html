@@ -1,36 +1,11 @@
 <main id="main">
-    <section class="bg-white">
+    <section>
         <div class="container-fluid">
             <div class="row align-items-center justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-4 mob-mb1">
                     <a routerLink="/super-admin/super-admin-supplier" class="btn btn-primary text-dark">Back</a>
                 </div>
             </div>
-            <div class="table-responsive mt-5 mb-3">
-                <table class="table table-borderless align-middle">
-                    <thead>
-                        <tr>
-                            <th width="200px">Supplier Name</th>
-                            <th>Supplier ID</th>
-                            <th>Admin Name</th>
-                            <th>Join Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{supplierData?.name}}</td>
-                            <td v-align="middle">{{supplierData?._id}}</td>
-                            <td>{{supplierData?.userName}}</td>
-                            <td>{{supplierData?.doj | date : 'dd/MM/yyyy'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container-fluid">
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
                     <div class="form-group mb-0">
