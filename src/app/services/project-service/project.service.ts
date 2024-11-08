@@ -15,7 +15,8 @@ export enum ProjectEndPoint {
   QUESTION_DETAILS = '/summary-question/list/',
   UPDATE_MANAGER = '/project/update/project-manager/',
   UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status',
-  DELETE_BULK_PROJECT = '/project/delete-multiple'
+  DELETE_BULK_PROJECT = '/project/delete-multiple',
+  ADD_BULK_CASESTUDY = '/case-study/create-multiple'
 }
 
 @Injectable({
@@ -123,6 +124,11 @@ export class ProjectService {
   addProject(payload: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + ProjectEndPoint.ADD_PROJECT, payload);
+  }
+
+  addBulkCaseStudy(payload: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + ProjectEndPoint.ADD_BULK_CASESTUDY, payload);
   }
 
   getProjectDetails(): Observable<any> {
