@@ -14,7 +14,8 @@ export enum ProjectEndPoint {
   SUMMARYQUESTION_LIST = "/summary-question/list/",
   QUESTION_DETAILS = '/summary-question/list/',
   UPDATE_MANAGER = '/project/update/project-manager/',
-  UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status'
+  UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status',
+  DELETE_BULK_PROJECT = '/project/delete-multiple'
 }
 
 @Injectable({
@@ -107,6 +108,11 @@ export class ProjectService {
   deleteProject(id: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT + '/' + id);
+  }
+
+  deleteBulkProject(): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_BULK_PROJECT);
   }
 
   editProject(projectId: string, payload: any): Observable<any> {

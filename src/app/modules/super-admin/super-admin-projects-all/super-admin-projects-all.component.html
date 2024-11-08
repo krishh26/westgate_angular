@@ -126,36 +126,56 @@
 
 
         <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
-          <div class="row align-items-center justify-content-between">
-            <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-              <div class="form-group mb-0">
-                <span class="input-icon"><i class="bi bi-search"></i></span>
-                <input class="form-control control-search"
-                  placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-                  type="text" [(ngModel)]="searchText" (input)="searchtext()">
+          <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+            <div class="row align-items-center justify-content-between">
+              <!-- Left Section: Search Bar and Info Icon -->
+              <div class="col-lg-7 col-xl-7 col-md-7 col-12 d-flex align-items-center mb-2">
+                <!-- Search Bar -->
+                <div class="flex-grow-1">
+                  <div class="form-group mb-0 position-relative">
+                    <span class="input-icon"><i class="bi bi-search"></i></span>
+                    <input
+                      class="form-control control-search"
+                      placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+                      type="text"
+                      [(ngModel)]="searchText"
+                      (input)="searchtext()"
+                    />
+                  </div>
+                </div>
+                <!-- Info Icon -->
+                <div class="ms-3" style="cursor: pointer;">
+                  <i
+                    class="bi bi-info-circle-fill"
+                    data-bs-toggle="tooltip"
+                    title="Search using BOS ID, Project name, Client name, Website, Notice reference"
+                  ></i>
+                </div>
+              </div>
+          
+              <!-- Right Section: Delete and Add Buttons -->
+              <div class="col-lg-5 col-xl-5 col-md-5 col-12 d-flex justify-content-end gap-2 mb-2">
+                <!-- Delete Button -->
+                <button (click)="deleteBulkProject()" class="btn btn-danger btn-sm">
+                  <i class="bi bi-trash3-fill"></i> Delete Bulk
+                </button>
+                <!-- Add Project Button -->
+                <nav id="navbar" class="navbar p-0">
+                  <ul class="p-0 m-0">
+                    <li class="dropdown">
+                      <span class="btn btn-primary">+ Add Project</span>
+                      <ul>
+                        <li><a routerLink="/super-admin/super-admin-add-project">Single Entry</a></li>
+                        <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
-            <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer;">
-              <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
-                title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
-            </div>
-            <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-              <button (click)="deleteBulkSupplier()" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"> Delete
-                  Bulk</i>
-              </button>
-              <nav id="navbar" class="navbar">
-                <ul>
-                  <li class="dropdown">
-                    <span class="btn btn-outline-white w-100">+ Add Project</span>
-                    <ul>
-                      <li><a routerLink="/super-admin/super-admin-add-project">Single Entry</a></li>
-                      <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </nav>
-            </div>
           </div>
+          
+
           <div class="table-responsive mt-5 mb-3">
             <table class="table table-striped align-middle">
               <thead>
