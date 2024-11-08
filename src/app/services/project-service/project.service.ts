@@ -49,7 +49,7 @@ export class ProjectService {
     valueRange?: any,
     selectedSupplier?: boolean // Add this line
     expired?: boolean,
-    supplierStatus?:string
+    supplierStatus?: string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -104,9 +104,9 @@ export class ProjectService {
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
-  deleteProject(payload: any): Observable<any> {
+  deleteProject(id: any): Observable<any> {
     return this.httpClient
-      .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT, payload);
+      .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT + '/' + id);
   }
 
   editProject(projectId: string, payload: any): Observable<any> {

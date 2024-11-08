@@ -11,6 +11,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-super-admin-projects-all',
@@ -310,6 +311,35 @@ export class SuperAdminProjectsAllComponent {
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
+  }
+
+  deleteProject(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.deleteProject(id).subscribe((response: any) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('Project successfully deleted');
+            this.getProjectList();
+          } else {
+            this.showLoader = false;
+            this.notificationService.showError(response?.message);
+          }
+        }, (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
   }
 
 }
