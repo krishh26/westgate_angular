@@ -19,6 +19,9 @@ import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admi
 import { SuperadminAddProjectComponent } from './superadmin-add-project/superadmin-add-project.component';
 import { SuperadminCommentModalComponent } from './superadmin-comment-modal/superadmin-comment-modal.component';
 import { RegisterNewSupplierComponent } from './register-new-supplier/register-new-supplier.component';
+import { CaseStudyBulkAddComponent } from './case-study-bulk-add/case-study-bulk-add.component';
+import { AdminCaseStudiesListComponent } from './admin-case-studies-list/admin-case-studies-list.component';
+import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
 
 
 
@@ -34,7 +37,10 @@ import { RegisterNewSupplierComponent } from './register-new-supplier/register-n
     SuperAdminDashboardComponent,
     SuperadminAddProjectComponent,
     SuperadminCommentModalComponent,
-    RegisterNewSupplierComponent
+    RegisterNewSupplierComponent,
+    CaseStudyBulkAddComponent,
+    AdminCaseStudiesListComponent,
+    AdminAddCaseStudyComponent
   ],
   imports: [
     CommonModule,

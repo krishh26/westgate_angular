@@ -9,6 +9,9 @@ import { SuperAdminProjectDetailsComponent } from './super-admin-project-details
 import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
 import { SuperadminAddProjectComponent } from './superadmin-add-project/superadmin-add-project.component';
 import { RegisterNewSupplierComponent } from './register-new-supplier/register-new-supplier.component';
+import { AdminCaseStudiesListComponent } from './admin-case-studies-list/admin-case-studies-list.component';
+import { CaseStudyBulkAddComponent } from './case-study-bulk-add/case-study-bulk-add.component';
+import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
 
 
 
@@ -49,6 +52,21 @@ const routes: Routes = [
         path: "add-new-supplier",
         component: RegisterNewSupplierComponent
       },
+
+      {
+        path: "add-new-case-study",
+        component: AdminAddCaseStudyComponent
+      },
+      {
+        path: "add-bulk-case-study",
+        component: CaseStudyBulkAddComponent
+      },
+      {
+        path: "admin-case-study-list",
+        component: AdminCaseStudiesListComponent
+      },
+
+
     ]
   },
   {
