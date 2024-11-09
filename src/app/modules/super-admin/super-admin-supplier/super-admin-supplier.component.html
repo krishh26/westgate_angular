@@ -4,8 +4,6 @@
       <div class="row align-items-center justify-content-between">
         <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
           <div class="form-group mb-0">
-            <!-- <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control control-search" placeholder="Search"> -->
             <h4 class="text-theme"><strong>Supplier List</strong></h4>
           </div>
         </div>
@@ -39,7 +37,21 @@
               </td>
               <td> <a (click)="deleteSupplier(item?._id)" class="btn btn-danger btn-sm"><i
                     class="bi bi-trash3-fill"></i>
-                </a></td>
+                </a>
+              </td>
+              <td>
+                <nav id="navbar" class="navbar">
+                  <ul>
+                    <li class="dropdown">
+                      <span class="btn btn-outline-white w-100">+ Add Case Study</span>
+                      <ul>
+                        <li><a routerLink="/super-admin/add-new-case-study">Single Entry</a></li>
+                        <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </td>
             </tr>
           </tbody>
         </table>

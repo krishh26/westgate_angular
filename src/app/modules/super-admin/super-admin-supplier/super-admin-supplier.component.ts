@@ -7,6 +7,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { SuperadminCommentModalComponent } from '../superadmin-comment-modal/superadmin-comment-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
+import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
 
 @Component({
   selector: 'app-super-admin-supplier',
@@ -32,6 +33,11 @@ export class SuperAdminSupplierComponent {
 
   ngOnInit(): void {
     this.getManageUserList();
+  }
+
+
+  openAddTeamModal() {
+    this.modalService.open(CaseStudyBulkAddComponent, { size: 'xl' });
   }
 
   onToggleSwitch(item: any) {
