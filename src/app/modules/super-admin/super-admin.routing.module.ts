@@ -12,6 +12,7 @@ import { RegisterNewSupplierComponent } from './register-new-supplier/register-n
 import { AdminCaseStudiesListComponent } from './admin-case-studies-list/admin-case-studies-list.component';
 import { CaseStudyBulkAddComponent } from './case-study-bulk-add/case-study-bulk-add.component';
 import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
+import { SupplierManageUserListComponent } from './supplier-manage-user-list/supplier-manage-user-list.component';
 
 
 
@@ -35,6 +36,10 @@ const routes: Routes = [
       {
         path: "super-admin-supplier-project-view",
         component: SuperAdminSupplierProjectViewComponent
+      },
+      {
+        path: "super-admin-supplier-users-list",
+        component: SupplierManageUserListComponent
       },
       {
         path: "super-admin-project-details",
