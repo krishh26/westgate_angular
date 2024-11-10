@@ -15,6 +15,8 @@ import * as XLSX from 'xlsx';
 export class CaseStudyBulkAddComponent {
 
   showLoader: boolean = false;
+  supplierData: any = [];
+  supplierID: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -23,7 +25,21 @@ export class CaseStudyBulkAddComponent {
     private superService: SuperadminService,
     private activeModal: NgbActiveModal,
     private spinner: NgxSpinnerService
-  ) { }
+  ) {
+    this.supplierData = localStorage.getItem("supplierData");
+  }
+
+  ngOnInit(): void {
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      console.log(this.supplierData?._id);
+      this.supplierID = this.supplierData?._id;
+    } else {
+      console.log("No supplier data found in localStorage");
+    }
+  }
+
 
   onFileChange(event: any) {
     const target: DataTransfer = <DataTransfer>(event.target);
@@ -65,6 +81,7 @@ export class CaseStudyBulkAddComponent {
       // Map the data to desired JSON format with null values replaced
       const jsonData = data.map(row => {
         return {
+          userId: this.supplierID,
           date: typeof row[0] === 'number' ? convertExcelDate(row[0]) : replaceNullWithEmptyString(row[0]),
           name: replaceNullWithEmptyString(row[1]),
           category: replaceNullWithEmptyString(row[2]),
