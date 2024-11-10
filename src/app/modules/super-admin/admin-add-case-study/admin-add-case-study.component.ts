@@ -14,7 +14,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
   templateUrl: './admin-add-case-study.component.html',
   styleUrls: ['./admin-add-case-study.component.css']
 })
-export class AdminAddCaseStudyComponent  {
+export class AdminAddCaseStudyComponent {
 
   addEditProjectForm = {
     name: new FormControl("", Validators.required),
@@ -116,7 +116,7 @@ export class AdminAddCaseStudyComponent  {
       this.productForm.markAllAsTouched();
       return;
     }
-  
+
     this.showLoader = true;
     const formData = new FormData();
     for (const key in this.productForm.value) {
@@ -124,13 +124,12 @@ export class AdminAddCaseStudyComponent  {
         formData.append(key, this.productForm.value[key]);
       }
     }
-  
     this.supplierService.addCaseStudy(formData).subscribe(
       (response) => {
         if (response?.status === true) {
           this.showLoader = false;
-          this.notificationService.showSuccess('', 'Project added successfully.');
-          this.router.navigate(['/supplier-admin/case-studies-list']);
+          this.notificationService.showSuccess('', 'Case Study added successfully.');
+          this.router.navigate(['/super-admin/admin-case-study-list']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -142,6 +141,6 @@ export class AdminAddCaseStudyComponent  {
       }
     );
   }
-  
+
 
 }
