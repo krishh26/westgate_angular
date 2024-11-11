@@ -13,6 +13,7 @@ import { AdminCaseStudiesListComponent } from './admin-case-studies-list/admin-c
 import { CaseStudyBulkAddComponent } from './case-study-bulk-add/case-study-bulk-add.component';
 import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
 import { SupplierManageUserListComponent } from './supplier-manage-user-list/supplier-manage-user-list.component';
+import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/supplier-user-profile-data.component';
 
 
 
@@ -70,7 +71,10 @@ const routes: Routes = [
         path: "admin-case-study-list",
         component: AdminCaseStudiesListComponent
       },
-
+      {
+        path: "supplier-user-profile",
+        component: SupplierUserProfileDataComponent
+      },
 
     ]
   },
