@@ -8,6 +8,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 
 @Component({
   selector: 'app-admin-case-studies-list',
@@ -28,7 +29,8 @@ export class AdminCaseStudiesListComponent {
   selectedDocument: any;
   selectedCasestudy: any;
   categoryList: any = [];
-
+  supplierData: any = [];
+  supplierID: string = '';
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -48,6 +50,14 @@ export class AdminCaseStudiesListComponent {
   caseForm = new FormGroup(this.casestudyForm, []);
 
   ngOnInit(): void {
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      console.log(this.supplierData?._id);
+      this.supplierID = this.supplierData?._id;
+    } else {
+      console.log("No supplier data found in localStorage");
+    }
     this.getCaseStudiesList();
     this.getCategoryList();
     this.selectedCasestudy = 'https://f005.backblazeb2.com/file/west-get-it-hub-1/caseStudy/1727203790532_Historical Data.xlsx';
@@ -80,24 +90,27 @@ export class AdminCaseStudiesListComponent {
 
   getCaseStudiesList() {
     this.showLoader = true;
-    this.supplierService.getCaseStudyList().subscribe((response) => {
-      this.caseStudyList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.caseStudyList = response?.data?.data;
-        console.log(this.caseStudyList);
-
-        this.totalRecords = response?.totalCount;
+    Payload.casestudyList.page = String(this.page);
+    Payload.casestudyList.limit = String(this.pagesize);
+    Payload.casestudyList.userId = this.supplierID;
+  
+    this.supplierService.getadminCaseStudyList(Payload.casestudyList).subscribe((response) => {
+      console.log('API response:', response);
+      if (response?.status === true) {
+        this.caseStudyList = response?.data?.data || [];
+        this.totalRecords = response?.data?.meta_data?.items || 0;
+        console.log('Case Study List:', this.caseStudyList);
+        console.log('Total Records:', this.totalRecords);
       } else {
         this.notificationService.showError(response?.message);
-        this.showLoader = false;
       }
+      this.showLoader = false;
     }, (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
   }
+  
 
   addCaseStudy() {
     const data = new FormData();

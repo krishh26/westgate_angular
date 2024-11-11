@@ -119,6 +119,12 @@ export const Payload = {
     limit: '10',
   },
 
+  casestudyList : {
+    page: '1',
+    limit: '10',
+    userId : ''
+  },
+
   Project: {
     _id: "",
     projectName: "",

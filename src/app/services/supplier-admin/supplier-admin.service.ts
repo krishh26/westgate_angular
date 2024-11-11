@@ -42,6 +42,19 @@ export class SupplierAdminService {
       .get<any>(this.baseUrl + SupplierAdminEndPoint.CASE_STUDY_LIST);
   }
 
+  getadminCaseStudyList(params: {
+    userId: string,
+    page: string,
+    limit: string,
+  }): Observable<any> {
+    const url = `${this.baseUrl}${SupplierAdminEndPoint.CASE_STUDY_LIST}`;
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('userId', params?.userId || '');
+    queryParams = queryParams.set('page', params?.page);
+    queryParams = queryParams.set('limit', params?.limit);
+    return this.httpClient.get<any>(url, { params: queryParams });
+  }
+
   getManageUserList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.MANAGE_USER_LIST);
