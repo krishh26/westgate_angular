@@ -117,7 +117,7 @@ export class SuperAdminSupplierComponent {
   projectDetails(projectId: any, item: any) {
     let data = item;
     localStorage.setItem('supplierData', JSON.stringify(data))
-    this.router.navigate(['/super-admin/admin-case-study-list'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/supplier-user-profile'], { queryParams: { id: projectId } });
   }
 
   openCommentModal(item: any) {
