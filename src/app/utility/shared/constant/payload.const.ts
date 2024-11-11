@@ -125,6 +125,12 @@ export const Payload = {
     userId : ''
   },
 
+  
+  supplierUserList : {
+    page: '1',
+    limit: '10',
+  },
+
   manageSUpplierUserList : {
     page: '1',
     limit: '10',

@@ -8,6 +8,8 @@ import { SuperadminCommentModalComponent } from '../superadmin-comment-modal/sup
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
 @Component({
   selector: 'app-super-admin-supplier',
@@ -28,7 +30,8 @@ export class SuperAdminSupplierComponent {
     private authservice: AuthService,
     private notificationService: NotificationService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private superService: SuperadminService
   ) { }
 
   ngOnInit(): void {
@@ -92,15 +95,15 @@ export class SuperAdminSupplierComponent {
 
   getManageUserList() {
     this.showLoader = true;
-    this.authservice.getUserList('SupplierAdmin').subscribe(
+    Payload.supplierUserList.page = String(this.page);
+    Payload.supplierUserList.limit = String(this.pagesize);
+    this.superService.getSUpplierList(Payload.supplierUserList).subscribe(
       (response) => {
         this.supplierUserList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
         if (response?.status == true) {
           this.showLoader = false;
-          this.supplierUserList = response?.data;
-          console.log(this.supplierUserList);
-          this.totalRecords = response?.totalCount;
+          this.supplierUserList = response?.data?.data;
+          this.totalRecords = response?.data?.meta_data?.items || 0;
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -119,6 +122,13 @@ export class SuperAdminSupplierComponent {
     localStorage.setItem('supplierData', JSON.stringify(data))
     this.router.navigate(['/super-admin/supplier-user-profile'], { queryParams: { id: projectId } });
   }
+
+  paginate(page: number) {
+    this.page = page;
+    this.getManageUserList();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 
   openCommentModal(item: any) {
     const modalRef = this.modalService.open(SuperadminCommentModalComponent, { centered: true });

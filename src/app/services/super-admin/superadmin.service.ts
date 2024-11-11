@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -12,6 +12,7 @@ export enum SuperAdminEndPoint {
   INDUSTRY_LIST = '/industry/list',
   SUPPLIER_LIST = '/user/suplier/list',
   SUPPLIER_REGISTER = '/web-user/register',
+  SUPPLIERUSER_LIST = '/user/suplier/list'
 }
 
 
@@ -58,6 +59,19 @@ export class SuperadminService {
   supplierregister(payload: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + SuperAdminEndPoint.SUPPLIER_REGISTER, payload);
+  }
+
+
+  getSUpplierList(
+    params: {
+      page: string,
+      limit: string,
+    }): Observable<any> {
+    const url = `${this.baseUrl}${SuperAdminEndPoint.SUPPLIERUSER_LIST}`;
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('page', params?.page);
+    queryParams = queryParams.set('limit', params?.limit);
+    return this.httpClient.get<any>(url, { params: queryParams });
   }
 
 }

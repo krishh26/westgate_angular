@@ -43,6 +43,13 @@
           </tbody>
         </table>
       </div>
+      <div class="row mt-3 align-items-center">
+        <div class="row">
+          <div class="pagination">
+            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </main>
