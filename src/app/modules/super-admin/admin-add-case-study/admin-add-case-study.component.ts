@@ -36,7 +36,8 @@ export class AdminAddCaseStudyComponent {
   projectId: string = '';
   categoryList: any = [];
   industryList: any = [];
-
+  supplierData: any = [];
+  supplierID: string = '';
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -48,6 +49,14 @@ export class AdminAddCaseStudyComponent {
   }
 
   ngOnInit(): void {
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      console.log(this.supplierData?._id);
+      this.supplierID = this.supplierData?._id;
+    } else {
+      console.log("No supplier data found in localStorage");
+    }
     this.getcategoryList();
     this.getIndustryList();
     this.route.queryParams.subscribe((params) => {
@@ -112,7 +121,6 @@ export class AdminAddCaseStudyComponent {
 
   submitForm() {
     if (this.productForm.invalid) {
-      // Mark all controls as touched to trigger validation messages
       this.productForm.markAllAsTouched();
       return;
     }
@@ -124,6 +132,10 @@ export class AdminAddCaseStudyComponent {
         formData.append(key, this.productForm.value[key]);
       }
     }
+
+    // Manually pass the supplierID
+    formData.append('userId', this.supplierID);
+
     this.supplierService.addCaseStudy(formData).subscribe(
       (response) => {
         if (response?.status === true) {
