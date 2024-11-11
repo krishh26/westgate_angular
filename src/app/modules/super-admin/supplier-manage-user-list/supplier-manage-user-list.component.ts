@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -40,7 +41,12 @@ export class SupplierManageUserListComponent {
 
   getManageUserList() {
     this.showLoader = true;
-    this.supplierService.getManageUserList().subscribe((response) => {
+
+    Payload.manageSUpplierUserList.page = String(this.page);
+    Payload.manageSUpplierUserList.limit = String(this.pagesize);
+    Payload.manageSUpplierUserList.userId = this.supplierID;
+
+    this.supplierService.getsupplierManageUserList(Payload.manageSUpplierUserList).subscribe((response) => {
       this.manageUserList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
