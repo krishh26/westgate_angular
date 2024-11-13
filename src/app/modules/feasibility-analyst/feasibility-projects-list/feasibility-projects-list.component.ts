@@ -236,7 +236,7 @@ export class FeasibilityProjectsListComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        console.log(this.projectList);
+         
         this.totalRecords = response?.data?.meta_data?.items;
 
       } else {
@@ -272,7 +272,7 @@ export class FeasibilityProjectsListComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        console.log(this.projectList);
+         
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);

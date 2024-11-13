@@ -133,7 +133,7 @@ export class SupplierProjectSubmittedComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        console.log(this.projectList);
+         
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
@@ -181,7 +181,7 @@ export class SupplierProjectSubmittedComponent {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-        console.log(this.industryList);
+         
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
