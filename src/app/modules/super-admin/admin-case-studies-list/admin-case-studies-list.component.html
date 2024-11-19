@@ -51,6 +51,7 @@
                   <th>Contract Value</th>
                   <th>Resources Used</th>
                   <th>Client Name</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -75,6 +76,8 @@
                   <td>{{item?.contractValue}}</td>
                   <td>{{item?.resourcesUsed}}</td>
                   <td>{{item?.clientName}}</td>
+                  <td><a class="btn btn-primary btn-sm" style="cursor: pointer;" routerLink="/super-admin/add-new-case-study" [state]="item"
+                    ><i class="bi bi-pencil-fill"></i></a></td>
                 </tr>
               </tbody>
             </table>

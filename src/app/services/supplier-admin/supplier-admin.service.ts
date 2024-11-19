@@ -13,6 +13,7 @@ export enum SupplierAdminEndPoint {
   ADD_USER = '/user/suplier/register',
   CASE_STUDY_LIST = '/case-study/list',
   ADD_CASE_STUDY = '/case-study/create',
+  UPDATE_CASE_STUDY = '/case-study/update/',
   DELETE_USER = '/user/delete/',
   DELETE_SUPPLIER_USER = '/user/delete',
   SUPPLIER_DETAILS = '/user/suplier/get'
@@ -86,6 +87,12 @@ export class SupplierAdminService {
   addCaseStudy(payload: any) {
     return this.httpClient
       .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_CASESTUDY, payload);
+  }
+
+  updateCaseStudy(payload: any,id:string) {
+    return this.httpClient
+      .patch<any>(this.baseUrl + SupplierAdminEndPoint.UPDATE_CASE_STUDY
+        +id, payload);
   }
 
   addUser(payload: any) {

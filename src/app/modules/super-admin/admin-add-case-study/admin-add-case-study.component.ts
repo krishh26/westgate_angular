@@ -38,6 +38,7 @@ export class AdminAddCaseStudyComponent {
   industryList: any = [];
   supplierData: any = [];
   supplierID: string = '';
+  data:any;
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -46,9 +47,14 @@ export class AdminAddCaseStudyComponent {
     private superService: SuperadminService,
     private supplierService: SupplierAdminService
   ) {
+    const navigation = this.router.getCurrentNavigation();
+    this.data = navigation?.extras.state;
   }
 
   ngOnInit(): void {
+    if(this.data) {
+      this.productForm.patchValue(this.data);
+    }
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
@@ -120,6 +126,30 @@ export class AdminAddCaseStudyComponent {
 
 
   submitForm() {
+    if (this.data) {
+      const payload = {
+        ...this.data, 
+        ...this.productForm.value,
+      };
+      this.showLoader = true;
+      this.supplierService.updateCaseStudy(payload,this.data._id).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('', 'Case Study Edit successfully.');
+            this.router.navigate(['/super-admin/admin-case-study-list']);
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
+      return
+    }
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
       return;
