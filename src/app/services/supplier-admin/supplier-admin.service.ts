@@ -16,7 +16,8 @@ export enum SupplierAdminEndPoint {
   UPDATE_CASE_STUDY = '/case-study/update/',
   DELETE_USER = '/user/delete/',
   DELETE_SUPPLIER_USER = '/user/delete',
-  SUPPLIER_DETAILS = '/user/suplier/get'
+  SUPPLIER_DETAILS = '/user/suplier/get',
+  SUPPLIER_ACTIVITY = '/user/login-details'
 }
 
 @Injectable({
@@ -44,10 +45,16 @@ export class SupplierAdminService {
       .get<any>(this.baseUrl + SupplierAdminEndPoint.CASE_STUDY_LIST);
   }
 
-  getSupplierDetails(supplierId : any): Observable<any> {
+  getSupplierDetails(supplierId: any): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.SUPPLIER_DETAILS + '/' + supplierId);
   }
+
+  getSupplierActivity(supplierId: any): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SupplierAdminEndPoint.SUPPLIER_ACTIVITY + '/' + supplierId);
+  }
+
 
   getadminCaseStudyList(params: {
     userId: string,
@@ -89,10 +96,10 @@ export class SupplierAdminService {
       .post<any>(this.baseUrl + SupplierAdminEndPoint.ADD_CASESTUDY, payload);
   }
 
-  updateCaseStudy(payload: any,id:string) {
+  updateCaseStudy(payload: any, id: string) {
     return this.httpClient
       .patch<any>(this.baseUrl + SupplierAdminEndPoint.UPDATE_CASE_STUDY
-        +id, payload);
+        + id, payload);
   }
 
   addUser(payload: any) {
