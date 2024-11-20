@@ -26,6 +26,13 @@
             </tr>
           </thead>
           <tbody>
+
+            <tr>
+              <td *ngIf="!rows?.length" colspan="7">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
             <tr *ngFor="let row of rows">
               <td *ngFor="let time of row">{{ time }}</td>
             </tr>
