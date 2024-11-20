@@ -14,6 +14,7 @@ import { CaseStudyBulkAddComponent } from './case-study-bulk-add/case-study-bulk
 import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
 import { SupplierManageUserListComponent } from './supplier-manage-user-list/supplier-manage-user-list.component';
 import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/supplier-user-profile-data.component';
+import { SupplierUserActivityComponent } from './supplier-user-activity/supplier-user-activity.component';
 
 
 
@@ -74,6 +75,10 @@ const routes: Routes = [
       {
         path: "supplier-user-profile",
         component: SupplierUserProfileDataComponent
+      },
+       {
+        path: "supplier-user-activity",
+        component: SupplierUserActivityComponent
       },
 
     ]

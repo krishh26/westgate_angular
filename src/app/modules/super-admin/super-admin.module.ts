@@ -24,6 +24,7 @@ import { AdminCaseStudiesListComponent } from './admin-case-studies-list/admin-c
 import { AdminAddCaseStudyComponent } from './admin-add-case-study/admin-add-case-study.component';
 import { SupplierManageUserListComponent } from './supplier-manage-user-list/supplier-manage-user-list.component';
 import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/supplier-user-profile-data.component';
+import { SupplierUserActivityComponent } from './supplier-user-activity/supplier-user-activity.component';
 
 
 
@@ -44,7 +45,8 @@ import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/s
     AdminCaseStudiesListComponent,
     AdminAddCaseStudyComponent,
     SupplierManageUserListComponent,
-    SupplierUserProfileDataComponent
+    SupplierUserProfileDataComponent,
+    SupplierUserActivityComponent
   ],
   imports: [
     CommonModule,
