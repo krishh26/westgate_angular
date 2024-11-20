@@ -18,6 +18,8 @@ export class SupplierUserActivityComponent {
   supplierData: any = [];
   showLoader: boolean = false;
   supplierDetails: any = [];
+  dates: string[] = []; // Will hold the keys (dates) dynamically
+  rows: string[][] = []; // Will hold the rows of login times
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -37,7 +39,7 @@ export class SupplierUserActivityComponent {
     } else {
       console.log("No supplier data found in localStorage");
     }
-    this.getSupplierdata();
+    // this.getSupplierdata();
     this.getSupplierActivity();
   }
 
@@ -66,6 +68,20 @@ export class SupplierUserActivityComponent {
       (response) => {
         if (response?.status) {
           this.supplierDetails = response.data;
+  
+          // Extract dates (keys)
+          this.dates = Object.keys(this.supplierDetails);
+  
+          // Find the maximum number of login times
+          const maxEntries = Math.max(
+            ...Object.values(this.supplierDetails).map((times) => (times as any[]).length)
+          );
+  
+          // Prepare rows
+          this.rows = Array.from({ length: maxEntries }, (_, rowIndex) =>
+            this.dates.map((date) => this.supplierDetails[date][rowIndex]?.loginTime || "")
+          );
+  
           this.showLoader = false;
         } else {
           console.error('Failed to fetch supplier activity:', response?.message);
@@ -78,5 +94,5 @@ export class SupplierUserActivityComponent {
       }
     );
   }
-
+  
 }
