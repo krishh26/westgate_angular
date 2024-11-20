@@ -11,6 +11,7 @@ export enum SupplierAdminEndPoint {
   // PROJECT_DETAILS = '/project/get/',
   MANAGE_USER_LIST = '/user/suplier',
   ADD_USER = '/user/suplier/register',
+  UPDATE_USER = '/user/update/',
   CASE_STUDY_LIST = '/case-study/list',
   ADD_CASE_STUDY = '/case-study/create',
   UPDATE_CASE_STUDY = '/case-study/update/',
@@ -99,6 +100,12 @@ export class SupplierAdminService {
   updateCaseStudy(payload: any, id: string) {
     return this.httpClient
       .patch<any>(this.baseUrl + SupplierAdminEndPoint.UPDATE_CASE_STUDY
+        + id, payload);
+  }
+
+  updateSuppilerDetails(payload: any, id: string) {
+    return this.httpClient
+      .patch<any>(this.baseUrl + SupplierAdminEndPoint.UPDATE_USER
         + id, payload);
   }
 

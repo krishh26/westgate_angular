@@ -4,21 +4,37 @@
       <div class="row align-items-center">
         <nav>
           <ul class="projects-nav-tab">
-            <li routerLink="/super-admin/supplier-user-profile"><a class="active">Profile</a></li>
-            <li routerLink="/super-admin/admin-case-study-list"><a>Case Studies</a></li>
-            <li routerLink="/super-admin/super-admin-supplier-users-list"><a>Users</a></li>
-            <li routerLink="/super-admin/supplier-user-activity"><a>Activity</a></li>
+            <li routerLink="/super-admin/supplier-user-profile">
+              <a class="active">Profile</a>
+            </li>
+            <li routerLink="/super-admin/admin-case-study-list">
+              <a>Case Studies</a>
+            </li>
+            <li routerLink="/super-admin/super-admin-supplier-users-list">
+              <a>Users</a>
+            </li>
+            <li routerLink="/super-admin/supplier-user-activity">
+              <a>Activity</a>
+            </li>
           </ul>
         </nav>
       </div>
     </div>
 
     <div class="container-fluid">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-12">
-          <h4 class="text-theme"><strong>Supplier Information</strong></h4><br>
+      <div class="row align-items-end justify-content-between">
+        <div class="col-12 d-flex justify-content-between mb-2">
+          <h4 class="text-theme"><strong>Supplier Information</strong></h4>
+          <a
+            class="btn btn-primary btn-sm"
+            style="cursor: pointer"
+            routerLink="/super-admin/supplier-user-profile-edit"
+            [state]="supplierDetails"
+            ><i class="bi bi-pencil-fill"></i
+          ></a>
         </div>
       </div>
+
       <div class="row">
         <div class="col-12">
           <table class="table table-striped table-bordered">
