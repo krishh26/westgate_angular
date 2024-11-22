@@ -31,6 +31,13 @@ export class ProjectManagerService {
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST + `?userRoles=${userRoles}`);
   }
 
+  getUserListProjectManager(userRoles: string, projectId: any): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}${ProjectManagerAPIEndPoint.USER_LIST}?userRoles=${userRoles}&projectId=${projectId}`
+    );
+  }
+  
+
   dropUser(payload: any, id: string): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectManagerAPIEndPoint.DROP_USER + id, payload);
