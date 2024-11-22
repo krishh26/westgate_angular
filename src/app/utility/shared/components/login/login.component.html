@@ -1,10 +1,8 @@
 <div class="body-login">
-    <div class="container">
-        <img src="assets/img/westgate.svg" width="250" height="100" class="float-start" />
-    </div>   
+    <img src="assets/img/westgate.svg" width="250" height="100" class="float-start" />
     <div class="container d-flex justify-content-center align-items-center" style="height:100vh; overflow:hidden;">
         <div class="row d-flex align-items-center justify-content-center"
-            style="overflow:hidden; width:100vw; height:100vh;"> 
+            style="overflow:hidden; width:100vw; height:100vh;">
             <div class="col-lg-4 col-xl-4 col-12">
                 <div class="login-modal">
                     <div class="login-body">
@@ -14,19 +12,19 @@
                                 <label>Role</label>
                                 <!-- <input type="text" formControlName="role" required class="form-control"
                                     placeholder="Enter role"> -->
-                                    <select formControlName="role" class="form-select">
-                                        <option disabled selected hidden value="">Select User Role</option>
-                                        <option value="BOS">Bos User</option>
-                                        <option value="FeasibilityUser">Feasibility User</option>
-                                        <option value="ProjectManager">Project Manager</option>
-                                        <!-- <option value="SupplierAdmin">Supplier Admin</option> -->
-                                        <option value="Admin">Super Admin</option>
+                                <select formControlName="role" class="form-select">
+                                    <option disabled selected hidden value="">Select User Role</option>
+                                    <option value="BOS">Bos User</option>
+                                    <option value="FeasibilityUser">Feasibility User</option>
+                                    <option value="ProjectManager">Project Manager</option>
+                                    <!-- <option value="SupplierAdmin">Supplier Admin</option> -->
+                                    <option value="Admin">Super Admin</option>
 
-                                        <!-- <option value="UKWriter">UK Writer</option>
+                                    <!-- <option value="UKWriter">UK Writer</option>
                                         <option value="BIDSubmition">Bid Submission</option>
                                         <option value="ProjectCoOrdinator">Project Co-Ordinator</option> -->
 
-                                    </select>
+                                </select>
                                 <span class="text-danger" *ngIf="
                                 loginForm.controls.role?.touched &&
                                 loginForm.controls.role?.errors?.['required']">
