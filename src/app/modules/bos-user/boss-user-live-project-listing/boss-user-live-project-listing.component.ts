@@ -9,6 +9,7 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Options } from '@angular-slider/ngx-slider';
+import { BosProjectMailSendComponent } from '../bos-project-mail-send/bos-project-mail-send.component';
 
 @Component({
   selector: 'app-boss-user-live-project-listing',
@@ -293,5 +294,28 @@ export class BossUserLiveProjectListingComponent {
       this.searchtext();
     }
   }
+
+  openMailModal() {
+    const modalRef = this.modalService.open(BosProjectMailSendComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    // Pass project details to the modal
+    // modalRef.componentInstance.projectName = projectName;
+    // modalRef.componentInstance.bosId = bosId;
+    // modalRef.componentInstance.supplierName = this.loginUser?.name;
+
+    modalRef.result.then(
+      (result) => {
+        console.log('Email sent with message:', result);
+        // Call your API to send the email or perform another action
+      },
+      (reason) => {
+        console.log('Modal dismissed:', reason);
+      }
+    );
+  }
+
 }
 

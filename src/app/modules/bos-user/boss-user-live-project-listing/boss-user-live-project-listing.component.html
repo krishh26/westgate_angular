@@ -135,15 +135,15 @@
                   type="text" [(ngModel)]="searchText" (input)="searchtext()">
               </div>
             </div>
-            <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer;">
+            <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="cursor: pointer;">
               <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
                 title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
-            <div class="col-lg-2 col-xl-2 col-12 mob-mb1">
-              <nav id="navbar" class="navbar">
+            <div class="col-lg-5 col-xl-5 col-12 mob-mb1 d-flex justify-content-end">
+              <nav id="navbar" class="navbar me-2">
                 <ul>
                   <li class="dropdown">
-                    <span class="btn btn-outline-white w-100">+ Add Project</span>
+                    <span class="btn btn-outline-white">+ Add Project</span>
                     <ul>
                       <li><a routerLink="/boss-user/add-project">Single Entry</a></li>
                       <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
@@ -151,8 +151,12 @@
                   </li>
                 </ul>
               </nav>
+              <button (click)="openMailModal()" class="btn btn-dark btn-sm">
+                <i class="bi bi-envelope-arrow-up"></i> Send Mail
+              </button>
             </div>
           </div>
+
           <div class="table-responsive mt-5 mb-3">
             <table class="table table-striped align-middle">
               <thead>

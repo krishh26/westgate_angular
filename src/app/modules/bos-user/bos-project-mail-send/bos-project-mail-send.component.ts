@@ -4,12 +4,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+
 @Component({
-  selector: 'app-projectMailSend',
-  templateUrl: './projectMailSend.component.html',
-  styleUrls: ['./projectMailSend.component.css']
+  selector: 'app-bos-project-mail-send',
+  templateUrl: './bos-project-mail-send.component.html',
+  styleUrls: ['./bos-project-mail-send.component.css']
 })
-export class ProjectMailSendComponent implements OnInit {
+export class BosProjectMailSendComponent implements OnInit {
+
   @Input() projectName: string = ''; // Passed from the parent
   @Input() bosId: string = ''; // Passed from the parent
   @Input() supplierName: string = ''; // Passed from the parent
