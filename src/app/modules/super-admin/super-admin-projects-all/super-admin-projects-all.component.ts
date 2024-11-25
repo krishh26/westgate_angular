@@ -12,6 +12,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 import Swal from 'sweetalert2';
+import { ProjectMailSendComponent } from '../projectMailSend/projectMailSend.component';
 
 @Component({
   selector: 'app-super-admin-projects-all',
@@ -369,6 +370,28 @@ export class SuperAdminProjectsAllComponent {
         });
       }
     });
+  }
+
+  openMailModal() {
+    const modalRef = this.modalService.open(ProjectMailSendComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    // Pass project details to the modal
+    // modalRef.componentInstance.projectName = projectName;
+    // modalRef.componentInstance.bosId = bosId;
+    // modalRef.componentInstance.supplierName = this.loginUser?.name;
+
+    modalRef.result.then(
+      (result) => {
+        console.log('Email sent with message:', result);
+        // Call your API to send the email or perform another action
+      },
+      (reason) => {
+        console.log('Modal dismissed:', reason);
+      }
+    );
   }
 
 }

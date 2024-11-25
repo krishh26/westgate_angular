@@ -134,25 +134,18 @@
                 <div class="flex-grow-1">
                   <div class="form-group mb-0 position-relative">
                     <span class="input-icon"><i class="bi bi-search"></i></span>
-                    <input
-                      class="form-control control-search"
+                    <input class="form-control control-search"
                       placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-                      type="text"
-                      [(ngModel)]="searchText"
-                      (input)="searchtext()"
-                    />
+                      type="text" [(ngModel)]="searchText" (input)="searchtext()" />
                   </div>
                 </div>
                 <!-- Info Icon -->
                 <div class="ms-3" style="cursor: pointer;">
-                  <i
-                    class="bi bi-info-circle-fill"
-                    data-bs-toggle="tooltip"
-                    title="Search using BOS ID, Project name, Client name, Website, Notice reference"
-                  ></i>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
+                    title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
                 </div>
               </div>
-          
+
               <!-- Right Section: Delete and Add Buttons -->
               <div class="col-lg-5 col-xl-5 col-md-5 col-12 d-flex justify-content-end gap-2 mb-2">
                 <!-- Delete Button -->
@@ -171,10 +164,14 @@
                     </li>
                   </ul>
                 </nav>
+                <!-- Delete Button -->
+                <button (click)="openMailModal()" class="btn btn-dark btn-sm">
+                  <i class="bi bi-envelope-arrow-up"></i> Send Mail
+                </button>
               </div>
             </div>
           </div>
-          
+
 
           <div class="table-responsive mt-5 mb-3">
             <table class="table table-striped align-middle">
