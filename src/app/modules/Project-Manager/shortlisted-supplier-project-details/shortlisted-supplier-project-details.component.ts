@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SummaryService } from 'src/app/services/summary/summary.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-shortlisted-supplier-project-details',
@@ -16,7 +17,7 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
 
  
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
-
+  casestudylist: any = [];
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
@@ -28,6 +29,7 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
   summaryQuestionList: any;
   selectedDate: any;
   summaryId: any;
+  userDetail: any;
   statusList: string[] = [
     'In solution',
     'In-review',
@@ -37,6 +39,8 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
     'Not awarded',
     'Dropped'
   ];
+  selectedSupplier: any;
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
 
   constructor(
     private projectService: ProjectService,
@@ -46,7 +50,8 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private summaryService: SummaryService,
     private datePipe: DatePipe,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private projectManagerService: ProjectManagerService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -54,6 +59,20 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
 
     this.loginUser = this.localStorageService.getLogger();
   }
+
+  companyDetails: any = [
+    {
+      name: "Delphi Services Limited"
+    }, {
+      name: "Spectrum IT Hub Limited"
+    }, {
+      name: "Apex IT Solutions"
+    }, {
+      name: "Big Data Limited"
+    }, {
+      name: "Saiwen"
+    }
+  ]
 
   ngOnInit(): void {
     this.getProjectDetails();
@@ -66,6 +85,7 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+        this.casestudylist = response?.data?.casestudy;
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -73,6 +93,28 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
     }, (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
+    });
+  }
+
+  selectSupplier(supplier: any) {
+    this.selectedSupplier = supplier
+
+    if (!this.selectedSupplier) {
+      return this.notificationService.showError('please select supplier');
+    }
+    console.log('sadsdd', supplier);
+
+    const data = {
+      select: {
+        supplierId: this.selectedSupplier?._id,
+        companySelect: supplier.company,
+        handoverCall: supplier.startDate
+      }
+    }
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      this.notificationService.showSuccess('Successfully select user')
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Something went wrong');
     });
   }
 
@@ -185,6 +227,31 @@ export class ShortlistedSupplierProjectDetailsComponent implements OnInit {
       return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  dropUser(details: any) {
+    console.log('this is testing data', details);
+    if (!details?.reason) {
+      return this.notificationService.showError('Please enter reason');
+    }
+
+    const data = {
+      dropUser: {
+        userId: details?._id,
+        reason: details?.reason
+      }
+    }
+
+    this.projectManagerService.dropUser(data, this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.notificationService.showSuccess(response?.message || 'Drop user successfully');
+        //this.getUserDetails();
+      } else {
+        return this.notificationService.showError('Try after some time.');
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message || 'Error.')
+    })
   }
 
 }
