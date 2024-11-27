@@ -191,34 +191,35 @@
                   </td>
                 </tr>
 
-                <ng-container *ngFor="let item of projectList">
-                  <tr>
-                    <td></td>
-                    <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
-                    <!-- <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td> -->
-                    <td v-align="middle">{{item?.BOSID}}</td>
-                    <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-                    <td>{{item?.category}}</td>
-                    <td>{{item?.industry}}</td>
-                    <td>{{item?.minValue}}</td>
-                    <td>{{item?.maxValue}}</td>
-                    <!-- <td>{{item?.website}}</td> -->
-                    <td>{{item?.matchedSupplierCount}} / {{item?.sortListUserId?.length}}</td>
-                    <td><a href='{{item?.link}}' target="_blank">Link to notice</a></td>
-                    <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
-                    <td>{{item?.status}}</td>
-                    <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                    <td>
-                      <button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1"
-                        style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">View Matched
-                        Suppliers</button>
-                    </td>
-                    <td></td>
-                  </tr>
-                  <tr *ngIf="item?.select?.length == 0">
-                    <td colspan="16" style="background-color: #b5b2b2; text-align: center;">No Records.</td>
-                  </tr>
-                </ng-container>
+
+                <tr *ngFor="let item of projectList">
+                  <td></td>
+                  <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
+                  <!-- <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td> -->
+                  <td v-align="middle">{{item?.BOSID}}</td>
+                  <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                  <td>{{item?.category}}</td>
+                  <td>{{item?.industry}}</td>
+                  <td>{{item?.minValue}}</td>
+                  <td>{{item?.maxValue}}</td>
+                  <!-- <td>{{item?.website}}</td> -->
+                  <td>{{item?.matchedSupplierCount}} / {{item?.sortListUserId?.length}}</td>
+                  <td><a href='{{item?.link}}' target="_blank">Link to notice</a></td>
+                  <td>{{item?.createdAt | date:'dd/MM/yyyy'}}</td>
+                  <td>{{item?.status}}</td>
+                  <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                  <td>
+                    <button (click)="projectDetails(item?._id)" class="btn btn-sm btn-primary px-2 py-1"
+                      style="white-space: nowrap;font-size: 11px;position: relative; top: 35px;">View Matched
+                      Suppliers</button>
+                  </td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td *ngIf="!projectList?.length" colspan="15">
+                    <app-no-record-found></app-no-record-found>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
