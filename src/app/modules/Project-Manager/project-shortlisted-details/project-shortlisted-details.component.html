@@ -190,7 +190,7 @@
           </tr>
         </thead>
         <tbody class="bg-f9 mb-2">
-          <ng-container *ngFor="let supplier of userDetail">
+          <ng-container *ngFor="let supplier of projectDetails?.sortlistedUsers">
             <ng-container class="mb-3">
               <tr>
                 <td></td>
@@ -228,7 +228,7 @@
                   <table class="table bg-transparent w-100 mb-0">
                     <tr>
                       <td width="156px"></td>
-                      <td colspan="3" *ngFor="let casestudy of casestudylist">
+                      <td colspan="3" *ngFor="let casestudy of supplier?.caseStudy">
                         <div class="d-flex align-items-center bg-transparent">
                           <div class="d-flex align-items-center me-1">
                             <span class="w-space pe-2">{{casestudy?.name}}</span>
@@ -380,6 +380,32 @@
     </div>
   </div>
 </section> -->
+
+<!-- ViewCaseModal Modal -->
+<div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between;">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">Case Study ({{selectedDocument?.name}})</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- View Screenshot Modal -->
 <div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
