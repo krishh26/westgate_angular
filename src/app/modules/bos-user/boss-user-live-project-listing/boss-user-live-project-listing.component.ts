@@ -345,11 +345,6 @@ export class BossUserLiveProjectListingComponent {
       keyboard: false,
     });
 
-    // Pass project details to the modal
-    // modalRef.componentInstance.projectName = projectName;
-    // modalRef.componentInstance.bosId = bosId;
-    // modalRef.componentInstance.supplierName = this.loginUser?.name;
-
     modalRef.result.then(
       (result) => {
         console.log('Email sent with message:', result);
