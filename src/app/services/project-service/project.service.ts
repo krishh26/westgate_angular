@@ -16,7 +16,9 @@ export enum ProjectEndPoint {
   UPDATE_MANAGER = '/project/update/project-manager/',
   UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status',
   DELETE_BULK_PROJECT = '/project/delete-multiple',
-  ADD_BULK_CASESTUDY = '/case-study/create-multiple'
+  ADD_BULK_CASESTUDY = '/case-study/create-multiple',
+  CREATE_CATEGORY = '/category/create',
+  CREATE_INDUSTRY = '/industry/create'
 }
 
 @Injectable({
@@ -104,6 +106,17 @@ export class ProjectService {
       queryParams = queryParams.set('expired', params?.expired);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
+  }
+
+
+  createCategory(payload: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + ProjectEndPoint.CREATE_CATEGORY, payload);
+  }
+
+  createIndustry(payload: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + ProjectEndPoint.CREATE_INDUSTRY, payload);
   }
 
   deleteProject(id: any): Observable<any> {
