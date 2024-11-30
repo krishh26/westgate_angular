@@ -27,6 +27,7 @@ import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/s
 import { SupplierUserActivityComponent } from './supplier-user-activity/supplier-user-activity.component';
 import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/supplier-user-profile-edit.component';
 import { ProjectMailSendComponent } from './projectMailSend/projectMailSend.component';
+import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 
 
 
@@ -50,7 +51,8 @@ import { ProjectMailSendComponent } from './projectMailSend/projectMailSend.comp
     SupplierUserProfileDataComponent,
     SupplierUserActivityComponent,
     SupplierUserProfileEditComponent,
-    ProjectMailSendComponent
+    ProjectMailSendComponent,
+    TodoTasksComponent
   ],
   imports: [
     CommonModule,
