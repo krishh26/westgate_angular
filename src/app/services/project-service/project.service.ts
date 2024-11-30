@@ -16,7 +16,9 @@ export enum ProjectEndPoint {
   UPDATE_MANAGER = '/project/update/project-manager/',
   UPDATE_PROJECTMANAGER_SUPPLIER_STATUS = '/project/add-status',
   DELETE_BULK_PROJECT = '/project/delete-multiple',
-  ADD_BULK_CASESTUDY = '/case-study/create-multiple'
+  ADD_BULK_CASESTUDY = '/case-study/create-multiple',
+  CREATE_CATEGORY= '/category/create',
+  CREAT_INDRUSTY= '/industry/create'
 }
 
 @Injectable({
@@ -171,5 +173,15 @@ export class ProjectService {
     return this.httpClient
       .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`, payload, {
       });
+  }
+
+  createCategory(payload:any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + ProjectEndPoint.CREATE_CATEGORY, payload);
+  }
+
+  createIndustry(payload:any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + ProjectEndPoint.CREAT_INDRUSTY, payload);
   }
 }

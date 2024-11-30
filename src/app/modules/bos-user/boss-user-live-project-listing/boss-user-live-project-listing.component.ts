@@ -230,7 +230,7 @@ export class BossUserLiveProjectListingComponent {
 
   searchtext() {
     this.showLoader = true;
-
+    console.log('this is called',this.searchText);
     // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
@@ -268,6 +268,50 @@ export class BossUserLiveProjectListingComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  onItemAddCategory(item: { category: string }): void {
+    // Add type annotation for 'categoryItem'
+    const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createCategory(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getcategoryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
+  }
+
+  onItemAddIndustry(item: { industry: string }): void {
+    // Add type annotation for 'categoryItem'
+    console.log(this.industryList)
+
+    const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createIndustry(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getIndustryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
   }
 
   projectDetails(projectId: any) {
