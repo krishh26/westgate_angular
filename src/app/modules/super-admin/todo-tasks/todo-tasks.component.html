@@ -139,13 +139,29 @@
               </div>
         </div>
         <div class="col-lg-3 col-xl-3 col-md-2 col-sm-3 col-12">
-            <div class="sidebar-widget">
-                <p class="ps-3"><strong>Task Status</strong></p>
-                    <ul class="sidebar-nav">
-                        <li><a href="javascript:void(0)" class="active"><i class="bi bi-bell me-2"></i> Reminder my task</a></li>
-                        <li><a href="javascript:void(0)"><i class="bi bi-calendar-week me-2"></i> Schedule my task</a></li>
-                        <li><a href="javascript:void(0)"><i class="bi bi-trash me-2"></i> Delete task</a></li>
+            <div class="sidebar-widget p-3">
+                <ul class="Listgroup border-bottom bg-white">
+                    <li> <i class="bi bi-circle task-icon bluetext"></i> Task 1 <span class="action-mark"><i class="bi bi-star bluetext"></i></span></li>
+                    <li> <i class="bi bi-circle task-icon bluetext"></i> Task 1 <span class="action-mark"><i class="bi bi-x"></i></span></li>
+                    <li> <a href="javascript:void(0)">+ New Step</a></li>
+                </ul>
+                   
+                    <ul class="todo-actionList">
+                        <li><a href="javascript:void(0)" class="active"><i class="bi bi-brightness-high me-2"></i> Add to my day</a></li>
+                        <li><a href="javascript:void(0)"><i class="bi bi-bell me-2"></i> Reminder me</a></li>
+                        <li><a href="javascript:void(0)"><i class="bi bi-calendar-week me-2"></i> Add due date</a></li>
+                        <li><a href="javascript:void(0)"><i class="bi bi-repeat me-2"></i> Repeat</a></li>
+                        <li><a href="javascript:void(0)"><i class="bi bi-pin me-2"></i> Pick a category</a></li>
+                        <li><a href="javascript:void(0)"><i class="bi bi-paperclip me-2"></i> Add File</a></li>
                     </ul>
+                    <textarea class="form-control" placeholder="Add note..." rows="2" cols="100"></textarea>
+                    <div class="sidebar-footer-nav">
+                        <div class="row ">
+                            <div class="col-2"><a href="javascript:void(0)" class="action-button"><i class="bi bi-box-arrow-in-right"></i></a></div>
+                            <div class="col-8 text-center">Created Today</div>
+                            <div class="col-2 text-end"><a href="javascript:void(0)" class="action-button"></a> <i class="bi bi-trash"></i></div>
+                        </div>
+                    </div>
                </div>
         </div>
     </div>
