@@ -20,18 +20,20 @@
             <!-- Category Dropdown -->
             <div class="sort-widget mb-3">
               <h6 class="p-600">Category</h6>
-              <ng-select style="padding: 0px !important;" placeholder="Select Category"
+              <ng-select style="padding: 0px !important" placeholder="Select Category"
                 class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
-                [multiple]="true" bindValue="category" [(ngModel)]="selectedCategories" (change)="searchtext()">
+                [multiple]="true" bindValue="category" [(ngModel)]="selectedCategories" (change)="searchtext()"
+                [addTag]="true" (add)="onItemAddCategory($event)">
               </ng-select>
             </div>
 
             <!-- Industry Dropdown -->
             <div class="sort-widget mb-3">
               <h6 class="p-600">Industry</h6>
-              <ng-select style="padding: 0px !important;" placeholder="Select Industry"
+              <ng-select style="padding: 0px !important" placeholder="Select Industry"
                 class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
-                [multiple]="true" bindValue="industry" [(ngModel)]="selectedIndustries" (change)="searchtext()">
+                [multiple]="true" bindValue="industry" [(ngModel)]="selectedIndustries" (change)="searchtext()"
+                [addTag]="true" (add)="onItemAddIndustry($event)">
               </ng-select>
             </div>
 
