@@ -28,6 +28,7 @@ import { SupplierUserActivityComponent } from './supplier-user-activity/supplier
 import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/supplier-user-profile-edit.component';
 import { ProjectMailSendComponent } from './projectMailSend/projectMailSend.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
+import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 
 
 
@@ -52,7 +53,8 @@ import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
     SupplierUserActivityComponent,
     SupplierUserProfileEditComponent,
     ProjectMailSendComponent,
-    TodoTasksComponent
+    TodoTasksComponent,
+    StatusWiseTrackerComponent
   ],
   imports: [
     CommonModule,

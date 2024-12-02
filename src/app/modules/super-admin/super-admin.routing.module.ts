@@ -17,6 +17,7 @@ import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/s
 import { SupplierUserActivityComponent } from './supplier-user-activity/supplier-user-activity.component';
 import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/supplier-user-profile-edit.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
+import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 
 
 
@@ -89,6 +90,10 @@ const routes: Routes = [
       {
         path: "todo-tasks",
         component: TodoTasksComponent
+      },
+      {
+        path: "status-wise-tracker",
+        component: StatusWiseTrackerComponent
       },
 
     ]
