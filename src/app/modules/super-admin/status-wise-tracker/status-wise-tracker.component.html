@@ -1,45 +1,82 @@
 <main id="main">
   <section class="casestudy-section">
-
-    <div class="sort-widget">
-      <h6 class="p-600">Publish Date Range</h6>
-      <form class="row row-cols-sm-auto" (ngSubmit)="getDataByStatus()">
-        <div class="col-6">
-          <div class="input-group mb-2">
-            <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="trackerStartDate" ngbDatepicker
-              #startDatePicker="ngbDatepicker" />
-            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-              type="button"></button>
+    <div class="container-fluid">
+      <div class="sort-widget">
+        <h6 class="p-600">Publish Date Range</h6>
+        <form class="row row-cols-sm-auto" (ngSubmit)="getDataByStatus()">
+          <div class="col-6">
+            <div class="input-group mb-2">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [formControl]="trackerStartDate"
+                ngbDatepicker
+                #startDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="startDatePicker.toggle()"
+                type="button"
+              ></button>
+            </div>
           </div>
-        </div>
-        <div class="col-6">
-          <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="trackerEndDate" ngbDatepicker
-              #endDatePicker="ngbDatepicker" />
-            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-              type="button"></button>
+          <div class="col-6">
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [formControl]="trackerEndDate"
+                ngbDatepicker
+                #endDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="endDatePicker.toggle()"
+                type="button"
+              ></button>
+            </div>
           </div>
-        </div>
-      </form>
-      <button class="btn btn-primary mt-3" (click)="getDataByStatus()">Fetch Data</button>
+        </form>
+      </div>
     </div>
 
-
-    <div class="container-fluids mb-3">
+    <!-- <div class="container-fluid mb-3">
       <div class="row align-items-center">
         <nav>
           <ul class="projects-nav-tab">
-            <li routerLink="/super-admin/supplier-user-profile">
-              <a class="active">Profile</a>
+            <li
+              *ngFor="let status of projectStatuses"
+              (click)="selectStatus(status)"
+              [class.active]="selectedStatus === status"
+            >
+              {{ status }}
             </li>
           </ul>
         </nav>
       </div>
-    </div>
+    </div> -->
 
     <div class="container-fluid">
-
+      <div *ngIf="statusWiseData.length > 0">
+        <h4 class="text-theme">Project Data</h4>
+        <table class="table table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Project Count</th>
+              <th>Project Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of statusWiseData">
+              <td>{{ data.status }}</td>
+              <td>{{ data.count }}</td>
+              <td>{{ data.value | number:'1.0-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
+    
   </section>
 </main>

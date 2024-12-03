@@ -1,4 +1,8 @@
 .table td {
-    font-weight: bold;
-    font-size: 14px;
-  }
+  font-weight: bold;
+  font-size: 14px;
+}
+.projects-nav-tab li.active {
+  font-weight: bold;
+  color: #007bff;
+}
