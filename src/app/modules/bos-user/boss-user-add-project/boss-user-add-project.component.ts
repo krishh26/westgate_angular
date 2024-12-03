@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 
 @Component({
   selector: 'app-boss-user-add-project',
@@ -148,6 +149,7 @@ export class BossUserAddProjectComponent {
     let payload = {
       data: this.productForm.value
     }
+    console.log('thisis value',this.productForm.value)
     if (this.projectId) {
       this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
         if (response.status) {
@@ -176,6 +178,52 @@ export class BossUserAddProjectComponent {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       });
+    }
+  }
+
+
+  onItemAddCategory(item: { category: string }): void {
+    // Add type annotation for 'categoryItem'
+    const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createCategory(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getcategoryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
+  }
+
+  onItemAddIndustry(item: { industry: string }): void {
+    // Add type annotation for 'categoryItem'
+    console.log(this.industryList)
+    console.log('this is value',item);
+
+    const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createIndustry(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getIndustryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
     }
   }
 }

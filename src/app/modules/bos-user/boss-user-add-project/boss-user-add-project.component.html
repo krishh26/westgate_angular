@@ -215,6 +215,8 @@
                       [multiple]="true"
                       bindValue="category"
                       formControlName="category"
+                      [addTag]="true"
+                      (add)="onItemAddCategory($event)"
                     >
                     </ng-select>
                   </div>
@@ -235,6 +237,8 @@
                       [multiple]="true"
                       bindValue="industry"
                       formControlName="industry"
+                      [addTag]="true"
+                      (add)="onItemAddIndustry($event)"
                     >
                     </ng-select>
                   </div>
