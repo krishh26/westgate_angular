@@ -88,7 +88,7 @@ export class CaseStudyBulkAddComponent {
           industry: replaceNullWithEmptyString(row[3]),
           type: replaceNullWithEmptyString(row[4]),
           description: replaceNullWithEmptyString(row[5]),
-          contractDuration: replaceNullWithEmptyString(row[6]),
+          contractDuration: typeof row[6] === 'number' ? convertExcelDate(row[6]) : replaceNullWithEmptyString(row[6]),
           technologies: replaceNullWithEmptyString(row[7]),
           maintenance: replaceNullWithEmptyString(row[8]),
           contractValue: replaceNullWithEmptyString(row[9]),

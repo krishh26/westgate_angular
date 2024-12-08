@@ -62,8 +62,15 @@ export class BossUserBulkEntryComponent {
         return excelEpoch.toISOString().split('T')[0]; // Convert to ISO string and remove time
       };
 
-      // Map the data to desired JSON format with null values replaced
       const jsonData = data.map(row => {
+        const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
+
+        // Convert a comma-separated string to an array, or return an empty array if the string is empty
+        const parseCommaSeparatedField = (value: string) => {
+          const cleanedValue = replaceNullWithEmptyString(value);
+          return cleanedValue ? cleanedValue.split(',').map((item: any) => item.trim()) : [];
+        };
+
         return {
           BOSID: replaceNullWithEmptyString(row[0]),
           projectName: replaceNullWithEmptyString(row[1]),
@@ -82,11 +89,13 @@ export class BossUserBulkEntryComponent {
           clientType: replaceNullWithEmptyString(row[14]),
           clientName: replaceNullWithEmptyString(row[15]),
           projectType: replaceNullWithEmptyString(row[16]),
-          industry: replaceNullWithEmptyString(row[17]),
-          category: replaceNullWithEmptyString(row[18]),
+          industry: parseCommaSeparatedField(row[17]), // Convert industry string to an array
+          category: parseCommaSeparatedField(row[18]), // Convert category string to an array
           mailID: replaceNullWithEmptyString(row[19]),
         };
       });
+
+
 
       console.log(jsonData);
       const payload = {

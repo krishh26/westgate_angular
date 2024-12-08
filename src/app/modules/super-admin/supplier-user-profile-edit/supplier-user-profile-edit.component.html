@@ -123,15 +123,6 @@
                   class="form-control"
                   placeholder="Enter Type of Company"
                 />
-                <div
-                  *ngIf="
-                    supplierDetails.get('TypeOfCompany')?.invalid &&
-                    supplierDetails.get('TypeOfCompany')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Type of Company is required.
-                </div>
               </div>
             </div>
 
@@ -147,15 +138,6 @@
                   class="form-control"
                   placeholder="Enter Industry Sector"
                 />
-                <div
-                  *ngIf="
-                    supplierDetails.get('industry_Sector')?.invalid &&
-                    supplierDetails.get('industry_Sector')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Industry Sector is required.
-                </div>
               </div>
             </div>
 
