@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
 @Component({
@@ -11,25 +12,28 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 })
 export class TodoTasksComponent {
   taskDetails: string = '';
-  taskTitle : string = '';
+  taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
+  userList: any = [];
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private projectManagerService: ProjectManagerService,
   ) {
   }
 
   ngOnInit(): void {
-    this.getTask()
+    this.getTask();
+    this.getUserAllList();
   }
 
   addTask() {
     if (this.taskDetails.trim()) {
       const payload = {
         discription: this.taskDetails,
-        task : this.taskTitle,
+        task: this.taskTitle,
         status: 'Todo',
         dueDate: '',
         assignTo: ''
@@ -74,6 +78,27 @@ export class TodoTasksComponent {
     );
   }
 
-
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter out users with role 'supplierAdmin'
+          this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
+          console.log(this.userList);
+          
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+  
 
 }

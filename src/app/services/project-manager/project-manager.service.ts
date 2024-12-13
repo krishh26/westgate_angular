@@ -31,6 +31,11 @@ export class ProjectManagerService {
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST + `?userRoles=${userRoles}`);
   }
 
+  getUserAllList(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST);
+  }
+
   getUserListProjectManager(userRoles: string, projectId: any): Observable<any> {
     return this.httpClient.get<any>(
       `${this.baseUrl}${ProjectManagerAPIEndPoint.USER_LIST}?userRoles=${userRoles}&projectId=${projectId}`
