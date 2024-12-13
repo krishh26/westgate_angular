@@ -48,6 +48,7 @@
           </div>
         </div>
       </div>
+
       <div class="accordion accordion-flush" id="accordianTodoList">
         <p><strong>Ongoing Task</strong></p>
         <div class="accordion-item">
@@ -61,20 +62,13 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button class="accordion-button" [class.collapsed]="i !== 0" type="button" data-bs-toggle="collapse"
-                [attr.data-bs-target]="'#flush-collapse-' + i" [attr.aria-controls]="'flush-collapse-' + i"
-                [attr.aria-expanded]="i === 0 ? 'true' : 'false'">
+              <button class="accordion-button" type="button">
                 <i class="bi bi-circle task-icon"></i> {{ task?.task }}
               </button>
             </h2>
-            <div [id]="'flush-collapse-' + i" class="accordion-collapse collapse" [class.show]="i === 0"
-              [attr.aria-labelledby]="'flush-TodoList-' + i" data-bs-parent="#accordianTodoList">
+            <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
               <div class="accordion-body">
-                <p>
-                  Placeholder content for this accordion, which is intended to
-                  demonstrate the <code>.accordion-flush</code> class. This is the
-                  {{ i + 1 }} item's accordion body.
-                </p>
+                <p>{{ task?.discription }}</p>
                 <ul class="SecondarytaskList">
                   <li>
                     <i class="bi bi-circle task-icon"></i> Louisville Geek provides
@@ -85,6 +79,7 @@
             </div>
           </div>
         </div>
+
       </div>
 
       <div class="accordion accordion-flush" id="accordianCompletedTodoList">
@@ -168,8 +163,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <textarea class="form-control" placeholder="Enter task details" cols="100" rows="3"
-          [(ngModel)]="taskDetails"></textarea>
+        <input class="form-control" placeholder="Enter Task Titles" cols="100" rows="3" [(ngModel)]="taskTitle">
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control" placeholder="Enter Task Description" [(ngModel)]="taskDetails"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

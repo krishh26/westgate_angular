@@ -9,7 +9,7 @@ import { SuperAdminSupplierProjectViewComponent } from './super-admin-supplier-p
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SuperAdminProjectDetailsComponent } from './super-admin-project-details/super-admin-project-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SuperAdminSupplierDetailsComponent } from './super-admin-supplier-details/super-admin-supplier-details.component';
@@ -68,6 +68,7 @@ import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tr
     NgxSliderModule,
     NgxExtendedPdfViewerModule
   ],
+  providers: [NgbActiveModal], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SuperAdminModule { }
