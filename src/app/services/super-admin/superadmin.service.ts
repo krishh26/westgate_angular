@@ -13,7 +13,10 @@ export enum SuperAdminEndPoint {
   SUPPLIER_LIST = '/user/suplier/list',
   SUPPLIER_REGISTER = '/web-user/register',
   SUPPLIERUSER_LIST = '/user/suplier/list',
-  PROJECT_MAIL_SEND = '/project/new-project-mail'
+  PROJECT_MAIL_SEND = '/project/new-project-mail',
+  CREATE_TASK='/task/create',
+  GET_TASK='/task/list'
+
 }
 
 
@@ -77,6 +80,16 @@ export class SuperadminService {
     queryParams = queryParams.set('page', params?.page);
     queryParams = queryParams.set('limit', params?.limit);
     return this.httpClient.get<any>(url, { params: queryParams });
+  }
+
+  createTask(payload: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + SuperAdminEndPoint.CREATE_TASK, payload);
+  }
+
+  getTask(): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
   }
 
 }
