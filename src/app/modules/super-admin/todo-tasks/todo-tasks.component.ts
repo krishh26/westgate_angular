@@ -14,7 +14,7 @@ export class TodoTasksComponent {
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
-  
+
   ) {
   }
 
@@ -25,55 +25,56 @@ export class TodoTasksComponent {
   addTask() {
     if (this.taskDetails.trim()) {
       this.showLoader = true;
-      const payload={
-          "task": this.taskDetails,
-          "status": "Todo",
-          "dueDate": null,
-          "assignTo": null   }
-    this.superService.createTask(payload).subscribe(
+      const payload = {
+        "task": this.taskDetails,
+        "status": "Todo",
+        "dueDate": "",
+        "assignTo": ""
+      }
+      this.superService.createTask(payload).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('Task Create Successfully');
+            this.getTask()
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
+
+    } else {
+      this.notificationService.showError('please Enter Task Details');
+
+    }
+  }
+  getTask() {
+
+    this.showLoader = true;
+    this.superService.getTask().subscribe(
       (response) => {
         if (response?.status == true) {
+          this.taskList = response?.data?.data;
           this.showLoader = false;
-          this.notificationService.showSuccess('Task Create Successfully');
-          this.getTask()
-      }else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    },
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
     );
-      
-    } else {
-     this.notificationService.showError('please Enter Task Details');
-  
-    }
-  }
-  getTask() {
-  
-      this.showLoader = true;
-    this.superService.getTask().subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.taskList=response?.data?.data;
-          this.showLoader = false;
-          
-      }else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    ); 
-  
-}
 
-  
+  }
+
+
 
 }
