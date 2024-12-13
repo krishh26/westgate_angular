@@ -26,6 +26,9 @@ import { SupplierManageUserListComponent } from './supplier-manage-user-list/sup
 import { SupplierUserProfileDataComponent } from './supplier-user-profile-data/supplier-user-profile-data.component';
 import { SupplierUserActivityComponent } from './supplier-user-activity/supplier-user-activity.component';
 import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/supplier-user-profile-edit.component';
+import { ProjectMailSendComponent } from './projectMailSend/projectMailSend.component';
+import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
+import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 
 
 
@@ -48,7 +51,10 @@ import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/s
     SupplierManageUserListComponent,
     SupplierUserProfileDataComponent,
     SupplierUserActivityComponent,
-    SupplierUserProfileEditComponent 
+    SupplierUserProfileEditComponent,
+    ProjectMailSendComponent,
+    TodoTasksComponent,
+    StatusWiseTrackerComponent
   ],
   imports: [
     CommonModule,

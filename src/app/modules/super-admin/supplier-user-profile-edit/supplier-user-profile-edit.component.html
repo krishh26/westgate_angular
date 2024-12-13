@@ -17,235 +17,95 @@
           <div class="col-lg-6 col-xl-6 col-12">
             <!-- Company Name -->
             <div class="row mb-3">
-              <label for="companyName" class="col-sm-4 col-form-label"
-                >Company Name</label
-              >
+              <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="companyName"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Company Name"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('companyName')?.invalid &&
-                    supplierDetails.get('companyName')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Company Name is required.
-                </div>
+                <input formControlName="companyName" type="text" class="form-control"
+                  placeholder="Enter Company Name" />
+
               </div>
             </div>
 
             <!-- Website -->
             <div class="row mb-3">
-              <label for="website" class="col-sm-4 col-form-label"
-                >Website</label
-              >
+              <label for="website" class="col-sm-4 col-form-label">Website</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="website"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Website"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('website')?.invalid &&
-                    supplierDetails.get('website')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Website is required.
-                </div>
+                <input formControlName="website" type="text" class="form-control" placeholder="Enter Website" />
+
               </div>
             </div>
 
             <!-- Year of Establishment -->
             <div class="row mb-3">
-              <label for="yearOfEstablishment" class="col-sm-4 col-form-label"
-                >Year of Establishment</label
-              >
+              <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year of Establishment</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="yearOfEstablishment"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Year of Establishment"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('yearOfEstablishment')?.invalid &&
-                    supplierDetails.get('yearOfEstablishment')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Year of Establishment is required.
-                </div>
+                <input formControlName="yearOfEstablishment" type="text" class="form-control"
+                  placeholder="Enter Year of Establishment" />
+
               </div>
             </div>
 
             <!-- Registration Number -->
             <div class="row mb-3">
-              <label for="registrationNumber" class="col-sm-4 col-form-label"
-                >Registration Number</label
-              >
+              <label for="registrationNumber" class="col-sm-4 col-form-label">Registration Number</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="registrationNumber"
-                  type="number"
-                  class="form-control"
-                  placeholder="Enter Registration Number"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('registrationNumber')?.invalid &&
-                    supplierDetails.get('registrationNumber')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Registration Number is required.
-                </div>
+                <input formControlName="registrationNumber" type="number" class="form-control"
+                  placeholder="Enter Registration Number" />
+
               </div>
             </div>
 
             <!-- Type of Company -->
             <div class="row mb-3">
-              <label for="TypeOfCompany" class="col-sm-4 col-form-label"
-                >Type of Company</label
-              >
+              <label for="TypeOfCompany" class="col-sm-4 col-form-label">Type of Company</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="TypeOfCompany"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Type of Company"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('TypeOfCompany')?.invalid &&
-                    supplierDetails.get('TypeOfCompany')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Type of Company is required.
-                </div>
+                <input formControlName="TypeOfCompany" type="text" class="form-control"
+                  placeholder="Enter Type of Company" />
               </div>
             </div>
 
             <!-- Industry Sector -->
             <div class="row mb-3">
-              <label for="industry_Sector" class="col-sm-4 col-form-label"
-                >Industry Sector</label
-              >
+              <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector</label>
               <div class="col-sm-8">
-                <input
-                  formControlName="industry_Sector"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Industry Sector"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('industry_Sector')?.invalid &&
-                    supplierDetails.get('industry_Sector')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Industry Sector is required.
-                </div>
+                <input formControlName="industry_Sector" type="text" class="form-control"
+                  placeholder="Enter Industry Sector" />
               </div>
             </div>
 
             <!-- Company Address -->
             <div class="row mb-3">
-              <label for="companyAddress" class="col-sm-4 col-form-label"
-                >Company Address</label
-              >
+              <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="companyAddress"
-                  class="form-control"
-                  placeholder="Enter Company Address"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('companyAddress')?.invalid &&
-                    supplierDetails.get('companyAddress')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Company Address is required.
-                </div>
+                <textarea formControlName="companyAddress" class="form-control"
+                  placeholder="Enter Company Address"></textarea>
+
               </div>
             </div>
 
             <div class="row mb-3">
-              <label for="companyAddress" class="col-sm-4 col-form-label"
-                >Developer Or Engineer Teams</label
-              >
+              <label for="companyAddress" class="col-sm-4 col-form-label">Developer Or Engineer Teams</label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="developerOrEngineerTeams"
-                  class="form-control"
-                  placeholder="Enter Company Address"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('developerOrEngineerTeams')?.invalid &&
-                    supplierDetails.get('developerOrEngineerTeams')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Developer Or Engineer Teams is required.
-                </div>
+                <textarea formControlName="developerOrEngineerTeams" class="form-control"
+                  placeholder="Enter Company Address"></textarea>
+
               </div>
             </div>
             <div class="row mb-3">
-              <label for="companyAddress" class="col-sm-4 col-form-label"
-                >Data Privacy Policies</label
-              >
+              <label for="companyAddress" class="col-sm-4 col-form-label">Data Privacy Policies</label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="dataPrivacyPolicies"
-                  class="form-control"
-                  placeholder="Enter Company Address"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('dataPrivacyPolicies')?.invalid &&
-                    supplierDetails.get('dataPrivacyPolicies')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Data Privacy Policies is required.
-                </div>
+                <textarea formControlName="dataPrivacyPolicies" class="form-control"
+                  placeholder="Enter Company Address"></textarea>
+
               </div>
             </div>
             <div class="row mb-3">
-              <label
-                for="securityCertifications"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="securityCertifications" class="col-sm-4 col-form-label">
                 Security Certifications
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="securityCertifications"
-                  class="form-control"
-                  placeholder="Enter Security Certifications"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('securityCertifications')?.invalid &&
-                    supplierDetails.get('securityCertifications')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Security Certifications is required.
-                </div>
+                <textarea formControlName="securityCertifications" class="form-control"
+                  placeholder="Enter Security Certifications"></textarea>
+
               </div>
             </div>
 
@@ -253,48 +113,20 @@
             <div class="row mb-3">
               <label for="email" class="col-sm-4 col-form-label"> Email </label>
               <div class="col-sm-8">
-                <input
-                  formControlName="email"
-                  type="email"
-                  class="form-control"
-                  placeholder="Enter Email"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('email')?.invalid &&
-                    supplierDetails.get('email')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Valid Email is required.
-                </div>
+                <input formControlName="email" type="email" class="form-control" placeholder="Enter Email" />
+
               </div>
             </div>
 
             <!-- Customer Support Contact -->
             <div class="row mb-3">
-              <label
-                for="customerSupportContact"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="customerSupportContact" class="col-sm-4 col-form-label">
                 Customer Support Contact
               </label>
               <div class="col-sm-8">
-                <input
-                  formControlName="customerSupportContact"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Customer Support Contact"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('customerSupportContact')?.invalid &&
-                    supplierDetails.get('customerSupportContact')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Customer Support Contact is required.
-                </div>
+                <input formControlName="customerSupportContact" type="text" class="form-control"
+                  placeholder="Enter Customer Support Contact" />
+
               </div>
             </div>
 
@@ -304,21 +136,9 @@
                 Company Contact Number
               </label>
               <div class="col-sm-8">
-                <input
-                  formControlName="companyContactNumber"
-                  type="number"
-                  class="form-control"
-                  placeholder="Enter Company Contact Number"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('companyContactNumber')?.invalid &&
-                    supplierDetails.get('companyContactNumber')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Company Contact Number is required.
-                </div>
+                <input formControlName="companyContactNumber" type="number" class="form-control"
+                  placeholder="Enter Company Contact Number" />
+
               </div>
             </div>
 
@@ -328,98 +148,44 @@
                 VAT or GST Number
               </label>
               <div class="col-sm-8">
-                <input
-                  formControlName="VATOrGSTNumber"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter VAT or GST Number"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('VATOrGSTNumber')?.invalid &&
-                    supplierDetails.get('VATOrGSTNumber')?.touched
-                  "
-                  class="text-danger"
-                >
-                  VAT or GST Number is required.
-                </div>
+                <input formControlName="VATOrGSTNumber" type="text" class="form-control"
+                  placeholder="Enter VAT or GST Number" />
+
               </div>
             </div>
 
             <!-- Company Directors/Owners -->
             <div class="row mb-3">
-              <label
-                for="companyDirectors_Owners"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="companyDirectors_Owners" class="col-sm-4 col-form-label">
                 Company Directors/Owners
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="companyDirectors_Owners"
-                  class="form-control"
-                  placeholder="Enter Company Directors/Owners"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('companyDirectors_Owners')?.invalid &&
-                    supplierDetails.get('companyDirectors_Owners')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Company Directors/Owners is required.
-                </div>
+                <textarea formControlName="companyDirectors_Owners" class="form-control"
+                  placeholder="Enter Company Directors/Owners"></textarea>
+
               </div>
             </div>
             <!-- Compliance Certifications -->
             <div class="row mb-3">
-              <label
-                for="complianceCertifications"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="complianceCertifications" class="col-sm-4 col-form-label">
                 Compliance Certifications
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="complianceCertifications"
-                  class="form-control"
-                  placeholder="Enter Compliance Certifications"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('complianceCertifications')?.invalid &&
-                    supplierDetails.get('complianceCertifications')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Compliance Certifications is required.
-                </div>
+                <textarea formControlName="complianceCertifications" class="form-control"
+                  placeholder="Enter Compliance Certifications"></textarea>
+
               </div>
             </div>
 
             <!-- Products/Services Offered -->
             <div class="row mb-3">
-              <label
-                for="products_ServicesOffered"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="products_ServicesOffered" class="col-sm-4 col-form-label">
                 Products/Services Offered
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="products_ServicesOffered"
-                  class="form-control"
-                  placeholder="Enter Products/Services Offered"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('products_ServicesOffered')?.invalid &&
-                    supplierDetails.get('products_ServicesOffered')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Products/Services Offered is required.
-                </div>
+                <textarea formControlName="products_ServicesOffered" class="form-control"
+                  placeholder="Enter Products/Services Offered"></textarea>
+
               </div>
             </div>
 
@@ -429,20 +195,9 @@
                 Technology Stack
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="technologyStack"
-                  class="form-control"
-                  placeholder="Enter Technology Stack"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('technologyStack')?.invalid &&
-                    supplierDetails.get('technologyStack')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Technology Stack is required.
-                </div>
+                <textarea formControlName="technologyStack" class="form-control"
+                  placeholder="Enter Technology Stack"></textarea>
+
               </div>
             </div>
 
@@ -452,20 +207,9 @@
                 Licensing Details
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="licensingDetails"
-                  class="form-control"
-                  placeholder="Enter Licensing Details"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('licensingDetails')?.invalid &&
-                    supplierDetails.get('licensingDetails')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Licensing Details is required.
-                </div>
+                <textarea formControlName="licensingDetails" class="form-control"
+                  placeholder="Enter Licensing Details"></textarea>
+
               </div>
             </div>
 
@@ -475,20 +219,8 @@
                 IP/Patents
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="IP_Patents"
-                  class="form-control"
-                  placeholder="Enter IP/Patents"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('IP_Patents')?.invalid &&
-                    supplierDetails.get('IP_Patents')?.touched
-                  "
-                  class="text-danger"
-                >
-                  IP/Patents is required.
-                </div>
+                <textarea formControlName="IP_Patents" class="form-control" placeholder="Enter IP/Patents"></textarea>
+
               </div>
             </div>
 
@@ -498,47 +230,21 @@
                 Employee Count
               </label>
               <div class="col-sm-8">
-                <input
-                  formControlName="employeeCount"
-                  type="number"
-                  class="form-control"
-                  placeholder="Enter Employee Count"
-                />
-                <div
-                  *ngIf="
-                    supplierDetails.get('employeeCount')?.invalid &&
-                    supplierDetails.get('employeeCount')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Employee Count is required.
-                </div>
+                <input formControlName="employeeCount" type="number" class="form-control"
+                  placeholder="Enter Employee Count" />
+
               </div>
             </div>
 
             <!-- Cybersecurity Practices -->
             <div class="row mb-3">
-              <label
-                for="cybersecurityPractices"
-                class="col-sm-4 col-form-label"
-              >
+              <label for="cybersecurityPractices" class="col-sm-4 col-form-label">
                 Cybersecurity Practices
               </label>
               <div class="col-sm-8">
-                <textarea
-                  formControlName="cybersecurityPractices"
-                  class="form-control"
-                  placeholder="Enter Cybersecurity Practices"
-                ></textarea>
-                <div
-                  *ngIf="
-                    supplierDetails.get('cybersecurityPractices')?.invalid &&
-                    supplierDetails.get('cybersecurityPractices')?.touched
-                  "
-                  class="text-danger"
-                >
-                  Cybersecurity Practices is required.
-                </div>
+                <textarea formControlName="cybersecurityPractices" class="form-control"
+                  placeholder="Enter Cybersecurity Practices"></textarea>
+
               </div>
             </div>
           </div>
@@ -547,13 +253,8 @@
         <!-- Submit Button -->
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button
-              type="button"
-              routerLink="/super-admin/supplier-user-profile"
-              class="btn btn-primary"
-            >
-              Back</button
-            >&nbsp;
+            <button type="button" routerLink="/super-admin/supplier-user-profile" class="btn btn-primary">
+              Back</button>&nbsp;
             <button type="submit" class="btn btn-primary">Edit Supplier</button>
           </div>
         </div>

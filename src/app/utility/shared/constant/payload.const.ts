@@ -19,6 +19,11 @@ export const Payload = {
     supplierStatus: ""
   },
 
+  dataByStatus : {
+    endDate : '',
+    startDate : ''
+  },
+
   pmAllProjectList: {
     keyword: '',
     page: '1',

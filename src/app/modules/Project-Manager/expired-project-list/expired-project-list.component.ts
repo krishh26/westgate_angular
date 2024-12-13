@@ -125,7 +125,7 @@ export class ExpiredProjectListComponent implements OnInit {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-         
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -134,6 +134,50 @@ export class ExpiredProjectListComponent implements OnInit {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  onItemAddCategory(item: { category: string }): void {
+    // Add type annotation for 'categoryItem'
+    const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createCategory(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getcategoryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
+  }
+
+  onItemAddIndustry(item: { industry: string }): void {
+    // Add type annotation for 'categoryItem'
+    console.log(this.industryList)
+
+    const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createIndustry(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getIndustryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
   }
 
   isDesc: boolean = false;
@@ -204,7 +248,7 @@ export class ExpiredProjectListComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
@@ -247,7 +291,7 @@ export class ExpiredProjectListComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);

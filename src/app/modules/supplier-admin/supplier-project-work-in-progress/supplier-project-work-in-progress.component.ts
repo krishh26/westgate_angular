@@ -104,6 +104,49 @@ export class SupplierProjectWorkInProgressComponent {
     });
   }
 
+  onItemAddCategory(item: { category: string }): void {
+    // Add type annotation for 'categoryItem'
+    const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createCategory(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getcategoryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
+  }
+
+  onItemAddIndustry(item: { industry: string }): void {
+    // Add type annotation for 'categoryItem'
+    console.log(this.industryList)
+
+    const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
+    if (!found) {
+      this.showLoader = true;
+    this.projectService.createIndustry(item).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.getIndustryList();
+  
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+    }
+  }
 
   changeRange() {
     if (this.maxValue >= this.minValue) {

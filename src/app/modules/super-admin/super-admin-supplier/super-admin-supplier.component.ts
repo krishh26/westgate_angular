@@ -43,6 +43,10 @@ export class SuperAdminSupplierComponent {
     this.modalService.open(CaseStudyBulkAddComponent, { size: 'xl' });
   }
 
+  deleteBulkProject() {
+    
+  }
+
   onToggleSwitch(item: any) {
     if (!item.active) {
       this.openCommentModal(item);

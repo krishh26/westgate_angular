@@ -25,7 +25,9 @@ export class SuperadminHeaderComponent {
     { title: 'Dashboard', route: ['/super-admin/super-admin-dashboard'] },
     { title: 'Projects', route: ['/super-admin/super-admin-projects-all'] },
     { title: 'Supplier', route: ['/super-admin/super-admin-supplier'] },
-    { title: 'Register Supplier', route: ['/super-admin/add-new-supplier'] },
+    // { title: 'Register Supplier', route: ['/super-admin/add-new-supplier'] },
+    { title: 'Project Tracker', route: ['/super-admin/status-wise-tracker'] },
+    { title: 'TO DO TASKS', route: ['/super-admin/todo-tasks'] },
   ];
 
 

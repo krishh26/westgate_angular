@@ -12,7 +12,8 @@ export enum SuperAdminEndPoint {
   INDUSTRY_LIST = '/industry/list',
   SUPPLIER_LIST = '/user/suplier/list',
   SUPPLIER_REGISTER = '/web-user/register',
-  SUPPLIERUSER_LIST = '/user/suplier/list'
+  SUPPLIERUSER_LIST = '/user/suplier/list',
+  PROJECT_MAIL_SEND = '/project/new-project-mail'
 }
 
 
@@ -41,6 +42,10 @@ export class SuperadminService {
       .get<any>(this.baseUrl + SuperAdminEndPoint.SUPER_Statistics);
   }
 
+  projectMailSend(): Observable<any> {
+    return this.httpClient.post<any>(this.baseUrl + SuperAdminEndPoint.PROJECT_MAIL_SEND, {});
+  }
+  
   getIndustryList(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + SuperAdminEndPoint.INDUSTRY_LIST);

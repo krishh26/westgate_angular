@@ -99,7 +99,7 @@ export class MatchProjectDetailsComponent {
   }
 
   getUserDetails() {
-    this.projectManagerService.getUserList('SupplierAdmin').subscribe((response) => {
+    this.projectManagerService.getUserListProjectManager('SupplierAdmin' , this.projectId).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
         this.userDetail = response?.data;

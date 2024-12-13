@@ -18,7 +18,8 @@ export enum SupplierAdminEndPoint {
   DELETE_USER = '/user/delete/',
   DELETE_SUPPLIER_USER = '/user/delete',
   SUPPLIER_DETAILS = '/user/suplier/get',
-  SUPPLIER_ACTIVITY = '/user/login-details'
+  SUPPLIER_ACTIVITY = '/user/login-details',
+  STATUS_WISE_COUNT_VALUE = '/project/status-count-value'
 }
 
 @Injectable({
@@ -50,6 +51,24 @@ export class SupplierAdminService {
     return this.httpClient
       .get<any>(this.baseUrl + SupplierAdminEndPoint.SUPPLIER_DETAILS + '/' + supplierId);
   }
+
+  getDataBYStatus(params: {
+    startDate?: string;
+    endDate?: string;
+  }): Observable<any> {
+    const url = `${this.baseUrl}${SupplierAdminEndPoint.STATUS_WISE_COUNT_VALUE}`;
+    let queryParams = new HttpParams();
+  
+    if (params.startDate) {
+      queryParams = queryParams.set('startDate', params.startDate);
+    }
+    if (params.endDate) {
+      queryParams = queryParams.set('endDate', params.endDate);
+    }
+  
+    return this.httpClient.get<any>(url, { params: queryParams });
+  }
+  
 
   getSupplierActivity(supplierId: any): Observable<any> {
     return this.httpClient

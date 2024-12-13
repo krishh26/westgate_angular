@@ -22,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { BosProjectMailSendComponent } from './bos-project-mail-send/bos-project-mail-send.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -36,7 +37,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     BossUserUploadProjectComponent,
     ViewDocumentComponent,
     BossUserBulkEntryComponent,
-    BossUserProfileComponent
+    BossUserProfileComponent,
+    BosProjectMailSendComponent
   ],
   imports: [
     CommonModule,
