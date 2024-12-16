@@ -43,7 +43,8 @@ export class TodoTasksComponent {
           if (response?.status === true) {
             this.notificationService.showSuccess('Task Created Successfully');
             this.getTask();
-            this.activeModal.close();
+            // this.activeModal.close();
+            window.location.reload();
           } else {
             this.notificationService.showError(response?.message);
           }
