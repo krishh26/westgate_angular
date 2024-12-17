@@ -33,7 +33,7 @@ export class StatusWiseTrackerComponent implements OnInit {
    filterObject:{ [key: string]: string }={ 
     'Awaiting':'Awaiting',
     'Documents not found':'DocumentsNotFound',
-    'Fail':'Failed',
+    'Fail':'Fail',
     'In-progress':'InProgress',
     'Pass':'Passed',
     'Dropped after feasibility': 'DroppedAfterFeasibility',
@@ -163,7 +163,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  isExpired: boolean = false;
+  isExpired: boolean = true;
 
   getProjectList() {
     this.showLoader = true;
