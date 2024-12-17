@@ -14,8 +14,6 @@
 
       <div class="row">
         <div class="col-md-12 col-xl-12 col-12">
-          <!-- Loader -->
-          <div *ngIf="showLoader" class="loader">Loading...</div>
 
           <!-- User List -->
           <ul class="taskuserList" *ngIf="!showLoader">
@@ -55,24 +53,17 @@
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
 
               <div class="accordion-body">
-                <p *ngIf="task?.discription?.length"><strong>Task Description :</strong> {{ task?.discription }}</p>
-                <p *ngIf="!task?.discription?.length" class="text-muted">No description available.</p>
+                <!-- <p *ngIf="task?.discription?.length"><strong>Task Description :</strong> {{ task?.discription }}</p> -->
+                <!-- <p *ngIf="!task?.discription?.length" class="text-muted">No description available.</p> -->
 
                 <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
                   <li *ngFor="let comment of task.comments" class="comment-item">
                     <div class="row align-items-center mb-3">
-                      <div class="col-auto">
-                        <div class="avatar">
-                          <img src="../../../../assets/img/no-image.jpg" alt="User Avatar" />
-                        </div>
-                      </div>
                       <div class="col">
-                        <!-- User name and date in the same row -->
                         <div class="d-flex justify-content-between">
                           <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                          <small class="text-muted">{{ task?.createdAt | date: 'dd-MM-yyyy' }}</small>
+                          <small class="text-muted">{{ task?.createdAt | date: 'M/d/yy, h:mm a' }}</small>
                         </div>
-                        <!-- Role in a separate row -->
                         <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
                       </div>
                     </div>
@@ -80,7 +71,6 @@
                   </li>
                 </ul>
 
-                <!-- Fallback message when no comments are available -->
                 <p *ngIf="!task?.comments?.length" class="text-muted">No comments available.</p>
               </div>
             </div>
