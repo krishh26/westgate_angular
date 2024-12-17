@@ -32,28 +32,52 @@
             </button>
           </h2>
         </div>
+
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
+
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
               <button class="accordion-button" type="button">
                 <i class="bi bi-circle task-icon"></i> {{ task?.task }}
               </button>
             </h2>
+
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
+
               <div class="accordion-body">
-                <p>{{ task?.discription }}</p>
-                <ul class="SecondarytaskList">
-                  <li>
-                    <i class="bi bi-circle task-icon"></i> Louisville Geek
-                    provides comprehensive managed IT services for a diverse
-                    range.
+                <p *ngIf="task?.discription?.length"><strong>Task Description :</strong> {{ task?.discription }}</p>
+                <p *ngIf="!task?.discription?.length" class="text-muted">No description available.</p>
+
+                <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
+                  <li *ngFor="let comment of task.comments" class="comment-item">
+                    <div class="row align-items-center mb-3">
+                      <div class="col-auto">
+                        <div class="avatar">
+                          <img src="../../../../assets/img/no-image.jpg" alt="User Avatar" />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <!-- User name and date in the same row -->
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                          <small class="text-muted">{{ task?.createdAt | date: 'dd-MM-yyyy' }}</small>
+                        </div>
+                        <!-- Role in a separate row -->
+                        <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                      </div>
+                    </div>
+                    <p>{{ comment.comment }}</p>
                   </li>
                 </ul>
+
+                <!-- Fallback message when no comments are available -->
+                <p *ngIf="!task?.comments?.length" class="text-muted">No comments available.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
 
       <!-- <div class="accordion accordion-flush" id="accordianCompletedTodoList">
         <p><strong>Completed Task</strong></p>
@@ -84,7 +108,7 @@
           </div>
         </div>
       </div> -->
-    
+
     </div>
     <div class="col-lg-3 col-xl-3 col-md-2 col-sm-3 col-12">
       <div class="sidebar-widget p-3">
