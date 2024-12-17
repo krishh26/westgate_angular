@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="modal-body">
-        <label>AssignTo</label>
+        <label>Assign To</label>
         <ng-select style="padding: 0px !important" placeholder="Select Assign User"
           class="form-select custom-ng-select-option" bindLabel="userName" [multiple]="true" bindValue="_id"
           [items]="userList" [(ngModel)]="assignTo">
@@ -137,30 +137,22 @@
 <div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <!-- Modal Header -->
       <div class="modal-header">
         <h4>{{modalTask?.task}}</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <!-- Modal Body -->
       <div class="modal-body d-flex">
-        <!-- Left Section: Task Content -->
         <div class="flex-grow-1 pe-3">
-          <!-- Description -->
           <div class="mb-3">
             <h6><strong>Description</strong></h6>
             <p>{{modalTask?.discription}}</p>
           </div>
-
-          <!-- Comments Section -->
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
               <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment"></textarea>
               <button class="btn btn-sm btn-primary mt-2" (click)="addComment()">Comment</button>
-
-              <!-- Add margin-top class to create space -->
               <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
                 <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
                   <div class="row align-items-center mb-3">
@@ -179,14 +171,11 @@
                 </li>
               </ul>
             </div>
-
-
             <!-- Comment List -->
             <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
               <strong>{{ comment.user }} </strong>
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
-
             </div>
           </div>
         </div>
@@ -194,14 +183,25 @@
         <!-- Right Sidebar: Task Details -->
         <div class="border-start ps-3" style="min-width: 250px;">
           <h6>Details</h6>
-          <p><strong>Assignee:</strong> {{ modalTask.assignee || 'Unassigned' }}</p>
-          <p><strong>Labels:</strong> None</p>
-          <p><strong>Parent:</strong> None</p>
-          <p><strong>Team:</strong> None</p>
-          <p><strong>Development:</strong> {{ modalTask.development || 'None' }}</p>
-          <p><strong>Reporter:</strong> {{ modalTask.reporter }}</p>
-          <p><small>Created: {{ modalTask.createdAt }}</small></p>
-          <p><small>Updated: {{ modalTask.updatedAt }}</small></p>
+          <p><strong>Assignee:</strong>
+            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+              class="form-select custom-ng-select-option" bindLabel="userName" [multiple]="true" bindValue="_id"
+              [items]="userList" [(ngModel)]="assignTo">
+            </ng-select>
+          </p>
+          <p><strong>Pick a Category:</strong>
+            <ng-select style="padding: 0px !important" placeholder="Pick a Category"
+              class="form-select custom-ng-select-option" [items]="categoryList" [(ngModel)]="selectedCategory">
+            </ng-select>
+          </p>
+          <p><strong>Due Date:</strong></p>
+          <div class="d-flex align-items-center">
+            <input class="form-control me-2" style="max-width: 200px;" placeholder="yyyy-mm-dd" name="dueDate"
+              [(ngModel)]="dueDate" ngbDatepicker #d="ngbDatepicker" />
+            <button class="btn btn-sm btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="bi bi-calendar"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

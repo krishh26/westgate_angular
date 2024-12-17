@@ -23,6 +23,8 @@ export class TodoTasksComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl('');
+  categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
+  selectedCategory: string | undefined;
 
   constructor(
     private superService: SuperadminService,
