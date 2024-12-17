@@ -18,8 +18,9 @@ export class TodoTasksComponent {
   taskList: any = [];
   userList: any = [];
   assignTo: any[] = [];
-
-    dueDate: FormControl = new FormControl('');
+  showAll = false;
+  displayedUsers: any[] = [];
+  dueDate: FormControl = new FormControl('');
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -39,9 +40,9 @@ export class TodoTasksComponent {
         discription: this.taskDetails,
         task: this.taskTitle,
         status: 'Todo',
-        dueDate:  this.dueDate.value
-        ? this.formatDate(this.dueDate.value)
-        : '',
+        dueDate: this.dueDate.value
+          ? this.formatDate(this.dueDate.value)
+          : '',
         assignTo: this.assignTo
       };
       this.superService.createTask(payload).subscribe(
@@ -90,10 +91,10 @@ export class TodoTasksComponent {
     this.projectManagerService.getUserAllList().subscribe(
       (response) => {
         if (response?.status === true) {
-          // Filter out users with role 'supplierAdmin'
+          // Filter out users with role 'SupplierAdmin'
           this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
-          console.log(this.userList);
-          
+          // Display only the first 7 users initially
+          this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
@@ -107,9 +108,14 @@ export class TodoTasksComponent {
     );
   }
 
+  toggleView() {
+    this.showAll = !this.showAll;
+    this.displayedUsers = this.showAll ? this.userList : this.userList.slice(0, 7);
+  }
+
   private formatDate(date: { year: number; month: number; day: number }): string {
     return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
   }
-  
+
 
 }

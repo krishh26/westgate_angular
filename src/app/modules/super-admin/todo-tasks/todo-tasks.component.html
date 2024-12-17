@@ -11,16 +11,26 @@
       </div>
     </div>
     <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
+
       <div class="row">
         <div class="col-md-12 col-xl-12 col-12">
-          <ul class="taskuserList">
-            <li *ngFor="let user of userList">
+          <!-- Loader -->
+          <div *ngIf="showLoader" class="loader">Loading...</div>
+
+          <!-- User List -->
+          <ul class="taskuserList" *ngIf="!showLoader">
+            <li *ngFor="let user of displayedUsers">
               {{ user.userName }}
+            </li>
+            <!-- View More / View Less Link -->
+            <li *ngIf="userList.length > 7">
+              <a href="javascript:;" (click)="toggleView()">
+                {{ showAll ? '- View Less' : '+ View More' }}
+              </a>
             </li>
           </ul>
         </div>
       </div>
-
 
       <div class="accordion accordion-flush" id="accordianTodoList">
         <p><strong>Ongoing Task</strong></p>
