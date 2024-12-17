@@ -35,7 +35,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     'Documents not found':'DocumentsNotFound',
     'Fail':'Fail',
     'In-progress':'InProgress',
-    'Pass':'Passed',
+    'Passed':'Passed',
     'Dropped after feasibility': 'DroppedAfterFeasibility',
     'In-solution': 'InSolution',
     'Shortlisted projects':'Shortlisted',
