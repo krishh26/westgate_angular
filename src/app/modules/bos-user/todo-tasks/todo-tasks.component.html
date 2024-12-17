@@ -10,17 +10,20 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-7 col-xl-7 col-md-8 col-sm-8 col-12">
+    <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
       <div class="accordion accordion-flush" id="accordianTodoList">
         <p><strong>Ongoing Task</strong></p>
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
-            <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button class="accordion-button" type="button">
+            <h2 class="accordion-header" [id]="'flush-TodoList' + i">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#flush-collapse' + i" aria-expanded="false"
+                [attr.aria-controls]="'flush-collapse' + i">
                 <i class="bi bi-circle task-icon"></i> {{ task?.task }}
               </button>
             </h2>
-            <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
+            <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
+              [attr.aria-labelledby]="'flush-TodoList' + i" data-bs-parent="#accordianTodoList">
               <div class="accordion-body">
                 <p>{{ task?.discription }}</p>
 
