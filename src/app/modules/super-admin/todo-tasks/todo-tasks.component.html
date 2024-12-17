@@ -43,19 +43,27 @@
 
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
-
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button class="accordion-button" type="button">
-                <i class="bi bi-circle task-icon"></i> {{ task?.task }}
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button">
+                <div>
+                  <i class="bi bi-circle task-icon"></i>
+                  {{ task?.task }}
+                </div>
+                <div class="text-end">
+                  <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
+                   
+                    <span *ngFor="let user of task.assignTo; let last = last">
+                      {{ user?.userDetail?.name }}{{ last ? '' : ', ' }}
+                    </span>
+                  </span>
+                  <span *ngIf="task?.dueDate" class="text-muted">
+                    Due Date: {{ task.dueDate | date: 'MMM d, y' }}
+                  </span>
+                </div>
               </button>
             </h2>
-
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
-
               <div class="accordion-body">
-                <!-- <p *ngIf="task?.discription?.length"><strong>Task Description :</strong> {{ task?.discription }}</p> -->
-                <!-- <p *ngIf="!task?.discription?.length" class="text-muted">No description available.</p> -->
-
                 <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
                   <li *ngFor="let comment of task.comments" class="comment-item">
                     <div class="row align-items-center mb-3">
@@ -70,14 +78,13 @@
                     <p>{{ comment.comment }}</p>
                   </li>
                 </ul>
-
                 <p *ngIf="!task?.comments?.length" class="text-muted">No comments available.</p>
               </div>
             </div>
           </div>
         </div>
+        
       </div>
-
 
       <!-- <div class="accordion accordion-flush" id="accordianCompletedTodoList">
         <p><strong>Completed Task</strong></p>
