@@ -9,55 +9,60 @@ import { FeasibilityLoginDetailsComponent } from './feasibility-login-details/fe
 import { AddLoginDetailsComponent } from './add-login-details/add-login-details.component';
 import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
 import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
+import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: FeasibilityAnalystComponent,
-        children: [
-            {
-                path: "feasibility-project-detail",
-                component: FeasibilityProjectDetailsComponent
-            },
-            {
-                path: "feasibility-project-list",
-                component: FeasibilityProjectsListComponent
-            },
-            {
-                path: "minimum-eligibility-form",
-                component: MinimumEligibilityFormComponent
-            },
-            {
-                path: "summary-note-questions",
-                component: SummaryNoteQuestionsComponent
-            },
-            {
-                path: "feasibility-login-detail",
-                component: FeasibilityLoginDetailsComponent
-            },
-            {
-                path: "add-login-detail",
-                component: AddLoginDetailsComponent
-            },
-            {
-              path: "profile",
-              component: FeasibilityProfileComponent
-            },
-            {
-                path: "edit-feasibility-project-details",
-                component: EditFeasibilityProjectDetailsComponent
-            },
-        ]
-    },
-    {
-        path: "**",
-        pathMatch: "full",
-        redirectTo: ""
-    }
+  {
+    path: '',
+    component: FeasibilityAnalystComponent,
+    children: [
+      {
+        path: 'feasibility-project-detail',
+        component: FeasibilityProjectDetailsComponent,
+      },
+      {
+        path: 'feasibility-project-list',
+        component: FeasibilityProjectsListComponent,
+      },
+      {
+        path: 'feasibility-todo-task',
+        component: TodoTasksComponent,
+      },
+      {
+        path: 'minimum-eligibility-form',
+        component: MinimumEligibilityFormComponent,
+      },
+      {
+        path: 'summary-note-questions',
+        component: SummaryNoteQuestionsComponent,
+      },
+      {
+        path: 'feasibility-login-detail',
+        component: FeasibilityLoginDetailsComponent,
+      },
+      {
+        path: 'add-login-detail',
+        component: AddLoginDetailsComponent,
+      },
+      {
+        path: 'profile',
+        component: FeasibilityProfileComponent,
+      },
+      {
+        path: 'edit-feasibility-project-details',
+        component: EditFeasibilityProjectDetailsComponent,
+      },
+    ],
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class FeasibilityAnalsystRoutingModule { }
+export class FeasibilityAnalsystRoutingModule {}

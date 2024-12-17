@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
@@ -16,6 +17,9 @@ export class TodoTasksComponent {
   showLoader: boolean = false;
   taskList: any = [];
   userList: any = [];
+  assignTo: any[] = [];
+
+    dueDate: FormControl = new FormControl('');
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -35,8 +39,10 @@ export class TodoTasksComponent {
         discription: this.taskDetails,
         task: this.taskTitle,
         status: 'Todo',
-        dueDate: '',
-        assignTo: ''
+        dueDate:  this.dueDate.value
+        ? this.formatDate(this.dueDate.value)
+        : '',
+        assignTo: this.assignTo
       };
       this.superService.createTask(payload).subscribe(
         (response) => {
@@ -99,6 +105,10 @@ export class TodoTasksComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  private formatDate(date: { year: number; month: number; day: number }): string {
+    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
   }
   
 

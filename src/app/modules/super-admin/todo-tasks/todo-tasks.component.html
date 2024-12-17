@@ -23,14 +23,24 @@
         </div>
         <div class="col-md-3 col-xl-3 col-12">
           <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-              data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               Assign User
             </button>
             <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton1">
               <li>
                 <div class="form-check dropdown-item">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
                   <label class="form-check-label" for="flexCheckDefault">
                     Mickel Morne
                   </label>
@@ -38,7 +48,13 @@
               </li>
               <li>
                 <div class="form-check dropdown-item">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckChecked"
+                    checked
+                  />
                   <label class="form-check-label" for="flexCheckChecked">
                     Joseph D Symond
                   </label>
@@ -53,8 +69,12 @@
         <p><strong>Ongoing Task</strong></p>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListZero">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="modal"
-              data-bs-target="#exampleModal">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
               <span class="bluetext">+ Add a New Task</span>
             </button>
           </h2>
@@ -71,29 +91,39 @@
                 <p>{{ task?.discription }}</p>
                 <ul class="SecondarytaskList">
                   <li>
-                    <i class="bi bi-circle task-icon"></i> Louisville Geek provides
-                    comprehensive managed IT services for a diverse range.
+                    <i class="bi bi-circle task-icon"></i> Louisville Geek
+                    provides comprehensive managed IT services for a diverse
+                    range.
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="accordion accordion-flush" id="accordianCompletedTodoList">
         <p><strong>Completed Task</strong></p>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseOne"
+              aria-expanded="false"
+              aria-controls="flush-collapseOne"
+            >
               <i class="bi bi-circle task-icon"></i> Microsoft Teams | Tasks in
               Teams Updates
             </button>
           </h2>
-          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-TodoListOne"
-            data-bs-parent="#accordianCompletedTodoList">
+          <div
+            id="flush-collapseOne"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-TodoListOne"
+            data-bs-parent="#accordianCompletedTodoList"
+          >
             <div class="accordion-body">
               <p>
                 Placeholder content for this accordion, which is intended to
@@ -123,23 +153,38 @@
 
         <ul class="todo-actionList">
           <li>
-            <a href="javascript:void(0)" class="active"><i class="bi bi-brightness-high me-2"></i> Add to my day</a>
+            <a href="javascript:void(0)" class="active"
+              ><i class="bi bi-brightness-high me-2"></i> Add to my day</a
+            >
           </li>
           <li>
-            <a href="javascript:void(0)"><i class="bi bi-calendar-week me-2"></i> Add due date</a>
+            <a href="javascript:void(0)"
+              ><i class="bi bi-calendar-week me-2"></i> Add due date</a
+            >
           </li>
           <li>
-            <a href="javascript:void(0)"><i class="bi bi-repeat me-2"></i> Repeat</a>
+            <a href="javascript:void(0)"
+              ><i class="bi bi-repeat me-2"></i> Repeat</a
+            >
           </li>
           <li>
-            <a href="javascript:void(0)"><i class="bi bi-pin me-2"></i> Pick a category</a>
+            <a href="javascript:void(0)"
+              ><i class="bi bi-pin me-2"></i> Pick a category</a
+            >
           </li>
         </ul>
-        <textarea class="form-control" placeholder="Add comment..." rows="2" cols="100"></textarea>
+        <textarea
+          class="form-control"
+          placeholder="Add comment..."
+          rows="2"
+          cols="100"
+        ></textarea>
         <div class="sidebar-footer-nav">
           <div class="row">
             <div class="col-2">
-              <a href="javascript:void(0)" class="action-button"><i class="bi bi-box-arrow-in-right"></i></a>
+              <a href="javascript:void(0)" class="action-button"
+                ><i class="bi bi-box-arrow-in-right"></i
+              ></a>
             </div>
             <div class="col-8 text-center">Created Today</div>
             <div class="col-2 text-end">
@@ -154,20 +199,73 @@
 </div>
 
 <!-- Add New task Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-  #taskModal>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  #taskModal
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <input class="form-control" placeholder="Enter Task Titles" cols="100" rows="3" [(ngModel)]="taskTitle">
+        <input
+          class="form-control"
+          placeholder="Enter Task Titles"
+          cols="100"
+          rows="3"
+          [(ngModel)]="taskTitle"
+        />
       </div>
       <div class="modal-body">
-        <textarea class="form-control" placeholder="Enter Task Description" [(ngModel)]="taskDetails"></textarea>
+        <textarea
+          class="form-control"
+          placeholder="Enter Task Description"
+          [(ngModel)]="taskDetails"
+        ></textarea>
       </div>
+      <div class="modal-body">
+        <label>Due Date</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            [formControl]="dueDate"
+            ngbDatepicker
+            #endDatePicker="ngbDatepicker"
+          />
+          <button
+            class="btn btn-outline-secondary bi bi-calendar3"
+            (click)="endDatePicker.toggle()"
+            type="button"
+          ></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <label>AssignTo</label>
+        <ng-select
+          style="padding: 0px !important"
+          placeholder="Select Assign User"
+          class="form-select custom-ng-select-option"
+          bindLabel="userName"
+          [multiple]="true"
+          bindValue="_id"
+          [items]="userList"
+          [(ngModel)]="assignTo"
+        >
+        </ng-select>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close

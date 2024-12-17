@@ -19,95 +19,100 @@ import { ExpiredProjectListComponent } from './expired-project-list/expired-proj
 import { ExpiredProjectDetailsComponent } from './expired-project-details/expired-project-details.component';
 import { ShortlistedSupplierProjectDetailsComponent } from './shortlisted-supplier-project-details/shortlisted-supplier-project-details.component';
 import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-project-list/shortlisted-supplier-project-list.component';
+import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
 
 const routes: Routes = [
   {
-    path: "dashboard",
-    component: ProjectManagerHomeComponent
+    path: 'dashboard',
+    component: ProjectManagerHomeComponent,
   },
   {
     path: 'project',
     component: ProjectManagerComponent,
     children: [
       {
-        path: "all",
-        component: ProjectManagerAllProjectListComponent
+        path: 'all',
+        component: ProjectManagerAllProjectListComponent,
       },
       {
-        path: "expired-project-list",
-        component: ExpiredProjectListComponent
+        path: 'todo-task',
+        component: TodoTasksComponent,
       },
       {
-        path: "expired-project-details",
-        component: ExpiredProjectDetailsComponent
+        path: 'expired-project-list',
+        component: ExpiredProjectListComponent,
       },
       {
-        path: "shortlisted-supplier-project-details",
-        component: ShortlistedSupplierProjectDetailsComponent
+        path: 'expired-project-details',
+        component: ExpiredProjectDetailsComponent,
       },
       {
-        path: "shortlisted-supplier-project-list",
-        component: ShortlistedSupplierProjectListComponent
+        path: 'shortlisted-supplier-project-details',
+        component: ShortlistedSupplierProjectDetailsComponent,
       },
       {
-        path: "match",
-        component: ProjectManagerMatchProjectListComponent
+        path: 'shortlisted-supplier-project-list',
+        component: ShortlistedSupplierProjectListComponent,
       },
       {
-        path: "close",
-        component: ProjectManagerCloseProjectListComponent
+        path: 'match',
+        component: ProjectManagerMatchProjectListComponent,
       },
       {
-        path: "details",
-        component: AllProjectDetailsComponent
+        path: 'close',
+        component: ProjectManagerCloseProjectListComponent,
       },
       {
-        path: "project-all-details",
-        component: NewAllProjectDetailsComponent
+        path: 'details',
+        component: AllProjectDetailsComponent,
       },
       {
-        path: "match-project-details",
-        component: MatchProjectDetailsComponent
+        path: 'project-all-details',
+        component: NewAllProjectDetailsComponent,
       },
       {
-        path: "close-project-details",
-        component: ProjectCloseDetailsComponent
+        path: 'match-project-details',
+        component: MatchProjectDetailsComponent,
       },
       {
-        path: "shortlisted-project-details",
-        component: ProjectShortlistedDetailsComponent
+        path: 'close-project-details',
+        component: ProjectCloseDetailsComponent,
       },
       {
-        path: "summary-project-details",
-        component: ProjectManagerSummaryDetailComponent
+        path: 'shortlisted-project-details',
+        component: ProjectShortlistedDetailsComponent,
       },
       {
-        path: "projectmanager-case-studies",
-        component: PmCaseStudiesComponent
+        path: 'summary-project-details',
+        component: ProjectManagerSummaryDetailComponent,
       },
       {
-        path: "shortlisted",
-        component: PmShortlistedProjectsComponent
+        path: 'projectmanager-case-studies',
+        component: PmCaseStudiesComponent,
       },
       {
-        path: "summary-notes",
-        component: SummaryNotesComponent
+        path: 'shortlisted',
+        component: PmShortlistedProjectsComponent,
       },
-    ]
+      {
+        path: 'summary-notes',
+        component: SummaryNotesComponent,
+      },
+    ],
   },
   {
-    path: "profile",
-    component: ProjectMangerProfileComponent
+    path: 'profile',
+    component: ProjectMangerProfileComponent,
   },
   {
-    path: "**",
-    pathMatch: "full",
-    redirectTo: "dashboard"
-  }
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'dashboard',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ProjectManagerRoutingModule { }
+export class ProjectManagerRoutingModule {}

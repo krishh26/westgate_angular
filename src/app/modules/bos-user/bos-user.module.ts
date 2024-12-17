@@ -23,6 +23,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BosProjectMailSendComponent } from './bos-project-mail-send/bos-project-mail-send.component';
+import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -38,7 +39,8 @@ import { BosProjectMailSendComponent } from './bos-project-mail-send/bos-project
     ViewDocumentComponent,
     BossUserBulkEntryComponent,
     BossUserProfileComponent,
-    BosProjectMailSendComponent
+    BosProjectMailSendComponent,
+    TodoTasksComponent,
   ],
   imports: [
     CommonModule,
@@ -51,8 +53,9 @@ import { BosProjectMailSendComponent } from './bos-project-mail-send/bos-project
     NgSelectModule,
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
-  schemas : [CUSTOM_ELEMENTS_SCHEMA]
+  exports: [TodoTasksComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class BOSUserModule { }
+export class BOSUserModule {}

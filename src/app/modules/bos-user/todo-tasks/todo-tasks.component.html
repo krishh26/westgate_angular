@@ -1,0 +1,88 @@
+<div class="container pt-5">
+  <div class="row">
+    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-3 col-12">
+      <div class="sidebar-widget">
+        <p class="ps-3"><strong>Task Status</strong></p>
+        <ul class="sidebar-nav">
+          <li><a href="javascript:void(0)">My Day</a></li>
+          <li><a href="javascript:void(0)" class="active">Ongoing</a></li>
+          <li><a href="javascript:void(0)">Completed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-7 col-xl-7 col-md-8 col-sm-8 col-12">
+      <div class="accordion accordion-flush" id="accordianTodoList">
+        <p><strong>Ongoing Task</strong></p>
+        <div *ngFor="let task of taskList; let i = index">
+          <div class="accordion-item">
+            <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
+              <button class="accordion-button" type="button">
+                <i class="bi bi-circle task-icon"></i> {{ task?.task }}
+              </button>
+            </h2>
+            <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
+              <div class="accordion-body">
+                <p>{{ task?.discription }}</p>
+
+                <textarea
+                  class="form-control"
+                  placeholder="Enter Task Comments"
+                  [(ngModel)]="task.commentDetails"
+                ></textarea>
+                <div class="text-end mt-1">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="addComment(task.commentDetails, task._id)"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion accordion-flush" id="accordianCompletedTodoList">
+        <p><strong>Completed Task</strong></p>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-TodoListOne">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseOne"
+              aria-expanded="false"
+              aria-controls="flush-collapseOne"
+            >
+              <i class="bi bi-circle task-icon"></i> Microsoft Teams | Tasks in
+              Teams Updates
+            </button>
+          </h2>
+          <div
+            id="flush-collapseOne"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-TodoListOne"
+            data-bs-parent="#accordianCompletedTodoList"
+          >
+            <div class="accordion-body">
+              <p>
+                Placeholder content for this accordion, which is intended to
+                demonstrate the <code>.accordion-flush</code> class. This is the
+                first item's accordion body.
+              </p>
+              <ul class="SecondarytaskList">
+                <li>
+                  <i class="bi bi-circle task-icon"></i> Louisville Geek
+                  provides comprehensive managed IT services for a diverse
+                  range.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

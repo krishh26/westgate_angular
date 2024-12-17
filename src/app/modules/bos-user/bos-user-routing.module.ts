@@ -10,6 +10,7 @@ import { FioDocumentListComponent } from './fio-document-list/fio-document-list.
 import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-document-add-edit.component';
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
+import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: "project-list",
         component: BossUserLiveProjectListingComponent
+      },
+      {
+        path: "todo-task",
+        component: TodoTasksComponent
       },
       {
         path: "view-project",

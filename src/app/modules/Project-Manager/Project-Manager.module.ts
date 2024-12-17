@@ -29,6 +29,7 @@ import { ExpiredProjectListComponent } from './expired-project-list/expired-proj
 import { ExpiredProjectDetailsComponent } from './expired-project-details/expired-project-details.component';
 import { ShortlistedSupplierProjectDetailsComponent } from './shortlisted-supplier-project-details/shortlisted-supplier-project-details.component';
 import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-project-list/shortlisted-supplier-project-list.component';
+import { BOSUserModule } from '../bos-user/bos-user.module';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-
     NgbModule,
     NgSelectModule,
     NgxSliderModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    BOSUserModule,
   ],
   declarations: [
     ProjectManagerComponent,
@@ -64,9 +66,9 @@ import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-
     ExpiredProjectListComponent,
     ExpiredProjectDetailsComponent,
     ShortlistedSupplierProjectDetailsComponent,
-    ShortlistedSupplierProjectListComponent
+    ShortlistedSupplierProjectListComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
-export class ProjectManagerModule { }
+export class ProjectManagerModule {}

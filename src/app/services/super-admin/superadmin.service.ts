@@ -14,17 +14,15 @@ export enum SuperAdminEndPoint {
   SUPPLIER_REGISTER = '/web-user/register',
   SUPPLIERUSER_LIST = '/user/suplier/list',
   PROJECT_MAIL_SEND = '/project/new-project-mail',
-  CREATE_TASK='/task/create',
-  GET_TASK='/task/list'
-
+  CREATE_TASK = '/task/create',
+  GET_TASK = '/task/list',
+  ADD_COMMENTS = '/task/add-comment/',
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SuperadminService {
-
   baseUrl!: string;
 
   constructor(
@@ -36,45 +34,51 @@ export class SuperadminService {
   }
 
   getDashboardList(params: any): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.DASHBOARD_LIST, { params });
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.DASHBOARD_LIST,
+      { params }
+    );
   }
 
   getsuperstatictics(): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.SUPER_Statistics);
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.SUPER_Statistics
+    );
   }
 
   projectMailSend(): Observable<any> {
-    return this.httpClient.post<any>(this.baseUrl + SuperAdminEndPoint.PROJECT_MAIL_SEND, {});
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.PROJECT_MAIL_SEND,
+      {}
+    );
   }
-  
+
   getIndustryList(): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.INDUSTRY_LIST);
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.INDUSTRY_LIST
+    );
   }
 
   getCategoryList(): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.CATEGORY_LIST);
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.CATEGORY_LIST
+    );
   }
 
   getSupplierList(): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.SUPPLIER_LIST);
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.SUPPLIER_LIST
+    );
   }
 
   supplierregister(payload: any): Observable<any> {
-    return this.httpClient
-      .post<any>(this.baseUrl + SuperAdminEndPoint.SUPPLIER_REGISTER, payload);
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.SUPPLIER_REGISTER,
+      payload
+    );
   }
 
-
-  getSUpplierList(
-    params: {
-      page: string,
-      limit: string,
-    }): Observable<any> {
+  getSUpplierList(params: { page: string; limit: string }): Observable<any> {
     const url = `${this.baseUrl}${SuperAdminEndPoint.SUPPLIERUSER_LIST}`;
     let queryParams = new HttpParams();
     queryParams = queryParams.set('page', params?.page);
@@ -83,13 +87,20 @@ export class SuperadminService {
   }
 
   createTask(payload: any): Observable<any> {
-    return this.httpClient
-      .post<any>(this.baseUrl + SuperAdminEndPoint.CREATE_TASK, payload);
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.CREATE_TASK,
+      payload
+    );
   }
 
   getTask(): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
+    return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
   }
 
+  addComments(payload: any, id: string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.ADD_COMMENTS + id,
+      payload
+    );
+  }
 }

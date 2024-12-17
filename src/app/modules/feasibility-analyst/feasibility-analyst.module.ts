@@ -20,6 +20,7 @@ import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-proje
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { BOSUserModule } from '../bos-user/bos-user.module';
 @NgModule({
     declarations: [
         FeasibilityAnalystComponent,
@@ -45,7 +46,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
         NgSelectModule,
         NgxSpinnerModule,
         NgxSliderModule,
-        NgxExtendedPdfViewerModule
+        NgxExtendedPdfViewerModule,
+        BOSUserModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
