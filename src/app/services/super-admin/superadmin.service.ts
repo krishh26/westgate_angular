@@ -24,7 +24,6 @@ export enum SuperAdminEndPoint {
 })
 export class SuperadminService {
   baseUrl!: string;
-  SuperAdminEndPoint: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -94,16 +93,8 @@ export class SuperadminService {
     );
   }
 
-  getTask(assignTo?: string): Observable<any> {
-    let params = new HttpParams();
-
-    // Check if assignTo is provided and append it to the params
-    if (assignTo) {
-      params = params.set('assignTo', assignTo);
-    }
-
-    // Make the GET request with the query parameters
-    return this.httpClient.get<any>(this.baseUrl + this.SuperAdminEndPoint.GET_TASK, { params });
+  getTask(): Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
   }
 
   addComments(payload: any, id: string): Observable<any> {
