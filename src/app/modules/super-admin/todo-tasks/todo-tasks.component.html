@@ -44,14 +44,14 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button class="accordion-button d-flex justify-content-between align-items-center" type="button">
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)">
                 <div>
                   <i class="bi bi-circle task-icon"></i>
                   {{ task?.task }}
                 </div>
                 <div class="text-end">
                   <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
-                   
                     <span *ngFor="let user of task.assignTo; let last = last">
                       {{ user?.userDetail?.name }}{{ last ? '' : ', ' }}
                     </span>
@@ -83,80 +83,9 @@
             </div>
           </div>
         </div>
-        
+
       </div>
-
-      <!-- <div class="accordion accordion-flush" id="accordianCompletedTodoList">
-        <p><strong>Completed Task</strong></p>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-TodoListOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-              <i class="bi bi-circle task-icon"></i> Microsoft Teams | Tasks in
-              Teams Updates
-            </button>
-          </h2>
-          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-TodoListOne"
-            data-bs-parent="#accordianCompletedTodoList">
-            <div class="accordion-body">
-              <p>
-                Placeholder content for this accordion, which is intended to
-                demonstrate the <code>.accordion-flush</code> class. This is the
-                first item's accordion body.
-              </p>
-              <ul class="SecondarytaskList">
-                <li>
-                  <i class="bi bi-circle task-icon"></i> Louisville Geek
-                  provides comprehensive managed IT services for a diverse
-                  range.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
     </div>
-
-    <!-- <div class="col-lg-3 col-xl-3 col-md-2 col-sm-3 col-12">
-      <div class="sidebar-widget p-3">
-        <ul class="Listgroup border-bottom bg-white">
-          <li>
-            <i class="bi bi-circle task-icon bluetext"></i> Task 1
-            <span class="action-mark"><i class="bi bi-star bluetext"></i></span>
-          </li>
-        </ul>
-
-        <ul class="todo-actionList">
-          <li>
-            <a href="javascript:void(0)" class="active"><i class="bi bi-brightness-high me-2"></i> Add to my day</a>
-          </li>
-          <li>
-            <a href="javascript:void(0)"><i class="bi bi-calendar-week me-2"></i> Add due date</a>
-          </li>
-          <li>
-            <a href="javascript:void(0)"><i class="bi bi-repeat me-2"></i> Repeat</a>
-          </li>
-          <li>
-            <a href="javascript:void(0)"><i class="bi bi-pin me-2"></i> Pick a category</a>
-          </li>
-        </ul>
-        <textarea class="form-control" placeholder="Add comment..." rows="2" cols="100"></textarea>
-        <div class="sidebar-footer-nav">
-          <div class="row">
-            <div class="col-2">
-              <a href="javascript:void(0)" class="action-button"><i class="bi bi-box-arrow-in-right"></i></a>
-            </div>
-            <div class="col-8 text-center">Created Today</div>
-            <div class="col-2 text-end">
-              <a href="javascript:void(0)" class="action-button"></a>
-              <i class="bi bi-trash"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
   </div>
 </div>
 
@@ -199,6 +128,81 @@
         <button type="button" class="btn btn-primary" (click)="addTask()">
           Add Task
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Task details Modal -->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4>{{modalTask?.task}}</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body d-flex">
+        <!-- Left Section: Task Content -->
+        <div class="flex-grow-1 pe-3">
+          <!-- Description -->
+          <div class="mb-3">
+            <h6><strong>Description</strong></h6>
+            <p>{{modalTask?.discription}}</p>
+          </div>
+
+          <!-- Comments Section -->
+          <div class="comments-section">
+            <h6><strong>Comment</strong></h6>
+            <div class="mb-2">
+              <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment"></textarea>
+              <button class="btn btn-sm btn-primary mt-2" (click)="addComment()">Comment</button>
+
+              <!-- Add margin-top class to create space -->
+              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+                <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
+                  <div class="row align-items-center mb-3">
+                    <div class="col">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                        <small class="text-muted">{{ modalTask?.createdAt | date: 'M/d/yy, h:mm a' }}</small>
+                      </div>
+                      <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p>{{ comment.comment }}</p>
+                    <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">Delete</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+
+            <!-- Comment List -->
+            <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
+              <strong>{{ comment.user }} </strong>
+              <small class="text-muted">{{ comment.time }}</small>
+              <p class="mb-1">{{ comment.text }}</p>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar: Task Details -->
+        <div class="border-start ps-3" style="min-width: 250px;">
+          <h6>Details</h6>
+          <p><strong>Assignee:</strong> {{ modalTask.assignee || 'Unassigned' }}</p>
+          <p><strong>Labels:</strong> None</p>
+          <p><strong>Parent:</strong> None</p>
+          <p><strong>Team:</strong> None</p>
+          <p><strong>Development:</strong> {{ modalTask.development || 'None' }}</p>
+          <p><strong>Reporter:</strong> {{ modalTask.reporter }}</p>
+          <p><small>Created: {{ modalTask.createdAt }}</small></p>
+          <p><small>Updated: {{ modalTask.updatedAt }}</small></p>
+        </div>
       </div>
     </div>
   </div>

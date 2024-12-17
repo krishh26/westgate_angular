@@ -3,7 +3,9 @@ import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
+import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-todo-tasks',
@@ -21,11 +23,13 @@ export class TodoTasksComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl('');
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
+    private projectService: ProjectService,
   ) {
   }
 
@@ -65,6 +69,12 @@ export class TodoTasksComponent {
     }
   }
 
+  modalTask: any = {};
+
+  openTaskModal(task: any) {
+    console.log(task);
+    this.modalTask = { ...task }; // Deep copy to avoid direct binding
+  }
 
   getTask() {
     this.showLoader = true;
@@ -108,6 +118,35 @@ export class TodoTasksComponent {
     );
   }
 
+  deleteTask(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.deleteTask(id).subscribe((response: any) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('Task successfully deleted');
+            this.getTask();
+          } else {
+            this.showLoader = false;
+            this.notificationService.showError(response?.message);
+          }
+        }, (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
+  }
+
   toggleView() {
     this.showAll = !this.showAll;
     this.displayedUsers = this.showAll ? this.userList : this.userList.slice(0, 7);
@@ -115,6 +154,31 @@ export class TodoTasksComponent {
 
   private formatDate(date: { year: number; month: number; day: number }): string {
     return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+  }
+
+  newComment: string = '';
+
+  // Add a new comment
+  addComment() {
+    if (this.newComment.trim()) {
+      this.modalTask.comments.push({
+        user: 'Kishansinh Parmar',
+        time: 'Just now',
+        text: this.newComment.trim()
+      });
+      this.newComment = '';
+    }
+  }
+
+  // Edit a comment
+  editComment(index: number) {
+    this.newComment = this.modalTask.comments[index].text;
+    this.modalTask.comments.splice(index, 1); // Remove old comment
+  }
+
+  // Delete a comment
+  deleteComment(index: number) {
+    this.modalTask.comments.splice(index, 1);
   }
 
 
