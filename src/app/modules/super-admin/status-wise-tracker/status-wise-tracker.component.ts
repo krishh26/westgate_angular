@@ -29,26 +29,26 @@ export class StatusWiseTrackerComponent implements OnInit {
   totalRecords: number = pagination.totalRecords;
   searchText: any;
   dateDifference: any;
-  status:string ='';
-   filterObject:{ [key: string]: string }={ 
-    'Awaiting':'Awaiting',
-    'Documents not found':'DocumentsNotFound',
-    'Fail':'Fail',
-    'In-progress':'InProgress',
-    'Passed':'Passed',
-    'Dropped after feasibility': 'DroppedAfterFeasibility',
-    'In-solution': 'InSolution',
-    'Shortlisted projects':'Shortlisted',
-    'Waiting for result' :'WaitingForResult',
-    'awarded':'Awarded',
-    'not awarded':'NotAwarded'
+  status: string = '';
+  filterObject: { [key: string]: string } = {
+    'Awaiting': 'Awaiting',
+    'DocumentsNotFound': 'DocumentsNotFound',
+    'Fail': 'Fail',
+    'InProgress': 'InProgress',
+    'Passed': 'Passed',
+    'DroppedAfterFeasibility': 'DroppedAfterFeasibility',
+    'InSolution': 'InSolution',
+    'Shortlisted': 'Shortlisted',
+    'WaitingForResult': 'WaitingForResult',
+    'Awarded': 'Awarded',
+    'NotAwarded': 'NotAwarded'
 
   };
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
-     private projectService: ProjectService,
+    private projectService: ProjectService,
   ) { }
 
   ngOnInit() {
@@ -171,14 +171,14 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
-    Payload.projectList.status=this.status;
+    Payload.projectList.status = this.status;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
@@ -222,10 +222,9 @@ export class StatusWiseTrackerComponent implements OnInit {
     });
   };
 
-  filter(value:any)
-  {
-    console.log('this is values',value,this.filterObject[value]);
-    this.status=this.filterObject[value]
+  filter(value: any) {
+    console.log('this is values', value, this.filterObject[value]);
+    this.status = this.filterObject[value]
     this.getProjectList();
   }
 
