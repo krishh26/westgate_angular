@@ -187,3 +187,20 @@ textarea {
 .comment-list {
     margin-top: 15px;
 }
+
+.details-container {
+    padding-left: 1.5rem;
+}
+
+.details-header {
+    font-weight: bold;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.ng-select .custom-ng-select-option {
+    padding: 0 !important;
+}
