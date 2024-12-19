@@ -103,9 +103,8 @@ export class TodoTasksComponent {
     this.projectManagerService.getUserAllList().subscribe(
       (response) => {
         if (response?.status === true) {
-          // Filter out users with role 'SupplierAdmin'
           this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
-          // Display only the first 7 users initially
+
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
         } else {
