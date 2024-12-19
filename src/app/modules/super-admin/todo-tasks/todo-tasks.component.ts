@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -22,10 +22,10 @@ export class TodoTasksComponent {
   assignTo: any[] = [];
   showAll = false;
   displayedUsers: any[] = [];
-  dueDate: FormControl = new FormControl('');
+  dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
   selectedCategory: string | undefined;
-
+  dueDateValue: NgbDate | null = null;
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -40,6 +40,11 @@ export class TodoTasksComponent {
     this.getUserAllList();
   }
 
+  onDueDateChange(date: NgbDate | null) {
+    this.dueDateValue = date; // Update the local variable
+    this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
+  }
+  
   addTask() {
     if (this.taskDetails.trim()) {
       const payload = {
@@ -69,6 +74,35 @@ export class TodoTasksComponent {
     } else {
       this.notificationService.showError('Please Enter Task Details');
     }
+  }
+
+  onChange(paramKey: string, paramValue: any) {
+    const params: any = {};
+  
+    if (paramKey === 'dueDate' && paramValue) {
+      params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
+    } else if (paramKey === 'assignTo' && paramValue) {
+      params.assignTo = paramValue;
+    } else if (paramKey === 'pickACategory' && paramValue) {
+      params.pickACategory = paramValue;
+    }
+  
+    this.updateTask(params);
+  }
+  
+
+  // API call to update the task
+  updateTask(params: any) {
+    this.superService.updateTask(params, this.modalTask._id).subscribe(
+      (response) => {
+        console.log('Task updated successfully', response);
+        this.notificationService.showSuccess('Task updated Successfully');
+      },
+      (error) => {
+        console.error('Error updating task', error);
+        this.notificationService.showError('Error updating task');
+      }
+    );
   }
 
   modalTask: any = {};

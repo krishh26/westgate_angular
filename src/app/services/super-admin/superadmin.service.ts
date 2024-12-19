@@ -95,7 +95,7 @@ export class SuperadminService {
   }
 
   updateTask(payload: any , id :string): Observable<any> {
-    return this.httpClient.post<any>(
+    return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_TASK + '/' + id,
       payload
     );

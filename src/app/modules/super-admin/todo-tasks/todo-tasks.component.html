@@ -184,32 +184,37 @@
         <div class="details-container border-start ps-3" style="min-width: 250px;">
           <h5 class="details-header mb-3">Details</h5>
 
+          <!-- Due Date Section -->
+          <div class="detail-item">
+            <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
+            <div class="input-group">
+              <input id="dueDate" class="form-control" style="max-width: 200px;" placeholder="yyyy-mm-dd" name="dueDate"
+                [(ngModel)]="dueDateValue" (ngModelChange)="onChange('dueDate', $event)" ngbDatepicker
+                #d="ngbDatepicker" />
+              <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
+                <i class="bi bi-calendar"></i>
+              </button>
+            </div>
+          </div>
+
           <!-- Assignee Section -->
           <div class="detail-item mb-3">
             <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
             <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
-              [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
-              [(ngModel)]="assignTo"></ng-select>
+              [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
+              (ngModelChange)="onChange('assignTo', $event)"></ng-select>
           </div>
 
           <!-- Category Section -->
           <div class="detail-item mb-3">
             <label for="category" class="form-label"><strong>Pick a Category:</strong></label>
             <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
-              [items]="categoryList" [(ngModel)]="selectedCategory"></ng-select>
+              [items]="categoryList" [(ngModel)]="selectedCategory"
+              (ngModelChange)="onChange('pickACategory', $event)"></ng-select>
           </div>
 
-          <!-- Due Date Section -->
-          <div class="detail-item">
-            <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
-            <div class="input-group">
-              <input id="dueDate" class="form-control" style="max-width: 200px;" placeholder="yyyy-mm-dd" name="dueDate"
-                [(ngModel)]="dueDate" ngbDatepicker #d="ngbDatepicker" />
-              <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
-                <i class="bi bi-calendar"></i>
-              </button>
-            </div>
-          </div>
+
+
         </div>
 
       </div>
