@@ -96,6 +96,7 @@ export class TodoTasksComponent {
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
         console.log('Task updated successfully', response);
+        this.getTask();
         this.notificationService.showSuccess('Task updated Successfully');
       },
       (error) => {

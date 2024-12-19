@@ -75,7 +75,10 @@
                         <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
                       </div>
                     </div>
-                    <p>{{ comment.comment }}</p>
+                    <div class="d-flex justify-content-between">
+                      <p>{{ comment.comment }}</p>
+                      <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">Delete</button>
+                    </div>
                   </li>
                 </ul>
                 <p *ngIf="!task?.comments?.length" class="text-muted">No comments available.</p>
@@ -212,11 +215,7 @@
               [items]="categoryList" [(ngModel)]="selectedCategory"
               (ngModelChange)="onChange('pickACategory', $event)"></ng-select>
           </div>
-
-
-
         </div>
-
       </div>
     </div>
   </div>
