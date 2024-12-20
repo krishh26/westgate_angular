@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
@@ -19,12 +20,16 @@ export class TodoTasksComponent {
   assignTo: any[] = [];
   modalTask: any = {};
   newComment: string = '';
+  loginUser: any;
   dueDate: FormControl = new FormControl('');
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
-    public activeModal: NgbActiveModal
-  ) { }
+    public activeModal: NgbActiveModal,
+     private localStorageService: LocalStorageService,
+  ) { 
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.getTask();
@@ -67,12 +72,11 @@ export class TodoTasksComponent {
     }
   }
 
-
   getTask() {
     this.showLoader = true;
-    this.superService.getTask().subscribe(
+    this.superService.getTaskUserwise(this.loginUser?.id).subscribe(
       (response) => {
-        if (response?.status == true) {
+        if (response?.status === true) {
           this.taskList = response?.data?.data.map((task: any) => ({
             ...task,
             commentDetails: '',
@@ -89,7 +93,7 @@ export class TodoTasksComponent {
       }
     );
   }
-
+  
   // getUserAllList() {
   //   this.showLoader = true;
   //   this.projectManagerService.getUserAllList().subscribe(

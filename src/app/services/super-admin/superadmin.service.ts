@@ -94,7 +94,7 @@ export class SuperadminService {
     );
   }
 
-  updateTask(payload: any , id :string): Observable<any> {
+  updateTask(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_TASK + '/' + id,
       payload
@@ -104,6 +104,12 @@ export class SuperadminService {
   getTask(): Observable<any> {
     return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
   }
+
+  getTaskUserwise(userId: string): Observable<any> {
+    const params = new HttpParams().set('assignTo', userId);
+    return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK, { params });
+  }
+  
 
   addComments(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
