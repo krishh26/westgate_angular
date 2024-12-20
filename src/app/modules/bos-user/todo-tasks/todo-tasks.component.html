@@ -16,13 +16,12 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList' + i">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                [attr.data-bs-target]="'#flush-collapse' + i" aria-expanded="false"
-                [attr.aria-controls]="'flush-collapse' + i">
+              <button class="accordion-button" type="button" data-bs-toggle="modal" data-bs-target="#taskDetailsModal"
+                (click)="openTaskModal(task)">
                 <i class="bi bi-circle task-icon"></i> {{ task?.task }}
               </button>
             </h2>
-            <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
+            <!-- <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
               [attr.aria-labelledby]="'flush-TodoList' + i" data-bs-parent="#accordianTodoList">
               <div class="accordion-body">
                 <p>{{ task?.discription }}</p>
@@ -35,40 +34,65 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- <div class="accordion accordion-flush" id="accordianCompletedTodoList">
-        <p><strong>Completed Task</strong></p>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-TodoListOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-              <i class="bi bi-circle task-icon"></i> Microsoft Teams | Tasks in
-              Teams Updates
-            </button>
-          </h2>
-          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-TodoListOne"
-            data-bs-parent="#accordianCompletedTodoList">
-            <div class="accordion-body">
-              <p>
-                Placeholder content for this accordion, which is intended to
-                demonstrate the <code>.accordion-flush</code> class. This is the
-                first item's accordion body.
-              </p>
-              <ul class="SecondarytaskList">
-                <li>
-                  <i class="bi bi-circle task-icon"></i> Louisville Geek
-                  provides comprehensive managed IT services for a diverse
-                  range.
+<!-- Add Task Details Modal -->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>{{ modalTask?.task }}</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="mb-3">
+            <h6><strong>Description</strong></h6>
+            <p>{{ modalTask?.discription }}</p>
+          </div>
+
+          <!-- Comments Section -->
+          <div class="comments-section">
+            <h6><strong>Comment</strong></h6>
+            <div class="mb-2">
+              <!-- Textarea for Adding Comment -->
+              <textarea
+                class="form-control"
+                placeholder="Add a comment..."
+                [(ngModel)]="newComment">
+              </textarea>
+              <button
+                class="btn btn-sm btn-primary mt-2"
+                (click)="addComment(newComment, modalTask?._id)">
+                Comment
+              </button>
+
+              <!-- Display Existing Comments -->
+              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+                <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
+                  <div class="row align-items-center mb-3">
+                    <div class="col">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                        <small class="text-muted">{{ comment?.date | date: 'M/d/yy, h:mm a' }}</small>
+                      </div>
+                      <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                    </div>
+                  </div>
+                  <p class="mb-1">{{ comment?.comment }}</p>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>

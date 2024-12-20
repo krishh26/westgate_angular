@@ -17,47 +17,56 @@ export class TodoTasksComponent {
   taskList: any = [];
   userList: any = [];
   assignTo: any[] = [];
-
+  modalTask: any = {};
+  newComment: string = '';
   dueDate: FormControl = new FormControl('');
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTask();
     // this.getUserAllList();
   }
 
+  openTaskModal(task: any) {
+    console.log(task);
+    this.modalTask = { ...task };
+  }
+
   addComment(comment: string, id: string) {
-    if (comment.length > 0) {
+    if (comment?.trim().length > 0) {
       this.showLoader = true;
-      const payload = {
-        comment: comment,
-      };
+      const payload = { comment: comment.trim() };
+
       this.superService.addComments(payload, id).subscribe(
         (response) => {
-          if (response?.status == true) {
-            this.showLoader = false;
-            const task = this.taskList.find((task: any) => task._id === id);
+          this.showLoader = false;
+          if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
+            window.location.reload();
+            const newComment = {
+              text: comment.trim(),
+            };
+            this.modalTask.comments = [...(this.modalTask.comments || []), newComment];
 
-            if (task) {
-              task.commentDetails = '';
-            }
+            this.newComment = '';
           } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
+            this.notificationService.showError(response?.message || 'Failed to add comment');
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
           this.showLoader = false;
+          this.notificationService.showError(error?.message || 'An error occurred');
         }
       );
+    } else {
+      this.notificationService.showError('Comment cannot be empty');
     }
   }
+
 
   getTask() {
     this.showLoader = true;
