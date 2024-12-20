@@ -194,7 +194,8 @@
                 </tr>
 
 
-                <tr *ngFor="let item of projectList">
+                <tr
+                  *ngFor="let item of projectList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
                   <td></td>
                   <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
                   <!-- <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td> -->
