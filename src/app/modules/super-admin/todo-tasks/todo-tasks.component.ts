@@ -204,15 +204,34 @@ export class TodoTasksComponent {
 
   newComment: string = '';
 
-  // Add a new comment
-  addComment() {
-    if (this.newComment.trim()) {
-      this.modalTask.comments.push({
-        user: 'Kishansinh Parmar',
-        time: 'Just now',
-        text: this.newComment.trim(),
-      });
-      this.newComment = '';
+  addComment(comment: string, id: string) {
+    if (comment?.trim().length > 0) {
+      this.showLoader = true;
+      const payload = { comment: comment.trim() };
+
+      this.superService.addComments(payload, id).subscribe(
+        (response) => {
+          this.showLoader = false;
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Comment added successfully');
+            window.location.reload();
+            const newComment = {
+              text: comment.trim(),
+            };
+            this.modalTask.comments = [...(this.modalTask.comments || []), newComment];
+
+            this.newComment = '';
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add comment');
+          }
+        },
+        (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message || 'An error occurred');
+        }
+      );
+    } else {
+      this.notificationService.showError('Comment cannot be empty');
     }
   }
 
