@@ -207,6 +207,22 @@ textarea {
 
 .selected-user {
     // background-color: #e0f7fa; /* Light blue */
-    color: red; /* Darker teal */
+    color: red;
+    /* Darker teal */
     cursor: pointer;
-  }
+}
+
+.bg-light-yellow {
+    background-color: #fffacd;
+    /* Light Yellow */
+}
+
+.bg-light-blue {
+    background-color: #add8e6;
+    /* Light Blue */
+}
+
+.bg-light-orange {
+    background-color: #ffcccb;
+    /* Light Orange */
+}
