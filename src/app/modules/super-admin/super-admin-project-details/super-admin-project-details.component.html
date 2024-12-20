@@ -1,26 +1,26 @@
 <main id="main">
     <section>
         <div class="container-fluid">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+            <div class="row align-items-center">
+                <!-- <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
                         <input type="search" class="form-control control-search" placeholder="Search" />
                     </div>
-                </div>
-                <div class="col-lg-2 col-xl-2 col-12">
+                </div> -->
+                <div class="col-lg-12 col-xl-12 col-12 d-flex justify-content-end">
                     <a routerLink="/feasibility-user/feasibility-project-list"
                         class="btn btn-primary text-dark">Back</a>
                 </div>
+
             </div>
 
             <!-- Project Details -->
-            <div class="table-responsive mt-5 mb-3">
+            <!-- <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
                             <th width="100px">Project Title</th>
-                            <!-- <th>Project Description</th> -->
                             <th>BOS ID</th>
                             <th>Publish Date</th>
                             <th>Category</th>
@@ -38,7 +38,6 @@
                         <tr>
                             <td><a href="javascript:;">{{projectDetails?.projectName}}</a>
                             </td>
-                            <!-- <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td> -->
                             <td v-align="middle">{{projectDetails?.BOSID}}</td>
                             <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.category}}</td>
@@ -49,13 +48,32 @@
                             <td><a href='{{projectDetails?.link}}' target="_blank">Link to Notice</a></td>
                             <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
                             <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                            <td>
-                                <!-- <a (click)="editProjectDetails(projectDetails?._id)" class="btn btn-secondary sm ml-2" title="Edit"><i
-                        class="bi bi-pencil-fill"></i></a>&nbsp; -->
-                            </td>
                         </tr>
                     </tbody>
                 </table>
+            </div> -->
+
+            <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <h4>Project Details:</h4> -->
+                        <p><strong>Project Title:</strong> {{ projectDetails?.projectName }}</p>
+                        <p><strong>BOS ID:</strong> {{ projectDetails?.BOSID }}</p>
+                        <p><strong>Publish Date:</strong> {{ projectDetails?.publishDate | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Category:</strong> {{ projectDetails?.category }}</p>
+                        <p><strong>Industry:</strong> {{ projectDetails?.industry }}</p>
+                        <p><strong>Min value (GBP):</strong> £ {{ projectDetails?.minValue }}</p>
+                        <p><strong>Max value (GBP):</strong> £ {{ projectDetails?.maxValue }}</p>
+                        <p><strong>Website:</strong> {{ projectDetails?.website }}</p>
+                        <p><strong>Link to notice:</strong>
+                            <a href="{{ projectDetails?.link }}" target="_blank"> Link to Notice</a>
+                        </p>
+                        <p><strong>Created Date:</strong> {{ projectDetails?.createdAt | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Due Date & Time:</strong>
+                            {{ projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a' }}
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <section class="pageheader bg-dark">
