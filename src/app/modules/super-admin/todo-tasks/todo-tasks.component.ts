@@ -24,7 +24,9 @@ export class TodoTasksComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
+  statusTaskList: string[] = ['Todo', 'Ongoing', 'Completed'];
   selectedCategory: string | undefined;
+  selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
   constructor(
@@ -83,6 +85,8 @@ export class TodoTasksComponent {
       params.assignTo = paramValue;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
+    }else if (paramKey === 'taskStatus' && paramValue) {
+      params.status = paramValue;
     }
 
     this.updateTask(params);

@@ -227,16 +227,26 @@
             <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
             <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
               [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
-              (ngModelChange)="onChange('assignTo', $event)"></ng-select>
+              (ngModelChange)="onChange('assignTo', $event)">
+            </ng-select>
           </div>
 
           <!-- Category Section -->
           <div class="detail-item mb-3">
             <label for="category" class="form-label"><strong>Pick a Category:</strong></label>
             <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
-              [items]="categoryList" [(ngModel)]="selectedCategory"
-              (ngModelChange)="onChange('pickACategory', $event)"></ng-select>
+              [items]="categoryList" [(ngModel)]="selectedCategory" (ngModelChange)="onChange('pickACategory', $event)">
+            </ng-select>
           </div>
+
+          <!-- task status Section -->
+          <div class="detail-item mb-3">
+            <label for="taskstatus" class="form-label"><strong>Task Status:</strong></label>
+            <ng-select id="taskstatus" class="form-select custom-ng-select-option" placeholder="Pick a Status"
+              [items]="statusTaskList" [(ngModel)]="selectedStatus" (ngModelChange)="onChange('taskStatus', $event)">
+            </ng-select>
+          </div>
+
         </div>
       </div>
     </div>
