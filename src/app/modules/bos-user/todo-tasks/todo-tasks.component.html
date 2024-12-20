@@ -16,9 +16,21 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList' + i">
-              <button class="accordion-button" type="button" data-bs-toggle="modal" data-bs-target="#taskDetailsModal"
-                (click)="openTaskModal(task)">
-                <i class="bi bi-circle task-icon"></i> {{ task?.task }}
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#taskDetailsModal"
+                (click)="openTaskModal(task)" [ngClass]="{
+                  'bg-light-yellow': task?.pickACategory === 'feasibility',
+                  'bg-light-blue': task?.pickACategory === 'bid manager',
+                  'bg-light-orange': task?.pickACategory === 'other tasks'
+                }">
+                <div>
+                  <i class="bi bi-circle task-icon"></i>
+                  {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory }})</span>
+                </div>
+                <div class="text-end">
+                  <span *ngIf="task?.dueDate" class="text-muted">
+                    Due Date: {{ task.dueDate | date : "MMM d, y" }}
+                  </span>
+                </div>
               </button>
             </h2>
             <!-- <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
@@ -64,14 +76,9 @@
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
               <!-- Textarea for Adding Comment -->
-              <textarea
-                class="form-control"
-                placeholder="Add a comment..."
-                [(ngModel)]="newComment">
+              <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment">
               </textarea>
-              <button
-                class="btn btn-sm btn-primary mt-2"
-                (click)="addComment(newComment, modalTask?._id)">
+              <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                 Comment
               </button>
 
