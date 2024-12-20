@@ -16,12 +16,9 @@
           <!-- User List -->
           <ul class="taskuserList" *ngIf="!showLoader">
             <li *ngFor="let user of displayedUsers">
-              <span
-                [ngClass]="{
+              <span [ngClass]="{
                   'selected-user': selectedUserIds.includes(user._id)
-                }"
-                (click)="toggleUserSelection(user._id)"
-              >
+                }" (click)="toggleUserSelection(user._id)">
                 {{ user.userName }}
               </span>
             </li>
@@ -39,12 +36,8 @@
         <p><strong>Ongoing Task</strong></p>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListZero">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="modal"
+              data-bs-target="#exampleModal">
               <span class="bluetext">+ Add a New Task</span>
             </button>
           </h2>
@@ -53,22 +46,14 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button
-                class="accordion-button d-flex justify-content-between align-items-center"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#taskDetailsModal"
-                (click)="openTaskModal(task)"
-              >
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)">
                 <div>
                   <i class="bi bi-circle task-icon"></i>
                   {{ task?.task }}
                 </div>
                 <div class="text-end">
-                  <span
-                    *ngIf="task.assignTo?.length > 0"
-                    class="text-muted me-3"
-                  >
+                  <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
                     <span *ngFor="let user of task.assignTo; let last = last">
                       {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
                     </span>
@@ -81,33 +66,24 @@
             </h2>
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
               <div class="accordion-body">
-                <ul
-                  class="SecondarytaskList"
-                  *ngIf="task?.comments?.length > 0"
-                >
-                  <li
-                    *ngFor="let comment of task.comments"
-                    class="comment-item"
-                  >
+                <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
+                  <li *ngFor="let comment of task.comments" class="comment-item">
                     <div class="row align-items-center mb-3">
                       <div class="col">
                         <div class="d-flex justify-content-between">
                           <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                           <small class="text-muted">{{
                             task?.createdAt | date : "M/d/yy, h:mm a"
-                          }}</small>
+                            }}</small>
                         </div>
                         <small class="text-muted d-block">{{
                           comment?.userDetail?.role
-                        }}</small>
+                          }}</small>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between">
                       <p>{{ comment.comment }}</p>
-                      <button
-                        class="btn btn-sm text-danger"
-                        (click)="deleteTask(modalTask?._id)"
-                      >
+                      <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
                         Delete
                       </button>
                     </div>
@@ -126,70 +102,34 @@
 </div>
 
 <!-- Add New task Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
-  #taskModal
->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  #taskModal>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input
-          class="form-control"
-          placeholder="Enter Task Titles"
-          cols="100"
-          rows="3"
-          [(ngModel)]="taskTitle"
-        />
+        <input class="form-control" placeholder="Enter Task Titles" cols="100" rows="3" [(ngModel)]="taskTitle" />
       </div>
       <div class="modal-body">
-        <textarea
-          class="form-control"
-          placeholder="Enter Task Description"
-          [(ngModel)]="taskDetails"
-        ></textarea>
+        <textarea class="form-control" placeholder="Enter Task Description" [(ngModel)]="taskDetails"></textarea>
       </div>
       <div class="modal-body">
         <label>Due Date</label>
         <div class="input-group">
-          <input
-            class="form-control"
-            placeholder="yyyy-mm-dd"
-            [formControl]="dueDate"
-            ngbDatepicker
-            #endDatePicker="ngbDatepicker"
-          />
-          <button
-            class="btn btn-outline-secondary bi bi-calendar3"
-            (click)="endDatePicker.toggle()"
-            type="button"
-          ></button>
+          <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="dueDate" ngbDatepicker
+            #endDatePicker="ngbDatepicker" />
+          <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+            type="button"></button>
         </div>
       </div>
       <div class="modal-body">
         <label>Assign To</label>
-        <ng-select
-          style="padding: 0px !important"
-          placeholder="Select Assign User"
-          class="form-select custom-ng-select-option"
-          bindLabel="userName"
-          [multiple]="true"
-          bindValue="_id"
-          [items]="userList"
-          [(ngModel)]="assignTo"
-        >
+        <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+          class="form-select custom-ng-select-option" bindLabel="userName" [multiple]="true" bindValue="_id"
+          [items]="userList" [(ngModel)]="assignTo">
         </ng-select>
       </div>
 
@@ -206,23 +146,12 @@
 </div>
 
 <!-- Add Task details Modal -->
-<div
-  class="modal fade"
-  id="taskDetailsModal"
-  tabindex="-1"
-  aria-labelledby="taskModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h4>{{ modalTask?.task }}</h4>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body d-flex">
@@ -230,48 +159,33 @@
           <div class="mb-3">
             <h6><strong>Description</strong></h6>
             <p>{{ modalTask?.discription }}</p>
+            <p *ngIf="!modalTask?.discription">No Record Found.</p>
           </div>
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
-              <textarea
-                class="form-control"
-                placeholder="Add a comment..."
-                [(ngModel)]="newComment"
-              ></textarea>
-              <button
-                class="btn btn-sm btn-primary mt-2"
-                (click)="addComment(newComment, modalTask?._id)"
-              >
+              <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment"></textarea>
+              <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                 Comment
               </button>
-              <ul
-                class="SecondarytaskList mt-3"
-                *ngIf="modalTask?.comments?.length > 0"
-              >
-                <li
-                  *ngFor="let comment of modalTask.comments; let i = index"
-                  class="comment-item"
-                >
+              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+                <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                         <small class="text-muted">{{
                           modalTask?.createdAt | date : "M/d/yy, h:mm a"
-                        }}</small>
+                          }}</small>
                       </div>
                       <small class="text-muted d-block">{{
                         comment?.userDetail?.role
-                      }}</small>
+                        }}</small>
                     </div>
                   </div>
                   <div class="d-flex justify-content-between">
                     <p>{{ comment.comment }}</p>
-                    <button
-                      class="btn btn-sm text-danger"
-                      (click)="deleteTask(modalTask?._id)"
-                    >
+                    <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
                       Delete
                     </button>
                   </div>
@@ -279,10 +193,7 @@
               </ul>
             </div>
             <!-- Comment List -->
-            <div
-              *ngFor="let comment of modalTask.comments; let i = index"
-              class="mb-3"
-            >
+            <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
               <strong>{{ comment.user }} </strong>
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
@@ -291,34 +202,17 @@
         </div>
 
         <!-- Right Sidebar: Task Details -->
-        <div
-          class="details-container border-start ps-3"
-          style="min-width: 250px"
-        >
+        <div class="details-container border-start ps-3" style="min-width: 250px">
           <h5 class="details-header mb-3">Details</h5>
 
           <!-- Due Date Section -->
           <div class="detail-item">
-            <label for="dueDate" class="form-label"
-              ><strong>Due Date:</strong></label
-            >
+            <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
             <div class="input-group">
-              <input
-                id="dueDate"
-                class="form-control"
-                style="max-width: 200px"
-                placeholder="yyyy-mm-dd"
-                name="dueDate"
-                [(ngModel)]="dueDateValue"
-                (ngModelChange)="onChange('dueDate', $event)"
-                ngbDatepicker
-                #d="ngbDatepicker"
-              />
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                (click)="d.toggle()"
-              >
+              <input id="dueDate" class="form-control" style="max-width: 200px" placeholder="yyyy-mm-dd" name="dueDate"
+                [(ngModel)]="dueDateValue" (ngModelChange)="onChange('dueDate', $event)" ngbDatepicker
+                #d="ngbDatepicker" />
+              <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
                 <i class="bi bi-calendar"></i>
               </button>
             </div>
@@ -326,35 +220,18 @@
 
           <!-- Assignee Section -->
           <div class="detail-item mb-3">
-            <label for="assignTo" class="form-label"
-              ><strong>Assignee:</strong></label
-            >
-            <ng-select
-              id="assignTo"
-              class="form-select custom-ng-select-option"
-              placeholder="Select Assign User"
-              [multiple]="true"
-              bindLabel="userName"
-              bindValue="_id"
-              [items]="userList"
-              [(ngModel)]="assignTo"
-              (ngModelChange)="onChange('assignTo', $event)"
-            ></ng-select>
+            <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+              [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
+              (ngModelChange)="onChange('assignTo', $event)"></ng-select>
           </div>
 
           <!-- Category Section -->
           <div class="detail-item mb-3">
-            <label for="category" class="form-label"
-              ><strong>Pick a Category:</strong></label
-            >
-            <ng-select
-              id="category"
-              class="form-select custom-ng-select-option"
-              placeholder="Pick a Category"
-              [items]="categoryList"
-              [(ngModel)]="selectedCategory"
-              (ngModelChange)="onChange('pickACategory', $event)"
-            ></ng-select>
+            <label for="category" class="form-label"><strong>Pick a Category:</strong></label>
+            <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
+              [items]="categoryList" [(ngModel)]="selectedCategory"
+              (ngModelChange)="onChange('pickACategory', $event)"></ng-select>
           </div>
         </div>
       </div>
