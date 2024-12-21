@@ -35,7 +35,7 @@ export class TodoTasksComponent {
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTask();
@@ -85,7 +85,7 @@ export class TodoTasksComponent {
       params.assignTo = paramValue;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
-    }else if (paramKey === 'taskStatus' && paramValue) {
+    } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
     }
 
@@ -189,6 +189,45 @@ export class TodoTasksComponent {
       }
     });
   }
+
+  enableEdit(comment: any): void {
+    comment.isEditing = true;
+    comment.updatedComment = comment.comment; // Initialize with the existing comment
+  }
+
+  cancelEdit(comment: any): void {
+    comment.isEditing = false;
+  }
+
+  updateTaskComment(comment: any): void {
+    if (comment.updatedComment.trim()) {
+      const payload = {
+        commentId: comment.commentId,
+        comment: comment.updatedComment,
+      };
+
+      this.superService.updateComment(payload, comment._id, this.modalTask._id).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.notificationService.showSuccess('Comment Updated Successfully');
+            this.getTask();
+            comment.comment = comment.updatedComment; // Update UI
+            comment.isEditing = false; // Exit edit mode
+          } else {
+            console.log(response?.message);
+
+            this.notificationService.showError(response?.message || 'Comment cannot be updated after 24 hours');
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message || 'Comment cannot be updated after 24 hours');
+        }
+      );
+    } else {
+      this.notificationService.showError('Comment cannot be empty');
+    }
+  }
+
   toggleView() {
     this.showAll = !this.showAll;
     this.displayedUsers = this.showAll

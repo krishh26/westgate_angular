@@ -87,9 +87,9 @@
                     </div>
                     <div class="d-flex justify-content-between">
                       <p>{{ comment.comment }}</p>
-                      <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
+                      <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
                         Delete
-                      </button>
+                      </button> -->
                     </div>
                   </li>
                 </ul>
@@ -182,22 +182,43 @@
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                         <small class="text-muted">{{
-                          modalTask?.createdAt | date : "M/d/yy, h:mm a"
+                          comment?.createdAt | date : "M/d/yy, h:mm a"
                           }}</small>
                       </div>
-                      <small class="text-muted d-block">{{
-                        comment?.userDetail?.role
-                        }}</small>
+                      <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-between">
-                    <p>{{ comment.comment }}</p>
-                    <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
-                      Delete
-                    </button>
+                  <div class="d-flex flex-column">
+                    <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
+                      <p>{{ comment.comment }}</p>
+                      <div>
+                        <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
+                          Edit
+                        </button>
+                        <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment.commentId)">
+                          Delete
+                        </button> -->
+                      </div>
+                    </div>
+                    <div *ngIf="comment.isEditing" class="d-flex flex-column">
+                      <textarea class="form-control mb-2" placeholder="Edit comment..."
+                        [(ngModel)]="comment.updatedComment" style="width: 100%;"></textarea>
+                      <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-success me-2" (click)="updateTaskComment(comment)">
+                          Save
+                        </button>
+                        <button class="btn btn-sm btn-secondary me-2" (click)="cancelEdit(comment)">
+                          Cancel
+                        </button>
+                        <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment._id)">
+                          Delete
+                        </button> -->
+                      </div>
+                    </div>
                   </div>
                 </li>
               </ul>
+
             </div>
             <!-- Comment List -->
             <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
@@ -249,6 +270,13 @@
               [items]="statusTaskList" [(ngModel)]="selectedStatus" (ngModelChange)="onChange('taskStatus', $event)">
             </ng-select>
           </div>
+
+          <div class="detail-item mb-3">
+            <button class="btn btn-sm btn-danger" (click)="deleteTask(modalTask?._id)">
+              Delete
+            </button>
+          </div>
+
 
         </div>
       </div>

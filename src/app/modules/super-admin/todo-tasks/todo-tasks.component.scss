@@ -226,3 +226,8 @@ textarea {
     background-color: #ffcccb;
     /* Light Orange */
 }
+.comment-item textarea {
+    resize: none; /* Disable resizing if unnecessary */
+    min-height: 80px; /* Optional: Set a minimum height */
+  }
+  

@@ -18,6 +18,7 @@ export enum SuperAdminEndPoint {
   GET_TASK = '/task/list',
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
+  UPDATE_COMMENT= '/task/update-comment'
 }
 
 @Injectable({
@@ -97,6 +98,13 @@ export class SuperadminService {
   updateTask(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_TASK + '/' + id,
+      payload
+    );
+  }
+
+  updateComment(payload: any, id: string , taskID:string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.UPDATE_COMMENT + '/' + taskID,
       payload
     );
   }
