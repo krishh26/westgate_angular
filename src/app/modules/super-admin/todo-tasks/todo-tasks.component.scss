@@ -204,3 +204,9 @@ textarea {
 .ng-select .custom-ng-select-option {
     padding: 0 !important;
 }
+
+.selected-user {
+    // background-color: #e0f7fa; /* Light blue */
+    color: red; /* Darker teal */
+    cursor: pointer;
+  }

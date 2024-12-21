@@ -17,7 +17,7 @@ export enum SuperAdminEndPoint {
   CREATE_TASK = '/task/create',
   GET_TASK = '/task/list',
   ADD_COMMENTS = '/task/add-comment/',
-  UPDATE_TASK = '/task/update'
+  UPDATE_TASK = '/task/update',
 }
 
 @Injectable({
@@ -101,15 +101,24 @@ export class SuperadminService {
     );
   }
 
-  getTask(): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK);
+  getTask(assignId: string): Observable<any> {
+    let params = new HttpParams();
+    if (assignId) {
+      params = params.set('assignTo', assignId);
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_TASK,
+      { params }
+    );
   }
 
   getTaskUserwise(userId: string): Observable<any> {
     const params = new HttpParams().set('assignTo', userId);
-    return this.httpClient.get<any>(this.baseUrl + SuperAdminEndPoint.GET_TASK, { params });
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_TASK,
+      { params }
+    );
   }
-  
 
   addComments(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(

@@ -26,14 +26,14 @@ export class TodoTasksComponent {
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
   selectedCategory: string | undefined;
   dueDateValue: NgbDate | null = null;
+  selectedUserIds: number[] = [];
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService,
-  ) {
-  }
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit(): void {
     this.getTask();
@@ -44,17 +44,15 @@ export class TodoTasksComponent {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
   }
-  
+
   addTask() {
     if (this.taskDetails.trim()) {
       const payload = {
         discription: this.taskDetails,
         task: this.taskTitle,
         status: 'Todo',
-        dueDate: this.dueDate.value
-          ? this.formatDate(this.dueDate.value)
-          : '',
-        assignTo: this.assignTo
+        dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
+        assignTo: this.assignTo,
       };
       this.superService.createTask(payload).subscribe(
         (response) => {
@@ -78,7 +76,7 @@ export class TodoTasksComponent {
 
   onChange(paramKey: string, paramValue: any) {
     const params: any = {};
-  
+
     if (paramKey === 'dueDate' && paramValue) {
       params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
     } else if (paramKey === 'assignTo' && paramValue) {
@@ -86,10 +84,9 @@ export class TodoTasksComponent {
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
     }
-  
+
     this.updateTask(params);
   }
-  
 
   // API call to update the task
   updateTask(params: any) {
@@ -115,12 +112,11 @@ export class TodoTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTask().subscribe(
+    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;
           this.showLoader = false;
-
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -138,7 +134,11 @@ export class TodoTasksComponent {
     this.projectManagerService.getUserAllList().subscribe(
       (response) => {
         if (response?.status === true) {
-          this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+
+          console.log('thus us user list', this.userList);
 
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
@@ -162,34 +162,44 @@ export class TodoTasksComponent {
       showCancelButton: true,
       confirmButtonColor: '#00B96F',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete!'
+      confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.projectService.deleteTask(id).subscribe((response: any) => {
-          if (response?.status == true) {
+        this.projectService.deleteTask(id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Task successfully deleted');
+              this.getTask();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
             this.showLoader = false;
-            this.notificationService.showSuccess('Task successfully deleted');
-            this.getTask();
-          } else {
-            this.showLoader = false;
-            this.notificationService.showError(response?.message);
+            this.notificationService.showError(error?.message);
           }
-        }, (error) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.message);
-        });
+        );
       }
     });
   }
-
   toggleView() {
     this.showAll = !this.showAll;
-    this.displayedUsers = this.showAll ? this.userList : this.userList.slice(0, 7);
+    this.displayedUsers = this.showAll
+      ? this.userList
+      : this.userList.slice(0, 7);
   }
 
-  private formatDate(date: { year: number; month: number; day: number }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+  private formatDate(date: {
+    year: number;
+    month: number;
+    day: number;
+  }): string {
+    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
+      date.day
+    ).padStart(2, '0')}`;
   }
 
   newComment: string = '';
@@ -200,7 +210,7 @@ export class TodoTasksComponent {
       this.modalTask.comments.push({
         user: 'Kishansinh Parmar',
         time: 'Just now',
-        text: this.newComment.trim()
+        text: this.newComment.trim(),
       });
       this.newComment = '';
     }
@@ -217,5 +227,13 @@ export class TodoTasksComponent {
     this.modalTask.comments.splice(index, 1);
   }
 
-
+  toggleUserSelection(userId: number): void {
+    const index = this.selectedUserIds.indexOf(userId);
+    if (index > -1) {
+      this.selectedUserIds.splice(index, 1);
+    } else {
+      this.selectedUserIds.push(userId);
+    }
+    this.getTask();
+  }
 }
