@@ -78,11 +78,11 @@ export class TodoTasksComponent {
 
   onChange(paramKey: string, paramValue: any) {
     const params: any = {};
-
     if (paramKey === 'dueDate' && paramValue) {
       params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
     } else if (paramKey === 'assignTo' && paramValue) {
-      params.assignTo = paramValue;
+      const data = [...paramValue, ...this.assignTo, ...this.selectedUsers];
+      params.assignTo = data.filter((value, index, self) => self.indexOf(value) === index);
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
@@ -96,7 +96,6 @@ export class TodoTasksComponent {
   updateTask(params: any) {
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
-        console.log('Task updated successfully', response);
         this.getTask();
         this.notificationService.showSuccess('Task updated Successfully');
       },
@@ -108,9 +107,14 @@ export class TodoTasksComponent {
   }
 
   modalTask: any = {};
-
+  selectedUsers: any = [];
   openTaskModal(task: any) {
-    console.log(task);
+    this.assignTo = [];
+    this.selectedUsers = [];
+    task?.assignTo?.map((element : any) => {
+      this.assignTo.push(element?.userId);
+      this.selectedUsers.push(element?.userId);
+    });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
   }
 
@@ -141,9 +145,6 @@ export class TodoTasksComponent {
           this.userList = response?.data?.filter(
             (user: any) => user?.role !== 'SupplierAdmin'
           );
-
-          console.log('thus us user list', this.userList);
-
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
         } else {
@@ -214,8 +215,6 @@ export class TodoTasksComponent {
             comment.comment = comment.updatedComment; // Update UI
             comment.isEditing = false; // Exit edit mode
           } else {
-            console.log(response?.message);
-
             this.notificationService.showError(response?.message || 'Comment cannot be updated after 24 hours');
           }
         },
