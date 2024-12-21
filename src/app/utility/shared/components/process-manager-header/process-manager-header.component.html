@@ -1,0 +1,34 @@
+<header id="header">
+  <div class="container d-flex align-items-center">
+    <a href="javascript:;" class="logo mee-auto"><img src="assets/img/westgate.svg" alt="" class="img-fluid"></a>
+    <nav id="navbar" class="w-100 navbar">
+      <ul class="mx-auto">
+        <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
+          <a [class.active]="(item.route.includes(router.url))" class="nav-link " data-toggle="tab"
+            [routerLink]="item.route">
+            <i *ngIf="item.title == 'Live Projects'" class="bi bi-dot text-danger p-22"></i>
+            <span>{{item.title}}</span>
+          </a>
+        </li>
+      </ul>
+
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+    <nav class="navbar">
+      <ul class="d-block">
+        <li class="dropdown"><a href="javascript:;">
+            <span class="mobile-hide">
+              {{ loginUser?.name.length > 20 ? (loginUser?.name ) + '...' : loginUser?.name }}
+            </span>
+            <i class="bi bi-chevron-down"></i>
+          </a>
+          <ul>
+            <li><a routerLink="/supplier-admin/supplier-user-profile">Profile Seting</a></li>
+            <li><a style="cursor: pointer;" (click)="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
