@@ -39,13 +39,15 @@ const routes: Routes = [
   },
   {
     path: 'user-profile',
-    loadChildren: () => import('./modules/user-profile/user-profile.module').then(m => m.UserProfileModule
-      
-    )
+    loadChildren: () => import('./modules/user-profile/user-profile.module').then(m => m.UserProfileModule)
+  },
+  {
+    path: 'process-manager',
+    loadChildren: () => import('./modules/process-manager-admin/process-manager-admin.module').then(m => m.ProcessManagerAdminModule)
   },
   {
     path: 'login',
-    component : LoginComponent
+    component: LoginComponent
   },
   {
     path: 'forgot-password',
@@ -53,12 +55,12 @@ const routes: Routes = [
   },
   {
     path: 'reset-password',
-    component : ResetPasswordComponent
+    component: ResetPasswordComponent
   },
   {
     path: '**',
-    pathMatch : 'full',
-    redirectTo : 'login'
+    pathMatch: 'full',
+    redirectTo: 'login'
   },
 ];
 

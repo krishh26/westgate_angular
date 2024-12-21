@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProcessManagerAdminComponent } from './process-manager-admin.component';
-import { ManagerAdminComponent } from './manager-admin/manager-admin.component';
+import { ToDoTasksProcessManagerComponent } from './to-do-tasks-process-manager/to-do-tasks-process-manager.component';
 
 
 
@@ -12,8 +12,8 @@ const routes: Routes = [
     component: ProcessManagerAdminComponent,
     children: [
       {
-        path: "admin",
-        component: ManagerAdminComponent
+        path: "to-do-tasks-process-manager",
+        component: ToDoTasksProcessManagerComponent
       },
     ]
   },

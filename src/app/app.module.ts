@@ -27,6 +27,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ProcessManagerAdminModule } from './modules/process-manager-admin/process-manager-admin.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +53,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     NoopAnimationsModule,
     NgbModule,
     ProjectManagerModule,
+    ProcessManagerAdminModule,
     UkWriterModule,
     // NgSelectModule,
     ToastrModule.forRoot({
