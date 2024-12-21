@@ -78,18 +78,57 @@ export class TodoTasksComponent {
 
   onChange(paramKey: string, paramValue: any) {
     const params: any = {};
+
     if (paramKey === 'dueDate' && paramValue) {
       params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
     } else if (paramKey === 'assignTo' && paramValue) {
-      const data = [...paramValue, ...this.assignTo, ...this.selectedUsers];
-      params.assignTo = data.filter((value, index, self) => self.indexOf(value) === index);
+      // Find the deselected users
+      const deselectedUsers = this.assignTo.filter(
+        (id: string) => !paramValue.includes(id)
+      );
+
+      // Find the newly selected users
+      const newSelectedUsers = paramValue.filter(
+        (id: string) => !this.assignTo.includes(id)
+      );
+
+      // Handle the deselected users
+      if (deselectedUsers.length > 0) {
+        console.log('Deselected User:', deselectedUsers[0]);
+        // Example: Pass deselected user to an API
+        this.processDeselectedUser(deselectedUsers[0]);
+      }
+
+      // Handle the newly selected users
+      if (newSelectedUsers.length > 0) {
+        console.log('Newly Selected User:', newSelectedUsers[0]);
+        // Example: Pass newly selected user to an API
+        this.processSelectedUser(newSelectedUsers[0]);
+      }
+
+      // Update the assignTo list
+      this.assignTo = paramValue;
+
+      // Add updated assignTo list to params
+      params.assignTo = this.assignTo;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
     }
 
+    // Call the updateTask method with updated params
     this.updateTask(params);
+  }
+
+  processDeselectedUser(userId: string) {
+    // Logic to handle deselected user (e.g., API call)
+    console.log(`Processing deselected user: ${userId}`);
+  }
+  
+  processSelectedUser(userId: string) {
+    // Logic to handle newly selected user (e.g., API call)
+    console.log(`Processing newly selected user: ${userId}`);
   }
 
   // API call to update the task
@@ -111,7 +150,7 @@ export class TodoTasksComponent {
   openTaskModal(task: any) {
     this.assignTo = [];
     this.selectedUsers = [];
-    task?.assignTo?.map((element : any) => {
+    task?.assignTo?.map((element: any) => {
       this.assignTo.push(element?.userId);
       this.selectedUsers.push(element?.userId);
     });
