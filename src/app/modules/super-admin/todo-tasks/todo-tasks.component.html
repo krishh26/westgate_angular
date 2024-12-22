@@ -71,25 +71,20 @@
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
               <div class="accordion-body">
                 <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
-                  <li *ngFor="let comment of task.comments" class="comment-item">
+                  <li class="comment-item">
                     <div class="row align-items-center mb-3">
                       <div class="col">
                         <div class="d-flex justify-content-between">
-                          <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                          <small class="text-muted">{{
-                            task?.createdAt | date : "M/d/yy, h:mm a"
-                            }}</small>
+                          <p class="mb-0">{{ task?.comments[0]?.userDetail?.name }}</p>
+                          <small class="text-muted">
+                            {{ task?.comments[0]?.createdAt | date : "M/d/yy, h:mm a" }}
+                          </small>
                         </div>
-                        <small class="text-muted d-block">{{
-                          comment?.userDetail?.role
-                          }}</small>
+                        <small class="text-muted d-block">{{ task?.comments[0]?.userDetail?.role }}</small>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between">
-                      <p>{{ comment.comment }}</p>
-                      <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(modalTask?._id)">
-                        Delete
-                      </button> -->
+                      <p>{{ task?.comments[0]?.comment }}</p>
                     </div>
                   </li>
                 </ul>
