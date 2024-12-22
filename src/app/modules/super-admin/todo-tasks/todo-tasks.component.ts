@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,6 +21,7 @@ export class TodoTasksComponent {
   taskList: any = [];
   userList: any = [];
   assignTo: any[] = [];
+  assignProject: string | undefined;
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
@@ -29,6 +31,8 @@ export class TodoTasksComponent {
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
+  projectList: any = [];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -40,11 +44,29 @@ export class TodoTasksComponent {
   ngOnInit(): void {
     this.getTask();
     this.getUserAllList();
+    this.getProjectList();
   }
 
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
+  }
+
+  getProjectList() {
+    this.showLoader = true;
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectList = response?.data?.data;
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
   }
 
   addTask() {
@@ -116,6 +138,9 @@ export class TodoTasksComponent {
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
     }
+    else if (paramKey === 'assignProjectId' && paramValue) {
+      params.project = paramValue;
+    }
 
     // Call the updateTask method with updated params
     this.updateTask(params);
@@ -125,7 +150,7 @@ export class TodoTasksComponent {
     // Logic to handle deselected user (e.g., API call)
     console.log(`Processing deselected user: ${userId}`);
   }
-  
+
   processSelectedUser(userId: string) {
     // Logic to handle newly selected user (e.g., API call)
     console.log(`Processing newly selected user: ${userId}`);
