@@ -8,10 +8,17 @@
                         <input type="search" class="form-control control-search" placeholder="Search" />
                     </div>
                 </div> -->
-                <div class="col-lg-12 col-xl-12 col-12 d-flex justify-content-end">
-                    <a routerLink="/feasibility-user/feasibility-project-list"
-                        class="btn btn-primary text-dark">Back</a>
+                <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
+                        <h5 class="me-3"><strong>Project Title:</strong></h5>
+                        <h6>{{ projectDetails?.projectName }}</h6>
+                    </div>
+                    
+                    <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
+                        Back
+                    </a>
                 </div>
+
 
             </div>
 
@@ -56,25 +63,82 @@
             <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
                 <div class="card">
                     <div class="card-body">
-                        <!-- <h4>Project Details:</h4> -->
-                        <p><strong>Project Title:</strong> {{ projectDetails?.projectName }}</p>
-                        <p><strong>BOS ID:</strong> {{ projectDetails?.BOSID }}</p>
-                        <p><strong>Publish Date:</strong> {{ projectDetails?.publishDate | date:'dd/MM/yyyy' }}</p>
-                        <p><strong>Category:</strong> {{ projectDetails?.category }}</p>
-                        <p><strong>Industry:</strong> {{ projectDetails?.industry }}</p>
-                        <p><strong>Min value (GBP):</strong> £ {{ projectDetails?.minValue }}</p>
-                        <p><strong>Max value (GBP):</strong> £ {{ projectDetails?.maxValue }}</p>
-                        <p><strong>Website:</strong> {{ projectDetails?.website }}</p>
-                        <p><strong>Link to notice:</strong>
-                            <a href="{{ projectDetails?.link }}" target="_blank"> Link to Notice</a>
-                        </p>
-                        <p><strong>Created Date:</strong> {{ projectDetails?.createdAt | date:'dd/MM/yyyy' }}</p>
-                        <p><strong>Due Date & Time:</strong>
-                            {{ projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a' }}
-                        </p>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Project Title:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.projectName || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Project Description:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.description || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>BOS ID:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.BOSID || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Publish Date:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.publishDate ? (projectDetails?.publishDate | date:'dd/MM/yyyy') : '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Category:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.category || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Industry:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.industry || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Min value (GBP):</strong></div>
+                            <div class="col-md-10">GBP {{ projectDetails?.minValue || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Max value (GBP):</strong></div>
+                            <div class="col-md-10">GBP {{ projectDetails?.maxValue || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Website:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.website || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Link to notice:</strong></div>
+                            <div class="col-md-10">
+                                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}" target="_blank">Link to Notice</a>
+                                <ng-template #noLink>-</ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Created Date:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.createdAt ? (projectDetails?.createdAt | date:'dd/MM/yyyy') : '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Due Date & Time:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.dueDate ? (projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a') : '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>CPV Codes:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.CPVCodes || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Notice Reference:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.noticeReference || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Status:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.status || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Project Type:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.projectType || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Mail Id:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.mailID || '-' }}</div>
+                        </div>
                     </div>
                 </div>
+                
             </div>
+
 
             <section class="pageheader bg-dark">
                 <div class="container ">
