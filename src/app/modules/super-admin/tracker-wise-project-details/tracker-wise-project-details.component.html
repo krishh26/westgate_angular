@@ -128,8 +128,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-2"><strong>Status:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.status || '-' }}</div>
-                        </div>
+                            <div 
+                              class="col-md-10" 
+                              [ngClass]="{'text-success': projectDetails?.status === 'Passed', 'text-danger': projectDetails?.status === 'Fail'}">
+                              {{ projectDetails?.status || '-' }}
+                            </div>
+                          </div>
+                          
                         <div class="row">
                             <div class="col-md-2"><strong>Project Type:</strong></div>
                             <div class="col-md-10">{{ projectDetails?.projectType || '-' }}</div>
