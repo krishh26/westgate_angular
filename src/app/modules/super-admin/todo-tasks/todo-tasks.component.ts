@@ -255,6 +255,42 @@ export class TodoTasksComponent {
     });
   }
 
+  deleteComment(id: any) {
+    let param = {
+      commentId: id
+    };
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.deleteComment(param, this.modalTask._id).subscribe(
+          (response: any) => {
+            if (response?.status === true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Comment successfully deleted');
+              window.location.reload();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+  
+
   enableEdit(comment: any): void {
     comment.isEditing = true;
     comment.updatedComment = comment.comment; // Initialize with the existing comment
@@ -348,9 +384,9 @@ export class TodoTasksComponent {
   }
 
   // Delete a comment
-  deleteComment(index: number) {
-    this.modalTask.comments.splice(index, 1);
-  }
+  // deleteComment(index: number) {
+  //   this.modalTask.comments.splice(index, 1);
+  // }
 
   toggleUserSelection(userId: number): void {
     const index = this.selectedUserIds.indexOf(userId);

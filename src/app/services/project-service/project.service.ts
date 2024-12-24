@@ -19,7 +19,8 @@ export enum ProjectEndPoint {
   ADD_BULK_CASESTUDY = '/case-study/create-multiple',
   CREATE_CATEGORY = '/category/create',
   CREATE_INDUSTRY = '/industry/create',
-  DELETE_TASK = '/task/delete'
+  DELETE_TASK = '/task/delete',
+  DELETE_COMMENT = '/task/delete-comment'
 }
 
 @Injectable({
@@ -128,6 +129,11 @@ export class ProjectService {
   deleteTask(id: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_TASK + '/' + id);
+  }
+
+  deleteComment(payload: any, id: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.DELETE_COMMENT + '/' + id, payload);
   }
 
   deleteBulkProject(): Observable<any> {
