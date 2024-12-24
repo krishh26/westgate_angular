@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
@@ -38,7 +39,8 @@ export class TodoTasksComponent {
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +69,11 @@ export class TodoTasksComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  projectDetails(projectId: any) {
+    this.activeModal.close();
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
   addTask() {
@@ -289,7 +296,7 @@ export class TodoTasksComponent {
       }
     });
   }
-  
+
 
   enableEdit(comment: any): void {
     comment.isEditing = true;

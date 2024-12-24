@@ -163,11 +163,19 @@
 
       <div class="modal-body d-flex">
         <div class="flex-grow-1 pe-3">
+
           <div class="mb-3">
             <h6><strong>Description</strong></h6>
             <p>{{ modalTask?.discription }}</p>
             <p *ngIf="!modalTask?.discription">No Record Found.</p>
           </div>
+
+          <div class="mb-3">
+            <h6><strong>Assigned Project</strong></h6>
+            <a (click)="projectDetails(modalTask?.project?._id)"
+              href="javascript:;">{{modalTask?.project?.projectName}}</a>
+          </div>
+
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
