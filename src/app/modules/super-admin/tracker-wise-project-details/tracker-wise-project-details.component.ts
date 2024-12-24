@@ -71,7 +71,10 @@ export class TrackerWiseProjectDetailsComponent {
   subContracting: boolean = true;
   userList: any = [];
   assignTo: any;
-
+  modalTask: any = {};
+  taskList: any = [];
+  selectedUserIds: number[] = [];
+  filteredTasks: any = []
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -99,6 +102,7 @@ export class TrackerWiseProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getUserAllList();
+    this.getTask();
   }
 
   openDocument(data: any) {
@@ -118,6 +122,33 @@ export class TrackerWiseProjectDetailsComponent {
         document.body.removeChild(link);
       });
   }
+
+  getTask() {
+    this.showLoader = true;
+    const projectIdToMatch = this.projectId; // Replace with the actual project ID to match
+
+    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter tasks based on project ID
+          this.filteredTasks = response.data.data.filter(
+            (task: any) => task.project && task.project._id === projectIdToMatch
+          );
+          this.showLoader = false;
+        } else {
+          this.filteredTasks = []; // No records found
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.filteredTasks = []; // No records found
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   getProjectDetails() {
     this.showLoader = true;
