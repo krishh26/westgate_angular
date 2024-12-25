@@ -546,34 +546,33 @@
         <div class="col-lg-6 col-xl-6 col-md-6 col-12">
           <h5>WestGate Documents</h5>
           <div class="card">
-              <ul class="project-document">
-                  <ng-container *ngIf="projectDetails?.westGetDocument?.length > 0">
-                      <li *ngFor="let westGetDocument of projectDetails?.westGetDocument">
-                          <div class="row">
-                              <div class="col-5 text-center">
-                                  <p class="mb-0">Project Notice</p>
-                              </div>
-                              <div class="col-7 text-center">
-                                  <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill"
-                                          data-bs-toggle="modal" data-bs-target="#ViewDocuments"
-                                          (click)="openDocument(westGetDocument?.file)"></i>
-                                      View</a>
-                                  <a href="javascript:;" class="btn btn-primarysm"><i
-                                          class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                              </div>
-                          </div>
-                      </li>
-                  </ng-container>
-                  <ng-container *ngIf="projectDetails?.westGetDocument?.length == 0">
-                      <li style="text-align: center;">
-                          <p>No Record Found.</p>
-                      </li>
-                  </ng-container>
-              </ul>
+            <ul class="project-document">
+              <ng-container *ngIf="projectDetails?.westGetDocument?.length > 0">
+                <li *ngFor="let westGetDocument of projectDetails?.westGetDocument">
+                  <div class="row">
+                    <div class="col-5 text-center">
+                      <p class="mb-0">Project Notice</p>
+                    </div>
+                    <div class="col-7 text-center">
+                      <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill" data-bs-toggle="modal"
+                          data-bs-target="#ViewDocuments" (click)="openDocument(westGetDocument?.file)"></i>
+                        View</a>
+                      <a href="javascript:;" class="btn btn-primarysm"><i
+                          class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
+                    </div>
+                  </div>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="projectDetails?.westGetDocument?.length == 0">
+                <li style="text-align: center;">
+                  <p>No Record Found.</p>
+                </li>
+              </ng-container>
+            </ul>
           </div>
-      </div>
+        </div>
 
-        
+
 
         <!-- <div class="col-lg-3 col-xl-3 col-12">
           <div class="form-group">
@@ -628,153 +627,89 @@
         </div>
       </section><br>
 
-      <div class="col-lg-4 col-xl-7 col-12">
-
-        <div class="form-group">
-          <div class="row align-items-center">
-            <div class="col-6">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment1"
-                  value="InProgress" (change)="statusChange('InProgress')" [checked]="status == 'InProgress'" />
-                <label class="form-check-label" for="comment1">In-Progress</label>
-              </div>
-            </div>
-
-            <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'InProgress' && commentData?.length">
-              <div class="d-flex gap-3" *ngFor="let item of commentData">
-                <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
-                <input disabled type="text" [value]="item.comment" class="form-control"
-                  placeholder="Comments for In-Progress" />
-              </div>
-            </div>
-            <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'InProgress'">
-              <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-              <input *ngIf="this.status == 'InProgress'" type="text" class="form-control"
-                placeholder="Comments for In-Progress" [formControl]="statusComment" />
-              <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-            </div>
+      <div class="col-lg-6 col-xl-8 col-12">
+        <div class="card shadow-sm p-4">
+          <!-- Header -->
+          <div class="card-header bg-primary text-white mb-3">
+            <h5 class="mb-0">Status Selection</h5>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="row align-items-center">
-            <div class="col-6">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment2"
-                  value="InHold" (change)="statusChange('InHold')" [checked]="status == 'InHold'" />
-                <label class="form-check-label" for="comment2">In-Hold</label>
-              </div>
-            </div>
-            <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'InHold' && commentData?.length">
-              <div class="d-flex gap-3" *ngFor="let item of commentData">
-                <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
-                <input disabled type="text" [value]="item.comment" class="form-control"
-                  placeholder="Comments for In-Hold" />
-              </div>
-            </div>
-            <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'InHold'">
-              <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-              <input type="text" class="form-control" placeholder="Comments for In-Hold"
-                [formControl]="statusComment" />
-              <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-            </div>
+          <!-- Status Buttons -->
+          <div class="d-flex justify-content-between flex-wrap mb-4">
+            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
+              (click)="statusChange('InProgress')">
+              In-Progress
+            </button>
+            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
+              (click)="statusChange('InHold')">
+              In-Hold
+            </button>
+            <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
+              (click)="statusChange('Passed')">
+              Pass
+            </button>
+            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
+              (click)="statusChange('Fail')">
+              Fail
+            </button>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="row align-items-center">
-            <div class="col-6">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment3"
-                  value="Passed" (change)="statusChange('Passed')" [checked]="status == 'Passed'" />
-                <label class="form-check-label text-success" for="comment3">Pass</label>
-              </div>
-            </div>
-            <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'Passed' && commentData?.length">
-              <div class="d-flex gap-3" *ngFor="let item of commentData">
-                <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
-                <input disabled type="text" [value]="item.comment" class="form-control"
-                  placeholder="Comments for Pass" />
+          <!-- Dynamic Comment Section -->
+          <div *ngIf="status" class="status-section">
+            <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+
+            <!-- Display Existing Comments -->
+            <div *ngIf="commentData?.length" class="comment-list">
+              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                  <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm a" }}</span>
+                </div>
               </div>
             </div>
 
-            <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'Passed'">
-              <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-              <input type="text" class="form-control" placeholder="Comments for Pass" [formControl]="statusComment" />
-              <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-plus-lg"></i>
+            <!-- Add New Comment -->
+            <div class="add-comment d-flex gap-3 align-items-center mt-3">
+              <input type="date" class="form-control w-50" [formControl]="statusDate" placeholder="Select Date" />
+              <input type="text" class="form-control w-50" [formControl]="statusComment"
+                placeholder="Add your comment" />
+              <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                <i class="bi bi-plus-lg"></i> Add
               </button>
             </div>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="inlineRadioOptionsForComment" id="comment4"
-                  value="Fail" (change)="statusChange('Fail')" [checked]="status == 'Fail'" />
-                <label class="form-check-label text-danger" for="comment4">Fail</label>
-              </div>
-            </div>
-            <div class="col-8" *ngIf="this.status == 'Fail'">
-            </div>
-            <div class="col-12 d-flex flex-column gap-2" *ngIf="this.status == 'Fail' && commentData?.length">
-              <div class="d-flex gap-3" *ngFor="let item of commentData">
-                <input disabled type="date" [value]="item.date" class="form-control" placeholder="Date" />
-                <input disabled type="text" [value]="item.comment" class="form-control"
-                  placeholder="Comments for Fail" />
-              </div>
-            </div>
-            <div class="col-12 d-flex gap-3 mt-1" *ngIf="this.status == 'Fail'">
-              <input type="date" class="form-control" [formControl]="statusDate" placeholder="Date" />
-              <input type="text" class="form-control" placeholder="Comments for Fail" [formControl]="statusComment" />
-              <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-            </div>
-            <div class="col-12 d-flex gap-3" *ngIf="this.status == 'Fail'">
-              <!-- <div>
-                <label class="btn-upload-file" for="failedReson"><i class="bi bi-file-earmark-arrow-up-fill"></i>
-                  Upload Document</label>
-                <input type="file" id="failedReson" name="failedReson" style="height: 5px; width: 5px"
-                  (change)="uploadDocument($event,documentUploadType.failStatusImage)" />
-                <a *ngIf="failStatusImage?.url" (click)="openUploadedDocument(failStatusImage)"
-                  class="btn btn-small w-100" data-bs-toggle="modal" data-bs-target="#ViewUploadedDocument"><i
-                    class="bi bi-eye-fill"></i> View</a>
-              </div>
-              <div>
+            <!-- Fail Specific Fields -->
+            <div *ngIf="status === 'Fail'" class="mt-4">
+              <h6 class="text-danger">Additional Details for "Fail"</h6>
+              <div class="d-flex flex-column gap-3">
+                <!-- File Upload -->
+                <div class="d-flex align-items-center">
+                  <label for="failedReson" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-upload"></i> Upload Document
+                  </label>
+                  <input type="file" id="failedReson" name="failedReson" hidden
+                    (change)="uploadDocument($event, documentUploadType.failStatusImage)" />
+                </div>
+
+                <!-- Fail Reason Dropdown -->
                 <select class="form-select" [formControl]="failStatusReason">
-                  <option disabled selected hidden value="">
-                    Select Failed Reason
-                  </option>
+                  <option disabled selected hidden value="">Select Fail Reason</option>
                   <option value="Accreditation">Accreditation</option>
                   <option value="Time Constraints">Time Constraints</option>
                   <option value="Certification">Certification</option>
                   <option value="Case Study">Case Study</option>
-                  <option value="Certifications from Subcontractor">
-                    Certifications from Subcontractor
-                  </option>
-                  <option value="Delivery of goods/Hardware">
-                    Delivery of goods/Hardware
-                  </option>
-                  <option value="Financial Conditions">
-                    Financial Conditions
-                  </option>
+                  <option value="Certifications from Subcontractor">Certifications from Subcontractor</option>
+                  <option value="Delivery of goods/Hardware">Delivery of goods/Hardware</option>
+                  <option value="Financial Conditions">Financial Conditions</option>
                   <option value="Not related">Not related</option>
                 </select>
               </div>
-              <button (click)="pushStatus()" type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-plus-lg"></i>
-              </button> -->
             </div>
           </div>
         </div>
       </div>
+
+
 
       <!-- <div class="row">
         <div class="col-lg-4 col-xl-4 col-12">
@@ -858,20 +793,22 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="modal-body">
-          <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
-            <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
-              height="600px"></ngx-extended-pdf-viewer>
-          </ng-container>
-          <ng-template #otherFormats>
-            <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
-              [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px;"></iframe>
-            <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
-          </ng-template>
-        </div>
-        <!-- <img [src]="selectedDocument?.file?.url" class="img-fluid" /> -->
+      <div class="alert alert-danger" role="alert">
+        ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+        have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
       </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px;"></iframe>
+          <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <!-- <img [src]="selectedDocument?.file?.url" class="img-fluid" /> -->
     </div>
   </div>
 </div>
@@ -884,6 +821,10 @@
       <div class="modal-header" style="display: flex; justify-content: space-between;">
         <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-danger" role="alert">
+        ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+        have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
       </div>
       <div class="modal-body">
         <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
@@ -911,6 +852,10 @@
       <div class="modal-header" style="display: flex; justify-content: space-between;">
         <h5 class="modal-title" id="ViewUploadedDocumentModal">Document</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-danger" role="alert">
+        ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+        have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
       </div>
       <div class="modal-body" style="text-align: center;">
         <ng-container *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument">
