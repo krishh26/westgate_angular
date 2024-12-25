@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -16,11 +17,17 @@ export class FeasibilityHeaderComponent {
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router,
+    public router: Router,
     private notificationService: NotificationService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
+
+  navUrlArr = [
+    { title: 'My Projects', route: ['/feasibility-user/feasibility-project-list'] },
+    { title: 'TO DO TASKS', route: ['/feasibility-user/feasibility-todo-task'] },
+
+  ];
 
   logout(): void {
     this.authService.logout();
