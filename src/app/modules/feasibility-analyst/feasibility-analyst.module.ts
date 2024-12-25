@@ -21,6 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { BOSUserModule } from '../bos-user/bos-user.module';
+import { FeasibilityProjectsToActionComponent } from './feasibility-projects-to-action/feasibility-projects-to-action.component';
 @NgModule({
     declarations: [
         FeasibilityAnalystComponent,
@@ -33,7 +34,8 @@ import { BOSUserModule } from '../bos-user/bos-user.module';
         FeasibilityHeaderComponent,
         TruncatePipe,
         FeasibilityProfileComponent,
-        EditFeasibilityProjectDetailsComponent
+        EditFeasibilityProjectDetailsComponent,
+        FeasibilityProjectsToActionComponent
     ],
     imports: [
         CommonModule,

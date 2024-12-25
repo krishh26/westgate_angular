@@ -10,6 +10,7 @@ import { AddLoginDetailsComponent } from './add-login-details/add-login-details.
 import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-profile.component';
 import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
 import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
+import { FeasibilityProjectsToActionComponent } from './feasibility-projects-to-action/feasibility-projects-to-action.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'feasibility-project-list',
         component: FeasibilityProjectsListComponent,
+      },
+      {
+        path: 'feasibility-projects-to-actions',
+        component: FeasibilityProjectsToActionComponent,
       },
       {
         path: 'feasibility-todo-task',
