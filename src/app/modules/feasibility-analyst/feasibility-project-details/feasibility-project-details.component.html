@@ -521,55 +521,72 @@
             </button>
           </div>
           <ng-container *ngIf="viewClientDocumentForm">
-            <div class="d-flex p-2 justify-content-between">
-              <div class="row align-items-center">
-                <div class="col-9">
-                  <div class="form-group">
-                    <input type="text" [(ngModel)]="documentName" placeholder="Enter Document Name"
-                      class="form-control" />
-                  </div>
+            <div class="card p-3 mt-3">
+              <div class="row g-3 align-items-center">
+                <!-- Document Name Input -->
+                <div class="col-md-8 col-sm-12">
+                  <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
+                    aria-label="Document Name" />
                 </div>
-              </div>
-              <div class="col-lg-4 col-xl-4 col-6">
-                <div class="btn btn-small w-100">
-                  <label for="uploadClientDocument"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                <!-- Upload Button -->
+                <div class="col-md-4 col-sm-12">
+                  <label class="btn btn-outline-primary w-100">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    <input type="file" id="uploadClientDocument"
+                      (change)="uploadDocument($event, documentUploadType.clientDocument)" hidden
+                      aria-label="Upload Document" />
                   </label>
-                  <input type="file" id="uploadClientDocument" (change)="
-                      uploadDocument($event, documentUploadType.clientDocument)
-                    " name="myfile" style="height: 1px; width: 1px" />
                 </div>
               </div>
             </div>
           </ng-container>
         </div>
 
-        <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+        <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
           <h5>WestGate Documents</h5>
           <div class="card">
             <ul class="project-document">
-              <ng-container *ngIf="projectDetails?.westGetDocument?.length > 0">
-                <li *ngFor="let westGetDocument of projectDetails?.westGetDocument">
-                  <div class="row">
-                    <div class="col-5 text-center">
-                      <p class="mb-0">Project Notice</p>
-                    </div>
-                    <div class="col-7 text-center">
-                      <a href="javascript:;" class="btn btn-primarysm"><i class="bi bi-eye-fill" data-bs-toggle="modal"
-                          data-bs-target="#ViewDocuments" (click)="openDocument(westGetDocument?.file)"></i>
-                        View</a>
-                      <a href="javascript:;" class="btn btn-primarysm"><i
-                          class="bi bi-file-earmark-arrow-down-fill"></i> Download</a>
-                    </div>
+              <!-- Document List -->
+              <li *ngFor="let item of projectDetails?.projectComment" class="list-group-item">
+                <div class="row">
+                  <div class="col-5 text-center">
+                    <p class="mb-0">{{ item?.comment }}</p>
                   </div>
-                </li>
-              </ng-container>
-              <ng-container *ngIf="projectDetails?.westGetDocument?.length == 0">
-                <li style="text-align: center;">
-                  <p>No Record Found.</p>
-                </li>
-              </ng-container>
+                  <div class="col-7 text-center">
+                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)">
+                      <i class="bi bi-eye-fill"></i> View
+                    </a>
+                    <a href="href:;" class="btn btn-primarysm" (click)="download(item?.file?.url, item?.name)">
+                      <i class="bi bi-file-earmark-arrow-down-fill"></i> Download
+                    </a>
+                  </div>
+                </div>
+              </li>
             </ul>
+            <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn">
+              <i class="bi bi-plus-lg"></i>
+            </button>
           </div>
+          <ng-container *ngIf="viewClientDocumentForm">
+            <div class="card p-3 mt-3">
+              <div class="row g-3 align-items-center">
+                <!-- Comment Input -->
+                <div class="col-md-8 col-sm-12">
+                  <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
+                    class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
+                </div>
+                <!-- Upload Button -->
+                <div class="col-md-4 col-sm-12">
+                  <label class="btn btn-outline-primary w-100">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                    <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)" hidden
+                      aria-label="Upload Document" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
         </div>
 
 

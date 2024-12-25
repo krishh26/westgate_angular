@@ -16,7 +16,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class FeasibilityProjectDetailsComponent {
 
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
-
+  commentName: string = "";
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
@@ -53,7 +53,8 @@ export class FeasibilityProjectDetailsComponent {
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
     otherDocument: 'otherDocument',
-    failStatusImage: "failStatusImage"
+    failStatusImage: "failStatusImage",
+    westgatedocument: "westgatedocument"
   }
 
   // For check bov
@@ -78,7 +79,7 @@ export class FeasibilityProjectDetailsComponent {
     private feasibilityService: FeasibilityService,
     private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
-      private superService: SuperadminService
+    private superService: SuperadminService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -304,6 +305,38 @@ export class FeasibilityProjectDetailsComponent {
         // Hide the spinner in case of an error as well
         this.spinner.hide();
         return this.notificationService.showError(error?.message || "Error while uploading");
+      });
+    }
+  }
+
+  uploadDocuments(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+      this.spinner.show();
+
+      this.feasibilityService.uploadDocument(data).subscribe((response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          if (!this.commentName) {
+            return this.notificationService.showError('Enter a client document name');
+          }
+
+          // Add the uploaded file and comment to projectComment array
+          let objToBePushed = {
+            comment: this.commentName,
+            file: response?.data
+          };
+          this.projectDetails.projectComment.push(objToBePushed);
+          this.commentName = ""; // Clear the comment input
+          this.notificationService.showSuccess(response?.message);
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      }, (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.message || 'Error while uploading');
       });
     }
   }
