@@ -165,40 +165,57 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   isExpired: boolean = true;
 
-  getProjectList() {
-    this.showLoader = true;
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.expired = this.isExpired;
-    Payload.projectList.status = this.status;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+getProjectList(selectedStatus?: string) {
+  this.showLoader = true;
+
+  // Set common parameters
+  Payload.projectList.keyword = this.searchText;
+  Payload.projectList.page = String(this.page);
+  Payload.projectList.limit = String(this.pagesize);
+  Payload.projectList.expired = this.isExpired;
+
+  // Ensure selectedStatus is defined and map it dynamically
+  const statusKey = selectedStatus || this.status; // Use fallback to current status if selectedStatus is undefined
+
+  if (this.filterObject[statusKey] === 'Shortlisted') {
+    Payload.projectList.sortlist = true;
+    Payload.projectList.status = ''; // Clear status for 'Shortlisted'
+  } else {
+    Payload.projectList.sortlist = false;
+    Payload.projectList.status = this.filterObject[statusKey] || '';
+  }
+
+  this.projectService.getProjectList(Payload.projectList).subscribe(
+    (response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
+
+      if (response?.status === true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
 
-
+        // Calculate the date difference for each project
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
           const currentDate = new Date();
           const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-
           const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
           this.dateDifference = formattedDateDifference;
         });
-
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
       }
-    }, (error) => {
+    },
+    (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
-    });
-  }
+    }
+  );
+}
 
+
+  
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;

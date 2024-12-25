@@ -30,7 +30,7 @@
         <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of feasibilityData" class="me-3">
-              <div (click)="filter(item.status)">
+              <div (click)="filter(item.status)" (click)="selectStatus(item.status)" [ngClass]="{'text-danger': selectedStatus === item.status}">
                 {{ item.status }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
@@ -44,7 +44,7 @@
         <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of bidData" class="me-3">
-              <div (click)="filter(item.status)">
+              <div (click)="filter(item.status)" (click)="selectStatus(item.status)" [ngClass]="{'text-danger': selectedStatus === item.status}">
                 {{ item.status }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
