@@ -1,29 +1,32 @@
 <main id="main">
-    <section>
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <!-- <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+  <section>
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <!-- <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
                     <div class="form-group mb-0">
                         <span class="input-icon"><i class="bi bi-search"></i></span>
                         <input type="search" class="form-control control-search" placeholder="Search" />
                     </div>
                 </div> -->
-                <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
-                    <div class="d-flex align-items-center">
-                        <h5 class="me-3"><strong>Project Title:</strong></h5>
-                        <h6>{{ projectDetails?.projectName }}</h6>
-                    </div>
+        <div
+          class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3"
+        >
+          <div class="d-flex align-items-center">
+            <h5 class="me-3"><strong>Project Title:</strong></h5>
+            <h6>{{ projectDetails?.projectName }}</h6>
+          </div>
 
-                    <a routerLink="/super-admin/status-wise-tracker" class="btn btn-primary text-dark">
-                        Back
-                    </a>
-                </div>
+          <a
+            routerLink="/super-admin/status-wise-tracker"
+            class="btn btn-primary text-dark"
+          >
+            Back
+          </a>
+        </div>
+      </div>
 
-
-            </div>
-
-            <!-- Project Details -->
-            <!-- <div class="table-responsive mt-5 mb-3">
+      <!-- Project Details -->
+      <!-- <div class="table-responsive mt-5 mb-3">
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
@@ -60,119 +63,174 @@
                 </table>
             </div> -->
 
-            <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- <div class="row">
+      <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <!-- <div class="row">
                             <div class="col-md-2"><strong>Project Title:</strong></div>
                             <div class="col-md-10">{{ projectDetails?.projectName || '-' }}</div>
                         </div> -->
-                        <!-- <div class="row">
+            <!-- <div class="row">
                             <div class="col-md-2"><strong>Project Description:</strong></div>
                             <div class="col-md-10">{{ projectDetails?.description || '-' }}</div>
                         </div> -->
-                        <div class="row">
-                            <div class="col-md-2"><strong>BOS ID:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.BOSID || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Publish Date:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.publishDate ? (projectDetails?.publishDate |
-                                date:'dd/MM/yyyy') : '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Category:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.category || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Industry:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.industry || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Min value (GBP):</strong></div>
-                            <div class="col-md-10">GBP {{ projectDetails?.minValue || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Max value (GBP):</strong></div>
-                            <div class="col-md-10">GBP {{ projectDetails?.maxValue || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Website:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.website || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Link to notice:</strong></div>
-                            <div class="col-md-10">
-                                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}"
-                                    target="_blank">Link to Notice</a>
-                                <ng-template #noLink>-</ng-template>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Created Date:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.createdAt ? (projectDetails?.createdAt |
-                                date:'dd/MM/yyyy') : '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Due Date & Time:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.dueDate ? (projectDetails?.dueDate |
-                                date:'dd/MM/yyyy, h:mm a') : '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>CPV Codes:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.CPVCodes || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Notice Reference:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.noticeReference || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Status:</strong></div>
-                            <div class="col-md-10"
-                                [ngClass]="{'text-success': projectDetails?.status === 'Passed', 'text-danger': projectDetails?.status === 'Fail'}">
-                                {{ projectDetails?.status || '-' }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Project Type:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.projectType || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Mail Id:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.mailID || '-' }}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-2"><strong>Client Type:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.clientType || '-' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Client Name:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.clientName || '-' }}</div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="row">
+              <div class="col-md-2"><strong>BOS ID:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.BOSID || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Publish Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.publishDate
+                    ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Category:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.category || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Industry:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.industry || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Min value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.minValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Max value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.maxValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Website:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.website || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Link to notice:</strong></div>
+              <div class="col-md-10">
+                <a
+                  *ngIf="projectDetails?.link; else noLink"
+                  href="{{ projectDetails?.link }}"
+                  target="_blank"
+                  >Link to Notice</a
+                >
+                <ng-template #noLink>-</ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Created Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.createdAt
+                    ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Due Date & Time:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.dueDate
+                    ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>CPV Codes:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.CPVCodes || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Notice Reference:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.noticeReference || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Status:</strong></div>
+              <div
+                class="col-md-10"
+                [ngClass]="{
+                  'text-success': projectDetails?.status === 'Passed',
+                  'text-danger': projectDetails?.status === 'Fail'
+                }"
+              >
+                {{ projectDetails?.status || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Project Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.projectType || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Mail Id:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.mailID || "-" }}</div>
             </div>
 
+            <div class="row">
+              <div class="col-md-2"><strong>Client Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientType || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Client Name:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientName || "-" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <section class="pageheader bg-dark">
-                <div class="container ">
-                    <p><strong>Project Description</strong></p>
-                </div>
-            </section><br>
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Project Description</strong></p>
+        </div>
+      </section>
+      <br />
 
-            <p>{{ projectDetails?.description }}</p>
+      <p>{{ projectDetails?.description }}</p>
 
-            <!-- <section class="pageheader bg-dark">
+      <div class="row">
+        <div class="col-md-3">
+          <label>Assign To</label>
+          <ng-select
+            style="padding: 0px !important"
+            placeholder="Select Assign User"
+            class="form-select custom-ng-select-option"
+            bindLabel="userName"
+            bindValue="_id"
+            [items]="userList"
+            [(ngModel)]="assignTo"
+          >
+          </ng-select>
+        </div>
+        <div class="mt-2">
+          <button type="button" class="btn btn-primary" (click)="assignUser()">
+            Submit
+          </button>
+        </div>
+      </div>
+
+      <!-- <section class="pageheader bg-dark">
                 <div class="container">
                     <p><strong>Client & FOI Detils</strong></p>
                 </div>
             </section> -->
 
-
-            <!--client details-->
-            <!-- <div class="row mt-5">
+      <!--client details-->
+      <!-- <div class="row mt-5">
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body">
@@ -260,35 +318,62 @@
                     </div>
                 </div>
             </div> -->
-        </div>
-    </section>
+    </div>
+  </section>
 </main>
 
 <!-- View Document Modal -->
-<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="display: flex; justify-content: space-between;">
-                <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-                    <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-                        height="600px"></ngx-extended-pdf-viewer>
-                </ng-container>
-                <ng-template #otherFormats>
-                    <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-                        [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
-                        style="width: 100%; height: 600px;"></iframe>
-                    <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url"
-                        class="img-fluid" />
-                </ng-template>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="ViewDocumentModal"
+  tabindex="-1"
+  aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          FOI Document ({{ selectedDocument?.name }})
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-container
+          *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats"
+        >
+          <ngx-extended-pdf-viewer
+            [src]="selectedDocument?.link?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe
+            *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectedDocument?.link?.url)"
+            [src]="selectedDocument?.link?.url"
+            class="img-fluid"
+          />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
     </div>
+  </div>
 </div>

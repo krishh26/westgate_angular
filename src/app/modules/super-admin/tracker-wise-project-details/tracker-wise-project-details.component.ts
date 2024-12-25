@@ -1,5 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -10,15 +16,14 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
   templateUrl: './tracker-wise-project-details.component.html',
-  styleUrls: ['./tracker-wise-project-details.component.scss']
+  styleUrls: ['./tracker-wise-project-details.component.scss'],
 })
 export class TrackerWiseProjectDetailsComponent {
-
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
@@ -35,10 +40,10 @@ export class TrackerWiseProjectDetailsComponent {
   economicalPartnershipResponceFile: any;
   viewClientDocumentForm: boolean = true;
   viewLoginForm: boolean = true;
-  documentName: string = "";
-  loginName: string = "";
+  documentName: string = '';
+  loginName: string = '';
   isEditing = false;
-  status: string = "Expired";
+  status: string = 'Expired';
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
@@ -49,8 +54,9 @@ export class TrackerWiseProjectDetailsComponent {
   uploadedDocument: any;
   failStatusImage: any;
   showSuccess: boolean = false;
-  userDetail: any
-  selectedSuppliers: { [key: string]: { company: string; startDate: any } } = {};
+  userDetail: any;
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } =
+    {};
   myForm: FormGroup | undefined;
   selectedSupplier: any;
   summaryQuestionList: any;
@@ -63,6 +69,8 @@ export class TrackerWiseProjectDetailsComponent {
   commentData: any[] = [];
   comment: string = '';
   subContracting: boolean = true;
+  userList: any = [];
+  assignTo: any;
 
   constructor(
     private projectService: ProjectService,
@@ -76,19 +84,21 @@ export class TrackerWiseProjectDetailsComponent {
     private fb: FormBuilder,
     private projectManagerService: ProjectManagerService,
     private projectCoordinatorService: ProjectCoordinatorService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private superService: SuperadminService
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.projectId = params['id']
+      this.projectId = params['id'];
     });
     this.myForm = this.fb.group({
-      skills: this.fb.array([])
+      skills: this.fb.array([]),
     });
     this.loginUser = this.localStorageService.getLogger();
   }
 
   ngOnInit(): void {
     this.getProjectDetails();
+    this.getUserAllList();
   }
 
   openDocument(data: any) {
@@ -97,8 +107,8 @@ export class TrackerWiseProjectDetailsComponent {
 
   download(imageUrl: string, fileName: string): void {
     fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -111,28 +121,35 @@ export class TrackerWiseProjectDetailsComponent {
 
   getProjectDetails() {
     this.showLoader = true;
-    this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectDetails = response?.data;
-        this.casestudylist = response?.data?.casestudy;
-        this.status = this.projectDetails?.status;
-        this.subContracting = this.projectDetails?.subContracting;
-        this.statusComment.setValue(this.projectDetails?.statusComment);
+    this.projectService.getProjectDetailsById(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectDetails = response?.data;
+          this.casestudylist = response?.data?.casestudy;
+          this.status = this.projectDetails?.status;
+          this.subContracting = this.projectDetails?.subContracting;
+          this.statusComment.setValue(this.projectDetails?.statusComment);
 
-        this.subContractDocument = this.projectDetails?.subContractingfile || null;
-        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
-        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
-        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments || null;
-        this.failStatusImage = this.projectDetails?.failStatusImage || null;
-      } else {
-        this.notificationService.showError(response?.message);
+          this.subContractDocument =
+            this.projectDetails?.subContractingfile || null;
+          this.economicalPartnershipQueryFile =
+            this.projectDetails?.economicalPartnershipQueryFile || null;
+          this.economicalPartnershipResponceFile =
+            this.projectDetails?.economicalPartnershipResponceFile || null;
+          this.FeasibilityOtherDocuments =
+            this.projectDetails?.FeasibilityOtherDocuments || null;
+          this.failStatusImage = this.projectDetails?.failStatusImage || null;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   isPdf(url: string): boolean {
@@ -140,19 +157,77 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   isWordOrExcel(url: string): boolean {
-    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+    return (
+      url?.endsWith('.doc') ||
+      url?.endsWith('.docx') ||
+      url?.endsWith('.xls') ||
+      url?.endsWith('.xlsx') ||
+      false
+    );
   }
 
   isImage(url: string): boolean {
-    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+    return (
+      url?.endsWith('.jpg') ||
+      url?.endsWith('.jpeg') ||
+      url?.endsWith('.png') ||
+      false
+    );
   }
 
   getDocumentViewerUrl(url: string): SafeResourceUrl {
     if (this.isWordOrExcel(url)) {
-      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+        url
+      )}`;
       return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  assignUser() {
+    if (!this.assignTo) {
+      this.notificationService.showError('Please select assign to user');
+      return;
+    }
+    const payload = {
+      task: this.projectDetails?.projectName,
+      assignTo: [`${this.assignTo}`],
+      project: this.projectId,
+    };
+    console.log('this is data', payload);
+    this.superService.createTask(payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('user Assign  Successfully');
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+      }
+    );
+  }
 }
