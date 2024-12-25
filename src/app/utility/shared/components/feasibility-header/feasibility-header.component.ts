@@ -24,7 +24,7 @@ export class FeasibilityHeaderComponent {
   }
 
   navUrlArr = [
-    { title: 'My Projects', route: ['/feasibility-user/feasibility-project-list'] },
+    { title: 'My Projects', route: ['/feasibility-user/feasibility-projects-to-actions'] },
     { title: 'TO DO TASKS', route: ['/feasibility-user/feasibility-todo-task'] },
 
   ];
