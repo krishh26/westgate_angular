@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/feasibility-analyst/feasibility-analyst.module').then(m => m.FeasibilityModule)
   },
   {
+    path: 'feasibility-manager',
+    loadChildren: () => import('./modules/feasibility-manager/feasibility-manager.module').then(m => m.FeasibilityManagerModule)
+  },
+  {
     path: 'project-manager',
     loadChildren: () => import('./modules/Project-Manager/Project-Manager.module').then(m => m.ProjectManagerModule)
   },
