@@ -11,6 +11,8 @@ import { FeasibilityProfileComponent } from './feasibility-profile/feasibility-p
 import { EditFeasibilityProjectDetailsComponent } from './edit-feasibility-project-details/edit-feasibility-project-details.component';
 import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
 import { FeasibilityProjectsToActionComponent } from './feasibility-projects-to-action/feasibility-projects-to-action.component';
+import { FeasibilityProjectsCompletedComponent } from './feasibility-projects-completed/feasibility-projects-completed.component';
+import { FeasibilityProjectsInProgressComponent } from './feasibility-projects-in-progress/feasibility-projects-in-progress.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,14 @@ const routes: Routes = [
       {
         path: 'feasibility-projects-to-actions',
         component: FeasibilityProjectsToActionComponent,
+      },
+      {
+        path: 'feasibility-projects-in-progress',
+        component: FeasibilityProjectsInProgressComponent,
+      },
+      {
+        path: 'feasibility-projects-completed',
+        component: FeasibilityProjectsCompletedComponent,
       },
       {
         path: 'feasibility-todo-task',

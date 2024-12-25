@@ -23,11 +23,11 @@ interface Project {
 }
 
 @Component({
-  selector: 'app-feasibility-projects-to-action',
-  templateUrl: './feasibility-projects-to-action.component.html',
-  styleUrls: ['./feasibility-projects-to-action.component.scss']
+  selector: 'app-feasibility-projects-in-progress',
+  templateUrl: './feasibility-projects-in-progress.component.html',
+  styleUrls: ['./feasibility-projects-in-progress.component.scss']
 })
-export class FeasibilityProjectsToActionComponent {
+export class FeasibilityProjectsInProgressComponent {
 
   showLoader: boolean = false;
   projectList: any = [];

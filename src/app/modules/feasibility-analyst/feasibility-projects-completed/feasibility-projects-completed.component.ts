@@ -21,13 +21,12 @@ interface Project {
   dueDate: Date;
   // Add other properties as needed
 }
-
 @Component({
-  selector: 'app-feasibility-projects-to-action',
-  templateUrl: './feasibility-projects-to-action.component.html',
-  styleUrls: ['./feasibility-projects-to-action.component.scss']
+  selector: 'app-feasibility-projects-completed',
+  templateUrl: './feasibility-projects-completed.component.html',
+  styleUrls: ['./feasibility-projects-completed.component.scss']
 })
-export class FeasibilityProjectsToActionComponent {
+export class FeasibilityProjectsCompletedComponent {
 
   showLoader: boolean = false;
   projectList: any = [];
