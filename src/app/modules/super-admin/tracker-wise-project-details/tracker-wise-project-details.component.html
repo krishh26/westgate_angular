@@ -223,7 +223,7 @@
                         </li>
                       </ul>
                     </div>
-                    <p *ngIf="!task.comments?.length">No comments available</p>
+                    <p *ngIf="task.comments?.length === 0">No comments available</p>
                   </div>
                 </li>
               </ul>

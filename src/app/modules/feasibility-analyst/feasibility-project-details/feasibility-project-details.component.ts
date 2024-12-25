@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
 @Component({
   selector: 'app-feasibility-project-details',
@@ -43,7 +44,7 @@ export class FeasibilityProjectDetailsComponent {
   password = 'password';
   showPassword = false;
   failStatusImage: any;
-
+  filteredTasks: any = []
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -66,7 +67,7 @@ export class FeasibilityProjectDetailsComponent {
     password: new FormControl("", Validators.required),
     id: new FormControl(""),
   }
-
+  selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = []
   constructor(
@@ -76,7 +77,8 @@ export class FeasibilityProjectDetailsComponent {
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private sanitizer: DomSanitizer,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+      private superService: SuperadminService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -84,6 +86,7 @@ export class FeasibilityProjectDetailsComponent {
   }
   ngOnInit(): void {
     this.getProjectDetails();
+    this.getTask();
   }
 
   public showHidePass(): void {
@@ -98,6 +101,32 @@ export class FeasibilityProjectDetailsComponent {
 
   editProjectDetails(projectId: any) {
     this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
+  }
+
+  getTask() {
+    this.showLoader = true;
+    const projectIdToMatch = this.projectId; // Replace with the actual project ID to match
+
+    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter tasks based on project ID
+          this.filteredTasks = response.data.data.filter(
+            (task: any) => task.project && task.project._id === projectIdToMatch
+          );
+          this.showLoader = false;
+        } else {
+          this.filteredTasks = []; // No records found
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.filteredTasks = []; // No records found
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getProjectDetails() {
