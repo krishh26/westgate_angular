@@ -9,7 +9,6 @@ import { FeasibilityManagerHeaderComponent } from './components/feasibility-mana
 @NgModule({
   declarations: [
     NoRecordFoundComponent,
-    FeasibilityManagerHeaderComponent,
   ],
   imports: [
     CommonModule,

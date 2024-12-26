@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -25,8 +26,9 @@ export class FeasibilityManagerHeaderComponent {
 
   navUrlArr = [
     // { title: 'Home', route: ['/boss-user/home'] },
-    // { title: 'Live Projects', route: ['/boss-user/project-list'] },
-    { title: 'TO DO TASKS', route: ['/process-manager/to-do-tasks-process-manager'] },
+    { title: 'Live Projects', route: ['/feasibility-manager/feasibility-manager-projects-to-actions'] },
+    { title: 'Review', route: ['/feasibility-manager/feasibility-manager-review'] },
+    { title: 'TO DO TASKS', route: ['/feasibility-manager/to-do-tasks-process-manager'] },
 
   ];
 

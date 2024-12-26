@@ -28,6 +28,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 // import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ProcessManagerAdminModule } from './modules/process-manager-admin/process-manager-admin.module';
+import { FeasibilityManagerModule } from './modules/feasibility-manager/feasibility-manager.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +56,7 @@ import { ProcessManagerAdminModule } from './modules/process-manager-admin/proce
     ProjectManagerModule,
     ProcessManagerAdminModule,
     UkWriterModule,
+    FeasibilityManagerModule,
     // NgSelectModule,
     ToastrModule.forRoot({
       timeOut: 3000,
