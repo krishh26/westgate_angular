@@ -28,7 +28,7 @@ export class FeasibilityManagerHeaderComponent {
     // { title: 'Home', route: ['/boss-user/home'] },
     { title: 'Live Projects', route: ['/feasibility-manager/feasibility-manager-projects-to-actions'] },
     { title: 'Review', route: ['/feasibility-manager/feasibility-manager-review'] },
-    { title: 'TO DO TASKS', route: ['/feasibility-manager/to-do-tasks-process-manager'] },
+    { title: 'TO DO TASKS', route: ['/feasibility-manager/feasibility-manager-todo-task'] },
 
   ];
 

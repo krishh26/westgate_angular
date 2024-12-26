@@ -15,6 +15,7 @@ import { FeasibilityManagerReviewComponent } from './feasibility-manager-review/
 import { FeasibilityManagerProjectsToActionComponent } from './feasibility-manager-projects-to-action/feasibility-manager-projects-to-action.component';
 import { FeasibilityManagerProjectsInProgressComponent } from './feasibility-manager-projects-in-progress/feasibility-manager-projects-in-progress.component';
 import { FeasibilityManagerProjectsCompletedComponent } from './feasibility-manager-projects-completed/feasibility-manager-projects-completed.component';
+import { FeasibilityManagerComponent } from './feasibility-manager.component';
 
 
 
@@ -24,7 +25,8 @@ import { FeasibilityManagerProjectsCompletedComponent } from './feasibility-mana
     FeasibilityManagerProjectsInProgressComponent,
     FeasibilityManagerProjectsCompletedComponent,
     FeasibilityManagerReviewComponent,
-    FeasibilityManagerHeaderComponent
+    FeasibilityManagerHeaderComponent,
+    FeasibilityManagerComponent
   ],
   imports: [
     CommonModule,
