@@ -16,8 +16,7 @@ import { FeasibilityManagerProjectsToActionComponent } from './feasibility-manag
 import { FeasibilityManagerProjectsInProgressComponent } from './feasibility-manager-projects-in-progress/feasibility-manager-projects-in-progress.component';
 import { FeasibilityManagerProjectsCompletedComponent } from './feasibility-manager-projects-completed/feasibility-manager-projects-completed.component';
 import { FeasibilityManagerComponent } from './feasibility-manager.component';
-
-
+import { FeasibilityManagerAwaitingSectionComponent } from './feasibility-manager-awaiting-section/feasibility-manager-awaiting-section.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,8 @@ import { FeasibilityManagerComponent } from './feasibility-manager.component';
     FeasibilityManagerProjectsCompletedComponent,
     FeasibilityManagerReviewComponent,
     FeasibilityManagerHeaderComponent,
-    FeasibilityManagerComponent
+    FeasibilityManagerComponent,
+    FeasibilityManagerAwaitingSectionComponent
   ],
   imports: [
     CommonModule,

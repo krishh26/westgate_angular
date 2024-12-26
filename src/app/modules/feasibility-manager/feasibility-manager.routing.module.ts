@@ -6,6 +6,7 @@ import { FeasibilityManagerProjectsInProgressComponent } from './feasibility-man
 import { FeasibilityManagerProjectsToActionComponent } from './feasibility-manager-projects-to-action/feasibility-manager-projects-to-action.component';
 import { FeasibilityManagerReviewComponent } from './feasibility-manager-review/feasibility-manager-review.component';
 import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
+import { FeasibilityManagerAwaitingSectionComponent } from './feasibility-manager-awaiting-section/feasibility-manager-awaiting-section.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,10 @@ const routes: Routes = [
             {
                 path: 'feasibility-manager-projects-completed',
                 component: FeasibilityManagerProjectsCompletedComponent,
+            },
+            {
+                path: 'feasibility-manager-awaiting-section',
+                component: FeasibilityManagerAwaitingSectionComponent,
             },
             {
                 path: 'feasibility-manager-review',

@@ -21,12 +21,14 @@ interface Project {
   dueDate: Date;
   // Add other properties as needed
 }
+
+
 @Component({
-  selector: 'app-feasibility-manager-review',
-  templateUrl: './feasibility-manager-review.component.html',
-  styleUrls: ['./feasibility-manager-review.component.scss']
+  selector: 'app-feasibility-manager-awaiting-section',
+  templateUrl: './feasibility-manager-awaiting-section.component.html',
+  styleUrls: ['./feasibility-manager-awaiting-section.component.scss']
 })
-export class FeasibilityManagerReviewComponent {
+export class FeasibilityManagerAwaitingSectionComponent {
 
   showLoader: boolean = false;
   projectList: any = [];
@@ -126,10 +128,6 @@ export class FeasibilityManagerReviewComponent {
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;
-  }
-
-  approveOrRejectProjects(item :any) {
-
   }
 
   getCategoryList() {
