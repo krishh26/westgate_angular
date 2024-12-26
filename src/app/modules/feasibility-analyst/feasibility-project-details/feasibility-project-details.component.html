@@ -516,19 +516,20 @@
                 </div>
               </li>
             </ul>
-            <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn">
+            <button data-bs-toggle="modal" data-bs-target="#addClientDocument" type="button"
+              class="btn btn-dark btn-sm add-card-btn">
               <i class="bi bi-plus-lg"></i>
             </button>
+            <!-- (click)="hideShowForm()" -->
           </div>
-          <ng-container *ngIf="viewClientDocumentForm">
+
+          <!-- <ng-container *ngIf="viewClientDocumentForm">
             <div class="card p-3 mt-3">
               <div class="row g-3 align-items-center">
-                <!-- Document Name Input -->
                 <div class="col-md-8 col-sm-12">
                   <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
                     aria-label="Document Name" />
                 </div>
-                <!-- Upload Button -->
                 <div class="col-md-4 col-sm-12">
                   <label class="btn btn-outline-primary w-100">
                     <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
@@ -539,7 +540,7 @@
                 </div>
               </div>
             </div>
-          </ng-container>
+          </ng-container> -->
         </div>
 
         <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
@@ -564,19 +565,18 @@
                 </div>
               </li>
             </ul>
-            <button (click)="hideShowForm()" type="button" class="btn btn-dark btn-sm add-card-btn">
+            <button data-bs-toggle="modal" data-bs-target="#addWestgateDocument" type="button"
+              class="btn btn-dark btn-sm add-card-btn">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-          <ng-container *ngIf="viewClientDocumentForm">
+          <!-- <ng-container *ngIf="viewClientDocumentForm">
             <div class="card p-3 mt-3">
               <div class="row g-3 align-items-center">
-                <!-- Comment Input -->
                 <div class="col-md-8 col-sm-12">
                   <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
                     class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
                 </div>
-                <!-- Upload Button -->
                 <div class="col-md-4 col-sm-12">
                   <label class="btn btn-outline-primary w-100">
                     <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
@@ -586,10 +586,8 @@
                 </div>
               </div>
             </div>
-          </ng-container>
+          </ng-container> -->
         </div>
-
-
 
         <!-- <div class="col-lg-3 col-xl-3 col-12">
           <div class="form-group">
@@ -840,6 +838,77 @@
   </div>
 </div>
 
+<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          Add Client Document
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="viewClientDocumentForm">
+          <div class="card p-3 mt-3">
+            <div class="row g-3 align-items-center">
+              <!-- Document Name Input -->
+              <div class="col-md-8 col-sm-12">
+                <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
+                  aria-label="Document Name" />
+              </div>
+              <!-- Upload Button -->
+              <div class="col-md-4 col-sm-12">
+                <label class="btn btn-outline-primary w-100">
+                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                  <input type="file" id="uploadClientDocument"
+                    (change)="uploadDocument($event, documentUploadType.clientDocument)" hidden
+                    aria-label="Upload Document" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addWestgateDocument" tabindex="-1" aria-labelledby="addWestgateDocumentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          Add Westgate Document
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="viewClientDocumentForm">
+          <div class="card p-3 mt-3">
+            <div class="row g-3 align-items-center">
+              <!-- Comment Input -->
+              <div class="col-md-8 col-sm-12">
+                <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
+                  class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
+              </div>
+              <!-- Upload Button -->
+              <div class="col-md-4 col-sm-12">
+                <label class="btn btn-outline-primary w-100">
+                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                  <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)" hidden
+                    aria-label="Upload Document" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -869,7 +938,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
   aria-hidden="true">
@@ -901,7 +969,6 @@
   </div>
 </div>
 
-
 <div class="modal fade" id="ViewUploadedDocument" tabindex="-1" aria-labelledby="ViewUploadedDocumentModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -931,7 +998,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
