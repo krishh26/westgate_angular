@@ -92,12 +92,13 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" *ngIf="loginUser?.role === 'FeasibilityAdmin'">
                 <div class="col-md-2"><strong>Select Assign User:</strong></div>
                 <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
-                [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
-                [(ngModel)]="projectDetails.assignedUsers" (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
-            </ng-select>
+                    [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
+                    [(ngModel)]="projectDetails.assignedUsers"
+                    (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
+                </ng-select>
             </div>
 
             <section class="pageheader bg-dark">

@@ -8,6 +8,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-feasibility-manager-project-details',
@@ -69,6 +70,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     password: new FormControl("", Validators.required),
     id: new FormControl(""),
   }
+  loginUser: any = [];
   selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = []
@@ -81,11 +83,13 @@ export class FeasibilityManagerProjectDetailsComponent {
     private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
     private superService: SuperadminService,
-     private projectManagerService: ProjectManagerService,
+    private projectManagerService: ProjectManagerService,
+    private localStorageService: LocalStorageService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
+    this.loginUser = this.localStorageService.getLogger();
   }
   ngOnInit(): void {
     this.getProjectDetails();
