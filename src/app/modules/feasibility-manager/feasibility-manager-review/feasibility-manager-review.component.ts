@@ -273,7 +273,7 @@ export class FeasibilityManagerReviewComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
-    Payload.projectList.status = 'DocumentsNotFound,InHold,Fail,Passed';
+    Payload.projectList.status = 'Passed';
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
