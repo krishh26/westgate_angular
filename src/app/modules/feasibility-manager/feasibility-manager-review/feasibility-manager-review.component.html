@@ -179,23 +179,26 @@
                                 </tr>
 
                                 <tr
-                                *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords }; let i = index">
-                                <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
-                                <td v-align="middle">{{item?.BOSID}}</td>
-                                <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                                <td>{{item?.status}}</td>
-                                <td>
-                                    <div style="display: flex; gap: 10px;">
-                                        <a class="btn btn-primary btn-sm" style="cursor: pointer;" (click)="approveOrRejectProjects(item?._id)">
-                                            Approve
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" style="cursor: pointer;" (click)="approveOrRejectProjects(item?._id)">
-                                            Reject
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                                    *ngFor="let item of projectList | paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords }; let i = index">
+                                    <td><a (click)="projectDetails(item?._id)"
+                                            href="javascript:;">{{item?.projectName}}</a></td>
+                                    <td v-align="middle">{{item?.BOSID}}</td>
+                                    <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                                    <td>{{item?.status}}</td>
+                                    <td>
+                                        <div style="display: flex; gap: 10px;">
+                                            <a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                                                (click)="approveOrRejectProjects('approve', item?._id)">
+                                                Approve
+                                            </a>
+                                            <a class="btn btn-danger btn-sm" style="cursor: pointer;"
+                                                (click)="approveOrRejectProjects('reject', item?._id)">
+                                                Reject
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

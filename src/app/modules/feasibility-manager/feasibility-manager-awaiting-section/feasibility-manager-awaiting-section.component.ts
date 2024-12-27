@@ -305,6 +305,7 @@ export class FeasibilityManagerAwaitingSectionComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
+    Payload.projectList.status = 'Awaiting';
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
@@ -448,12 +449,12 @@ export class FeasibilityManagerAwaitingSectionComponent {
     const payload = {
       userId: selectedUsers // Array of selected user IDs
     };
-
     this.superService.appointFeasibilityUser(payload, projectId).subscribe(
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
-          this.notificationService.showSuccess('Appointed users successfully');
+          this.getProjectList();
+          this.notificationService.showSuccess('Appoint users successfully');
           // window.location.reload();
         } else {
           this.notificationService.showError(response?.message || 'Failed to appoint users');

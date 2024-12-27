@@ -19,7 +19,8 @@ export enum SuperAdminEndPoint {
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
   UPDATE_COMMENT= '/task/update-comment',
-  APPOINT_FEASIBLITY_USER = '/project/update/appoint-user'
+  APPOINT_FEASIBLITY_USER = '/project/update/appoint-user',
+  APPROVE_OR_REJECT = '/project/update/approve-reject'
 }
 
 @Injectable({
@@ -139,6 +140,13 @@ export class SuperadminService {
   appointFeasibilityUser(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.APPOINT_FEASIBLITY_USER + '/' + id,
+      payload
+    );
+  }
+
+  approveOrRejectProject(payload: any, id: string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.APPROVE_OR_REJECT + '/' + id,
       payload
     );
   }
