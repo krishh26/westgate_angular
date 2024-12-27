@@ -723,15 +723,18 @@
           <div class="comments-section">
             <ul class="SecondarytaskList mt-3">
               <li *ngFor="let log of projectDetails?.logs" class="mb-3">
-                <div class="comment-item">
-                  <div class="d-flex justify-content-between">
-                    <p class="mb-0">
-                      {{log?.log}}
-                    </p>
+                  <div class="comment-item">
+                      <div class="d-flex justify-content-between">
+                          <p class="mb-0">
+                              {{log?.log}}
+                          </p>
+                          <span class="text-muted">
+                              {{log?.date | date : "M/d/yy, h:mm a"}}
+                          </span>
+                      </div>
                   </div>
-                </div>
               </li>
-            </ul>
+          </ul>
             <p *ngIf="projectDetails?.logs === 0" class="text-center">
               No records found
             </p>

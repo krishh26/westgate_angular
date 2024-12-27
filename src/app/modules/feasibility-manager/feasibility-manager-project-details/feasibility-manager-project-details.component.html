@@ -614,7 +614,7 @@
                         </div>
                     </div>
                 </div>
-            </div><br/>
+            </div><br />
 
             <section class="pageheader bg-dark">
                 <div class="container ">
@@ -702,10 +702,14 @@
                                         <p class="mb-0">
                                             {{log?.log}}
                                         </p>
+                                        <span class="text-muted">
+                                            {{log?.date | date : "M/d/yy, h:mm a"}}
+                                        </span>
                                     </div>
                                 </div>
                             </li>
                         </ul>
+
                         <p *ngIf="projectDetails?.logs === 0" class="text-center">
                             No records found
                         </p>
