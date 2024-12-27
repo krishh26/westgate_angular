@@ -7,6 +7,7 @@ import { FeasibilityManagerProjectsToActionComponent } from './feasibility-manag
 import { FeasibilityManagerReviewComponent } from './feasibility-manager-review/feasibility-manager-review.component';
 import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
 import { FeasibilityManagerAwaitingSectionComponent } from './feasibility-manager-awaiting-section/feasibility-manager-awaiting-section.component';
+import { FeasibilityManagerProjectDetailsComponent } from './feasibility-manager-project-details/feasibility-manager-project-details.component';
 
 const routes: Routes = [
     {
@@ -33,9 +34,13 @@ const routes: Routes = [
                 path: 'feasibility-manager-review',
                 component: FeasibilityManagerReviewComponent,
             },
-             {
+            {
                 path: 'feasibility-manager-todo-task',
                 component: TodoTasksComponent,
+            },
+            {
+                path: 'feasibility-manager-project-details',
+                component: FeasibilityManagerProjectDetailsComponent,
             },
         ]
     },

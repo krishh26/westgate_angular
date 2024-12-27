@@ -339,12 +339,12 @@ export class FeasibilityManagerProjectsCompletedComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-user/feasibility-project-detail'], { queryParams: { id: projectId } });
+    this.router.navigate(['/feasibility-manager/feasibility-manager-project-details'], { queryParams: { id: projectId } });
   }
 
-  editProjectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
-  }
+  // editProjectDetails(projectId: any) {
+  //   this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
+  // }
 
   paginate(page: number) {
     this.page = page;
