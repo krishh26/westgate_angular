@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-feasibility-manager-project-details',
@@ -56,11 +57,11 @@ export class FeasibilityManagerProjectDetailsComponent {
     failStatusImage: "failStatusImage",
     westgatedocument: "westgatedocument"
   }
-
+  userList: any = [];
   // For check bov
   subContracting: boolean = true;
   loginModalMode: boolean = true;
-
+  displayedUsers: any[] = [];
   loginDetailControl = {
     companyName: new FormControl("", Validators.required),
     link: new FormControl("", Validators.required),
@@ -79,7 +80,8 @@ export class FeasibilityManagerProjectDetailsComponent {
     private feasibilityService: FeasibilityService,
     private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+     private projectManagerService: ProjectManagerService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -88,6 +90,30 @@ export class FeasibilityManagerProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getTask();
+    this.getUserAllList();
+  }
+
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role === 'FeasibilityAdmin' || user?.role === 'FeasibilityUser'
+          );
+          this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   public showHidePass(): void {
@@ -476,6 +502,30 @@ export class FeasibilityManagerProjectDetailsComponent {
       },
       (error) => {
         this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
+
+  
+  appointFeasibilityUser(selectedUsers: string[], item: any) {
+    const projectId = item?._id
+    const payload = {
+      userId: selectedUsers // Array of selected user IDs
+    };
+    this.superService.appointFeasibilityUser(payload, projectId).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          this.getProjectDetails();
+          this.notificationService.showSuccess('Appoint users successfully');
+          // window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to appoint users');
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'An error occurred');
       }
     );
   }

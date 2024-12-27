@@ -90,7 +90,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-2"><strong>Select Assign User:</strong></div>
+                <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+                [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
+                [(ngModel)]="projectDetails.assignedUsers" (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
+            </ng-select>
             </div>
 
             <section class="pageheader bg-dark">
@@ -561,7 +568,8 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm a"}}</span>
+                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm
+                                        a"}}</span>
                                 </div>
                             </div>
                         </div>
