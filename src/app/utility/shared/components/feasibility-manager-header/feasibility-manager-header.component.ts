@@ -27,6 +27,7 @@ export class FeasibilityManagerHeaderComponent {
   navUrlArr = [
     // { title: 'Home', route: ['/boss-user/home'] },
     { title: 'My Projects', route: ['/feasibility-manager/feasibility-manager-projects-to-actions'] },
+    { title: 'Awaiting Section', route: ['/feasibility-manager/feasibility-manager-awaiting-section'] },
     { title: 'Review', route: ['/feasibility-manager/feasibility-manager-review'] },
     { title: 'TO DO TASKS', route: ['/feasibility-manager/feasibility-manager-todo-task'] },
 
