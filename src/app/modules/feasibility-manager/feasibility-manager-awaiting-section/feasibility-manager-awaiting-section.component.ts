@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
@@ -60,14 +61,14 @@ export class FeasibilityManagerAwaitingSectionComponent {
     floor: 0,
     ceil: 99999999999999999
   };
-
-
+  userList: any = [];
+  displayedUsers: any[] = [];
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-
+  assignTo: any[] = [];
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -96,7 +97,8 @@ export class FeasibilityManagerAwaitingSectionComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private projectManagerService: ProjectManagerService,
   ) { }
 
   ngOnInit(): void {
@@ -123,11 +125,39 @@ export class FeasibilityManagerAwaitingSectionComponent {
         this.searchtext()
       }
     });
+    this.getUserAllList();
   }
 
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;
+  }
+
+  onChange(data: any) {
+
+  }
+
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role === 'FeasibilityAdmin' || user?.role === 'FeasibilityUser'
+          );
+          this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getCategoryList() {
@@ -154,19 +184,19 @@ export class FeasibilityManagerAwaitingSectionComponent {
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createCategory(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getCategoryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getCategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -177,19 +207,19 @@ export class FeasibilityManagerAwaitingSectionComponent {
     const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createIndustry(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getIndustryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -281,7 +311,7 @@ export class FeasibilityManagerAwaitingSectionComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
         this.totalRecords = response?.data?.meta_data?.items;
 
       } else {
@@ -317,7 +347,7 @@ export class FeasibilityManagerAwaitingSectionComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
@@ -412,5 +442,29 @@ export class FeasibilityManagerAwaitingSectionComponent {
       this.searchtext();
     }
   }
+
+  appointFeasibilityUser(selectedUsers: string[], item: any) {
+    const projectId = item?._id
+    const payload = {
+      userId: selectedUsers // Array of selected user IDs
+    };
+
+    this.superService.appointFeasibilityUser(payload, projectId).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Appointed users successfully');
+          // window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to appoint users');
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'An error occurred');
+      }
+    );
+  }
+
 
 }
