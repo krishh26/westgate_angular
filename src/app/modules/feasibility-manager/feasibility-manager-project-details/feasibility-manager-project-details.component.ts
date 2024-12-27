@@ -223,9 +223,9 @@ export class FeasibilityManagerProjectDetailsComponent {
     // }
     this.saveChanges(type);
 
-    if (type == 'next') {
-      this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-    }
+    // if (type == 'next') {
+    //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+    // }
   }
 
   uploadDocument(event: any, type: string): void {
@@ -467,9 +467,9 @@ export class FeasibilityManagerProjectDetailsComponent {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
           this.getProjectDetails();
-          if (type == 'save') {
-            this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-          }
+          // if (type == 'save') {
+          //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+          // }
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }

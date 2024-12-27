@@ -561,8 +561,7 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm
-                                        a" }}</span>
+                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm a"}}</span>
                                 </div>
                             </div>
                         </div>
@@ -578,7 +577,6 @@
                             </button>
                         </div>
 
-                        <!-- Fail Specific Fields -->
                         <div *ngIf="status === 'Fail'" class="mt-4">
                             <h6 class="text-danger">Additional Details for "Fail"</h6>
                             <div class="d-flex flex-column gap-3">
@@ -618,40 +616,67 @@
 
             <div class="modal-body d-flex">
                 <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <!-- <h6><strong>Comment</strong></h6> -->
-                        <div *ngIf="filteredTasks?.length > 0">
-                            <ul class="SecondarytaskList mt-3">
-                                <li *ngFor="let task of filteredTasks" class="comment-item">
-                                    <div>
-                                        <!-- <h5>{{ task.task }}</h5> -->
-                                        <div *ngIf="task.comments?.length > 0">
-                                            <ul>
-                                                <li *ngFor="let comment of task?.comments" class="mb-3">
-                                                    <div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                                                            <small class="text-muted">{{
-                                                                comment?.date | date : 'M/d/yy, h:mm a'
-                                                                }}</small>
-                                                        </div>
-                                                        <small class="text-muted d-block">
-                                                            {{ comment?.userDetail?.role }}
-                                                        </small>
-                                                        <p>{{ comment?.comment }}</p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <p *ngIf="task.comments?.length === 0">No comments available</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <p *ngIf="filteredTasks?.length === 0" class="text-center">No records found</p>
+                  <div class="comments-section">
+                    <div *ngIf="filteredTasks?.length > 0">
+                      <ul class="SecondarytaskList mt-3">
+                        <li *ngFor="let comment of commentData" class="mb-3">
+                          <div class="comment-item">
+                            <div class="d-flex justify-content-between">
+                              <p class="mb-0"></p>
+                              <small class="text-muted">{{
+                                comment?.date | date : "M/d/yy, h:mm a"
+                                }}</small>
+                            </div>
+                            <small class="text-muted d-block">
+                              {{ comment?.comment }}
+                            </small>
+                            <p>{{ comment?.status }}</p>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
+                    <p *ngIf="commentData?.length === 0" class="text-center">
+                      No records found
+                    </p>
+                  </div>
                 </div>
-            </div>
+              </div>
+              
+              <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                  <div class="comments-section">
+                    <ng-container *ngIf="filteredTasks?.length > 0">
+                      <ul class="SecondarytaskList mt-3">
+                        <li *ngFor="let task of filteredTasks" class="comment-item">
+                          <ng-container *ngIf="task?.comments?.length > 0; else noComments">
+                            <ul>
+                              <li *ngFor="let comment of task.comments" class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                  <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                                  <small class="text-muted">
+                                    {{ comment?.date | date: 'M/d/yy, h:mm a' }}
+                                  </small>
+                                </div>
+                                <small class="text-muted d-block">
+                                  {{ comment?.userDetail?.role }}
+                                </small>
+                                <p>{{ comment?.comment }}</p>
+                              </li>
+                            </ul>
+                          </ng-container>
+                        </li>
+                      </ul>
+                    </ng-container>
+                    <!-- <ng-template #noRecords>
+                      <p class="text-center">No records found</p>
+                    </ng-template> -->
+                  </div>
+                </div>
+              </div>
+
+              <ng-template #noComments>
+                <p>No comments available</p>
+              </ng-template>
 
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
