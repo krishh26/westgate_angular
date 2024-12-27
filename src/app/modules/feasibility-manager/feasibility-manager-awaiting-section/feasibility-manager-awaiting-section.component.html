@@ -155,7 +155,7 @@
                                     <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                                             class="bi bi-sort-up"></i></th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <!-- <th></th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -172,13 +172,13 @@
                                     <td>{{ item?.publishDate | date: 'dd/MM/yyyy' }}</td>
                                     <td>{{ item?.dueDate | date: 'dd/MM/yyyy, h:mm a' }}</td>
                                     <td>{{ item?.status }}</td>
-                                    <td>&nbsp;&nbsp;
+                                    <!-- <td>&nbsp;&nbsp;
                                         <ng-select id="assignTo" class="form-select custom-ng-select-option"
                                             placeholder="Select Assign User" [multiple]="true" bindLabel="userName"
                                             bindValue="_id" [items]="userList" [(ngModel)]="item.assignedUsers"
                                             (change)="appointFeasibilityUser(item.assignedUsers, item)">
                                         </ng-select>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
 
