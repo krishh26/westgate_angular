@@ -712,6 +712,32 @@
         <p>No comments available</p>
       </ng-template>
 
+      <section class="pageheader bg-dark">
+        <div class="container ">
+          <p><strong>Projects Logs</strong></p>
+        </div>
+      </section><br>
+
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="comments-section">
+            <ul class="SecondarytaskList mt-3">
+              <li *ngFor="let log of projectDetails?.logs" class="mb-3">
+                <div class="comment-item">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0">
+                      {{log?.log}}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <p *ngIf="projectDetails?.logs === 0" class="text-center">
+              No records found
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div class="row justify-content-end">
         <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">

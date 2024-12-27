@@ -569,8 +569,9 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date : "M/d/yy, h:mm
-                                        a"}}</span>
+                                    <span class="text-muted"><strong>Date:</strong> {{ item.date | date :"M/d/yy, h:mm
+                                        a"}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -684,6 +685,33 @@
             <ng-template #noComments>
                 <p>No comments available</p>
             </ng-template>
+
+            <section class="pageheader bg-dark">
+                <div class="container ">
+                    <p><strong>Projects Logs</strong></p>
+                </div>
+            </section><br>
+
+            <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                    <div class="comments-section">
+                        <ul class="SecondarytaskList mt-3">
+                            <li *ngFor="let log of projectDetails?.logs" class="mb-3">
+                                <div class="comment-item">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0">
+                                            {{log?.log}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <p *ngIf="projectDetails?.logs === 0" class="text-center">
+                            No records found
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <div class="row justify-content-end">
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
