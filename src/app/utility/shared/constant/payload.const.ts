@@ -1,13 +1,12 @@
 export const Payload = {
-
   projectList: {
     keyword: '',
     page: '1',
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -16,13 +15,13 @@ export const Payload = {
     SubmissionDueDateRange: '',
     valueRange: '',
     expired: false,
-    supplierStatus: "",
-    appointed: ""
+    supplierStatus: '',
+    appointed: '',
   },
 
-  dataByStatus : {
-    endDate : '',
-    startDate : ''
+  dataByStatus: {
+    endDate: '',
+    startDate: '',
   },
 
   pmAllProjectList: {
@@ -31,8 +30,8 @@ export const Payload = {
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -40,9 +39,9 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
-    supplierId: '', 
+    supplierId: '',
     expired: false,
-    selectedSupplier : false
+    selectedSupplier: false,
   },
 
   pmShortlistsupplierProjectList: {
@@ -51,8 +50,8 @@ export const Payload = {
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -61,7 +60,7 @@ export const Payload = {
     SubmissionDueDateRange: '',
     valueRange: '',
     supplierId: '',
-    selectedSupplier: false
+    selectedSupplier: false,
   },
 
   pmMatchProjectList: {
@@ -70,8 +69,8 @@ export const Payload = {
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -80,7 +79,7 @@ export const Payload = {
     SubmissionDueDateRange: '',
     valueRange: '',
     supplierId: '',
-    expired:false
+    expired: false,
   },
 
   pmCloseProjectList: {
@@ -89,8 +88,8 @@ export const Payload = {
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -106,8 +105,8 @@ export const Payload = {
     limit: '10',
     applied: false,
     sortlist: false,
-    match: "",
-    status: "",
+    match: '',
+    status: '',
     category: '',
     industry: '',
     projectType: '',
@@ -116,7 +115,7 @@ export const Payload = {
     SubmissionDueDateRange: '',
     valueRange: '',
     supplierId: '',
-    expired: false
+    expired: false,
   },
 
   mailSSList: {
@@ -125,35 +124,37 @@ export const Payload = {
     limit: '10',
   },
 
-  casestudyList : {
+  casestudyList: {
     page: '1',
     limit: '10',
-    userId : ''
+    userId: '',
   },
 
-  
-  supplierUserList : {
+  supplierUserList: {
     page: '1',
     limit: '10',
   },
 
-  manageSUpplierUserList : {
+  manageSUpplierUserList: {
     page: '1',
     limit: '10',
-    userId : ''
+    userId: '',
   },
 
   Project: {
-    _id: "",
-    projectName: "",
-    description: "",
-    category: "",
-    industry: "",
+    _id: '',
+    projectName: '',
+    description: '',
+    category: '',
+    industry: '',
     value: Number,
-    projectType: "",
-    status: "",
+    projectType: '',
+    status: '',
     dueDate: Date,
     // Add other properties as needed
-  }
+  },
+};
 
+export function createPayloadCopy(): any {
+  return JSON.parse(JSON.stringify(Payload));
 }

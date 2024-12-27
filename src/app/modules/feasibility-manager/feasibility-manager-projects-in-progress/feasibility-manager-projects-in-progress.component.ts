@@ -6,7 +6,10 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
-import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import {
+  createPayloadCopy,
+  Payload,
+} from 'src/app/utility/shared/constant/payload.const';
 
 interface Project {
   _id: string;
@@ -15,7 +18,7 @@ interface Project {
   category: string;
   industry: string;
   minValue: number;
-  maxValue: number
+  maxValue: number;
   projectType: string;
   status: string;
   dueDate: Date;
@@ -25,10 +28,9 @@ interface Project {
 @Component({
   selector: 'app-feasibility-manager-projects-in-progress',
   templateUrl: './feasibility-manager-projects-in-progress.component.html',
-  styleUrls: ['./feasibility-manager-projects-in-progress.component.scss']
+  styleUrls: ['./feasibility-manager-projects-in-progress.component.scss'],
 })
 export class FeasibilityManagerProjectsInProgressComponent {
-
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
@@ -42,6 +44,7 @@ export class FeasibilityManagerProjectsInProgressComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
+  tempPayload: any;
   // statusList: any = [
   //   "Awaiting",
   //   "⁠Documents not found",
@@ -57,9 +60,8 @@ export class FeasibilityManagerProjectsInProgressComponent {
   maxValue: number = 99999999999999999;
   options: Options = {
     floor: 0,
-    ceil: 99999999999999999
+    ceil: 99999999999999999,
   };
-
 
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -70,12 +72,12 @@ export class FeasibilityManagerProjectsInProgressComponent {
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
-    { projectType: 'Service', value: 'Service' }
+    { projectType: 'Service', value: 'Service' },
   ];
 
   clientTypeList = [
     { clientType: 'Public Sector', value: 'PublicSector' },
-    { clientType: 'Private Sector', value: 'PrivateSector' }
+    { clientType: 'Private Sector', value: 'PrivateSector' },
   ];
 
   statusList = [
@@ -83,7 +85,7 @@ export class FeasibilityManagerProjectsInProgressComponent {
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' }
+    { value: 'Fail', status: 'Fail' },
   ];
 
   publishStartDate: FormControl = new FormControl('');
@@ -96,9 +98,10 @@ export class FeasibilityManagerProjectsInProgressComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.tempPayload = createPayloadCopy();
     this.myControl.valueChanges.subscribe((res: any) => {
       let storeTest = res;
       this.searchText = res.toLowerCase();
@@ -108,18 +111,22 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.getProjectList();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
-        this.notificationService.showError('Please select a Publish start date');
-        return
+        this.notificationService.showError(
+          'Please select a Publish start date'
+        );
+        return;
       } else {
-        this.searchtext()
+        this.searchtext();
       }
     });
     this.submissionEndDate.valueChanges?.subscribe((res: any) => {
       if (!this.submissionStartDate.value) {
-        this.notificationService.showError('Please select a Submission start date');
-        return
+        this.notificationService.showError(
+          'Please select a Submission start date'
+        );
+        return;
       } else {
-        this.searchtext()
+        this.searchtext();
       }
     });
   }
@@ -133,7 +140,10 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.showLoader = true;
     this.superService.getCategoryList().subscribe(
       (response) => {
-        if (response?.status && response?.message === "category fetched successfully") {
+        if (
+          response?.status &&
+          response?.message === 'category fetched successfully'
+        ) {
           this.categoryList = response.data;
           this.showLoader = false;
         } else {
@@ -150,45 +160,55 @@ export class FeasibilityManagerProjectsInProgressComponent {
 
   onItemAddCategory(item: { category: string }): void {
     // Add type annotation for 'categoryItem'
-    const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
+    const found = this.categoryList.some(
+      (categoryItem: { category: string }) =>
+        categoryItem.category === item.category
+    );
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.getCategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      this.projectService.createCategory(item).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.getCategoryList();
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
     }
   }
 
   onItemAddIndustry(item: { industry: string }): void {
     // Add type annotation for 'categoryItem'
-    console.log(this.industryList)
+    console.log(this.industryList);
 
-    const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
+    const found = this.industryList.some(
+      (industryItem: { industry: string }) =>
+        industryItem.industry === item.industry
+    );
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      this.projectService.createIndustry(item).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.getIndustryList();
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
     }
   }
 
@@ -196,7 +216,10 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.showLoader = true;
     this.superService.getIndustryList().subscribe(
       (response) => {
-        if (response?.status && response?.message === "Industry fetched successfully") {
+        if (
+          response?.status &&
+          response?.message === 'Industry fetched successfully'
+        ) {
           this.industryList = response.data;
           this.showLoader = false;
         } else {
@@ -222,15 +245,13 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.projectList.sort(function (a: any, b: any) {
       if (a[property] < b[property]) {
         return -1 * direction;
-      }
-      else if (a[property] > b[property]) {
+      } else if (a[property] > b[property]) {
         return 1 * direction;
-      }
-      else {
+      } else {
         return 0;
       }
     });
-  };
+  }
 
   createddatesort(property: any) {
     this.isDesc = !this.isDesc;
@@ -240,15 +261,13 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.projectList.sort(function (a: any, b: any) {
       if (a[property] < b[property]) {
         return -1 * direction;
-      }
-      else if (a[property] > b[property]) {
+      } else if (a[property] > b[property]) {
         return 1 * direction;
-      }
-      else {
+      } else {
         return 0;
       }
     });
-  };
+  }
 
   duedatesort(property: any) {
     this.isDesc = !this.isDesc;
@@ -258,87 +277,104 @@ export class FeasibilityManagerProjectsInProgressComponent {
     this.projectList.sort(function (a: any, b: any) {
       if (a[property] < b[property]) {
         return -1 * direction;
-      }
-      else if (a[property] > b[property]) {
+      } else if (a[property] > b[property]) {
         return 1 * direction;
-      }
-      else {
+      } else {
         return 0;
       }
     });
-  };
+  }
 
   getProjectList() {
     this.showLoader = true;
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    // Payload.projectList.match = 'partial';
-    Payload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-         
+    this.tempPayload.projectList.keyword = this.searchText;
+    this.tempPayload.projectList.page = String(this.page);
+    this.tempPayload.projectList.limit = String(this.pagesize);
+    // this.tempPayload.projectList.match = 'partial';
+    this.tempPayload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
+    this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
 
-      } else {
-        this.notificationService.showError(response?.message);
+          this.totalRecords = response?.data?.meta_data?.items;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   searchtext() {
     this.showLoader = true;
 
     // Update payload with filters
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.category = this.selectedCategories.join(',');
-    Payload.projectList.industry = this.selectedIndustries.join(',');
-    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
-    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
-    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
-    Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
-    console.log(Payload.projectList);
-    Payload.projectList.expired = this.isExpired;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-         
+    this.tempPayload.projectList.keyword = this.searchText;
+    this.tempPayload.projectList.page = String(this.page);
+    this.tempPayload.projectList.limit = String(this.pagesize);
+    this.tempPayload.projectList.category = this.selectedCategories.join(',');
+    this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
+    this.tempPayload.projectList.projectType =
+      this.selectedProjectTypes.join(',');
+    this.tempPayload.projectList.clientType =
+      this.selectedClientTypes.join(',');
+    this.tempPayload.projectList.status = this.selectedStatuses.join(',');
+    this.tempPayload.projectList.publishDateRange =
+      this.publishStartDate.value && this.publishEndDate.value
+        ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
+        : '';
+    this.tempPayload.projectList.SubmissionDueDateRange =
+      this.submissionStartDate.value && this.submissionEndDate.value
+        ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
+        : '';
+    this.tempPayload.projectList.valueRange =
+      this.minValue + '-' + this.maxValue;
+    console.log(this.tempPayload.projectList);
+    this.tempPayload.projectList.expired = this.isExpired;
+    this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
 
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(
+              dueDate.getTime() - currentDate.getTime()
+            );
 
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
-      } else {
-        this.notificationService.showError(response?.message);
+            const formattedDateDifference: string =
+              this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-manager/feasibility-manager-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(
+      ['/feasibility-manager/feasibility-manager-project-details'],
+      { queryParams: { id: projectId } }
+    );
   }
 
   // editProjectDetails(projectId: any) {
@@ -369,7 +405,7 @@ export class FeasibilityManagerProjectsInProgressComponent {
       maxValue: item.maxValue,
       projectType: item.projectType,
       status: item.status,
-      dueDate: item.dueDate
+      dueDate: item.dueDate,
       // Add other fields as necessary
     };
     this.projectService.editProject(item._id, payload).subscribe(
@@ -379,7 +415,9 @@ export class FeasibilityManagerProjectsInProgressComponent {
           // window.location.reload();
           this.getProjectList();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+          this.notificationService.showError(
+            response?.message || 'Failed to update project'
+          );
         }
       },
       (error) => {
@@ -389,12 +427,16 @@ export class FeasibilityManagerProjectsInProgressComponent {
   }
 
   getCategoryName(categoryId: string): string {
-    const foundCategory = this.categoryList.find((category: any) => category._id === categoryId);
+    const foundCategory = this.categoryList.find(
+      (category: any) => category._id === categoryId
+    );
     return foundCategory ? foundCategory.category : '';
   }
 
   getIndustryName(industryId: string): string {
-    const foundIndustry = this.industryList.find((industry: any) => industry._id === industryId);
+    const foundIndustry = this.industryList.find(
+      (industry: any) => industry._id === industryId
+    );
     return foundIndustry ? foundIndustry.industry : '';
   }
 
@@ -412,5 +454,4 @@ export class FeasibilityManagerProjectsInProgressComponent {
       this.searchtext();
     }
   }
-
 }
