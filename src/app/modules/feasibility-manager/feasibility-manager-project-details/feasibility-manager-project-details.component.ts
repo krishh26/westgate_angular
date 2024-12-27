@@ -163,21 +163,21 @@ export class FeasibilityManagerProjectDetailsComponent {
 
   pushStatus() {
     if (!this.statusComment.value) {
-      this.notificationService.showError('Please enter status comment')
+      this.notificationService.showError('Please enter a status comment');
       return;
     }
-    if (!this.statusDate.value) {
-      this.notificationService.showError('Please enter Date')
-      return;
-    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
     this.commentData.push({
       comment: this.statusComment.value,
-      date: this.statusDate.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
-    })
-    this.statusComment.reset()
-    this.statusDate.reset()
+    });
 
+    // Reset the comment input field
+    this.statusComment.reset();
   }
 
   // Function for subcontract
