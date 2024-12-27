@@ -274,6 +274,7 @@ export class FeasibilityManagerProjectsInProgressComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
+    Payload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

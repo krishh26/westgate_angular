@@ -153,19 +153,19 @@ export class FeasibilityProjectsInProgressComponent {
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createCategory(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getCategoryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getCategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -176,19 +176,19 @@ export class FeasibilityProjectsInProgressComponent {
     const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createIndustry(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getIndustryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -274,15 +274,14 @@ export class FeasibilityProjectsInProgressComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
+    Payload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
         this.totalRecords = response?.data?.meta_data?.items;
-
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -316,7 +315,7 @@ export class FeasibilityProjectsInProgressComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
