@@ -569,8 +569,7 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                                    <span class="text-muted"><strong>Date: </strong> {{item.date | date:"M/d/yy, h:mm
-                                        a"}}
+                                    <span class="text-muted"><strong>Date: </strong> {{item.date | date:"M/d/yy,h:mm a"}}
                                     </span>
                                 </div>
                             </div>
@@ -622,28 +621,33 @@
                 </div>
             </section><br>
 
-            <div class="modal-body">
+            <div class="modal-body d-flex">
                 <div class="flex-grow-1 pe-3">
                     <div class="comments-section">
-                        <ng-container *ngIf="commentData!.length > 0; else noRecords">
-                            <div class="comment-item mb-3" *ngFor="let comment of commentData">
-                                <!-- Header with Date -->
-                                <div class="d-flex justify-content-between mb-1">
-                                    <p class="fw-bold mb-0">{{ comment?.status }}</p>
-                                    <small class="text-muted">{{ comment?.date | date: "M/d/yy, h:mm a" }}</small>
-                                </div>
-                                <!-- Comment Content -->
-                                <p class="text-muted mb-1">{{ comment?.comment }}</p>
+                        <ng-container *ngIf="commentData!.length > 0; else noTasks">
+                            <div *ngFor="let comment of commentData" class="task-item">
+                                <ng-container *ngIf="comment?.userDetails">
+                                    <div class="comment mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
+                                            <small class="text-muted">
+                                                {{ comment?.date | date: 'M/d/yy, h:mm a' }}
+                                            </small>
+                                        </div>
+                                        <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status }}</small>
+                                        <p class="mt-2">{{ comment?.comment }}</p>
+                                    </div>
+                                </ng-container>
                             </div>
                         </ng-container>
                     </div>
+
+                    <ng-template #noTasks>
+                        <p class="text-center text-muted">No comments available.</p>
+                    </ng-template>
+
                 </div>
             </div>
-
-            <!-- No Records Template -->
-            <ng-template #noRecords>
-                <p class="text-center text-muted">No comments available</p>
-            </ng-template>
 
 
             <div class="modal-body d-flex">

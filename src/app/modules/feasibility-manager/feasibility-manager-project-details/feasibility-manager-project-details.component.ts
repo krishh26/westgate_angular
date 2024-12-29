@@ -204,6 +204,7 @@ export class FeasibilityManagerProjectDetailsComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
+      userId: this.loginUser?._id
     });
 
     // Reset the comment input field
@@ -482,6 +483,12 @@ export class FeasibilityManagerProjectDetailsComponent {
       if (this.failStatusReason?.value) {
         payload['failStatusReason'] = [this.failStatusReason?.value] || [];
       }
+
+      // Conditionally add the `subContracting` field if it is defined
+      if (this.subContracting !== undefined && this.subContracting !== null) {
+        payload.subContracting = this.subContracting;
+      }
+
     }
 
     if (contractEdit) {
