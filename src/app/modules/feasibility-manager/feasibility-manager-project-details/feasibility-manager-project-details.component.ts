@@ -46,7 +46,8 @@ export class FeasibilityManagerProjectDetailsComponent {
   password = 'password';
   showPassword = false;
   failStatusImage: any;
-  filteredTasks: any = []
+  filteredTasks: any = [];
+  showAllLogs: boolean = false;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -73,7 +74,9 @@ export class FeasibilityManagerProjectDetailsComponent {
   loginUser: any = [];
   selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
-  commentData: any[] = []
+  commentData: any[] = [];
+  logs: any = [];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -166,6 +169,10 @@ export class FeasibilityManagerProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+
+        // Assign only the first 3 logs to the logs property
+        this.logs = response?.data?.logs?.slice(0, 3) || [];
+
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         // this.statusComment.setValue(this.projectDetails?.statusComment);
@@ -517,7 +524,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     );
   }
 
-  
+
   appointFeasibilityUser(selectedUsers: string[], item: any) {
     const projectId = item?._id
     const payload = {

@@ -23,6 +23,7 @@ export class FeasibilityProjectDetailsComponent {
   projectID: any;
   dateDifference: any;
   currentDate: Date = new Date();
+  showAllLogs: boolean = false;
   selectedDocument: any;
   uploadedDocument: any;
   clientDocument: any[] = [];
@@ -44,7 +45,9 @@ export class FeasibilityProjectDetailsComponent {
   password = 'password';
   showPassword = false;
   failStatusImage: any;
-  filteredTasks: any = []
+  filteredTasks: any = [];
+  logs: any = [];
+
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -136,6 +139,10 @@ export class FeasibilityProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
+
+        // Assign only the first 3 logs to the logs property
+        this.logs = response?.data?.logs?.slice(0, 3) || [];
+
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
         // this.statusComment.setValue(this.projectDetails?.statusComment);
