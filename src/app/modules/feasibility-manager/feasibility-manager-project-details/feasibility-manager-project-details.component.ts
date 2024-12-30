@@ -414,8 +414,6 @@ export class FeasibilityManagerProjectDetailsComponent {
     }
   }
 
-
-
   hideShowForm() {
     this.viewClientDocumentForm = !this.viewClientDocumentForm
   }
@@ -429,11 +427,13 @@ export class FeasibilityManagerProjectDetailsComponent {
     this.loginModalMode = false
     this.loginDetailForm.reset()
   }
+  
   editLoginDetail(loginData: any, i: number) {
     this.loginModalMode = false
     this.loginDetailForm.patchValue(loginData.data)
     this.loginDetailForm.controls['id'].setValue(i)
   }
+
   addLoginInfo() {
     const dataToBePushed = {
       name: this.loginName,
