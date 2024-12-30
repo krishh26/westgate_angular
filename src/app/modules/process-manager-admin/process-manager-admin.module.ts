@@ -5,12 +5,14 @@ import { ProcessManagerAdminRoutingModule } from './process-manager-admin.routin
 import { ProcessManagerHeaderComponent } from 'src/app/utility/shared/components/process-manager-header/process-manager-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ToDoTasksProcessManagerComponent } from './to-do-tasks-process-manager/to-do-tasks-process-manager.component';
 import { SharedModule } from 'src/app/utility/shared/shared.module';
+import { ProcessManagerTrackerComponent } from './process-manager-tracker/process-manager-tracker.component';
+import { ProcessManagerTrackerProjectDetailsComponent } from './process-manager-tracker-project-details/process-manager-tracker-project-details.component';
 
 @NgModule({
   imports: [
@@ -28,9 +30,12 @@ import { SharedModule } from 'src/app/utility/shared/shared.module';
   declarations: [
     ProcessManagerAdminComponent,
     ProcessManagerHeaderComponent,
-    ToDoTasksProcessManagerComponent
+    ToDoTasksProcessManagerComponent,
+    ProcessManagerTrackerComponent,
+    ProcessManagerTrackerProjectDetailsComponent
   ],
-   exports: [ToDoTasksProcessManagerComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+   providers: [NgbActiveModal], 
+  exports: [ToDoTasksProcessManagerComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProcessManagerAdminModule { }
