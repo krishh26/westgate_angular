@@ -233,3 +233,28 @@ textarea {
     min-height: 80px;
     /* Optional: Set a minimum height */
 }
+
+
+
+
+.comments-section {
+    margin-top: 1rem;
+}
+
+.comment {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd; /* Optional: Add separation between comments */
+}
+
+.comment:last-child {
+    border-bottom: none; /* Remove the border for the last comment */
+}
+
+.comment p {
+    margin: 0;
+}
+
+.text-muted {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
