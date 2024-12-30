@@ -130,6 +130,15 @@
                 </div>
             </div>
 
+            <div class="row" *ngIf="loginUser?.role === 'ProcessManagerAdmin'">
+                <div class="col-md-2"><strong>Select Assign User:</strong></div>
+                <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+                    [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
+                    [(ngModel)]="projectDetails.assignedUsers"
+                    (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
+                </ng-select>
+            </div><br/>
+
             <section class="pageheader bg-dark">
                 <div class="container">
                     <p><strong>Project Description</strong></p>
@@ -181,7 +190,7 @@
                     </div>
                 </div>
 
-                <div class="details-container border-start ps-3" style="width: 30%">
+                <!-- <div class="details-container border-start ps-3" style="width: 30%">
                     <div class="detail-item mb-4">
                         <label>Assign To</label>
                         <ng-select style="padding: 0px !important" placeholder="Select Assign User"
@@ -194,7 +203,7 @@
                             Submit
                         </button>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <section class="pageheader bg-dark">
@@ -207,7 +216,7 @@
                 <div class="flex-grow-1 pe-3">
                     <div class="comments-section">
 
-                        <div *ngIf="projectDetails?.logs?.length > 3" class="text-end mt-3">
+                        <div *ngIf="logs?.length > 3" class="text-end mt-3">
                             <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
                                 View All
                             </a>

@@ -182,7 +182,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           this.projectDetails = response?.data;
 
           // Assign only the first 3 logs to the logs property
-          this.logs = response?.data?.logs?.slice(0, 3) || [];
+          // this.logs = response?.data?.logs?.slice(0, 3) || [];
 
           this.casestudylist = response?.data?.casestudy;
           this.status = this.projectDetails?.status;
@@ -249,7 +249,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(
-            (user: any) => user?.role !== 'SupplierAdmin'
+            (user: any) => user?.role == 'ProjectManager'
           );
           this.showLoader = false;
         } else {
@@ -288,4 +288,28 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       }
     );
   }
+
+  appointFeasibilityUser(selectedUsers: string[], item: any) {
+    const projectId = item?._id
+    const payload = {
+      userIds: selectedUsers // Array of selected user IDs
+    };
+    this.superService.appointBidUser(payload, projectId).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          this.getProjectDetails();
+          this.notificationService.showSuccess('Appoint users successfully');
+          // window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to appoint users');
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'An error occurred');
+      }
+    );
+  }
+
 }

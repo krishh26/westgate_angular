@@ -18,8 +18,9 @@ export enum SuperAdminEndPoint {
   GET_TASK = '/task/list',
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
-  UPDATE_COMMENT= '/task/update-comment',
+  UPDATE_COMMENT = '/task/update-comment',
   APPOINT_FEASIBLITY_USER = '/project/update/appoint-user',
+  APPOINT_BID_USER = '/project/update/appoint-bidmanager',
   APPROVE_OR_REJECT = '/project/update/approve-reject'
 }
 
@@ -104,7 +105,7 @@ export class SuperadminService {
     );
   }
 
-  updateComment(payload: any, id: string , taskID:string): Observable<any> {
+  updateComment(payload: any, id: string, taskID: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_COMMENT + '/' + taskID,
       payload
@@ -140,6 +141,13 @@ export class SuperadminService {
   appointFeasibilityUser(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.APPOINT_FEASIBLITY_USER + '/' + id,
+      payload
+    );
+  }
+
+  appointBidUser(payload: any, id: string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.APPOINT_BID_USER + '/' + id,
       payload
     );
   }
