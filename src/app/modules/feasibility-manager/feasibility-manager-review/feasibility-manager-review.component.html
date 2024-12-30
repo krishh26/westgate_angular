@@ -167,6 +167,7 @@
                                     </th>
                                     <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                                             class="bi bi-sort-up"></i></th>
+                                    <th>UserName</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -185,6 +186,7 @@
                                     <td v-align="middle">{{item?.BOSID}}</td>
                                     <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                                    <td>{{item?.statusChangeUser?.name}}</td>
                                     <td>{{item?.status}}</td>
                                     <td>
                                         <div style="display: flex; gap: 10px;">
