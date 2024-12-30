@@ -73,7 +73,11 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   modalTask: any = {};
   taskList: any = [];
   selectedUserIds: number[] = [];
-  filteredTasks: any = []
+  filteredTasks: any = [];
+  showAllLogs: boolean = false;
+  logs: any = [];
+
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -102,6 +106,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     this.getProjectDetails();
     this.getUserAllList();
     this.getTask();
+    this.getProjectLogs();
   }
 
   openDocument(data: any) {
@@ -148,6 +153,25 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     );
   }
 
+  getProjectLogs() {
+    this.showLoader = true;
+    this.projectService.getProjectLogs(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.logs = response?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   getProjectDetails() {
     this.showLoader = true;
@@ -156,6 +180,10 @@ export class ProcessManagerTrackerProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectDetails = response?.data;
+
+          // Assign only the first 3 logs to the logs property
+          this.logs = response?.data?.logs?.slice(0, 3) || [];
+
           this.casestudylist = response?.data?.casestudy;
           this.status = this.projectDetails?.status;
           this.subContracting = this.projectDetails?.subContracting;
