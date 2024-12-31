@@ -23,6 +23,7 @@ import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component'
 import { ProjectManagerToActionComponent } from './project-manager-to-action/project-manager-to-action.component';
 import { ProjectManagerCompletedComponent } from './project-manager-completed/project-manager-completed.component';
 import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
+import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
 
 const routes: Routes = [
   {
@@ -113,6 +114,10 @@ const routes: Routes = [
       {
         path: 'bid-manager-in-progress',
         component: ProjectManagerInProgressComponent,
+      },
+      {
+        path: 'bid-manager-project-details',
+        component: ProjectManagerProjectDetailsComponent,
       },
 
     ],

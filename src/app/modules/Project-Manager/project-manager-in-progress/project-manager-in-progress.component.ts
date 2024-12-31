@@ -371,7 +371,7 @@ export class ProjectManagerInProgressComponent {
 
   projectDetails(projectId: any) {
     this.router.navigate(
-      ['/feasibility-manager/feasibility-manager-project-details'],
+      ['/project-manager/project/bid-manager-project-details'],
       { queryParams: { id: projectId } }
     );
   }
