@@ -77,7 +77,7 @@
                         <div class="d-flex justify-content-between">
                           <p class="mb-0">{{ task?.comments[0]?.userDetail?.name }}</p>
                           <small class="text-muted">
-                            {{ task?.comments[0]?.createdAt | date : "M/d/yy, h:mm a" }}
+                            {{ task?.comments[0]?.createdAt | date : "dd/MM/yyyy, h:mm a" }}
                           </small>
                         </div>
                         <small class="text-muted d-block">{{ task?.comments[0]?.userDetail?.role }}</small>
@@ -178,7 +178,7 @@
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                         <small class="text-muted">{{
-                          comment?.createdAt | date : "M/d/yy, h:mm a"
+                          comment?.createdAt | date : "dd/MM/yyyy, h:mm a"
                           }}</small>
                       </div>
                       <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>

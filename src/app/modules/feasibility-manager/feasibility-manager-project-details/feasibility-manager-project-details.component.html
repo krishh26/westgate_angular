@@ -569,7 +569,7 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span><span
-                                        class="text-muted"><strong>Date: </strong> {{item.date | date:"M/d/yy,h:mm a"
+                                        class="text-muted"><strong>Date: </strong> {{item.date | date:"dd/MM/yyyy,h:mm a"
                                         }}
                                     </span>
                                 </div>
@@ -632,7 +632,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
                                             <small class="text-muted">
-                                                {{ comment?.date | date: 'M/d/yy, h:mm a' }}
+                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
                                             </small>
                                         </div>
                                         <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status
@@ -660,7 +660,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
                                             <small class="text-muted">
-                                                {{ comment?.date | date: 'M/d/yy, h:mm a' }}
+                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
                                             </small>
                                         </div>
                                         <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
@@ -699,7 +699,7 @@
                                     <div class="d-flex justify-content-between">
                                         <p class="mb-0" [innerHTML]="log?.log"></p>
                                         <span class="text-muted">
-                                            {{ log?.date | date: 'M/d/yy, h:mm a' }}
+                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
                                         </span>
                                     </div>
                                 </div>
@@ -741,7 +741,7 @@
                                     <div class="d-flex justify-content-between">
                                         <p class="mb-0" [innerHTML]="log?.log"></p>
                                         <span class="text-muted">
-                                            {{ log?.date | date: 'M/d/yy, h:mm a' }}
+                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
                                         </span>
                                     </div>
                                 </div>
