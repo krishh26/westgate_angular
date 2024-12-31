@@ -20,6 +20,9 @@ import { ExpiredProjectDetailsComponent } from './expired-project-details/expire
 import { ShortlistedSupplierProjectDetailsComponent } from './shortlisted-supplier-project-details/shortlisted-supplier-project-details.component';
 import { ShortlistedSupplierProjectListComponent } from './shortlisted-supplier-project-list/shortlisted-supplier-project-list.component';
 import { TodoTasksComponent } from '../bos-user/todo-tasks/todo-tasks.component';
+import { ProjectManagerToActionComponent } from './project-manager-to-action/project-manager-to-action.component';
+import { ProjectManagerCompletedComponent } from './project-manager-completed/project-manager-completed.component';
+import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
 
 const routes: Routes = [
   {
@@ -98,6 +101,20 @@ const routes: Routes = [
         path: 'summary-notes',
         component: SummaryNotesComponent,
       },
+
+      {
+        path: 'bid-manager-to-action',
+        component: ProjectManagerToActionComponent,
+      },
+      {
+        path: 'bid-manager-completed',
+        component: ProjectManagerCompletedComponent,
+      },
+      {
+        path: 'bid-manager-in-progress',
+        component: ProjectManagerInProgressComponent,
+      },
+
     ],
   },
   {
