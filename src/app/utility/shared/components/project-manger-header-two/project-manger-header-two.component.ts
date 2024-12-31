@@ -20,10 +20,9 @@ export class ProjectMangerHeaderTwoComponent {
   }
 
   navUrlArr = [
-    { route: '/project-manager/project/all', title: 'All' },
-    { route: '/project-manager/project/match', title: 'Matched' },
-    { route: '/project-manager/project/close', title: 'Closed' },
-    { route: '/project-manager/project/shortlisted', title: 'ShortListed' }
+    { route: '/project-manager/project/all', title: 'Live Projects' },
+    { route: '/project-manager/project/todo-task', title: 'To Do Task' },
+    // { route: '/project-manager/project/todo-task', title: 'My Projects' },
   ];
 
 
