@@ -61,7 +61,9 @@ export class SuperAdminProjectDetailsComponent {
   failStatusReason: FormControl = new FormControl('');
   commentData: any[] = [];
   comment: string = '';
-
+  media_Obj: any = [];
+  selectedThumbnailImage!: string;
+  selectedImage!: string;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -99,6 +101,13 @@ export class SuperAdminProjectDetailsComponent {
     password: new FormControl("", Validators.required),
   }
 
+  addStripcontrol = {
+    text: new FormControl("", Validators.required),
+    image: new FormControl("", Validators.required),
+    imageText: new FormControl("", Validators.required),
+    type: new FormControl("", Validators.required),
+  }
+
   eligibility = {
     caseStudyRequired: new FormControl("", Validators.required),
     certifications: new FormControl("", Validators.required),
@@ -119,6 +128,7 @@ export class SuperAdminProjectDetailsComponent {
   }
   summaryForm: FormGroup;
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
+  addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
 
   constructor(
     private projectService: ProjectService,
@@ -153,6 +163,12 @@ export class SuperAdminProjectDetailsComponent {
     this.getUserDetails();
     this.initializeForm();
     this.addDocument();
+    this.addStripForm = this.fb.group({
+      text: ['', Validators.required],
+      image: ['', Validators.required],
+      imageText: ['', Validators.required],
+      type: ['', Validators.required],
+    });
   }
 
   initializeForm() {
@@ -560,15 +576,6 @@ export class SuperAdminProjectDetailsComponent {
     this.loginDetailForm.patchValue(loginData)
   }
 
-  addLoginInfo() {
-    const dataToBePushed = {
-      name: this.loginName,
-      data: this.loginDetailForm.value
-    }
-    this.projectDetails.loginDetail.push(dataToBePushed)
-    this.loginName = ''
-  }
-
   toggleEdit() {
     this.isEditing = !this.isEditing;
   }
@@ -751,19 +758,83 @@ export class SuperAdminProjectDetailsComponent {
     });
   }
 
-  // Handle the file change event
-  addFiles(event: any, index: number): void {
-    if (event.target.files && event.target.files[0]) {
-      const data = new FormData();
-      data.append('files', event.target.files[0]);
-      this.spinner.show();
-      this.projectCoordinatorService.uploadDocument(data).subscribe((response) => {
-        this.spinner.hide();
-        if (response?.status) {
-          this.document?.at(index)?.get('url')?.setValue(response?.data?.url);
-          this.document?.at(index)?.get('key')?.setValue(response?.data?.key)
-        }
+  onFileSelect(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.addStripForm.patchValue({
+        image: file,
       });
+      this.addStripForm.get('image')?.updateValueAndValidity();
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result; // For preview
+      };
+      reader.readAsDataURL(file);
     }
   }
+
+
+  uploadType: boolean = true;
+
+  selectUploadType(isText: boolean): void {
+    this.uploadType = isText;
+    if (isText) {
+      this.addStripForm.get('text')?.setValidators(Validators.required);
+      this.addStripForm.get('imageText')?.clearValidators();
+      this.addStripForm.get('image')?.clearValidators();
+    } else {
+      this.addStripForm.get('text')?.clearValidators();
+      this.addStripForm.get('imageText')?.setValidators(Validators.required);
+      this.addStripForm.get('image')?.setValidators(Validators.required);
+    }
+    this.addStripForm.get('text')?.updateValueAndValidity();
+    this.addStripForm.get('imageText')?.updateValueAndValidity();
+    this.addStripForm.get('image')?.updateValueAndValidity();
+  }
+
+
+  addLoginInfo(): void {
+    if (this.addStripForm.valid) {
+      const formData = new FormData();
+
+      // Add common data
+      formData.append('type', this.addStripForm.get('type')?.value);
+
+      if (this.uploadType) {
+        // For Text Type
+        formData.append('text', this.addStripForm.get('text')?.value);
+      } else {
+        // For Image Type
+        formData.append('imageText', this.addStripForm.get('imageText')?.value);
+        const imageFile = this.addStripForm.get('image')?.value;
+        if (imageFile) {
+          formData.append('image', imageFile);
+        }
+      }
+
+      // Call the API
+      this.createStrip(formData);
+    }
+  }
+
+  createStrip(formData: FormData): void {
+    this.projectService.createStrip(formData).subscribe((response: any) => {
+      if (response?.status == true) {
+        this.getProjectDetails();
+        this.notificationService.showSuccess('', 'Project Update Successfully.');
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error: any) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+
+  }
+
+
+
+
 }

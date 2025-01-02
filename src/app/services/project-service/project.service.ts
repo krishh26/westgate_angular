@@ -21,7 +21,8 @@ export enum ProjectEndPoint {
   CREATE_INDUSTRY = '/industry/create',
   DELETE_TASK = '/task/delete',
   DELETE_COMMENT = '/task/delete-comment',
-  PROJECT_LOGS = '/project/logs/'
+  PROJECT_LOGS = '/project/logs/',
+  CREATE_STRIP = '/project-detail-title/create'
 }
 
 @Injectable({
@@ -207,4 +208,11 @@ export class ProjectService {
       .patch<any>(this.baseUrl + `${ProjectEndPoint.UPDATE_MANAGER}${supplierId}`, payload, {
       });
   }
+
+  createStrip(payload: any) {
+    return this.httpClient
+      .post<any>(this.baseUrl + `${ProjectEndPoint.CREATE_STRIP}`, payload, {
+      });
+  }
+
 }
