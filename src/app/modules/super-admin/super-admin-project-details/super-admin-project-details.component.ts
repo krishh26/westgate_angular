@@ -103,9 +103,9 @@ export class SuperAdminProjectDetailsComponent {
 
   addStripcontrol = {
     text: new FormControl("", Validators.required),
-    image: new FormControl("", Validators.required),
     imageText: new FormControl("", Validators.required),
     type: new FormControl("", Validators.required),
+    description: new FormControl("", Validators.required),
   }
 
   eligibility = {
@@ -164,10 +164,10 @@ export class SuperAdminProjectDetailsComponent {
     this.initializeForm();
     this.addDocument();
     this.addStripForm = this.fb.group({
-      text: ['', Validators.required],
-      image: ['', Validators.required],
-      imageText: ['', Validators.required],
       type: ['', Validators.required],
+      text: [''],
+      description: [''], // Ensure this is included
+      imageText: ['']
     });
   }
 
@@ -793,33 +793,32 @@ export class SuperAdminProjectDetailsComponent {
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
 
+  addLoginInfo() {
+    // Retrieve form values
+    const formValues = this.addStripForm.value;
 
-  addLoginInfo(): void {
-    if (this.addStripForm.valid) {
-      const formData = new FormData();
+    // Construct the params object
+    const params: any = {
+      type: formValues.type, // Required
+      projectId: this.projectDetails?._id, // Hardcoded project ID
+    };
 
-      // Add common data
-      formData.append('type', this.addStripForm.get('type')?.value);
-
-      if (this.uploadType) {
-        // For Text Type
-        formData.append('text', this.addStripForm.get('text')?.value);
-      } else {
-        // For Image Type
-        formData.append('imageText', this.addStripForm.get('imageText')?.value);
-        const imageFile = this.addStripForm.get('image')?.value;
-        if (imageFile) {
-          formData.append('image', imageFile);
-        }
-      }
-
-      // Call the API
-      this.createStrip(formData);
+    // Conditionally add optional fields if present
+    if (formValues.text && formValues.type === "Text") {
+      params.text = formValues.text;
     }
-  }
 
-  createStrip(formData: FormData): void {
-    this.projectService.createStrip(formData).subscribe((response: any) => {
+    if (formValues.description && formValues.type === "Text") {
+      params.description = formValues.description;
+    }
+
+    if (formValues.imageText && formValues.type === "Image") {
+      params.description = formValues.imageText; // Assuming description maps to image text
+    }
+
+    // Log params to the console
+    console.log("Params to be sent:", params);
+    this.projectService.createStrip(params).subscribe((response: any) => {
       if (response?.status == true) {
         this.getProjectDetails();
         this.notificationService.showSuccess('', 'Project Update Successfully.');
@@ -831,8 +830,23 @@ export class SuperAdminProjectDetailsComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
-
   }
+
+
+  // createStrip(formData: FormData): void {
+  //   this.projectService.createStrip(formData).subscribe((response: any) => {
+  //     if (response?.status == true) {
+  //       this.getProjectDetails();
+  //       this.notificationService.showSuccess('', 'Project Update Successfully.');
+  //     } else {
+  //       this.notificationService.showError(response?.message);
+  //       this.showLoader = false;
+  //     }
+  //   }, (error: any) => {
+  //     this.notificationService.showError(error?.message);
+  //     this.showLoader = false;
+  //   });
+  // }
 
 
 

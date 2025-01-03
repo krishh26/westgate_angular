@@ -7,11 +7,18 @@
                         <h5 class="me-3"><strong>Project Title:</strong></h5>
                         <h6>{{ projectDetails?.projectName }}</h6>
                     </div>
-                    <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
-                        Back
-                    </a>
+                    <div class="ms-auto d-flex">
+                        <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd"
+                            class="btn btn-primary btn-sm text-dark me-2">
+                           Add Strips
+                        </a>
+                        <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
+                            Back
+                        </a>
+                    </div>
                 </div>
             </div>
+
 
             <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
                 <div class="card">
@@ -90,9 +97,6 @@
             <section class="pageheader bg-dark">
                 <div class="container d-flex justify-content-between align-items-center">
                     <p class="mb-0"><strong>Project Description</strong></p>
-                    <button data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-square"></i>
-                    </button>
                 </div>
             </section>
             <br>
@@ -1613,16 +1617,22 @@
                 <div *ngIf="uploadType; else imageUploadSection">
                     <!-- Text Upload Section -->
                     <div class="form-group mb-3">
-                        <label for="textInput" class="form-label">Strip Heading</label>
+                        <label for="textInput" class="form-label">Strip Heading :</label>
                         <input type="text" id="textInput" class="form-control" placeholder="Enter Text"
                             formControlName="text" />
                         <div *ngIf="addStripcontrol.text.touched && addStripcontrol.text.invalid" class="text-danger">
                             Text is required.
                         </div>
                     </div>
-                    <!-- Thumbnail Preview -->
-                    <div *ngIf="selectedThumbnailImage" class="text-center mt-3">
-                        <img [src]="selectedThumbnailImage" alt="Thumbnail Preview" class="img-fluid" />
+
+                    <div class="form-group mb-3">
+                        <label for="textInput" class="form-label">Strip Description :</label>
+                        <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
+                            formControlName="description"></textarea>
+                        <div *ngIf="addStripcontrol.description.touched && addStripcontrol.description.invalid"
+                            class="text-danger">
+                            Description is required.
+                        </div>
                     </div>
                 </div>
 
@@ -1636,22 +1646,6 @@
                             class="text-danger">
                             Image Text is required.
                         </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="imageInput" class="form-label">Upload Image</label>
-                        <input type="file" id="imageInput" class="form-control" accept="image/*"
-                            (change)="onFileSelect($event)" required />
-                        <div *ngIf="addStripForm.get('image')?.touched && addStripForm.get('image')?.invalid"
-                            class="text-danger">
-                            Image is required.
-                        </div>
-
-                    </div>
-                    <!-- Image Preview -->
-                    <div class="text-center mt-3">
-                        <img *ngIf="media_Obj.videoImage && !selectedImage" [src]="media_Obj.videoImage"
-                            alt="Uploaded Image" class="img-fluid mb-2" />
-                        <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" class="img-fluid mb-2" />
                     </div>
                 </ng-template>
 
@@ -1667,3 +1661,23 @@
         </div>
     </div>
 </div>
+
+<!-- <div *ngIf="selectedThumbnailImage" class="text-center mt-3">
+                        <img [src]="selectedThumbnailImage" alt="Thumbnail Preview" class="img-fluid" />
+                    </div> -->
+
+<!-- <div class="form-group mb-3">
+                        <label for="imageInput" class="form-label">Upload Image</label>
+                        <input type="file" id="imageInput" class="form-control" accept="image/*"
+                            (change)="onFileSelect($event)" required />
+                        <div *ngIf="addStripForm.get('image')?.touched && addStripForm.get('image')?.invalid"
+                            class="text-danger">
+                            Image is required.
+                        </div>
+                    </div> -->
+
+<!-- <div class="text-center mt-3">
+                        <img *ngIf="media_Obj.videoImage && !selectedImage" [src]="media_Obj.videoImage"
+                            alt="Uploaded Image" class="img-fluid mb-2" />
+                        <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" class="img-fluid mb-2" />
+                    </div> -->
