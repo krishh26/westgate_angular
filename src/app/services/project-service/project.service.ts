@@ -22,7 +22,8 @@ export enum ProjectEndPoint {
   DELETE_TASK = '/task/delete',
   DELETE_COMMENT = '/task/delete-comment',
   PROJECT_LOGS = '/project/logs/',
-  CREATE_STRIP = '/project-detail-title/create'
+  CREATE_STRIP = '/project-detail-title/create',
+  PROJECT_STRIP_LIST ='/project-detail-title/list'
 }
 
 @Injectable({
@@ -181,6 +182,11 @@ export class ProjectService {
   getProjectLogs(projectId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LOGS + projectId);
+  }
+
+  getprojectStrips(projectId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_STRIP_LIST + '?projectId='+ projectId);
   }
 
   getQuestionDetailsById(projectId: string): Observable<any> {

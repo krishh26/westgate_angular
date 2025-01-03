@@ -64,6 +64,7 @@ export class SuperAdminProjectDetailsComponent {
   media_Obj: any = [];
   selectedThumbnailImage!: string;
   selectedImage!: string;
+  uploadType: boolean = true;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -89,7 +90,7 @@ export class SuperAdminProjectDetailsComponent {
     }
   ]
   loginModalMode: boolean = true;
-
+  projectStrips:any = [];
   // For check bov
   subContracting: boolean = true;
   eligibilityForm: FormGroup;
@@ -113,7 +114,6 @@ export class SuperAdminProjectDetailsComponent {
     certifications: new FormControl("", Validators.required),
     policy: new FormControl("", Validators.required),
   }
-
 
   summary = {
     questionName: new FormControl("", Validators.required),
@@ -163,6 +163,7 @@ export class SuperAdminProjectDetailsComponent {
     this.getUserDetails();
     this.initializeForm();
     this.addDocument();
+    this.getProjectStrips()
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
@@ -774,9 +775,6 @@ export class SuperAdminProjectDetailsComponent {
     }
   }
 
-
-  uploadType: boolean = true;
-
   selectUploadType(isText: boolean): void {
     this.uploadType = isText;
     if (isText) {
@@ -796,26 +794,21 @@ export class SuperAdminProjectDetailsComponent {
   addLoginInfo() {
     // Retrieve form values
     const formValues = this.addStripForm.value;
-
     // Construct the params object
     const params: any = {
       type: formValues.type, // Required
       projectId: this.projectDetails?._id, // Hardcoded project ID
     };
-
     // Conditionally add optional fields if present
     if (formValues.text && formValues.type === "Text") {
       params.text = formValues.text;
     }
-
     if (formValues.description && formValues.type === "Text") {
       params.description = formValues.description;
     }
-
     if (formValues.imageText && formValues.type === "Image") {
       params.description = formValues.imageText; // Assuming description maps to image text
     }
-
     // Log params to the console
     console.log("Params to be sent:", params);
     this.projectService.createStrip(params).subscribe((response: any) => {
@@ -832,23 +825,21 @@ export class SuperAdminProjectDetailsComponent {
     });
   }
 
-
-  // createStrip(formData: FormData): void {
-  //   this.projectService.createStrip(formData).subscribe((response: any) => {
-  //     if (response?.status == true) {
-  //       this.getProjectDetails();
-  //       this.notificationService.showSuccess('', 'Project Update Successfully.');
-  //     } else {
-  //       this.notificationService.showError(response?.message);
-  //       this.showLoader = false;
-  //     }
-  //   }, (error: any) => {
-  //     this.notificationService.showError(error?.message);
-  //     this.showLoader = false;
-  //   });
-  // }
-
-
-
+  getProjectStrips() {
+    this.projectService.getprojectStrips(this.projectId).subscribe((response) => {
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectStrips = response?.data?.data;
+        console.log(this.projectStrips);
+        
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
 
 }
