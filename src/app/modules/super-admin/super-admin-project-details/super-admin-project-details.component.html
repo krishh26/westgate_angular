@@ -872,22 +872,35 @@
     </div>
   </section>
 
-  <section class="pageheader bg-dark mb-4" *ngFor="let item of projectStrips">
-    <div class="container py-4">
-      <!-- Title and Description -->
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
-          <p class="text-light">Description : {{ item?.description }}</p>
-        </div>
-        <!-- Add Button -->
-        <div *ngIf="item.type === 'Image'">
-          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" [attr.data-bs-target]="'#imageModal_' + item._id">
-            Add
-          </button>
+  <section *ngFor="let item of projectStrips">
+    <!-- Black Strip Header -->
+    <div class="bg-dark py-3">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="container d-flex justify-content-between align-items-center">
+            <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
+          </div>
+          <!-- Add Button -->
+          <div *ngIf="item.type === 'Image'">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+              [attr.data-bs-target]="'#imageModal_' + item._id">
+              Add
+            </button>
+          </div>
         </div>
       </div>
-  
+    </div>
+
+    <!-- Redesigned Description -->
+    <div class="bg-light py-3">
+      <div class="container">
+        <p class="text-secondary mb-0 fw-bold">Description:</p>
+        <p class="text-dark mb-0">{{ item?.description }}</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container py-4">
       <!-- Image Details Section -->
       <div class="row mt-3" *ngIf="item?.images?.length">
         <div class="col-lg-4 col-md-6 col-sm-12 mb-3" *ngFor="let image of item?.images">
@@ -895,8 +908,8 @@
             <div class="card-body">
               <p class="card-text fw-semibold">{{ image?.imageText }}</p>
               <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" 
-                  (click)="openViewImage(image)" data-bs-target="#viewstripimage">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" (click)="openViewImage(image)"
+                  data-bs-target="#viewstripimage">
                   <i class="bi bi-eye-fill"></i> View
                 </button>
               </div>
@@ -905,7 +918,7 @@
         </div>
       </div>
     </div>
-  
+
     <!-- Modal for Adding Image Details -->
     <div class="modal fade" [id]="'imageModal_' + item._id" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -919,7 +932,8 @@
             <div *ngFor="let field of imageFields; let i = index" class="input-group mb-3">
               <input type="text" class="form-control" placeholder="Enter Text" [(ngModel)]="field.text" />
               <input type="file" class="form-control" accept="image/*" (change)="onFileChange($event, i)" />
-              <button type="button" class="btn btn-danger" (click)="removeField(i)" [disabled]="imageFields.length === 1">
+              <button type="button" class="btn btn-danger" (click)="removeField(i)"
+                [disabled]="imageFields.length === 1">
                 Delete
               </button>
             </div>
@@ -936,7 +950,6 @@
       </div>
     </div>
   </section>
-  
 
 </main>
 
@@ -1157,7 +1170,7 @@
         <!-- Image Upload Section -->
         <ng-template #imageUploadSection>
           <div class="form-group mb-3">
-            <label for="imageTextInput" class="form-label">Strip Heading</label>
+            <label for="imageTextInput" class="form-label">Strip Heading :</label>
             <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
               formControlName="imageText" />
             <div *ngIf="
