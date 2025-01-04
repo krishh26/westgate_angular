@@ -33,6 +33,7 @@ import { BOSUserModule } from '../bos-user/bos-user.module';
 import { ProjectManagerCompletedComponent } from './project-manager-completed/project-manager-completed.component';
 import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
 import { ProjectManagerToActionComponent } from './project-manager-to-action/project-manager-to-action.component';
+import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { ProjectManagerToActionComponent } from './project-manager-to-action/pro
     ShortlistedSupplierProjectListComponent,
     ProjectManagerCompletedComponent,
     ProjectManagerInProgressComponent,
-    ProjectManagerToActionComponent
+    ProjectManagerToActionComponent,
+    ProjectManagerProjectDetailsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],

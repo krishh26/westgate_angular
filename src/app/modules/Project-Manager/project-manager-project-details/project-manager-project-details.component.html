@@ -1,1 +1,524 @@
-<p>project-manager-project-details works!</p>
+<main id="main">
+    <section>
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
+
+                    <div class="d-flex align-items-center">
+                        <h5 class="me-3"><strong>Project Title:</strong></h5>
+                        <h6>{{ projectDetails?.projectName }}</h6>
+                    </div>
+
+                    <a routerLink="/feasibility-manager/feasibility-manager-projects-to-actions"
+                        class="btn btn-primary text-dark">Back</a>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2"><strong>BOS ID:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.BOSID || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Publish Date:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.publishDate ? (projectDetails?.publishDate |
+                                date:'dd/MM/yyyy')
+                                : '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Category:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.category || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Industry:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.industry || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Min value (GBP):</strong></div>
+                            <div class="col-md-10">GBP {{ projectDetails?.minValue || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Max value (GBP):</strong></div>
+                            <div class="col-md-10">GBP {{ projectDetails?.maxValue || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Website:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.website || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Link to notice:</strong></div>
+                            <div class="col-md-10">
+                                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}"
+                                    target="_blank">Link to
+                                    Notice</a>
+                                <ng-template #noLink>-</ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Created Date:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.createdAt ? (projectDetails?.createdAt |
+                                date:'dd/MM/yyyy') :
+                                '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Due Date & Time:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.dueDate ? (projectDetails?.dueDate |
+                                date:'dd/MM/yyyy, h:mm a')
+                                : '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>CPV Codes:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.CPVCodes || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Notice Reference:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.noticeReference || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Status:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.status || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Project Type:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.projectType || '-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Mail Id:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.mailID || '-' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="loginUser?.role === 'FeasibilityAdmin'">
+                <div class="col-md-2"><strong>Select Assign User:</strong></div>
+                <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+                    [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
+                    [(ngModel)]="projectDetails.assignedUsers"
+                    (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
+                </ng-select>
+            </div>
+
+            <section class="pageheader bg-dark">
+                <div class="container ">
+                    <p><strong>Project Description</strong></p>
+                </div>
+            </section><br>
+
+            <p>{{ projectDetails?.description }}</p>
+
+            <section class="pageheader bg-dark">
+                <div class="container">
+                    <p><strong>Client & FOI Detils</strong></p>
+                </div>
+            </section>
+
+
+            <!--client details-->
+            <div class="row mt-5">
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-xl-4 col-12">
+                                    <h6 class="text-theme"><strong>Client Detils</strong></h6>
+                                </div>
+                                <div class="col-lg-7 col-xl-7 col-12">
+                                    <p class="p-13 mb-0">
+                                        Mail ID : {{ projectDetails?.mailID }}
+                                    </p>
+                                    <p class="p-13 mb-0">
+                                        Client Type : {{ projectDetails?.clientType }}
+                                    </p>
+                                    <p class="p-13 mb-0">
+                                        Client Name : {{ projectDetails?.clientName }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                            <p class="mb-0">FOI Screenshot</p>
+                        </div>
+                        <div class="row align-items-center" *ngIf="projectDetails?.mailScreenshots?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="projectDetails?.mailScreenshots?.length > 0">
+                            <div class="row align-items-center"
+                                *ngFor="let foiScreenshot of projectDetails?.mailScreenshots">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{ foiScreenshot?.name }}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiScreenshot)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewScreenshot"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="
+                              download(foiScreenshot?.link?.url, foiScreenshot?.name)
+                            " target="_blank" class="btn btn-small w-100"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="row align-items-center mt-3">
+                        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                            <p class="mb-0">FOI Document</p>
+                        </div>
+                        <div class="row align-items-center" *ngIf="projectDetails?.fois?.length == 0">
+                            <div class="col-lg-12 col-xl-12 col-12 mob-mb1">
+                                <p class="mb-0">No Record Found.</p>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="projectDetails?.fois?.length > 0">
+                            <div class="row align-items-center" *ngFor="let foiDocument of projectDetails?.fois">
+                                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+                                    <p class="mb-0">{{ foiDocument?.name }}</p>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a (click)="openDocument(foiDocument)" class="btn btn-small w-100"
+                                        data-bs-toggle="modal" data-bs-target="#ViewDocumentModal"><i
+                                            class="bi bi-eye-fill"></i> View</a>
+                                </div>
+                                <div class="col-lg-4 col-xl-4 col-6">
+                                    <a style="
+                              padding-left: 0 !important;
+                              padding-right: 0px !important;
+                            " (click)="
+                              download(foiDocument?.link?.url, foiDocument?.name)
+                            " target="_blank" class="btn btn-small w-100"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <ng-container *ngIf="!isEditing; else editMode">
+                                <p class="p-13">
+                                    <strong> Period of Contract: {{ projectDetails?.periodOfContractStart | date :
+                                        "dd/MM/yyyy" }} -
+                                        {{projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy" }}
+                                    </strong>
+                                </p>
+                                <p class="p-13">
+                                    <strong>Project Type: {{ projectDetails?.projectType }}</strong>
+                                </p>
+                                <!-- <a class="btn btn-secondary sm ml-2" (click)="toggleEdit()"><i
+                                        class="bi bi-pencil-fill"></i></a> -->
+                            </ng-container>
+                            <ng-template #editMode>
+                                <p class="p-13">
+                                    <strong>
+                                        Period of Contract:
+                                        <input type="date" [(ngModel)]="projectDetails.periodOfContractStart" />
+                                        -
+                                        <input type="date" [(ngModel)]="projectDetails.periodOfContractEnd" />
+                                    </strong>
+                                </p>
+                                <p class="p-13">
+                                    <strong>
+                                        Project Type:
+                                        <input type="text" [(ngModel)]="projectDetails.projectType" />
+                                    </strong>
+                                </p>
+                                <!-- <a class="btn btn-primary sm" title="Save" (click)="saveChanges('save', true)"><i
+                                        class="bi bi-check2"></i></a>&nbsp;
+                                <a class="btn btn-warning ml-2" title="Cancel" (click)="toggleEdit()"><i
+                                        class="bi bi-x-lg"></i></a> -->
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div class="modal fade" id="ViewProjectLogs" tabindex="-1" aria-labelledby="ViewProjectLogsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewProjectLogsLabel">
+                    Project Logs
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                    <div class="comments-section">
+                        <ul class="SecondarytaskList mt-3">
+                            <li *ngFor="let log of projectDetails?.logs" class="mb-3">
+                                <div class="comment-item">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0" [innerHTML]="log?.log"></p>
+                                        <span class="text-muted">
+                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- No records found -->
+                        <p *ngIf="logs?.length === 0" class="text-center">
+                            No records found
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewScreenshot" tabindex="-1" aria-labelledby="ViewScreenshotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">
+                    FOI Screenshot : {{ selectedDocument?.name }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img [src]="selectedDocument?.link?.url" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">
+                    Add Client Document
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="viewClientDocumentForm">
+                    <div class="card p-3 mt-3">
+                        <div class="row g-3 align-items-center">
+                            <!-- Document Name Input -->
+                            <div class="col-md-8 col-sm-12">
+                                <input type="text" [(ngModel)]="documentName" class="form-control"
+                                    placeholder="Enter Document Name" aria-label="Document Name" />
+                            </div>
+                            <!-- Upload Button -->
+                            <div class="col-md-4 col-sm-12">
+                                <label class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                                    <input type="file" id="uploadClientDocument"
+                                        (change)="uploadDocument($event, documentUploadType.clientDocument)" hidden
+                                        aria-label="Upload Document" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addWestgateDocument" tabindex="-1" aria-labelledby="addWestgateDocumentLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewScreenshotLabel">
+                    Add Westgate Document
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="viewClientDocumentForm">
+                    <div class="card p-3 mt-3">
+                        <div class="row g-3 align-items-center">
+                            <!-- Comment Input -->
+                            <div class="col-md-8 col-sm-12">
+                                <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
+                                    class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
+                            </div>
+                            <!-- Upload Button -->
+                            <div class="col-md-4 col-sm-12">
+                                <label class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                                    <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)"
+                                        hidden aria-label="Upload Document" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewClientDocLabel">
+                    Client Document : {{ selectedDocument?.name }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger" role="alert">
+                ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+                have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
+                    <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #otherFormats>
+                    <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
+                        [src]="getDocumentViewerUrl(selectedDocument?.file?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url"
+                        class="img-fluid" />
+                </ng-template>
+            </div>
+            <!-- <img [src]="selectedDocument?.file?.url" class="img-fluid" /> -->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="ViewDocumentModalLabel">FOI Document ({{selectedDocument?.name}})</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger" role="alert">
+                ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+                have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
+                    <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #otherFormats>
+                    <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+                        [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url"
+                        class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewUploadedDocument" tabindex="-1" aria-labelledby="ViewUploadedDocumentModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between;">
+                <h5 class="modal-title" id="ViewUploadedDocumentModal">Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger" role="alert">
+                ⚠ Important Notice : If you are unable to view any documents, please note that the files may
+                have been uploaded as a ZIP file. Kindly download the ZIP file to access the documents.
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <ng-container *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument">
+                    <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
+                        height="600px"></ngx-extended-pdf-viewer>
+                </ng-container>
+                <ng-template #otherFormatsForDocument>
+                    <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)"
+                        [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+                        style="width: 100%; height: 600px;"></iframe>
+                    <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Company Name</label>
+                <input [readonly]="loginModalMode" type="text" formControlName="companyName" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+                    Please enter Company Name
+                </div>
+                <label>Website Link</label>
+                <input [readonly]="loginModalMode" type="text" formControlName="link" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+                    Please enter Website Link
+                </div>
+                <label>Login Id</label>
+                <input [readonly]="loginModalMode" type="text" formControlName="loginID" class="form-control" />
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+                    Please enter Login Id
+                </div>
+                <label>Password</label>
+                <div style="position: relative;">
+                    <input [readonly]="loginModalMode" [type]="password" formControlName="password"
+                        class="form-control" />
+                    <span class="showicon"
+                        style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;"
+                        *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
+                    <span class="showicon"
+                        style="position: absolute; top: 0; right: 0; margin-top: 1rem; margin-right: 1rem;"
+                        *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
+                </div>
+                <div class="text-danger" style="color: red"
+                    *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+                    Please enter Password
+                </div>
+                <div *ngIf="!loginModalMode" class="row justify-content-end">
+                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end mt-3">
+                        <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close"
+                            [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
