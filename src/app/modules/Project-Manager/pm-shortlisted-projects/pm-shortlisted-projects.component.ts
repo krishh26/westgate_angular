@@ -29,6 +29,8 @@ export class PmShortlistedProjectsComponent {
   isExpired: boolean = false;
   categoryList: any = [];
   industryList: any = [];
+  isDesc: boolean = false;
+  column: string = 'publishDate';
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -96,6 +98,42 @@ export class PmShortlistedProjectsComponent {
       }
     });
   }
+
+  duedatesort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
+
+  sort(property: any) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.projectList.sort(function (a: any, b: any) {
+      if (a[property] < b[property]) {
+        return -1 * direction;
+      }
+      else if (a[property] > b[property]) {
+        return 1 * direction;
+      }
+      else {
+        return 0;
+      }
+    });
+  };
 
   // get project listing
   getProjectList() {
@@ -265,4 +303,9 @@ export class PmShortlistedProjectsComponent {
       this.searchtext();
     }
   }
+
+  addToMyList(id:any) {
+
+  }
+
 }
