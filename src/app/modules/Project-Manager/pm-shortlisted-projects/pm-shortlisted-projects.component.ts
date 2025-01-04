@@ -7,6 +7,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { Options } from '@angular-slider/ngx-slider';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 @Component({
   selector: 'app-pm-shortlisted-projects',
   templateUrl: './pm-shortlisted-projects.component.html',
@@ -68,13 +69,16 @@ export class PmShortlistedProjectsComponent {
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
   submissionEndDate: FormControl = new FormControl('');
-
+  loginUser: any;
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
-  ) { }
+    private superService: SuperadminService,
+    private localStorageService: LocalStorageService
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.getIndustryList();
@@ -183,7 +187,7 @@ export class PmShortlistedProjectsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -237,7 +241,27 @@ export class PmShortlistedProjectsComponent {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-         
+
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
+  }
+
+  addToMyList(projectId: any) {
+    let params = {
+      "userId": this.loginUser?._id
+    }
+    this.showLoader = true;
+    this.projectService.addToMyListBid(params, projectId).subscribe((response: any) => {
+      if (response?.status) {
+        this.showLoader = false;
+        this.getProjectList();
+        this.notificationService.showSuccess(response?.message);
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -253,19 +277,19 @@ export class PmShortlistedProjectsComponent {
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createCategory(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getcategoryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getcategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -276,19 +300,19 @@ export class PmShortlistedProjectsComponent {
     const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createIndustry(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getIndustryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -302,10 +326,6 @@ export class PmShortlistedProjectsComponent {
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
-  }
-
-  addToMyList(id:any) {
-
   }
 
 }

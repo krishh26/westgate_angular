@@ -917,7 +917,7 @@ export class SuperAdminProjectDetailsComponent {
       params.description = formValues.description;
     }
     if (formValues.imageText && formValues.type === 'Image') {
-      params.description = formValues.imageText; // Assuming description maps to image text
+      params.text = formValues.imageText; // Assuming description maps to image text
     }
     // Log params to the console
     console.log('Params to be sent:', params);

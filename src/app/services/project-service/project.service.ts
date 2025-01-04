@@ -23,7 +23,8 @@ export enum ProjectEndPoint {
   DELETE_COMMENT = '/task/delete-comment',
   PROJECT_LOGS = '/project/logs/',
   CREATE_STRIP = '/project-detail-title/create',
-  PROJECT_STRIP_LIST ='/project-detail-title/list'
+  PROJECT_STRIP_LIST = '/project-detail-title/list',
+  ADD_TO_MY_LIST = '/project/update/my-list/'
 }
 
 @Injectable({
@@ -186,7 +187,7 @@ export class ProjectService {
 
   getprojectStrips(projectId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_STRIP_LIST + '?projectId='+ projectId);
+      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_STRIP_LIST + '?projectId=' + projectId);
   }
 
   getQuestionDetailsById(projectId: string): Observable<any> {
@@ -197,6 +198,11 @@ export class ProjectService {
   projectApply(payload: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectEndPoint.APPLY_PROJECT, payload);
+  }
+
+  addToMyListBid(payload: any, projectId: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.ADD_TO_MY_LIST + projectId, payload);
   }
 
   changeProjectSupplierStatus(payload: any): Observable<any> {
