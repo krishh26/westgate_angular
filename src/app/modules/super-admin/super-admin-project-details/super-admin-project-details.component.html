@@ -873,82 +873,106 @@
   </section>
 
   <section *ngFor="let item of projectStrips">
-    <!-- Black Strip Header -->
-    <div class="bg-dark py-3">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="container d-flex justify-content-between align-items-center">
-            <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
-          </div>
-          <!-- Add Button -->
-          <div *ngIf="item.type === 'Image'">
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-              [attr.data-bs-target]="'#imageModal_' + item._id">
-              Add
-            </button>
+    <div class="container-fluid">
+      <!-- Black Strip Header -->
+      <div class="bg-dark py-3">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="container d-flex justify-content-between align-items-center">
+              <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
+            </div><br />
+            <!-- Add Button -->
+            <div *ngIf="item.type === 'Image'">
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                [attr.data-bs-target]="'#imageModal_' + item._id">
+                Add
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div><br />
 
-    <!-- Redesigned Description -->
-    <div class="bg-light py-3" *ngIf="item?.type != 'Image'">
-      <div class="container">
+      <!-- Redesigned Description -->
+      <div class="bg-white py-3" *ngIf="item?.type != 'Image'">
         <p class="text-secondary mb-0 fw-bold">Description:</p>
         <p class="text-dark mb-0">{{ item?.description }}</p>
       </div>
-    </div>
 
-    <!-- Main Content -->
-    <div class="container py-4">
-      <!-- Image Details Section -->
-      <div class="row mt-3" *ngIf="item?.images?.length">
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-3" *ngFor="let image of item?.images">
-          <div class="card h-100">
-            <div class="card-body">
-              <p class="card-text fw-semibold">{{ image?.imageText }}</p>
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" (click)="openViewImage(image)"
-                  data-bs-target="#viewstripimage">
-                  <i class="bi bi-eye-fill"></i> View
-                </button>
+      <!-- <div class="container py-4">
+        <div class="row mt-3" *ngIf="item?.images?.length">
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-3" *ngFor="let image of item?.images">
+            <div class="card h-100">
+              <div class="card-body">
+                <p class="card-text fw-semibold">{{ image?.imageText }}</p>
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" (click)="openViewImage(image)"
+                    data-bs-target="#viewstripimage">
+                    <i class="bi bi-eye-fill"></i> View
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row align-items-center">
+        <div class="col-lg-9 col-xl-9 col-12">
+          <div class="row">
+            <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12" *ngIf="item?.images?.length">
+              <div class="form-group" *ngFor="let image of item?.images">
+                <label class="display-block">{{ image?.imageText }}</label> <br />
+                <div class="upload-btn-wrapper">
+                  <div class="d-flex justify-content-between">
+                    <a *ngIf="subContractDocument" (click)="openViewImage(image)" class="btn btn-small me-2"
+                      data-bs-toggle="modal" data-bs-target="#viewstripimage">
+                      <i class="bi bi-eye-fill"></i> View
+                    </a>
+                    <a *ngIf="subContractDocument" (click)="
+                      removeDocument(documentUploadType.subContractDocument)
+                    " class="btn btn-danger">
+                      <i class="bi bi-trash-fill"></i> Remove
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal for Adding Image Details -->
-    <div class="modal fade" [id]="'imageModal_' + item._id" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add Image Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Dynamic Input Fields -->
-            <div *ngFor="let field of imageFields; let i = index" class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Enter Text" [(ngModel)]="field.text" />
-              <input type="file" class="form-control" accept="image/*" (change)="onFileChange($event, i)" />
-              <button type="button" class="btn btn-danger" (click)="removeField(i)"
-                [disabled]="imageFields.length === 1">
-                Delete
+      <!-- Modal for Adding Image Details -->
+      <div class="modal fade" [id]="'imageModal_' + item._id" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Image Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Dynamic Input Fields -->
+              <div *ngFor="let field of imageFields; let i = index" class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter Text" [(ngModel)]="field.text" />
+                <input type="file" class="form-control" accept="image/*" (change)="onFileChange($event, i)" />
+                <button type="button" class="btn btn-danger" (click)="removeField(i)"
+                  [disabled]="imageFields.length === 1">
+                  Delete
+                </button>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mt-3" (click)="addField()">
+                Add More
               </button>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm mt-3" (click)="addField()">
-              Add More
-            </button>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="saveFields(item._id)" data-bs-dismiss="modal">
-              Save
-            </button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="saveFields(item._id)" data-bs-dismiss="modal">
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </section>
 
 </main>
