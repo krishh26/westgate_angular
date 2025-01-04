@@ -17,6 +17,7 @@ export const Payload = {
     expired: false,
     supplierStatus: '',
     appointed: '',
+    myList: '',
   },
 
   dataByStatus: {
