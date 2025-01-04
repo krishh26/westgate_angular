@@ -33,6 +33,7 @@ export class SuperAdminProjectDetailsComponent {
   dateDifference: any;
   currentDate: Date = new Date();
   selectedDocument: any;
+  selectViewImage: any;
   clientDocument: any[] = [];
   loginDetailDocument: any[] = [];
   subContractDocument: any;
@@ -517,6 +518,12 @@ export class SuperAdminProjectDetailsComponent {
 
   openDocument(data: any) {
     this.selectedDocument = data;
+  }
+
+  openViewImage(image:any) {
+    this.selectViewImage = image;
+    console.log(this.selectViewImage?.url);
+    
   }
 
   download(imageUrl: string, fileName: string): void {
