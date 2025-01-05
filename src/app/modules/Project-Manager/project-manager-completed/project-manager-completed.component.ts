@@ -31,7 +31,7 @@ interface Project {
   styleUrls: ['./project-manager-completed.component.scss']
 })
 export class ProjectManagerCompletedComponent {
- showLoader: boolean = false;
+  showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
@@ -98,7 +98,7 @@ export class ProjectManagerCompletedComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
@@ -291,7 +291,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.status = 'Passed,Fail';
+    this.tempPayload.projectList.bidManagerStatus =  "DroppedAfterFeasibility, Awarded, NotAwarded";
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];

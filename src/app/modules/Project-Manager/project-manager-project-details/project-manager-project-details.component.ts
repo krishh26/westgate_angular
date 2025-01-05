@@ -212,7 +212,7 @@ export class ProjectManagerProjectDetailsComponent {
     this.commentData.push({
       comment: this.bidManagerStatusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
-      status: this.status,
+      bidManagerStatus: this.status,
       userId: this.loginUser?._id
     });
 
@@ -468,7 +468,7 @@ export class ProjectManagerProjectDetailsComponent {
         this.commentData.push({
           comment: this.bidManagerStatusComment.value,
           date: this.statusDate.value,
-          status: this.status,
+          bidManagerStatus: this.status,
         })
       }
 
@@ -483,7 +483,7 @@ export class ProjectManagerProjectDetailsComponent {
         subContracting: this.subContracting || "",
         comment: this.comment || "",
         clientDocument: this.projectDetails?.clientDocument || [],
-        status: this.status || "",
+        bidManagerStatus: this.status || "",
         bidManagerStatusComment: this.commentData,
         loginDetail: this.projectDetails.loginDetail || "",
         failStatusImage: this.failStatusImage || ""

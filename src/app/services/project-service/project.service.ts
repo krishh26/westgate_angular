@@ -49,6 +49,7 @@ export class ProjectService {
     sortlist: boolean,
     match: string,
     status: string,
+    bidManagerStatus: string,
     category?: string,
     supplierId?: string,
     industry?: string,
@@ -80,6 +81,9 @@ export class ProjectService {
     }
     if (params?.status) {
       queryParams = queryParams.set('status', params?.status);
+    }
+    if (params?.bidManagerStatus) {
+      queryParams = queryParams.set('bidManagerStatus', params?.bidManagerStatus);
     }
     if (params?.supplierStatus) {
       queryParams = queryParams.set('supplierStatus', params?.supplierStatus);

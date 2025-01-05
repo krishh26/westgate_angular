@@ -290,7 +290,7 @@ export class ProjectManagerInProgressComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
+    this.tempPayload.projectList.bidManagerStatus = "InSolution, WaitingForResult";
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];

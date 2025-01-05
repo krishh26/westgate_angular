@@ -18,6 +18,7 @@ export const Payload = {
     supplierStatus: '',
     appointed: '',
     myList: '',
+    bidManagerStatus: ''
   },
 
   dataByStatus: {
@@ -43,6 +44,7 @@ export const Payload = {
     supplierId: '',
     expired: false,
     selectedSupplier: false,
+    bidManagerStatus: ''
   },
 
   pmShortlistsupplierProjectList: {
@@ -62,6 +64,7 @@ export const Payload = {
     valueRange: '',
     supplierId: '',
     selectedSupplier: false,
+    bidManagerStatus: ''
   },
 
   pmMatchProjectList: {
@@ -81,6 +84,7 @@ export const Payload = {
     valueRange: '',
     supplierId: '',
     expired: false,
+    bidManagerStatus: ''
   },
 
   pmCloseProjectList: {
@@ -98,6 +102,7 @@ export const Payload = {
     publishDateRange: '',
     SubmissionDueDateRange: '',
     valueRange: '',
+    bidManagerStatus: ''
   },
 
   pmShortlistProjectList: {
@@ -117,6 +122,7 @@ export const Payload = {
     valueRange: '',
     supplierId: '',
     expired: false,
+     bidManagerStatus: ''
   },
 
   mailSSList: {
