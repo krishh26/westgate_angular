@@ -244,6 +244,199 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-12 col-xl-12 col-12">
+                <div class="card shadow-sm p-4">
+                    <!-- Header -->
+                    <div class="card-header bg-primary text-white mb-3">
+                        <h5 class="mb-0">Bid Status</h5>
+                    </div>
+
+                    <!-- Status Buttons -->
+                    <div class="d-flex justify-content-between flex-wrap mb-4">
+                        <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Toaction'"
+                            (click)="statusChange('Toaction')">
+                            To Action
+                        </button>
+                        <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
+                            (click)="statusChange('InSolution')">
+                            In-Solution
+                        </button>
+                        <button class="btn btn-outline-secondary flex-fill m-1"
+                            [class.active]="status === 'WaitingForResult'" (click)="statusChange('WaitingForResult')">
+                            Waiting For Result
+                        </button>
+                        <button class="btn btn-outline-success flex-fill m-1"
+                            [class.active]="status === 'DroppedAfterFeasibility'"
+                            (click)="statusChange('DroppedAfterFeasibility')">
+                            Dropped After Feasibility</button>
+                        <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Awarded'"
+                            (click)="statusChange('Awarded')">
+                            Awarded
+                        </button>
+                        <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'NotAwarded'"
+                            (click)="statusChange('NotAwarded')">
+                            Not Awarded
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Comment Section -->
+                    <div *ngIf="status" class="status-section">
+                        <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+
+                        <!-- Display Existing Comments -->
+                        <div *ngIf="commentData?.length" class="comment-list">
+                            <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted"><strong>Comment:</strong> {{ item?.comment }}</span><span
+                                        class="text-muted"><strong>Date: </strong>{{item.date | date:"dd/MM/yyyy,h:mm a"}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add New Comment -->
+                        <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                            <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                                placeholder="Add your comment" />
+                            <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                                <i class="bi bi-plus-lg"></i> Add
+                            </button>
+                        </div>
+
+                        <div *ngIf="status === 'Fail'" class="mt-4">
+                            <h6 class="text-danger">Additional Details for "Fail"</h6>
+                            <div class="d-flex flex-column gap-3">
+                                <!-- File Upload -->
+                                <div class="d-flex align-items-center">
+                                    <label for="failedReson" class="btn btn-outline-secondary me-3">
+                                        <i class="bi bi-upload"></i> Upload Document
+                                    </label>
+                                    <input type="file" id="failedReson" name="failedReson" hidden
+                                        (change)="uploadDocument($event, documentUploadType.failStatusImage)" />
+                                </div>
+
+                                <!-- Fail Reason Dropdown -->
+                                <select class="form-select" [formControl]="failStatusReason">
+                                    <option disabled selected hidden value="">Select Fail Reason</option>
+                                    <option value="Accreditation">Accreditation</option>
+                                    <option value="Time Constraints">Time Constraints</option>
+                                    <option value="Certification">Certification</option>
+                                    <option value="Case Study">Case Study</option>
+                                    <option value="Certifications from Subcontractor">Certifications from Subcontractor
+                                    </option>
+                                    <option value="Delivery of goods/Hardware">Delivery of goods/Hardware</option>
+                                    <option value="Financial Conditions">Financial Conditions</option>
+                                    <option value="Not related">Not related</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br />
+            <section class="pageheader bg-dark">
+                <div class="container ">
+                    <p><strong>To-Do Task Comments</strong></p>
+                </div>
+            </section><br>
+
+            <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                    <div class="comments-section">
+                        <ng-container *ngIf="commentData!.length > 0; else noTasks">
+                            <div *ngFor="let comment of commentData" class="task-item">
+                                <ng-container >
+                                    <div class="comment mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
+                                            <small class="text-muted">
+                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                            </small>
+                                        </div>
+                                        <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status
+                                            }}</small>
+                                        <p class="mt-2">{{ comment?.comment }}</p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <ng-template #noTasks>
+                        <p class="text-muted">No status comments available.</p>
+                    </ng-template>
+                </div>
+            </div>
+
+
+            <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                    <div class="comments-section">
+                        <ng-container>
+                            <div *ngFor="let task of filteredTasks" class="task-item">
+                                <ng-container *ngIf="task?.comments?.length > 0; else noComments">
+                                    <div *ngFor="let comment of task.comments" class="comment mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
+                                            <small class="text-muted">
+                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                            </small>
+                                        </div>
+                                        <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                                        <p class="mt-2">{{ comment?.comment }}</p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noComments>
+                <p class="text-muted">No comments available.</p>
+            </ng-template>
+
+            <section class="pageheader bg-dark">
+                <div class="container ">
+                    <p><strong>Project Logs</strong></p>
+                </div>
+            </section><br>
+
+            <div class="modal-body d-flex">
+                <div class="flex-grow-1 pe-3">
+                    <div class="comments-section">
+
+                        <div *ngIf="projectDetails?.logs?.length > 3" class="text-end mt-3">
+                            <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+                                View All
+                            </a>
+                        </div>
+                        <!-- List of logs -->
+                        <ul class="SecondarytaskList mt-3">
+                            <li *ngFor="let log of (showAllLogs ? logs : logs.slice(0, 3))" class="mb-3">
+                                <div class="comment-item">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0" [innerHTML]="log?.log"></p>
+                                        <span class="text-muted">
+                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- No records found -->
+                        <p *ngIf="logs?.length === 0" class="text-center">
+                            No records found
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-end">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                    <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+                </div>
+            </div>
         </div>
     </section>
 </main>

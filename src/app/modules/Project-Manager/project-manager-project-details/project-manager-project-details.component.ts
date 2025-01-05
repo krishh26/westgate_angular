@@ -39,7 +39,7 @@ export class ProjectManagerProjectDetailsComponent {
   comment: string = '';
   isEditing = false;
   status: string = "Expired";
-  statusComment: FormControl = new FormControl('');
+  bidManagerStatusComment: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
@@ -175,8 +175,10 @@ export class ProjectManagerProjectDetailsComponent {
 
         this.status = this.projectDetails?.status;
         this.subContracting = this.projectDetails?.subContracting;
-        // this.statusComment.setValue(this.projectDetails?.statusComment);
-        this.commentData = this.projectDetails?.statusComment
+        // this.bidManagerStatusComment.setValue(this.projectDetails?.bidManagerStatusComment);
+        this.commentData = this.projectDetails?.bidManagerStatusComment;
+        console.log(this.commentData);
+        
         this.subContractDocument = this.projectDetails?.subContractingfile || null;
         this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
         this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
@@ -195,11 +197,11 @@ export class ProjectManagerProjectDetailsComponent {
   statusChange(status: string) {
     this.status = status;
     this.commentData = []
-    this.statusComment.reset()
+    this.bidManagerStatusComment.reset()
   }
 
   pushStatus() {
-    if (!this.statusComment.value) {
+    if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
@@ -208,14 +210,14 @@ export class ProjectManagerProjectDetailsComponent {
     const currentDate = new Date();
 
     this.commentData.push({
-      comment: this.statusComment.value,
+      comment: this.bidManagerStatusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
       userId: this.loginUser?._id
     });
 
     // Reset the comment input field
-    this.statusComment.reset();
+    this.bidManagerStatusComment.reset();
   }
 
   // Function for subcontract
@@ -454,7 +456,7 @@ export class ProjectManagerProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {}
     if (!contractEdit) {
-      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
+      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.bidManagerStatusComment?.value) {
       //   return this.notificationService.showError('Please Enter Status Comment');
       // }
 
@@ -462,9 +464,9 @@ export class ProjectManagerProjectDetailsComponent {
       //   return this.notificationService.showError('Please Select Status Comment');
       // }
 
-      if (this.statusComment.value && this.statusDate.value) {
+      if (this.bidManagerStatusComment.value && this.statusDate.value) {
         this.commentData.push({
-          comment: this.statusComment.value,
+          comment: this.bidManagerStatusComment.value,
           date: this.statusDate.value,
           status: this.status,
         })
@@ -482,7 +484,7 @@ export class ProjectManagerProjectDetailsComponent {
         comment: this.comment || "",
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || "",
-        statusComment: this.commentData,
+        bidManagerStatusComment: this.commentData,
         loginDetail: this.projectDetails.loginDetail || "",
         failStatusImage: this.failStatusImage || ""
       };
@@ -505,7 +507,7 @@ export class ProjectManagerProjectDetailsComponent {
         projectType: this.projectDetails.projectType,
       }
     }
-    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+    this.feasibilityService.updateProjectDetailsBid(payload, this.projectDetails._id).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');

@@ -5,7 +5,9 @@ import { environment } from 'src/environment/environment';
 
 export enum FeasibilityEndPoint {
   DOCUMENT_UPLOAD = '/project/upload',
-  UPDATE_PROJECT = "/project/update/Feasibility/"
+  UPDATE_PROJECT_FESIBILITY = "/project/update/Feasibility/",
+  UPDATE_PROJECT_BID = '/project/update/'
+
 }
 @Injectable({
   providedIn: 'root'
@@ -33,6 +35,12 @@ export class FeasibilityService {
 
   updateProjectDetails(payload: any, projectId: string): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + FeasibilityEndPoint.UPDATE_PROJECT + projectId, payload);
+      .patch<any>(this.baseUrl + FeasibilityEndPoint.UPDATE_PROJECT_FESIBILITY + projectId, payload);
   }
+
+  updateProjectDetailsBid(payload: any, projectId: string): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + FeasibilityEndPoint.UPDATE_PROJECT_BID + projectId, payload);
+  }
+
 }
