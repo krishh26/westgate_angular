@@ -60,6 +60,7 @@ export class ProjectManagerProjectDetailsComponent {
     westgatedocument: "westgatedocument"
   }
   userList: any = [];
+  selectedSupplier: any = [];
   // For check bov
   subContracting: boolean = true;
   loginModalMode: boolean = true;
@@ -169,7 +170,7 @@ export class ProjectManagerProjectDetailsComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
-
+        this.selectedSupplier = response?.data?.sortlistedUsers;
         // Assign only the first 3 logs to the logs property
         this.logs = response?.data?.logs?.slice(0, 3) || [];
 
@@ -178,7 +179,7 @@ export class ProjectManagerProjectDetailsComponent {
         // this.bidManagerStatusComment.setValue(this.projectDetails?.bidManagerStatusComment);
         this.commentData = this.projectDetails?.bidManagerStatusComment;
         console.log(this.commentData);
-        
+
         this.subContractDocument = this.projectDetails?.subContractingfile || null;
         this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
         this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
@@ -429,7 +430,7 @@ export class ProjectManagerProjectDetailsComponent {
     this.loginModalMode = false
     this.loginDetailForm.reset()
   }
-  
+
   editLoginDetail(loginData: any, i: number) {
     this.loginModalMode = false
     this.loginDetailForm.patchValue(loginData.data)
@@ -568,6 +569,29 @@ export class ProjectManagerProjectDetailsComponent {
       return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  selectSupplier(supplier: any) {
+    this.selectedSupplier = supplier;
+    const data = {
+      select: {
+        supplierId: this.selectedSupplier?._id,
+      },
+    };
+    this.projectManagerService.dropUser(data, this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.notificationService.showSuccess(
+            response?.message || 'supplier select successfully'
+          );
+        } else {
+          return this.notificationService.showError('Try after some time.');
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Error.');
+      }
+    );
   }
 
 }

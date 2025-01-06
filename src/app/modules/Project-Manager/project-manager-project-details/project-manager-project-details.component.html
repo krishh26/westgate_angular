@@ -248,6 +248,32 @@
             <div class="col-lg-12 col-xl-12 col-12">
                 <div class="card shadow-sm p-4">
                     <!-- Header -->
+                    <div class="card-header bg-secondary text-white mb-3">
+                        <h5 class="mb-0">Shortlisted Supplier</h5><br/>
+                        <div class="sort-widget mb-3">
+                            <!-- <h6 class="p-600">Category</h6> -->
+                            <ng-select style="padding: 0px !important" placeholder="Select Supplier"
+                                class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name" bindValue="_id" 
+                                (change)="selectSupplier($event)"  [addTag]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <!-- Add New Comment -->
+                    <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                        <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                            placeholder="Add your comment" />
+                        <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                            <i class="bi bi-plus-lg"></i> Add
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-xl-12 col-12">
+                <div class="card shadow-sm p-4">
+                    <!-- Header -->
                     <div class="card-header bg-primary text-white mb-3">
                         <h5 class="mb-0">Bid Status</h5>
                     </div>
@@ -289,7 +315,8 @@
                             <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted"><strong>Comment:</strong> {{ item?.comment }}</span><span
-                                        class="text-muted"><strong>Date: </strong>{{item.date | date:"dd/MM/yyyy,h:mm a"}}
+                                        class="text-muted"><strong>Date: </strong>{{item.date | date:"dd/MM/yyyy,h:mm
+                                        a"}}
                                     </span>
                                 </div>
                             </div>
@@ -345,7 +372,7 @@
                     <div class="comments-section">
                         <ng-container *ngIf="commentData!.length > 0; else noTasks">
                             <div *ngFor="let comment of commentData" class="task-item">
-                                <ng-container >
+                                <ng-container>
                                     <div class="comment mb-3">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
@@ -353,7 +380,8 @@
                                                 {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
                                             </small>
                                         </div>
-                                        <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.bidManagerStatus
+                                        <small class="text-muted d-block"><strong>Status :</strong> {{
+                                            comment?.bidManagerStatus
                                             }}</small>
                                         <p class="mt-2">{{ comment?.comment }}</p>
                                     </div>
