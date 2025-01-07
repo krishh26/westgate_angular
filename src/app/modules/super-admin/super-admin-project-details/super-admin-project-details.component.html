@@ -1045,7 +1045,7 @@
         </div>
         <div class="row justify-content-end">
           <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-            <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close"
+            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close"
               [disabled]="!loginDetailForm.valid" class="btn btn-dark w-100">
               Add
             </button>
@@ -1189,6 +1189,13 @@
               Description is required.
             </div>
           </div>
+
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select User"
+              [multiple]="true" bindLabel="name" bindValue="_id" [items]="ForTitleuserList" formControlName="userIds">
+            </ng-select>
+          </div>
+
         </div>
 
         <!-- Image Upload Section -->
@@ -1204,11 +1211,18 @@
               Image Text is required.
             </div>
           </div>
+
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select User"
+              [multiple]="true" bindLabel="name" bindValue="_id" [items]="ForTitleuserList" formControlName="userIds">
+            </ng-select>
+          </div>
+
         </ng-template>
 
         <div class="row justify-content-end mt-4">
           <div class="col-auto">
-            <button (click)="addLoginInfo()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
+            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
               Add
             </button>
           </div>

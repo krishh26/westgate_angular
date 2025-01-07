@@ -83,7 +83,8 @@ export class SuperAdminProjectDetailsComponent {
     otherDocument: 'otherDocument',
     failStatusImage: 'failStatusImage',
   };
-
+  ForTitleuserList: any = [];
+  displayForTitleedUsers: any = [];
   companyDetails: any = [
     {
       name: 'Delphi Services Limited',
@@ -103,6 +104,7 @@ export class SuperAdminProjectDetailsComponent {
   ];
   loginModalMode: boolean = true;
   projectStrips: any = [];
+  userList: any = [];
   // For check bov
   subContracting: boolean = true;
   eligibilityForm: FormGroup;
@@ -176,11 +178,13 @@ export class SuperAdminProjectDetailsComponent {
     this.initializeForm();
     this.addDocument();
     this.getProjectStrips();
+    this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
+      userIds: ['']
     });
   }
 
@@ -230,6 +234,31 @@ export class SuperAdminProjectDetailsComponent {
     });
     this.statusComment.reset();
     this.statusDate.reset();
+  }
+
+  getForTitleUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.ForTitleuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          this.displayForTitleedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getUserDetails() {
@@ -520,10 +549,10 @@ export class SuperAdminProjectDetailsComponent {
     this.selectedDocument = data;
   }
 
-  openViewImage(image:any) {
+  openViewImage(image: any) {
     this.selectViewImage = image;
     console.log(this.selectViewImage?.url);
-    
+
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -901,7 +930,7 @@ export class SuperAdminProjectDetailsComponent {
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
 
-  addLoginInfo() {
+  addtitle() {
     // Retrieve form values
     const formValues = this.addStripForm.value;
     // Construct the params object
