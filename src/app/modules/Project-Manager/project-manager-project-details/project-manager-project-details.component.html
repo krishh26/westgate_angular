@@ -3,14 +3,17 @@
         <div class="container-fluid">
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
-
                     <div class="d-flex align-items-center">
                         <h5 class="me-3"><strong>Project Title:</strong></h5>
                         <h6>{{ projectDetails?.projectName }}</h6>
                     </div>
-
-                    <a routerLink="/feasibility-manager/feasibility-manager-projects-to-actions"
-                        class="btn btn-primary text-dark">Back</a>
+                    <div class="ms-auto d-flex">
+                        <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
+                            Add Strips
+                          </a>
+                        <a routerLink="/feasibility-manager/feasibility-manager-projects-to-actions"
+                            class="btn btn-primary text-dark">Back</a>
+                    </div>
                 </div>
             </div>
 
@@ -738,6 +741,128 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- View StripAdd Modal -->
+<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Radio Buttons to Select Upload Type -->
+        <div class="form-group d-flex align-items-center mb-4">
+          <label class="me-3">Select Type:</label>
+          <div class="form-check me-3">
+            <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
+              (change)="selectUploadType(true)" />
+            <label for="textOption" class="form-check-label">Text</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
+              (change)="selectUploadType(false)" />
+            <label for="imageOption" class="form-check-label">Image</label>
+          </div>
+        </div>
+
+        <!-- Conditional Rendering Based on Upload Type -->
+        <div *ngIf="uploadType; else imageUploadSection">
+          <!-- Text Upload Section -->
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label">Strip Heading :</label>
+            <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
+            <div *ngIf="
+                addStripcontrol.text.touched && addStripcontrol.text.invalid
+              " class="text-danger">
+              Text is required.
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label">Strip Description :</label>
+            <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
+              formControlName="description"></textarea>
+            <div *ngIf="
+                addStripcontrol.description.touched &&
+                addStripcontrol.description.invalid
+              " class="text-danger">
+              Description is required.
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select User"
+              [multiple]="true" bindLabel="name" bindValue="_id" [items]="ForTitleuserList" formControlName="userIds">
+            </ng-select>
+          </div>
+
+        </div>
+
+        <!-- Image Upload Section -->
+        <ng-template #imageUploadSection>
+          <div class="form-group mb-3">
+            <label for="imageTextInput" class="form-label">Strip Heading :</label>
+            <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
+              formControlName="imageText" />
+            <div *ngIf="
+                addStripcontrol.imageText.touched &&
+                addStripcontrol.imageText.invalid
+              " class="text-danger">
+              Image Text is required.
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select User"
+              [multiple]="true" bindLabel="name" bindValue="_id" [items]="ForTitleuserList" formControlName="userIds">
+            </ng-select>
+          </div>
+
+        </ng-template>
+
+        <div class="row justify-content-end mt-4">
+          <div class="col-auto">
+            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Strip image Modal -->
+<div class="modal fade" id="viewstripimage" tabindex="-1" aria-labelledby="viewstripimageLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          Strip Image ({{ selectViewImage?.imageText }})
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
+          <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
+            height="600px"></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
+            style="width: 100%; height: 600px"></iframe>
+          <img *ngIf="isImage(selectViewImage?.url)" [src]="selectViewImage?.url" class="img-fluid" />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">

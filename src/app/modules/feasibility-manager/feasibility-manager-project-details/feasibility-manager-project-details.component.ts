@@ -81,7 +81,8 @@ export class FeasibilityManagerProjectDetailsComponent {
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = [];
   logs: any = [];
-
+  supplieruserList: any = [];
+  ForTitleuserList: any = [];
   addStripcontrol = {
     text: new FormControl('', Validators.required),
     imageText: new FormControl('', Validators.required),
@@ -106,7 +107,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     westgatedocument: 'westgatedocument',
   };
   supportDocument!: FormGroup;
-
+  displayForTitleedUsers: any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -129,6 +130,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
+    this.getForTitleUserAllList();
     this.getProjectStrips();
     this.initializeForm();
     this.addStripForm = this.fb.group({
@@ -136,6 +138,7 @@ export class FeasibilityManagerProjectDetailsComponent {
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
+      userIds: ['']
     });
   }
 
@@ -169,7 +172,8 @@ export class FeasibilityManagerProjectDetailsComponent {
     this.addStripForm.get('imageText')?.updateValueAndValidity();
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
-  addLoginInfoAdd() {
+
+  addtitle() {
     // Retrieve form values
     const formValues = this.addStripForm.value;
     // Construct the params object
@@ -186,6 +190,10 @@ export class FeasibilityManagerProjectDetailsComponent {
     }
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
+    }
+    // Add userIds if selected
+    if (formValues.userIds && formValues.userIds.length > 0) {
+      params.userIds = formValues.userIds; // This will already be an array
     }
     // Log params to the console
     console.log('Params to be sent:', params);
@@ -341,6 +349,31 @@ export class FeasibilityManagerProjectDetailsComponent {
               user?.role === 'FeasibilityUser'
           );
           this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getForTitleUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.ForTitleuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          this.displayForTitleedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);

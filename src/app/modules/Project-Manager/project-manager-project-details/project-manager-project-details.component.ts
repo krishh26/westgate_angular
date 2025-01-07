@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -77,6 +77,20 @@ export class ProjectManagerProjectDetailsComponent {
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = [];
   logs: any = [];
+  addStripcontrol = {
+    text: new FormControl('', Validators.required),
+    imageText: new FormControl('', Validators.required),
+    type: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    userIds: new FormControl('', Validators.required),
+  };
+  addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
+  selectedImage!: string;
+
+  ForTitleuserList: any = [];
+  displayForTitleedUsers: any = [];
+  selectViewImage: any;
+  uploadType: boolean = true;
 
   constructor(
     private projectService: ProjectService,
@@ -88,7 +102,8 @@ export class ProjectManagerProjectDetailsComponent {
     private spinner: NgxSpinnerService,
     private superService: SuperadminService,
     private projectManagerService: ProjectManagerService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
@@ -99,6 +114,115 @@ export class ProjectManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
+    this.getForTitleUserAllList();
+    this.addStripForm = this.fb.group({
+      type: ['', Validators.required],
+      text: [''],
+      description: [''], // Ensure this is included
+      imageText: [''],
+      userIds: ['']
+    });
+  }
+
+  onFileSelect(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.addStripForm.patchValue({
+        image: file,
+      });
+      this.addStripForm.get('image')?.updateValueAndValidity();
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result; // For preview
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getForTitleUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.ForTitleuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          this.displayForTitleedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  selectUploadType(isText: boolean): void {
+    this.uploadType = isText;
+    if (isText) {
+      this.addStripForm.get('text')?.setValidators(Validators.required);
+      this.addStripForm.get('imageText')?.clearValidators();
+      this.addStripForm.get('image')?.clearValidators();
+    } else {
+      this.addStripForm.get('text')?.clearValidators();
+      this.addStripForm.get('imageText')?.setValidators(Validators.required);
+      this.addStripForm.get('image')?.setValidators(Validators.required);
+    }
+    this.addStripForm.get('text')?.updateValueAndValidity();
+    this.addStripForm.get('imageText')?.updateValueAndValidity();
+    this.addStripForm.get('image')?.updateValueAndValidity();
+  }
+
+  addtitle() {
+    // Retrieve form values
+    const formValues = this.addStripForm.value;
+    // Construct the params object
+    const params: any = {
+      type: formValues.type, // Required
+      projectId: this.projectDetails?._id, // Hardcoded project ID
+    };
+    // Conditionally add optional fields if present
+    if (formValues.text && formValues.type === 'Text') {
+      params.text = formValues.text;
+    }
+    if (formValues.description && formValues.type === 'Text') {
+      params.description = formValues.description;
+    }
+    if (formValues.imageText && formValues.type === 'Image') {
+      params.text = formValues.imageText; // Assuming description maps to image text
+    }
+    // Add userIds if selected
+    if (formValues.userIds && formValues.userIds.length > 0) {
+      params.userIds = formValues.userIds; // This will already be an array
+    }
+    // Log params to the console
+    console.log('Params to be sent:', params);
+    this.projectService.createStrip(params).subscribe(
+      (response: any) => {
+        if (response?.status == true) {
+          this.getProjectDetails();
+          this.notificationService.showSuccess(
+            '',
+            'Project Update Successfully.'
+          );
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getUserAllList() {

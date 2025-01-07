@@ -99,6 +99,8 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     otherDocument: 'otherDocument',
     failStatusImage: 'failStatusImage',
   };
+  ForTitleuserList: any = [];
+  displayForTitleedUsers: any = [];
 
   constructor(
     private projectService: ProjectService,
@@ -128,6 +130,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getUserAllList();
+    this.getForTitleUserAllList();
     this.getTask();
     this.getProjectLogs();
     this.getProjectStrips();
@@ -137,6 +140,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
+      userIds: ['']
     });
   }
   onFileSelect(event: any): void {
@@ -154,6 +158,33 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  getForTitleUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.ForTitleuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin' ||
+              user?.role === 'FeasibilityUser' ||
+              user?.role === 'FeasibilityAdmin' || user?.role === 'ProjectManager' 
+          );
+          this.displayForTitleedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
   selectUploadType(isText: boolean): void {
     this.uploadType = isText;
     if (isText) {
@@ -169,6 +200,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     this.addStripForm.get('imageText')?.updateValueAndValidity();
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
+
   addLoginInfo() {
     // Retrieve form values
     const formValues = this.addStripForm.value;

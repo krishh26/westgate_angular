@@ -13,6 +13,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-feasibility-project-details',
@@ -92,6 +93,9 @@ export class FeasibilityProjectDetailsComponent {
   selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = [];
+  supplieruserList: any = [];
+  displayedUsers: any[] = [];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -101,7 +105,8 @@ export class FeasibilityProjectDetailsComponent {
     private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
     private superService: SuperadminService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private projectManagerService: ProjectManagerService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -112,12 +117,45 @@ export class FeasibilityProjectDetailsComponent {
     this.getTask();
     this.getProjectStrips();
     this.initializeForm();
+    this.getUserAllList()
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
+      userIds: [''],
     });
+  }
+
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter only roles of FeasibilityAdmin and FeasibilityUser
+          this.supplieruserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin'
+
+          );
+          console.log(this.supplieruserList);
+
+          this.displayedUsers = this.supplieruserList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  restrictUSer(event: any) {
+
   }
 
   onFileSelect(event: any): void {
@@ -135,6 +173,8 @@ export class FeasibilityProjectDetailsComponent {
       reader.readAsDataURL(file);
     }
   }
+
+
   selectUploadType(isText: boolean): void {
     this.uploadType = isText;
     if (isText) {
@@ -150,7 +190,8 @@ export class FeasibilityProjectDetailsComponent {
     this.addStripForm.get('imageText')?.updateValueAndValidity();
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
-  addLoginInfoAdd() {
+
+  addtitle() {
     // Retrieve form values
     const formValues = this.addStripForm.value;
     // Construct the params object
@@ -167,6 +208,10 @@ export class FeasibilityProjectDetailsComponent {
     }
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
+    }
+    // Add userIds if selected
+    if (formValues.userIds && formValues.userIds.length > 0) {
+      params.userIds = formValues.userIds; // This will already be an array
     }
     // Log params to the console
     console.log('Params to be sent:', params);
