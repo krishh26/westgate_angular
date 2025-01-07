@@ -1,319 +1,750 @@
 <main id="main">
-    <section>
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
-                    <div class="d-flex align-items-center">
-                        <h5 class="me-3"><strong>Project Title:</strong></h5>
-                        <h6>{{ projectDetails?.projectName }}</h6>
-                    </div>
+  <section>
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div
+          class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3"
+        >
+          <div class="d-flex align-items-center">
+            <h5 class="me-3"><strong>Project Title:</strong></h5>
+            <h6>{{ projectDetails?.projectName }}</h6>
+          </div>
+          <div class="ms-auto d-flex">
+            <a
+              data-bs-toggle="modal"
+              data-bs-target="#ViewStripAdd"
+              class="btn btn-primary btn-sm text-dark me-2"
+            >
+              Add Strips
+            </a>
 
-                    <a routerLink="/super-admin/status-wise-tracker" class="btn btn-primary text-dark">
-                        Back
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-2"><strong>BOS ID:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.BOSID || "-" }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Publish Date:</strong></div>
-                            <div class="col-md-10">
-                                {{
-                                projectDetails?.publishDate
-                                ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
-                                : "-"
-                                }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Category:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.category || "-" }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Industry:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.industry || "-" }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Min value (GBP):</strong></div>
-                            <div class="col-md-10">
-                                GBP {{ projectDetails?.minValue || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Max value (GBP):</strong></div>
-                            <div class="col-md-10">
-                                GBP {{ projectDetails?.maxValue || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Website:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.website || "-" }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Link to notice:</strong></div>
-                            <div class="col-md-10">
-                                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}"
-                                    target="_blank">Link to
-                                    Notice</a>
-                                <ng-template #noLink>-</ng-template>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Created Date:</strong></div>
-                            <div class="col-md-10">
-                                {{
-                                projectDetails?.createdAt
-                                ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
-                                : "-"
-                                }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Due Date & Time:</strong></div>
-                            <div class="col-md-10">
-                                {{
-                                projectDetails?.dueDate
-                                ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
-                                : "-"
-                                }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>CPV Codes:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.CPVCodes || "-" }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Notice Reference:</strong></div>
-                            <div class="col-md-10">
-                                {{ projectDetails?.noticeReference || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Status:</strong></div>
-                            <div class="col-md-10" [ngClass]="{
-                    'text-success': projectDetails?.status === 'Passed',
-                    'text-danger': projectDetails?.status === 'Fail'
-                  }">
-                                {{ projectDetails?.status || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Project Type:</strong></div>
-                            <div class="col-md-10">
-                                {{ projectDetails?.projectType || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Mail Id:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.mailID || "-" }}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-2"><strong>Client Type:</strong></div>
-                            <div class="col-md-10">
-                                {{ projectDetails?.clientType || "-" }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><strong>Client Name:</strong></div>
-                            <div class="col-md-10">
-                                {{ projectDetails?.clientName || "-" }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" *ngIf="loginUser?.role === 'ProcessManagerAdmin'">
-                <div class="col-md-2"><strong>Select Assign User:</strong></div>
-                <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
-                    [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
-                    [(ngModel)]="projectDetails.assignedUsers"
-                    (change)="appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)">
-                </ng-select>
-            </div><br />
-
-            <section class="pageheader bg-dark">
-                <div class="container">
-                    <p><strong>Project Description</strong></p>
-                </div>
-            </section>
-            <br />
-
-            <p>{{ projectDetails?.description }}</p>
-
-            <section class="pageheader bg-dark">
-                <div class="container">
-                    <p><strong>Comments</strong></p>
-                </div>
-            </section><br />
-
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <ng-container *ngIf="commentData!.length > 0; else noTasks">
-                            <div *ngFor="let comment of commentData" class="task-item">
-                                <ng-container *ngIf="comment?.userDetails">
-                                    <div class="comment mb-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
-                                            <small class="text-muted">
-                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                            </small>
-                                        </div>
-                                        <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status
-                                            }}</small>
-                                        <p class="mt-2">{{ comment?.comment }}</p>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </div>
-                    <ng-template #noTasks>
-                        <p class="text-muted">No status comments available.</p>
-                    </ng-template>
-                </div>
-            </div>
-
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <ng-container>
-                            <div *ngFor="let task of filteredTasks" class="task-item">
-                                <ng-container *ngIf="task?.comments?.length > 0; else noComments">
-                                    <div *ngFor="let comment of task.comments" class="comment mb-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
-                                            <small class="text-muted">
-                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                            </small>
-                                        </div>
-                                        <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
-                                        <p class="mt-2">{{ comment?.comment }}</p>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-
-            <ng-template #noComments>
-                <p class="text-muted">No comments available.</p>
-            </ng-template>
-
-            <section class="pageheader bg-dark">
-                <div class="container ">
-                    <p><strong>Project Logs</strong></p>
-                </div>
-            </section><br>
-
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-
-                        <div *ngIf="logs?.length > 3" class="text-end mt-3">
-                            <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
-                                View All
-                            </a>
-                        </div>
-                        <!-- List of logs -->
-                        <ul class="SecondarytaskList mt-3">
-                            <li *ngFor="let log of (showAllLogs ? logs : logs.slice(0, 3))" class="mb-3">
-                                <div class="comment-item">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-0" [innerHTML]="log?.log"></p>
-                                        <span class="text-muted">
-                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- No records found -->
-                        <p *ngIf="logs?.length === 0" class="text-center">
-                            No Logs available.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
+            <a
+              routerLink="/super-admin/status-wise-tracker"
+              class="btn btn-primary text-dark"
+            >
+              Back
+            </a>
+          </div>
         </div>
-    </section>
+      </div>
+
+      <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2"><strong>BOS ID:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.BOSID || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Publish Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.publishDate
+                    ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Category:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.category || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Industry:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.industry || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Min value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.minValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Max value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.maxValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Website:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.website || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Link to notice:</strong></div>
+              <div class="col-md-10">
+                <a
+                  *ngIf="projectDetails?.link; else noLink"
+                  href="{{ projectDetails?.link }}"
+                  target="_blank"
+                  >Link to Notice</a
+                >
+                <ng-template #noLink>-</ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Created Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.createdAt
+                    ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Due Date & Time:</strong></div>
+              <div class="col-md-10">
+                {{
+                  projectDetails?.dueDate
+                    ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
+                    : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>CPV Codes:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.CPVCodes || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Notice Reference:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.noticeReference || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Status:</strong></div>
+              <div
+                class="col-md-10"
+                [ngClass]="{
+                  'text-success': projectDetails?.status === 'Passed',
+                  'text-danger': projectDetails?.status === 'Fail'
+                }"
+              >
+                {{ projectDetails?.status || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Project Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.projectType || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Mail Id:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.mailID || "-" }}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2"><strong>Client Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientType || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Client Name:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientName || "-" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="loginUser?.role === 'ProcessManagerAdmin'">
+        <div class="col-md-2"><strong>Select Assign User:</strong></div>
+        <ng-select
+          id="assignTo"
+          class="form-select custom-ng-select-option"
+          placeholder="Select Assign User"
+          [multiple]="true"
+          bindLabel="userName"
+          bindValue="_id"
+          [items]="userList"
+          [(ngModel)]="projectDetails.assignedUsers"
+          (change)="
+            appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)
+          "
+        >
+        </ng-select>
+      </div>
+      <br />
+
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Project Description</strong></p>
+        </div>
+      </section>
+      <br />
+
+      <p>{{ projectDetails?.description }}</p>
+
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Comments</strong></p>
+        </div>
+      </section>
+      <br />
+
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="comments-section">
+            <ng-container *ngIf="commentData!.length > 0; else noTasks">
+              <div *ngFor="let comment of commentData" class="task-item">
+                <ng-container *ngIf="comment?.userDetails">
+                  <div class="comment mb-3">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <p class="mb-0 fw-bold">
+                        {{ comment?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"
+                      ><strong>Status :</strong> {{ comment?.status }}</small
+                    >
+                    <p class="mt-2">{{ comment?.comment }}</p>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+          <ng-template #noTasks>
+            <p class="text-muted">No status comments available.</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="comments-section">
+            <ng-container>
+              <div *ngFor="let task of filteredTasks" class="task-item">
+                <ng-container
+                  *ngIf="task?.comments?.length > 0; else noComments"
+                >
+                  <div
+                    *ngFor="let comment of task.comments"
+                    class="comment mb-3"
+                  >
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <p class="mb-0 fw-bold">
+                        {{ comment?.userDetail?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block">{{
+                      comment?.userDetail?.role
+                    }}</small>
+                    <p class="mt-2">{{ comment?.comment }}</p>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noComments>
+        <p class="text-muted">No comments available.</p>
+      </ng-template>
+
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Project Logs</strong></p>
+        </div>
+      </section>
+      <br />
+
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="comments-section">
+            <div *ngIf="logs?.length > 3" class="text-end mt-3">
+              <a
+                class="btn btn-link"
+                data-bs-toggle="modal"
+                data-bs-target="#ViewProjectLogs"
+              >
+                View All
+              </a>
+            </div>
+            <!-- List of logs -->
+            <ul class="SecondarytaskList mt-3">
+              <li
+                *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)"
+                class="mb-3"
+              >
+                <div class="comment-item">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0" [innerHTML]="log?.log"></p>
+                    <span class="text-muted">
+                      {{ log?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <!-- No records found -->
+            <p *ngIf="logs?.length === 0" class="text-center">
+              No Logs available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <!-- View Document Modal -->
-<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="display: flex; justify-content: space-between">
-                <h5 class="modal-title" id="ViewDocumentModalLabel">
-                    FOI Document ({{ selectedDocument?.name }})
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-                    <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-                        height="600px"></ngx-extended-pdf-viewer>
-                </ng-container>
-                <ng-template #otherFormats>
-                    <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-                        [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
-                        style="width: 100%; height: 600px"></iframe>
-                    <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url"
-                        class="img-fluid" />
-                </ng-template>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Close
-                </button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="ViewDocumentModal"
+  tabindex="-1"
+  aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          FOI Document ({{ selectedDocument?.name }})
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-container
+          *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats"
+        >
+          <ngx-extended-pdf-viewer
+            [src]="selectedDocument?.link?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe
+            *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectedDocument?.link?.url)"
+            [src]="selectedDocument?.link?.url"
+            class="img-fluid"
+          />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="modal fade" id="ViewProjectLogs" tabindex="-1" aria-labelledby="ViewProjectLogsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ViewProjectLogsLabel">
-                    Project Logs
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <ul class="SecondarytaskList mt-3">
-                            <li *ngFor="let log of projectDetails?.logs" class="mb-3">
-                                <div class="comment-item">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-0" [innerHTML]="log?.log"></p>
-                                        <span class="text-muted">
-                                            {{ log?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- No records found -->
-                        <p *ngIf="logs?.length === 0" class="text-center">
-                            No records found
-                        </p>
-                    </div>
+<div
+  class="modal fade"
+  id="ViewProjectLogs"
+  tabindex="-1"
+  aria-labelledby="ViewProjectLogsLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewProjectLogsLabel">Project Logs</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex">
+        <div class="flex-grow-1 pe-3">
+          <div class="comments-section">
+            <ul class="SecondarytaskList mt-3">
+              <li *ngFor="let log of projectDetails?.logs" class="mb-3">
+                <div class="comment-item">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0" [innerHTML]="log?.log"></p>
+                    <span class="text-muted">
+                      {{ log?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </span>
+                  </div>
                 </div>
-            </div>
+              </li>
+            </ul>
+
+            <!-- No records found -->
+            <p *ngIf="logs?.length === 0" class="text-center">
+              No records found
+            </p>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<section *ngFor="let item of projectStrips">
+  <div class="container-fluid">
+    <!-- Black Strip Header -->
+    <div class="bg-dark py-3">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div
+            class="container d-flex justify-content-between align-items-center"
+          >
+            <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
+          </div>
+          <br />
+          <!-- Add Button -->
+          <div *ngIf="item.type === 'Image'">
+            <button
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              [attr.data-bs-target]="'#imageModal_' + item._id"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+
+    <!-- Redesigned Description -->
+    <div class="bg-white py-3" *ngIf="item?.type != 'Image'">
+      <p class="text-secondary mb-0 fw-bold">Description:</p>
+      <p class="text-dark mb-0">{{ item?.description }}</p>
+    </div>
+
+    <!-- <div class="container py-4">
+        <div class="row mt-3" *ngIf="item?.images?.length">
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-3" *ngFor="let image of item?.images">
+            <div class="card h-100">
+              <div class="card-body">
+                <p class="card-text fw-semibold">{{ image?.imageText }}</p>
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" (click)="openViewImage(image)"
+                    data-bs-target="#viewstripimage">
+                    <i class="bi bi-eye-fill"></i> View
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+    <div class="row align-items-center">
+      <div class="col-lg-9 col-xl-9 col-12">
+        <div class="row">
+          <div
+            class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12"
+            *ngIf="item?.images?.length"
+          >
+            <div class="form-group" *ngFor="let image of item?.images">
+              <label class="display-block">{{ image?.imageText }}</label> <br />
+              <div class="upload-btn-wrapper">
+                <div class="d-flex justify-content-between">
+                  <a
+                    *ngIf="subContractDocument"
+                    (click)="openViewImage(image)"
+                    class="btn btn-small me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewstripimage"
+                  >
+                    <i class="bi bi-eye-fill"></i> View
+                  </a>
+                  <a
+                    *ngIf="subContractDocument"
+                    (click)="
+                      removeDocument(documentUploadType.subContractDocument)
+                    "
+                    class="btn btn-danger"
+                  >
+                    <i class="bi bi-trash-fill"></i> Remove
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Adding Image Details -->
+    <div
+      class="modal fade"
+      [id]="'imageModal_' + item._id"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Image Details</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Dynamic Input Fields -->
+            <div
+              *ngFor="let field of imageFields; let i = index"
+              class="input-group mb-3"
+            >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Text"
+                [(ngModel)]="field.text"
+              />
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                (change)="onFileChange($event, i)"
+              />
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="removeField(i)"
+                [disabled]="imageFields.length === 1"
+              >
+                Delete
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm mt-3"
+              (click)="addField()"
+            >
+              Add More
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveFields(item._id)"
+              data-bs-dismiss="modal"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- View StripAdd Modal -->
+<div
+  class="modal fade"
+  id="ViewStripAdd"
+  tabindex="-1"
+  aria-labelledby="ViewStripAddLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Radio Buttons to Select Upload Type -->
+        <div class="form-group d-flex align-items-center mb-4">
+          <label class="me-3">Select Type:</label>
+          <div class="form-check me-3">
+            <input
+              type="radio"
+              id="textOption"
+              class="form-check-input"
+              formControlName="type"
+              value="Text"
+              (change)="selectUploadType(true)"
+            />
+            <label for="textOption" class="form-check-label">Text</label>
+          </div>
+          <div class="form-check">
+            <input
+              type="radio"
+              id="imageOption"
+              class="form-check-input"
+              formControlName="type"
+              value="Image"
+              (change)="selectUploadType(false)"
+            />
+            <label for="imageOption" class="form-check-label">Image</label>
+          </div>
+        </div>
+
+        <!-- Conditional Rendering Based on Upload Type -->
+        <div *ngIf="uploadType; else imageUploadSection">
+          <!-- Text Upload Section -->
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label">Strip Heading :</label>
+            <input
+              type="text"
+              id="textInput"
+              class="form-control"
+              placeholder="Enter Text"
+              formControlName="text"
+            />
+            <div
+              *ngIf="
+                addStripcontrol.text.touched && addStripcontrol.text.invalid
+              "
+              class="text-danger"
+            >
+              Text is required.
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label"
+              >Strip Description :</label
+            >
+            <textarea
+              type="text"
+              id="textInput"
+              class="form-control"
+              placeholder="Enter Description"
+              formControlName="description"
+            ></textarea>
+            <div
+              *ngIf="
+                addStripcontrol.description.touched &&
+                addStripcontrol.description.invalid
+              "
+              class="text-danger"
+            >
+              Description is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Upload Section -->
+        <ng-template #imageUploadSection>
+          <div class="form-group mb-3">
+            <label for="imageTextInput" class="form-label"
+              >Strip Heading :</label
+            >
+            <input
+              type="text"
+              id="imageTextInput"
+              class="form-control"
+              placeholder="Enter Text"
+              formControlName="imageText"
+            />
+            <div
+              *ngIf="
+                addStripcontrol.imageText.touched &&
+                addStripcontrol.imageText.invalid
+              "
+              class="text-danger"
+            >
+              Image Text is required.
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="row justify-content-end mt-4">
+          <div class="col-auto">
+            <button
+              (click)="addLoginInfo()"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              class="btn btn-dark"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Strip image Modal -->
+<div
+  class="modal fade"
+  id="viewstripimage"
+  tabindex="-1"
+  aria-labelledby="viewstripimageLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          Strip Image ({{ selectViewImage?.imageText }})
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
+          <ngx-extended-pdf-viewer
+            [src]="selectViewImage?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
+        </ng-container>
+        <ng-template #otherFormats>
+          <iframe
+            *ngIf="isWordOrExcel(selectViewImage?.url)"
+            [src]="getDocumentViewerUrl(selectViewImage?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectViewImage?.url)"
+            [src]="selectViewImage?.url"
+            class="img-fluid"
+          />
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

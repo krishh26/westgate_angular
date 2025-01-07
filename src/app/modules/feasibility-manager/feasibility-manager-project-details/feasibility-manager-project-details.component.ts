@@ -1,5 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -13,12 +19,11 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 @Component({
   selector: 'app-feasibility-manager-project-details',
   templateUrl: './feasibility-manager-project-details.component.html',
-  styleUrls: ['./feasibility-manager-project-details.component.scss']
+  styleUrls: ['./feasibility-manager-project-details.component.scss'],
 })
 export class FeasibilityManagerProjectDetailsComponent {
-
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
-  commentName: string = "";
+  commentName: string = '';
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
@@ -34,11 +39,11 @@ export class FeasibilityManagerProjectDetailsComponent {
   economicalPartnershipResponceFile: any;
   viewClientDocumentForm: boolean = true;
   viewLoginForm: boolean = true;
-  documentName: string = "";
-  loginName: string = "";
+  documentName: string = '';
+  loginName: string = '';
   comment: string = '';
   isEditing = false;
-  status: string = "Expired";
+  status: string = 'Expired';
   statusComment: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
@@ -48,6 +53,47 @@ export class FeasibilityManagerProjectDetailsComponent {
   failStatusImage: any;
   filteredTasks: any = [];
   showAllLogs: boolean = false;
+  // documentUploadType: any = {
+  //   subContractDocument: 'SubContract',
+  //   economicalPartnershipQuery: 'economicalPartnershipQuery',
+  //   economicalPartnershipResponse: 'economicalPartnershipResponse',
+  //   clientDocument: 'clientDocument',
+  //   loginDetailDocument: 'loginDetailDocument',
+  //   otherQueryDocument: 'otherQueryDocument',
+  //   otherDocument: 'otherDocument',
+  //   failStatusImage: 'failStatusImage',
+  //   westgatedocument: 'westgatedocument',
+  // };
+  userList: any = [];
+  // For check bov
+  subContracting: boolean = true;
+  loginModalMode: boolean = true;
+  displayedUsers: any[] = [];
+  loginDetailControl = {
+    companyName: new FormControl('', Validators.required),
+    link: new FormControl('', Validators.required),
+    loginID: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    id: new FormControl(''),
+  };
+  loginUser: any = [];
+  selectedUserIds: number[] = [];
+  loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
+  commentData: any[] = [];
+  logs: any = [];
+
+  addStripcontrol = {
+    text: new FormControl('', Validators.required),
+    imageText: new FormControl('', Validators.required),
+    type: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+  };
+  addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
+  selectedImage!: string;
+  uploadType: boolean = true;
+  projectStrips: any = [];
+  imageFields = [{ text: '', file: null }];
+  selectViewImage: any;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -56,26 +102,10 @@ export class FeasibilityManagerProjectDetailsComponent {
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
     otherDocument: 'otherDocument',
-    failStatusImage: "failStatusImage",
-    westgatedocument: "westgatedocument"
-  }
-  userList: any = [];
-  // For check bov
-  subContracting: boolean = true;
-  loginModalMode: boolean = true;
-  displayedUsers: any[] = [];
-  loginDetailControl = {
-    companyName: new FormControl("", Validators.required),
-    link: new FormControl("", Validators.required),
-    loginID: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
-    id: new FormControl(""),
-  }
-  loginUser: any = [];
-  selectedUserIds: number[] = [];
-  loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
-  commentData: any[] = [];
-  logs: any = [];
+    failStatusImage: 'failStatusImage',
+    westgatedocument: 'westgatedocument',
+  };
+  supportDocument!: FormGroup;
 
   constructor(
     private projectService: ProjectService,
@@ -87,10 +117,11 @@ export class FeasibilityManagerProjectDetailsComponent {
     private spinner: NgxSpinnerService,
     private superService: SuperadminService,
     private projectManagerService: ProjectManagerService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.projectId = params['id']
+      this.projectId = params['id'];
     });
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -98,6 +129,204 @@ export class FeasibilityManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
+    this.getProjectStrips();
+    this.initializeForm();
+    this.addStripForm = this.fb.group({
+      type: ['', Validators.required],
+      text: [''],
+      description: [''], // Ensure this is included
+      imageText: [''],
+    });
+  }
+
+  onFileSelect(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.addStripForm.patchValue({
+        image: file,
+      });
+      this.addStripForm.get('image')?.updateValueAndValidity();
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result; // For preview
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  selectUploadType(isText: boolean): void {
+    this.uploadType = isText;
+    if (isText) {
+      this.addStripForm.get('text')?.setValidators(Validators.required);
+      this.addStripForm.get('imageText')?.clearValidators();
+      this.addStripForm.get('image')?.clearValidators();
+    } else {
+      this.addStripForm.get('text')?.clearValidators();
+      this.addStripForm.get('imageText')?.setValidators(Validators.required);
+      this.addStripForm.get('image')?.setValidators(Validators.required);
+    }
+    this.addStripForm.get('text')?.updateValueAndValidity();
+    this.addStripForm.get('imageText')?.updateValueAndValidity();
+    this.addStripForm.get('image')?.updateValueAndValidity();
+  }
+  addLoginInfoAdd() {
+    // Retrieve form values
+    const formValues = this.addStripForm.value;
+    // Construct the params object
+    const params: any = {
+      type: formValues.type, // Required
+      projectId: this.projectDetails?._id, // Hardcoded project ID
+    };
+    // Conditionally add optional fields if present
+    if (formValues.text && formValues.type === 'Text') {
+      params.text = formValues.text;
+    }
+    if (formValues.description && formValues.type === 'Text') {
+      params.description = formValues.description;
+    }
+    if (formValues.imageText && formValues.type === 'Image') {
+      params.text = formValues.imageText; // Assuming description maps to image text
+    }
+    // Log params to the console
+    console.log('Params to be sent:', params);
+    this.projectService.createStrip(params).subscribe(
+      (response: any) => {
+        if (response?.status == true) {
+          this.getProjectDetails();
+          this.notificationService.showSuccess(
+            '',
+            'Project Update Successfully.'
+          );
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getProjectStrips() {
+    this.projectService.getprojectStrips(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectStrips = response?.data?.data;
+          console.log(this.projectStrips);
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  addField() {
+    this.imageFields.push({ text: '', file: null });
+  }
+
+  // Remove a field
+  removeField(index: number) {
+    if (this.imageFields.length > 1) {
+      this.imageFields.splice(index, 1);
+    }
+  }
+
+  // Handle file input change
+  onFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    this.imageFields[index].file = file;
+  }
+
+  // Save fields and close modal
+  saveFields(modalId: number) {
+    const allFilesUploaded = this.imageFields.every((field) => !!field.file);
+    if (!allFilesUploaded) {
+      return;
+    }
+    // this.imageFields = [{ text: '', file: null }];
+    let uploadedImages: any = {};
+    const formData = new FormData();
+    for (const field of this.imageFields) {
+      if (field.file) {
+        formData.append('files', field.file);
+      }
+    }
+    this.feasibilityService.uploadDocument(formData).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.saveImageDetails(response.data, modalId.toString());
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  saveImageDetails(data: any, id: string) {
+    const dataArray = Array.isArray(data) ? data : [data];
+    const mergerdata = dataArray.map((response: any, index: number) => {
+      const field = this.imageFields[index];
+      return {
+        imageText: field.text,
+        key: response.key,
+        url: response.url,
+        fileName: response.fileName,
+      };
+    });
+    const payload = {
+      images: mergerdata,
+      projectId: this.projectId,
+    };
+    this.superService.updateProjectDetails(payload, id).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.notificationService.showSuccess('images add succesfully');
+          this.imageFields = [{ text: '', file: null }];
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  openViewImage(image: any) {
+    this.selectViewImage = image;
+    console.log(this.selectViewImage?.url);
+  }
+
+  removeDocumentADD(i: number) {
+    this.document.removeAt(i);
+  }
+
+  initializeForm() {
+    this.supportDocument = this.fb.group({
+      document: this.fb.array([]),
+    });
+  }
+  get document(): FormArray {
+    return this.supportDocument?.get('document') as FormArray;
   }
 
   getUserAllList() {
@@ -107,7 +336,9 @@ export class FeasibilityManagerProjectDetailsComponent {
         if (response?.status === true) {
           // Filter only roles of FeasibilityAdmin and FeasibilityUser
           this.userList = response?.data?.filter(
-            (user: any) => user?.role === 'FeasibilityAdmin' || user?.role === 'FeasibilityUser'
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
+              user?.role === 'FeasibilityUser'
           );
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
@@ -134,7 +365,10 @@ export class FeasibilityManagerProjectDetailsComponent {
   }
 
   editProjectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(
+      ['/feasibility-user/edit-feasibility-project-details'],
+      { queryParams: { id: projectId } }
+    );
   }
 
   getTask() {
@@ -165,37 +399,44 @@ export class FeasibilityManagerProjectDetailsComponent {
 
   getProjectDetails() {
     this.showLoader = true;
-    this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectDetails = response?.data;
+    this.projectService.getProjectDetailsById(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectDetails = response?.data;
 
-        // Assign only the first 3 logs to the logs property
-        this.logs = response?.data?.logs?.slice(0, 3) || [];
+          // Assign only the first 3 logs to the logs property
+          this.logs = response?.data?.logs?.slice(0, 3) || [];
 
-        this.status = this.projectDetails?.status;
-        this.subContracting = this.projectDetails?.subContracting;
-        // this.statusComment.setValue(this.projectDetails?.statusComment);
-        this.commentData = this.projectDetails?.statusComment
-        this.subContractDocument = this.projectDetails?.subContractingfile || null;
-        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
-        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
-        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments || null;
-        this.failStatusImage = this.projectDetails?.failStatusImage || null;
-      } else {
-        this.notificationService.showError(response?.message);
+          this.status = this.projectDetails?.status;
+          this.subContracting = this.projectDetails?.subContracting;
+          // this.statusComment.setValue(this.projectDetails?.statusComment);
+          this.commentData = this.projectDetails?.statusComment;
+          this.subContractDocument =
+            this.projectDetails?.subContractingfile || null;
+          this.economicalPartnershipQueryFile =
+            this.projectDetails?.economicalPartnershipQueryFile || null;
+          this.economicalPartnershipResponceFile =
+            this.projectDetails?.economicalPartnershipResponceFile || null;
+          this.FeasibilityOtherDocuments =
+            this.projectDetails?.FeasibilityOtherDocuments || null;
+          this.failStatusImage = this.projectDetails?.failStatusImage || null;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   statusChange(status: string) {
     this.status = status;
-    this.commentData = []
-    this.statusComment.reset()
+    this.commentData = [];
+    this.statusComment.reset();
   }
 
   pushStatus() {
@@ -211,7 +452,7 @@ export class FeasibilityManagerProjectDetailsComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
-      userId: this.loginUser?._id
+      userId: this.loginUser?._id,
     });
 
     // Reset the comment input field
@@ -235,13 +476,12 @@ export class FeasibilityManagerProjectDetailsComponent {
   openUploadedDocument(data: any) {
     this.uploadedDocument = data;
     console.log(this.uploadedDocument);
-
   }
 
   download(imageUrl: string, fileName: string): void {
     fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -274,76 +514,86 @@ export class FeasibilityManagerProjectDetailsComponent {
 
       this.spinner.show();
 
-      this.feasibilityService.uploadDocument(data).subscribe((response) => {
-        this.spinner.hide();
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
 
-        if (response?.status) {
-          // Sub-contract document
-          if (type == this.documentUploadType.subContractDocument) {
-            this.subContractDocument = response?.data;
-          }
-
-          // Economical partnership query document
-          if (type == this.documentUploadType.economicalPartnershipQuery) {
-            this.economicalPartnershipQueryFile = response?.data;
-          }
-
-          // Other query document
-          if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
-            let objToBePushed = {
-              name: this.loginName,
-              type: type,
-              file: response?.data
-            };
-            this.FeasibilityOtherDocuments.push(objToBePushed);
-            this.loginName = "";
-          }
-
-          if (type == this.documentUploadType.failStatusImage) {
-            this.failStatusImage = response?.data;
-          }
-
-          // Economical partnership response document
-          if (type == this.documentUploadType.economicalPartnershipResponse) {
-            this.economicalPartnershipResponceFile = response?.data;
-          }
-
-          //client document
-          if (type == this.documentUploadType.clientDocument) {
-            if (!this.documentName) {
-              return this.notificationService.showError('Enter a client document Name');
+          if (response?.status) {
+            // Sub-contract document
+            if (type == this.documentUploadType.subContractDocument) {
+              this.subContractDocument = response?.data;
             }
-            this.clientDocument = response?.data;
-            let objToBePushed = {
-              name: this.documentName,
-              file: response?.data
-            };
-            this.projectDetails.clientDocument.push(objToBePushed);
-            this.documentName = "";
-          }
 
-          if (type == this.documentUploadType.loginDetailDocument) {
-            if (!this.loginName) {
-              return this.notificationService.showError('Enter Name');
+            // Economical partnership query document
+            if (type == this.documentUploadType.economicalPartnershipQuery) {
+              this.economicalPartnershipQueryFile = response?.data;
             }
-            this.loginDetailDocument = response?.data;
-            let objToBePushed = {
-              name: this.loginName,
-              file: response?.data
-            };
-            this.projectDetails.loginDetail.push(objToBePushed);
-            this.loginName = "";
-          }
 
-          return this.notificationService.showSuccess(response?.message);
-        } else {
-          return this.notificationService.showError(response?.message);
+            // Other query document
+            if (
+              type == this.documentUploadType.otherQueryDocument ||
+              type == this.documentUploadType.otherDocument
+            ) {
+              let objToBePushed = {
+                name: this.loginName,
+                type: type,
+                file: response?.data,
+              };
+              this.FeasibilityOtherDocuments.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            if (type == this.documentUploadType.failStatusImage) {
+              this.failStatusImage = response?.data;
+            }
+
+            // Economical partnership response document
+            if (type == this.documentUploadType.economicalPartnershipResponse) {
+              this.economicalPartnershipResponceFile = response?.data;
+            }
+
+            //client document
+            if (type == this.documentUploadType.clientDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a client document Name'
+                );
+              }
+              this.clientDocument = response?.data;
+              let objToBePushed = {
+                name: this.documentName,
+                file: response?.data,
+              };
+              this.projectDetails.clientDocument.push(objToBePushed);
+              this.documentName = '';
+            }
+
+            if (type == this.documentUploadType.loginDetailDocument) {
+              if (!this.loginName) {
+                return this.notificationService.showError('Enter Name');
+              }
+              this.loginDetailDocument = response?.data;
+              let objToBePushed = {
+                name: this.loginName,
+                file: response?.data,
+              };
+              this.projectDetails.loginDetail.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            return this.notificationService.showSuccess(response?.message);
+          } else {
+            return this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          // Hide the spinner in case of an error as well
+          this.spinner.hide();
+          return this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
         }
-      }, (error) => {
-        // Hide the spinner in case of an error as well
-        this.spinner.hide();
-        return this.notificationService.showError(error?.message || "Error while uploading");
-      });
+      );
     }
   }
 
@@ -354,28 +604,35 @@ export class FeasibilityManagerProjectDetailsComponent {
       data.append('files', file);
       this.spinner.show();
 
-      this.feasibilityService.uploadDocument(data).subscribe((response) => {
-        this.spinner.hide();
-        if (response?.status) {
-          if (!this.commentName) {
-            return this.notificationService.showError('Enter a client document name');
-          }
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
+          if (response?.status) {
+            if (!this.commentName) {
+              return this.notificationService.showError(
+                'Enter a client document name'
+              );
+            }
 
-          // Add the uploaded file and comment to projectComment array
-          let objToBePushed = {
-            comment: this.commentName,
-            file: response?.data
-          };
-          this.projectDetails.projectComment.push(objToBePushed);
-          this.commentName = ""; // Clear the comment input
-          this.notificationService.showSuccess(response?.message);
-        } else {
-          this.notificationService.showError(response?.message);
+            // Add the uploaded file and comment to projectComment array
+            let objToBePushed = {
+              comment: this.commentName,
+              file: response?.data,
+            };
+            this.projectDetails.projectComment.push(objToBePushed);
+            this.commentName = ''; // Clear the comment input
+            this.notificationService.showSuccess(response?.message);
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
         }
-      }, (error) => {
-        this.spinner.hide();
-        this.notificationService.showError(error?.message || 'Error while uploading');
-      });
+      );
     }
   }
 
@@ -398,11 +655,11 @@ export class FeasibilityManagerProjectDetailsComponent {
 
     if (type === this.documentUploadType.economicalPartnershipResponse) {
       this.economicalPartnershipResponceFile = null; // Clear the uploaded document
-      this.notificationService.showSuccess("Document removed successfully.");
+      this.notificationService.showSuccess('Document removed successfully.');
     }
 
     // Add any additional logic for other document types
-    this.notificationService.showSuccess("Document removed successfully.");
+    this.notificationService.showSuccess('Document removed successfully.');
   }
 
   removeOtherDocument(document: any): void {
@@ -410,41 +667,42 @@ export class FeasibilityManagerProjectDetailsComponent {
     const index = this.FeasibilityOtherDocuments.indexOf(document);
     if (index > -1) {
       this.FeasibilityOtherDocuments.splice(index, 1); // Remove the document from the array
-      this.notificationService.showSuccess("Document removed successfully.");
+      this.notificationService.showSuccess('Document removed successfully.');
     }
   }
 
   hideShowForm() {
-    this.viewClientDocumentForm = !this.viewClientDocumentForm
+    this.viewClientDocumentForm = !this.viewClientDocumentForm;
   }
 
   viewLoginDetail(loginData: any) {
-    this.loginModalMode = true
-    this.loginDetailForm.patchValue(loginData.data)
+    this.loginModalMode = true;
+    this.loginDetailForm.patchValue(loginData.data);
   }
 
   openLoginDetail() {
-    this.loginModalMode = false
-    this.loginDetailForm.reset()
+    this.loginModalMode = false;
+    this.loginDetailForm.reset();
   }
-  
+
   editLoginDetail(loginData: any, i: number) {
-    this.loginModalMode = false
-    this.loginDetailForm.patchValue(loginData.data)
-    this.loginDetailForm.controls['id'].setValue(i)
+    this.loginModalMode = false;
+    this.loginDetailForm.patchValue(loginData.data);
+    this.loginDetailForm.controls['id'].setValue(i);
   }
 
   addLoginInfo() {
     const dataToBePushed = {
       name: this.loginName,
-      data: this.loginDetailForm.value
-    }
+      data: this.loginDetailForm.value,
+    };
     if (this.projectDetails.loginDetail[this.loginDetailForm.value['id']]) {
-      this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data = dataToBePushed.data
+      this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data =
+        dataToBePushed.data;
     } else {
-      this.projectDetails.loginDetail.push(dataToBePushed)
+      this.projectDetails.loginDetail.push(dataToBePushed);
     }
-    this.loginName = ''
+    this.loginName = '';
   }
 
   toggleEdit() {
@@ -452,7 +710,7 @@ export class FeasibilityManagerProjectDetailsComponent {
   }
 
   saveChanges(type?: string, contractEdit?: boolean) {
-    let payload: any = {}
+    let payload: any = {};
     if (!contractEdit) {
       // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
       //   return this.notificationService.showError('Please Enter Status Comment');
@@ -467,24 +725,26 @@ export class FeasibilityManagerProjectDetailsComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
-        })
+        });
       }
 
       payload = {
         subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+        economicalPartnershipQueryFile:
+          this.economicalPartnershipQueryFile || [],
         FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
+        economicalPartnershipResponceFile:
+          this.economicalPartnershipResponceFile || [],
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
-        subContracting: this.subContracting || "",
-        comment: this.comment || "",
+        subContracting: this.subContracting || '',
+        comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
-        status: this.status || "",
+        status: this.status || '',
         statusComment: this.commentData,
-        loginDetail: this.projectDetails.loginDetail || "",
-        failStatusImage: this.failStatusImage || ""
+        loginDetail: this.projectDetails.loginDetail || '',
+        failStatusImage: this.failStatusImage || '',
       };
 
       if (this.failStatusReason?.value) {
@@ -495,7 +755,6 @@ export class FeasibilityManagerProjectDetailsComponent {
       if (this.subContracting !== undefined && this.subContracting !== null) {
         payload.subContracting = this.subContracting;
       }
-
     }
 
     if (contractEdit) {
@@ -503,32 +762,37 @@ export class FeasibilityManagerProjectDetailsComponent {
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
-      }
+      };
     }
-    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          this.getProjectDetails();
-          // if (type == 'save') {
-          //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-          // }
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+    this.feasibilityService
+      .updateProjectDetails(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+            // if (type == 'save') {
+            //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+            // }
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
         }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
-      }
-    );
+      );
   }
 
-
   appointFeasibilityUser(selectedUsers: string[], item: any) {
-    const projectId = item?._id
+    const projectId = item?._id;
     const payload = {
-      userId: selectedUsers // Array of selected user IDs
+      userId: selectedUsers, // Array of selected user IDs
     };
     this.superService.appointFeasibilityUser(payload, projectId).subscribe(
       (response) => {
@@ -538,12 +802,16 @@ export class FeasibilityManagerProjectDetailsComponent {
           this.notificationService.showSuccess('Appoint users successfully');
           // window.location.reload();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to appoint users');
+          this.notificationService.showError(
+            response?.message || 'Failed to appoint users'
+          );
         }
       },
       (error) => {
         this.showLoader = false;
-        this.notificationService.showError(error?.message || 'An error occurred');
+        this.notificationService.showError(
+          error?.message || 'An error occurred'
+        );
       }
     );
   }
@@ -553,20 +821,31 @@ export class FeasibilityManagerProjectDetailsComponent {
   }
 
   isWordOrExcel(url: string): boolean {
-    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+    return (
+      url?.endsWith('.doc') ||
+      url?.endsWith('.docx') ||
+      url?.endsWith('.xls') ||
+      url?.endsWith('.xlsx') ||
+      false
+    );
   }
 
   isImage(url: string): boolean {
-    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+    return (
+      url?.endsWith('.jpg') ||
+      url?.endsWith('.jpeg') ||
+      url?.endsWith('.png') ||
+      false
+    );
   }
 
   getDocumentViewerUrl(url: string): SafeResourceUrl {
     if (this.isWordOrExcel(url)) {
-      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+        url
+      )}`;
       return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-
 }
-

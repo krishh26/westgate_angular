@@ -1010,7 +1010,8 @@ export class SuperAdminProjectDetailsComponent {
   }
 
   saveImageDetails(data: any, id: string) {
-    const mergerdata = data.map((response: any, index: number) => {
+    const dataArray = Array.isArray(data) ? data : [data];
+    const mergerdata = dataArray.map((response: any, index: number) => {
       const field = this.imageFields[index];
       return {
         imageText: field.text,

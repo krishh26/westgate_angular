@@ -20,7 +20,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 @Component({
   selector: 'app-process-manager-tracker-project-details',
   templateUrl: './process-manager-tracker-project-details.component.html',
-  styleUrls: ['./process-manager-tracker-project-details.component.scss']
+  styleUrls: ['./process-manager-tracker-project-details.component.scss'],
 })
 export class ProcessManagerTrackerProjectDetailsComponent {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
@@ -77,6 +77,28 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   showAllLogs: boolean = false;
   logs: any = [];
 
+  addStripcontrol = {
+    text: new FormControl('', Validators.required),
+    imageText: new FormControl('', Validators.required),
+    type: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+  };
+  addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
+  selectedImage!: string;
+  uploadType: boolean = true;
+  projectStrips: any = [];
+  imageFields = [{ text: '', file: null }];
+  selectViewImage: any;
+  documentUploadType: any = {
+    subContractDocument: 'SubContract',
+    economicalPartnershipQuery: 'economicalPartnershipQuery',
+    economicalPartnershipResponse: 'economicalPartnershipResponse',
+    clientDocument: 'clientDocument',
+    loginDetailDocument: 'loginDetailDocument',
+    otherQueryDocument: 'otherQueryDocument',
+    otherDocument: 'otherDocument',
+    failStatusImage: 'failStatusImage',
+  };
 
   constructor(
     private projectService: ProjectService,
@@ -91,7 +113,8 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     private projectManagerService: ProjectManagerService,
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private superadminService: SuperadminService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -107,6 +130,203 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     this.getUserAllList();
     this.getTask();
     this.getProjectLogs();
+    this.getProjectStrips();
+    this.initializeForm();
+    this.addStripForm = this.fb.group({
+      type: ['', Validators.required],
+      text: [''],
+      description: [''], // Ensure this is included
+      imageText: [''],
+    });
+  }
+  onFileSelect(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.addStripForm.patchValue({
+        image: file,
+      });
+      this.addStripForm.get('image')?.updateValueAndValidity();
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result; // For preview
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  selectUploadType(isText: boolean): void {
+    this.uploadType = isText;
+    if (isText) {
+      this.addStripForm.get('text')?.setValidators(Validators.required);
+      this.addStripForm.get('imageText')?.clearValidators();
+      this.addStripForm.get('image')?.clearValidators();
+    } else {
+      this.addStripForm.get('text')?.clearValidators();
+      this.addStripForm.get('imageText')?.setValidators(Validators.required);
+      this.addStripForm.get('image')?.setValidators(Validators.required);
+    }
+    this.addStripForm.get('text')?.updateValueAndValidity();
+    this.addStripForm.get('imageText')?.updateValueAndValidity();
+    this.addStripForm.get('image')?.updateValueAndValidity();
+  }
+  addLoginInfo() {
+    // Retrieve form values
+    const formValues = this.addStripForm.value;
+    // Construct the params object
+    const params: any = {
+      type: formValues.type, // Required
+      projectId: this.projectDetails?._id, // Hardcoded project ID
+    };
+    // Conditionally add optional fields if present
+    if (formValues.text && formValues.type === 'Text') {
+      params.text = formValues.text;
+    }
+    if (formValues.description && formValues.type === 'Text') {
+      params.description = formValues.description;
+    }
+    if (formValues.imageText && formValues.type === 'Image') {
+      params.text = formValues.imageText; // Assuming description maps to image text
+    }
+    // Log params to the console
+    console.log('Params to be sent:', params);
+    this.projectService.createStrip(params).subscribe(
+      (response: any) => {
+        if (response?.status == true) {
+          this.getProjectDetails();
+          this.notificationService.showSuccess(
+            '',
+            'Project Update Successfully.'
+          );
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getProjectStrips() {
+    this.projectService.getprojectStrips(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectStrips = response?.data?.data;
+          console.log(this.projectStrips);
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  addField() {
+    this.imageFields.push({ text: '', file: null });
+  }
+
+  // Remove a field
+  removeField(index: number) {
+    if (this.imageFields.length > 1) {
+      this.imageFields.splice(index, 1);
+    }
+  }
+
+  // Handle file input change
+  onFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    this.imageFields[index].file = file;
+  }
+
+  // Save fields and close modal
+  saveFields(modalId: number) {
+    const allFilesUploaded = this.imageFields.every((field) => !!field.file);
+    if (!allFilesUploaded) {
+      return;
+    }
+    // this.imageFields = [{ text: '', file: null }];
+    let uploadedImages: any = {};
+    const formData = new FormData();
+    for (const field of this.imageFields) {
+      if (field.file) {
+        formData.append('files', field.file);
+      }
+    }
+    this.feasibilityService.uploadDocument(formData).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.saveImageDetails(response.data, modalId.toString());
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  saveImageDetails(data: any, id: string) {
+    const dataArray = Array.isArray(data) ? data : [data];
+    const mergerdata = dataArray.map((response: any, index: number) => {
+      const field = this.imageFields[index];
+      return {
+        imageText: field.text,
+        key: response.key,
+        url: response.url,
+        fileName: response.fileName,
+      };
+    });
+    const payload = {
+      images: mergerdata,
+      projectId: this.projectId,
+    };
+    this.superadminService.updateProjectDetails(payload, id).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.notificationService.showSuccess('images add succesfully');
+          this.imageFields = [{ text: '', file: null }];
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  openViewImage(image: any) {
+    this.selectViewImage = image;
+    console.log(this.selectViewImage?.url);
+  }
+
+  removeDocument(i: number) {
+    this.document.removeAt(i);
+  }
+
+  initializeForm() {
+    this.supportDocument = this.fb.group({
+      document: this.fb.array([]),
+    });
+  }
+  get document(): FormArray {
+    return this.supportDocument?.get('document') as FormArray;
   }
 
   openDocument(data: any) {
@@ -171,7 +391,6 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       }
     );
   }
-
 
   getProjectDetails() {
     this.showLoader = true;
@@ -290,9 +509,9 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   }
 
   appointFeasibilityUser(selectedUsers: string[], item: any) {
-    const projectId = item?._id
+    const projectId = item?._id;
     const payload = {
-      userIds: selectedUsers // Array of selected user IDs
+      userIds: selectedUsers, // Array of selected user IDs
     };
     this.superService.appointBidUser(payload, projectId).subscribe(
       (response) => {
@@ -302,14 +521,17 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           this.notificationService.showSuccess('Appoint users successfully');
           // window.location.reload();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to appoint users');
+          this.notificationService.showError(
+            response?.message || 'Failed to appoint users'
+          );
         }
       },
       (error) => {
         this.showLoader = false;
-        this.notificationService.showError(error?.message || 'An error occurred');
+        this.notificationService.showError(
+          error?.message || 'An error occurred'
+        );
       }
     );
   }
-
 }
