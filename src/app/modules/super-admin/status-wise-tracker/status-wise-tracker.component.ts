@@ -165,57 +165,52 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   isExpired: boolean = true;
 
-getProjectList(selectedStatus?: string) {
-  this.showLoader = true;
-
-  // Set common parameters
-  Payload.projectList.keyword = this.searchText;
-  Payload.projectList.page = String(this.page);
-  Payload.projectList.limit = String(this.pagesize);
-  Payload.projectList.expired = this.isExpired;
-
-  // Ensure selectedStatus is defined and map it dynamically
-  const statusKey = selectedStatus || this.status; // Use fallback to current status if selectedStatus is undefined
-
-  if (this.filterObject[statusKey] === 'Shortlisted') {
-    Payload.projectList.sortlist = true;
-    Payload.projectList.status = ''; // Clear status for 'Shortlisted'
-  } else {
-    Payload.projectList.sortlist = false;
-    Payload.projectList.status = this.filterObject[statusKey] || '';
-  }
-
-  this.projectService.getProjectList(Payload.projectList).subscribe(
-    (response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-
-      if (response?.status === true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-
-        // Calculate the date difference for each project
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
-      } else {
-        this.notificationService.showError(response?.message);
+  getProjectList(type?: string) {
+    this.showLoader = true;
+  
+    // Set common parameters
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.expired = this.isExpired;
+  
+    // Map the appropriate parameter based on the type
+    if (type === 'feasibility') {
+      Payload.projectList.status = this.status || '';
+      Payload.projectList.bidManagerStatus = ''; // Clear the other field
+    } else if (type === 'bid') {
+      Payload.projectList.bidManagerStatus = this.status || '';
+      Payload.projectList.status = ''; // Clear the other field
+    }
+  
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+  
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+  
+          // Calculate the date difference for each project
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    },
-    (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    }
-  );
-}
-
-
-  
+    );
+  }
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
@@ -239,10 +234,11 @@ getProjectList(selectedStatus?: string) {
     });
   };
 
-  filter(value: any) {
-    console.log('this is values', value, this.filterObject[value]);
-    this.status = this.filterObject[value]
-    this.getProjectList();
+
+  filter(value: any, type: string) {
+    console.log('this is values', value, this.filterObject[value], type);
+    this.status = this.filterObject[value];
+    this.getProjectList(type);
   }
 
 }

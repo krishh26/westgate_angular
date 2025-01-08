@@ -24,35 +24,40 @@
       </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <h5 class="text-theme"><strong>Feasibility Status</strong></h5>
-        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
-          <ul class="taskuserList d-flex flex-wrap list-unstyled">
-            <li *ngFor="let item of feasibilityData" class="me-3">
-              <div (click)="filter(item.status)" (click)="selectStatus(item.status)" [ngClass]="{'text-danger': selectedStatus === item.status}">
-                {{ item.status }} : {{ item.count }} : GBP
-                {{ item.value | number : "1.0-2" }}
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <h5 class="text-theme"><strong>Bid Status</strong></h5>
-        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
-          <ul class="taskuserList d-flex flex-wrap list-unstyled">
-            <li *ngFor="let item of bidData" class="me-3">
-              <div (click)="filter(item.status)" (click)="selectStatus(item.status)" [ngClass]="{'text-danger': selectedStatus === item.status}">
-                {{ item.status }} : {{ item.count }} : GBP
-                {{ item.value | number : "1.0-2" }}
-              </div>
-            </li>
-          </ul>
-        </div>
+    <div class="row">
+      <h5 class="text-theme"><strong>Feasibility Status</strong></h5>
+      <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
+        <ul class="taskuserList d-flex flex-wrap list-unstyled">
+          <li *ngFor="let item of feasibilityData" class="me-3">
+            <div
+              (click)="filter(item.status, 'feasibility')"
+              (click)="selectStatus(item.status)"
+              [ngClass]="{'text-danger': selectedStatus === item.status}"
+            >
+              {{ item.status }} : {{ item.count }} : GBP {{ item.value | number: '1.0-2' }}
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
+    
+    <div class="row">
+      <h5 class="text-theme"><strong>Bid Status</strong></h5>
+      <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
+        <ul class="taskuserList d-flex flex-wrap list-unstyled">
+          <li *ngFor="let item of bidData" class="me-3">
+            <div
+              (click)="filter(item.status, 'bid')"
+              (click)="selectStatus(item.status)"
+              [ngClass]="{'text-danger': selectedStatus === item.status}"
+            >
+              {{ item.status }} : {{ item.count }} : GBP {{ item.value | number: '1.0-2' }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
 
     <div class="container-fluid">
       <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
@@ -68,7 +73,8 @@
                 <th style="cursor: pointer" (click)="duedatesort('dueDate')">
                   Due Date & Time <i class="bi bi-sort-up"></i>
                 </th>
-                <th>Status</th>
+                <th>Feasibility Status</th>
+                <th>Bid Status</th>
               </tr>
             </thead>
             <tbody>
@@ -87,6 +93,7 @@
                 <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
                 <td>{{ item?.dueDate | date : "dd/MM/yyyy, h:mm a" }}</td>
                 <td>{{ item?.status }}</td>
+                <td>{{ item?.bidManagerStatus }}</td>
               </tr>
             </tbody>
           </table>
