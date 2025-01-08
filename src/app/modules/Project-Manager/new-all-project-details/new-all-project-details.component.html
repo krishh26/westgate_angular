@@ -257,7 +257,7 @@
         </div>
       </div>
 
-      <section class="pageheader bg-dark">
+      <!-- <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Upload Sub-contracting</strong></p>
         </div>
@@ -356,7 +356,6 @@
                   <br />
                   <p>{{ documentUploadType?.otherQueryDocument?.fileName }}</p>
 
-                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
                     <ng-container *ngIf="
                         document?.type === documentUploadType.otherQueryDocument
@@ -441,12 +440,10 @@
                     " />
                   <br />
 
-                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
                     <ng-container *ngIf="
                         document?.type === documentUploadType.otherDocument
                       ">
-                      <!-- Display document file name -->
                       <p>{{ document.file?.fileName }}</p>
 
                       <div class="d-flex justify-content-between align-items-center mb-2">
@@ -478,9 +475,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <!--Documents-->
       <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Documents</strong></p>
@@ -489,9 +485,6 @@
       <br />
 
       <div class="row mb-4">
-        <!-- <div class="col-12">
-          <h4 class="text-theme mb-4"><strong>Documents</strong></h4>
-        </div> -->
         <div class="col-lg-5 col-xl-5 col-12 mob-mb1">
           <h5>Client Documents</h5>
           <div class="card">
@@ -733,7 +726,7 @@
         </div> -->
       </div>
 
-      <section class="pageheader bg-dark">
+      <!-- <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Login Details</strong></p>
         </div>
@@ -785,7 +778,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row justify-content-end">
         <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">

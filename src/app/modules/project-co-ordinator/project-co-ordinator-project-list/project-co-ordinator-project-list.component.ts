@@ -40,7 +40,7 @@ export class ProjectCoOrdinatorProjectListComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-        console.log('this.projectList', this.projectList);
+          
         
       } else {
         this.notificationService.showError(response?.message);
