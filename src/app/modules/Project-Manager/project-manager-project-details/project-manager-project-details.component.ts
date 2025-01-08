@@ -87,7 +87,7 @@ export class ProjectManagerProjectDetailsComponent {
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   selectedImage!: string;
 
-  ForTitleuserList: any = [];
+  ForTitleuserList: any = ['SupplierAdmin', 'FeasibilityAdmin', 'FeasibilityUser'];
   displayForTitleedUsers: any = [];
   selectViewImage: any;
   uploadType: boolean = true;
@@ -114,13 +114,13 @@ export class ProjectManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
-    this.getForTitleUserAllList();
+    // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      userIds: ['']
+      roles: ['']
     });
   }
 
@@ -200,8 +200,8 @@ export class ProjectManagerProjectDetailsComponent {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
     // Add userIds if selected
-    if (formValues.userIds && formValues.userIds.length > 0) {
-      params.userIds = formValues.userIds; // This will already be an array
+    if (formValues.roles && formValues.roles.length > 0) {
+      params.roles = formValues.roles; // Pass roles directly as an array
     }
     // Log params to the console
     console.log('Params to be sent:', params);

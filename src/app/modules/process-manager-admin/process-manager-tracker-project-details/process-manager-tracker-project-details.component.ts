@@ -99,7 +99,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     otherDocument: 'otherDocument',
     failStatusImage: 'failStatusImage',
   };
-  ForTitleuserList: any = [];
+  ForTitleuserList: any = ['FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'SupplierAdmin'];
   displayForTitleedUsers: any = [];
 
   constructor(
@@ -130,7 +130,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getUserAllList();
-    this.getForTitleUserAllList();
+    //this.getForTitleUserAllList();
     this.getTask();
     this.getProjectLogs();
     this.getProjectStrips();
@@ -140,7 +140,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      userIds: ['']
+      roles: ['']
     });
   }
   onFileSelect(event: any): void {
@@ -169,7 +169,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
             (user: any) =>
               user?.role === 'SupplierAdmin' ||
               user?.role === 'FeasibilityUser' ||
-              user?.role === 'FeasibilityAdmin' || user?.role === 'ProjectManager' 
+              user?.role === 'FeasibilityAdmin' || user?.role === 'ProjectManager'
           );
           this.displayForTitleedUsers = this.userList.slice(0, 7);
           this.showLoader = false;

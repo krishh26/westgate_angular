@@ -83,7 +83,11 @@ export class SuperAdminProjectDetailsComponent {
     otherDocument: 'otherDocument',
     failStatusImage: 'failStatusImage',
   };
-  ForTitleuserList: any = [];
+  ForTitleuserList: any = [
+
+    'FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'ProcessManagerAdmin', 'SupplierAdmin'
+
+  ];
   displayForTitleedUsers: any = [];
   companyDetails: any = [
     {
@@ -178,13 +182,13 @@ export class SuperAdminProjectDetailsComponent {
     this.initializeForm();
     this.addDocument();
     this.getProjectStrips();
-    this.getForTitleUserAllList();
+    // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      userIds: ['']
+      roles: ['']
     });
   }
 
@@ -948,6 +952,12 @@ export class SuperAdminProjectDetailsComponent {
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
+
+    // Add userIds if selected
+    if (formValues.roles && formValues.roles.length > 0) {
+      params.roles = formValues.roles; // Pass roles directly as an array
+    }
+
     // Log params to the console
     console.log('Params to be sent:', params);
     this.projectService.createStrip(params).subscribe(

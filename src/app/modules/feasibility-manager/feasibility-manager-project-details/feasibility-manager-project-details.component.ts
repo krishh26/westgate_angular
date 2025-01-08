@@ -82,7 +82,7 @@ export class FeasibilityManagerProjectDetailsComponent {
   commentData: any[] = [];
   logs: any = [];
   supplieruserList: any = [];
-  ForTitleuserList: any = [];
+  ForTitleuserList: any = ['SupplierAdmin', 'FeasibilityUser'];
   addStripcontrol = {
     text: new FormControl('', Validators.required),
     imageText: new FormControl('', Validators.required),
@@ -130,7 +130,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
-    this.getForTitleUserAllList();
+    // this.getForTitleUserAllList();
     this.getProjectStrips();
     this.initializeForm();
     this.addStripForm = this.fb.group({
@@ -138,7 +138,7 @@ export class FeasibilityManagerProjectDetailsComponent {
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      userIds: ['']
+      roles: ['']
     });
   }
 
@@ -191,10 +191,12 @@ export class FeasibilityManagerProjectDetailsComponent {
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
+
     // Add userIds if selected
-    if (formValues.userIds && formValues.userIds.length > 0) {
-      params.userIds = formValues.userIds; // This will already be an array
+    if (formValues.roles && formValues.roles.length > 0) {
+      params.roles = formValues.roles; // Pass roles directly as an array
     }
+
     // Log params to the console
     console.log('Params to be sent:', params);
     this.projectService.createStrip(params).subscribe(

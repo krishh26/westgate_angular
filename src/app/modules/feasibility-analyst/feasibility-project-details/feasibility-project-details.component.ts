@@ -93,7 +93,7 @@ export class FeasibilityProjectDetailsComponent {
   selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = [];
-  supplieruserList: any = [];
+  supplieruserList: any = ['SupplierAdmin'];
   displayedUsers: any[] = [];
 
   constructor(
@@ -117,13 +117,13 @@ export class FeasibilityProjectDetailsComponent {
     this.getTask();
     this.getProjectStrips();
     this.initializeForm();
-    this.getUserAllList()
+    //this.getUserAllList()
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      userIds: [''],
+      roles: ['']
     });
   }
 
@@ -210,8 +210,8 @@ export class FeasibilityProjectDetailsComponent {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
     // Add userIds if selected
-    if (formValues.userIds && formValues.userIds.length > 0) {
-      params.userIds = formValues.userIds; // This will already be an array
+    if (formValues.roles && formValues.roles.length > 0) {
+      params.roles = formValues.roles; // Pass roles directly as an array
     }
     // Log params to the console
     console.log('Params to be sent:', params);
