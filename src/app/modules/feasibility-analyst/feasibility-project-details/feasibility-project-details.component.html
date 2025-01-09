@@ -4,8 +4,8 @@
       <div class="row align-items-center justify-content-between">
         <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
-            <h5 class="me-3"><strong>Project Title:</strong></h5>
-            <h6>{{ projectDetails?.projectName }}</h6>
+            <h4 class="me-3"><strong>Project Title:</strong></h4>
+            <h4>{{ projectDetails?.projectName }}</h4>
           </div>
           <div class="ms-auto d-flex">
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
@@ -602,17 +602,17 @@
 
             <!-- Fail Specific Fields -->
             <div *ngIf="status === 'Fail'" class="mt-4">
-              <h6 class="text-danger">Additional Details for "Fail"</h6>
+              <!-- <h6 class="text-danger">Additional Details for "Fail"</h6> -->
               <div class="d-flex flex-column gap-3">
                 <!-- File Upload -->
-                <div class="d-flex align-items-center">
+                <!-- <div class="d-flex align-items-center">
                   <label for="failedReson" class="btn btn-outline-secondary me-3">
                     <i class="bi bi-upload"></i> Upload Document
                   </label>
                   <input type="file" id="failedReson" name="failedReson" hidden (change)="
                       uploadDocument($event, documentUploadType.failStatusImage)
                     " />
-                </div>
+                </div> -->
 
                 <!-- Fail Reason Dropdown -->
                 <select class="form-select" [formControl]="failStatusReason">
