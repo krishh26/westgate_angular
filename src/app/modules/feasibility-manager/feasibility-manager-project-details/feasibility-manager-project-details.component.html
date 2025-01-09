@@ -269,14 +269,14 @@
         </div>
       </div>
 
-      <section class="pageheader bg-dark">
+      <!-- <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Upload Sub-contracting</strong></p>
         </div>
       </section>
-      <br />
+      <br /> -->
 
-      <div class="row align-items-center">
+      <!-- <div class="row align-items-center">
         <div class="col-lg-9 col-xl-9 col-12">
           <div class="row">
             <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
@@ -368,7 +368,6 @@
                   <br />
                   <p>{{ documentUploadType?.otherQueryDocument?.fileName }}</p>
 
-                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
                     <ng-container *ngIf="
                         document?.type === documentUploadType.otherQueryDocument
@@ -452,13 +451,10 @@
                       uploadDocument($event, documentUploadType.otherDocument)
                     " />
                   <br />
-
-                  <!-- Loop through the uploaded documents -->
                   <ng-container *ngFor="let document of FeasibilityOtherDocuments">
                     <ng-container *ngIf="
                         document?.type === documentUploadType.otherDocument
                       ">
-                      <!-- Display document file name -->
                       <p>{{ document.file?.fileName }}</p>
 
                       <div class="d-flex justify-content-between align-items-center mb-2">
@@ -490,7 +486,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <section class="pageheader bg-dark">
         <div class="container">
@@ -600,10 +596,9 @@
             <div *ngIf="commentData?.length" class="comment-list">
               <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                 <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span><span
-                    class="text-muted"><strong>Date: </strong>
-                    {{ item.date | date : "dd/MM/yyyy,h:mm a" }}
-                  </span>
+                  <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                  <span class="text-muted"><strong>Date:</strong>
+                    {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
                 </div>
               </div>
             </div>
@@ -617,6 +612,7 @@
               </button>
             </div>
 
+            <!-- Fail Specific Fields -->
             <div *ngIf="status === 'Fail'" class="mt-4">
               <h6 class="text-danger">Additional Details for "Fail"</h6>
               <div class="d-flex flex-column gap-3">
@@ -656,6 +652,12 @@
         </div>
       </div>
       <br />
+
+      <div class="row justify-content-end mb-4">
+        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+          <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+        </div>
+      </div>
 
       <section class="pageheader bg-dark">
         <div class="container">
@@ -757,12 +759,6 @@
               No records found
             </p>
           </div>
-        </div>
-      </div>
-
-      <div class="row justify-content-end">
-        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-          <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
         </div>
       </div>
     </div>

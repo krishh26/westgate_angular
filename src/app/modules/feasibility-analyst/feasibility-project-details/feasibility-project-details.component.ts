@@ -702,18 +702,18 @@ export class FeasibilityProjectDetailsComponent {
 
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {};
-  
+
     if (!contractEdit) {
       // Validation for status
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
       }
-  
+
       // Validation for comment
       if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
         return this.notificationService.showError('Please provide a comment for the selected status.');
       }
-  
+
       // Add the comment to commentData only if it's provided
       if (this.statusComment.value && this.statusDate.value) {
         this.commentData.push({
@@ -723,7 +723,7 @@ export class FeasibilityProjectDetailsComponent {
         });
         this.statusComment.reset(); // Clear the comment field after adding
       }
-  
+
       // Prepare payload
       payload = {
         subContractingfile: this.subContractDocument || [],
@@ -741,13 +741,13 @@ export class FeasibilityProjectDetailsComponent {
         loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
-  
+
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
         payload['failStatusReason'] = [this.failStatusReason?.value] || [];
       }
     }
-  
+
     // For contract edit
     if (contractEdit) {
       payload = {
@@ -756,7 +756,7 @@ export class FeasibilityProjectDetailsComponent {
         projectType: this.projectDetails.projectType,
       };
     }
-  
+
     // API call to update project details
     this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
@@ -773,7 +773,7 @@ export class FeasibilityProjectDetailsComponent {
       }
     );
   }
-  
+
 
   isPdf(url: string): boolean {
     return url?.endsWith('.pdf') || false;
