@@ -16,8 +16,8 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList' + i">
-              <button class="accordion-button d-flex justify-content-between align-items-center" type="button" data-bs-toggle="modal" data-bs-target="#taskDetailsModal"
-                (click)="openTaskModal(task)" [ngClass]="{
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)" [ngClass]="{
                   'bg-light-yellow': task?.pickACategory === 'feasibility',
                   'bg-light-green': task?.pickACategory === 'bid manager',
                   'bg-light-orange': task?.pickACategory === 'other tasks'
@@ -72,6 +72,12 @@
             <h6><strong>Description</strong></h6>
             <p>{{ modalTask?.discription }}</p>
             <p *ngIf="!modalTask?.discription">No Record Found.</p>
+          </div>
+
+          <div class="mb-3">
+            <h6><strong>Assigned Project</strong></h6>
+            <a (click)="projectDetails(modalTask?.project?._id)"
+              href="javascript:;">{{modalTask?.project?.projectName}}</a>
           </div>
 
           <!-- Comments Section -->

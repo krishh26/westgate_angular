@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -26,8 +27,9 @@ export class TodoTasksComponent {
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
-     private localStorageService: LocalStorageService,
-  ) { 
+    private localStorageService: LocalStorageService,
+    private router: Router,
+  ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
@@ -72,6 +74,11 @@ export class TodoTasksComponent {
     }
   }
 
+  projectDetails(projectId: any) {
+    this.activeModal.close();
+    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+  }
+
   getTask() {
     this.showLoader = true;
     this.superService.getTaskUserwise(this.loginUser?.id).subscribe(
@@ -93,7 +100,7 @@ export class TodoTasksComponent {
       }
     );
   }
-  
+
   // getUserAllList() {
   //   this.showLoader = true;
   //   this.projectManagerService.getUserAllList().subscribe(
