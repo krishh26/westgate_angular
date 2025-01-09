@@ -225,7 +225,7 @@ export class TodoTasksComponent {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
-          this.getProjectDetails();
+        //  this.getProjectDetails();
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
