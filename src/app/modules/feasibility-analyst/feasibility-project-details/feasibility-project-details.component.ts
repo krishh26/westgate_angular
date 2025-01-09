@@ -492,20 +492,6 @@ export class FeasibilityProjectDetailsComponent {
       });
   }
 
-  summaryDetail(type: string) {
-    if (!this.projectDetails?.clientDocument.length) {
-      return this.notificationService.showError('Upload Client Document');
-    }
-    // if (!this.projectDetails?.loginDetail.length) {
-    //   return this.notificationService.showError('Upload Login Detail');
-    // }
-    this.saveChanges(type);
-
-    // if (type == 'next') {
-    //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-    // }
-  }
-
   uploadDocument(event: any, type: string): void {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
@@ -707,32 +693,43 @@ export class FeasibilityProjectDetailsComponent {
     this.isEditing = !this.isEditing;
   }
 
+  summaryDetail(type: string) {
+    if (!this.projectDetails?.clientDocument.length) {
+      return this.notificationService.showError('Upload Client Document');
+    }
+    this.saveChanges(type);
+  }
+
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {};
+  
     if (!contractEdit) {
-      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.statusComment?.value) {
-      //   return this.notificationService.showError('Please Enter Status Comment');
-      // }
-
-      // if (this.status == 'Expired' && !this.failStatusReason?.value) {
-      //   return this.notificationService.showError('Please Select Status Comment');
-      // }
-
+      // Validation for status
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
+      }
+  
+      // Validation for comment
+      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
+        return this.notificationService.showError('Please provide a comment for the selected status.');
+      }
+  
+      // Add the comment to commentData only if it's provided
       if (this.statusComment.value && this.statusDate.value) {
         this.commentData.push({
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
         });
+        this.statusComment.reset(); // Clear the comment field after adding
       }
-
+  
+      // Prepare payload
       payload = {
         subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile:
-          this.economicalPartnershipQueryFile || [],
+        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
         FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile:
-          this.economicalPartnershipResponceFile || [],
+        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
@@ -744,12 +741,14 @@ export class FeasibilityProjectDetailsComponent {
         loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
-
+  
+      // Add fail reason if applicable
       if (this.failStatusReason?.value) {
         payload['failStatusReason'] = [this.failStatusReason?.value] || [];
       }
     }
-
+  
+    // For contract edit
     if (contractEdit) {
       payload = {
         periodOfContractStart: this.projectDetails.periodOfContractStart,
@@ -757,30 +756,24 @@ export class FeasibilityProjectDetailsComponent {
         projectType: this.projectDetails.projectType,
       };
     }
-    this.feasibilityService
-      .updateProjectDetails(payload, this.projectDetails._id)
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            this.notificationService.showSuccess(
-              'Project updated successfully'
-            );
-            this.isEditing = false;
-            this.getProjectDetails();
-            // if (type == 'save') {
-            //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-            // }
-          } else {
-            this.notificationService.showError(
-              response?.message || 'Failed to update project'
-            );
-          }
-        },
-        (error) => {
-          this.notificationService.showError('Failed to update project');
+  
+    // API call to update project details
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
         }
-      );
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
   }
+  
 
   isPdf(url: string): boolean {
     return url?.endsWith('.pdf') || false;
