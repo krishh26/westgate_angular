@@ -22,7 +22,8 @@ export enum SuperAdminEndPoint {
   APPOINT_FEASIBLITY_USER = '/project/update/appoint-user',
   APPOINT_BID_USER = '/project/update/appoint-bidmanager',
   APPROVE_OR_REJECT = '/project/update/approve-reject',
-  ADD_IMAGE_PROJECT_DETAILS= '/project-detail-title/update/'
+  ADD_IMAGE_PROJECT_DETAILS = '/project-detail-title/update/',
+  GET_GAP_ANALYSIS = '/project/gap-analysis'
 }
 
 @Injectable({
@@ -42,6 +43,13 @@ export class SuperadminService {
   getDashboardList(params: any): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.DASHBOARD_LIST,
+      { params }
+    );
+  }
+
+  getGapAnalysis(params: any): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_GAP_ANALYSIS,
       { params }
     );
   }
@@ -162,9 +170,9 @@ export class SuperadminService {
 
   updateProjectDetails(payload: any, id: string,): Observable<any> {
     return this.httpClient.patch<any>(
-      this.baseUrl + SuperAdminEndPoint.ADD_IMAGE_PROJECT_DETAILS+ id,
+      this.baseUrl + SuperAdminEndPoint.ADD_IMAGE_PROJECT_DETAILS + id,
       payload
     );
   }
-  
+
 }

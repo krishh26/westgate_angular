@@ -11,7 +11,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 })
 export class SuperadminHeaderComponent {
   loginUser: any;
-  
+
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
@@ -27,7 +27,8 @@ export class SuperadminHeaderComponent {
     { title: 'Supplier', route: ['/super-admin/super-admin-supplier'] },
     // { title: 'Register Supplier', route: ['/super-admin/add-new-supplier'] },
     { title: 'Project Tracker', route: ['/super-admin/status-wise-tracker'] },
-    { title: 'TO DO TASKS', route: ['/super-admin/todo-tasks'] },
+    { title: 'TO DO Tasks', route: ['/super-admin/todo-tasks'] },
+    { title: 'Gap Analysis', route: ['/super-admin/gap-analysis'] },
   ];
 
 

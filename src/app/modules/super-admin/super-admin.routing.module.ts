@@ -19,6 +19,7 @@ import { SupplierUserProfileEditComponent } from './supplier-user-profile-edit/s
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-details/tracker-wise-project-details.component';
+import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 
 
 
@@ -99,6 +100,10 @@ const routes: Routes = [
       {
         path: "tracker-wise-project-details",
         component: TrackerWiseProjectDetailsComponent
+      },
+      {
+        path: "gap-analysis",
+        component: GapAnalysisComponent
       },
 
     ]

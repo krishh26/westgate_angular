@@ -30,6 +30,8 @@ import { ProjectMailSendComponent } from './projectMailSend/projectMailSend.comp
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-details/tracker-wise-project-details.component';
+import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
+import { ChartistModule } from 'ng-chartist';
 
 
 
@@ -56,7 +58,8 @@ import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-detai
     ProjectMailSendComponent,
     TodoTasksComponent,
     StatusWiseTrackerComponent,
-    TrackerWiseProjectDetailsComponent
+    TrackerWiseProjectDetailsComponent,
+    GapAnalysisComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +71,8 @@ import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-detai
     SuperAdminRoutingModule,
     NgSelectModule,
     NgxSliderModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    ChartistModule,
   ],
   providers: [NgbActiveModal], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
