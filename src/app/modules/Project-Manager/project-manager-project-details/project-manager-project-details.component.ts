@@ -91,6 +91,9 @@ export class ProjectManagerProjectDetailsComponent {
   displayForTitleedUsers: any = [];
   selectViewImage: any;
   uploadType: boolean = true;
+  showSupplierList = false;
+  viewReasonList: any = [];
+  filteredComments: any[] = [];
 
   constructor(
     private projectService: ProjectService,
@@ -118,10 +121,62 @@ export class ProjectManagerProjectDetailsComponent {
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
-      description: [''], // Ensure this is included
+      description: [''],
       imageText: [''],
       roles: ['']
     });
+  }
+
+  viewAllComments(userId: string) {
+    // Check if the userId is passed correctly
+    console.log('Selected User ID:', userId);
+
+    // Find the user in the dropUser list based on userId
+    const supplier = this.viewReasonList.find((item:any) => item.userId === userId);
+
+    if (supplier) {
+      // Assign the reasons for this supplier to filteredComments
+      this.filteredComments = supplier.reason;
+      console.log('Filtered Comments:', this.filteredComments); // Log the filtered comments to verify
+    } else {
+      console.log('Supplier not found');
+      this.filteredComments = []; // In case no supplier is found
+    }
+  }
+
+  dropUser(supplier: any) {
+    if (!supplier.inputValue) {
+      this.notificationService.showError('Please provide a reason.');
+      return;
+    }
+    const data = {
+      dropUser: {
+        userId: supplier._id,
+        reason: supplier.inputValue,
+      },
+    };
+    this.projectManagerService.dropUser(data, this.projectId).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.notificationService.showSuccess(response?.message || 'User dropped successfully.');
+          supplier.inputValue = '';
+        } else {
+          this.notificationService.showError('Error: Unable to drop user. Try again later.');
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Error occurred while dropping user.');
+      }
+    );
+  }
+
+  toggleSupplierList(): void {
+    this.showSupplierList = !this.showSupplierList;
+  }
+
+  saveSupplierInput(index: number): void {
+    const supplier = this.selectedSupplier[index];
+    console.log(`Saved input for ${supplier.name}: ${supplier.inputValue}`);
   }
 
   onFileSelect(event: any): void {
@@ -288,27 +343,19 @@ export class ProjectManagerProjectDetailsComponent {
     );
   }
 
+  // Method to fetch project details and set the viewReasonList
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status == true) {
+      if (response?.status === true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
         this.selectedSupplier = response?.data?.sortlistedUsers;
-        // Assign only the first 3 logs to the logs property
         this.logs = response?.data?.logs?.slice(0, 3) || [];
-
         this.status = this.projectDetails?.status;
-        this.subContracting = this.projectDetails?.subContracting;
-        // this.bidManagerStatusComment.setValue(this.projectDetails?.bidManagerStatusComment);
         this.commentData = this.projectDetails?.bidManagerStatusComment;
-        console.log(this.commentData);
-
-        this.subContractDocument = this.projectDetails?.subContractingfile || null;
-        this.economicalPartnershipQueryFile = this.projectDetails?.economicalPartnershipQueryFile || null;
-        this.economicalPartnershipResponceFile = this.projectDetails?.economicalPartnershipResponceFile || null;
-        this.FeasibilityOtherDocuments = this.projectDetails?.FeasibilityOtherDocuments || null;
-        this.failStatusImage = this.projectDetails?.failStatusImage || null;
+        this.viewReasonList = this.projectDetails?.dropUser;  // Store the dropUser list
+        console.log(this.viewReasonList); // Logs the dropUser list for debugging
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -405,34 +452,8 @@ export class ProjectManagerProjectDetailsComponent {
         this.spinner.hide();
 
         if (response?.status) {
-          // Sub-contract document
-          if (type == this.documentUploadType.subContractDocument) {
-            this.subContractDocument = response?.data;
-          }
-
-          // Economical partnership query document
-          if (type == this.documentUploadType.economicalPartnershipQuery) {
-            this.economicalPartnershipQueryFile = response?.data;
-          }
-
-          // Other query document
-          if (type == this.documentUploadType.otherQueryDocument || type == this.documentUploadType.otherDocument) {
-            let objToBePushed = {
-              name: this.loginName,
-              type: type,
-              file: response?.data
-            };
-            this.FeasibilityOtherDocuments.push(objToBePushed);
-            this.loginName = "";
-          }
-
           if (type == this.documentUploadType.failStatusImage) {
             this.failStatusImage = response?.data;
-          }
-
-          // Economical partnership response document
-          if (type == this.documentUploadType.economicalPartnershipResponse) {
-            this.economicalPartnershipResponceFile = response?.data;
           }
 
           //client document
@@ -487,8 +508,6 @@ export class ProjectManagerProjectDetailsComponent {
           if (!this.commentName) {
             return this.notificationService.showError('Enter a client document name');
           }
-
-          // Add the uploaded file and comment to projectComment array
           let objToBePushed = {
             comment: this.commentName,
             file: response?.data
