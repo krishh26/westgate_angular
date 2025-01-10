@@ -992,6 +992,11 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div class="alert alert-danger" role="alert">
+        ⚠ Important Notice : If you are unable to view any documents, please
+        note that the files may have been uploaded as a ZIP file. Kindly
+        download the ZIP file to access the documents.
+      </div>
       <div class="modal-body">
         <div class="modal-body">
           <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
