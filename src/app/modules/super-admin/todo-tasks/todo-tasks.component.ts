@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -33,6 +34,12 @@ export class TodoTasksComponent {
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
   projectList: any = [];
+  statusComment: FormControl = new FormControl('');
+  commentData: any[] = [];
+  status: string = 'Expired';
+  failStatusReason: FormControl = new FormControl('');
+  statusDate: FormControl = new FormControl('');
+  isEditing = false;
 
   constructor(
     private superService: SuperadminService,
@@ -41,6 +48,7 @@ export class TodoTasksComponent {
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService,
     private router: Router,
+    private feasibilityService: FeasibilityService,
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +77,88 @@ export class TodoTasksComponent {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
     });
+  }
+
+  statusChange(status: string) {
+    this.status = status;
+    this.commentData = [];
+    this.statusComment.reset();
+  }
+
+  summaryDetail(type: string) {
+    this.saveChanges(type);
+  }
+
+  saveChanges(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+
+    if (!contractEdit) {
+      // Validation for status
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      // Validation for comment
+      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
+        return this.notificationService.showError('Please provide a comment for the selected status.');
+      }
+
+      // Add the comment to commentData only if it's provided
+      if (this.statusComment.value && this.statusDate.value) {
+        this.commentData.push({
+          comment: this.statusComment.value,
+          date: this.statusDate.value,
+          status: this.status,
+        });
+        this.statusComment.reset(); // Clear the comment field after adding
+      }
+
+      // Prepare payload
+      payload = {
+        status: this.status || '',
+        statusComment: this.commentData,
+      };
+
+      // Add fail reason if applicable
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
+    }
+
+    // API call to update project details
+    this.feasibilityService.updateProjectDetails(payload, this.modalTask?.project?._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          //  this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
+
+  pushStatus() {
+    if (!this.statusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
+    this.commentData.push({
+      comment: this.statusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      status: this.status,
+    });
+
+    // Reset the comment input field
+    this.statusComment.reset();
   }
 
   projectDetails(projectId: any) {

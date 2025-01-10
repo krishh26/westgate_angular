@@ -196,7 +196,7 @@
                       <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
                     </div>
                   </div>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column mb-3">
                     <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
                       <p>{{ comment.comment }}</p>
                       <div>
@@ -226,13 +226,110 @@
                   </div>
                 </li>
               </ul>
-
             </div>
-            <!-- Comment List -->
             <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
               <strong>{{ comment.user }} </strong>
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
+            </div>
+          </div>
+          <div class="col-lg-12 col-xl-12 col-12 mb-3">
+            <div class="card shadow-sm p-4">
+              <!-- Header -->
+              <div class="card-header bg-primary text-white mb-3">
+                <h5 class="mb-0">Feasibility Status</h5>
+              </div>
+
+              <!-- Status Buttons -->
+              <div class="d-flex justify-content-between flex-wrap mb-4">
+                <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
+                  (click)="statusChange('InProgress')">
+                  In-Progress
+                </button>
+                <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
+                  (click)="statusChange('InHold')">
+                  In-Hold
+                </button>
+                <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
+                  (click)="statusChange('Passed')">
+                  Pass
+                </button>
+                <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
+                  (click)="statusChange('Fail')">
+                  Fail
+                </button>
+                <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'DocumentsNotFound'"
+                  (click)="statusChange('DocumentsNotFound')">
+                  Document Not Found
+                </button>
+              </div>
+
+              <!-- Dynamic Comment Section -->
+              <div *ngIf="status" class="status-section">
+                <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+
+                <!-- Display Existing Comments -->
+                <div *ngIf="commentData?.length" class="comment-list">
+                  <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                      <span class="text-muted"><strong>Date:</strong>
+                        {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Add New Comment -->
+                <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                  <input type="text" class="form-control w-80" [formControl]="statusComment"
+                    placeholder="Add your comment" />
+                  <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                    <i class="bi bi-plus-lg"></i> Add
+                  </button>
+                </div>
+
+                <!-- Fail Specific Fields -->
+                <div *ngIf="status === 'Fail'" class="mt-4">
+                  <!-- <h6 class="text-danger">Additional Details for "Fail"</h6> -->
+                  <div class="d-flex flex-column gap-3">
+                    <!-- File Upload -->
+                    <!-- <div class="d-flex align-items-center">
+                      <label for="failedReson" class="btn btn-outline-secondary me-3">
+                        <i class="bi bi-upload"></i> Upload Document
+                      </label>
+                      <input type="file" id="failedReson" name="failedReson" hidden (change)="
+                          uploadDocument($event, documentUploadType.failStatusImage)
+                        " />
+                    </div> -->
+
+                    <!-- Fail Reason Dropdown -->
+                    <select class="form-select" [formControl]="failStatusReason">
+                      <option disabled selected hidden value="">
+                        Select Fail Reason
+                      </option>
+                      <option value="Accreditation">Accreditation</option>
+                      <option value="Time Constraints">Time Constraints</option>
+                      <option value="Certification">Certification</option>
+                      <option value="Case Study">Case Study</option>
+                      <option value="Certifications from Subcontractor">
+                        Certifications from Subcontractor
+                      </option>
+                      <option value="Delivery of goods/Hardware">
+                        Delivery of goods/Hardware
+                      </option>
+                      <option value="Financial Conditions">
+                        Financial Conditions
+                      </option>
+                      <option value="Not related">Not related</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-end mb-3">
+            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+              <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
             </div>
           </div>
         </div>

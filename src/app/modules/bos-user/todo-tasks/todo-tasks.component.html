@@ -115,7 +115,7 @@
               <div class="card-header bg-primary text-white mb-3">
                 <h5 class="mb-0">Feasibility Status</h5>
               </div>
-    
+
               <!-- Status Buttons -->
               <div class="d-flex justify-content-between flex-wrap mb-4">
                 <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
@@ -139,11 +139,11 @@
                   Document Not Found
                 </button>
               </div>
-    
+
               <!-- Dynamic Comment Section -->
               <div *ngIf="status" class="status-section">
                 <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
-    
+
                 <!-- Display Existing Comments -->
                 <div *ngIf="commentData?.length" class="comment-list">
                   <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
@@ -154,7 +154,7 @@
                     </div>
                   </div>
                 </div>
-    
+
                 <!-- Add New Comment -->
                 <div class="add-comment d-flex gap-3 align-items-center mt-3">
                   <input type="text" class="form-control w-80" [formControl]="statusComment"
@@ -163,7 +163,7 @@
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
-    
+
                 <!-- Fail Specific Fields -->
                 <div *ngIf="status === 'Fail'" class="mt-4">
                   <!-- <h6 class="text-danger">Additional Details for "Fail"</h6> -->
@@ -177,7 +177,7 @@
                           uploadDocument($event, documentUploadType.failStatusImage)
                         " />
                     </div> -->
-    
+
                     <!-- Fail Reason Dropdown -->
                     <select class="form-select" [formControl]="failStatusReason">
                       <option disabled selected hidden value="">
@@ -204,7 +204,7 @@
             </div>
           </div>
           <br />
-    
+
           <div class="row justify-content-end mb-4">
             <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
               <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
