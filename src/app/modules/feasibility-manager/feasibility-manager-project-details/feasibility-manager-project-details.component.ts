@@ -108,6 +108,9 @@ export class FeasibilityManagerProjectDetailsComponent {
   };
   supportDocument!: FormGroup;
   displayForTitleedUsers: any = [];
+  failStatusReasons: { tag: string; comment: string }[] = [];
+  selectedFailReason: string = '';
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -157,6 +160,35 @@ export class FeasibilityManagerProjectDetailsComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  // Method to add a new fail reason
+  addFailReason() {
+    if (!this.selectedFailReason) {
+      this.notificationService.showError('Please select a fail reason.');
+      return;
+    }
+
+    // Check if the reason already exists
+    if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
+      this.notificationService.showError('This reason is already added.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.failStatusReasons.push({
+      tag: this.selectedFailReason,
+      comment: '',
+    });
+
+    // Reset the dropdown selection
+    this.selectedFailReason = '';
+  }
+
+  // Method to remove a fail reason
+  removeFailReason(index: number) {
+    this.failStatusReasons.splice(index, 1);
+  }
+
   selectUploadType(isText: boolean): void {
     this.uploadType = isText;
     if (isText) {
@@ -758,20 +790,13 @@ export class FeasibilityManagerProjectDetailsComponent {
       }
 
       payload = {
-        subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
-        FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
-        subContracting: this.subContracting || '',
-        comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || '',
         statusComment: this.commentData,
-        loginDetail: this.projectDetails.loginDetail || '',
-        failStatusImage: this.failStatusImage || '',
+        failStatusReason: this.failStatusReasons,
       };
 
       // Add fail reason if applicable

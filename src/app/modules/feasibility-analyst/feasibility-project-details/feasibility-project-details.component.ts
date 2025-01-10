@@ -764,7 +764,6 @@ saveChanges(type?: string, contractEdit?: boolean) {
       periodOfContractStart: this.projectDetails.periodOfContractStart,
       periodOfContractEnd: this.projectDetails.periodOfContractEnd,
       projectType: this.projectDetails.projectType,
-      comment: this.comment || '',
       clientDocument: this.projectDetails?.clientDocument || [],
       status: this.status || '',
       statusComment: this.commentData,
