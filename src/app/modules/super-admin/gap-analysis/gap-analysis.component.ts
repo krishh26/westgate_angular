@@ -52,8 +52,10 @@ export class GapAnalysisComponent {
     );
   }
 
-  projectDetails() {
-
+  projectDetails(projectId: any) {
+    console.log("hello");
+    
+    this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
   }
 
   paginate(page: number) {
@@ -64,7 +66,7 @@ export class GapAnalysisComponent {
 
   showProjects(projects: any[]) {
     this.selectedProjects = projects;
-}
+  }
 
 
 }

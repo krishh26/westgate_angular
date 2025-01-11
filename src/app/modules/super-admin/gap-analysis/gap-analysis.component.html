@@ -62,7 +62,6 @@
                     <thead>
                         <tr>
                             <th>Project Name</th>
-                            <th>Project ID</th>
                             <th>Bid Manager Status</th>
                             <th>Feasibility Status</th>
                         </tr>
@@ -74,8 +73,9 @@
                             </td>
                         </tr>
                         <tr *ngFor="let project of selectedProjects">
-                            <td>{{ project?.projectName }}</td>
-                            <td>{{ project?._id }}</td>
+                            <td><a (click)="projectDetails(project?._id)"
+                                    href="javascript:;">{{project?.projectName}}</a></td>
+                            <!-- <td>{{ project?._id }}</td> -->
                             <td>{{ project?.bidManagerStatus }}</td>
                             <td>{{ project?.status }}</td>
                         </tr>
