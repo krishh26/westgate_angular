@@ -27,7 +27,7 @@
                                         <td>
                                             <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                                                 data-bs-toggle="modal" data-bs-target="#viewAllProjects"
-                                                (click)="showProjects(item.projects)">View Total Projects</a>
+                                                (click)="showProjects(item?.projects)">View Total Projects</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -62,7 +62,7 @@
                     <thead>
                         <tr>
                             <th>Project Name</th>
-                            <!-- <th>Bid Manager Status</th> -->
+                            <th>Comment</th>
                             <th>Feasibility Status</th>
                         </tr>
                     </thead>
@@ -75,8 +75,7 @@
                         <tr *ngFor="let project of selectedProjects">
                             <td><a (click)="projectDetails(project?._id)"
                                     href="javascript:;">{{project?.projectName}}</a></td>
-                            <!-- <td>{{ project?._id }}</td> -->
-                            <!-- <td>{{ project?.bidManagerStatus }}</td> -->
+                            <td>{{ project?.comment }}</td>
                             <td>{{ project?.status }}</td>
                         </tr>
                     </tbody>

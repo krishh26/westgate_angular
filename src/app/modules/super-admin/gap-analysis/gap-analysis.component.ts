@@ -54,7 +54,7 @@ export class GapAnalysisComponent {
 
   projectDetails(projectId: any) {
     console.log("hello");
-    
+
     this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
   }
 
@@ -64,8 +64,17 @@ export class GapAnalysisComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  showProjects(projects: any[]) {
-    this.selectedProjects = projects;
+  showProjects(projects: any) {
+    this.selectedProjects = [];
+    // Flatten the nested structure and include the comment
+    Object.keys(projects).forEach((key) => {
+      projects[key].forEach((project: any) => {
+        this.selectedProjects.push({
+          ...project,
+          comment: project?.failStatusReason?.comment || 'No comment available',
+        });
+      });
+    });
   }
 
 
