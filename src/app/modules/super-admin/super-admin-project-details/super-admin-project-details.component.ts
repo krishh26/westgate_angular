@@ -148,6 +148,10 @@ export class SuperAdminProjectDetailsComponent {
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   imageFields = [{ text: '', file: null }];
+  failStatusReasons: { tag: string; comment: string }[] = [];
+  selectedFailReason: string = '';
+
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -224,20 +228,22 @@ export class SuperAdminProjectDetailsComponent {
 
   pushStatus() {
     if (!this.statusComment.value) {
-      this.notificationService.showError('Please enter status comment');
+      this.notificationService.showError('Please enter a status comment');
       return;
     }
-    if (!this.statusDate.value) {
-      this.notificationService.showError('Please enter Date');
-      return;
-    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
     this.commentData.push({
       comment: this.statusComment.value,
-      date: this.statusDate.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
+      userId: this.loginUser?._id,
     });
+
+    // Reset the comment input field
     this.statusComment.reset();
-    this.statusDate.reset();
   }
 
   getForTitleUserAllList() {
@@ -1082,4 +1088,85 @@ export class SuperAdminProjectDetailsComponent {
       }
     );
   }
+
+  // Method to add a new fail reason
+  addFailReason() {
+    if (!this.selectedFailReason) {
+      this.notificationService.showError('Please select a fail reason.');
+      return;
+    }
+
+    // Check if the reason already exists
+    if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
+      this.notificationService.showError('This reason is already added.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.failStatusReasons.push({
+      tag: this.selectedFailReason,
+      comment: '',
+    });
+
+    // Reset the dropdown selection
+    this.selectedFailReason = '';
+  }
+
+  // Method to remove a fail reason
+  removeFailReason(index: number) {
+    this.failStatusReasons.splice(index, 1);
+  }
+
+  saveFeasibilityStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+
+    if (!contractEdit) {
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
+        return this.notificationService.showError('Please provide a comment for the selected status.');
+      }
+      if (this.statusComment.value && this.statusDate.value) {
+        this.commentData.push({
+          comment: this.statusComment.value,
+          date: this.statusDate.value,
+          status: this.status,
+        });
+        this.statusComment.reset();
+      }
+
+      payload = {
+        projectType: this.projectDetails.projectType,
+        clientDocument: this.projectDetails?.clientDocument || [],
+        status: this.status || '',
+        statusComment: this.commentData,
+        failStatusReason: this.failStatusReasons,
+      };
+
+      // Add fail reason if applicable
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
+    }
+
+    // API call to update project details
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
+
+
 }

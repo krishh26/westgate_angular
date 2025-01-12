@@ -763,9 +763,9 @@ export class FeasibilityManagerProjectDetailsComponent {
   }
 
   summaryDetail(type: string) {
-    if (!this.projectDetails?.clientDocument.length) {
-      return this.notificationService.showError('Upload Client Document');
-    }
+    // if (!this.projectDetails?.clientDocument.length) {
+    //   return this.notificationService.showError('Upload Client Document');
+    // }
     this.saveChanges(type);
   }
 
