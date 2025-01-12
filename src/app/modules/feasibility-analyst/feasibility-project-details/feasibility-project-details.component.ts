@@ -138,10 +138,10 @@ export class FeasibilityProjectDetailsComponent {
     }
 
     // Check if the reason already exists
-    if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
-      this.notificationService.showError('This reason is already added.');
-      return;
-    }
+    // if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
+    //   this.notificationService.showError('This reason is already added.');
+    //   return;
+    // }
 
     // Add the reason with an empty comment
     this.failStatusReasons.push({
