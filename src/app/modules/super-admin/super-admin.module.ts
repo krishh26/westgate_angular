@@ -31,6 +31,8 @@ import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-details/tracker-wise-project-details.component';
 import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
+import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
+import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
 
 
 
@@ -58,7 +60,8 @@ import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
     TodoTasksComponent,
     StatusWiseTrackerComponent,
     TrackerWiseProjectDetailsComponent,
-    GapAnalysisComponent
+    GapAnalysisComponent,
+    MyDayTasksComponent, CompletedTasksComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +75,7 @@ import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
   ],
-  providers: [NgbActiveModal], 
+  providers: [NgbActiveModal],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SuperAdminModule { }

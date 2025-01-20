@@ -20,6 +20,8 @@ import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { StatusWiseTrackerComponent } from './status-wise-tracker/status-wise-tracker.component';
 import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-details/tracker-wise-project-details.component';
 import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
+import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
+import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
 
 
 
@@ -92,6 +94,14 @@ const routes: Routes = [
       {
         path: "todo-tasks",
         component: TodoTasksComponent
+      },
+      {
+        path: "my-day-tasks",
+        component: MyDayTasksComponent
+      },
+      {
+        path: "completed-tasks",
+        component: CompletedTasksComponent
       },
       {
         path: "status-wise-tracker",
