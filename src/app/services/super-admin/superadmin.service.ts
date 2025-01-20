@@ -132,6 +132,34 @@ export class SuperadminService {
     );
   }
 
+  getsuperadmintasks(assignId: string, status: string): Observable<any> {
+    let params = new HttpParams();
+    if (assignId) {
+      params = params.set('assignTo', assignId);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_TASK,
+      { params }
+    );
+  }
+
+  getMyTask(assignId: string, myDay: boolean): Observable<any> {
+    let params = new HttpParams();
+    if (assignId) {
+      params = params.set('assignTo', assignId);
+    }
+    if (myDay) {
+      params = params.set('myDay', myDay.toString());
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_TASK,
+      { params }
+    );
+  }
+
   getTaskUserwise(queryParams: { [key: string]: any }): Observable<any> {
     let params = new HttpParams();
 

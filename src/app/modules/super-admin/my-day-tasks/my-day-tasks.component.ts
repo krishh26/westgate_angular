@@ -281,7 +281,7 @@ export class MyDayTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+    this.superService.getMyTask(this.selectedUserIds.join(',') , true).subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;

@@ -280,7 +280,7 @@ export class CompletedTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+    this.superService.getsuperadmintasks(this.selectedUserIds.join(','),'Completed').subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;
