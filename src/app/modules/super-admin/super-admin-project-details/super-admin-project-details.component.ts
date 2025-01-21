@@ -86,7 +86,7 @@ export class SuperAdminProjectDetailsComponent {
   ForTitleuserList: any = [
     'FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'ProcessManagerAdmin', 'SupplierAdmin'
   ];
-  dueDate: any
+  dueDate: any;
   displayForTitleedUsers: any = [];
   assignTo: any;
   loginModalMode: boolean = true;

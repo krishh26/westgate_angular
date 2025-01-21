@@ -76,7 +76,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   filteredTasks: any = [];
   showAllLogs: boolean = false;
   logs: any = [];
-
+  dueDate: any;
   addStripcontrol = {
     text: new FormControl('', Validators.required),
     imageText: new FormControl('', Validators.required),
