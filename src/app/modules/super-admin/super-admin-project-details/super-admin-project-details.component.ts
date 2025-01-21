@@ -84,28 +84,11 @@ export class SuperAdminProjectDetailsComponent {
     failStatusImage: 'failStatusImage',
   };
   ForTitleuserList: any = [
-
     'FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'ProcessManagerAdmin', 'SupplierAdmin'
-
   ];
+  dueDate: any
   displayForTitleedUsers: any = [];
-  companyDetails: any = [
-    {
-      name: 'Delphi Services Limited',
-    },
-    {
-      name: 'Spectrum IT Hub Limited',
-    },
-    {
-      name: 'Apex IT Solutions',
-    },
-    {
-      name: 'Big Data Limited',
-    },
-    {
-      name: 'Saiwen',
-    },
-  ];
+  assignTo: any;
   loginModalMode: boolean = true;
   projectStrips: any = [];
   userList: any = [];
@@ -166,7 +149,8 @@ export class SuperAdminProjectDetailsComponent {
     private projectManagerService: ProjectManagerService,
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
-    private superadminService: SuperadminService
+    private superadminService: SuperadminService,
+    private superService: SuperadminService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -187,6 +171,7 @@ export class SuperAdminProjectDetailsComponent {
     this.initializeForm();
     this.addDocument();
     this.getProjectStrips();
+    this.getUserAllList();
     // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -195,6 +180,64 @@ export class SuperAdminProjectDetailsComponent {
       imageText: [''],
       roles: ['']
     });
+  }
+
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+
+  assignUser() {
+    if (!this.assignTo) {
+      this.notificationService.showError('Please select assign to user');
+      return;
+    }
+
+    // Format the dueDate
+    let formattedDueDate: string | null = null;
+    if (this.dueDate) {
+      const { year, month, day } = this.dueDate;
+      formattedDueDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    }
+
+    const payload = {
+      task: this.projectDetails?.projectName,
+      assignTo: [`${this.assignTo}`],
+      project: this.projectId,
+      dueDate: formattedDueDate,
+    };
+
+    console.log('this is data', payload);
+
+    this.superService.createTask(payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('User assigned successfully');
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+      }
+    );
   }
 
   initializeForm() {
