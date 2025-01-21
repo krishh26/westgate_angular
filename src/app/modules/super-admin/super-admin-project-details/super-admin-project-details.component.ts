@@ -182,7 +182,7 @@ export class SuperAdminProjectDetailsComponent {
 
   ngOnInit(): void {
     this.getProjectDetails();
-    this.getSummaryList();
+    // this.getSummaryList();
     this.getUserDetails();
     this.initializeForm();
     this.addDocument();
@@ -232,20 +232,16 @@ export class SuperAdminProjectDetailsComponent {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
-
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
-
     this.commentData.push({
       comment: this.statusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      date: currentDate.toISOString(),
       status: this.status,
       userId: this.loginUser?._id,
     });
-
-    // Reset the comment input field
     this.statusComment.reset();
   }
+
 
   getForTitleUserAllList() {
     this.showLoader = true;
@@ -519,7 +515,7 @@ export class SuperAdminProjectDetailsComponent {
           this.status = this.projectDetails?.status;
           this.subContracting = this.projectDetails?.subContracting;
           this.statusComment.setValue(this.projectDetails?.statusComment);
-
+          this.commentData = this.projectDetails?.statusComment || [];
           this.subContractDocument =
             this.projectDetails?.subContractingfile || null;
           this.economicalPartnershipQueryFile =
@@ -1172,16 +1168,15 @@ export class SuperAdminProjectDetailsComponent {
         return this.notificationService.showError('Please select a status.');
       }
 
-      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
+      // Check if the status has at least one comment
+      const hasExistingComment = this.commentData.some(item => item.status === this.status);
+      if (!hasExistingComment && !this.statusComment.value) {
         return this.notificationService.showError('Please provide a comment for the selected status.');
       }
-      if (this.statusComment.value && this.statusDate.value) {
-        this.commentData.push({
-          comment: this.statusComment.value,
-          date: this.statusDate.value,
-          status: this.status,
-        });
-        this.statusComment.reset();
+
+      // If a comment is filled but not added
+      if (this.statusComment.value) {
+        return this.notificationService.showError('Please click the "Add" button to save your comment.');
       }
 
       payload = {
@@ -1214,6 +1209,14 @@ export class SuperAdminProjectDetailsComponent {
       }
     );
   }
+
+  isCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.commentData.some(item => item.status === this.status);
+    const hasUnaddedComment = this.statusComment.value && !hasComment;
+    return this.status && (hasComment || hasUnaddedComment);
+  }
+
 
 
 }
