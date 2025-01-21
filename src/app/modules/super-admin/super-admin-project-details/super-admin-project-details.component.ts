@@ -100,6 +100,7 @@ export class SuperAdminProjectDetailsComponent {
   subContracting: boolean = true;
   eligibilityForm: FormGroup;
   commentName: string = '';
+  filteredTasks: any = [];
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -142,6 +143,9 @@ export class SuperAdminProjectDetailsComponent {
   bidStatus: string = 'Expired';
   bidManagerStatusComment: FormControl = new FormControl('');
   bidCommentData: any[] = [];
+  selectedUserIds: number[] = [];
+  showAllLogs: boolean = false;
+  logs: any = [];
 
   constructor(
     private projectService: ProjectService,
@@ -179,6 +183,8 @@ export class SuperAdminProjectDetailsComponent {
     this.addDocument();
     this.getProjectStrips();
     this.getUserAllList();
+    this.getTask();
+    this.getProjectLogs();
     // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -187,6 +193,51 @@ export class SuperAdminProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+  }
+
+  getProjectLogs() {
+    this.showLoader = true;
+    this.projectService.getProjectLogs(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.logs = response?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getTask() {
+    this.showLoader = true;
+    const projectIdToMatch = this.projectId; // Replace with the actual project ID to match
+
+    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          // Filter tasks based on project ID
+          this.filteredTasks = response.data.data.filter(
+            (task: any) => task.project && task.project._id === projectIdToMatch
+          );
+          this.showLoader = false;
+        } else {
+          this.filteredTasks = []; // No records found
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.filteredTasks = []; // No records found
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getUserAllList() {
