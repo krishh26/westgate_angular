@@ -112,6 +112,7 @@ export class SuperAdminProjectDetailsComponent {
   // For check bov
   subContracting: boolean = true;
   eligibilityForm: FormGroup;
+  commentName: string = '';
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -595,16 +596,18 @@ export class SuperAdminProjectDetailsComponent {
     }
   }
 
-  // upload Sub Contract
   uploadDocument(event: any, type: string): void {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const data = new FormData();
       data.append('files', file);
+
       this.spinner.show();
+
       this.feasibilityService.uploadDocument(data).subscribe(
         (response) => {
           this.spinner.hide();
+
           if (response?.status) {
             // Sub-contract document
             if (type == this.documentUploadType.subContractDocument) {
@@ -621,19 +624,25 @@ export class SuperAdminProjectDetailsComponent {
               type == this.documentUploadType.otherQueryDocument ||
               type == this.documentUploadType.otherDocument
             ) {
-              let objToBePused = {
+              let objToBePushed = {
                 name: this.loginName,
+                type: type,
                 file: response?.data,
               };
-              this.FeasibilityOtherDocuments.push(objToBePused);
+              this.FeasibilityOtherDocuments.push(objToBePushed);
               this.loginName = '';
             }
 
-            // economical partner ship response document
+            if (type == this.documentUploadType.failStatusImage) {
+              this.failStatusImage = response?.data;
+            }
+
+            // Economical partnership response document
             if (type == this.documentUploadType.economicalPartnershipResponse) {
               this.economicalPartnershipResponceFile = response?.data;
             }
 
+            //client document
             if (type == this.documentUploadType.clientDocument) {
               if (!this.documentName) {
                 return this.notificationService.showError(
@@ -641,16 +650,12 @@ export class SuperAdminProjectDetailsComponent {
                 );
               }
               this.clientDocument = response?.data;
-              let objToBePused = {
+              let objToBePushed = {
                 name: this.documentName,
                 file: response?.data,
               };
-              this.projectDetails.clientDocument.push(objToBePused);
+              this.projectDetails.clientDocument.push(objToBePushed);
               this.documentName = '';
-            }
-
-            if (type == this.documentUploadType.failStatusImage) {
-              this.failStatusImage = response?.data;
             }
 
             if (type == this.documentUploadType.loginDetailDocument) {
@@ -658,11 +663,11 @@ export class SuperAdminProjectDetailsComponent {
                 return this.notificationService.showError('Enter Name');
               }
               this.loginDetailDocument = response?.data;
-              let objToBePused = {
+              let objToBePushed = {
                 name: this.loginName,
                 file: response?.data,
               };
-              this.projectDetails.loginDetail.push(objToBePused);
+              this.projectDetails.loginDetail.push(objToBePushed);
               this.loginName = '';
             }
 
@@ -672,6 +677,8 @@ export class SuperAdminProjectDetailsComponent {
           }
         },
         (error) => {
+          // Hide the spinner in case of an error as well
+          this.spinner.hide();
           return this.notificationService.showError(
             error?.message || 'Error while uploading'
           );
@@ -793,6 +800,46 @@ export class SuperAdminProjectDetailsComponent {
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
+
+  uploadDocuments(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+      this.spinner.show();
+
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
+          if (response?.status) {
+            if (!this.commentName) {
+              return this.notificationService.showError(
+                'Enter a client document name'
+              );
+            }
+
+            // Add the uploaded file and comment to projectComment array
+            let objToBePushed = {
+              comment: this.commentName,
+              file: response?.data,
+            };
+            this.projectDetails.projectComment.push(objToBePushed);
+            this.commentName = ''; // Clear the comment input
+            this.notificationService.showSuccess(response?.message);
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
+        }
+      );
+    }
+  }
+
 
   applyProject() {
     const payload = {

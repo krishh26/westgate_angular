@@ -35,6 +35,7 @@ export class ProcessManagerTrackerComponent {
     'DocumentsNotFound': 'DocumentsNotFound',
     'Fail': 'Fail',
     'InProgress': 'InProgress',
+    'InHold' : 'InHold',
     'Passed': 'Passed',
     'DroppedAfterFeasibility': 'DroppedAfterFeasibility',
     'InSolution': 'InSolution',

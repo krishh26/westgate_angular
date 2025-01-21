@@ -33,6 +33,7 @@ import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-detai
 import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
 import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -74,6 +75,7 @@ import { CompletedTasksComponent } from './completed-tasks/completed-tasks.compo
     NgSelectModule,
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
+    NgxSpinnerModule
   ],
   providers: [NgbActiveModal],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
