@@ -28,7 +28,7 @@ export class TodoTasksComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
-  statusTaskList: string[] = ['Todo', 'Ongoing', 'Completed'];
+  statusTaskList: string[] = [ 'MyDay','Todo', 'Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;

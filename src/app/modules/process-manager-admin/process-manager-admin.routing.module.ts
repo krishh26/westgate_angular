@@ -4,6 +4,8 @@ import { ProcessManagerAdminComponent } from './process-manager-admin.component'
 import { ToDoTasksProcessManagerComponent } from './to-do-tasks-process-manager/to-do-tasks-process-manager.component';
 import { ProcessManagerTrackerComponent } from './process-manager-tracker/process-manager-tracker.component';
 import { ProcessManagerTrackerProjectDetailsComponent } from './process-manager-tracker-project-details/process-manager-tracker-project-details.component';
+import { MyDayTaskProcessManagerComponent } from './my-day-task-process-manager/my-day-task-process-manager.component';
+import { CompletedTaskProcessManagerComponent } from './completed-task-process-manager/completed-task-process-manager.component';
 
 
 
@@ -24,6 +26,14 @@ const routes: Routes = [
       {
         path: "process-manager-project-details",
         component: ProcessManagerTrackerProjectDetailsComponent
+      },
+      {
+        path: "my-day-tasks",
+        component: MyDayTaskProcessManagerComponent
+      },
+      {
+        path: "completed-tasks",
+        component: CompletedTaskProcessManagerComponent
       },
     ]
   },

@@ -13,6 +13,8 @@ import { ToDoTasksProcessManagerComponent } from './to-do-tasks-process-manager/
 import { SharedModule } from 'src/app/utility/shared/shared.module';
 import { ProcessManagerTrackerComponent } from './process-manager-tracker/process-manager-tracker.component';
 import { ProcessManagerTrackerProjectDetailsComponent } from './process-manager-tracker-project-details/process-manager-tracker-project-details.component';
+import { MyDayTaskProcessManagerComponent } from './my-day-task-process-manager/my-day-task-process-manager.component';
+import { CompletedTaskProcessManagerComponent } from './completed-task-process-manager/completed-task-process-manager.component';
 
 @NgModule({
   imports: [
@@ -32,7 +34,9 @@ import { ProcessManagerTrackerProjectDetailsComponent } from './process-manager-
     ProcessManagerHeaderComponent,
     ToDoTasksProcessManagerComponent,
     ProcessManagerTrackerComponent,
-    ProcessManagerTrackerProjectDetailsComponent
+    ProcessManagerTrackerProjectDetailsComponent,
+    MyDayTaskProcessManagerComponent,
+    CompletedTaskProcessManagerComponent
   ],
    providers: [NgbActiveModal], 
   exports: [ToDoTasksProcessManagerComponent],

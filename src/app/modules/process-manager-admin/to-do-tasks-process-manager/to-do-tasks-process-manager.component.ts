@@ -23,7 +23,7 @@ export class ToDoTasksProcessManagerComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
-  statusTaskList: string[] = ['Todo', 'Ongoing', 'Completed'];
+ statusTaskList: string[] = [ 'MyDay','Todo', 'Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -158,7 +158,7 @@ export class ToDoTasksProcessManagerComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing').subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;

@@ -1,29 +1,24 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
-import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
-import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 
-
 @Component({
-  selector: 'app-my-day-tasks',
-  templateUrl: './my-day-tasks.component.html',
-  styleUrls: ['./my-day-tasks.component.scss']
+  selector: 'app-my-day-task-process-manager',
+  templateUrl: './my-day-task-process-manager.component.html',
+  styleUrls: ['./my-day-task-process-manager.component.scss']
 })
-export class MyDayTasksComponent {
- taskDetails: string = '';
+export class MyDayTaskProcessManagerComponent {
+taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
   userList: any = [];
   assignTo: any[] = [];
-  assignProject: string | undefined;
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
@@ -33,137 +28,22 @@ export class MyDayTasksComponent {
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
-  projectList: any = [];
-  statusComment: FormControl = new FormControl('');
-  commentData: any[] = [];
-  status: string = 'Expired';
-  failStatusReason: FormControl = new FormControl('');
-  statusDate: FormControl = new FormControl('');
-  isEditing = false;
-
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService,
-    private router: Router,
-    private feasibilityService: FeasibilityService,
+    private projectService: ProjectService
   ) { }
 
   ngOnInit(): void {
     this.getTask();
     this.getUserAllList();
-    this.getProjectList();
   }
 
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
-  }
-
-  getProjectList() {
-    this.showLoader = true;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
-  }
-
-  statusChange(status: string) {
-    this.status = status;
-    this.commentData = [];
-    this.statusComment.reset();
-  }
-
-  summaryDetail(type: string) {
-    this.saveChanges(type);
-  }
-
-  saveChanges(type?: string, contractEdit?: boolean) {
-    let payload: any = {};
-
-    if (!contractEdit) {
-      // Validation for status
-      if (!this.status) {
-        return this.notificationService.showError('Please select a status.');
-      }
-
-      // Validation for comment
-      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
-        return this.notificationService.showError('Please provide a comment for the selected status.');
-      }
-
-      // Add the comment to commentData only if it's provided
-      if (this.statusComment.value && this.statusDate.value) {
-        this.commentData.push({
-          comment: this.statusComment.value,
-          date: this.statusDate.value,
-          status: this.status,
-        });
-        this.statusComment.reset(); // Clear the comment field after adding
-      }
-
-      // Prepare payload
-      payload = {
-        status: this.status || '',
-        statusComment: this.commentData,
-      };
-
-      // Add fail reason if applicable
-      if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
-      }
-    }
-
-    // API call to update project details
-    this.feasibilityService.updateProjectDetails(payload, this.modalTask?.project?._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          //  this.getProjectDetails();
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
-        }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
-      }
-    );
-  }
-
-  pushStatus() {
-    if (!this.statusComment.value) {
-      this.notificationService.showError('Please enter a status comment');
-      return;
-    }
-
-    // Create a new date instance for the current date and time
-    const currentDate = new Date();
-
-    this.commentData.push({
-      comment: this.statusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      status: this.status,
-    });
-
-    // Reset the comment input field
-    this.statusComment.reset();
-  }
-
-  projectDetails(projectId: any) {
-    this.activeModal.close();
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
   addTask() {
@@ -235,9 +115,6 @@ export class MyDayTasksComponent {
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
     }
-    else if (paramKey === 'assignProjectId' && paramValue) {
-      params.project = paramValue;
-    }
 
     // Call the updateTask method with updated params
     this.updateTask(params);
@@ -247,7 +124,7 @@ export class MyDayTasksComponent {
     // Logic to handle deselected user (e.g., API call)
     console.log(`Processing deselected user: ${userId}`);
   }
-
+  
   processSelectedUser(userId: string) {
     // Logic to handle newly selected user (e.g., API call)
     console.log(`Processing newly selected user: ${userId}`);
@@ -281,7 +158,7 @@ export class MyDayTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getMyTask(this.selectedUserIds.join(',') , true).subscribe(
+    this.superService.getMyTask(this.selectedUserIds.join(','), true).subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;
@@ -351,42 +228,6 @@ export class MyDayTasksComponent {
       }
     });
   }
-
-  deleteComment(id: any) {
-    let param = {
-      commentId: id
-    };
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete this comment?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#00B96F',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete!',
-    }).then((result: any) => {
-      if (result?.value) {
-        this.showLoader = true;
-        this.projectService.deleteComment(param, this.modalTask._id).subscribe(
-          (response: any) => {
-            if (response?.status === true) {
-              this.showLoader = false;
-              this.notificationService.showSuccess('Comment successfully deleted');
-              window.location.reload();
-            } else {
-              this.showLoader = false;
-              this.notificationService.showError(response?.message);
-            }
-          },
-          (error) => {
-            this.showLoader = false;
-            this.notificationService.showError(error?.message);
-          }
-        );
-      }
-    });
-  }
-
 
   enableEdit(comment: any): void {
     comment.isEditing = true;
@@ -481,9 +322,9 @@ export class MyDayTasksComponent {
   }
 
   // Delete a comment
-  // deleteComment(index: number) {
-  //   this.modalTask.comments.splice(index, 1);
-  // }
+  deleteComment(index: number) {
+    this.modalTask.comments.splice(index, 1);
+  }
 
   toggleUserSelection(userId: number): void {
     const index = this.selectedUserIds.indexOf(userId);
