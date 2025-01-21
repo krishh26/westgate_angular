@@ -562,6 +562,7 @@ export class SuperAdminProjectDetailsComponent {
           this.projectDetails = response?.data;
           this.casestudylist = response?.data?.casestudy;
           this.status = this.projectDetails?.status;
+          this.bidStatus = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
           this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
@@ -594,8 +595,8 @@ export class SuperAdminProjectDetailsComponent {
     this.statusComment.reset();
   }
 
-  statusChangeBid(status: string) {
-    this.bidStatus = status;
+  statusChangeBid(newStatus: string) {
+    this.bidStatus = newStatus;
     this.bidCommentData = [];
     this.bidManagerStatusComment.reset();
   }
