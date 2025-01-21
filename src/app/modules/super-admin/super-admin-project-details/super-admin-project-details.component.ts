@@ -84,7 +84,11 @@ export class SuperAdminProjectDetailsComponent {
     failStatusImage: 'failStatusImage',
   };
   ForTitleuserList: any = [
-    'FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'ProcessManagerAdmin', 'SupplierAdmin'
+    'FeasibilityAdmin',
+    'FeasibilityUser',
+    'ProjectManager',
+    'ProcessManagerAdmin',
+    'SupplierAdmin',
   ];
   dueDate: any;
   displayForTitleedUsers: any = [];
@@ -135,6 +139,9 @@ export class SuperAdminProjectDetailsComponent {
   failStatusReasons: { tag: string; comment: string }[] = [];
   selectedFailReason: string = '';
 
+  bidStatus: string = 'Expired';
+  bidManagerStatusComment: FormControl = new FormControl('');
+  bidCommentData: any[] = [];
 
   constructor(
     private projectService: ProjectService,
@@ -178,7 +185,7 @@ export class SuperAdminProjectDetailsComponent {
       text: [''],
       description: [''], // Ensure this is included
       imageText: [''],
-      roles: ['']
+      roles: [''],
     });
   }
 
@@ -203,7 +210,6 @@ export class SuperAdminProjectDetailsComponent {
     );
   }
 
-
   assignUser() {
     if (!this.assignTo) {
       this.notificationService.showError('Please select assign to user');
@@ -214,7 +220,9 @@ export class SuperAdminProjectDetailsComponent {
     let formattedDueDate: string | null = null;
     if (this.dueDate) {
       const { year, month, day } = this.dueDate;
-      formattedDueDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      formattedDueDate = `${year}-${month.toString().padStart(2, '0')}-${day
+        .toString()
+        .padStart(2, '0')}`;
     }
 
     const payload = {
@@ -285,7 +293,6 @@ export class SuperAdminProjectDetailsComponent {
     this.statusComment.reset();
   }
 
-
   getForTitleUserAllList() {
     this.showLoader = true;
     this.projectManagerService.getUserAllList().subscribe(
@@ -294,8 +301,7 @@ export class SuperAdminProjectDetailsComponent {
           // Filter only roles of FeasibilityAdmin and FeasibilityUser
           this.ForTitleuserList = response?.data?.filter(
             (user: any) =>
-              user?.role === 'SupplierAdmin' ||
-              user?.role === 'FeasibilityUser'
+              user?.role === 'SupplierAdmin' || user?.role === 'FeasibilityUser'
           );
           this.displayForTitleedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
@@ -559,6 +565,8 @@ export class SuperAdminProjectDetailsComponent {
           this.subContracting = this.projectDetails?.subContracting;
           this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
+          this.bidCommentData =
+            this.projectDetails?.bidManagerStatusComment || [];
           this.subContractDocument =
             this.projectDetails?.subContractingfile || null;
           this.economicalPartnershipQueryFile =
@@ -586,6 +594,32 @@ export class SuperAdminProjectDetailsComponent {
     this.statusComment.reset();
   }
 
+  statusChangeBid(status: string) {
+    this.bidStatus = status;
+    this.bidCommentData = [];
+    this.bidManagerStatusComment.reset();
+  }
+
+  pushStatusBid() {
+    if (!this.bidManagerStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
+    this.bidCommentData.push({
+      comment: this.bidManagerStatusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      bidManagerStatus: this.bidStatus,
+      userId: this.loginUser?._id,
+    });
+
+    // Reset the comment input field
+    this.bidManagerStatusComment.reset();
+  }
+
   // Function for subcontract
   subContactChange(value: string) {
     if (value == 'true') {
@@ -602,7 +636,6 @@ export class SuperAdminProjectDetailsComponent {
   openViewImage(image: any) {
     this.selectViewImage = image;
     console.log(this.selectViewImage?.url);
-
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -749,6 +782,14 @@ export class SuperAdminProjectDetailsComponent {
         });
       }
 
+      // if (this.bidManagerStatusComment.value && this.statusDate.value) {
+      //   this.commentData.push({
+      //     comment: this.bidManagerStatusComment.value,
+      //     date: this.statusDate.value,
+      //     bidManagerStatus: this.bidStatus,
+      //   });
+      // }
+
       payload = {
         subContractingfile: this.subContractDocument || [],
         economicalPartnershipQueryFile:
@@ -764,6 +805,8 @@ export class SuperAdminProjectDetailsComponent {
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || '',
         statusComment: this.commentData,
+        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatusComment: this.bidCommentData,
         loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
@@ -878,7 +921,6 @@ export class SuperAdminProjectDetailsComponent {
       );
     }
   }
-
 
   applyProject() {
     const payload = {
@@ -1183,7 +1225,11 @@ export class SuperAdminProjectDetailsComponent {
     }
 
     // Check if the reason already exists
-    if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
+    if (
+      this.failStatusReasons.some(
+        (reason) => reason.tag === this.selectedFailReason
+      )
+    ) {
       this.notificationService.showError('This reason is already added.');
       return;
     }
@@ -1212,21 +1258,30 @@ export class SuperAdminProjectDetailsComponent {
       }
 
       // Check if the status has at least one comment
-      const hasExistingComment = this.commentData.some(item => item.status === this.status);
+      const hasExistingComment = this.commentData.some(
+        (item) => item.status === this.status
+      );
       if (!hasExistingComment && !this.statusComment.value) {
-        return this.notificationService.showError('Please provide a comment for the selected status.');
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
       }
 
       // If a comment is filled but not added
       if (this.statusComment.value) {
-        return this.notificationService.showError('Please click the "Add" button to save your comment.');
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
       }
 
       payload = {
         projectType: this.projectDetails.projectType,
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || '',
-        statusComment: this.commentData,
+        statusComment: [
+          ...this.commentData,
+          ...this.projectDetails?.statusComment,
+        ],
         failStatusReason: this.failStatusReasons,
       };
 
@@ -1237,29 +1292,94 @@ export class SuperAdminProjectDetailsComponent {
     }
 
     // API call to update project details
-    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          this.getProjectDetails();
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+    this.feasibilityService
+      .updateProjectDetails(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
         }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
+      );
+  }
+
+  saveBidStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+
+    if (!contractEdit) {
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
       }
-    );
+
+      // Check if the status has at least one comment
+      const hasExistingComment = this.bidCommentData.some(
+        (item) => item.status === this.bidStatus
+      );
+      if (!hasExistingComment && !this.statusComment.value) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
+      }
+      payload = {
+        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatusComment: [
+          ...this.bidCommentData,
+          ...this.projectDetails?.bidManagerStatusComment,
+        ],
+        
+      };
+
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
   }
 
   isCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
-    const hasComment = this.commentData.some(item => item.status === this.status);
+    const hasComment = this.commentData.some(
+      (item) => item.status === this.status
+    );
     const hasUnaddedComment = this.statusComment.value && !hasComment;
     return this.status && (hasComment || hasUnaddedComment);
   }
 
-
-
+  isBidCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.bidCommentData.some(
+      (item) => item.status === this.bidStatus
+    );
+    const hasUnaddedComment = this.statusComment.value && !hasComment;
+    return this.status && (hasComment || hasUnaddedComment);
+  }
 }
