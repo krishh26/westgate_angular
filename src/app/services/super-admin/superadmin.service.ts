@@ -23,7 +23,7 @@ export enum SuperAdminEndPoint {
   APPOINT_BID_USER = '/project/update/appoint-bidmanager',
   APPROVE_OR_REJECT = '/project/update/approve-reject',
   ADD_IMAGE_PROJECT_DETAILS = '/project-detail-title/update/',
-  GET_GAP_ANALYSIS = '/project/gap-analysis'
+  GET_GAP_ANALYSIS = '/project/gap-analysis',
 }
 
 @Injectable({
@@ -132,8 +132,12 @@ export class SuperadminService {
     );
   }
 
-  getTaskUserwise(userId: string): Observable<any> {
-    const params = new HttpParams().set('assignTo', userId);
+  getTaskUserwise(queryParams: { [key: string]: any }): Observable<any> {
+    let params = new HttpParams();
+
+    Object.entries(queryParams).forEach(([key, value]) => {
+      params = params.set(key, value.toString());
+    });
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,
       { params }
@@ -168,11 +172,10 @@ export class SuperadminService {
     );
   }
 
-  updateProjectDetails(payload: any, id: string,): Observable<any> {
+  updateProjectDetails(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.ADD_IMAGE_PROJECT_DETAILS + id,
       payload
     );
   }
-
 }

@@ -24,6 +24,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BosProjectMailSendComponent } from './bos-project-mail-send/bos-project-mail-send.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
+import { OngoingTodoTaskComponent } from './ongoing-todo-task/ongoing-todo-task.component';
+import { MyDayTodoTaskComponent } from './my-day-todo-task/my-day-todo-task.component';
+import { CompletedTodoTaskComponent } from './completed-todo-task/completed-todo-task.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -41,6 +44,9 @@ import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
     BossUserProfileComponent,
     BosProjectMailSendComponent,
     TodoTasksComponent,
+    OngoingTodoTaskComponent,
+    MyDayTodoTaskComponent,
+    CompletedTodoTaskComponent,
   ],
   imports: [
     CommonModule,
