@@ -18,7 +18,7 @@ export class BossUserAddProjectComponent {
   addEditProjectForm = {
     projectName: new FormControl("", Validators.required),
     BOSID: new FormControl("", Validators.required),
-    publishDate: new FormControl(moment(new Date()).format('dd-MM-YYYY'), Validators.required),
+    publishDate: new FormControl(moment(new Date()).format('YYYY-MM-DD'), Validators.required),
     website: new FormControl("", Validators.required),
     category: new FormControl("", Validators.required),
     industry: new FormControl("", Validators.required),
@@ -115,7 +115,7 @@ export class BossUserAddProjectComponent {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-         
+
       } else {
         //  this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -126,34 +126,18 @@ export class BossUserAddProjectComponent {
     });
   }
 
-  // getCurrentDate(): string {
-  //   const currentDate = new Date();
-  //   return this.formatDate(currentDate);
-  // }
-
-  // formatDate(date: any) {
-  //   const day = date.getDate();
-  //   const monthNames = [
-  //     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  //   ];
-  //   const month = monthNames[date.getMonth()];
-  //   const year = date.getFullYear();
-
-  //   return `${day}-${month}-${year}`;
-  // }
-
 
   // Submit form
   submitForm() {
     this.showLoader = true;
     let payload = {
-      data: this.productForm.value
+      data: [this.productForm.value]
     }
-    console.log('thisis value',this.productForm.value)
+    console.log('thisis value', this.productForm.value)
     if (this.projectId) {
       this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
         if (response.status) {
-          this.notificationService.showSuccess('' , 'Project updated successfully.');
+          this.notificationService.showSuccess('', 'Project updated successfully.');
           this.router.navigate(['/boss-user/project-list']);
         } else {
           this.notificationService.showError(response?.message);
@@ -168,7 +152,7 @@ export class BossUserAddProjectComponent {
       this.projectService.addProject(payload).subscribe((response) => {
         if (response?.status == true) {
           this.showLoader = false;
-          this.notificationService.showSuccess('' , 'Project added successfully.');
+          this.notificationService.showSuccess('', 'Project added successfully.');
           this.router.navigate(['/boss-user/project-list']);
         } else {
           this.notificationService.showError(response?.message);
@@ -187,43 +171,43 @@ export class BossUserAddProjectComponent {
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createCategory(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getcategoryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getcategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
   onItemAddIndustry(item: { industry: string }): void {
     // Add type annotation for 'categoryItem'
     console.log(this.industryList)
-    console.log('this is value',item);
+    console.log('this is value', item);
 
     const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createIndustry(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getIndustryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 }

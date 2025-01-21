@@ -161,23 +161,11 @@
                               <div class="row mb-3">
                                   <label for="inputEmail3" class="col-sm-4 col-form-label">Category</label>
                                   <div class="col-sm-8">
-
-                                      <!-- <select formControlName="category" class="form-select">
-                                          <option>Select category</option>
-                                      </select> -->
-
-                                      <!-- <select class="form-control" required name="doctorSpecilisationIDs"
-                                          formControlName="doctorSpecilisationIDs">
-                                          <option selected hidden>Select Speciality</option>
-                                          <option *ngFor="let item of specialitylist">
-                                              {{item.specialistName}}</option>
-                                      </select> -->
-                                      <select class="form-control dropdown-filter" formControlName="category"
-                                          name="category">
-                                          <option value="" selected hidden>Select a category</option>
-                                          <option *ngFor="let category of categoryList">{{
-                                              category?.category }}</option>
-                                      </select>
+                                    <ng-select style="padding: 0px !important" placeholder="Select Category"
+                                    class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
+                                    [multiple]="true" bindValue="category" formControlName="category" [addTag]="true"
+                                    (add)="onItemAddCategory($event)">
+                                  </ng-select>
                                   </div>
                               </div>
                           </div>
@@ -185,16 +173,11 @@
                               <div class="row mb-3">
                                   <label for="inputEmail3" class="col-sm-4 col-form-label">Industry</label>
                                   <div class="col-sm-8">
-                                      <!-- <select formControlName="industry" class="form-select">
-                                          <option>Industry Type</option>
-                                      </select> -->
-                                      <select class="form-control dropdown-filter" formControlName="industry"
-                                          name="industry">
-                                          <option value="" selected hidden>Select a industry</option>
-                                          <option *ngFor="let industry of industryList" [value]="industry?.industry">
-                                              {{
-                                              industry?.industry }}</option>
-                                      </select>
+                                    <ng-select style="padding: 0px !important" placeholder="Select Category"
+                                    class="form-select custom-ng-select-option" [items]="industryList" bindLabel="industry"
+                                    [multiple]="true" bindValue="industry" formControlName="industry" [addTag]="true"
+                                    (add)="onItemAddIndustry($event)">
+                                  </ng-select>
                                   </div>
                               </div>
                           </div>
