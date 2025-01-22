@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -16,7 +17,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./completed-tasks.component.scss']
 })
 export class CompletedTasksComponent {
- taskDetails: string = '';
+  taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
@@ -27,7 +28,7 @@ export class CompletedTasksComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
- statusTaskList: string[] = [ 'MyDay','Todo', 'Ongoing', 'Completed'];
+  statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -39,7 +40,7 @@ export class CompletedTasksComponent {
   failStatusReason: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   isEditing = false;
-
+  loginUser: any;
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -48,7 +49,10 @@ export class CompletedTasksComponent {
     private projectService: ProjectService,
     private router: Router,
     private feasibilityService: FeasibilityService,
-  ) { }
+      private localStorageService: LocalStorageService,
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+   }
 
   ngOnInit(): void {
     this.getTask();
@@ -108,6 +112,7 @@ export class CompletedTasksComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
+          userId: this.loginUser?._id
         });
         this.statusComment.reset(); // Clear the comment field after adding
       }
@@ -154,6 +159,7 @@ export class CompletedTasksComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
+      userId: this.loginUser?._id
     });
 
     // Reset the comment input field
@@ -280,7 +286,7 @@ export class CompletedTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getsuperadmintasks(this.selectedUserIds.join(','),'Completed').subscribe(
+    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed').subscribe(
       (response) => {
         if (response?.status == true) {
           this.taskList = response?.data?.data;

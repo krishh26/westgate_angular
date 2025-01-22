@@ -110,6 +110,14 @@
               <div class="col-md-2"><strong>Mail Id:</strong></div>
               <div class="col-md-10">{{ projectDetails?.mailID || "-" }}</div>
             </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Client Type:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.clientType || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Client Name:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.clientName || "-" }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -123,14 +131,14 @@
 
       <p>{{ projectDetails?.description }}</p>
 
-      <section class="pageheader bg-dark">
+      <!-- <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Client & FOI Detils</strong></p>
         </div>
-      </section>
+      </section> -->
 
       <!--client details-->
-      <div class="row mt-5">
+      <!-- <div class="row mt-5">
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
             <div class="card-body">
@@ -256,7 +264,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- <section class="pageheader bg-dark">
         <div class="container">
@@ -507,10 +515,9 @@
               </li>
             </ul>
             <button data-bs-toggle="modal" data-bs-target="#addClientDocument" type="button"
-              class="btn btn-dark btn-sm add-card-btn">
+              *ngIf="projectDetails?.status !== 'Fail'" class="btn btn-dark btn-sm add-card-btn">
               <i class="bi bi-plus-lg"></i>
             </button>
-            <!-- (click)="hideShowForm()" -->
           </div>
         </div>
 
@@ -518,7 +525,6 @@
           <h5>WestGate Documents</h5>
           <div class="card">
             <ul class="project-document">
-              <!-- Document List -->
               <li *ngFor="let item of projectDetails?.projectComment" class="list-group-item">
                 <div class="row">
                   <div class="col-5 text-center">
@@ -538,7 +544,7 @@
               </li>
             </ul>
             <button data-bs-toggle="modal" data-bs-target="#addWestgateDocument" type="button"
-              class="btn btn-dark btn-sm add-card-btn">
+              *ngIf="projectDetails?.status !== 'Fail'" class="btn btn-dark btn-sm add-card-btn">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
@@ -549,11 +555,11 @@
         <div class="card shadow-sm p-4">
           <!-- Header -->
           <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Feasibility Status</h5>
+            <h5 class="mb-0">Feasibility Status : {{projectDetails?.status}}</h5>
           </div>
 
           <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4">
+          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="projectDetails?.status !== 'Fail'">
             <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
               (click)="statusChange('InProgress')">
               In-Progress
@@ -583,11 +589,25 @@
             <!-- Display Existing Comments -->
             <div *ngIf="commentData?.length" class="comment-list">
               <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
-                <div class="d-flex justify-content-between align-items-center">
+                <!-- <div class="d-flex justify-content-between align-items-center">
                   <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
                   <span class="text-muted"><strong>Date:</strong>
                     {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                </div> -->
+
+                <div class="comment mb-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-0 fw-bold">
+                      {{ item?.userDetails?.name }}
+                    </p>
+                    <small class="text-muted">
+                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </small>
+                  </div>
+                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <p class="mt-2">{{ item?.comment }}</p>
                 </div>
+
               </div>
             </div>
 
@@ -641,9 +661,7 @@
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
@@ -667,7 +685,7 @@
           <div class="comments-section">
             <ng-container *ngIf="commentData!.length > 0; else noTasks">
               <div *ngFor="let comment of commentData" class="task-item">
-                <ng-container *ngIf="comment?.userDetails">
+                <ng-container>
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">
@@ -691,7 +709,7 @@
         </div>
       </div>
 
-      <div class="modal-body d-flex">
+      <!-- <div class="modal-body d-flex">
         <div class="flex-grow-1 pe-3">
           <div class="comments-section">
             <ng-container>
@@ -720,7 +738,7 @@
 
       <ng-template #noComments>
         <p class="text-muted">No comments available.</p>
-      </ng-template>
+      </ng-template> -->
 
       <section class="pageheader bg-dark">
         <div class="container">

@@ -14,6 +14,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-feasibility-project-details',
@@ -53,6 +54,7 @@ export class FeasibilityProjectDetailsComponent {
   failStatusImage: any;
   filteredTasks: any = [];
   logs: any = [];
+  loginUser: any;
 
   addStripcontrol = {
     text: new FormControl('', Validators.required),
@@ -110,7 +112,10 @@ export class FeasibilityProjectDetailsComponent {
     private superService: SuperadminService,
     private fb: FormBuilder,
     private projectManagerService: ProjectManagerService,
+    private localStorageService: LocalStorageService,
+    
   ) {
+    this.loginUser = this.localStorageService.getLogger();
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
     });
@@ -487,6 +492,7 @@ export class FeasibilityProjectDetailsComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
+      userId: this.loginUser?._id
     });
 
     // Reset the comment input field
@@ -755,6 +761,7 @@ saveChanges(type?: string, contractEdit?: boolean) {
         comment: this.statusComment.value,
         date: this.statusDate.value,
         status: this.status,
+        userId: this.loginUser?._id
       });
       this.statusComment.reset(); // Clear the comment field after adding
     }

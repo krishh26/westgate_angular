@@ -4,6 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 
@@ -66,7 +67,7 @@ export class NewAllProjectDetailsComponent {
     password: new FormControl("", Validators.required),
     id: new FormControl(""),
   }
-
+  loginUser: any;
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   commentData: any[] = []
   constructor(
@@ -76,8 +77,10 @@ export class NewAllProjectDetailsComponent {
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private sanitizer: DomSanitizer,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private localStorageService: LocalStorageService,
   ) {
+    this.loginUser = this.localStorageService.getLogger();
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id']
     });
@@ -144,6 +147,7 @@ export class NewAllProjectDetailsComponent {
       comment: this.statusComment.value,
       date: this.statusDate.value,
       status: this.status,
+      userId: this.loginUser?._id
     })
     this.statusComment.reset()
     this.statusDate.reset()
@@ -367,6 +371,7 @@ export class NewAllProjectDetailsComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
+          userId: this.loginUser?._id
         })
       }
 

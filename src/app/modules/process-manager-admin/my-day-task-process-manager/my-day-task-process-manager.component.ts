@@ -23,7 +23,7 @@ taskDetails: string = '';
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
- statusTaskList: string[] = [ 'MyDay','Todo', 'Ongoing', 'Completed'];
+ statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;

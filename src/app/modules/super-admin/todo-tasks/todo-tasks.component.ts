@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -28,7 +29,7 @@ export class TodoTasksComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
-  statusTaskList: string[] = [ 'MyDay','Todo', 'Ongoing', 'Completed'];
+  statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -40,7 +41,7 @@ export class TodoTasksComponent {
   failStatusReason: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   isEditing = false;
-
+  loginUser: any;
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -49,7 +50,10 @@ export class TodoTasksComponent {
     private projectService: ProjectService,
     private router: Router,
     private feasibilityService: FeasibilityService,
-  ) { }
+    private localStorageService: LocalStorageService,
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.getTask();
@@ -109,6 +113,7 @@ export class TodoTasksComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
+          userId: this.loginUser?._id
         });
         this.statusComment.reset(); // Clear the comment field after adding
       }
@@ -155,6 +160,7 @@ export class TodoTasksComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
+      userId: this.loginUser?._id
     });
 
     // Reset the comment input field
@@ -171,7 +177,7 @@ export class TodoTasksComponent {
       const payload = {
         discription: this.taskDetails,
         task: this.taskTitle,
-        status: 'Todo',
+        status: 'Ongoing',
         dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
         assignTo: this.assignTo,
       };
@@ -240,6 +246,14 @@ export class TodoTasksComponent {
     }
 
     // Call the updateTask method with updated params
+    this.updateTask(params);
+  }
+
+  onChangeMyday(value: any) {
+    console.log(value);
+    let params = {
+      status: value
+    }
     this.updateTask(params);
   }
 

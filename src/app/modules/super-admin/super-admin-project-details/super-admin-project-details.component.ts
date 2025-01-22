@@ -831,6 +831,7 @@ export class SuperAdminProjectDetailsComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
+          userId: this.loginUser?._id
         });
       }
 

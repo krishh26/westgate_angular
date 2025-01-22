@@ -677,7 +677,7 @@
           <div class="comments-section">
             <ng-container *ngIf="commentData!.length > 0; else noTasks">
               <div *ngFor="let comment of commentData" class="task-item">
-                <ng-container *ngIf="comment?.userDetails">
+                <ng-container>
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">

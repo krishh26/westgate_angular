@@ -613,6 +613,7 @@ export class ProjectManagerProjectDetailsComponent {
           comment: this.bidManagerStatusComment.value,
           date: this.statusDate.value,
           bidManagerStatus: this.status,
+          userId: this.loginUser?._id
         })
       }
 

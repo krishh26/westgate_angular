@@ -175,6 +175,7 @@ export class OngoingTodoTaskComponent {
         comment: this.statusComment.value,
         date: currentDate.toISOString(), // ISO format for standardization (optional)
         status: this.status,
+        userId: this.loginUser?._id
       });
   
       // Reset the comment input field
@@ -202,6 +203,7 @@ export class OngoingTodoTaskComponent {
             comment: this.statusComment.value,
             date: this.statusDate.value,
             status: this.status,
+            userId: this.loginUser?._id
           });
           this.statusComment.reset(); // Clear the comment field after adding
         }

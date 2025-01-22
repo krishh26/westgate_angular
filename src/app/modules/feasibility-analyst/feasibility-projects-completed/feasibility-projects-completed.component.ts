@@ -97,8 +97,8 @@ export class FeasibilityProjectsCompletedComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
-    private localStorageService : LocalStorageService
-  ) { 
+    private localStorageService: LocalStorageService
+  ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
