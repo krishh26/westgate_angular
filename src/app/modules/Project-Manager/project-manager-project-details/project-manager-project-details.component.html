@@ -92,6 +92,15 @@
                             <div class="col-md-2"><strong>Mail Id:</strong></div>
                             <div class="col-md-10">{{ projectDetails?.mailID || '-' }}</div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Client Type:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.clientType || "-" }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><strong>Client Name:</strong></div>
+                            <div class="col-md-10">{{ projectDetails?.clientName || "-" }}</div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -112,16 +121,14 @@
             </section><br>
 
             <p>{{ projectDetails?.description }}</p>
-
+            <!-- 
             <section class="pageheader bg-dark">
                 <div class="container">
                     <p><strong>Client & FOI Detils</strong></p>
                 </div>
-            </section>
+            </section> -->
 
-
-            <!--client details-->
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-lg-4 col-xl-4 col-12 mb-4">
                     <div class="card">
                         <div class="card-body">
@@ -221,8 +228,6 @@
                                 <p class="p-13">
                                     <strong>Project Type: {{ projectDetails?.projectType }}</strong>
                                 </p>
-                                <!-- <a class="btn btn-secondary sm ml-2" (click)="toggleEdit()"><i
-                                        class="bi bi-pencil-fill"></i></a> -->
                             </ng-container>
                             <ng-template #editMode>
                                 <p class="p-13">
@@ -239,15 +244,11 @@
                                         <input type="text" [(ngModel)]="projectDetails.projectType" />
                                     </strong>
                                 </p>
-                                <!-- <a class="btn btn-primary sm" title="Save" (click)="saveChanges('save', true)"><i
-                                        class="bi bi-check2"></i></a>&nbsp;
-                                <a class="btn btn-warning ml-2" title="Cancel" (click)="toggleEdit()"><i
-                                        class="bi bi-x-lg"></i></a> -->
                             </ng-template>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-lg-12 col-xl-12 col-12">
                 <div class="card shadow-sm p-4">
