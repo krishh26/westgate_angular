@@ -146,7 +146,8 @@ export class TrackerWiseProjectDetailsComponent {
   selectedUserIds: number[] = [];
   showAllLogs: boolean = false;
   logs: any = [];
-
+  FeasibilityuserList: any = [];
+  BiduserList : any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -245,8 +246,12 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectManagerService.getUserAllList().subscribe(
       (response) => {
         if (response?.status === true) {
-          this.userList = response?.data?.filter(
-            (user: any) => user?.role !== 'SupplierAdmin'
+          this.FeasibilityuserList = response?.data?.filter(
+            (user: any) => user?.role === 'FeasibilityAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          this.BiduserList = response?.data?.filter(
+            (user: any) => user?.role === 'ProjectManager'
           );
           this.showLoader = false;
         } else {
