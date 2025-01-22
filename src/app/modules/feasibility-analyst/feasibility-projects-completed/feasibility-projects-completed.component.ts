@@ -2,6 +2,7 @@ import { Options } from '@angular-slider/ngx-slider/options';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -21,13 +22,14 @@ interface Project {
   dueDate: Date;
   // Add other properties as needed
 }
+
 @Component({
   selector: 'app-feasibility-projects-completed',
   templateUrl: './feasibility-projects-completed.component.html',
   styleUrls: ['./feasibility-projects-completed.component.scss']
 })
 export class FeasibilityProjectsCompletedComponent {
-
+  loginUser: any = [];
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
@@ -94,8 +96,11 @@ export class FeasibilityProjectsCompletedComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
-  ) { }
+    private superService: SuperadminService,
+    private localStorageService : LocalStorageService
+  ) { 
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -273,6 +278,7 @@ export class FeasibilityProjectsCompletedComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.status = 'Passed,Fail';
+    Payload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

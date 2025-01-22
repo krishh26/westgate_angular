@@ -2,6 +2,7 @@ import { Options } from '@angular-slider/ngx-slider/options';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -42,6 +43,7 @@ export class FeasibilityProjectsInProgressComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
+  loginUser: any = [];
   // statusList: any = [
   //   "Awaiting",
   //   "⁠Documents not found",
@@ -95,8 +97,11 @@ export class FeasibilityProjectsInProgressComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
-  ) { }
+    private superService: SuperadminService,
+    private localStorageService : LocalStorageService
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -275,6 +280,7 @@ export class FeasibilityProjectsInProgressComponent {
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
     Payload.projectList.status = 'DocumentsNotFound,InHold,InProgress';
+    Payload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
