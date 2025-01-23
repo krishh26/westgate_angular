@@ -5,38 +5,23 @@
         <p class="ps-3"><strong>Task Status</strong></p>
         <ul class="sidebar-nav">
           <li>
-            <a
-              href="javascript:void(0)"
-              (click)="setActiveComponent('MyDay')"
-              [ngClass]="{ active: activeComponent === 'MyDay' }"
-              >My Day</a
-            >
+            <a href="javascript:void(0)" (click)="setActiveComponent('MyDay')"
+              [ngClass]="{ active: activeComponent === 'MyDay' }">My Day</a>
           </li>
           <li>
-            <a
-              href="javascript:void(0)"
-              class="active"
-              (click)="setActiveComponent('Ongoing')"
-              [ngClass]="{ 'active': activeComponent === 'Ongoing' }"
-              >Ongoing</a
-            >
+            <a href="javascript:void(0)" class="active" (click)="setActiveComponent('Ongoing')"
+              [ngClass]="{ 'active': activeComponent === 'Ongoing' }">Ongoing</a>
           </li>
           <li>
-            <a
-              href="javascript:void(0)"
-              (click)="setActiveComponent('Completed')"
-              [ngClass]="{ 'active': activeComponent === 'Completed' }"
-              >Completed</a
-            >
+            <a href="javascript:void(0)" (click)="setActiveComponent('Completed')"
+              [ngClass]="{ 'active': activeComponent === 'Completed' }">Completed</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
       <app-my-day-todo-task *ngIf="activeComponent === 'MyDay'"></app-my-day-todo-task>
-      <app-ongoing-todo-task
-        *ngIf="activeComponent === 'Ongoing'"
-      ></app-ongoing-todo-task>
+      <app-ongoing-todo-task *ngIf="activeComponent === 'Ongoing'"></app-ongoing-todo-task>
       <app-completed-todo-task *ngIf="activeComponent === 'Completed'"></app-completed-todo-task>
     </div>
   </div>
