@@ -147,7 +147,7 @@ export class SuperAdminProjectDetailsComponent {
   showAllLogs: boolean = false;
   logs: any = [];
   FeasibilityuserList: any = [];
-  BiduserList : any = [];
+  BiduserList: any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -247,7 +247,8 @@ export class SuperAdminProjectDetailsComponent {
       (response) => {
         if (response?.status === true) {
           this.FeasibilityuserList = response?.data?.filter(
-            (user: any) => user?.role === 'FeasibilityAdmin' ||
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
               user?.role === 'FeasibilityUser'
           );
           this.BiduserList = response?.data?.filter(
@@ -620,7 +621,7 @@ export class SuperAdminProjectDetailsComponent {
           this.status = this.projectDetails?.status;
           this.bidStatus = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
-          this.statusComment.setValue(this.projectDetails?.statusComment);
+          // this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
           this.bidCommentData =
             this.projectDetails?.bidManagerStatusComment || [];
@@ -836,7 +837,7 @@ export class SuperAdminProjectDetailsComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
-          userId: this.loginUser?._id
+          userId: this.loginUser?._id,
         });
       }
 
@@ -1283,14 +1284,14 @@ export class SuperAdminProjectDetailsComponent {
     }
 
     // Check if the reason already exists
-    if (
-      this.failStatusReasons.some(
-        (reason) => reason.tag === this.selectedFailReason
-      )
-    ) {
-      this.notificationService.showError('This reason is already added.');
-      return;
-    }
+    // if (
+    //   this.failStatusReasons.some(
+    //     (reason) => reason.tag === this.selectedFailReason
+    //   )
+    // ) {
+    //   this.notificationService.showError('This reason is already added.');
+    //   return;
+    // }
 
     // Add the reason with an empty comment
     this.failStatusReasons.push({
@@ -1395,9 +1396,7 @@ export class SuperAdminProjectDetailsComponent {
           ...this.bidCommentData,
           ...this.projectDetails?.bidManagerStatusComment,
         ],
-
       };
-
     }
 
     // API call to update project details

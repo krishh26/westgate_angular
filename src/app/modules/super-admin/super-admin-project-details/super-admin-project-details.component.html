@@ -1,20 +1,34 @@
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
 <main id="main">
   <section>
     <div class="container-fluid">
       <div class="row align-items-center">
-        <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
+        <div
+          class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3"
+        >
           <div class="d-flex align-items-center">
             <h4 class="me-3"><strong>Project Title:</strong></h4>
             <h4>{{ projectDetails?.projectName }}</h4>
           </div>
           <div class="ms-auto d-flex">
-            <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
+            <a
+              data-bs-toggle="modal"
+              data-bs-target="#ViewStripAdd"
+              class="btn btn-primary btn-sm text-dark me-2"
+            >
               Add Strips
             </a>
-            <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
+            <a
+              routerLink="/super-admin/super-admin-projects-all"
+              class="btn btn-primary text-dark"
+            >
               Back
             </a>
           </div>
@@ -32,9 +46,9 @@
               <div class="col-md-2"><strong>Publish Date:</strong></div>
               <div class="col-md-10">
                 {{
-                projectDetails?.publishDate
-                ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
-                : "-"
+                  projectDetails?.publishDate
+                    ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
+                    : "-"
                 }}
               </div>
             </div>
@@ -65,8 +79,12 @@
             <div class="row">
               <div class="col-md-2"><strong>Link to notice:</strong></div>
               <div class="col-md-10">
-                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}" target="_blank">Link to
-                  Notice</a>
+                <a
+                  *ngIf="projectDetails?.link; else noLink"
+                  href="{{ projectDetails?.link }}"
+                  target="_blank"
+                  >Link to Notice</a
+                >
                 <ng-template #noLink>-</ng-template>
               </div>
             </div>
@@ -74,9 +92,9 @@
               <div class="col-md-2"><strong>Created Date:</strong></div>
               <div class="col-md-10">
                 {{
-                projectDetails?.createdAt
-                ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
-                : "-"
+                  projectDetails?.createdAt
+                    ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
+                    : "-"
                 }}
               </div>
             </div>
@@ -84,9 +102,9 @@
               <div class="col-md-2"><strong>Due Date & Time:</strong></div>
               <div class="col-md-10">
                 {{
-                projectDetails?.dueDate
-                ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
-                : "-"
+                  projectDetails?.dueDate
+                    ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
+                    : "-"
                 }}
               </div>
             </div>
@@ -117,21 +135,25 @@
 
             <div class="row">
               <div class="col-md-2"><strong>Client Type:</strong></div>
-              <div class="col-md-10">{{ projectDetails?.clientType || "-" }}</div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientType || "-" }}
+              </div>
             </div>
-
 
             <div class="row">
               <div class="col-md-2"><strong>Client Name:</strong></div>
-              <div class="col-md-10">{{ projectDetails?.clientName || "-" }}</div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientName || "-" }}
+              </div>
             </div>
-
           </div>
         </div>
       </div>
 
       <section class="pageheader bg-dark">
-        <div class="container d-flex justify-content-between align-items-center">
+        <div
+          class="container d-flex justify-content-between align-items-center"
+        >
           <p class="mb-0"><strong>Project Description</strong></p>
         </div>
       </section>
@@ -181,9 +203,15 @@
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
             <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="FeasibilityuserList"
-              [(ngModel)]="assignTo">
+            <ng-select
+              style="padding: 0px !important"
+              placeholder="Select Assign User"
+              class="form-select custom-ng-select-option"
+              bindLabel="userName"
+              bindValue="_id"
+              [items]="FeasibilityuserList"
+              [(ngModel)]="assignTo"
+            >
             </ng-select>
           </div>
         </div>
@@ -191,10 +219,18 @@
           <div class="detail-item">
             <label>Due Date</label>
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [(ngModel)]="dueDate"
+                ngbDatepicker
+                #endDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="endDatePicker.toggle()"
+                type="button"
+              ></button>
             </div>
           </div>
         </div>
@@ -215,9 +251,15 @@
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
             <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-              [(ngModel)]="assignTo">
+            <ng-select
+              style="padding: 0px !important"
+              placeholder="Select Assign User"
+              class="form-select custom-ng-select-option"
+              bindLabel="userName"
+              bindValue="_id"
+              [items]="BiduserList"
+              [(ngModel)]="assignTo"
+            >
             </ng-select>
           </div>
         </div>
@@ -225,10 +267,18 @@
           <div class="detail-item">
             <label>Due Date</label>
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [(ngModel)]="dueDate"
+                ngbDatepicker
+                #endDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="endDatePicker.toggle()"
+                type="button"
+              ></button>
             </div>
           </div>
         </div>
@@ -259,18 +309,31 @@
                     </p>
                   </div>
                   <div class="col-7 text-center">
-                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
-                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i class="bi bi-eye-fill"></i>
-                      View</a>
-                    <a href="href:;" (click)="download(item?.file?.url, item?.name)" class="btn btn-primarysm"><i
-                        class="bi bi-file-earmark-arrow-down-fill"></i>
-                      Download</a>
+                    <a
+                      href="href:;"
+                      class="btn btn-primarysm me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc"
+                      (click)="openDocument(item)"
+                      ><i class="bi bi-eye-fill"></i> View</a
+                    >
+                    <a
+                      href="href:;"
+                      (click)="download(item?.file?.url, item?.name)"
+                      class="btn btn-primarysm"
+                      ><i class="bi bi-file-earmark-arrow-down-fill"></i>
+                      Download</a
+                    >
                   </div>
                 </div>
               </li>
             </ul>
-            <button data-bs-toggle="modal" data-bs-target="#addClientDocument" type="button"
-              class="btn btn-dark btn-sm add-card-btn">
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#addClientDocument"
+              type="button"
+              class="btn btn-dark btn-sm add-card-btn"
+            >
               <i class="bi bi-plus-lg"></i>
             </button>
             <!-- (click)="hideShowForm()" -->
@@ -282,17 +345,29 @@
           <div class="card">
             <ul class="project-document">
               <!-- Document List -->
-              <li *ngFor="let item of projectDetails?.projectComment" class="list-group-item">
+              <li
+                *ngFor="let item of projectDetails?.projectComment"
+                class="list-group-item"
+              >
                 <div class="row">
                   <div class="col-5 text-center">
                     <p class="mb-0">{{ item?.comment }}</p>
                   </div>
                   <div class="col-7 text-center">
-                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
-                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)">
+                    <a
+                      href="href:;"
+                      class="btn btn-primarysm me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc"
+                      (click)="openDocument(item)"
+                    >
                       <i class="bi bi-eye-fill"></i> View
                     </a>
-                    <a href="href:;" class="btn btn-primarysm" (click)="download(item?.file?.url, item?.name)">
+                    <a
+                      href="href:;"
+                      class="btn btn-primarysm"
+                      (click)="download(item?.file?.url, item?.name)"
+                    >
                       <i class="bi bi-file-earmark-arrow-down-fill"></i>
                       Download
                     </a>
@@ -300,8 +375,12 @@
                 </div>
               </li>
             </ul>
-            <button data-bs-toggle="modal" data-bs-target="#addWestgateDocument" type="button"
-              class="btn btn-dark btn-sm add-card-btn">
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#addWestgateDocument"
+              type="button"
+              class="btn btn-dark btn-sm add-card-btn"
+            >
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
@@ -317,24 +396,39 @@
 
           <!-- Status Buttons -->
           <div class="d-flex justify-content-between flex-wrap mb-4">
-            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
-              (click)="statusChange('InProgress')">
+            <button
+              class="btn btn-outline-primary flex-fill m-1"
+              [class.active]="status === 'InProgress'"
+              (click)="statusChange('InProgress')"
+            >
               In-Progress
             </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
-              (click)="statusChange('InHold')">
+            <button
+              class="btn btn-outline-secondary flex-fill m-1"
+              [class.active]="status === 'InHold'"
+              (click)="statusChange('InHold')"
+            >
               In-Hold
             </button>
-            <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
-              (click)="statusChange('Passed')">
+            <button
+              class="btn btn-outline-success flex-fill m-1"
+              [class.active]="status === 'Passed'"
+              (click)="statusChange('Passed')"
+            >
               Pass
             </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
-              (click)="statusChange('Fail')">
+            <button
+              class="btn btn-outline-danger flex-fill m-1"
+              [class.active]="status === 'Fail'"
+              (click)="statusChange('Fail')"
+            >
               Fail
             </button>
-            <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'DocumentsNotFound'"
-              (click)="statusChange('DocumentsNotFound')">
+            <button
+              class="btn btn-outline-warning flex-fill m-1"
+              [class.active]="status === 'DocumentsNotFound'"
+              (click)="statusChange('DocumentsNotFound')"
+            >
               Document Not Found
             </button>
           </div>
@@ -344,15 +438,23 @@
             <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
             <!-- Display Existing Comments -->
-            <div *ngIf="commentData?.length" class="comment-list comments-section">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+            <div
+              *ngIf="commentData?.length"
+              class="comment-list comments-section"
+            >
+              <div
+                class="comment-item border rounded p-3 mb-2"
+                *ngFor="let item of commentData"
+              >
                 <!-- <div class="d-flex justify-content-between align-items-center">
                   <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
                   <span class="text-muted"><strong>Date:</strong>
                     {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
                 </div> -->
                 <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
                     <p class="mb-0 fw-bold">
                       {{ item?.userDetails?.name }}
                     </p>
@@ -360,16 +462,29 @@
                       {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
                     </small>
                   </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <small class="text-muted d-block"
+                    ><strong>Status :</strong> {{ item?.status }}</small
+                  >
                   <p class="mt-2">{{ item?.comment }}</p>
                 </div>
               </div>
             </div>
             <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2">
-              <input type="text" class="form-control w-80" [formControl]="statusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushStatus()">
+            <div
+              class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
+              *ngIf="status !== 'Fail'"
+            >
+              <input
+                type="text"
+                class="form-control w-80"
+                [formControl]="statusComment"
+                placeholder="Add your comment"
+              />
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="pushStatus()"
+              >
                 <i class="bi bi-plus-lg"></i> Add
               </button>
             </div>
@@ -396,20 +511,37 @@
                   </option>
                   <option value="Not related">Not related</option>
                 </select>
-                <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  (click)="addFailReason()"
+                >
                   <i class="bi bi-plus-lg"></i>
                 </button>
               </div>
 
               <!-- Display added reasons and comments -->
               <div class="mt-3">
-                <div class="reason-item border rounded p-3 mb-2"
-                  *ngFor="let reason of failStatusReasons; let i = index">
+                <div
+                  class="reason-item border rounded p-3 mb-2"
+                  *ngFor="let reason of failStatusReasons; let i = index"
+                >
                   <div class="d-flex align-items-center">
-                    <span class="me-3"><strong>Reason:</strong> {{ reason.tag }}</span>
-                    <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                      [(ngModel)]="reason.comment" />
-                    <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
+                    <span class="me-3"
+                      ><strong>Reason:</strong> {{ reason.tag }}</span
+                    >
+                    <input
+                      type="text"
+                      class="form-control me-3"
+                      style="flex: 1"
+                      placeholder="Add your comment"
+                      [(ngModel)]="reason.comment"
+                    />
+                    <button
+                      class="btn btn-sm btn-danger"
+                      type="button"
+                      (click)="removeFailReason(i)"
+                    >
                       Remove
                     </button>
                   </div>
@@ -418,15 +550,22 @@
             </div>
             <div class="row justify-content-end mb-4">
               <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid()"
-                  class="btn btn-primary w-100">Save Status</a>
+                <a
+                  (click)="saveFeasibilityStatus('save')"
+                  [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                  class="btn btn-primary w-100"
+                  >Save Status</a
+                >
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-12 col-xl-12 col-12 mb-2" *ngIf="projectDetails?.status == 'Pass'">
+      <div
+        class="col-lg-12 col-xl-12 col-12 mb-2"
+        *ngIf="projectDetails?.status == 'Pass'"
+      >
         <div class="card shadow-sm p-4">
           <!-- Header -->
           <div class="card-header bg-primary text-white mb-3">
@@ -435,29 +574,46 @@
 
           <!-- Status Buttons -->
           <div class="d-flex justify-content-between flex-wrap mb-4">
-            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'Toaction'"
-              (click)="statusChangeBid('Toaction')">
+            <button
+              class="btn btn-outline-primary flex-fill m-1"
+              [class.active]="bidStatus === 'Toaction'"
+              (click)="statusChangeBid('Toaction')"
+            >
               To Action
             </button>
-            <button class="btn btn-outline-info flex-fill m-1" [class.active]="bidStatus === 'InSolution'"
-              (click)="statusChangeBid('InSolution')">
+            <button
+              class="btn btn-outline-info flex-fill m-1"
+              [class.active]="bidStatus === 'InSolution'"
+              (click)="statusChangeBid('InSolution')"
+            >
               In-Solution
             </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="bidStatus === 'WaitingForResult'"
-              (click)="statusChangeBid('WaitingForResult')">
+            <button
+              class="btn btn-outline-secondary flex-fill m-1"
+              [class.active]="bidStatus === 'WaitingForResult'"
+              (click)="statusChangeBid('WaitingForResult')"
+            >
               Waiting For Result
             </button>
-            <button class="btn btn-outline-success flex-fill m-1"
+            <button
+              class="btn btn-outline-success flex-fill m-1"
               [class.active]="bidStatus === 'DroppedAfterFeasibility'"
-              (click)="statusChangeBid('DroppedAfterFeasibility')">
+              (click)="statusChangeBid('DroppedAfterFeasibility')"
+            >
               Dropped After Feasibility
             </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="bidStatus === 'Awarded'"
-              (click)="statusChangeBid('Awarded')">
+            <button
+              class="btn btn-outline-danger flex-fill m-1"
+              [class.active]="bidStatus === 'Awarded'"
+              (click)="statusChangeBid('Awarded')"
+            >
               Awarded
             </button>
-            <button class="btn btn-outline-warning flex-fill m-1" [class.active]="bidStatus === 'NotAwarded'"
-              (click)="statusChangeBid('NotAwarded')">
+            <button
+              class="btn btn-outline-warning flex-fill m-1"
+              [class.active]="bidStatus === 'NotAwarded'"
+              (click)="statusChangeBid('NotAwarded')"
+            >
               Not Awarded
             </button>
           </div>
@@ -468,13 +624,18 @@
 
             <!-- Display Existing Comments -->
             <div *ngIf="bidCommentData?.length" class="comment-list">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
+              <div
+                class="comment-item border rounded p-3 mb-2"
+                *ngFor="let item of bidCommentData"
+              >
                 <!-- <div class="d-flex justify-content-between align-items-center">
                   <span class="text-muted"><strong>Comment:</strong> {{ item?.comment }}</span>
                   <span class="text-muted"><strong>Date: </strong>{{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
                 </div> -->
                 <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
                     <p class="mb-0 fw-bold">
                       {{ item?.userDetails?.name }}
                     </p>
@@ -482,7 +643,9 @@
                       {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
                     </small>
                   </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <small class="text-muted d-block"
+                    ><strong>Status :</strong> {{ item?.status }}</small
+                  >
                   <p class="mt-2">{{ item?.comment }}</p>
                 </div>
               </div>
@@ -490,9 +653,17 @@
 
             <!-- Add New Comment -->
             <div class="add-comment d-flex gap-3 align-items-center mt-3">
-              <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushStatusBid()">
+              <input
+                type="text"
+                class="form-control w-80"
+                [formControl]="bidManagerStatusComment"
+                placeholder="Add your comment"
+              />
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="pushStatusBid()"
+              >
                 <i class="bi bi-plus-lg"></i> Add
               </button>
             </div>
@@ -500,7 +671,11 @@
 
           <div class="row justify-content-end mb-2 mt-3">
             <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-              <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+              <a
+                (click)="saveBidStatus('save')"
+                [class.disabled]="!isBidCommentValid()"
+                class="btn btn-primary w-100"
+              >
                 Save Bid Status
               </a>
             </div>
@@ -528,7 +703,9 @@
               <div *ngFor="let comment of commentData" class="task-item">
                 <ng-container>
                   <div class="comment mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
                       <p class="mb-0 fw-bold">
                         {{ comment?.userDetails?.name }}
                       </p>
@@ -536,7 +713,9 @@
                         {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
                       </small>
                     </div>
-                    <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status }}</small>
+                    <small class="text-muted d-block"
+                      ><strong>Status :</strong> {{ comment?.status }}</small
+                    >
                     <p class="mt-2">{{ comment?.comment }}</p>
                   </div>
                 </ng-container>
@@ -591,13 +770,20 @@
         <div class="flex-grow-1 pe-3">
           <div class="comments-section">
             <div *ngIf="logs?.length > 3" class="text-end mt-3">
-              <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+              <a
+                class="btn btn-link"
+                data-bs-toggle="modal"
+                data-bs-target="#ViewProjectLogs"
+              >
                 View All
               </a>
             </div>
             <!-- List of logs -->
             <ul class="SecondarytaskList mt-3">
-              <li *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)" class="mb-3">
+              <li
+                *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)"
+                class="mb-3"
+              >
                 <div class="comment-item">
                   <div class="d-flex justify-content-between">
                     <p class="mb-0" [innerHTML]="log?.log"></p>
@@ -616,7 +802,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -625,13 +810,18 @@
       <div class="bg-dark py-3">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="container d-flex justify-content-between align-items-center">
+            <div
+              class="container d-flex justify-content-between align-items-center"
+            >
               <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
             </div>
             <br />
             <div *ngIf="item.type === 'Image'">
-              <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                [attr.data-bs-target]="'#imageModal_' + item._id">
+              <button
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#imageModal_' + item._id"
+              >
                 Add
               </button>
             </div>
@@ -648,15 +838,22 @@
       <div class="row align-items-center">
         <div class="col-lg-12 col-xl-12 col-12">
           <div class="d-flex flex-row flex-wrap">
-            <div class="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-auto me-3"
-              *ngFor="let image of item?.images">
+            <div
+              class="col-lg-auto col-xl-auto col-md-auto col-sm-auto col-auto me-3"
+              *ngFor="let image of item?.images"
+            >
               <div class="form-group">
                 <label class="display-block">{{ image?.imageText }}</label>
                 <br />
                 <div class="upload-btn-wrapper">
                   <div class="d-flex justify-content-between">
-                    <a *ngIf="subContractDocument" (click)="openViewImage(image)" class="btn btn-small me-2"
-                      data-bs-toggle="modal" data-bs-target="#viewstripimage">
+                    <a
+                      *ngIf="subContractDocument"
+                      (click)="openViewImage(image)"
+                      class="btn btn-small me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#viewstripimage"
+                    >
                       <i class="bi bi-eye-fill"></i> View
                     </a>
                   </div>
@@ -667,29 +864,65 @@
         </div>
       </div>
 
-      <div class="modal fade" [id]="'imageModal_' + item._id" tabindex="-1" aria-hidden="true">
+      <div
+        class="modal fade"
+        [id]="'imageModal_' + item._id"
+        tabindex="-1"
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Add Image Details</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div class="modal-body">
               <!-- Dynamic Input Fields -->
-              <div *ngFor="let field of imageFields; let i = index" class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter Text" [(ngModel)]="field.text" />
-                <input type="file" class="form-control" accept="image/*" (change)="onFileChange($event, i)" />
-                <button type="button" class="btn btn-danger" (click)="removeField(i)"
-                  [disabled]="imageFields.length === 1">
+              <div
+                *ngFor="let field of imageFields; let i = index"
+                class="input-group mb-3"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Text"
+                  [(ngModel)]="field.text"
+                />
+                <input
+                  type="file"
+                  class="form-control"
+                  accept="image/*"
+                  (change)="onFileChange($event, i)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="removeField(i)"
+                  [disabled]="imageFields.length === 1"
+                >
                   Delete
                 </button>
               </div>
-              <button type="button" class="btn btn-secondary btn-sm mt-3" (click)="addField()">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm mt-3"
+                (click)="addField()"
+              >
                 Add More
               </button>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" (click)="saveFields(item._id)" data-bs-dismiss="modal">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="saveFields(item._id)"
+                data-bs-dismiss="modal"
+              >
                 Save
               </button>
             </div>
@@ -700,30 +933,51 @@
   </section>
 </main>
 
-<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="addClientDocument"
+  tabindex="-1"
+  aria-labelledby="addClientDocumentLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewScreenshotLabel">
           Add Client Document
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="viewClientDocumentForm">
           <div class="card p-3 mt-3">
             <div class="row g-3 align-items-center">
               <div class="col-md-8 col-sm-12">
-                <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
-                  aria-label="Document Name" />
+                <input
+                  type="text"
+                  [(ngModel)]="documentName"
+                  class="form-control"
+                  placeholder="Enter Document Name"
+                  aria-label="Document Name"
+                />
               </div>
               <div class="col-md-4 col-sm-12">
                 <label class="btn btn-outline-primary w-100">
                   <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                  <input type="file" id="uploadClientDocument" (change)="
+                  <input
+                    type="file"
+                    id="uploadClientDocument"
+                    (change)="
                       uploadDocument($event, documentUploadType.clientDocument)
-                    " hidden aria-label="Upload Document" />
+                    "
+                    hidden
+                    aria-label="Upload Document"
+                  />
                 </label>
               </div>
             </div>
@@ -734,12 +988,23 @@
   </div>
 </div>
 
-<div class="modal fade" id="ViewProjectLogs" tabindex="-1" aria-labelledby="ViewProjectLogsLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewProjectLogs"
+  tabindex="-1"
+  aria-labelledby="ViewProjectLogsLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewProjectLogsLabel">Project Logs</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body d-flex">
         <div class="flex-grow-1 pe-3">
@@ -768,29 +1033,50 @@
   </div>
 </div>
 
-<div class="modal fade" id="addWestgateDocument" tabindex="-1" aria-labelledby="addWestgateDocumentLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="addWestgateDocument"
+  tabindex="-1"
+  aria-labelledby="addWestgateDocumentLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewScreenshotLabel">
           Add Westgate Document
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="viewClientDocumentForm">
           <div class="card p-3 mt-3">
             <div class="row g-3 align-items-center">
               <div class="col-md-8 col-sm-12">
-                <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
-                  class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
+                <input
+                  type="text"
+                  [(ngModel)]="commentName"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-control"
+                  placeholder="Enter Document Name"
+                  aria-label="Document Name"
+                />
               </div>
               <div class="col-md-4 col-sm-12">
                 <label class="btn btn-outline-primary w-100">
                   <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                  <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)" hidden
-                    aria-label="Upload Document" />
+                  <input
+                    type="file"
+                    id="uploadClientDocument"
+                    (change)="uploadDocuments($event)"
+                    hidden
+                    aria-label="Upload Document"
+                  />
                 </label>
               </div>
             </div>
@@ -802,25 +1088,50 @@
 </div>
 
 <!-- View Document Modal -->
-<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewDocumentModal"
+  tabindex="-1"
+  aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
         <h5 class="modal-title" id="ViewDocumentModalLabel">
           FOI Document ({{ selectedDocument?.name }})
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
+        <ng-container
+          *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats"
+        >
+          <ngx-extended-pdf-viewer
+            [src]="selectedDocument?.link?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+          <iframe
+            *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectedDocument?.link?.url)"
+            [src]="selectedDocument?.link?.url"
+            class="img-fluid"
+          />
         </ng-template>
       </div>
       <div class="modal-footer">
@@ -833,44 +1144,80 @@
 </div>
 
 <!-- Login detail From modal -->
-<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
+<div
+  class="modal fade"
+  id="loginDetailModal"
+  tabindex="-1"
+  aria-labelledby="ViewLogin"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <label>Company Name</label>
         <input type="text" formControlName="companyName" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+        <div
+          class="text-danger"
+          style="color: red"
+          *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']"
+        >
           Please Company Name
         </div>
         <label>Website Link</label>
         <input type="text" formControlName="link" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+        <div
+          class="text-danger"
+          style="color: red"
+          *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']"
+        >
           Please enter Website Link
         </div>
         <label>Login Id</label>
         <input type="text" formControlName="loginID" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+        <div
+          class="text-danger"
+          style="color: red"
+          *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']"
+        >
           Please enter Login Id
         </div>
         <label>Password</label>
-        <input [type]="password" formControlName="password" class="form-control" />
-        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
-        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+        <input
+          [type]="password"
+          formControlName="password"
+          class="form-control"
+        />
+        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"
+          ><i class="bi bi-eye-fill"></i
+        ></span>
+        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"
+          ><i class="bi bi-eye-slash-fill"></i
+        ></span>
+        <div
+          class="text-danger"
+          style="color: red"
+          *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']"
+        >
           Please enter Password
         </div>
         <div class="row justify-content-end">
           <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" [disabled]="!loginDetailForm.valid"
-              class="btn btn-dark w-100">
+            <button
+              (click)="addtitle()"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              [disabled]="!loginDetailForm.valid"
+              class="btn btn-dark w-100"
+            >
               Add
             </button>
           </div>
@@ -880,23 +1227,48 @@
   </div>
 </div>
 
-<div class="modal fade" id="ViewUploadedDocument" tabindex="-1" aria-labelledby="ViewUploadedDocumentModal"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewUploadedDocument"
+  tabindex="-1"
+  aria-labelledby="ViewUploadedDocumentModal"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
         <h5 class="modal-title" id="ViewUploadedDocumentModal">Document</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument">
-          <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
+        <ng-container
+          *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument"
+        >
+          <ngx-extended-pdf-viewer
+            [src]="uploadedDocument?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormatsForDocument>
-          <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)" [src]="getDocumentViewerUrl(uploadedDocument?.url)"
-            style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
+          <iframe
+            *ngIf="isWordOrExcel(uploadedDocument?.url)"
+            [src]="getDocumentViewerUrl(uploadedDocument?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(uploadedDocument?.url)"
+            [src]="uploadedDocument?.url"
+            class="img-fluid"
+          />
         </ng-template>
       </div>
       <div class="modal-footer">
@@ -908,14 +1280,25 @@
   </div>
 </div>
 
-<div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewClientDoc"
+  tabindex="-1"
+  aria-labelledby="ViewClientDocLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewClientDocLabel">
           Client Document : {{ selectedDocument?.name }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="alert alert-danger" role="alert">
         ⚠ Important Notice : If you are unable to view any documents, please
@@ -924,14 +1307,26 @@
       </div>
       <div class="modal-body">
         <div class="modal-body">
-          <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
-            <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
-              height="600px"></ngx-extended-pdf-viewer>
+          <ng-container
+            *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats"
+          >
+            <ngx-extended-pdf-viewer
+              [src]="selectedDocument?.file?.url"
+              useBrowserLocale="true"
+              height="600px"
+            ></ngx-extended-pdf-viewer>
           </ng-container>
           <ng-template #otherFormats>
-            <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
-              [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px"></iframe>
-            <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+            <iframe
+              *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
+              [src]="getDocumentViewerUrl(selectedDocument?.file?.url)"
+              style="width: 100%; height: 600px"
+            ></iframe>
+            <img
+              *ngIf="isImage(selectedDocument?.file?.url)"
+              [src]="selectedDocument?.file?.url"
+              class="img-fluid"
+            />
           </ng-template>
         </div>
       </div>
@@ -940,24 +1335,50 @@
 </div>
 
 <!-- View Document Modal -->
-<div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewCaseModal"
+  tabindex="-1"
+  aria-labelledby="ViewDocumentModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
         <h5 class="modal-title" id="ViewDocumentModalLabel">
           Case Study ({{ selectedDocument?.name }})
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
+        <ng-container
+          *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats"
+        >
+          <ngx-extended-pdf-viewer
+            [src]="selectedDocument?.link?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
+          <iframe
+            *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
+            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectedDocument?.link?.url)"
+            [src]="selectedDocument?.link?.url"
+            class="img-fluid"
+          />
         </ng-template>
       </div>
       <div class="modal-footer">
@@ -970,12 +1391,23 @@
 </div>
 
 <!-- View StripAdd Modal -->
-<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ViewStripAdd"
+  tabindex="-1"
+  aria-labelledby="ViewStripAddLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -983,13 +1415,25 @@
         <div class="form-group d-flex align-items-center mb-4">
           <label class="me-3">Select Type:</label>
           <div class="form-check me-3">
-            <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
-              (change)="selectUploadType(true)" />
+            <input
+              type="radio"
+              id="textOption"
+              class="form-check-input"
+              formControlName="type"
+              value="Text"
+              (change)="selectUploadType(true)"
+            />
             <label for="textOption" class="form-check-label">Text</label>
           </div>
           <div class="form-check">
-            <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
-              (change)="selectUploadType(false)" />
+            <input
+              type="radio"
+              id="imageOption"
+              class="form-check-input"
+              formControlName="type"
+              value="Image"
+              (change)="selectUploadType(false)"
+            />
             <label for="imageOption" class="form-check-label">Image</label>
           </div>
         </div>
@@ -999,29 +1443,55 @@
           <!-- Text Upload Section -->
           <div class="form-group mb-3">
             <label for="textInput" class="form-label">Strip Heading :</label>
-            <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
-            <div *ngIf="
+            <input
+              type="text"
+              id="textInput"
+              class="form-control"
+              placeholder="Enter Text"
+              formControlName="text"
+            />
+            <div
+              *ngIf="
                 addStripcontrol.text.touched && addStripcontrol.text.invalid
-              " class="text-danger">
+              "
+              class="text-danger"
+            >
               Text is required.
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <label for="textInput" class="form-label">Strip Description :</label>
-            <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
-              formControlName="description"></textarea>
-            <div *ngIf="
+            <label for="textInput" class="form-label"
+              >Strip Description :</label
+            >
+            <textarea
+              type="text"
+              id="textInput"
+              class="form-control"
+              placeholder="Enter Description"
+              formControlName="description"
+            ></textarea>
+            <div
+              *ngIf="
                 addStripcontrol.description.touched &&
                 addStripcontrol.description.invalid
-              " class="text-danger">
+              "
+              class="text-danger"
+            >
               Description is required.
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+            <ng-select
+              id="assignTo"
+              class="form-select custom-ng-select-option"
+              placeholder="Select Role"
+              [multiple]="true"
+              bindLabel="name"
+              [items]="ForTitleuserList"
+              formControlName="roles"
+            >
             </ng-select>
           </div>
         </div>
@@ -1029,27 +1499,49 @@
         <!-- Image Upload Section -->
         <ng-template #imageUploadSection>
           <div class="form-group mb-3">
-            <label for="imageTextInput" class="form-label">Strip Heading :</label>
-            <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
-              formControlName="imageText" />
-            <div *ngIf="
+            <label for="imageTextInput" class="form-label"
+              >Strip Heading :</label
+            >
+            <input
+              type="text"
+              id="imageTextInput"
+              class="form-control"
+              placeholder="Enter Text"
+              formControlName="imageText"
+            />
+            <div
+              *ngIf="
                 addStripcontrol.imageText.touched &&
                 addStripcontrol.imageText.invalid
-              " class="text-danger">
+              "
+              class="text-danger"
+            >
               Image Text is required.
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+            <ng-select
+              id="assignTo"
+              class="form-select custom-ng-select-option"
+              placeholder="Select Role"
+              [multiple]="true"
+              bindLabel="name"
+              [items]="ForTitleuserList"
+              formControlName="roles"
+            >
             </ng-select>
           </div>
         </ng-template>
 
         <div class="row justify-content-end mt-4">
           <div class="col-auto">
-            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
+            <button
+              (click)="addtitle()"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              class="btn btn-dark"
+            >
               Add
             </button>
           </div>
@@ -1060,24 +1552,48 @@
 </div>
 
 <!-- View Strip image Modal -->
-<div class="modal fade" id="viewstripimage" tabindex="-1" aria-labelledby="viewstripimageLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="viewstripimage"
+  tabindex="-1"
+  aria-labelledby="viewstripimageLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
+      <div
+        class="modal-header"
+        style="display: flex; justify-content: space-between"
+      >
         <h5 class="modal-title" id="ViewDocumentModalLabel">
           Strip Image ({{ selectViewImage?.imageText }})
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
+          <ngx-extended-pdf-viewer
+            [src]="selectViewImage?.url"
+            useBrowserLocale="true"
+            height="600px"
+          ></ngx-extended-pdf-viewer>
         </ng-container>
         <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
-            style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectViewImage?.url)" [src]="selectViewImage?.url" class="img-fluid" />
+          <iframe
+            *ngIf="isWordOrExcel(selectViewImage?.url)"
+            [src]="getDocumentViewerUrl(selectViewImage?.url)"
+            style="width: 100%; height: 600px"
+          ></iframe>
+          <img
+            *ngIf="isImage(selectViewImage?.url)"
+            [src]="selectViewImage?.url"
+            class="img-fluid"
+          />
         </ng-template>
       </div>
       <div class="modal-footer">
