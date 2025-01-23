@@ -254,10 +254,7 @@ export class ProjectManagerProjectDetailsComponent {
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
-    // Add userIds if selected
-    if (formValues.roles && formValues.roles.length > 0) {
-      params.roles = formValues.roles; // Pass roles directly as an array
-    }
+    params.roles = [...(formValues.roles || []), 'ProjectManager'];
     // Log params to the console
     console.log('Params to be sent:', params);
     this.projectService.createStrip(params).subscribe(

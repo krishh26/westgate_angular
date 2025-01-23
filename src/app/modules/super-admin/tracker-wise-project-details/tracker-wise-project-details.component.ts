@@ -147,7 +147,7 @@ export class TrackerWiseProjectDetailsComponent {
   showAllLogs: boolean = false;
   logs: any = [];
   FeasibilityuserList: any = [];
-  BiduserList : any = [];
+  BiduserList: any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -1145,10 +1145,7 @@ export class TrackerWiseProjectDetailsComponent {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
 
-    // Add userIds if selected
-    if (formValues.roles && formValues.roles.length > 0) {
-      params.roles = formValues.roles; // Pass roles directly as an array
-    }
+    params.roles = [...(formValues.roles || []), 'Admin'];
 
     // Log params to the console
     console.log('Params to be sent:', params);
@@ -1395,7 +1392,7 @@ export class TrackerWiseProjectDetailsComponent {
           ...this.bidCommentData,
           ...this.projectDetails?.bidManagerStatusComment,
         ],
-        
+
       };
 
     }

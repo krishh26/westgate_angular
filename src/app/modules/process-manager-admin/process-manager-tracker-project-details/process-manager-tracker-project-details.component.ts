@@ -201,7 +201,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     this.addStripForm.get('image')?.updateValueAndValidity();
   }
 
-  addLoginInfo() {
+  addStrips() {
     // Retrieve form values
     const formValues = this.addStripForm.value;
     // Construct the params object
@@ -219,16 +219,15 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     if (formValues.imageText && formValues.type === 'Image') {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
+    params.roles = [...(formValues.roles || []), 'ProcessManagerAdmin'];
     // Log params to the console
     console.log('Params to be sent:', params);
     this.projectService.createStrip(params).subscribe(
       (response: any) => {
         if (response?.status == true) {
           this.getProjectDetails();
-          this.notificationService.showSuccess(
-            '',
-            'Project Update Successfully.'
-          );
+          this.notificationService.showSuccess('', 'Project Update Successfully.');
+          window.location.reload();
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

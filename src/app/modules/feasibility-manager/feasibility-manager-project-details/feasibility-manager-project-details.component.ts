@@ -224,10 +224,7 @@ export class FeasibilityManagerProjectDetailsComponent {
       params.text = formValues.imageText; // Assuming description maps to image text
     }
 
-    // Add userIds if selected
-    if (formValues.roles && formValues.roles.length > 0) {
-      params.roles = formValues.roles; // Pass roles directly as an array
-    }
+    params.roles = [...(formValues.roles || []), 'FeasibilityAdmin'];
 
     // Log params to the console
     console.log('Params to be sent:', params);
