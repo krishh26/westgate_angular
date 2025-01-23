@@ -41,6 +41,14 @@ export class ToDoTasksProcessManagerComponent {
     this.getUserAllList();
   }
 
+  onChangeMyday(value: any) {
+    console.log(value);
+    let params = {
+      status: value
+    }
+    this.updateTask(params);
+  }
+
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value

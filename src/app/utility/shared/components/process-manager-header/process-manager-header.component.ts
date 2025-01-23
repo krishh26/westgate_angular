@@ -26,8 +26,8 @@ loginUser: any;
   navUrlArr = [
     // { title: 'Home', route: ['/boss-user/home'] },
     // { title: 'Live Projects', route: ['/boss-user/project-list'] },
-    { title: 'TO DO TASKS', route: ['/process-manager/to-do-tasks-process-manager'] },
     { title: 'Project Tracker', route: ['/process-manager/process-manager-tracker'] },
+    { title: 'TO DO TASKS', route: ['/process-manager/to-do-tasks-process-manager'] },
 
   ];
 

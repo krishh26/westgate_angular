@@ -7,7 +7,8 @@
                     <li><a href="javascript:void(0)" routerLink="/super-admin/my-day-tasks">My Day</a>
                     </li>
                     <li><a href="javascript:void(0)" routerLink="/super-admin/todo-tasks">Ongoing</a></li>
-                    <li><a href="javascript:void(0)" routerLink="/super-admin/completed-tasks" class="active">Completed</a></li>
+                    <li><a href="javascript:void(0)" routerLink="/super-admin/completed-tasks"
+                            class="active">Completed</a></li>
                 </ul>
             </div>
         </div>
@@ -400,6 +401,13 @@
                             placeholder="Pick a Status" [items]="statusTaskList" [(ngModel)]="selectedStatus"
                             (ngModelChange)="onChange('taskStatus', $event)">
                         </ng-select>
+                    </div>
+
+                    <div class="detail-item mb-3">
+                        <button class="btn btn-sm btn-primary" [(ngModel)]="selectedStatus"
+                            (click)="onChangeMyday('MyDay')">
+                            Add to My Day
+                        </button>
                     </div>
 
                     <div class="detail-item mb-3">

@@ -65,6 +65,14 @@ export class CompletedTasksComponent {
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
   }
 
+  onChangeMyday(value: any) {
+    console.log(value);
+    let params = {
+      status: value
+    }
+    this.updateTask(params);
+  }
+
   getProjectList() {
     this.showLoader = true;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {

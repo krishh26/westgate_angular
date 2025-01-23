@@ -46,6 +46,14 @@ export class CompletedTaskProcessManagerComponent {
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
   }
 
+  onChangeMyday(value: any) {
+    console.log(value);
+    let params = {
+      status: value
+    }
+    this.updateTask(params);
+  }
+
   addTask() {
     if (this.taskDetails.trim()) {
       const payload = {
