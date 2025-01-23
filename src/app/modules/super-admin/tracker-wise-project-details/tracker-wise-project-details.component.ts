@@ -1280,14 +1280,14 @@ export class TrackerWiseProjectDetailsComponent {
     }
 
     // Check if the reason already exists
-    if (
-      this.failStatusReasons.some(
-        (reason) => reason.tag === this.selectedFailReason
-      )
-    ) {
-      this.notificationService.showError('This reason is already added.');
-      return;
-    }
+    // if (
+    //   this.failStatusReasons.some(
+    //     (reason) => reason.tag === this.selectedFailReason
+    //   )
+    // ) {
+    //   this.notificationService.showError('This reason is already added.');
+    //   return;
+    // }
 
     // Add the reason with an empty comment
     this.failStatusReasons.push({
@@ -1313,22 +1313,37 @@ export class TrackerWiseProjectDetailsComponent {
       }
 
       // Check if the status has at least one comment
-      const hasExistingComment = this.commentData.some(
-        (item) => item.status === this.status
-      );
-      if (!hasExistingComment && !this.statusComment.value) {
-        return this.notificationService.showError(
-          'Please provide a comment for the selected status.'
+      if (this.status !== 'Fail') {
+        const hasExistingComment = this.commentData.some(
+          (item) => item.status === this.status
         );
-      }
+        if (!hasExistingComment && !this.statusComment.value) {
+          return this.notificationService.showError(
+            'Please provide a comment for the selected status.'
+          );
+        }
 
-      // If a comment is filled but not added
-      if (this.statusComment.value) {
-        return this.notificationService.showError(
-          'Please click the "Add" button to save your comment.'
-        );
-      }
+        // If a comment is filled but not added
+        if (this.statusComment.value) {
+          return this.notificationService.showError(
+            'Please click the "Add" button to save your comment.'
+          );
+        }
+      } else {
+        const errors = this.failStatusReasons
+          .map((item, index) =>
+            item.comment.trim() === ''
+              ? `Error at index ${index}: Comment is empty.`
+              : null
+          )
+          .filter((error) => error !== null);
 
+        if (errors.length > 0) {
+          return this.notificationService.showError(
+            'Please provide a comments for the selected Reason.'
+          );
+        }
+      }
       payload = {
         projectType: this.projectDetails.projectType,
         clientDocument: this.projectDetails?.clientDocument || [],
