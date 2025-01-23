@@ -2,6 +2,7 @@ import { Options } from '@angular-slider/ngx-slider/options';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -67,7 +68,7 @@ export class ProjectManagerInProgressComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-
+  loginUser: any = [];
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -96,8 +97,11 @@ export class ProjectManagerInProgressComponent {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
-  ) {}
+    private superService: SuperadminService,
+     private localStorageService : LocalStorageService
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
@@ -291,6 +295,7 @@ export class ProjectManagerInProgressComponent {
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
     this.tempPayload.projectList.bidManagerStatus = "InSolution, WaitingForResult";
+    Payload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
