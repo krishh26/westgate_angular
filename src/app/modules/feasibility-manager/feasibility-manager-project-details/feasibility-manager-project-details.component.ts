@@ -161,6 +161,96 @@ export class FeasibilityManagerProjectDetailsComponent {
     }
   }
 
+  isCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.commentData.some(
+      (item) => item.status === this.status
+    );
+    const hasUnaddedComment = this.statusComment.value && !hasComment;
+    return this.status && (hasComment || hasUnaddedComment);
+  }
+
+  saveFeasibilityStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+
+    if (!contractEdit) {
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      // Check if the status has at least one comment
+      if (this.status !== 'Fail') {
+        const hasExistingComment = this.commentData.some(
+          (item) => item.status === this.status
+        );
+        if (!hasExistingComment && !this.statusComment.value) {
+          return this.notificationService.showError(
+            'Please provide a comment for the selected status.'
+          );
+        }
+
+        // If a comment is filled but not added
+        if (this.statusComment.value) {
+          return this.notificationService.showError(
+            'Please click the "Add" button to save your comment.'
+          );
+        }
+      } else {
+        const errors = this.failStatusReasons
+          .map((item, index) =>
+            item.comment.trim() === ''
+              ? `Error at index ${index}: Comment is empty.`
+              : null
+          )
+          .filter((error) => error !== null);
+
+        if (errors.length > 0) {
+          return this.notificationService.showError(
+            'Please provide a comments for the selected Reason.'
+          );
+        }
+      }
+      payload = {
+        projectType: this.projectDetails.projectType,
+        clientDocument: this.projectDetails?.clientDocument || [],
+        status: this.status || '',
+        statusComment: [
+          ...this.commentData,
+          ...this.projectDetails?.statusComment,
+        ],
+        failStatusReason: this.failStatusReasons,
+      };
+
+      // Add fail reason if applicable
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetails(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+  }
+
+
   // Method to add a new fail reason
   addFailReason() {
     if (!this.selectedFailReason) {
@@ -169,10 +259,14 @@ export class FeasibilityManagerProjectDetailsComponent {
     }
 
     // Check if the reason already exists
-    if (this.failStatusReasons.some(reason => reason.tag === this.selectedFailReason)) {
-      this.notificationService.showError('This reason is already added.');
-      return;
-    }
+    // if (
+    //   this.failStatusReasons.some(
+    //     (reason) => reason.tag === this.selectedFailReason
+    //   )
+    // ) {
+    //   this.notificationService.showError('This reason is already added.');
+    //   return;
+    // }
 
     // Add the reason with an empty comment
     this.failStatusReasons.push({
@@ -183,6 +277,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     // Reset the dropdown selection
     this.selectedFailReason = '';
   }
+
 
   // Method to remove a fail reason
   removeFailReason(index: number) {

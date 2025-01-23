@@ -568,7 +568,7 @@
         </div>
       </div>
 
-      <div class="col-lg-12 col-xl-12 col-12">
+      <div class="col-lg-12 col-xl-12 col-12 mb-2">
         <div class="card shadow-sm p-4">
           <!-- Header -->
           <div class="card-header bg-primary text-white mb-3">
@@ -604,18 +604,29 @@
             <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
             <!-- Display Existing Comments -->
-            <div *ngIf="commentData?.length" class="comment-list">
+            <div *ngIf="commentData?.length" class="comment-list comments-section">
               <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
-                <div class="d-flex justify-content-between align-items-center">
+                <!-- <div class="d-flex justify-content-between align-items-center">
                   <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
                   <span class="text-muted"><strong>Date:</strong>
                     {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                </div> -->
+                <div class="comment mb-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-0 fw-bold">
+                      {{ item?.userDetails?.name }}
+                    </p>
+                    <small class="text-muted">
+                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </small>
+                  </div>
+                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <p class="mt-2">{{ item?.comment }}</p>
                 </div>
               </div>
             </div>
-
             <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3">
+            <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="status !== 'Fail'">
               <input type="text" class="form-control w-80" [formControl]="statusComment"
                 placeholder="Add your comment" />
               <button class="btn btn-primary" type="button" (click)="pushStatus()">
@@ -656,13 +667,19 @@
                   *ngFor="let reason of failStatusReasons; let i = index">
                   <div class="d-flex align-items-center">
                     <span class="me-3"><strong>Reason:</strong> {{ reason.tag }}</span>
-                    <input type="text" class="form-control me-3" style="flex: 1;" placeholder="Add your comment"
+                    <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
                       [(ngModel)]="reason.comment" />
                     <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
                       Remove
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="row justify-content-end mb-4">
+              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                  class="btn btn-primary w-100">Save Status</a>
               </div>
             </div>
           </div>
