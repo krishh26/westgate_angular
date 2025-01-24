@@ -198,7 +198,7 @@ export class ProcessManagerTrackerComponent {
       Payload.projectList.bidManagerStatus = ''; // Clear the other field
     } else if (type === 'bid') {
       Payload.projectList.bidManagerStatus = this.status || '';
-      Payload.projectList.status = ''; // Clear the other field
+      Payload.projectList.status = 'Passed'; // Clear the other field
     }
 
     this.projectService.getProjectList(Payload.projectList).subscribe(

@@ -88,6 +88,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   uploadType: boolean = true;
   projectStrips: any = [];
   imageFields = [{ text: '', file: null }];
+  BiduserList: any = [];
   selectViewImage: any;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
@@ -101,7 +102,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   };
   ForTitleuserList: any = ['FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'SupplierAdmin'];
   displayForTitleedUsers: any = [];
-
+  FeasibilityuserList: any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -498,8 +499,13 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     this.projectManagerService.getUserAllList().subscribe(
       (response) => {
         if (response?.status === true) {
-          this.userList = response?.data?.filter(
-            (user: any) => user?.role == 'ProjectManager'
+          this.FeasibilityuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          this.BiduserList = response?.data?.filter(
+            (user: any) => user?.role === 'ProjectManager'
           );
           this.showLoader = false;
         } else {
