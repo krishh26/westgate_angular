@@ -192,14 +192,14 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
-
+    
     // Map the appropriate parameter based on the type
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
       Payload.projectList.bidManagerStatus = ''; // Clear the other field
     } else if (type === 'bid') {
       Payload.projectList.bidManagerStatus = this.status || '';
-      Payload.projectList.status = ''; // Clear the other field
+      Payload.projectList.status = 'Passed'; // Clear the other field
     }
 
     this.projectService.getProjectList(Payload.projectList).subscribe(
