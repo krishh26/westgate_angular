@@ -169,7 +169,7 @@
                   <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                       class="bi bi-sort-up"></i></th>
                   <th>Status</th>
-                  <th [width]="180"></th>
+                  <!-- <th [width]="180"></th> -->
                 </tr>
               </thead>
               <tbody>
@@ -186,10 +186,10 @@
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>{{item?.status}}</td>
-                  <td class="text-center">
+                  <!-- <td class="text-center">
                     <a class="btn btn-primary btn-sm w-100" style="cursor: pointer;"
                       (click)="addToMyList(item?._id)">Add To My List</a>
-                  </td>
+                  </td> -->
 
                 </tr>
                 <tr>
