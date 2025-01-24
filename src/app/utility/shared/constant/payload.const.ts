@@ -18,7 +18,8 @@ export const Payload = {
     supplierStatus: '',
     appointed: '',
     myList: '',
-    bidManagerStatus: ''
+    bidManagerStatus: '',
+    notAppointed: ''
   },
 
   dataByStatus: {

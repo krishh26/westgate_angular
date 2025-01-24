@@ -53,6 +53,9 @@ export class FeasibilityManagerProjectDetailsComponent {
   failStatusImage: any;
   filteredTasks: any = [];
   showAllLogs: boolean = false;
+  FeasibilityuserList: any = [];
+  assignTo: any;
+  dueDate: any;
   // documentUploadType: any = {
   //   subContractDocument: 'SubContract',
   //   economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -136,6 +139,7 @@ export class FeasibilityManagerProjectDetailsComponent {
     // this.getForTitleUserAllList();
     this.getProjectStrips();
     this.initializeForm();
+    this.getUserAllLists();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
       text: [''],
@@ -159,6 +163,70 @@ export class FeasibilityManagerProjectDetailsComponent {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  getUserAllLists() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.FeasibilityuserList = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
+              user?.role === 'FeasibilityUser'
+          );
+          // this.BiduserList = response?.data?.filter(
+          //   (user: any) => user?.role === 'ProjectManager'
+          // );
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  assignUser() {
+    if (!this.assignTo) {
+      this.notificationService.showError('Please select assign to user');
+      return;
+    }
+
+    // Format the dueDate
+    let formattedDueDate: string | null = null;
+    if (this.dueDate) {
+      const { year, month, day } = this.dueDate;
+      formattedDueDate = `${year}-${month.toString().padStart(2, '0')}-${day
+        .toString()
+        .padStart(2, '0')}`;
+    }
+
+    const payload = {
+      task: this.projectDetails?.projectName,
+      assignTo: [`${this.assignTo}`],
+      project: this.projectId,
+      dueDate: formattedDueDate,
+    };
+
+    console.log('this is data', payload);
+
+    this.superService.createTask(payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('User assigned successfully');
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+      }
+    );
   }
 
   isCommentValid(): boolean {
@@ -226,6 +294,7 @@ export class FeasibilityManagerProjectDetailsComponent {
         payload['failStatusReason'] = [this.failStatusReason?.value] || [];
       }
     }
+
 
     // API call to update project details
     this.feasibilityService

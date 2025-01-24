@@ -560,7 +560,7 @@
           </div>
 
           <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="projectDetails?.status !== 'Fail'">
+          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="projectDetails?.status !== 'Fail' && projectDetails?.status !== 'Passed'">
             <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
               (click)="statusChange('InProgress')">
               In-Progress
@@ -619,7 +619,7 @@
             </div>
 
             <!-- Fail Specific Fields -->
-            <div *ngIf="status === 'Fail'" class="mt-4">
+            <div *ngIf="status === 'Fail' && projectDetails?.status !== 'Fail'" class="mt-4">
               <div class="d-flex align-items-center gap-3">
                 <select class="form-select" [(ngModel)]="selectedFailReason">
                   <option disabled selected hidden value="">

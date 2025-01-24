@@ -127,7 +127,7 @@
         </div>
       </div>
 
-      <div class="row" *ngIf="loginUser?.role === 'FeasibilityAdmin'">
+      <!-- <div class="row" *ngIf="loginUser?.role === 'FeasibilityAdmin'">
         <div class="col-md-2"><strong>Select Assign User:</strong></div>
         <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
           [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList"
@@ -135,7 +135,34 @@
             appointFeasibilityUser(projectDetails.assignedUsers, projectDetails)
           ">
         </ng-select>
-      </div><br />
+      </div><br /> -->
+      <div class="row align-items-end mb-4" *ngIf="projectDetails?.status == 'Awaiting'">
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="detail-item">
+            <label>Assign To</label>
+            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
+              [items]="FeasibilityuserList" [(ngModel)]="assignTo">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="detail-item">
+            <label>Due Date</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
+                #endDatePicker="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                type="button"></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-end">
+          <button type="button" class="btn btn-primary" (click)="assignUser()">
+            Submit
+          </button>
+        </div>
+      </div>
 
       <section class="pageheader bg-dark">
         <div class="container">
@@ -572,11 +599,11 @@
         <div class="card shadow-sm p-4">
           <!-- Header -->
           <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Feasibility Status</h5>
+            <h5 class="mb-0">Feasibility Status : {{projectDetails?.status}}</h5>
           </div>
 
           <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4">
+          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="projectDetails?.status !== 'Fail' && projectDetails?.status !== 'Passed'">
             <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
               (click)="statusChange('InProgress')">
               In-Progress
@@ -635,7 +662,7 @@
             </div>
 
             <!-- Fail Specific Fields -->
-            <div *ngIf="status === 'Fail'" class="mt-4">
+            <div *ngIf="status === 'Fail' && projectDetails?.status !== 'Fail'" class="mt-4">
               <div class="d-flex align-items-center gap-3">
                 <select class="form-select" [(ngModel)]="selectedFailReason">
                   <option disabled selected hidden value="">

@@ -62,7 +62,8 @@ export class ProjectService {
     expired?: boolean,
     supplierStatus?: string,
     appointed?: string,
-    myList?:string
+    myList?:string,
+    notAppointed?:string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -96,6 +97,9 @@ export class ProjectService {
     }
     if (params?.appointed) {
       queryParams = queryParams.set('appointed', params?.appointed);
+    }
+    if (params?.notAppointed) {
+      queryParams = queryParams.set('notAppointed', params?.notAppointed);
     }
     if (params?.myList) {
       queryParams = queryParams.set('myList', params?.myList);
