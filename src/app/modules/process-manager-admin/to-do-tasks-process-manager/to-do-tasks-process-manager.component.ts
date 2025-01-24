@@ -66,7 +66,7 @@ export class ToDoTasksProcessManagerComponent {
       const payload = {
         discription: this.taskDetails,
         task: this.taskTitle,
-        status: 'Todo',
+        status: 'Ongoing',
         dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
         assignTo: this.assignTo,
       };
