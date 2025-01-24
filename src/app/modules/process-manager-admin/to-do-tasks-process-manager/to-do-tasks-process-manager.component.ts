@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./to-do-tasks-process-manager.component.scss']
 })
 export class ToDoTasksProcessManagerComponent {
- taskDetails: string = '';
+  taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
@@ -23,7 +24,7 @@ export class ToDoTasksProcessManagerComponent {
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
- statusTaskList: string[] = ['Ongoing', 'Completed'];
+  statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -33,7 +34,8 @@ export class ToDoTasksProcessManagerComponent {
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,11 @@ export class ToDoTasksProcessManagerComponent {
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
+  }
+
+  projectDetails(projectId: any) {
+    this.activeModal.close();
+    this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
   }
 
   addTask() {
@@ -132,7 +139,7 @@ export class ToDoTasksProcessManagerComponent {
     // Logic to handle deselected user (e.g., API call)
     console.log(`Processing deselected user: ${userId}`);
   }
-  
+
   processSelectedUser(userId: string) {
     // Logic to handle newly selected user (e.g., API call)
     console.log(`Processing newly selected user: ${userId}`);

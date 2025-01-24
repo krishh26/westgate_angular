@@ -49,7 +49,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private projectService: ProjectService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getDataByStatus();
