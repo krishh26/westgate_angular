@@ -43,6 +43,7 @@ export class ProcessManagerTrackerComponent {
     WaitingForResult: 'WaitingForResult',
     Awarded: 'Awarded',
     NotAwarded: 'NotAwarded',
+    ToAction: 'ToAction'
   };
   constructor(
     private supplierService: SupplierAdminService,
