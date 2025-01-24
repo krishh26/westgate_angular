@@ -286,6 +286,10 @@ export class ProjectManagerProjectDetailsComponent {
           this.userList = response?.data?.filter(
             (user: any) => user?.role === 'FeasibilityAdmin' || user?.role === 'FeasibilityUser'
           );
+          this.selectedSupplier = response?.data?.filter(
+            (user: any) =>
+              user?.role === 'SupplierAdmin'
+          );
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
         } else {
@@ -347,7 +351,7 @@ export class ProjectManagerProjectDetailsComponent {
       if (response?.status === true) {
         this.showLoader = false;
         this.projectDetails = response?.data;
-        this.selectedSupplier = response?.data?.sortlistedUsers;
+        // this.selectedSupplier = response?.data?.sortlistedUsers;
         this.logs = response?.data?.logs?.slice(0, 3) || [];
         this.status = this.projectDetails?.status;
         this.commentData = this.projectDetails?.bidManagerStatusComment;
