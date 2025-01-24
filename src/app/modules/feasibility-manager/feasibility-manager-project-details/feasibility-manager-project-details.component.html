@@ -136,10 +136,26 @@
           ">
         </ng-select>
       </div><br /> -->
+
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Project Description</strong></p>
+        </div>
+      </section>
+      <br />
+
+      <p>{{ projectDetails?.description }}</p>
+
+      <section class="pageheader bg-dark mb-3" *ngIf="projectDetails?.status == 'Awaiting'">
+        <div class="container">
+          <p><strong>Assign Feasibility User : {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong></p>
+        </div>
+      </section>
+
       <div class="row align-items-end mb-4" *ngIf="projectDetails?.status == 'Awaiting'">
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
-            <label>Assign To</label>
+            <!-- <p><strong>Assign Bid User : {{projectDetails?.assignBidmanager[0]?.name}}</strong></p> -->
             <ng-select style="padding: 0px !important" placeholder="Select Assign User"
               class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
               [items]="FeasibilityuserList" [(ngModel)]="assignTo">
@@ -163,15 +179,6 @@
           </button>
         </div>
       </div>
-
-      <section class="pageheader bg-dark">
-        <div class="container">
-          <p><strong>Project Description</strong></p>
-        </div>
-      </section>
-      <br />
-
-      <p>{{ projectDetails?.description }}</p>
 
       <!-- <section class="pageheader bg-dark">
         <div class="container">
@@ -603,7 +610,8 @@
           </div>
 
           <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="projectDetails?.status !== 'Fail' && projectDetails?.status !== 'Passed'">
+          <div class="d-flex justify-content-between flex-wrap mb-4"
+            *ngIf="projectDetails?.status !== 'Fail' && projectDetails?.status !== 'Passed'">
             <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
               (click)="statusChange('InProgress')">
               In-Progress
