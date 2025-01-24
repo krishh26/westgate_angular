@@ -428,9 +428,9 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   summaryDetail(type: string) {
-    if (!this.projectDetails?.clientDocument.length) {
-      return this.notificationService.showError('Upload Client Document');
-    }
+    // if (!this.projectDetails?.clientDocument.length) {
+    //   return this.notificationService.showError('Upload Client Document');
+    // }
     // if (!this.projectDetails?.loginDetail.length) {
     //   return this.notificationService.showError('Upload Login Detail');
     // }
