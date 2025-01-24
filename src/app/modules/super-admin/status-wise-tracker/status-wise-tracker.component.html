@@ -6,18 +6,34 @@
         <form class="row row-cols-sm-auto" (ngSubmit)="getDataByStatus()">
           <div class="col-6">
             <div class="input-group mb-2">
-              <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="trackerStartDate" ngbDatepicker
-                #startDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                type="button"></button>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [formControl]="trackerStartDate"
+                ngbDatepicker
+                #startDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="startDatePicker.toggle()"
+                type="button"
+              ></button>
             </div>
           </div>
           <div class="col-6">
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="trackerEndDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                [formControl]="trackerEndDate"
+                ngbDatepicker
+                #endDatePicker="ngbDatepicker"
+              />
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="endDatePicker.toggle()"
+                type="button"
+              ></button>
             </div>
           </div>
         </form>
@@ -27,12 +43,19 @@
     <div class="container-fluid">
       <div class="row">
         <h5 class="text-theme"><strong>Feasibility Status</strong></h5>
-        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
+        <div
+          class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4"
+          style="cursor: pointer"
+        >
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of feasibilityData" class="me-3">
-              <div (click)="filter(item.status, 'feasibility')" (click)="selectStatus(item.status)"
-                [ngClass]="{'text-danger': selectedStatus === item.status}">
-                {{ item.status }} : {{ item.count }} : GBP {{ item.value | number: '1.0-2' }}
+              <div
+                (click)="filter(item.status, 'feasibility')"
+                (click)="selectStatus(item.status)"
+                [ngClass]="{ 'text-danger': selectedStatus === item.status }"
+              >
+                {{ item.status }} : {{ item.count }} : GBP
+                {{ item.value | number : "1.0-2" }}
               </div>
             </li>
           </ul>
@@ -41,12 +64,19 @@
 
       <div class="row">
         <h5 class="text-theme"><strong>Bid Status</strong></h5>
-        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
+        <div
+          class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4"
+          style="cursor: pointer"
+        >
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of bidData" class="me-3">
-              <div (click)="filter(item.status, 'bid')" (click)="selectStatus(item.status)"
-                [ngClass]="{'text-danger': selectedStatus === item.status}">
-                {{ item.status }} : {{ item.count }} : GBP {{ item.value | number: '1.0-2' }}
+              <div
+                (click)="filter(item.status, 'bid')"
+                (click)="selectBidStatus(item.status)"
+                [ngClass]="{ 'text-danger': selectedBidStatus === item.status }"
+              >
+                {{ item.status }} : {{ item.count }} : GBP
+                {{ item.value | number : "1.0-2" }}
               </div>
             </li>
           </ul>
@@ -80,9 +110,21 @@
               </tr>
 
               <tr
-                *ngFor="let item of projectList| paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
+                *ngFor="
+                  let item of projectList
+                    | paginate
+                      : {
+                          itemsPerPage: pagesize,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  let i = index
+                "
+              >
                 <td>
-                  <a href="javascript:;" (click)="projectDetails(item?._id)">{{ item?.projectName }}</a>
+                  <a href="javascript:;" (click)="projectDetails(item?._id)">{{
+                    item?.projectName
+                  }}</a>
                 </td>
                 <td v-align="middle">{{ item?.BOSID }}</td>
                 <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
@@ -96,7 +138,10 @@
         <div class="row mt-3 align-items-center">
           <div class="row">
             <div class="pagination">
-              <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+              <pagination-controls
+                (pageChange)="paginate($event)"
+                [idMaxSize]="100"
+              ></pagination-controls>
             </div>
           </div>
         </div>
