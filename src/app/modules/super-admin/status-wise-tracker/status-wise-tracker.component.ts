@@ -43,6 +43,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     WaitingForResult: 'WaitingForResult',
     Awarded: 'Awarded',
     NotAwarded: 'NotAwarded',
+    ToAction: 'ToAction'
   };
   constructor(
     private supplierService: SupplierAdminService,
