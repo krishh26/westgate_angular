@@ -805,9 +805,15 @@ export class ProjectManagerProjectDetailsComponent {
         return this.notificationService.showError('Please select a status.');
       }
 
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
+
       // Check if the status has at least one comment
       const hasExistingComment = this.commentData.some(
-        (item) => item.status === this.status
+        (item) => item.bidManagerStatus === this.status
       );
       if (!hasExistingComment && !this.bidManagerStatusComment.value) {
         return this.notificationService.showError(
@@ -849,7 +855,7 @@ export class ProjectManagerProjectDetailsComponent {
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
     const hasComment = this.commentData.some(
-      (item) => item.status === this.status
+      (item) => item.bidManagerStatus === this.status
     );
     const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
     return this.status && (hasComment || hasUnaddedComment);

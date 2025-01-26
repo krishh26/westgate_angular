@@ -1389,15 +1389,20 @@ export class SuperAdminProjectDetailsComponent {
     let payload: any = {};
 
     if (!contractEdit) {
-      if (!this.status) {
+      if (!this.bidStatus) {
         return this.notificationService.showError('Please select a status.');
       }
 
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
       // Check if the status has at least one comment
       const hasExistingComment = this.bidCommentData.some(
-        (item) => item.status === this.bidStatus
+        (item) => item.bidManagerStatus === this.bidStatus
       );
-      if (!hasExistingComment && !this.statusComment.value) {
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
         return this.notificationService.showError(
           'Please provide a comment for the selected status.'
         );
@@ -1446,9 +1451,10 @@ export class SuperAdminProjectDetailsComponent {
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
     const hasComment = this.bidCommentData.some(
-      (item) => item.status === this.bidStatus
+      (item) => item.bidManagerStatus === this.bidStatus
     );
-    const hasUnaddedComment = this.statusComment.value && !hasComment;
-    return this.status && (hasComment || hasUnaddedComment);
+
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 }
