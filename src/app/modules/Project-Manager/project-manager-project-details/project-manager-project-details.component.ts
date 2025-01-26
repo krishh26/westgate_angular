@@ -1,5 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -13,12 +18,11 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 @Component({
   selector: 'app-project-manager-project-details',
   templateUrl: './project-manager-project-details.component.html',
-  styleUrls: ['./project-manager-project-details.component.scss']
+  styleUrls: ['./project-manager-project-details.component.scss'],
 })
 export class ProjectManagerProjectDetailsComponent {
-
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
-  commentName: string = "";
+  commentName: string = '';
   showLoader: boolean = false;
   projectDetails: any = [];
   projectId: string = '';
@@ -34,11 +38,11 @@ export class ProjectManagerProjectDetailsComponent {
   economicalPartnershipResponceFile: any;
   viewClientDocumentForm: boolean = true;
   viewLoginForm: boolean = true;
-  documentName: string = "";
-  loginName: string = "";
+  documentName: string = '';
+  loginName: string = '';
   comment: string = '';
   isEditing = false;
-  status: string = "Expired";
+  status: string = 'Expired';
   bidManagerStatusComment: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
@@ -56,9 +60,9 @@ export class ProjectManagerProjectDetailsComponent {
     loginDetailDocument: 'loginDetailDocument',
     otherQueryDocument: 'otherQueryDocument',
     otherDocument: 'otherDocument',
-    failStatusImage: "failStatusImage",
-    westgatedocument: "westgatedocument"
-  }
+    failStatusImage: 'failStatusImage',
+    westgatedocument: 'westgatedocument',
+  };
   userList: any = [];
   selectedSupplier: any = [];
   // For check bov
@@ -66,12 +70,12 @@ export class ProjectManagerProjectDetailsComponent {
   loginModalMode: boolean = true;
   displayedUsers: any[] = [];
   loginDetailControl = {
-    companyName: new FormControl("", Validators.required),
-    link: new FormControl("", Validators.required),
-    loginID: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
-    id: new FormControl(""),
-  }
+    companyName: new FormControl('', Validators.required),
+    link: new FormControl('', Validators.required),
+    loginID: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    id: new FormControl(''),
+  };
   loginUser: any = [];
   selectedUserIds: number[] = [];
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
@@ -87,7 +91,11 @@ export class ProjectManagerProjectDetailsComponent {
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   selectedImage!: string;
 
-  ForTitleuserList: any = ['SupplierAdmin', 'FeasibilityAdmin', 'FeasibilityUser'];
+  ForTitleuserList: any = [
+    'SupplierAdmin',
+    'FeasibilityAdmin',
+    'FeasibilityUser',
+  ];
   displayForTitleedUsers: any = [];
   selectViewImage: any;
   uploadType: boolean = true;
@@ -109,7 +117,7 @@ export class ProjectManagerProjectDetailsComponent {
     private fb: FormBuilder
   ) {
     this.route.queryParams.subscribe((params) => {
-      this.projectId = params['id']
+      this.projectId = params['id'];
     });
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -123,7 +131,7 @@ export class ProjectManagerProjectDetailsComponent {
       text: [''],
       description: [''],
       imageText: [''],
-      roles: ['']
+      roles: [''],
     });
   }
 
@@ -132,7 +140,9 @@ export class ProjectManagerProjectDetailsComponent {
     console.log('Selected User ID:', userId);
 
     // Find the user in the dropUser list based on userId
-    const supplier = this.viewReasonList.find((item:any) => item.userId === userId);
+    const supplier = this.viewReasonList.find(
+      (item: any) => item.userId === userId
+    );
 
     if (supplier) {
       // Assign the reasons for this supplier to filteredComments
@@ -158,14 +168,20 @@ export class ProjectManagerProjectDetailsComponent {
     this.projectManagerService.dropUser(data, this.projectId).subscribe(
       (response) => {
         if (response?.status) {
-          this.notificationService.showSuccess(response?.message || 'User dropped successfully.');
+          this.notificationService.showSuccess(
+            response?.message || 'User dropped successfully.'
+          );
           supplier.inputValue = '';
         } else {
-          this.notificationService.showError('Error: Unable to drop user. Try again later.');
+          this.notificationService.showError(
+            'Error: Unable to drop user. Try again later.'
+          );
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message || 'Error occurred while dropping user.');
+        this.notificationService.showError(
+          error?.message || 'Error occurred while dropping user.'
+        );
       }
     );
   }
@@ -203,8 +219,7 @@ export class ProjectManagerProjectDetailsComponent {
           // Filter only roles of FeasibilityAdmin and FeasibilityUser
           this.ForTitleuserList = response?.data?.filter(
             (user: any) =>
-              user?.role === 'SupplierAdmin' ||
-              user?.role === 'FeasibilityUser'
+              user?.role === 'SupplierAdmin' || user?.role === 'FeasibilityUser'
           );
           this.displayForTitleedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
@@ -284,11 +299,12 @@ export class ProjectManagerProjectDetailsComponent {
         if (response?.status === true) {
           // Filter only roles of FeasibilityAdmin and FeasibilityUser
           this.userList = response?.data?.filter(
-            (user: any) => user?.role === 'FeasibilityAdmin' || user?.role === 'FeasibilityUser'
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
+              user?.role === 'FeasibilityUser'
           );
           this.selectedSupplier = response?.data?.filter(
-            (user: any) =>
-              user?.role === 'SupplierAdmin'
+            (user: any) => user?.role === 'SupplierAdmin'
           );
           this.displayedUsers = this.userList.slice(0, 7);
           this.showLoader = false;
@@ -315,7 +331,10 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   editProjectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-user/edit-feasibility-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(
+      ['/feasibility-user/edit-feasibility-project-details'],
+      { queryParams: { id: projectId } }
+    );
   }
 
   getTask() {
@@ -347,30 +366,33 @@ export class ProjectManagerProjectDetailsComponent {
   // Method to fetch project details and set the viewReasonList
   getProjectDetails() {
     this.showLoader = true;
-    this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      if (response?.status === true) {
-        this.showLoader = false;
-        this.projectDetails = response?.data;
-        // this.selectedSupplier = response?.data?.sortlistedUsers;
-        this.logs = response?.data?.logs?.slice(0, 3) || [];
-        this.status = this.projectDetails?.status;
-        this.commentData = this.projectDetails?.bidManagerStatusComment;
-        this.viewReasonList = this.projectDetails?.dropUser;  // Store the dropUser list
-        console.log(this.viewReasonList); // Logs the dropUser list for debugging
-      } else {
-        this.notificationService.showError(response?.message);
+    this.projectService.getProjectDetailsById(this.projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.projectDetails = response?.data;
+          // this.selectedSupplier = response?.data?.sortlistedUsers;
+          this.logs = response?.data?.logs?.slice(0, 3) || [];
+          this.status = this.projectDetails?.status;
+          this.commentData = this.projectDetails?.bidManagerStatusComment;
+          this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
+          console.log(this.viewReasonList); // Logs the dropUser list for debugging
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   statusChange(status: string) {
     this.status = status;
-    this.commentData = []
-    this.bidManagerStatusComment.reset()
+    this.commentData = [];
+    this.bidManagerStatusComment.reset();
   }
 
   pushStatus() {
@@ -386,7 +408,7 @@ export class ProjectManagerProjectDetailsComponent {
       comment: this.bidManagerStatusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       bidManagerStatus: this.status,
-      userId: this.loginUser?._id
+      userId: this.loginUser?._id,
     });
 
     // Reset the comment input field
@@ -410,13 +432,12 @@ export class ProjectManagerProjectDetailsComponent {
   openUploadedDocument(data: any) {
     this.uploadedDocument = data;
     console.log(this.uploadedDocument);
-
   }
 
   download(imageUrl: string, fileName: string): void {
     fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -449,50 +470,57 @@ export class ProjectManagerProjectDetailsComponent {
 
       this.spinner.show();
 
-      this.feasibilityService.uploadDocument(data).subscribe((response) => {
-        this.spinner.hide();
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
 
-        if (response?.status) {
-          if (type == this.documentUploadType.failStatusImage) {
-            this.failStatusImage = response?.data;
-          }
-
-          //client document
-          if (type == this.documentUploadType.clientDocument) {
-            if (!this.documentName) {
-              return this.notificationService.showError('Enter a client document Name');
+          if (response?.status) {
+            if (type == this.documentUploadType.failStatusImage) {
+              this.failStatusImage = response?.data;
             }
-            this.clientDocument = response?.data;
-            let objToBePushed = {
-              name: this.documentName,
-              file: response?.data
-            };
-            this.projectDetails.clientDocument.push(objToBePushed);
-            this.documentName = "";
-          }
 
-          if (type == this.documentUploadType.loginDetailDocument) {
-            if (!this.loginName) {
-              return this.notificationService.showError('Enter Name');
+            //client document
+            if (type == this.documentUploadType.clientDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a client document Name'
+                );
+              }
+              this.clientDocument = response?.data;
+              let objToBePushed = {
+                name: this.documentName,
+                file: response?.data,
+              };
+              this.projectDetails.clientDocument.push(objToBePushed);
+              this.documentName = '';
             }
-            this.loginDetailDocument = response?.data;
-            let objToBePushed = {
-              name: this.loginName,
-              file: response?.data
-            };
-            this.projectDetails.loginDetail.push(objToBePushed);
-            this.loginName = "";
-          }
 
-          return this.notificationService.showSuccess(response?.message);
-        } else {
-          return this.notificationService.showError(response?.message);
+            if (type == this.documentUploadType.loginDetailDocument) {
+              if (!this.loginName) {
+                return this.notificationService.showError('Enter Name');
+              }
+              this.loginDetailDocument = response?.data;
+              let objToBePushed = {
+                name: this.loginName,
+                file: response?.data,
+              };
+              this.projectDetails.loginDetail.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            return this.notificationService.showSuccess(response?.message);
+          } else {
+            return this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          // Hide the spinner in case of an error as well
+          this.spinner.hide();
+          return this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
         }
-      }, (error) => {
-        // Hide the spinner in case of an error as well
-        this.spinner.hide();
-        return this.notificationService.showError(error?.message || "Error while uploading");
-      });
+      );
     }
   }
 
@@ -503,26 +531,33 @@ export class ProjectManagerProjectDetailsComponent {
       data.append('files', file);
       this.spinner.show();
 
-      this.feasibilityService.uploadDocument(data).subscribe((response) => {
-        this.spinner.hide();
-        if (response?.status) {
-          if (!this.commentName) {
-            return this.notificationService.showError('Enter a client document name');
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
+          if (response?.status) {
+            if (!this.commentName) {
+              return this.notificationService.showError(
+                'Enter a client document name'
+              );
+            }
+            let objToBePushed = {
+              comment: this.commentName,
+              file: response?.data,
+            };
+            this.projectDetails.projectComment.push(objToBePushed);
+            this.commentName = ''; // Clear the comment input
+            this.notificationService.showSuccess(response?.message);
+          } else {
+            this.notificationService.showError(response?.message);
           }
-          let objToBePushed = {
-            comment: this.commentName,
-            file: response?.data
-          };
-          this.projectDetails.projectComment.push(objToBePushed);
-          this.commentName = ""; // Clear the comment input
-          this.notificationService.showSuccess(response?.message);
-        } else {
-          this.notificationService.showError(response?.message);
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
         }
-      }, (error) => {
-        this.spinner.hide();
-        this.notificationService.showError(error?.message || 'Error while uploading');
-      });
+      );
     }
   }
 
@@ -545,11 +580,11 @@ export class ProjectManagerProjectDetailsComponent {
 
     if (type === this.documentUploadType.economicalPartnershipResponse) {
       this.economicalPartnershipResponceFile = null; // Clear the uploaded document
-      this.notificationService.showSuccess("Document removed successfully.");
+      this.notificationService.showSuccess('Document removed successfully.');
     }
 
     // Add any additional logic for other document types
-    this.notificationService.showSuccess("Document removed successfully.");
+    this.notificationService.showSuccess('Document removed successfully.');
   }
 
   removeOtherDocument(document: any): void {
@@ -557,41 +592,42 @@ export class ProjectManagerProjectDetailsComponent {
     const index = this.FeasibilityOtherDocuments.indexOf(document);
     if (index > -1) {
       this.FeasibilityOtherDocuments.splice(index, 1); // Remove the document from the array
-      this.notificationService.showSuccess("Document removed successfully.");
+      this.notificationService.showSuccess('Document removed successfully.');
     }
   }
 
   hideShowForm() {
-    this.viewClientDocumentForm = !this.viewClientDocumentForm
+    this.viewClientDocumentForm = !this.viewClientDocumentForm;
   }
 
   viewLoginDetail(loginData: any) {
-    this.loginModalMode = true
-    this.loginDetailForm.patchValue(loginData.data)
+    this.loginModalMode = true;
+    this.loginDetailForm.patchValue(loginData.data);
   }
 
   openLoginDetail() {
-    this.loginModalMode = false
-    this.loginDetailForm.reset()
+    this.loginModalMode = false;
+    this.loginDetailForm.reset();
   }
 
   editLoginDetail(loginData: any, i: number) {
-    this.loginModalMode = false
-    this.loginDetailForm.patchValue(loginData.data)
-    this.loginDetailForm.controls['id'].setValue(i)
+    this.loginModalMode = false;
+    this.loginDetailForm.patchValue(loginData.data);
+    this.loginDetailForm.controls['id'].setValue(i);
   }
 
   addLoginInfo() {
     const dataToBePushed = {
       name: this.loginName,
-      data: this.loginDetailForm.value
-    }
+      data: this.loginDetailForm.value,
+    };
     if (this.projectDetails.loginDetail[this.loginDetailForm.value['id']]) {
-      this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data = dataToBePushed.data
+      this.projectDetails.loginDetail[this.loginDetailForm.value['id']].data =
+        dataToBePushed.data;
     } else {
-      this.projectDetails.loginDetail.push(dataToBePushed)
+      this.projectDetails.loginDetail.push(dataToBePushed);
     }
-    this.loginName = ''
+    this.loginName = '';
   }
 
   toggleEdit() {
@@ -599,7 +635,7 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   saveChanges(type?: string, contractEdit?: boolean) {
-    let payload: any = {}
+    let payload: any = {};
     if (!contractEdit) {
       // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.bidManagerStatusComment?.value) {
       //   return this.notificationService.showError('Please Enter Status Comment');
@@ -614,25 +650,27 @@ export class ProjectManagerProjectDetailsComponent {
           comment: this.bidManagerStatusComment.value,
           date: this.statusDate.value,
           bidManagerStatus: this.status,
-          userId: this.loginUser?._id
-        })
+          userId: this.loginUser?._id,
+        });
       }
 
       payload = {
         subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile: this.economicalPartnershipQueryFile || [],
+        economicalPartnershipQueryFile:
+          this.economicalPartnershipQueryFile || [],
         FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile: this.economicalPartnershipResponceFile || [],
+        economicalPartnershipResponceFile:
+          this.economicalPartnershipResponceFile || [],
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
-        subContracting: this.subContracting || "",
-        comment: this.comment || "",
+        subContracting: this.subContracting || '',
+        comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
-        bidManagerStatus: this.status || "",
+        bidManagerStatus: this.status || '',
         bidManagerStatusComment: this.commentData,
-        loginDetail: this.projectDetails.loginDetail || "",
-        failStatusImage: this.failStatusImage || ""
+        loginDetail: this.projectDetails.loginDetail || '',
+        failStatusImage: this.failStatusImage || '',
       };
 
       if (this.failStatusReason?.value) {
@@ -643,7 +681,6 @@ export class ProjectManagerProjectDetailsComponent {
       if (this.subContracting !== undefined && this.subContracting !== null) {
         payload.subContracting = this.subContracting;
       }
-
     }
 
     if (contractEdit) {
@@ -651,32 +688,37 @@ export class ProjectManagerProjectDetailsComponent {
         periodOfContractStart: this.projectDetails.periodOfContractStart,
         periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
-      }
+      };
     }
-    this.feasibilityService.updateProjectDetailsBid(payload, this.projectDetails._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          this.getProjectDetails();
-          // if (type == 'save') {
-          //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-          // }
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+            // if (type == 'save') {
+            //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
+            // }
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
         }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
-      }
-    );
+      );
   }
 
-
   appointFeasibilityUser(selectedUsers: string[], item: any) {
-    const projectId = item?._id
+    const projectId = item?._id;
     const payload = {
-      userId: selectedUsers // Array of selected user IDs
+      userId: selectedUsers, // Array of selected user IDs
     };
     this.superService.appointFeasibilityUser(payload, projectId).subscribe(
       (response) => {
@@ -686,12 +728,16 @@ export class ProjectManagerProjectDetailsComponent {
           this.notificationService.showSuccess('Appoint users successfully');
           // window.location.reload();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to appoint users');
+          this.notificationService.showError(
+            response?.message || 'Failed to appoint users'
+          );
         }
       },
       (error) => {
         this.showLoader = false;
-        this.notificationService.showError(error?.message || 'An error occurred');
+        this.notificationService.showError(
+          error?.message || 'An error occurred'
+        );
       }
     );
   }
@@ -701,16 +747,29 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   isWordOrExcel(url: string): boolean {
-    return url?.endsWith('.doc') || url?.endsWith('.docx') || url?.endsWith('.xls') || url?.endsWith('.xlsx') || false;
+    return (
+      url?.endsWith('.doc') ||
+      url?.endsWith('.docx') ||
+      url?.endsWith('.xls') ||
+      url?.endsWith('.xlsx') ||
+      false
+    );
   }
 
   isImage(url: string): boolean {
-    return url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || false;
+    return (
+      url?.endsWith('.jpg') ||
+      url?.endsWith('.jpeg') ||
+      url?.endsWith('.png') ||
+      false
+    );
   }
 
   getDocumentViewerUrl(url: string): SafeResourceUrl {
     if (this.isWordOrExcel(url)) {
-      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+        url
+      )}`;
       return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -739,5 +798,60 @@ export class ProjectManagerProjectDetailsComponent {
     );
   }
 
-}
+  saveBidStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+    if (!contractEdit) {
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
+      }
 
+      // Check if the status has at least one comment
+      const hasExistingComment = this.commentData.some(
+        (item) => item.status === this.status
+      );
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
+      }
+      payload = {
+        bidManagerStatus: this.status || '',
+        bidManagerStatusComment: [
+          ...this.commentData,
+          ...this.projectDetails?.bidManagerStatusComment,
+        ],
+      };
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+  }
+
+  isBidCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.commentData.some(
+      (item) => item.status === this.status
+    );
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.status && (hasComment || hasUnaddedComment);
+  }
+}
