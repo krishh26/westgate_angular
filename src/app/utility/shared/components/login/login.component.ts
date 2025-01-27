@@ -67,13 +67,13 @@ export class LoginComponent extends BaseLogin implements OnInit {
           this.loginDetails = decoded;
           this.localStorageService.setLogger(this.loginDetails);
           if (this.loginDetails?.role == 'BOS') {
-            this.router.navigateByUrl('/boss-user/home');
+            this.router.navigateByUrl('/boss-user/todo-task');
           } else if (this.loginDetails?.role == 'SupplierAdmin') {
             this.router.navigateByUrl('/supplier-admin/supplier-home');
           } else if (this.loginDetails?.role == 'FeasibilityUser') {
             this.router.navigateByUrl('/feasibility-user/feasibility-projects-to-actions');
           } else if (this.loginDetails?.role == 'ProjectManager') {
-            this.router.navigateByUrl('/project-manager/project/all');
+            this.router.navigateByUrl('/project-manager/project/bid-manager-to-action');
           } else if (this.loginDetails?.role == 'UKWriter') {
             this.router.navigateByUrl('/uk-writer/uk-writer-home');
           } else if (this.loginDetails?.role == 'BIDSubmition') {

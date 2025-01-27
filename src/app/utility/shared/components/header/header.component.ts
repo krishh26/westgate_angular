@@ -23,8 +23,8 @@ export class HeaderComponent {
   }
 
   navUrlArr = [
-    { title: 'Home', route: ['/boss-user/home'] },
-    { title: 'Live Projects', route: ['/boss-user/project-list'] },
+    // { title: 'Home', route: ['/boss-user/home'] },
+    // { title: 'Live Projects', route: ['/boss-user/project-list'] },
     { title: 'TO DO TASKS', route: ['/boss-user/todo-task'] },
 
   ];

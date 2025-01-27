@@ -141,112 +141,6 @@
 
       <p>{{ projectDetails?.description }}</p>
 
-      <!-- <section class="pageheader bg-dark">
-        <div class="container">
-          <p><strong>Client Detils</strong></p>
-        </div>
-      </section> -->
-
-      <!--client details-->
-      <!-- <div class="row mt-5">
-        <div class="col-lg-4 col-xl-4 col-12 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-lg-4 col-xl-4 col-12">
-                  <h6 class="text-theme"><strong>Client Detils</strong></h6>
-                </div>
-                <div class="col-lg-7 col-xl-7 col-12">
-                  <p class="p-13 mb-0">
-                    Mail ID : {{ projectDetails?.mailID }}
-                  </p>
-                  <p class="p-13 mb-0">
-                    Client Type : {{ projectDetails?.clientType }}
-                  </p>
-                  <p class="p-13 mb-0">
-                    Client Name : {{ projectDetails?.clientName }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <section class="pageheader bg-dark mb-3">
-        <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Feasibility User: {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong>
-          </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignFeasibilityUser[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
-        </div>
-      </section>
-
-      <div class="row align-items-end mb-4">
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
-              [items]="FeasibilityuserList" [(ngModel)]="assignTo">
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Due Date</label>
-            <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="assignUser()">
-            Submit
-          </button>
-        </div>
-      </div>
-
-      <section class="pageheader bg-dark mb-3">
-        <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
-          </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
-        </div>
-      </section>
-
-      <div class="row align-items-end mb-4">
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-              [(ngModel)]="assignTo">
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Due Date</label>
-            <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="assignUser()">
-            Submit
-          </button>
-        </div>
-      </div>
-
       <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Documents</strong></p>
@@ -316,205 +210,315 @@
         </div>
       </div>
 
-      <div class="col-lg-12 col-xl-12 col-12 mb-2">
-        <div class="card shadow-sm p-4">
-          <!-- Header -->
-          <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Feasibility Status</h5>
-          </div>
 
-          <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4">
-            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
-              (click)="statusChange('InProgress')">
-              In-Progress
-            </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
-              (click)="statusChange('InHold')">
-              In-Hold
-            </button>
-            <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
-              (click)="statusChange('Passed')">
-              Pass
-            </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
-              (click)="statusChange('Fail')">
-              Fail
-            </button>
-            <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'DocumentsNotFound'"
-              (click)="statusChange('DocumentsNotFound')">
-              Document Not Found
-            </button>
-          </div>
+      <!-- <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Client Detils</strong></p>
+        </div>
+      </section> -->
 
-          <!-- Dynamic Comment Section -->
-          <div *ngIf="status" class="status-section">
-            <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
-
-            <!-- Display Existing Comments -->
-            <div *ngIf="commentData?.length" class="comment-list comments-section">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
-                <!-- <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                  <span class="text-muted"><strong>Date:</strong>
-                    {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
-                </div> -->
-                <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">
-                      {{ item?.userDetails?.name }}
-                    </p>
-                    <small class="text-muted">
-                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
-                    </small>
-                  </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
+      <!--client details-->
+      <!-- <div class="row mt-5">
+        <div class="col-lg-4 col-xl-4 col-12 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-lg-4 col-xl-4 col-12">
+                  <h6 class="text-theme"><strong>Client Detils</strong></h6>
+                </div>
+                <div class="col-lg-7 col-xl-7 col-12">
+                  <p class="p-13 mb-0">
+                    Mail ID : {{ projectDetails?.mailID }}
+                  </p>
+                  <p class="p-13 mb-0">
+                    Client Type : {{ projectDetails?.clientType }}
+                  </p>
+                  <p class="p-13 mb-0">
+                    Client Name : {{ projectDetails?.clientName }}
+                  </p>
                 </div>
               </div>
             </div>
-            <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="status !== 'Fail'">
-              <input type="text" class="form-control w-80" [formControl]="statusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushStatus()">
-                <i class="bi bi-plus-lg"></i> Add
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <section class="pageheader bg-dark mb-3">
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Feasibility User: {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignFeasibilityUser[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
+        </div>
+      </section> -->
+
+      <section class="pageheader bg-dark mb-3">
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
+        </div>
+      </section>
+
+      <div class="row align-items-end mb-4">
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="detail-item">
+            <label>Assign To</label>
+            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
+              [(ngModel)]="assignTo">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="detail-item">
+            <label>Due Date</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
+                #endDatePicker="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                type="button"></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-end">
+          <button type="button" class="btn btn-primary" (click)="assignUser()">
+            Submit
+          </button>
+        </div>
+      </div>
+
+
+      <div class="row align-items-end mb-4">
+        <!-- <div class="col-lg-5 col-md-5 col-sm-12 mb-3">
+          <div class="detail-item">
+            <label>Assign To</label>
+            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
+              [items]="FeasibilityuserList" [(ngModel)]="assignTo">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12 mb-3">
+          <div class="detail-item">
+            <label>Due Date</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate" ngbDatepicker
+                #endDatePicker="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                type="button"></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-end mb-3">
+          <button type="button" class="btn btn-primary" (click)="assignUser()">
+            Submit
+          </button>
+        </div> -->
+
+        <div class="col-lg-12 col-xl-12 col-12 mb-2">
+          <div class="card shadow-sm p-4">
+            <!-- Header -->
+            <div class="card-header bg-primary text-white mb-3">
+              <h5 class="mb-0">Feasibility Status</h5>
+            </div>
+
+            <!-- Status Buttons -->
+            <div class="d-flex justify-content-between flex-wrap mb-4">
+              <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
+                (click)="statusChange('InProgress')">
+                In-Progress
+              </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
+                (click)="statusChange('InHold')">
+                In-Hold
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
+                (click)="statusChange('Passed')">
+                Pass
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
+                (click)="statusChange('Fail')">
+                Fail
+              </button>
+              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'DocumentsNotFound'"
+                (click)="statusChange('DocumentsNotFound')">
+                Document Not Found
               </button>
             </div>
 
-            <!-- Fail Specific Fields -->
-            <div *ngIf="status === 'Fail'" class="mt-4">
-              <div class="d-flex align-items-center gap-3">
-                <select class="form-select" [(ngModel)]="selectedFailReason">
-                  <option disabled selected hidden value="">
-                    Select Fail Reason
-                  </option>
-                  <option value="Accreditation">Accreditation</option>
-                  <option value="Time Constraints">Time Constraints</option>
-                  <option value="Certification">Certification</option>
-                  <option value="Case Study">Case Study</option>
-                  <option value="Certifications from Subcontractor">
-                    Certifications from Subcontractor
-                  </option>
-                  <option value="Delivery of goods/Hardware">
-                    Delivery of goods/Hardware
-                  </option>
-                  <option value="Financial Conditions">
-                    Financial Conditions
-                  </option>
-                  <option value="Not related">Not related</option>
-                </select>
-                <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
-                  <i class="bi bi-plus-lg"></i>
+            <!-- Dynamic Comment Section -->
+            <div *ngIf="status" class="status-section">
+              <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+
+              <!-- Display Existing Comments -->
+              <div *ngIf="commentData?.length" class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                  <!-- <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                    <span class="text-muted"><strong>Date:</strong>
+                      {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                  </div> -->
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ item?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                    <p class="mt-2">{{ item?.comment }}</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Add New Comment -->
+              <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="status !== 'Fail'">
+                <input type="text" class="form-control w-80" [formControl]="statusComment"
+                  placeholder="Add your comment" />
+                <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                  <i class="bi bi-plus-lg"></i> Add
                 </button>
               </div>
 
-              <!-- Display added reasons and comments -->
-              <div class="mt-3">
-                <div class="reason-item border rounded p-3 mb-2"
-                  *ngFor="let reason of failStatusReasons; let i = index">
-                  <div class="d-flex align-items-center">
-                    <span class="me-3"><strong>Reason:</strong> {{ reason.tag }}</span>
-                    <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                      [(ngModel)]="reason.comment" />
-                    <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
-                      Remove
-                    </button>
+              <!-- Fail Specific Fields -->
+              <div *ngIf="status === 'Fail'" class="mt-4">
+                <div class="d-flex align-items-center gap-3">
+                  <select class="form-select" [(ngModel)]="selectedFailReason">
+                    <option disabled selected hidden value="">
+                      Select Fail Reason
+                    </option>
+                    <option value="Accreditation">Accreditation</option>
+                    <option value="Time Constraints">Time Constraints</option>
+                    <option value="Certification">Certification</option>
+                    <option value="Case Study">Case Study</option>
+                    <option value="Certifications from Subcontractor">
+                      Certifications from Subcontractor
+                    </option>
+                    <option value="Delivery of goods/Hardware">
+                      Delivery of goods/Hardware
+                    </option>
+                    <option value="Financial Conditions">
+                      Financial Conditions
+                    </option>
+                    <option value="Not related">Not related</option>
+                  </select>
+                  <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                </div>
+
+                <!-- Display added reasons and comments -->
+                <div class="mt-3">
+                  <div class="reason-item border rounded p-3 mb-2"
+                    *ngFor="let reason of failStatusReasons; let i = index">
+                    <div class="d-flex align-items-center">
+                      <span class="me-3"><strong>Reason:</strong> {{ reason.tag }}</span>
+                      <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
+                        [(ngModel)]="reason.comment" />
+                      <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row justify-content-end mb-4">
-              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
-                  class="btn btn-primary w-100">Save Status</a>
+              <div class="row justify-content-end mb-4">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                  <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                    class="btn btn-primary w-100">Save Status</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-lg-12 col-xl-12 col-12 mb-2" *ngIf="projectDetails?.status == 'Passed'">
-        <div class="card shadow-sm p-4">
-          <!-- Header -->
-          <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Bid Status</h5>
-          </div>
-
-          <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4">
-            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'Toaction'"
-              (click)="statusChangeBid('Toaction')">
-              To Action
-            </button>
-            <button class="btn btn-outline-info flex-fill m-1" [class.active]="bidStatus === 'InSolution'"
-              (click)="statusChangeBid('InSolution')">
-              In-Solution
-            </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="bidStatus === 'WaitingForResult'"
-              (click)="statusChangeBid('WaitingForResult')">
-              Waiting For Result
-            </button>
-            <button class="btn btn-outline-success flex-fill m-1"
-              [class.active]="bidStatus === 'DroppedAfterFeasibility'"
-              (click)="statusChangeBid('DroppedAfterFeasibility')">
-              Dropped After Feasibility
-            </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="bidStatus === 'Awarded'"
-              (click)="statusChangeBid('Awarded')">
-              Awarded
-            </button>
-            <button class="btn btn-outline-warning flex-fill m-1" [class.active]="bidStatus === 'NotAwarded'"
-              (click)="statusChangeBid('NotAwarded')">
-              Not Awarded
-            </button>
-          </div>
-
-          <!-- Dynamic Comment Section -->
-          <div *ngIf="bidStatus" class="status-section comments-section">
-            <h6 class="text-secondary mb-3">{{ bidStatus }} Comments</h6>
-
-            <!-- Display Existing Comments -->
-            <div *ngIf="bidCommentData?.length" class="comment-list">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
-                <!-- <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted"><strong>Comment:</strong> {{ item?.comment }}</span>
-                  <span class="text-muted"><strong>Date: </strong>{{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
-                </div> -->
-                <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">
-                      {{ item?.userDetails?.name }}
-                    </p>
-                    <small class="text-muted">
-                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
-                    </small>
-                  </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.bidManagerStatus }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
-                </div>
-              </div>
+        <div class="col-lg-12 col-xl-12 col-12 mb-2" *ngIf="projectDetails?.status == 'Passed'">
+          <div class="card shadow-sm p-4">
+            <!-- Header -->
+            <div class="card-header bg-primary text-white mb-3">
+              <h5 class="mb-0">Bid Status</h5>
             </div>
-
-            <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3">
-              <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushStatusBid()">
-                <i class="bi bi-plus-lg"></i> Add
+  
+            <!-- Status Buttons -->
+            <div class="d-flex justify-content-between flex-wrap mb-4">
+              <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'Toaction'"
+                (click)="statusChangeBid('Toaction')">
+                To Action
+              </button>
+              <button class="btn btn-outline-info flex-fill m-1" [class.active]="bidStatus === 'InSolution'"
+                (click)="statusChangeBid('InSolution')">
+                In-Solution
+              </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="bidStatus === 'WaitingForResult'"
+                (click)="statusChangeBid('WaitingForResult')">
+                Waiting For Result
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1"
+                [class.active]="bidStatus === 'DroppedAfterFeasibility'"
+                (click)="statusChangeBid('DroppedAfterFeasibility')">
+                Dropped After Feasibility
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="bidStatus === 'Awarded'"
+                (click)="statusChangeBid('Awarded')">
+                Awarded
+              </button>
+              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="bidStatus === 'NotAwarded'"
+                (click)="statusChangeBid('NotAwarded')">
+                Not Awarded
               </button>
             </div>
-          </div>
-
-          <div class="row justify-content-end mb-2 mt-3">
-            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-              <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
-                Save Bid Status
-              </a>
+  
+            <!-- Dynamic Comment Section -->
+            <div *ngIf="bidStatus" class="status-section comments-section">
+              <h6 class="text-secondary mb-3">{{ bidStatus }} Comments</h6>
+  
+              <!-- Display Existing Comments -->
+              <div *ngIf="bidCommentData?.length" class="comment-list">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
+                  <!-- <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted"><strong>Comment:</strong> {{ item?.comment }}</span>
+                    <span class="text-muted"><strong>Date: </strong>{{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                  </div> -->
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ item?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Status :</strong> {{ item?.bidManagerStatus }}</small>
+                    <p class="mt-2">{{ item?.comment }}</p>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Add New Comment -->
+              <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                  placeholder="Add your comment" />
+                <button class="btn btn-primary" type="button" (click)="pushStatusBid()">
+                  <i class="bi bi-plus-lg"></i> Add
+                </button>
+              </div>
+            </div>
+  
+            <div class="row justify-content-end mb-2 mt-3">
+              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+                  Save Bid Status
+                </a>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
+
 
       <div class="row justify-content-end mb-2">
         <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
