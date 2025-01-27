@@ -192,7 +192,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
-    
+
     // Map the appropriate parameter based on the type
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
@@ -256,7 +256,7 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   filter(value: any, type: string) {
     console.log('this is values', value, this.filterObject[value], type);
-  
+
     // Check if the status is "Shortlisted"
     if (value === 'Shortlisted') {
       // Set shortlisted to true
@@ -269,9 +269,9 @@ export class StatusWiseTrackerComponent implements OnInit {
       this.status = this.filterObject[value];
       Payload.projectList.sortlist = false; // Clear shortlisted if not shortlisted
     }
-  
+
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
   }
-  
+
 }
