@@ -256,7 +256,22 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   filter(value: any, type: string) {
     console.log('this is values', value, this.filterObject[value], type);
-    this.status = this.filterObject[value];
+  
+    // Check if the status is "Shortlisted"
+    if (value === 'Shortlisted') {
+      // Set shortlisted to true
+      Payload.projectList.sortlist = true;
+      // Clear other relevant parameters
+      Payload.projectList.status = '';
+      // Payload.projectList.bidManagerStatus = '';
+    } else {
+      // Use the existing filter logic for other statuses
+      this.status = this.filterObject[value];
+      Payload.projectList.sortlist = false; // Clear shortlisted if not shortlisted
+    }
+  
+    // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
   }
+  
 }
