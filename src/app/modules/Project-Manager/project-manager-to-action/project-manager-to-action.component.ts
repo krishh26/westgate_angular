@@ -297,9 +297,11 @@ export class ProjectManagerToActionComponent {
     // this.tempPayload.projectList.match = 'partial';
     // this.tempPayload.projectList.myList = this.loginUser?._id;
     this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.status = 'Passed'
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
+        
         this.totalRecords = response?.data?.meta_data?.items;
         if (response?.status == true) {
           this.showLoader = false;
