@@ -1,74 +1,29 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
 <main id="main">
   <section>
     <div class="container-fluid">
       <div class="row align-items-center">
-        <!-- <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                    <div class="form-group mb-0">
-                        <span class="input-icon"><i class="bi bi-search"></i></span>
-                        <input type="search" class="form-control control-search" placeholder="Search" />
-                    </div>
-                </div> -->
         <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
           <div class="d-flex align-items-center">
             <h4 class="me-3"><strong>Project Title:</strong></h4>
             <h4>{{ projectDetails?.projectName }}</h4>
           </div>
-
-          <a routerLink="/super-admin/status-wise-tracker" class="btn btn-primary text-dark">
-            Back
-          </a>
+          <div class="ms-auto d-flex">
+            <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
+              Add Strips
+            </a>
+            <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
+              Back
+            </a>
+          </div>
         </div>
       </div>
-
-      <!-- Project Details -->
-      <!-- <div class="table-responsive mt-5 mb-3">
-                <table class="table table-striped align-middle">
-                    <thead>
-                        <tr>
-                            <th width="100px">Project Title</th>
-                            <th>BOS ID</th>
-                            <th>Publish Date</th>
-                            <th>Category</th>
-                            <th>Industry</th>
-                            <th>Min value (GBP)</th>
-                            <th>Max value (GBP)</th>
-                            <th>Website</th>
-                            <th>Link to notice</th>
-                            <th>Created Date</th>
-                            <th>Due Date & Time</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a href="javascript:;">{{projectDetails?.projectName}}</a>
-                            </td>
-                            <td v-align="middle">{{projectDetails?.BOSID}}</td>
-                            <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
-                            <td>{{projectDetails?.category}}</td>
-                            <td>{{projectDetails?.industry}}</td>
-                            <td>£ {{projectDetails?.minValue}}</td>
-                            <td>£ {{projectDetails?.maxValue}}</td>
-                            <td><a>{{projectDetails?.website}}</a></td>
-                            <td><a href='{{projectDetails?.link}}' target="_blank">Link to Notice</a></td>
-                            <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
-                            <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
 
       <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
         <div class="card">
           <div class="card-body">
-            <!-- <div class="row">
-                            <div class="col-md-2"><strong>Project Title:</strong></div>
-                            <div class="col-md-10">{{ projectDetails?.projectName || '-' }}</div>
-                        </div> -->
-            <!-- <div class="row">
-                            <div class="col-md-2"><strong>Project  </strong></div>
-                            <div class="col-md-10">{{ projectDetails?.description || '-' }}</div>
-                        </div> -->
             <div class="row">
               <div class="col-md-2"><strong>BOS ID:</strong></div>
               <div class="col-md-10">{{ projectDetails?.BOSID || "-" }}</div>
@@ -147,12 +102,7 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Status:</strong></div>
-              <div class="col-md-10" [ngClass]="{
-                  'text-success': projectDetails?.status === 'Passed',
-                  'text-danger': projectDetails?.status === 'Fail'
-                }">
-                {{ projectDetails?.status || "-" }}
-              </div>
+              <div class="col-md-10">{{ projectDetails?.status || "-" }}</div>
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Project Type:</strong></div>
@@ -171,6 +121,7 @@
                 {{ projectDetails?.clientType || "-" }}
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-2"><strong>Client Name:</strong></div>
               <div class="col-md-10">
@@ -182,11 +133,12 @@
       </div>
 
       <section class="pageheader bg-dark">
-        <div class="container">
-          <p><strong>Project Description</strong></p>
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Project Description</strong></p>
         </div>
       </section>
       <br />
+
       <p>{{ projectDetails?.description }}</p>
 
       <!-- <section class="pageheader bg-dark">
@@ -222,18 +174,22 @@
       </div> -->
 
       <section class="pageheader bg-dark mb-3">
-        <div class="container">
-          <p><strong>Assign Feasibility User : {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong></p>
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Feasibility User: {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignFeasibilityUser[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
         </div>
       </section>
+
 
       <div class="row align-items-end mb-4">
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
             <label>Assign To</label>
             <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="FeasibilityuserList"
-              [(ngModel)]="assignTo">
+              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
+              [items]="FeasibilityuserList" [(ngModel)]="assignTo">
             </ng-select>
           </div>
         </div>
@@ -252,12 +208,15 @@
           <button type="button" class="btn btn-primary" (click)="assignUser()">
             Submit
           </button>
-        </div>
+        </div>assignBidmanager
       </div>
 
       <section class="pageheader bg-dark mb-3">
-        <div class="container">
-          <p><strong>Assign Bid User : {{projectDetails?.assignBidmanager[0]?.name}}</strong></p>
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
         </div>
       </section>
 
@@ -476,7 +435,7 @@
         </div>
       </div>
 
-      <div class="col-lg-12 col-xl-12 col-12 mb-2" *ngIf="projectDetails?.status == 'Pass'">
+      <div class="col-lg-12 col-xl-12 col-12 mb-2" *ngIf="projectDetails?.status == 'Passed'">
         <div class="card shadow-sm p-4">
           <!-- Header -->
           <div class="card-header bg-primary text-white mb-3">
@@ -513,7 +472,7 @@
           </div>
 
           <!-- Dynamic Comment Section -->
-          <div *ngIf="bidStatus" class="status-section">
+          <div *ngIf="bidStatus" class="status-section comments-section">
             <h6 class="text-secondary mb-3">{{ bidStatus }} Comments</h6>
 
             <!-- Display Existing Comments -->
@@ -532,7 +491,7 @@
                       {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
                     </small>
                   </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.bidManagerStatus }}</small>
                   <p class="mt-2">{{ item?.comment }}</p>
                 </div>
               </div>
@@ -578,7 +537,9 @@
               <div *ngFor="let comment of commentData" class="task-item">
                 <ng-container>
                   <div class="comment mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
                       <p class="mb-0 fw-bold">
                         {{ comment?.userDetails?.name }}
                       </p>
@@ -586,7 +547,9 @@
                         {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
                       </small>
                     </div>
-                    <small class="text-muted d-block"><strong>Status :</strong> {{ comment?.status }}</small>
+                    <small class="text-muted d-block"
+                      ><strong>Status :</strong> {{ comment?.status }}</small
+                    >
                     <p class="mt-2">{{ comment?.comment }}</p>
                   </div>
                 </ng-container>
@@ -666,7 +629,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -877,6 +839,54 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login detail From modal -->
+<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label>Company Name</label>
+        <input type="text" formControlName="companyName" class="form-control" />
+        <div class="text-danger" style="color: red"
+          *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
+          Please Company Name
+        </div>
+        <label>Website Link</label>
+        <input type="text" formControlName="link" class="form-control" />
+        <div class="text-danger" style="color: red"
+          *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
+          Please enter Website Link
+        </div>
+        <label>Login Id</label>
+        <input type="text" formControlName="loginID" class="form-control" />
+        <div class="text-danger" style="color: red"
+          *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
+          Please enter Login Id
+        </div>
+        <label>Password</label>
+        <input [type]="password" formControlName="password" class="form-control" />
+        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
+        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
+        <div class="text-danger" style="color: red"
+          *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
+          Please enter Password
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" [disabled]="!loginDetailForm.valid"
+              class="btn btn-dark w-100">
+              Add
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

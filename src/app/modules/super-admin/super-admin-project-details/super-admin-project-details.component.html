@@ -174,8 +174,11 @@
       </div> -->
 
       <section class="pageheader bg-dark mb-3">
-        <div class="container">
-          <p><strong>Assign Feasibility User : {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong></p>
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Feasibility User: {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignFeasibilityUser[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
         </div>
       </section>
 
@@ -208,8 +211,11 @@
       </div>
 
       <section class="pageheader bg-dark mb-3">
-        <div class="container">
-          <p><strong>Assign Bid User : {{projectDetails?.assignBidmanager[0]?.name}}</strong></p>
+        <div class="container d-flex justify-content-between align-items-center">
+          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          </p>
+          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
+              date:'dd/MM/yyyy'}}</strong></p>
         </div>
       </section>
 
@@ -484,7 +490,7 @@
                       {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
                     </small>
                   </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.bidManagerStatus }}</small>
                   <p class="mt-2">{{ item?.comment }}</p>
                 </div>
               </div>
