@@ -136,7 +136,7 @@
             <div class="modal-body">
                 <label>Due Date</label>
                 <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" [formControl]="dueDate" ngbDatepicker
+                    <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="dueDate" ngbDatepicker
                         #endDatePicker="ngbDatepicker" />
                     <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
                         type="button"></button>
@@ -360,7 +360,7 @@
                     <div class="detail-item">
                         <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
                         <div class="input-group">
-                            <input id="dueDate" class="form-control" style="max-width: 200px" placeholder="yyyy-mm-dd"
+                            <input id="dueDate" class="form-control" style="max-width: 200px" placeholder="dd-MM-yyyy"
                                 name="dueDate" [(ngModel)]="dueDateValue" (ngModelChange)="onChange('dueDate', $event)"
                                 ngbDatepicker #d="ngbDatepicker" />
                             <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
