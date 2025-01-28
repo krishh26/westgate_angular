@@ -1,28 +1,36 @@
 <main id="main">
     <section class="casestudy-section">
         <div class="container-fluid">
-            <div class="sort-widget">
-                <h6 class="p-600">Date Range</h6>
-                <form class="row row-cols-sm-auto" (ngSubmit)="getDataByStatus()">
-                    <div class="col-6">
-                        <div class="input-group mb-2">
-                            <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate"
-                                ngbDatepicker #startDatePicker="ngbDatepicker" />
-                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                                type="button"></button>
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Date Range Section -->
+                <div class="sort-widget d-flex align-items-center">
+                    <h6 class="p-600 me-3 mb-0">Date Range</h6>
+                    <form class="row row-cols-sm-auto g-2" (ngSubmit)="getDataByStatus()">
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate"
+                                    ngbDatepicker #startDatePicker="ngbDatepicker" />
+                                <button class="btn btn-outline-secondary bi bi-calendar3"
+                                    (click)="startDatePicker.toggle()" type="button"></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate"
-                                ngbDatepicker #endDatePicker="ngbDatepicker" />
-                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                                type="button"></button>
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate"
+                                    ngbDatepicker #endDatePicker="ngbDatepicker" />
+                                <button class="btn btn-outline-secondary bi bi-calendar3"
+                                    (click)="endDatePicker.toggle()" type="button"></button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <!-- Add Project Button -->
+                <a routerLink="/process-manager/add-project" class="btn btn-primary btn-sm text-dark">
+                    Add Project
+                </a>
             </div>
         </div>
+
 
         <div class="container-fluid">
             <div class="row">
