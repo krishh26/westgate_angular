@@ -186,6 +186,10 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     );
   }
 
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/process-manager/add-project'], { queryParams: { id: projectId } });
+  }
+
   selectUploadType(isText: boolean): void {
     this.uploadType = isText;
     if (isText) {
