@@ -41,6 +41,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   viewLoginForm: boolean = true;
   documentName: string = '';
   loginName: string = '';
+  commentName: string = '';
   isEditing = false;
   status: string = 'Expired';
   FeasibilityOtherDocuments: any = [];
@@ -144,6 +145,209 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       roles: ['']
     });
   }
+
+  uploadDocuments(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+      this.spinner.show();
+
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
+          if (response?.status) {
+            if (!this.commentName) {
+              return this.notificationService.showError(
+                'Enter a client document name'
+              );
+            }
+
+            // Add the uploaded file and comment to projectComment array
+            let objToBePushed = {
+              comment: this.commentName,
+              file: response?.data,
+            };
+            this.projectDetails.projectComment.push(objToBePushed);
+            this.commentName = ''; // Clear the comment input
+            this.notificationService.showSuccess(response?.message);
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
+        }
+      );
+    }
+  }
+
+  uploadDocument(event: any, type: string): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('files', file);
+
+      this.spinner.show();
+
+      this.feasibilityService.uploadDocument(data).subscribe(
+        (response) => {
+          this.spinner.hide();
+
+          if (response?.status) {
+            // Sub-contract document
+            if (type == this.documentUploadType.subContractDocument) {
+              this.subContractDocument = response?.data;
+            }
+
+            // Economical partnership query document
+            if (type == this.documentUploadType.economicalPartnershipQuery) {
+              this.economicalPartnershipQueryFile = response?.data;
+            }
+
+            // Other query document
+            if (
+              type == this.documentUploadType.otherQueryDocument ||
+              type == this.documentUploadType.otherDocument
+            ) {
+              let objToBePushed = {
+                name: this.loginName,
+                type: type,
+                file: response?.data,
+              };
+              this.FeasibilityOtherDocuments.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            if (type == this.documentUploadType.failStatusImage) {
+              this.failStatusImage = response?.data;
+            }
+
+            // Economical partnership response document
+            if (type == this.documentUploadType.economicalPartnershipResponse) {
+              this.economicalPartnershipResponceFile = response?.data;
+            }
+
+            //client document
+            if (type == this.documentUploadType.clientDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a client document Name'
+                );
+              }
+              this.clientDocument = response?.data;
+              let objToBePushed = {
+                name: this.documentName,
+                file: response?.data,
+              };
+              this.projectDetails.clientDocument.push(objToBePushed);
+              this.documentName = '';
+            }
+
+            if (type == this.documentUploadType.loginDetailDocument) {
+              if (!this.loginName) {
+                return this.notificationService.showError('Enter Name');
+              }
+              this.loginDetailDocument = response?.data;
+              let objToBePushed = {
+                name: this.loginName,
+                file: response?.data,
+              };
+              this.projectDetails.loginDetail.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            return this.notificationService.showSuccess(response?.message);
+          } else {
+            return this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          // Hide the spinner in case of an error as well
+          this.spinner.hide();
+          return this.notificationService.showError(
+            error?.message || 'Error while uploading'
+          );
+        }
+      );
+    }
+  }
+
+  summaryDetail(type: string) {
+    // if (!this.projectDetails?.clientDocument.length) {
+    //   return this.notificationService.showError('Upload Client Document');
+    // }
+    this.saveChanges(type);
+  }
+
+    // Update the saveChanges method to include failStatusReasons
+    saveChanges(type?: string, contractEdit?: boolean) {
+      let payload: any = {};
+  
+      if (!contractEdit) {
+        // Validation for status
+        if (!this.status) {
+          return this.notificationService.showError('Please select a status.');
+        }
+  
+        // Validation for comment
+        // if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
+        //   return this.notificationService.showError('Please provide a comment for the selected status.');
+        // }
+  
+        // Add the comment to commentData only if it's provided
+        // if (this.statusComment.value && this.statusDate.value) {
+        //   this.commentData.push({
+        //     comment: this.statusComment.value,
+        //     date: this.statusDate.value,
+        //     status: this.status,
+        //     userId: this.loginUser?._id
+        //   });
+        //   this.statusComment.reset(); // Clear the comment field after adding
+        // }
+  
+        // Prepare payload
+        payload = {
+          // periodOfContractStart: this.projectDetails.periodOfContractStart,
+          // periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+          projectType: this.projectDetails.projectType,
+          clientDocument: this.projectDetails?.clientDocument || [],
+          status: this.status || '',
+          statusComment: this.commentData,
+          // failStatusImage: this.failStatusImage || '',
+          // failStatusReason: this.failStatusReasons,
+        };
+      }
+  
+      // For contract edit
+      if (contractEdit) {
+        payload = {
+          periodOfContractStart: this.projectDetails.periodOfContractStart,
+          periodOfContractEnd: this.projectDetails.periodOfContractEnd,
+          projectType: this.projectDetails.projectType,
+        };
+      }
+  
+      // API call to update project details
+      this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Project updated successfully');
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to update project');
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+    }
+
   onFileSelect(event: any): void {
     const file = event.target.files[0];
     if (file) {

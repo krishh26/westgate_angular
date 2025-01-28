@@ -1,5 +1,8 @@
 <main id="main">
   <section>
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
     <div class="container-fluid">
       <div class="row align-items-center">
         <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
@@ -167,6 +170,75 @@
 
       <p>{{ projectDetails?.description }}</p>
 
+      <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Documents</strong></p>
+        </div>
+      </section>
+      <br />
+
+      <div class="row mb-4">
+        <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+          <h5>Client Documents</h5>
+          <div class="card">
+            <ul class="project-document">
+              <li *ngFor="let item of projectDetails?.clientDocument">
+                <div class="row">
+                  <div class="col-5 text-center">
+                    <p class="mb-0">
+                      {{ item?.name }}
+                    </p>
+                  </div>
+                  <div class="col-7 text-center">
+                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i class="bi bi-eye-fill"></i>
+                      View</a>
+                    <a href="href:;" (click)="download(item?.file?.url, item?.name)" class="btn btn-primarysm"><i
+                        class="bi bi-file-earmark-arrow-down-fill"></i>
+                      Download</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <button data-bs-toggle="modal" data-bs-target="#addClientDocument" type="button"
+              class="btn btn-dark btn-sm add-card-btn">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            <!-- (click)="hideShowForm()" -->
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+          <h5>WestGate Documents</h5>
+          <div class="card">
+            <ul class="project-document">
+              <!-- Document List -->
+              <li *ngFor="let item of projectDetails?.projectComment" class="list-group-item">
+                <div class="row">
+                  <div class="col-5 text-center">
+                    <p class="mb-0">{{ item?.comment }}</p>
+                  </div>
+                  <div class="col-7 text-center">
+                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)">
+                      <i class="bi bi-eye-fill"></i> View
+                    </a>
+                    <a href="href:;" class="btn btn-primarysm" (click)="download(item?.file?.url, item?.name)">
+                      <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <button data-bs-toggle="modal" data-bs-target="#addWestgateDocument" type="button"
+              class="btn btn-dark btn-sm add-card-btn">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- <section class="pageheader bg-dark mb-3">
         <div class="container">
           <p><strong>Assign Feasibility User : {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong></p>
@@ -235,6 +307,11 @@
           <button type="button" class="btn btn-primary" (click)="assignUser()">
             Submit
           </button>
+        </div>
+      </div>
+      <div class="row justify-content-end mb-4">
+        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+          <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
         </div>
       </div>
 
@@ -626,6 +703,77 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          Add Client Document
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="viewClientDocumentForm">
+          <div class="card p-3 mt-3">
+            <div class="row g-3 align-items-center">
+              <!-- Document Name Input -->
+              <div class="col-md-8 col-sm-12">
+                <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
+                  aria-label="Document Name" />
+              </div>
+              <!-- Upload Button -->
+              <div class="col-md-4 col-sm-12">
+                <label class="btn btn-outline-primary w-100">
+                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                  <input type="file" id="uploadClientDocument" (change)="
+                      uploadDocument($event, documentUploadType.clientDocument)
+                    " hidden aria-label="Upload Document" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addWestgateDocument" tabindex="-1" aria-labelledby="addWestgateDocumentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          Add Westgate Document
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="viewClientDocumentForm">
+          <div class="card p-3 mt-3">
+            <div class="row g-3 align-items-center">
+              <!-- Comment Input -->
+              <div class="col-md-8 col-sm-12">
+                <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
+                  class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
+              </div>
+              <!-- Upload Button -->
+              <div class="col-md-4 col-sm-12">
+                <label class="btn btn-outline-primary w-100">
+                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                  <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)" hidden
+                    aria-label="Upload Document" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
