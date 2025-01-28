@@ -273,361 +273,370 @@
                 </div>
             </div> -->
 
-      <div class="col-lg-12 col-xl-12 col-12 mb-3">
-        <div class="card shadow-sm p-4">
-          <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-              Shortlisted Supplier :
-              {{ projectDetails?.select[0]?.supplierDetails?.companyName }}
-            </h5>
-            <div class="d-flex gap-3 align-items-center">
-              <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name" bindValue="_id"
-                (change)="selectSupplier($event)" [addTag]="true">
-              </ng-select>
-              <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
-                View All
-              </button>
-            </div>
-          </div>
+      <div *ngIf="projectDetails?.bidManagerStatus !== 'DroppedAfterFeasibility' && 
+            projectDetails?.bidManagerStatus !== 'AnotherStatus' && 
+            projectDetails?.bidManagerStatus !== 'YetAnotherStatus'">
+        <!-- Content goes here -->
 
-          <div *ngIf="showSupplierList" class="mt-3">
-            <ul class="list-group">
-              <li *ngFor="let supplier of selectedSupplier; let i = index"
-                class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center w-100 gap-2">
-                  <!-- Supplier Name -->
-                  <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier.name }}</span>
 
-                  <!-- Input Field -->
-                  <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
-                    placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
-
-                  <!-- Save Button -->
-                  <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
-                    (click)="dropUser(supplier)">
-                    Save
-                  </button>
-
-                  <!-- View All Button -->
-                  <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
-                    (click)="viewAllComments(supplier._id)" data-bs-toggle="modal" data-bs-target="#viewReasonList">
-                    View all
-                  </button>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-12 col-xl-12 col-12 mb-2">
-        <div class="card shadow-sm p-4">
-          <!-- Header -->
-          <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Feasibility Status</h5>
-          </div>
-
-          <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4">
-            <button class="btn btn-outline-primary flex-fill m-1" [class.active]="feasibilityStatus === 'InProgress'"
-              (click)="statusFeasibilityChange('InProgress')">
-              In-Progress
-            </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="feasibilityStatus === 'InHold'"
-              (click)="statusFeasibilityChange('InHold')">
-              In-Hold
-            </button>
-            <button class="btn btn-outline-success flex-fill m-1" [class.active]="feasibilityStatus === 'Passed'"
-              (click)="statusFeasibilityChange('Passed')">
-              Pass
-            </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="feasibilityStatus === 'Fail'"
-              (click)="statusFeasibilityChange('Fail')">
-              Fail
-            </button>
-            <button class="btn btn-outline-warning flex-fill m-1"
-              [class.active]="feasibilityStatus === 'DocumentsNotFound'"
-              (click)="statusFeasibilityChange('DocumentsNotFound')">
-              Document Not Found
-            </button>
-          </div>
-
-          <!-- Dynamic Comment Section -->
-          <div *ngIf="feasibilityStatus" class="status-section">
-            <h6 class="text-secondary mb-3">
-              {{ feasibilityStatus }} Comments
-            </h6>
-
-            <!-- Display Existing Comments -->
-            <div *ngIf="feasibilityCommentData?.length" class="comment-list comments-section">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of feasibilityCommentData">
-                <!-- <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                  <span class="text-muted"><strong>Date:</strong>
-                    {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
-                </div> -->
-                <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">
-                      {{ item?.userDetails?.name }}
-                    </p>
-                    <small class="text-muted">
-                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
-                    </small>
-                  </div>
-                  <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
-                </div>
+        <div class="col-lg-12 col-xl-12 col-12 mb-3">
+          <div class="card shadow-sm p-4">
+            <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">
+                Shortlisted Supplier :
+                {{ projectDetails?.select[0]?.supplierDetails?.companyName }}
+              </h5>
+              <div class="d-flex gap-3 align-items-center">
+                <ng-select style="padding: 0px !important" placeholder="Select Supplier"
+                  class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name"
+                  bindValue="_id" (change)="selectSupplier($event)" [addTag]="true">
+                </ng-select>
+                <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
+                  View All
+                </button>
               </div>
             </div>
-            <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
-              <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushFeasilityStatus()">
-                <i class="bi bi-plus-lg"></i> Add
+
+            <div *ngIf="showSupplierList" class="mt-3">
+              <ul class="list-group">
+                <li *ngFor="let supplier of selectedSupplier; let i = index"
+                  class="list-group-item d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center w-100 gap-2">
+                    <!-- Supplier Name -->
+                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier.name }}</span>
+
+                    <!-- Input Field -->
+                    <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
+                      placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
+
+                    <!-- Save Button -->
+                    <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
+                      (click)="dropUser(supplier)">
+                      Save
+                    </button>
+
+                    <!-- View All Button -->
+                    <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
+                      (click)="viewAllComments(supplier._id)" data-bs-toggle="modal" data-bs-target="#viewReasonList">
+                      View all
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 col-xl-12 col-12 mb-2">
+          <div class="card shadow-sm p-4">
+            <!-- Header -->
+            <div class="card-header bg-primary text-white mb-3">
+              <h5 class="mb-0">Feasibility Status</h5>
+            </div>
+
+            <!-- Status Buttons -->
+            <div class="d-flex justify-content-between flex-wrap mb-4">
+              <button class="btn btn-outline-primary flex-fill m-1" [class.active]="feasibilityStatus === 'InProgress'"
+                (click)="statusFeasibilityChange('InProgress')">
+                In-Progress
+              </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="feasibilityStatus === 'InHold'"
+                (click)="statusFeasibilityChange('InHold')">
+                In-Hold
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1" [class.active]="feasibilityStatus === 'Passed'"
+                (click)="statusFeasibilityChange('Passed')">
+                Pass
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="feasibilityStatus === 'Fail'"
+                (click)="statusFeasibilityChange('Fail')">
+                Fail
+              </button>
+              <button class="btn btn-outline-warning flex-fill m-1"
+                [class.active]="feasibilityStatus === 'DocumentsNotFound'"
+                (click)="statusFeasibilityChange('DocumentsNotFound')">
+                Document Not Found
               </button>
             </div>
 
-            <!-- Fail Specific Fields -->
-            <div *ngIf="status === 'Fail'" class="mt-4">
-              <div class="d-flex align-items-center gap-3">
-                <select class="form-select" [(ngModel)]="selectedFailReason">
-                  <option disabled selected hidden value="">
-                    Select Fail Reason
-                  </option>
-                  <option value="Accreditation">Accreditation</option>
-                  <option value="Time Constraints">Time Constraints</option>
-                  <option value="Certification">Certification</option>
-                  <option value="Case Study">Case Study</option>
-                  <option value="Certifications from Subcontractor">
-                    Certifications from Subcontractor
-                  </option>
-                  <option value="Delivery of goods/Hardware">
-                    Delivery of goods/Hardware
-                  </option>
-                  <option value="Financial Conditions">
-                    Financial Conditions
-                  </option>
-                  <option value="Not related">Not related</option>
-                </select>
-                <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
-                  <i class="bi bi-plus-lg"></i>
+            <!-- Dynamic Comment Section -->
+            <div *ngIf="feasibilityStatus" class="status-section">
+              <h6 class="text-secondary mb-3">
+                {{ feasibilityStatus }} Comments
+              </h6>
+
+              <!-- Display Existing Comments -->
+              <div *ngIf="feasibilityCommentData?.length" class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of feasibilityCommentData">
+                  <!-- <div class="d-flex justify-content-between align-items-center">
+                          <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                          <span class="text-muted"><strong>Date:</strong>
+                            {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                        </div> -->
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ item?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
+                    <p class="mt-2">{{ item?.comment }}</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Add New Comment -->
+              <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
+                <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
+                  placeholder="Add your comment" />
+                <button class="btn btn-primary" type="button" (click)="pushFeasilityStatus()">
+                  <i class="bi bi-plus-lg"></i> Add
                 </button>
               </div>
 
-              <!-- Display added reasons and comments -->
-              <div class="mt-3">
-                <div class="reason-item border rounded p-3 mb-2"
-                  *ngFor="let reason of failStatusReasons; let i = index">
-                  <div class="d-flex align-items-center">
-                    <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
-                    <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                      [(ngModel)]="reason.comment" />
-                    <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
-                      Remove
-                    </button>
+              <!-- Fail Specific Fields -->
+              <div *ngIf="status === 'Fail'" class="mt-4">
+                <div class="d-flex align-items-center gap-3">
+                  <select class="form-select" [(ngModel)]="selectedFailReason">
+                    <option disabled selected hidden value="">
+                      Select Fail Reason
+                    </option>
+                    <option value="Accreditation">Accreditation</option>
+                    <option value="Time Constraints">Time Constraints</option>
+                    <option value="Certification">Certification</option>
+                    <option value="Case Study">Case Study</option>
+                    <option value="Certifications from Subcontractor">
+                      Certifications from Subcontractor
+                    </option>
+                    <option value="Delivery of goods/Hardware">
+                      Delivery of goods/Hardware
+                    </option>
+                    <option value="Financial Conditions">
+                      Financial Conditions
+                    </option>
+                    <option value="Not related">Not related</option>
+                  </select>
+                  <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                </div>
+
+                <!-- Display added reasons and comments -->
+                <div class="mt-3">
+                  <div class="reason-item border rounded p-3 mb-2"
+                    *ngFor="let reason of failStatusReasons; let i = index">
+                    <div class="d-flex align-items-center">
+                      <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
+                      <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
+                        [(ngModel)]="reason.comment" />
+                      <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row justify-content-end mb-4">
-              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
-                  class="btn btn-primary w-100">Save Status</a>
+              <div class="row justify-content-end mb-4">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                  <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                    class="btn btn-primary w-100">Save Status</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-lg-12 col-xl-12 col-12">
-        <div class="card shadow-sm p-4">
-          <!-- Header -->
-          <div class="card-header bg-primary text-white mb-3">
-            <h5 class="mb-0">Bid Status</h5>
-          </div>
-
-          <!-- Status Buttons -->
-          <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
-              projectDetails?.bidManagerStatus != 'Awarded' &&
-              projectDetails?.bidManagerStatus != 'DroppedAfterFeasibility' &&
-              projectDetails?.bidManagerStatus != 'NotAwarded'
-            ">
-            <!-- <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Toaction'"
-              (click)="statusChange('Toaction')">
-              To Action
-            </button> -->
-            <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
-              (click)="statusChange('InSolution')">
-              In-Solution
-            </button>
-            <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'WaitingForResult'"
-              (click)="statusChange('WaitingForResult')">
-              Waiting For Result
-            </button>
-            <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'DroppedAfterFeasibility'"
-              (click)="statusChange('DroppedAfterFeasibility')">
-              Dropped After Feasibility
-            </button>
-            <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Awarded'"
-              (click)="statusChange('Awarded')">
-              Awarded
-            </button>
-            <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'NotAwarded'"
-              (click)="statusChange('NotAwarded')">
-              Not Awarded
-            </button>
-          </div>
-
-          <!-- Dynamic Comment Section -->
-          <div *ngIf="status" class="status-section comments-section">
-            <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
-
-            <!-- Display Existing Comments -->
-            <div *ngIf="commentData?.length" class="comment-list">
-              <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
-                <div class="comment mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-0 fw-bold">
-                      {{ item?.userDetails?.name }}
-                    </p>
-                    <small class="text-muted">
-                      {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
-                    </small>
-                  </div>
-                  <small class="text-muted d-block"><strong>Status :</strong>
-                    {{ item?.bidManagerStatus }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
-                </div>
-              </div>
+        <div class="col-lg-12 col-xl-12 col-12">
+          <div class="card shadow-sm p-4">
+            <!-- Header -->
+            <div class="card-header bg-primary text-white mb-3">
+              <h5 class="mb-0">Bid Status</h5>
             </div>
 
-            <!-- Add New Comment -->
-            <div class="add-comment d-flex gap-3 align-items-center mt-3">
-              <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                placeholder="Add your comment" />
-              <button class="btn btn-primary" type="button" (click)="pushStatus()">
-                <i class="bi bi-plus-lg"></i> Add
+            <!-- Status Buttons -->
+            <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
+                      projectDetails?.bidManagerStatus != 'Awarded' &&
+                      projectDetails?.bidManagerStatus != 'DroppedAfterFeasibility' &&
+                      projectDetails?.bidManagerStatus != 'NotAwarded'
+                    ">
+              <!-- <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Toaction'"
+                      (click)="statusChange('Toaction')">
+                      To Action
+                    </button> -->
+              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
+                (click)="statusChange('InSolution')">
+                In-Solution
+              </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'WaitingForResult'"
+                (click)="statusChange('WaitingForResult')">
+                Waiting For Result
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1"
+                [class.active]="status === 'DroppedAfterFeasibility'" (click)="statusChange('DroppedAfterFeasibility')">
+                Dropped After Feasibility
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Awarded'"
+                (click)="statusChange('Awarded')">
+                Awarded
+              </button>
+              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'NotAwarded'"
+                (click)="statusChange('NotAwarded')">
+                Not Awarded
               </button>
             </div>
-          </div>
-          <div class="row justify-content-end mb-2 mt-3">
-            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-              <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
-                Save Bid Status
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
-      <!-- <section class="pageheader bg-dark">
-                <div class="container ">
-                    <p><strong>To-Do Task Comments</strong></p>
-                </div>
-            </section><br>
 
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <ng-container *ngIf="commentData!.length > 0; else noTasks">
-                            <div *ngFor="let comment of commentData" class="task-item">
-                                <ng-container>
-                                    <div class="comment mb-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
-                                            <small class="text-muted">
-                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                            </small>
-                                        </div>
-                                        <small class="text-muted d-block"><strong>Status :</strong> {{
-                                            comment?.bidManagerStatus
-                                            }}</small>
-                                        <p class="mt-2">{{ comment?.comment }}</p>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
+            <!-- Dynamic Comment Section -->
+            <div *ngIf="status" class="status-section comments-section">
+              <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+
+              <!-- Display Existing Comments -->
+              <div *ngIf="commentData?.length" class="comment-list">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ item?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
                     </div>
-                    <ng-template #noTasks>
-                        <p class="text-muted">No status comments available.</p>
-                    </ng-template>
-                </div>
-            </div>
-
-
-            <div class="modal-body d-flex">
-                <div class="flex-grow-1 pe-3">
-                    <div class="comments-section">
-                        <ng-container>
-                            <div *ngFor="let task of filteredTasks" class="task-item">
-                                <ng-container *ngIf="task?.comments?.length > 0; else noComments">
-                                    <div *ngFor="let comment of task.comments" class="comment mb-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
-                                            <small class="text-muted">
-                                                {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                            </small>
-                                        </div>
-                                        <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
-                                        <p class="mt-2">{{ comment?.comment }}</p>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-
-            <ng-template #noComments>
-                <p class="text-muted">No comments available.</p>
-            </ng-template> -->
-
-      <section class="pageheader bg-dark">
-        <div class="container">
-          <p><strong>Project Logs</strong></p>
-        </div>
-      </section>
-      <br />
-
-      <div class="modal-body d-flex">
-        <div class="flex-grow-1 pe-3">
-          <div class="comments-section">
-            <div *ngIf="projectDetails?.logs?.length > 3" class="text-end mt-3">
-              <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
-                View All
-              </a>
-            </div>
-            <!-- List of logs -->
-            <ul class="SecondarytaskList mt-3">
-              <li *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)" class="mb-3">
-                <div class="comment-item">
-                  <div class="d-flex justify-content-between">
-                    <p class="mb-0" [innerHTML]="log?.log"></p>
-                    <span class="text-muted">
-                      {{ log?.date | date : "dd/MM/yyyy, h:mm a" }}
-                    </span>
+                    <small class="text-muted d-block"><strong>Status :</strong>
+                      {{ item?.bidManagerStatus }}</small>
+                    <p class="mt-2">{{ item?.comment }}</p>
                   </div>
                 </div>
-              </li>
-            </ul>
+              </div>
 
-            <!-- No records found -->
-            <p *ngIf="logs?.length === 0" class="text-center">
-              No records found
-            </p>
+              <!-- Add New Comment -->
+              <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                  placeholder="Add your comment" />
+                <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                  <i class="bi bi-plus-lg"></i> Add
+                </button>
+              </div>
+            </div>
+            <div class="row justify-content-end mb-2 mt-3">
+              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                  class="btn btn-primary w-100">
+                  Save Bid Status
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        <br />
+        <!-- <section class="pageheader bg-dark">
+                        <div class="container ">
+                            <p><strong>To-Do Task Comments</strong></p>
+                        </div>
+                    </section><br>
+        
+                    <div class="modal-body d-flex">
+                        <div class="flex-grow-1 pe-3">
+                            <div class="comments-section">
+                                <ng-container *ngIf="commentData!.length > 0; else noTasks">
+                                    <div *ngFor="let comment of commentData" class="task-item">
+                                        <ng-container>
+                                            <div class="comment mb-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
+                                                    <small class="text-muted">
+                                                        {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                                    </small>
+                                                </div>
+                                                <small class="text-muted d-block"><strong>Status :</strong> {{
+                                                    comment?.bidManagerStatus
+                                                    }}</small>
+                                                <p class="mt-2">{{ comment?.comment }}</p>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <ng-template #noTasks>
+                                <p class="text-muted">No status comments available.</p>
+                            </ng-template>
+                        </div>
+                    </div>
+        
+        
+                    <div class="modal-body d-flex">
+                        <div class="flex-grow-1 pe-3">
+                            <div class="comments-section">
+                                <ng-container>
+                                    <div *ngFor="let task of filteredTasks" class="task-item">
+                                        <ng-container *ngIf="task?.comments?.length > 0; else noComments">
+                                            <div *ngFor="let comment of task.comments" class="comment mb-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
+                                                    <small class="text-muted">
+                                                        {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
+                                                    </small>
+                                                </div>
+                                                <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                                                <p class="mt-2">{{ comment?.comment }}</p>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <ng-template #noComments>
+                        <p class="text-muted">No comments available.</p>
+                    </ng-template> -->
 
-      <div class="row justify-content-end">
-        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-          <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+        <section class="pageheader bg-dark">
+          <div class="container">
+            <p><strong>Project Logs</strong></p>
+          </div>
+        </section>
+        <br />
+
+        <div class="modal-body d-flex">
+          <div class="flex-grow-1 pe-3">
+            <div class="comments-section">
+              <div *ngIf="projectDetails?.logs?.length > 3" class="text-end mt-3">
+                <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+                  View All
+                </a>
+              </div>
+              <!-- List of logs -->
+              <ul class="SecondarytaskList mt-3">
+                <li *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)" class="mb-3">
+                  <div class="comment-item">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0" [innerHTML]="log?.log"></p>
+                      <span class="text-muted">
+                        {{ log?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <!-- No records found -->
+              <p *ngIf="logs?.length === 0" class="text-center">
+                No records found
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-end">
+          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+            <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+          </div>
         </div>
       </div>
     </div>
+
   </section>
 </main>
 
