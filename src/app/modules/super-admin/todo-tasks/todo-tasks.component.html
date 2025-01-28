@@ -62,8 +62,11 @@
                       {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
                     </span>
                   </span>
+                  <span *ngIf="task?.createdAt" class="text-muted me-2">
+                    Created: {{ task.createdAt | date : "MMM d, y" }}
+                  </span>
                   <span *ngIf="task?.dueDate" class="text-muted">
-                    Due Date: {{ task.dueDate | date : "MMM d, y" }}
+                    Due: {{ task.dueDate | date : "MMM d, y" }}
                   </span>
                 </div>
               </button>
