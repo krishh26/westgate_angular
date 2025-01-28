@@ -14,12 +14,23 @@
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
               Add Strips
             </a>
-            <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary text-dark">
+            <a routerLink="/super-admin/super-admin-projects-all" class="btn btn-primary btn-sm text-dark me-2">
               Back
+            </a>
+            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer;"
+              (click)="editProjectDetails(projectDetails?._id)">
+              Edit <i class="bi bi-pencil-fill"></i>
+            </a>
+            <a (click)="deleteProject(projectDetails?._id)" class="btn btn-danger btn-sm me-2">
+              Delete <i class="bi bi-trash3-fill"></i>
+            </a>
+            <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+              Logs
             </a>
           </div>
         </div>
       </div>
+
 
       <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
         <div class="card">
@@ -441,7 +452,7 @@
             <div class="card-header bg-primary text-white mb-3">
               <h5 class="mb-0">Bid Status</h5>
             </div>
-  
+
             <!-- Status Buttons -->
             <div class="d-flex justify-content-between flex-wrap mb-4">
               <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'Toaction'"
@@ -470,11 +481,11 @@
                 Not Awarded
               </button>
             </div>
-  
+
             <!-- Dynamic Comment Section -->
             <div *ngIf="bidStatus" class="status-section comments-section">
               <h6 class="text-secondary mb-3">{{ bidStatus }} Comments</h6>
-  
+
               <!-- Display Existing Comments -->
               <div *ngIf="bidCommentData?.length" class="comment-list">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
@@ -496,7 +507,7 @@
                   </div>
                 </div>
               </div>
-  
+
               <!-- Add New Comment -->
               <div class="add-comment d-flex gap-3 align-items-center mt-3">
                 <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
@@ -506,10 +517,11 @@
                 </button>
               </div>
             </div>
-  
+
             <div class="row justify-content-end mb-2 mt-3">
               <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                  class="btn btn-primary w-100">
                   Save Bid Status
                 </a>
               </div>
@@ -596,14 +608,14 @@
         <p class="text-muted">No comments available.</p>
       </ng-template> -->
 
-      <section class="pageheader bg-dark">
+      <!-- <section class="pageheader bg-dark">
         <div class="container">
           <p><strong>Project Logs</strong></p>
         </div>
       </section>
-      <br />
+      <br /> -->
 
-      <div class="modal-body d-flex">
+      <!-- <div class="modal-body d-flex">
         <div class="flex-grow-1 pe-3">
           <div class="comments-section">
             <div *ngIf="logs?.length > 3" class="text-end mt-3">
@@ -611,7 +623,6 @@
                 View All
               </a>
             </div>
-            <!-- List of logs -->
             <ul class="SecondarytaskList mt-3">
               <li *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)" class="mb-3">
                 <div class="comment-item">
@@ -624,14 +635,12 @@
                 </div>
               </li>
             </ul>
-
-            <!-- No records found -->
             <p *ngIf="logs?.length === 0" class="text-center">
               No Logs available.
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </section>
 

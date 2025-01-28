@@ -17,6 +17,7 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
@@ -195,6 +196,39 @@ export class TrackerWiseProjectDetailsComponent {
       roles: [''],
     });
   }
+
+  editProjectDetails(projectId: any) {
+    this.router.navigate(['/super-admin/super-admin-add-project'], { queryParams: { id: projectId } });
+  }
+
+    deleteProject(id: any) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to delete `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00B96F',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete!'
+      }).then((result: any) => {
+        if (result?.value) {
+          this.showLoader = true;
+          this.projectService.deleteProject(id).subscribe((response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Project successfully deleted');
+              this.getProjectDetails();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          }, (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          });
+        }
+      });
+    }
 
   getProjectLogs() {
     this.showLoader = true;
