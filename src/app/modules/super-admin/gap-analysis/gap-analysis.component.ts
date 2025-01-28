@@ -18,6 +18,8 @@ export class GapAnalysisComponent {
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   selectedProjects: any[] = [];
+  searchText: string = "";
+  filteredData : any[] = [];
 
   constructor(
     private superService: SuperadminService,
@@ -32,9 +34,13 @@ export class GapAnalysisComponent {
     this.getGapAnalysisData();
   }
 
-  getGapAnalysisData() {
-    let param = {};
+  getGapAnalysisData(searchText?: string) {
+    let param : any = {};
+    if(searchText) {
+      param['keyword'] = searchText
+    }
     this.showLoader = true;
+    this.gapAnalysisData = [];
     this.superService.getGapAnalysis(param).subscribe(
       (response) => {
         if (response?.status) {
@@ -52,9 +58,16 @@ export class GapAnalysisComponent {
     );
   }
 
-  projectDetails(projectId: any) {
-    console.log("hello");
+  searchInputChange() {
+    this.filteredData = this.selectedProjects.filter(item => {
+      const matchesComment = this.searchText
+        ? item.comment.toLowerCase().includes(this.searchText.toLowerCase())
+        : true;
+      return matchesComment;
+    });
+  }
 
+  projectDetails(projectId: any) {
     this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
   }
 
@@ -75,7 +88,7 @@ export class GapAnalysisComponent {
         });
       });
     });
+
+    this.filteredData = [...this.selectedProjects];
   }
-
-
 }

@@ -27,7 +27,7 @@
                                         <td>
                                             <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                                                 data-bs-toggle="modal" data-bs-target="#viewAllProjects"
-                                                (click)="showProjects(item?.projects)">View Total Projects</a>
+                                                (click)="showProjects(item?.projects)">View </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -58,6 +58,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="row align-items-center justify-content-between">
+                  <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+                    <div class="form-group mb-0">
+                      <span class="input-icon"><i class="bi bi-search"></i></span>
+                      <input class="form-control control-search"
+                        placeholder="Search comments..."
+                        type="text" [(ngModel)]="searchText" (input)="searchInputChange()">
+                    </div>
+                  </div>
+                </div>
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
@@ -67,12 +77,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngIf="!selectedProjects?.length">
+                        <tr *ngIf="!filteredData?.length">
                             <td colspan="4">
                                 <app-no-record-found></app-no-record-found>
                             </td>
                         </tr>
-                        <tr *ngFor="let project of selectedProjects">
+                        <tr *ngFor="let project of filteredData">
                             <td><a (click)="projectDetails(project?._id)"
                                     href="javascript:;">{{project?.projectName}}</a></td>
                             <td>{{ project?.comment }}</td>
