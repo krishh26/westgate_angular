@@ -1,28 +1,42 @@
 <main id="main">
   <section class="casestudy-section">
     <div class="container-fluid">
-      <div class="sort-widget">
-        <h6 class="p-600">Date Range</h6>
-        <form class="row row-cols-sm-auto" (ngSubmit)="getDataByStatus()">
-          <div class="col-6">
-            <div class="input-group mb-2">
-              <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate" ngbDatepicker
-                #startDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                type="button"></button>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="sort-widget d-flex">
+          <h6 class="p-600 me-3">Date Range</h6>
+          <form class="row row-cols-sm-auto g-2" (ngSubmit)="getDataByStatus()">
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate" ngbDatepicker
+                  #startDatePicker="ngbDatepicker" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
+                  type="button"></button>
+              </div>
             </div>
-          </div>
-          <div class="col-6">
-            <div class="input-group">
-              <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate" ngbDatepicker
+                  #endDatePicker="ngbDatepicker" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                  type="button"></button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
+        <nav id="navbar" class="navbar p-0">
+          <ul class="p-0 m-0 d-flex align-items-center">
+            <li class="dropdown">
+              <span class="btn btn-primary">+ Add Project</span>
+              <ul>
+                <li><a routerLink="/super-admin/super-admin-add-project">Single Entry</a></li>
+                <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
+
 
     <div class="container-fluid">
       <div class="row">

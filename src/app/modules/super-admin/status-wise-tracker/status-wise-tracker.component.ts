@@ -6,6 +6,8 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-status-wise-tracker',
@@ -49,7 +51,8 @@ export class StatusWiseTrackerComponent implements OnInit {
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+      private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -71,6 +74,11 @@ export class StatusWiseTrackerComponent implements OnInit {
     this.selectedBidStatus = '';
     this.selectedStatus = status;
   }
+
+  
+    openAddTeamModal() {
+      this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
+    }
 
   selectBidStatus(status: string): void {
     this.selectedStatus = '';
