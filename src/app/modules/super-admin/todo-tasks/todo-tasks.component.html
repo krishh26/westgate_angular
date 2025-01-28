@@ -5,24 +5,13 @@
         <p class="ps-3"><strong>Task Status</strong></p>
         <ul class="sidebar-nav">
           <li>
-            <a href="javascript:void(0)" routerLink="/super-admin/my-day-tasks"
-              >My Day</a
-            >
+            <a href="javascript:void(0)" routerLink="/super-admin/my-day-tasks">My Day</a>
           </li>
           <li>
-            <a
-              href="javascript:void(0)"
-              routerLink="/super-admin/todo-tasks"
-              class="active"
-              >Ongoing</a
-            >
+            <a href="javascript:void(0)" routerLink="/super-admin/todo-tasks" class="active">Ongoing</a>
           </li>
           <li>
-            <a
-              href="javascript:void(0)"
-              routerLink="/super-admin/completed-tasks"
-              >Completed</a
-            >
+            <a href="javascript:void(0)" routerLink="/super-admin/completed-tasks">Completed</a>
           </li>
         </ul>
       </div>
@@ -33,12 +22,9 @@
           <!-- User List -->
           <ul class="taskuserList" *ngIf="!showLoader">
             <li *ngFor="let user of displayedUsers">
-              <span
-                [ngClass]="{
+              <span [ngClass]="{
                   'selected-user': selectedUserIds.includes(user._id)
-                }"
-                (click)="toggleUserSelection(user._id)"
-              >
+                }" (click)="toggleUserSelection(user._id)">
                 {{ user.userName }}
               </span>
             </li>
@@ -56,12 +42,8 @@
         <p><strong>Ongoing Task</strong></p>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListZero">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="modal"
+              data-bs-target="#exampleModal">
               <span class="bluetext">+ Add a New Task</span>
             </button>
           </h2>
@@ -70,30 +52,20 @@
         <div *ngFor="let task of taskList; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
-              <button
-                class="accordion-button d-flex justify-content-between align-items-center"
-                type="button"
-                (click)="openTaskModal(task)"
-                data-bs-toggle="modal"
-                data-bs-target="#taskDetailsModal"
-                [ngClass]="{
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                (click)="openTaskModal(task)" data-bs-toggle="modal" data-bs-target="#taskDetailsModal" [ngClass]="{
                   'bg-light-yellow': task?.pickACategory === 'feasibility',
                   'bg-light-green': task?.pickACategory === 'bid manager',
                   'bg-light-orange': task?.pickACategory === 'other tasks'
-                }"
-              >
+                }">
                 <div>
                   <i class="bi bi-circle task-icon"></i>
                   {{ task?.task }}
                   <span *ngIf="task?.pickACategory">
-                    ({{ task?.pickACategory }})</span
-                  >
+                    ({{ task?.pickACategory }})</span>
                 </div>
                 <div class="text-end">
-                  <span
-                    *ngIf="task.assignTo?.length > 0"
-                    class="text-muted me-3"
-                  >
+                  <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
                     <span *ngFor="let user of task.assignTo; let last = last">
                       {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
                     </span>
@@ -109,10 +81,7 @@
             </h2>
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
               <div class="accordion-body">
-                <ul
-                  class="SecondarytaskList"
-                  *ngIf="task?.comments?.length > 0"
-                >
+                <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
                   <li class="comment-item">
                     <div class="row align-items-center mb-3">
                       <div class="col">
@@ -122,23 +91,20 @@
                           </p>
                           <small class="text-muted">
                             {{
-                              task?.comments[0]?.date
-                                | date : "dd/MM/yyyy, h:mm a"
+                            task?.comments[0]?.date
+                            | date : "dd/MM/yyyy, h:mm a"
                             }}
                           </small>
                         </div>
                         <small class="text-muted d-block">{{
                           task?.comments[0]?.userDetail?.role
-                        }}</small>
+                          }}</small>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between">
                       <p>{{ task?.comments[0]?.comment }}</p>
                       <div>
-                        <button
-                          class="btn btn-sm text-danger"
-                          (click)="deleteComment(task?.comments[0]?.commentId)"
-                        >
+                        <button class="btn btn-sm text-danger" (click)="deleteComment(task?.comments[0]?.commentId)">
                           Delete
                         </button>
                       </div>
@@ -161,70 +127,34 @@
 </div>
 
 <!-- Add New task Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
-  #taskModal
->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  #taskModal>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input
-          class="form-control"
-          placeholder="Enter Task Titles"
-          cols="100"
-          rows="3"
-          [(ngModel)]="taskTitle"
-        />
+        <input class="form-control" placeholder="Enter Task Titles" cols="100" rows="3" [(ngModel)]="taskTitle" />
       </div>
       <div class="modal-body">
-        <textarea
-          class="form-control"
-          placeholder="Enter Task Description"
-          [(ngModel)]="taskDetails"
-        ></textarea>
+        <textarea class="form-control" placeholder="Enter Task Description" [(ngModel)]="taskDetails"></textarea>
       </div>
       <div class="modal-body">
         <label>Due Date</label>
         <div class="input-group">
-          <input
-            class="form-control"
-            placeholder="dd-MM-yyyy"
-            [formControl]="dueDate"
-            ngbDatepicker
-            #endDatePicker="ngbDatepicker"
-          />
-          <button
-            class="btn btn-outline-secondary bi bi-calendar3"
-            (click)="endDatePicker.toggle()"
-            type="button"
-          ></button>
+          <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="dueDate" ngbDatepicker
+            #endDatePicker="ngbDatepicker" />
+          <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+            type="button"></button>
         </div>
       </div>
       <div class="modal-body">
         <label>Assign To</label>
-        <ng-select
-          style="padding: 0px !important"
-          placeholder="Select Assign User"
-          class="form-select custom-ng-select-option"
-          bindLabel="userName"
-          [multiple]="true"
-          bindValue="_id"
-          [items]="userList"
-          [(ngModel)]="assignTo"
-        >
+        <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+          class="form-select custom-ng-select-option" bindLabel="userName" [multiple]="true" bindValue="_id"
+          [items]="userList" [(ngModel)]="assignTo">
         </ng-select>
       </div>
 
@@ -241,23 +171,12 @@
 </div>
 
 <!-- Add Task details Modal -->
-<div
-  class="modal fade"
-  id="taskDetailsModal"
-  tabindex="-1"
-  aria-labelledby="taskModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h4>{{ modalTask?.task }}</h4>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body d-flex">
@@ -270,90 +189,52 @@
 
           <div class="mb-3" *ngIf="modalTask?.project?.projectName">
             <h6><strong>Assigned Project</strong></h6>
-            <a
-              (click)="projectDetails(modalTask?.project?._id)"
-              href="javascript:;"
-              >{{ modalTask?.project?.projectName }}</a
-            >
+            <a (click)="projectDetails(modalTask?.project?._id)" href="javascript:;">{{ modalTask?.project?.projectName
+              }}</a>
           </div>
 
-          <div
-            class="comments-section"
-            *ngIf="!modalTask?.project?.projectName"
-          >
+          <div class="comments-section" *ngIf="!modalTask?.project?.projectName">
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
-              <textarea
-                class="form-control"
-                placeholder="Add a comment..."
-                [(ngModel)]="newComment"
-              ></textarea>
-              <button
-                class="btn btn-sm btn-primary mt-2"
-                (click)="addComment(newComment, modalTask?._id)"
-              >
+              <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment"></textarea>
+              <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                 Comment
               </button>
-              <ul
-                class="SecondarytaskList mt-3"
-                *ngIf="modalTask?.comments?.length > 0"
-              >
-                <li
-                  *ngFor="let comment of modalTask.comments; let i = index"
-                  class="comment-item"
-                >
+              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+                <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                         <small class="text-muted">{{
                           comment?.date | date : "dd/MM/yyyy, h:mm a"
-                        }}</small>
+                          }}</small>
                       </div>
                       <small class="text-muted d-block">{{
                         comment?.userDetail?.role
-                      }}</small>
+                        }}</small>
                     </div>
                   </div>
                   <div class="d-flex flex-column mb-3">
-                    <div
-                      *ngIf="!comment.isEditing"
-                      class="d-flex justify-content-between align-items-center"
-                    >
+                    <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
                       <p>{{ comment.comment }}</p>
                       <div>
-                        <button
-                          class="btn btn-sm text-primary me-2"
-                          (click)="enableEdit(comment)"
-                        >
+                        <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
                           Edit
                         </button>
-                        <button
-                          class="btn btn-sm text-danger"
-                          (click)="deleteComment(comment?.commentId)"
-                        >
+                        <button class="btn btn-sm text-danger" (click)="deleteComment(comment?.commentId)">
                           Delete
                         </button>
                       </div>
                     </div>
                     <div *ngIf="comment.isEditing" class="d-flex flex-column">
-                      <textarea
-                        class="form-control mb-2"
-                        placeholder="Edit comment..."
-                        [(ngModel)]="comment.updatedComment"
-                        style="width: 100%"
-                      ></textarea>
+                      <textarea class="form-control mb-2" placeholder="Edit comment..."
+                        [(ngModel)]="comment.updatedComment" style="width: 100%"></textarea>
                       <div class="d-flex justify-content-between">
-                        <button
-                          class="btn btn-sm btn-success me-2"
-                          (click)="updateTaskComment(comment)"
-                        >
+                        <button class="btn btn-sm btn-success me-2" (click)="updateTaskComment(comment)">
                           Save
                         </button>
-                        <button
-                          class="btn btn-sm btn-secondary me-2"
-                          (click)="cancelEdit(comment)"
-                        >
+                        <button class="btn btn-sm btn-secondary me-2" (click)="cancelEdit(comment)">
                           Cancel
                         </button>
                         <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment._id)">
@@ -365,19 +246,13 @@
                 </li>
               </ul>
             </div>
-            <div
-              *ngFor="let comment of modalTask.comments; let i = index"
-              class="mb-3"
-            >
+            <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
               <strong>{{ comment.user }} </strong>
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
             </div>
           </div>
-          <div
-            class="col-lg-12 col-xl-12 col-12 mb-3"
-            *ngIf="modalTask?.project?.projectName"
-          >
+          <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="modalTask?.project?.projectName">
             <div class="card shadow-sm p-4">
               <!-- Header -->
               <div class="card-header bg-primary text-white mb-3">
@@ -386,39 +261,24 @@
 
               <!-- Status Buttons -->
               <div class="d-flex justify-content-between flex-wrap mb-4">
-                <button
-                  class="btn btn-outline-primary flex-fill m-1"
-                  [class.active]="status === 'InProgress'"
-                  (click)="statusChange('InProgress')"
-                >
+                <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'InProgress'"
+                  (click)="statusChange('InProgress')">
                   In-Progress
                 </button>
-                <button
-                  class="btn btn-outline-secondary flex-fill m-1"
-                  [class.active]="status === 'InHold'"
-                  (click)="statusChange('InHold')"
-                >
+                <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'InHold'"
+                  (click)="statusChange('InHold')">
                   In-Hold
                 </button>
-                <button
-                  class="btn btn-outline-success flex-fill m-1"
-                  [class.active]="status === 'Passed'"
-                  (click)="statusChange('Passed')"
-                >
+                <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Passed'"
+                  (click)="statusChange('Passed')">
                   Pass
                 </button>
-                <button
-                  class="btn btn-outline-danger flex-fill m-1"
-                  [class.active]="status === 'Fail'"
-                  (click)="statusChange('Fail')"
-                >
+                <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Fail'"
+                  (click)="statusChange('Fail')">
                   Fail
                 </button>
-                <button
-                  class="btn btn-outline-warning flex-fill m-1"
-                  [class.active]="status === 'DocumentsNotFound'"
-                  (click)="statusChange('DocumentsNotFound')"
-                >
+                <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'DocumentsNotFound'"
+                  (click)="statusChange('DocumentsNotFound')">
                   Document Not Found
                 </button>
               </div>
@@ -429,37 +289,20 @@
 
                 <!-- Display Existing Comments -->
                 <div *ngIf="commentData?.length" class="comment-list">
-                  <div
-                    class="comment-item border rounded p-3 mb-2"
-                    *ngFor="let item of commentData"
-                  >
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <span class="text-muted"
-                        ><strong>Comment:</strong> {{ item.comment }}</span
-                      >
-                      <span class="text-muted"
-                        ><strong>Date:</strong>
-                        {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span
-                      >
+                  <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                      <span class="text-muted"><strong>Date:</strong>
+                        {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Add New Comment -->
                 <div class="add-comment d-flex gap-3 align-items-center mt-3">
-                  <input
-                    type="text"
-                    class="form-control w-80"
-                    [formControl]="statusComment"
-                    placeholder="Add your comment"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    (click)="pushStatus()"
-                  >
+                  <input type="text" class="form-control w-80" [formControl]="statusComment"
+                    placeholder="Add your comment" />
+                  <button class="btn btn-primary" type="button" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
@@ -479,10 +322,7 @@
                     </div> -->
 
                     <!-- Fail Reason Dropdown -->
-                    <select
-                      class="form-select"
-                      [formControl]="failStatusReason"
-                    >
+                    <select class="form-select" [formControl]="failStatusReason">
                       <option disabled selected hidden value="">
                         Select Fail Reason
                       </option>
@@ -508,16 +348,11 @@
           </div>
           <div class="row justify-content-end mb-3">
             <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-              <a (click)="summaryDetail('save')" class="btn btn-dark w-100"
-                >Save</a
-              >
+              <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
             </div>
           </div>
 
-          <div
-            class="col-lg-12 col-xl-12 col-12"
-            *ngIf="modalTask?.project?.status == 'Passed'"
-          >
+          <div class="col-lg-12 col-xl-12 col-12" *ngIf="modalTask?.project?.status == 'Passed'">
             <div class="card shadow-sm p-4">
               <!-- Header -->
               <div class="card-header bg-primary text-white mb-3">
@@ -525,51 +360,34 @@
               </div>
 
               <!-- Status Buttons -->
-              <div
-                class="d-flex justify-content-between flex-wrap mb-4"
-                *ngIf="
+              <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
                   projectList?.bidManagerStatus != 'Awarded' &&
                   projectList?.bidManagerStatus != 'DroppedAfterFeasibility' &&
                   projectList?.bidManagerStatus != 'NotAwarded'
-                "
-              >
+                ">
                 <!-- <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Toaction'"
                 (click)="statusChange('Toaction')">
                 To Action
               </button> -->
-                <button
-                  class="btn btn-outline-info flex-fill m-1"
-                  [class.active]="bidStatus === 'InSolution'"
-                  (click)="statusBidChange('InSolution')"
-                >
+                <button class="btn btn-outline-info flex-fill m-1" [class.active]="bidStatus === 'InSolution'"
+                  (click)="statusBidChange('InSolution')">
                   In-Solution
                 </button>
-                <button
-                  class="btn btn-outline-secondary flex-fill m-1"
-                  [class.active]="bidStatus === 'WaitingForResult'"
-                  (click)="statusBidChange('WaitingForResult')"
-                >
+                <button class="btn btn-outline-secondary flex-fill m-1"
+                  [class.active]="bidStatus === 'WaitingForResult'" (click)="statusBidChange('WaitingForResult')">
                   Waiting For Result
                 </button>
-                <button
-                  class="btn btn-outline-success flex-fill m-1"
+                <button class="btn btn-outline-success flex-fill m-1"
                   [class.active]="bidStatus === 'DroppedAfterFeasibility'"
-                  (click)="statusBidChange('DroppedAfterFeasibility')"
-                >
+                  (click)="statusBidChange('DroppedAfterFeasibility')">
                   Dropped After Feasibility
                 </button>
-                <button
-                  class="btn btn-outline-danger flex-fill m-1"
-                  [class.active]="bidStatus === 'Awarded'"
-                  (click)="statusBidChange('Awarded')"
-                >
+                <button class="btn btn-outline-danger flex-fill m-1" [class.active]="bidStatus === 'Awarded'"
+                  (click)="statusBidChange('Awarded')">
                   Awarded
                 </button>
-                <button
-                  class="btn btn-outline-warning flex-fill m-1"
-                  [class.active]="bidStatus === 'NotAwarded'"
-                  (click)="statusBidChange('NotAwarded')"
-                >
+                <button class="btn btn-outline-warning flex-fill m-1" [class.active]="bidStatus === 'NotAwarded'"
+                  (click)="statusBidChange('NotAwarded')">
                   Not Awarded
                 </button>
               </div>
@@ -580,14 +398,9 @@
 
                 <!-- Display Existing Comments -->
                 <div *ngIf="bidCommentData?.length" class="comment-list">
-                  <div
-                    class="comment-item border rounded p-3 mb-2"
-                    *ngFor="let item of bidCommentData"
-                  >
+                  <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
                     <div class="comment mb-3">
-                      <div
-                        class="d-flex justify-content-between align-items-center"
-                      >
+                      <div class="d-flex justify-content-between align-items-center">
                         <p class="mb-0 fw-bold">
                           {{ item?.userDetails?.name }}
                         </p>
@@ -595,10 +408,8 @@
                           {{ item?.date | date : "dd/MM/yyyy, h:mm a" }}
                         </small>
                       </div>
-                      <small class="text-muted d-block"
-                        ><strong>Status :</strong>
-                        {{ item?.bidManagerStatus }}</small
-                      >
+                      <small class="text-muted d-block"><strong>Status :</strong>
+                        {{ item?.bidManagerStatus }}</small>
                       <p class="mt-2">{{ item?.comment }}</p>
                     </div>
                   </div>
@@ -606,30 +417,17 @@
 
                 <!-- Add New Comment -->
                 <div class="add-comment d-flex gap-3 align-items-center mt-3">
-                  <input
-                    type="text"
-                    class="form-control w-80"
-                    [formControl]="bidManagerStatusComment"
-                    placeholder="Add your comment"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    (click)="pushBidStatus()"
-                  >
+                  <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                    placeholder="Add your comment" />
+                  <button class="btn btn-primary" type="button" (click)="pushBidStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
               </div>
               <div class="row justify-content-end mb-2 mt-3">
-                <div
-                  class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end"
-                >
-                  <a
-                    (click)="saveBidStatus('save')"
-                    [class.disabled]="!isBidCommentValid()"
-                    class="btn btn-primary w-100"
-                  >
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                  <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                    class="btn btn-primary w-100">
                     Save Bid Status
                   </a>
                 </div>
@@ -645,26 +443,12 @@
 
           <!-- Due Date Section -->
           <div class="detail-item">
-            <label for="dueDate" class="form-label"
-              ><strong>Due Date:</strong></label
-            >
+            <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
             <div class="input-group">
-              <input
-                id="dueDate"
-                class="form-control"
-                style="max-width: 200px"
-                placeholder="dd-MM-yyyy"
-                name="dueDate"
-                [(ngModel)]="dueDateValue"
-                (ngModelChange)="onChange('dueDate', $event)"
-                ngbDatepicker
-                #d="ngbDatepicker"
-              />
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                (click)="d.toggle()"
-              >
+              <input id="dueDate" class="form-control" style="max-width: 200px" placeholder="dd-MM-yyyy" name="dueDate"
+                [(ngModel)]="dueDateValue" (ngModelChange)="onChange('dueDate', $event)" ngbDatepicker
+                #d="ngbDatepicker" />
+              <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
                 <i class="bi bi-calendar"></i>
               </button>
             </div>
@@ -672,20 +456,10 @@
 
           <!-- Assignee Section -->
           <div class="detail-item mb-3">
-            <label for="assignTo" class="form-label"
-              ><strong>Assignee:</strong></label
-            >
-            <ng-select
-              id="assignTo"
-              class="form-select custom-ng-select-option"
-              placeholder="Select Assign User"
-              [multiple]="true"
-              bindLabel="userName"
-              bindValue="_id"
-              [items]="userList"
-              [(ngModel)]="assignTo"
-              (ngModelChange)="onChange('assignTo', $event)"
-            >
+            <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+              [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
+              (ngModelChange)="onChange('assignTo', $event)">
             </ng-select>
           </div>
 
@@ -700,51 +474,28 @@
 
           <!-- Category Section -->
           <div class="detail-item mb-3">
-            <label for="category" class="form-label"
-              ><strong>Pick a Category:</strong></label
-            >
-            <ng-select
-              id="category"
-              class="form-select custom-ng-select-option"
-              placeholder="Pick a Category"
-              [items]="categoryList"
-              [(ngModel)]="selectedCategory"
-              (ngModelChange)="onChange('pickACategory', $event)"
-            >
+            <label for="category" class="form-label"><strong>Pick a Category:</strong></label>
+            <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
+              [items]="categoryList" [(ngModel)]="selectedCategory" (ngModelChange)="onChange('pickACategory', $event)">
             </ng-select>
           </div>
 
           <!-- task status Section -->
           <div class="detail-item mb-3">
-            <label for="taskstatus" class="form-label"
-              ><strong>Task Status:</strong></label
-            >
-            <ng-select
-              id="taskstatus"
-              class="form-select custom-ng-select-option"
-              placeholder="Pick a Status"
-              [items]="statusTaskList"
-              [(ngModel)]="selectedStatus"
-              (ngModelChange)="onChange('taskStatus', $event)"
-            >
+            <label for="taskstatus" class="form-label"><strong>Task Status:</strong></label>
+            <ng-select id="taskstatus" class="form-select custom-ng-select-option" placeholder="Pick a Status"
+              [items]="statusTaskList" [(ngModel)]="selectedStatus" (ngModelChange)="onChange('taskStatus', $event)">
             </ng-select>
           </div>
 
           <div class="detail-item mb-3">
-            <button
-              class="btn btn-sm btn-primary"
-              [(ngModel)]="selectedStatus"
-              (click)="onChangeMyday('MyDay')"
-            >
+            <button class="btn btn-sm btn-primary" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
               Add to My Day
             </button>
           </div>
 
           <div class="detail-item mb-3">
-            <button
-              class="btn btn-sm btn-danger"
-              (click)="deleteTask(modalTask?._id)"
-            >
+            <button class="btn btn-sm btn-danger" (click)="deleteTask(modalTask?._id)">
               Delete
             </button>
           </div>

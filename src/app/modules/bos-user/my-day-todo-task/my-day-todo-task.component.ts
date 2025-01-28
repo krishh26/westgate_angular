@@ -8,6 +8,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Payload } from 'src/app/utility/shared/constant/payload.const';
 
 @Component({
   selector: 'app-my-day-todo-task',
@@ -48,6 +49,10 @@ export class MyDayTodoTaskComponent {
   isEditing = false;
   projectId: string = '';
   projectDetail: any = [];
+  bidStatus: string = 'Expired';
+  bidCommentData: any[] = [];
+  bidManagerStatusComment: FormControl = new FormControl('');
+  projectList: any = [];
 
   constructor(
     private superService: SuperadminService,
@@ -65,6 +70,110 @@ export class MyDayTodoTaskComponent {
   ngOnInit(): void {
     this.getTask();
     // this.getUserAllList();
+    this.getProjectList();
+  }
+
+  getProjectList() {
+    this.showLoader = true;
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  pushBidStatus() {
+    if (!this.bidManagerStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
+    this.bidCommentData.push({
+      comment: this.bidManagerStatusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      bidManagerStatus: this.bidStatus,
+      userId: this.loginUser?._id,
+    });
+
+    // Reset the comment input field
+    this.bidManagerStatusComment.reset();
+  }
+
+  saveBidStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+    if (!contractEdit) {
+      if (!this.bidStatus) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
+
+      // Check if the status has at least one comment
+      const hasExistingComment = this.bidCommentData.some(
+        (item) => item.bidManagerStatus === this.bidStatus
+      );
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
+      }
+      payload = {
+        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatusComment: [
+          ...this.bidCommentData,
+          // ...this.projectDetails?.bidManagerStatusComment,
+        ],
+      };
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            // this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+  }
+
+  isBidCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.bidCommentData.some(
+      (item) => item.bidManagerStatus === this.bidStatus
+    );
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 
   openTaskModal(task: any) {
@@ -280,4 +389,13 @@ export class MyDayTodoTaskComponent {
       }
     );
   }
+
+  statusBidChange(status: string) {
+    this.bidStatus = status;
+    this.bidCommentData = [];
+    this.bidManagerStatusComment.reset();
+  }
+
+
+
 }
