@@ -34,6 +34,7 @@ import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
 import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ApproveRejectProjectComponent } from './approve-reject-project/approve-reject-project.component';
 
 
 
@@ -62,7 +63,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     StatusWiseTrackerComponent,
     TrackerWiseProjectDetailsComponent,
     GapAnalysisComponent,
-    MyDayTasksComponent, CompletedTasksComponent
+    MyDayTasksComponent, CompletedTasksComponent,ApproveRejectProjectComponent
   ],
   imports: [
     CommonModule,

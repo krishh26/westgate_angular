@@ -22,6 +22,7 @@ import { TrackerWiseProjectDetailsComponent } from './tracker-wise-project-detai
 import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
 import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
+import { ApproveRejectProjectComponent } from './approve-reject-project/approve-reject-project.component';
 
 
 
@@ -114,6 +115,10 @@ const routes: Routes = [
       {
         path: "gap-analysis",
         component: GapAnalysisComponent
+      },
+      {
+        path: "approve-reject-projects",
+        component: ApproveRejectProjectComponent
       },
 
     ]

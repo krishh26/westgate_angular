@@ -29,6 +29,7 @@ export class SuperadminHeaderComponent {
     { title: 'Project Tracker', route: ['/super-admin/status-wise-tracker'] },
     { title: 'TO DO Tasks', route: ['/super-admin/todo-tasks'] },
     { title: 'Gap Analysis', route: ['/super-admin/gap-analysis'] },
+    { title: 'Approve/Reject', route: ['/super-admin/approve-reject-projects'] },
   ];
 
 
