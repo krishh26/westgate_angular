@@ -28,7 +28,7 @@ export class MyDayTasksComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
-  categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
+  categoryList: string[] = [ 'High' ,'Medium', 'Low'];
  statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
@@ -178,7 +178,7 @@ export class MyDayTasksComponent {
       const payload = {
         discription: this.taskDetails,
         task: this.taskTitle,
-        status: 'Todo',
+        status: 'Ongoing',
         dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
         assignTo: this.assignTo,
       };

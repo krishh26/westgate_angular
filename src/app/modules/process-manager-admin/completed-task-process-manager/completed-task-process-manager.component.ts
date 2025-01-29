@@ -23,7 +23,7 @@ export class CompletedTaskProcessManagerComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
-  categoryList: string[] = ['feasibility', 'bid manager', 'other tasks'];
+  categoryList: string[] = [ 'High' ,'Medium', 'Low'];
   statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
