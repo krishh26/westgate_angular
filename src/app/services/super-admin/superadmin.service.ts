@@ -22,6 +22,7 @@ export enum SuperAdminEndPoint {
   APPOINT_FEASIBLITY_USER = '/project/update/appoint-user',
   APPOINT_BID_USER = '/project/update/appoint-bidmanager',
   APPROVE_OR_REJECT = '/project/update/approve-reject',
+  APPROVE_OR_REJECT_SUPERADMIN = '/project/update/approve-reject-admin',
   ADD_IMAGE_PROJECT_DETAILS = '/project-detail-title/update/',
   GET_GAP_ANALYSIS = '/project/gap-analysis',
 }
@@ -196,6 +197,13 @@ export class SuperadminService {
   approveOrRejectProject(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.APPROVE_OR_REJECT + '/' + id,
+      payload
+    );
+  }
+
+  approveOrRejectProjectsuperAdmin(payload: any, id: string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.APPROVE_OR_REJECT_SUPERADMIN + '/' + id,
       payload
     );
   }

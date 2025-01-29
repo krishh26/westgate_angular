@@ -19,7 +19,8 @@ export const Payload = {
     appointed: '',
     myList: '',
     bidManagerStatus: '',
-    notAppointed: ''
+    notAppointed: '',
+    adminReview: false
   },
 
   dataByStatus: {

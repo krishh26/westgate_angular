@@ -63,7 +63,8 @@ export class ProjectService {
     supplierStatus?: string,
     appointed?: string,
     myList?:string,
-    notAppointed?:string
+    notAppointed?:string,
+    adminReview?:boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -76,6 +77,9 @@ export class ProjectService {
     }
     if (params?.sortlist) {
       queryParams = queryParams.set('sortlist', params?.sortlist);
+    }
+    if (params?.adminReview) {
+      queryParams = queryParams.set('adminReview', params?.adminReview);
     }
     if (params?.match) {
       queryParams = queryParams.set('match', params?.match);
