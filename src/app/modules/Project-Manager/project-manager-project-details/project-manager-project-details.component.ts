@@ -102,6 +102,11 @@ export class ProjectManagerProjectDetailsComponent {
   showSupplierList = false;
   viewReasonList: any = [];
   filteredComments: any[] = [];
+  feasibilityStatus: string = 'Expired';
+  feasibilityCommentData: any[] = [];
+  feasibilityStatusComment: FormControl = new FormControl('');
+  selectedFailReason: string = '';
+  failStatusReasons: { tag: string; comment: string }[] = [];
 
   constructor(
     private projectService: ProjectService,
@@ -373,8 +378,11 @@ export class ProjectManagerProjectDetailsComponent {
           this.projectDetails = response?.data;
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
-          this.status = this.projectDetails?.status;
+          this.feasibilityStatus = this.projectDetails?.status;
+          this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
+          this.feasibilityCommentData =
+            this.projectDetails?.statusComment || [];
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
           console.log(this.viewReasonList); // Logs the dropUser list for debugging
         } else {
@@ -395,6 +403,12 @@ export class ProjectManagerProjectDetailsComponent {
     this.bidManagerStatusComment.reset();
   }
 
+  statusFeasibilityChange(status: string) {
+    this.feasibilityStatus = status;
+    this.feasibilityCommentData = [];
+    this.feasibilityStatusComment.reset();
+  }
+
   pushStatus() {
     if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
@@ -413,6 +427,21 @@ export class ProjectManagerProjectDetailsComponent {
 
     // Reset the comment input field
     this.bidManagerStatusComment.reset();
+  }
+
+  pushFeasilityStatus() {
+    if (!this.feasibilityStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+    const currentDate = new Date();
+    this.feasibilityCommentData.push({
+      comment: this.feasibilityStatusComment.value,
+      date: currentDate.toISOString(),
+      status: this.status,
+      userId: this.loginUser?._id,
+    });
+    this.feasibilityStatusComment.reset();
   }
 
   // Function for subcontract
@@ -645,6 +674,15 @@ export class ProjectManagerProjectDetailsComponent {
       //   return this.notificationService.showError('Please Select Status Comment');
       // }
 
+      if (this.feasibilityStatusComment.value && this.statusDate.value) {
+        this.feasibilityCommentData.push({
+          comment: this.feasibilityStatusComment.value,
+          date: this.statusDate.value,
+          status: this.status,
+          userId: this.loginUser?._id,
+        });
+      }
+
       if (this.bidManagerStatusComment.value && this.statusDate.value) {
         this.commentData.push({
           comment: this.bidManagerStatusComment.value,
@@ -669,6 +707,8 @@ export class ProjectManagerProjectDetailsComponent {
         clientDocument: this.projectDetails?.clientDocument || [],
         bidManagerStatus: this.status || '',
         bidManagerStatusComment: this.commentData,
+        status: this.feasibilityStatus || '',
+        statusComment: this.feasibilityCommentData,
         loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
@@ -858,6 +898,125 @@ export class ProjectManagerProjectDetailsComponent {
       (item) => item.bidManagerStatus === this.status
     );
     const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.status && (hasComment || hasUnaddedComment);
+  }
+
+  addFailReason() {
+    if (!this.selectedFailReason) {
+      this.notificationService.showError('Please select a fail reason.');
+      return;
+    }
+
+    // Check if the reason already exists
+    // if (
+    //   this.failStatusReasons.some(
+    //     (reason) => reason.tag === this.selectedFailReason
+    //   )
+    // ) {
+    //   this.notificationService.showError('This reason is already added.');
+    //   return;
+    // }
+
+    // Add the reason with an empty comment
+    this.failStatusReasons.push({
+      tag: this.selectedFailReason,
+      comment: '',
+    });
+
+    // Reset the dropdown selection
+    this.selectedFailReason = '';
+  }
+  removeFailReason(index: number) {
+    this.failStatusReasons.splice(index, 1);
+  }
+
+  saveFeasibilityStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+
+    if (!contractEdit) {
+      if (!this.feasibilityStatus) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      // Check if the status has at least one comment
+      if (this.feasibilityStatus !== 'Fail') {
+        const hasExistingComment = this.feasibilityCommentData.some(
+          (item) => item.status === this.feasibilityStatus
+        );
+        if (!hasExistingComment && !this.feasibilityStatusComment.value) {
+          return this.notificationService.showError(
+            'Please provide a comment for the selected status.'
+          );
+        }
+
+        // If a comment is filled but not added
+        if (this.feasibilityStatusComment.value) {
+          return this.notificationService.showError(
+            'Please click the "Add" button to save your comment.'
+          );
+        }
+      } else {
+        const errors = this.failStatusReasons
+          .map((item, index) =>
+            item.comment.trim() === ''
+              ? `Error at index ${index}: Comment is empty.`
+              : null
+          )
+          .filter((error) => error !== null);
+
+        if (errors.length > 0) {
+          return this.notificationService.showError(
+            'Please provide a comments for the selected Reason.'
+          );
+        }
+      }
+      payload = {
+        projectType: this.projectDetails.projectType,
+        clientDocument: this.projectDetails?.clientDocument || [],
+        status: this.feasibilityStatus || '',
+        statusComment: [
+          ...this.feasibilityCommentData,
+          ...this.projectDetails?.statusComment,
+        ],
+        failStatusReason: this.failStatusReasons,
+      };
+
+      // Add fail reason if applicable
+      if (this.failStatusReason?.value) {
+        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+      }
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetails(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+  }
+
+  isCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.feasibilityCommentData.some(
+      (item) => item.status === this.feasibilityStatus
+    );
+    const hasUnaddedComment =
+      this.feasibilityStatusComment.value && !hasComment;
     return this.status && (hasComment || hasUnaddedComment);
   }
 }

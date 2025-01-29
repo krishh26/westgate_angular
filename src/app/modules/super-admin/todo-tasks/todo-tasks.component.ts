@@ -36,8 +36,11 @@ export class TodoTasksComponent {
   selectedUserIds: number[] = [];
   projectList: any = [];
   statusComment: FormControl = new FormControl('');
+  bidManagerStatusComment: FormControl = new FormControl('');
   commentData: any[] = [];
+  bidCommentData: any[] = [];
   status: string = 'Expired';
+  bidStatus: string = 'Expired';
   failStatusReason: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   isEditing = false;
@@ -50,7 +53,7 @@ export class TodoTasksComponent {
     private projectService: ProjectService,
     private router: Router,
     private feasibilityService: FeasibilityService,
-    private localStorageService: LocalStorageService,
+    private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -68,25 +71,34 @@ export class TodoTasksComponent {
 
   getProjectList() {
     this.showLoader = true;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-      } else {
-        this.notificationService.showError(response?.message);
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   statusChange(status: string) {
     this.status = status;
     this.commentData = [];
     this.statusComment.reset();
+  }
+
+  statusBidChange(status: string) {
+    this.bidStatus = status;
+    this.bidCommentData = [];
+    this.bidManagerStatusComment.reset();
   }
 
   summaryDetail(type: string) {
@@ -103,8 +115,13 @@ export class TodoTasksComponent {
       }
 
       // Validation for comment
-      if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
-        return this.notificationService.showError('Please provide a comment for the selected status.');
+      if (
+        !this.statusComment.value &&
+        !this.commentData.some((item) => item.status === this.status)
+      ) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
       }
 
       // Add the comment to commentData only if it's provided
@@ -113,7 +130,7 @@ export class TodoTasksComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
-          userId: this.loginUser?._id
+          userId: this.loginUser?._id,
         });
         this.statusComment.reset(); // Clear the comment field after adding
       }
@@ -131,20 +148,26 @@ export class TodoTasksComponent {
     }
 
     // API call to update project details
-    this.feasibilityService.updateProjectDetails(payload, this.modalTask?.project?._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          //  this.getProjectDetails();
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+    this.feasibilityService
+      .updateProjectDetails(payload, this.modalTask?.project?._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            //  this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
         }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
-      }
-    );
+      );
   }
 
   pushStatus() {
@@ -160,7 +183,7 @@ export class TodoTasksComponent {
       comment: this.statusComment.value,
       date: currentDate.toISOString(), // ISO format for standardization (optional)
       status: this.status,
-      userId: this.loginUser?._id
+      userId: this.loginUser?._id,
     });
 
     // Reset the comment input field
@@ -169,7 +192,9 @@ export class TodoTasksComponent {
 
   projectDetails(projectId: any) {
     this.activeModal.close();
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], {
+      queryParams: { id: projectId },
+    });
   }
 
   addTask() {
@@ -240,8 +265,7 @@ export class TodoTasksComponent {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
-    }
-    else if (paramKey === 'assignProjectId' && paramValue) {
+    } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
     }
 
@@ -252,8 +276,8 @@ export class TodoTasksComponent {
   onChangeMyday(value: any) {
     console.log(value);
     let params = {
-      status: value
-    }
+      status: value,
+    };
     this.updateTask(params);
   }
 
@@ -295,21 +319,23 @@ export class TodoTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing').subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.taskList = response?.data?.data;
-          this.showLoader = false;
-        } else {
-          this.notificationService.showError(response?.message);
+    this.superService
+      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
+      .subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.taskList = response?.data?.data;
+            this.showLoader = false;
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+      );
   }
 
   getUserAllList() {
@@ -368,7 +394,7 @@ export class TodoTasksComponent {
 
   deleteComment(id: any) {
     let param = {
-      commentId: id
+      commentId: id,
     };
     Swal.fire({
       title: 'Are you sure?',
@@ -385,7 +411,9 @@ export class TodoTasksComponent {
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
-              this.notificationService.showSuccess('Comment successfully deleted');
+              this.notificationService.showSuccess(
+                'Comment successfully deleted'
+              );
               window.location.reload();
             } else {
               this.showLoader = false;
@@ -400,7 +428,6 @@ export class TodoTasksComponent {
       }
     });
   }
-
 
   enableEdit(comment: any): void {
     comment.isEditing = true;
@@ -418,21 +445,29 @@ export class TodoTasksComponent {
         comment: comment.updatedComment,
       };
 
-      this.superService.updateComment(payload, comment._id, this.modalTask._id).subscribe(
-        (response) => {
-          if (response?.status == true) {
-            this.notificationService.showSuccess('Comment Updated Successfully');
-            this.getTask();
-            comment.comment = comment.updatedComment; // Update UI
-            comment.isEditing = false; // Exit edit mode
-          } else {
-            this.notificationService.showError(response?.message || 'Comment cannot be updated after 24 hours');
+      this.superService
+        .updateComment(payload, comment._id, this.modalTask._id)
+        .subscribe(
+          (response) => {
+            if (response?.status == true) {
+              this.notificationService.showSuccess(
+                'Comment Updated Successfully'
+              );
+              this.getTask();
+              comment.comment = comment.updatedComment; // Update UI
+              comment.isEditing = false; // Exit edit mode
+            } else {
+              this.notificationService.showError(
+                response?.message || 'Comment cannot be updated after 24 hours'
+              );
+            }
+          },
+          (error) => {
+            this.notificationService.showError(
+              error?.message || 'Comment cannot be updated after 24 hours'
+            );
           }
-        },
-        (error) => {
-          this.notificationService.showError(error?.message || 'Comment cannot be updated after 24 hours');
-        }
-      );
+        );
     } else {
       this.notificationService.showError('Comment cannot be empty');
     }
@@ -471,16 +506,23 @@ export class TodoTasksComponent {
             const newComment = {
               text: comment.trim(),
             };
-            this.modalTask.comments = [...(this.modalTask.comments || []), newComment];
+            this.modalTask.comments = [
+              ...(this.modalTask.comments || []),
+              newComment,
+            ];
 
             this.newComment = '';
           } else {
-            this.notificationService.showError(response?.message || 'Failed to add comment');
+            this.notificationService.showError(
+              response?.message || 'Failed to add comment'
+            );
           }
         },
         (error) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message || 'An error occurred');
+          this.notificationService.showError(
+            error?.message || 'An error occurred'
+          );
         }
       );
     } else {
@@ -507,5 +549,87 @@ export class TodoTasksComponent {
       this.selectedUserIds.push(userId);
     }
     this.getTask();
+  }
+  saveBidStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+    if (!contractEdit) {
+      if (!this.bidStatus) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
+
+      // Check if the status has at least one comment
+      const hasExistingComment = this.bidCommentData.some(
+        (item) => item.bidManagerStatus === this.bidStatus
+      );
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
+      }
+      payload = {
+        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatusComment: [
+          ...this.bidCommentData,
+          // ...this.projectDetails?.bidManagerStatusComment,
+        ],
+      };
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            // this.getProjectDetails();
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
+        }
+      );
+  }
+
+  isBidCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.bidCommentData.some(
+      (item) => item.bidManagerStatus === this.bidStatus
+    );
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.bidStatus && (hasComment || hasUnaddedComment);
+  }
+
+  pushBidStatus() {
+    if (!this.bidManagerStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
+    this.bidCommentData.push({
+      comment: this.bidManagerStatusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      bidManagerStatus: this.bidStatus,
+      userId: this.loginUser?._id,
+    });
+
+    // Reset the comment input field
+    this.bidManagerStatusComment.reset();
   }
 }
