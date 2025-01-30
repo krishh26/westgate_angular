@@ -198,37 +198,44 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   editProjectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/super-admin-add-project'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/super-admin-add-project'], {
+      queryParams: { id: projectId },
+    });
   }
 
-    deleteProject(id: any) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `Do you want to delete `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#00B96F',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Delete!'
-      }).then((result: any) => {
-        if (result?.value) {
-          this.showLoader = true;
-          this.projectService.deleteProject(id).subscribe((response: any) => {
+  deleteProject(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.deleteProject(id).subscribe(
+          (response: any) => {
             if (response?.status == true) {
               this.showLoader = false;
-              this.notificationService.showSuccess('Project successfully deleted');
+              this.notificationService.showSuccess(
+                'Project successfully deleted'
+              );
               this.getProjectDetails();
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
             }
-          }, (error) => {
+          },
+          (error) => {
             this.showLoader = false;
             this.notificationService.showError(error?.message);
-          });
-        }
-      });
-    }
+          }
+        );
+      }
+    });
+  }
 
   getProjectLogs() {
     this.showLoader = true;
@@ -281,7 +288,8 @@ export class TrackerWiseProjectDetailsComponent {
       (response) => {
         if (response?.status === true) {
           this.FeasibilityuserList = response?.data?.filter(
-            (user: any) => user?.role === 'FeasibilityAdmin' ||
+            (user: any) =>
+              user?.role === 'FeasibilityAdmin' ||
               user?.role === 'FeasibilityUser'
           );
           this.BiduserList = response?.data?.filter(
@@ -654,7 +662,7 @@ export class TrackerWiseProjectDetailsComponent {
           this.status = this.projectDetails?.status;
           this.bidStatus = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
-          this.statusComment.setValue(this.projectDetails?.statusComment);
+          // this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
           this.bidCommentData =
             this.projectDetails?.bidManagerStatusComment || [];
@@ -870,7 +878,7 @@ export class TrackerWiseProjectDetailsComponent {
           comment: this.statusComment.value,
           date: this.statusDate.value,
           status: this.status,
-          userId: this.loginUser?._id
+          userId: this.loginUser?._id,
         });
       }
 
@@ -1426,11 +1434,17 @@ export class TrackerWiseProjectDetailsComponent {
         return this.notificationService.showError('Please select a status.');
       }
 
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
+
       // Check if the status has at least one comment
       const hasExistingComment = this.bidCommentData.some(
-        (item) => item.status === this.bidStatus
+        (item) => item.bidManagerStatus === this.bidStatus
       );
-      if (!hasExistingComment && !this.statusComment.value) {
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
         return this.notificationService.showError(
           'Please provide a comment for the selected status.'
         );
@@ -1441,9 +1455,7 @@ export class TrackerWiseProjectDetailsComponent {
           ...this.bidCommentData,
           ...this.projectDetails?.bidManagerStatusComment,
         ],
-
       };
-
     }
 
     // API call to update project details
@@ -1481,9 +1493,9 @@ export class TrackerWiseProjectDetailsComponent {
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
     const hasComment = this.bidCommentData.some(
-      (item) => item.status === this.bidStatus
+      (item) => item.bidManagerStatus === this.bidStatus
     );
-    const hasUnaddedComment = this.statusComment.value && !hasComment;
-    return this.status && (hasComment || hasUnaddedComment);
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 }
