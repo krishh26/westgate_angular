@@ -434,15 +434,24 @@ export class ProjectManagerProjectDetailsComponent {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
+  
     const currentDate = new Date();
-    this.feasibilityCommentData.push({
-      comment: this.feasibilityStatusComment.value,
-      date: currentDate.toISOString(),
-      status: this.status,
-      userId: this.loginUser?._id,
-    });
+    this.feasibilityCommentData = [
+      ...this.feasibilityCommentData,
+      {
+        comment: this.feasibilityStatusComment.value,
+        date: currentDate.toISOString(),
+        status: this.feasibilityStatus,
+        userId: this.loginUser?._id,
+      },
+    ];
+  
     this.feasibilityStatusComment.reset();
+    
+    // Force UI update
+    // this.cdr.detectChanges();
   }
+  
 
   // Function for subcontract
   subContactChange(value: string) {
@@ -906,18 +915,6 @@ export class ProjectManagerProjectDetailsComponent {
       this.notificationService.showError('Please select a fail reason.');
       return;
     }
-
-    // Check if the reason already exists
-    // if (
-    //   this.failStatusReasons.some(
-    //     (reason) => reason.tag === this.selectedFailReason
-    //   )
-    // ) {
-    //   this.notificationService.showError('This reason is already added.');
-    //   return;
-    // }
-
-    // Add the reason with an empty comment
     this.failStatusReasons.push({
       tag: this.selectedFailReason,
       comment: '',
@@ -926,6 +923,7 @@ export class ProjectManagerProjectDetailsComponent {
     // Reset the dropdown selection
     this.selectedFailReason = '';
   }
+
   removeFailReason(index: number) {
     this.failStatusReasons.splice(index, 1);
   }
@@ -1011,12 +1009,22 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   isCommentValid(): boolean {
-    // Validate if a comment exists for the selected status or is added
+    if (!this.feasibilityStatus) return false;
+  
+    // Check if at least one comment exists for the selected status
     const hasComment = this.feasibilityCommentData.some(
       (item) => item.status === this.feasibilityStatus
     );
-    const hasUnaddedComment =
-      this.feasibilityStatusComment.value && !hasComment;
-    return this.status && (hasComment || hasUnaddedComment);
+  
+    if (this.feasibilityStatus === 'Fail') {
+      return (
+        this.failStatusReasons.length > 0 &&
+        this.failStatusReasons.every((reason) => reason.comment.trim() !== '')
+      );
+    }
+  
+    return hasComment;
   }
+  
+
 }
