@@ -32,7 +32,7 @@ interface Project {
   styleUrls: ['./project-manager-to-action.component.scss']
 })
 export class ProjectManagerToActionComponent {
- showLoader: boolean = false;
+  showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
@@ -298,11 +298,11 @@ export class ProjectManagerToActionComponent {
     // this.tempPayload.projectList.myList = this.loginUser?._id;
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     // this.tempPayload.projectList.status = 'Passed'
-     this.tempPayload.pojectList.bidManagerStatus = 'Awaiting'
+    this.tempPayload.projectList.bidManagerStatus = 'Awaiting'
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
-        
+
         this.totalRecords = response?.data?.meta_data?.items;
         if (response?.status == true) {
           this.showLoader = false;
