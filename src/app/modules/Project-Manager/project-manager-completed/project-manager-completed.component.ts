@@ -294,6 +294,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
     this.tempPayload.projectList.bidManagerStatus =  "DroppedAfterFeasibility, Awarded, NotAwarded";
+    this.tempPayload.projectList.statusNotInclude = 'Fail'
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {

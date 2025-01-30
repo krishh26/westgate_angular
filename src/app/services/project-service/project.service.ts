@@ -64,7 +64,8 @@ export class ProjectService {
     appointed?: string,
     myList?:string,
     notAppointed?:string,
-    adminReview?:boolean
+    adminReview?:boolean,
+    statusNotInclude?:string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -77,6 +78,9 @@ export class ProjectService {
     }
     if (params?.sortlist) {
       queryParams = queryParams.set('sortlist', params?.sortlist);
+    }
+    if (params?.statusNotInclude) {
+      queryParams = queryParams.set('statusNotInclude', params?.statusNotInclude);
     }
     if (params?.adminReview) {
       queryParams = queryParams.set('adminReview', params?.adminReview);

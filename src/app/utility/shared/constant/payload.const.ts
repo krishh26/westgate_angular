@@ -20,7 +20,8 @@ export const Payload = {
     myList: '',
     bidManagerStatus: '',
     notAppointed: '',
-    adminReview: false
+    adminReview: false,
+    statusNotInclude: ''
   },
 
   dataByStatus: {
