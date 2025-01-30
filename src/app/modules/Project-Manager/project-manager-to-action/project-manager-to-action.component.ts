@@ -298,7 +298,7 @@ export class ProjectManagerToActionComponent {
     // this.tempPayload.projectList.myList = this.loginUser?._id;
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     // this.tempPayload.projectList.status = 'Passed'
-    // this.tempPayload.pojectList.bidManagerStatus = 'Awaiting'
+     this.tempPayload.pojectList.bidManagerStatus = 'Awaiting'
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];

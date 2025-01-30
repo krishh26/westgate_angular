@@ -339,7 +339,7 @@ export class ApproveRejectProjectComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/feasibility-manager/feasibility-manager-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
   // editProjectDetails(projectId: any) {
