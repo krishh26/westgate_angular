@@ -34,6 +34,7 @@ import { ProjectManagerCompletedComponent } from './project-manager-completed/pr
 import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
 import { ProjectManagerToActionComponent } from './project-manager-to-action/project-manager-to-action.component';
 import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
+import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { ProjectManagerProjectDetailsComponent } from './project-manager-project
     ProjectManagerCompletedComponent,
     ProjectManagerInProgressComponent,
     ProjectManagerToActionComponent,
-    ProjectManagerProjectDetailsComponent
+    ProjectManagerProjectDetailsComponent,
+    ProjectManagerFailedProjectComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],

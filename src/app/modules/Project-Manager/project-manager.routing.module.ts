@@ -24,6 +24,7 @@ import { ProjectManagerToActionComponent } from './project-manager-to-action/pro
 import { ProjectManagerCompletedComponent } from './project-manager-completed/project-manager-completed.component';
 import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
 import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
+import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
 
 const routes: Routes = [
   {
@@ -118,6 +119,10 @@ const routes: Routes = [
       {
         path: 'bid-manager-project-details',
         component: ProjectManagerProjectDetailsComponent,
+      },
+      {
+        path: 'bid-manager-project-failed',
+        component: ProjectManagerFailedProjectComponent,
       },
 
     ],
