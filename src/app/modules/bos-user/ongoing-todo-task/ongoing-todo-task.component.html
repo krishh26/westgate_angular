@@ -72,9 +72,15 @@
               <!-- Textarea for Adding Comment -->
               <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment">
               </textarea>
-              <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
-                Comment
-              </button>
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
+                  Comment
+                </button>
+                <button class="btn btn-sm btn-primary mt-2" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
+                  Add to My Day
+                </button>
+              </div>
+              
 
               <!-- Display Existing Comments -->
               <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
@@ -280,8 +286,6 @@
               </div>
             </div>
           </div>
-
-         
         </div>
       </div>
     </div>

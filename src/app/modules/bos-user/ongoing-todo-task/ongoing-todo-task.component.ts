@@ -53,6 +53,7 @@ export class OngoingTodoTaskComponent {
   bidStatus: string = 'Expired';
   bidCommentData: any[] = [];
   bidManagerStatusComment: FormControl = new FormControl('');
+  selectedStatus: string | undefined;
 
   constructor(
     private superService: SuperadminService,
@@ -72,6 +73,28 @@ export class OngoingTodoTaskComponent {
     // this.getUserAllList();
     this.getProjectList();
   }
+
+  onChangeMyday(value: any) {
+    console.log(value);
+    let params = {
+      status: value,
+    };
+    this.updateTask(params);
+  }
+
+    // API call to update the task
+    updateTask(params: any) {
+      this.superService.updateTask(params, this.modalTask._id).subscribe(
+        (response) => {
+          this.getTask();
+          this.notificationService.showSuccess('Task updated Successfully');
+        },
+        (error) => {
+          console.error('Error updating task', error);
+          this.notificationService.showError('Error updating task');
+        }
+      );
+    }
 
   getProjectList() {
     this.showLoader = true;
