@@ -77,37 +77,34 @@
                         </h2>
                         <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
                             <div class="accordion-body">
-                                <ul class="SecondarytaskList" *ngIf="task?.comments?.length > 0">
-                                    <li class="comment-item">
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col">
-                                                <div class="d-flex justify-content-between">
-                                                  <p class="mb-0">
-                                                    {{ task?.comments[0]?.userDetail?.name }}
-                                                  </p>
-                                                  <small class="text-muted">
-                                                    {{
-                                                    task?.comments[0]?.date
-                                                    | date : "dd/MM/yyyy, h:mm a"
-                                                    }}
-                                                  </small>
-                                                </div>
-                                                <small class="text-muted d-block">{{
-                                                  task?.comments[0]?.userDetail?.role
-                                                  }}</small>
-                                              </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <p>{{ task?.comments[0]?.comment }}</p>
-                                        </div>
-                                    </li>
-                                </ul>
-
-                                <p *ngIf="!task?.comments?.length" class="text-muted">
-                                    No comments available.
-                                </p>
+                              <ul class="SecondarytaskList" *ngIf="task?.todayComments">
+                                <li *ngFor="let comment of task.todayComments" class="comment-item">
+                                  <div class="row align-items-center mb-3">
+                                    <div class="col">
+                                      <div class="d-flex justify-content-between">
+                                        <p class="mb-0">
+                                          {{ comment?.userDetail?.name }}
+                                        </p>
+                                        <small class="text-muted">
+                                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                                        </small>
+                                      </div>
+                                      <small class="text-muted d-block">
+                                        {{ comment?.userDetail?.role }}
+                                      </small>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex justify-content-between">
+                                    <p>{{ comment?.comment }}</p>
+                                  </div>
+                                </li>
+                              </ul>
+                          
+                              <p *ngIf="!task?.todayComments" class="text-muted">
+                                No comments available.
+                              </p>
                             </div>
-                        </div>
+                          </div>
                     </div>
                 </div>
                 <div *ngIf="!taskList?.length">
