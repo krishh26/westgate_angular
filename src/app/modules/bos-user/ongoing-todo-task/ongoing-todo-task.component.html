@@ -30,20 +30,39 @@
           </div>
         </button>
       </h2>
-      <!-- <div [id]="'flush-collapse' + i" class="accordion-collapse collapse"
-          [attr.aria-labelledby]="'flush-TodoList' + i" data-bs-parent="#accordianTodoList">
-          <div class="accordion-body">
-            <p>{{ task?.discription }}</p>
-
-            <textarea class="form-control" placeholder="Enter Task Comments"
-              [(ngModel)]="task.commentDetails"></textarea>
-            <div class="text-end mt-1">
-              <button type="button" class="btn btn-primary" (click)="addComment(task.commentDetails, task._id)">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div> -->
+      <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
+        <div class="accordion-body">
+          <ul class="SecondarytaskList" *ngIf="task?.todayComments">
+            <li *ngFor="let comment of task.todayComments" class="comment-item">
+              <div class="row align-items-center mb-3">
+                <div class="col">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0">
+                      {{ comment?.userDetail?.name }}
+                    </p>
+                    <small class="text-muted">
+                      {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </small>
+                  </div>
+                  <small class="text-muted d-block">
+                    {{ comment?.userDetail?.role }}
+                  </small>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p>{{ comment?.comment }}</p>
+              </div>
+            </li>
+          </ul>
+          <p *ngIf="!task?.todayComments" class="text-muted">
+            No comments available.
+          </p>
+          
+          <p *ngIf="!task?.comments?.length" class="text-muted">
+            No comments available.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
   <div *ngIf="!taskList?.length">

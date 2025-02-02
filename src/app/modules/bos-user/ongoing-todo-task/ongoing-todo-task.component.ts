@@ -82,19 +82,19 @@ export class OngoingTodoTaskComponent {
     this.updateTask(params);
   }
 
-    // API call to update the task
-    updateTask(params: any) {
-      this.superService.updateTask(params, this.modalTask._id).subscribe(
-        (response) => {
-          this.getTask();
-          this.notificationService.showSuccess('Task updated Successfully');
-        },
-        (error) => {
-          console.error('Error updating task', error);
-          this.notificationService.showError('Error updating task');
-        }
-      );
-    }
+  // API call to update the task
+  updateTask(params: any) {
+    this.superService.updateTask(params, this.modalTask._id).subscribe(
+      (response) => {
+        this.getTask();
+        this.notificationService.showSuccess('Task updated Successfully');
+      },
+      (error) => {
+        console.error('Error updating task', error);
+        this.notificationService.showError('Error updating task');
+      }
+    );
+  }
 
   getProjectList() {
     this.showLoader = true;
@@ -159,13 +159,22 @@ export class OngoingTodoTaskComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id }).subscribe(
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id ,status: 'Ongoing'}).subscribe(
       (response) => {
         if (response?.status === true) {
-          this.taskList = response?.data?.data.map((task: any) => ({
-            ...task,
-            commentDetails: '',
-          }));
+          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
+          this.taskList = response?.data?.data.map((task: any) => {
+            const todayComments = task?.comments?.filter((comment: any) =>
+              comment.date.split("T")[0] === today
+            );
+
+            return {
+              ...task,
+              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+            };
+          });
+
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
@@ -178,6 +187,7 @@ export class OngoingTodoTaskComponent {
       }
     );
   }
+
 
   // getUserAllList() {
   //   this.showLoader = true;

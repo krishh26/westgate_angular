@@ -228,14 +228,22 @@ export class MyDayTodoTaskComponent {
 
   getTask() {
     this.showLoader = true;
-    const payload = { assignTo: this.loginUser?.id, myDay: true };
-    this.superService.getTaskUserwise(payload).subscribe(
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, myDay: true  }).subscribe(
       (response) => {
         if (response?.status === true) {
-          this.taskList = response?.data?.data.map((task: any) => ({
-            ...task,
-            commentDetails: '',
-          }));
+          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
+          this.taskList = response?.data?.data.map((task: any) => {
+            const todayComments = task?.comments?.filter((comment: any) =>
+              comment.date.split("T")[0] === today
+            );
+
+            return {
+              ...task,
+              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+            };
+          });
+
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
