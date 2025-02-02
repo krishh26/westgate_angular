@@ -79,12 +79,19 @@
                     <div class="row align-items-center mb-3">
                       <div class="col">
                         <div class="d-flex justify-content-between">
-                          <p class="mb-0">{{ task?.comments[0]?.userDetail?.name }}</p>
+                          <p class="mb-0">
+                            {{ task?.comments[0]?.userDetail?.name }}
+                          </p>
                           <small class="text-muted">
-                            {{ task?.comments[0]?.createdAt | date : "dd/MM/yyyy, h:mm a" }}
+                            {{
+                            task?.comments[0]?.date
+                            | date : "dd/MM/yyyy, h:mm a"
+                            }}
                           </small>
                         </div>
-                        <small class="text-muted d-block">{{ task?.comments[0]?.userDetail?.role }}</small>
+                        <small class="text-muted d-block">{{
+                          task?.comments[0]?.userDetail?.role
+                          }}</small>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between">

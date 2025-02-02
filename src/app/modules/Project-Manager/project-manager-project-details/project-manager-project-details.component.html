@@ -11,7 +11,7 @@
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
               Add Strips
             </a>
-            <a routerLink="/feasibility-manager/feasibility-manager-projects-to-actions"
+            <a routerLink="/project-manager/project/bid-manager-to-action"
               class="btn btn-primary text-dark">Back</a>
           </div>
         </div>
@@ -284,7 +284,7 @@
             <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
               <h5 class="mb-0">
                 Shortlisted Supplier :
-                {{ projectDetails?.select[0]?.supplierDetails?.companyName }}
+                {{ projectDetails?.select[0]?.supplierDetails?.name }}
               </h5>
               <div class="d-flex gap-3 align-items-center">
                 <ng-select style="padding: 0px !important" placeholder="Select Supplier"
@@ -448,7 +448,7 @@
           </div>
         </div>
 
-        <div class="col-lg-12 col-xl-12 col-12">
+        <div class="col-lg-12 col-xl-12 col-12" *ngIf="projectDetails?.status == 'Passed'">
           <div class="card shadow-sm p-4">
             <!-- Header -->
             <div class="card-header bg-primary text-white mb-3">
