@@ -8,6 +8,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-status-wise-tracker',
@@ -47,6 +48,27 @@ export class StatusWiseTrackerComponent implements OnInit {
     NotAwarded: 'NotAwarded',
     ToAction: 'ToAction'
   };
+
+    selectedCategories: any[] = [];
+    selectedIndustries: any[] = [];
+    selectedProjectTypes: any[] = [];
+    selectedClientTypes: any[] = [];
+    selectedStatuses: any[] = [];
+  
+     minValue: number = 0;
+      maxValue: number = 99999999999999999;
+      options: Options = {
+        floor: 0,
+        ceil: 99999999999999999
+      };
+  
+    publishStartDate: FormControl = new FormControl('');
+    publishEndDate: FormControl = new FormControl('');
+    submissionStartDate: FormControl = new FormControl('');
+    submissionEndDate: FormControl = new FormControl('');
+  
+    myControl = new FormControl();
+
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -56,6 +78,10 @@ export class StatusWiseTrackerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.myControl.valueChanges.subscribe((res: any) => {
+      let storeTest = res;
+      this.searchText = res.toLowerCase();
+    });
     this.getDataByStatus();
     this.trackerEndDate.valueChanges.subscribe((res: any) => {
       if (!this.trackerStartDate.value) {
@@ -68,6 +94,48 @@ export class StatusWiseTrackerComponent implements OnInit {
       }
     });
     this.getProjectList();
+  }
+
+  searchtext() {
+    this.showLoader = true;
+    console.log('this is called',this.searchText);
+    // Update payload with filters
+    Payload.projectList.keyword = this.searchText;
+    Payload.projectList.page = String(this.page);
+    Payload.projectList.limit = String(this.pagesize);
+    Payload.projectList.category = this.selectedCategories.join(',');
+    Payload.projectList.industry = this.selectedIndustries.join(',');
+    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
+    Payload.projectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.status = this.selectedStatuses.join(',')
+    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
+    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
+    Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
+    Payload.projectList.expired = this.isExpired;
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      this.totalRecords = response?.data?.meta_data?.items;
+      if (response?.status == true) {
+        this.showLoader = false;
+        this.projectList = response?.data?.data;
+         
+
+        this.projectList.forEach((project: any) => {
+          const dueDate = new Date(project.dueDate);
+          const currentDate = new Date();
+          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+          this.dateDifference = formattedDateDifference;
+        });
+      } else {
+        this.notificationService.showError(response?.message);
+        this.showLoader = false;
+      }
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+    });
   }
 
   selectStatus(status: string): void {

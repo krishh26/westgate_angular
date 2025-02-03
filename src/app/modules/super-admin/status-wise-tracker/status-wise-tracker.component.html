@@ -1,41 +1,55 @@
 <main id="main">
   <section class="casestudy-section">
     <div class="container-fluid mb-3">
-      <div class="d-flex align-items-center justify-content-between ">
-        <div class="sort-widget d-flex">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+        <!-- Date Range Section -->
+        <div class="sort-widget d-flex align-items-center">
           <h6 class="p-600 me-3">Date Range</h6>
-          <form class="row row-cols-sm-auto g-2" (ngSubmit)="getDataByStatus()">
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate" ngbDatepicker
-                  #startDatePicker="ngbDatepicker" />
-                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                  type="button"></button>
-              </div>
+          <form class="d-flex align-items-center gap-2" (ngSubmit)="getDataByStatus()">
+            <div class="input-group">
+              <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate" ngbDatepicker
+                #startDatePicker="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
+                type="button"></button>
             </div>
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate" ngbDatepicker
-                  #endDatePicker="ngbDatepicker" />
-                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                  type="button"></button>
-              </div>
+            <div class="input-group">
+              <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate" ngbDatepicker
+                #endDatePicker="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                type="button"></button>
             </div>
           </form>
         </div>
+
+        <!-- Search and Tooltip -->
+        <div class="d-flex align-items-center flex-grow-1">
+          <div class="form-group mb-0 flex-grow-1">
+            <span class="input-icon"><i class="bi bi-search"></i></span>
+            <input class="form-control control-search"
+              placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+              type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+          </div>
+          <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
+            title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
+        </div>
+
+        <!-- Add Project Dropdown Button -->
         <nav id="navbar" class="navbar p-0">
           <ul class="p-0 m-0 d-flex align-items-center">
-            <li class="dropdown">
+            <li class="dropdown position-relative">
               <span class="btn btn-primary">+ Add Project</span>
-              <ul>
+              <ul class="dropdown-menu position-absolute">
                 <li><a routerLink="/super-admin/super-admin-add-project">Single Entry</a></li>
                 <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
               </ul>
             </li>
           </ul>
         </nav>
+
       </div>
     </div>
+
 
 
     <div class="container-fluid">
