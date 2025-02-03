@@ -288,9 +288,15 @@
               </h5>
               <div class="d-flex gap-3 align-items-center">
                 <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                  class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name"
-                  bindValue="_id" (change)="selectSupplier($event)" [addTag]="true">
-                </ng-select>
+                class="form-select custom-ng-select-option" 
+                [items]="selectedSupplier" 
+                bindLabel="name"
+                bindValue="_id" 
+                (change)="selectSupplier($event)" 
+                [addTag]="true"
+                [clearable]="false">  <!-- Disable Clear Button -->
+              </ng-select>
+              
                 <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
                   View All
                 </button>
