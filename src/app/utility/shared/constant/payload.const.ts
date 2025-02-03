@@ -21,7 +21,9 @@ export const Payload = {
     bidManagerStatus: '',
     notAppointed: '',
     adminReview: false,
-    statusNotInclude: ''
+    statusNotInclude: '',
+    startCreatedDate: '',
+    endCreatedDate: ''
   },
 
   dataByStatus: {

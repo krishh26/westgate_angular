@@ -65,7 +65,9 @@ export class ProjectService {
     myList?:string,
     notAppointed?:string,
     adminReview?:boolean,
-    statusNotInclude?:string
+    statusNotInclude?:string,
+    startCreatedDate?:string,
+    endCreatedDate?:string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -126,6 +128,12 @@ export class ProjectService {
     }
     if (params?.SubmissionDueDateRange) {
       queryParams = queryParams.set('SubmissionDueDateRange', params?.SubmissionDueDateRange);
+    }
+    if (params?.startCreatedDate) {
+      queryParams = queryParams.set('startCreatedDate', params?.startCreatedDate);
+    }
+    if (params?.endCreatedDate) {
+      queryParams = queryParams.set('endCreatedDate', params?.endCreatedDate);
     }
     if (params?.valueRange) {
       queryParams = queryParams.set('valueRange', params?.valueRange);

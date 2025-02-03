@@ -49,32 +49,32 @@ export class StatusWiseTrackerComponent implements OnInit {
     ToAction: 'ToAction'
   };
 
-    selectedCategories: any[] = [];
-    selectedIndustries: any[] = [];
-    selectedProjectTypes: any[] = [];
-    selectedClientTypes: any[] = [];
-    selectedStatuses: any[] = [];
-  
-     minValue: number = 0;
-      maxValue: number = 99999999999999999;
-      options: Options = {
-        floor: 0,
-        ceil: 99999999999999999
-      };
-  
-    publishStartDate: FormControl = new FormControl('');
-    publishEndDate: FormControl = new FormControl('');
-    submissionStartDate: FormControl = new FormControl('');
-    submissionEndDate: FormControl = new FormControl('');
-  
-    myControl = new FormControl();
+  selectedCategories: any[] = [];
+  selectedIndustries: any[] = [];
+  selectedProjectTypes: any[] = [];
+  selectedClientTypes: any[] = [];
+  selectedStatuses: any[] = [];
+
+  minValue: number = 0;
+  maxValue: number = 99999999999999999;
+  options: Options = {
+    floor: 0,
+    ceil: 99999999999999999
+  };
+
+  publishStartDate: FormControl = new FormControl('');
+  publishEndDate: FormControl = new FormControl('');
+  submissionStartDate: FormControl = new FormControl('');
+  submissionEndDate: FormControl = new FormControl('');
+
+  myControl = new FormControl();
 
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
     private projectService: ProjectService,
-      private modalService: NgbModal,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -98,7 +98,7 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   searchtext() {
     this.showLoader = true;
-    console.log('this is called',this.searchText);
+    console.log('this is called', this.searchText);
     // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
@@ -118,7 +118,7 @@ export class StatusWiseTrackerComponent implements OnInit {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);
@@ -143,10 +143,10 @@ export class StatusWiseTrackerComponent implements OnInit {
     this.selectedStatus = status;
   }
 
-  
-    openAddTeamModal() {
-      this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
-    }
+
+  openAddTeamModal() {
+    this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
+  }
 
   selectBidStatus(status: string): void {
     this.selectedStatus = '';
@@ -199,6 +199,7 @@ export class StatusWiseTrackerComponent implements OnInit {
         console.error('Error fetching data:', error);
       }
     );
+    this.getProjectList();
   }
 
   private formatDate(date: {
@@ -262,32 +263,37 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   getProjectList(type?: string) {
     this.showLoader = true;
-
-    // Set common parameters
+  
+    const startCreatedDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endCreatedDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+  
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
-
-    // Map the appropriate parameter based on the type
+    Payload.projectList.startCreatedDate = startCreatedDate;
+    Payload.projectList.endCreatedDate = endCreatedDate;
+  
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
-      Payload.projectList.bidManagerStatus = ''; // Clear the other field
+      Payload.projectList.bidManagerStatus = '';
     } else if (type === 'bid') {
       Payload.projectList.bidManagerStatus = this.status || '';
-      Payload.projectList.status = 'Passed'; // Clear the other field
+      Payload.projectList.status = 'Passed';
     }
-
+  
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
-
+  
         if (response?.status === true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
-
-          // Calculate the date difference for each project
           this.projectList.forEach((project: any) => {
             const dueDate = new Date(project.dueDate);
             const currentDate = new Date();
@@ -309,6 +315,8 @@ export class StatusWiseTrackerComponent implements OnInit {
       }
     );
   }
+  
+
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
