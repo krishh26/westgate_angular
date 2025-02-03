@@ -40,6 +40,10 @@
 
       <div class="accordion accordion-flush" id="accordianTodoList">
         <p><strong>Ongoing Task</strong></p>
+        <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
+          (change)="searchtext()" [multiple]="false" placeholder="Select Type"> <!-- Ensure only a single value is selected -->
+        </ng-select>
+        <br>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListZero">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="modal"
@@ -109,7 +113,7 @@
                 <p *ngIf="!task?.todayComments" class="text-muted">
                   No comments available.
                 </p>
-                
+
                 <p *ngIf="!task?.comments?.length" class="text-muted">
                   No comments available.
                 </p>

@@ -41,6 +41,12 @@ export class CompletedTasksComponent {
   statusDate: FormControl = new FormControl('');
   isEditing = false;
   loginUser: any;
+
+  filterbyDueDate = [
+    { projectType: 'Newest to Oldest', value: 'Newest' },
+    { projectType: 'Oldest to Newest', value: 'Oldest' }
+  ];
+  selectedtype: any[] = []
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -63,6 +69,43 @@ export class CompletedTasksComponent {
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
+  }
+
+  searchtext() {
+    this.showLoader = true;
+  
+    // Convert array to string if needed
+    const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
+  
+    this.superService
+      .getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', sortType)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            const today = new Date().toISOString().split("T")[0];
+  
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
+  
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null,
+              };
+            });
+  
+            this.showLoader = false;
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
   }
 
   onChangeMyday(value: any) {
