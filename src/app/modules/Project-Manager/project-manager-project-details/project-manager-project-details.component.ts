@@ -397,6 +397,13 @@ export class ProjectManagerProjectDetailsComponent {
     );
   }
 
+  statusBaseHideShow() {
+    if(this.status == 'DroppedAfterFeasibility' || this.status ==  'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
+      return false;
+    }
+    return true;
+  }
+
   statusChange(status: string) {
     this.status = status;
     this.commentData = [];
@@ -434,7 +441,7 @@ export class ProjectManagerProjectDetailsComponent {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
-  
+
     const currentDate = new Date();
     this.feasibilityCommentData = [
       ...this.feasibilityCommentData,
@@ -445,13 +452,13 @@ export class ProjectManagerProjectDetailsComponent {
         userId: this.loginUser?._id,
       },
     ];
-  
+
     this.feasibilityStatusComment.reset();
-    
+
     // Force UI update
     // this.cdr.detectChanges();
   }
-  
+
 
   // Function for subcontract
   subContactChange(value: string) {
@@ -1010,21 +1017,21 @@ export class ProjectManagerProjectDetailsComponent {
 
   isCommentValid(): boolean {
     if (!this.feasibilityStatus) return false;
-  
+
     // Check if at least one comment exists for the selected status
     const hasComment = this.feasibilityCommentData.some(
       (item) => item.status === this.feasibilityStatus
     );
-  
+
     if (this.feasibilityStatus === 'Fail') {
       return (
         this.failStatusReasons.length > 0 &&
         this.failStatusReasons.every((reason) => reason.comment.trim() !== '')
       );
     }
-  
+
     return hasComment;
   }
-  
+
 
 }
