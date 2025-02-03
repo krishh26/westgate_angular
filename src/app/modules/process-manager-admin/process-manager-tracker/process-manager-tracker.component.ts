@@ -190,6 +190,7 @@ export class ProcessManagerTrackerComponent {
         console.error('Error fetching data:', error);
       }
     );
+    this.getProjectList();
   }
 
   private formatDate(date: {
@@ -252,32 +253,37 @@ export class ProcessManagerTrackerComponent {
 
   getProjectList(type?: string) {
     this.showLoader = true;
-
-    // Set common parameters
+  
+    const startCreatedDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endCreatedDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+  
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
-
-    // Map the appropriate parameter based on the type
+    Payload.projectList.startCreatedDate = startCreatedDate;
+    Payload.projectList.endCreatedDate = endCreatedDate;
+  
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
-      Payload.projectList.bidManagerStatus = ''; // Clear the other field
+      Payload.projectList.bidManagerStatus = '';
     } else if (type === 'bid') {
       Payload.projectList.bidManagerStatus = this.status || '';
-      Payload.projectList.status = 'Passed'; // Clear the other field
+      Payload.projectList.status = 'Passed';
     }
-
+  
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
-
+  
         if (response?.status === true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
-
-          // Calculate the date difference for each project
           this.projectList.forEach((project: any) => {
             const dueDate = new Date(project.dueDate);
             const currentDate = new Date();
@@ -299,6 +305,7 @@ export class ProcessManagerTrackerComponent {
       }
     );
   }
+  
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
