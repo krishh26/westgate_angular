@@ -23,17 +23,26 @@ export class CompletedTaskProcessManagerComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
-  categoryList: string[] = [ 'High' ,'Medium', 'Low'];
+  categoryList: string[] = ['High', 'Medium', 'Low'];
   statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
   selectedtype: any[] = [];
+  selectedpriority: any[] = [];
+
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
     { projectType: 'Oldest to Newest', value: 'Oldest' }
   ];
+
+  filterbyPriority = [
+    { priorityValue: 'High', priorityvalue: 'High' },
+    { priorityValue: 'Medium', priorityvalue: 'Medium' },
+    { priorityValue: 'Low', priorityvalue: 'Low' }
+  ];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -182,18 +191,18 @@ export class CompletedTaskProcessManagerComponent {
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-  
+
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
               comment.date.split("T")[0] === today
             );
-  
+
             return {
               ...task,
               todayComments: todayComments.length ? todayComments : null, // Assign filtered comments
             };
           });
-  
+
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
@@ -209,28 +218,37 @@ export class CompletedTaskProcessManagerComponent {
 
   searchtext() {
     this.showLoader = true;
-  
-    // Convert array to string if needed
+
+    // Convert array to string if needed for selectedtype
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
-  
+
+    // Ensure selectedpriority is a single value (not an array)
+    const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
+
+    // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
     this.superService
-      .getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', sortType)
+      .getsuperadmintasks(
+        this.selectedUserIds.join(','),
+        'Completed',
+        sortType,
+        priorityType // Use the single priority value here
+      )
       .subscribe(
         (response) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
-  
+
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
               );
-  
+
               return {
                 ...task,
                 todayComments: todayComments?.length ? todayComments : null,
               };
             });
-  
+
             this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);
@@ -243,7 +261,6 @@ export class CompletedTaskProcessManagerComponent {
         }
       );
   }
-
   getUserAllList() {
     this.showLoader = true;
     this.projectManagerService.getUserAllList().subscribe(

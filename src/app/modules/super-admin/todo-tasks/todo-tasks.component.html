@@ -40,9 +40,22 @@
 
       <div class="accordion accordion-flush" id="accordianTodoList">
         <p><strong>Ongoing Task</strong></p>
-        <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
-          (change)="searchtext()" [multiple]="false" placeholder="Select Type"> <!-- Ensure only a single value is selected -->
-        </ng-select>
+
+        <div class="select-container mb-3">
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
+                (change)="searchtext()" [multiple]="false" placeholder="Select Type">
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
+                [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
         <br>
         <div class="accordion-item">
           <h2 class="accordion-header" id="flush-TodoListZero">

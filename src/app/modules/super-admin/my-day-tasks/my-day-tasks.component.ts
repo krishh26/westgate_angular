@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./my-day-tasks.component.scss']
 })
 export class MyDayTasksComponent {
- taskDetails: string = '';
+  taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
@@ -28,8 +28,8 @@ export class MyDayTasksComponent {
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
-  categoryList: string[] = [ 'High' ,'Medium', 'Low'];
- statusTaskList: string[] = ['Ongoing', 'Completed'];
+  categoryList: string[] = ['High', 'Medium', 'Low'];
+  statusTaskList: string[] = ['Ongoing', 'Completed'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -41,7 +41,20 @@ export class MyDayTasksComponent {
   failStatusReason: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   isEditing = false;
-  loginUser:any;
+  loginUser: any;
+  selectedtype: any[] = [];
+  selectedpriority: any[] = [];
+
+  filterbyDueDate = [
+    { projectType: 'Newest to Oldest', value: 'Newest' },
+    { projectType: 'Oldest to Newest', value: 'Oldest' }
+  ];
+
+  filterbyPriority = [
+    { priorityValue: 'High', priorityvalue: 'High' },
+    { priorityValue: 'Medium', priorityvalue: 'Medium' },
+    { priorityValue: 'Low', priorityvalue: 'Low' }
+  ];
 
   constructor(
     private superService: SuperadminService,
@@ -51,8 +64,8 @@ export class MyDayTasksComponent {
     private projectService: ProjectService,
     private router: Router,
     private feasibilityService: FeasibilityService,
-     private localStorageService: LocalStorageService,
-  ) { 
+    private localStorageService: LocalStorageService,
+  ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
@@ -288,7 +301,7 @@ export class MyDayTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getMyTask(this.selectedUserIds.join(',') , true).subscribe(
+    this.superService.getMyTask(this.selectedUserIds.join(','), true).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
@@ -316,6 +329,53 @@ export class MyDayTasksComponent {
       }
     );
   }
+
+  searchtext() {
+    this.showLoader = true;
+
+    // Convert array to string if needed for selectedtype
+    const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
+
+    // Ensure selectedpriority is a single value (not an array)
+    const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
+
+    // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
+    this.superService
+      .getMyTask(
+        this.selectedUserIds.join(','),
+        true,
+        sortType,
+        priorityType // Use the single priority value here
+      )
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            const today = new Date().toISOString().split("T")[0];
+
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
+
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null,
+              };
+            });
+
+            this.showLoader = false;
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
+  }
+
 
   getUserAllList() {
     this.showLoader = true;
