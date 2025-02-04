@@ -199,7 +199,7 @@ export class SuperadminAddProjectComponent implements OnInit {
       this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
         if (response.status) {
           this.notificationService.showSuccess('', 'Project updated successfully.');
-          this.router.navigate(['/super-admin/super-admin-projects-all']);
+          this.router.navigate(['/super-admin/status-wise-tracker']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -214,7 +214,7 @@ export class SuperadminAddProjectComponent implements OnInit {
         if (response?.status == true) {
           this.showLoader = false;
           this.notificationService.showSuccess('', 'Project added successfully.');
-          this.router.navigate(['/super-admin/super-admin-projects-all']);
+          this.router.navigate(['/super-admin/status-wise-tracker']);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
