@@ -18,7 +18,7 @@ export class LoginComponent extends BaseLogin implements OnInit {
 
   defaultLoginForm = {
     email: new FormControl("", [Validators.required, Validators.pattern(Patterns.email)]),
-    password: new FormControl("", [Validators.required, Validators.pattern(Patterns.password)]),
+    password: new FormControl("", [Validators.required]),
     role: new FormControl("", [Validators.required]),
   };
 
