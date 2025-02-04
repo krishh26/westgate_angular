@@ -14,8 +14,7 @@
             <a class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
               Logs
             </a>
-            <a routerLink="/project-manager/project/bid-manager-to-action"
-              class="btn btn-primary text-dark">Back</a>
+            <a routerLink="/project-manager/project/bid-manager-to-action" class="btn btn-primary text-dark">Back</a>
           </div>
         </div>
       </div>
@@ -147,7 +146,7 @@
       <br />
 
       <p>{{ projectDetails?.description }}</p>
-      <!-- 
+      <!--
             <section class="pageheader bg-dark">
                 <div class="container">
                     <p><strong>Client & FOI Detils</strong></p>
@@ -276,8 +275,8 @@
                 </div>
             </div> -->
 
-      <div *ngIf="projectDetails?.bidManagerStatus !== 'DroppedAfterFeasibility' && 
-            projectDetails?.bidManagerStatus !== 'AnotherStatus' && 
+      <div *ngIf="projectDetails?.bidManagerStatus !== 'DroppedAfterFeasibility' &&
+            projectDetails?.bidManagerStatus !== 'AnotherStatus' &&
             projectDetails?.bidManagerStatus !== 'YetAnotherStatus'">
         <!-- Content goes here -->
 
@@ -290,16 +289,13 @@
                 {{ projectDetails?.select[0]?.supplierDetails?.name }}
               </h5>
               <div class="d-flex gap-3 align-items-center">
-                <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                class="form-select custom-ng-select-option" 
-                [items]="selectedSupplier" 
-                bindLabel="name"
-                bindValue="_id" 
-                (change)="selectSupplier($event)" 
-                [addTag]="true"
-                [clearable]="false">  <!-- Disable Clear Button -->
-              </ng-select>
-              
+                <ng-container *ngIf="statusBaseHideShow()">
+                  <ng-select style="padding: 0px !important" placeholder="Select Supplier"
+                    class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name"
+                    bindValue="_id" (change)="selectSupplier($event)" [addTag]="true" [clearable]="false">
+                    <!-- Disable Clear Button -->
+                  </ng-select>
+                </ng-container>
                 <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
                   View All
                 </button>
@@ -315,14 +311,16 @@
                     <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier.name }}</span>
 
                     <!-- Input Field -->
-                    <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
-                      placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
+                    <ng-container *ngIf="statusBaseHideShow()">
+                      <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
+                        placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
 
-                    <!-- Save Button -->
-                    <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
-                      (click)="dropUser(supplier)">
-                      Save
-                    </button>
+                      <!-- Save Button -->
+                      <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
+                        (click)="dropUser(supplier)">
+                        Save
+                      </button>
+                    </ng-container>
 
                     <!-- View All Button -->
                     <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
@@ -397,62 +395,68 @@
                 </div>
               </div>
               <!-- Add New Comment -->
-              <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
-                <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
-                  placeholder="Add your comment" />
-                <button class="btn btn-primary" type="button" (click)="pushFeasilityStatus()">
-                  <i class="bi bi-plus-lg"></i> Add
-                </button>
-              </div>
-
-              <!-- Fail Specific Fields -->
-              <div *ngIf="feasibilityStatus === 'Fail'" class="mt-4">
-                <div class="d-flex align-items-center gap-3">
-                  <select class="form-select" [(ngModel)]="selectedFailReason">
-                    <option disabled selected hidden value="">
-                      Select Fail Reason
-                    </option>
-                    <option value="Accreditation">Accreditation</option>
-                    <option value="Time Constraints">Time Constraints</option>
-                    <option value="Certification">Certification</option>
-                    <option value="Case Study">Case Study</option>
-                    <option value="Certifications from Subcontractor">
-                      Certifications from Subcontractor
-                    </option>
-                    <option value="Delivery of goods/Hardware">
-                      Delivery of goods/Hardware
-                    </option>
-                    <option value="Financial Conditions">
-                      Financial Conditions
-                    </option>
-                    <option value="Not related">Not related</option>
-                  </select>
-                  <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
-                    <i class="bi bi-plus-lg"></i>
+              <ng-container *ngIf="statusBaseHideShow()">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
+                  <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
+                    placeholder="Add your comment" />
+                  <button class="btn btn-primary" type="button" (click)="pushFeasilityStatus()">
+                    <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
+              </ng-container>
 
-                <!-- Display added reasons and comments -->
-                <div class="mt-3">
-                  <div class="reason-item border rounded p-3 mb-2"
-                    *ngFor="let reason of failStatusReasons; let i = index">
-                    <div class="d-flex align-items-center">
-                      <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
-                      <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                        [(ngModel)]="reason.comment" />
-                      <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
-                        Remove
-                      </button>
+              <!-- Fail Specific Fields -->
+              <ng-container *ngIf="statusBaseHideShow()">
+                <div *ngIf="feasibilityStatus === 'Fail'" class="mt-4">
+                  <div class="d-flex align-items-center gap-3">
+                    <select class="form-select" [(ngModel)]="selectedFailReason">
+                      <option disabled selected hidden value="">
+                        Select Fail Reason
+                      </option>
+                      <option value="Accreditation">Accreditation</option>
+                      <option value="Time Constraints">Time Constraints</option>
+                      <option value="Certification">Certification</option>
+                      <option value="Case Study">Case Study</option>
+                      <option value="Certifications from Subcontractor">
+                        Certifications from Subcontractor
+                      </option>
+                      <option value="Delivery of goods/Hardware">
+                        Delivery of goods/Hardware
+                      </option>
+                      <option value="Financial Conditions">
+                        Financial Conditions
+                      </option>
+                      <option value="Not related">Not related</option>
+                    </select>
+                    <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+
+                  <!-- Display added reasons and comments -->
+                  <div class="mt-3">
+                    <div class="reason-item border rounded p-3 mb-2"
+                      *ngFor="let reason of failStatusReasons; let i = index">
+                      <div class="d-flex align-items-center">
+                        <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
+                        <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
+                          [(ngModel)]="reason.comment" />
+                        <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row justify-content-end mb-4">
-                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                  <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
-                    class="btn btn-primary w-100">Save Status</a>
+              </ng-container>
+              <ng-container *ngIf="statusBaseHideShow()">
+                <div class="row justify-content-end mb-4">
+                  <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                      class="btn btn-primary w-100">Save Status</a>
+                  </div>
                 </div>
-              </div>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -497,6 +501,7 @@
             </div>
 
             <!-- Dynamic Comment Section -->
+
             <div *ngIf="status" class="status-section comments-section">
               <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
@@ -520,22 +525,27 @@
               </div>
 
               <!-- Add New Comment -->
-              <div class="add-comment d-flex gap-3 align-items-center mt-3">
-                <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                  placeholder="Add your comment" />
-                <button class="btn btn-primary" type="button" (click)="pushStatus()">
-                  <i class="bi bi-plus-lg"></i> Add
-                </button>
-              </div>
+              <ng-container *ngIf="statusBaseHideShow()">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                  <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
+                    placeholder="Add your comment" />
+                  <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                    <i class="bi bi-plus-lg"></i> Add
+                  </button>
+                </div>
+              </ng-container>
             </div>
             <div class="row justify-content-end mb-2 mt-3">
-              <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
-                  class="btn btn-primary w-100">
-                  Save Bid Status
-                </a>
-              </div>
+              <ng-container *ngIf="statusBaseHideShow()">
+                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                  <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                    class="btn btn-primary w-100">
+                    Save Bid Status
+                  </a>
+                </div>
+              </ng-container>
             </div>
+
           </div>
         </div>
         <br />
@@ -544,7 +554,7 @@
                             <p><strong>To-Do Task Comments</strong></p>
                         </div>
                     </section><br>
-        
+
                     <div class="modal-body d-flex">
                         <div class="flex-grow-1 pe-3">
                             <div class="comments-section">
@@ -572,8 +582,8 @@
                             </ng-template>
                         </div>
                     </div>
-        
-        
+
+
                     <div class="modal-body d-flex">
                         <div class="flex-grow-1 pe-3">
                             <div class="comments-section">
@@ -596,7 +606,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <ng-template #noComments>
                         <p class="text-muted">No comments available.</p>
                     </ng-template> -->
@@ -634,12 +644,13 @@
             </div>
           </div>
         </div> -->
-
-        <div class="row justify-content-end">
-          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-            <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+        <ng-container *ngIf="statusBaseHideShow()">
+          <div class="row justify-content-end">
+            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+              <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
+            </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
 
