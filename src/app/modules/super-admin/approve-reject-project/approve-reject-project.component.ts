@@ -66,6 +66,7 @@ export class ApproveRejectProjectComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedBidStatuses:any[]= [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -83,8 +84,18 @@ export class ApproveRejectProjectComponent {
     { value: 'InProgress', status: 'In-Progress' },
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
-    { value: 'Fail', status: 'Fail' }
+    { value: 'Fail', status: 'Fail' },
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
   ];
+
+  bidstatusList = [
+    { bidvalue: 'Awaiting', bidstatus: 'Awaiting' },
+    { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
+    { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
+    { bidvalue: 'Awarded', bidstatus: 'Awarded' },
+    { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
+    { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' }
+  ]
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -302,11 +313,12 @@ export class ApproveRejectProjectComponent {
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.category = this.selectedCategories.join(',');
-    Payload.projectList.industry = this.selectedIndustries.join(',');
-    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
+    // Payload.projectList.category = this.selectedCategories.join(',');
+    // Payload.projectList.industry = this.selectedIndustries.join(',');
+    // Payload.projectList.projectType = this.selectedProjectTypes.join(',');
+    // Payload.projectList.clientType = this.selectedClientTypes.join(',');
+    Payload.projectList.status = this.selectedStatuses.join(',');
+    Payload.projectList.bidManagerStatus = this.selectedBidStatuses.join(',')
     Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
     Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
@@ -423,7 +435,7 @@ export class ApproveRejectProjectComponent {
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
-          this. getProjectList();
+          this.getProjectList();
           this.notificationService.showSuccess('Project updated successfully');
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
