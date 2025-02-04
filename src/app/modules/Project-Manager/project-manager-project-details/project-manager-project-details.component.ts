@@ -398,7 +398,7 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   statusBaseHideShow() {
-    if(this.status == 'DroppedAfterFeasibility' || this.status ==  'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
+    if (this.status == 'DroppedAfterFeasibility' || this.status == 'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
       return false;
     }
     return true;
@@ -833,12 +833,16 @@ export class ProjectManagerProjectDetailsComponent {
 
   selectSupplier(supplier: any) {
     this.selectedSupplier = supplier;
-    const data = {
-      select: {
-        supplierId: this.selectedSupplier?._id,
-      },
-    };
-    this.projectManagerService.dropUser(data, this.projectId).subscribe(
+    // const data = {
+    //   select: {
+    //     supplierId: this.selectedSupplier?._id,
+    //   },
+    // };
+    let param = {
+      userId: this.selectedSupplier?._id,
+      projectId: this.projectId
+    }
+    this.projectService.projectSortList(param).subscribe(
       (response) => {
         if (response?.status == true) {
           this.notificationService.showSuccess(
