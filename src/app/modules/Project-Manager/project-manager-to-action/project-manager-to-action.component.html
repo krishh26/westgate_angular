@@ -18,8 +18,7 @@
                 <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
                     <div id="profile-menu-nav"><br><br>
 
-                        <!-- Category Dropdown -->
-                        <div class="sort-widget mb-3">
+                        <!-- <div class="sort-widget mb-3">
                             <h6 class="p-600">Category</h6>
                             <ng-select style="padding: 0px !important" placeholder="Select Category"
                                 class="form-select custom-ng-select-option" [items]="categoryList" bindLabel="category"
@@ -28,7 +27,6 @@
                             </ng-select>
                         </div>
 
-                        <!-- Industry Dropdown -->
                         <div class="sort-widget mb-3">
                             <h6 class="p-600">Industry</h6>
                             <ng-select style="padding: 0px !important" placeholder="Select Industry"
@@ -38,7 +36,6 @@
                             </ng-select>
                         </div>
 
-                        <!-- Project Type Dropdown -->
                         <div class="sort-widget mb-3">
                             <h6 class="p-600">Project Type</h6>
                             <ng-select style="padding: 0px !important;" placeholder="Select Project Type"
@@ -48,7 +45,6 @@
                             </ng-select>
                         </div>
 
-                        <!-- Client Type Dropdown -->
                         <div class="sort-widget mb-3">
                             <h6 class="p-600">Client Type</h6>
                             <ng-select style="padding: 0px !important;" placeholder="Select Client Type"
@@ -56,11 +52,10 @@
                                 bindLabel="clientType" [multiple]="true" bindValue="value"
                                 [(ngModel)]="selectedClientTypes" (change)="searchtext()">
                             </ng-select>
-                        </div>
+                        </div> -->
 
-                        <!-- Status Dropdown -->
                         <div class="sort-widget mb-3">
-                            <h6 class="p-600">Status</h6>
+                            <h6 class="p-600">Feasibility Status</h6>
                             <ng-select style="padding: 0px !important;" placeholder="Select Status"
                                 class="form-select custom-ng-select-option" [items]="statusList" bindLabel="status"
                                 [multiple]="true" bindValue="value" [(ngModel)]="selectedStatuses"
@@ -68,7 +63,15 @@
                             </ng-select>
                         </div>
 
-                        <!-- Expired Project Checkbox -->
+                        <div class="sort-widget mb-3">
+                            <h6 class="p-600">Bid Status</h6>
+                            <ng-select style="padding: 0px !important;" placeholder="Select Bid Status"
+                                class="form-select custom-ng-select-option" [items]="bidstatusList" bindLabel="bidstatus"
+                                [multiple]="true" bindValue="bidvalue" [(ngModel)]="selectedBidStatuses"
+                                (change)="searchtext()">
+                            </ng-select>
+                        </div>
+
                         <div class="sort-widget mb-3">
                             <h6 class="p-600">Expired Project</h6>
                             <div class="form-check">

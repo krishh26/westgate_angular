@@ -69,7 +69,10 @@ showLoader: boolean = false;
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedBidStatuses:any[]= [];
+
   loginUser: any = [];
+  
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -87,7 +90,17 @@ showLoader: boolean = false;
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
   ];
+
+  bidstatusList = [
+    { bidvalue: 'Awaiting', bidstatus: 'Awaiting' },
+    { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
+    { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
+    { bidvalue: 'Awarded', bidstatus: 'Awarded' },
+    { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
+    { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' }
+  ]
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -325,13 +338,14 @@ showLoader: boolean = false;
     this.tempPayload.projectList.keyword = this.searchText;
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
-    this.tempPayload.projectList.category = this.selectedCategories.join(',');
-    this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
-    this.tempPayload.projectList.projectType =
-      this.selectedProjectTypes.join(',');
-    this.tempPayload.projectList.clientType =
-      this.selectedClientTypes.join(',');
+    // this.tempPayload.projectList.category = this.selectedCategories.join(',');
+    // this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
+    // this.tempPayload.projectList.projectType =
+    //   this.selectedProjectTypes.join(',');
+    // this.tempPayload.projectList.clientType =
+    //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
+    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses.join(',')
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`

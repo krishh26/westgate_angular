@@ -46,16 +46,15 @@ export class ProjectManagerToActionComponent {
   categoryList: any = [];
   industryList: any = [];
   tempPayload: any;
-  // statusList: any = [
-  //   "Awaiting",
-  //   "⁠Documents not found",
-  //   "⁠Dropped",
-  //   "⁠Dropped after feasibility",
-  //   "⁠Failed",
-  //   "⁠Handovered to other supplier",
-  //   "⁠Passed",
-  //   "⁠Submitted"
-  // ];
+
+  bidstatusList = [
+    { bidvalue: 'Awaiting', bidstatus: 'Awaiting' },
+    { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
+    { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
+    { bidvalue: 'Awarded', bidstatus: 'Awarded' },
+    { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
+    { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' }
+  ]
 
   minValue: number = 0;
   maxValue: number = 99999999999999999;
@@ -69,6 +68,7 @@ export class ProjectManagerToActionComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedBidStatuses:any[]= [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -87,6 +87,7 @@ export class ProjectManagerToActionComponent {
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
   ];
   loginUser: any;
   publishStartDate: FormControl = new FormControl('');
@@ -329,13 +330,14 @@ export class ProjectManagerToActionComponent {
     this.tempPayload.projectList.keyword = this.searchText;
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
-    this.tempPayload.projectList.category = this.selectedCategories.join(',');
-    this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
-    this.tempPayload.projectList.projectType =
-      this.selectedProjectTypes.join(',');
-    this.tempPayload.projectList.clientType =
-      this.selectedClientTypes.join(',');
+    // this.tempPayload.projectList.category = this.selectedCategories.join(',');
+    // this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
+    // this.tempPayload.projectList.projectType =
+    //   this.selectedProjectTypes.join(',');
+    // this.tempPayload.projectList.clientType =
+    //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
+    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses.join(',')
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
