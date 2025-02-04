@@ -14,9 +14,6 @@
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
               Add Strips
             </a>
-            <a routerLink="/super-admin/status-wise-tracker" class="btn btn-primary btn-sm text-dark me-2">
-              Back
-            </a>
             <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer;"
               (click)="editProjectDetails(projectDetails?._id)">
               Edit <i class="bi bi-pencil-fill"></i>
@@ -26,6 +23,9 @@
             </a>
             <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
               Logs
+            </a>
+            <a routerLink="/super-admin/status-wise-tracker" class="btn btn-primary btn-sm text-dark me-2">
+              Back
             </a>
           </div>
         </div>
