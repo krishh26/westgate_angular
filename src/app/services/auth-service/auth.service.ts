@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 export enum AuthEndPoint {
   LOGIN_USER = '/user/login',
-  CHANGE_PASSWORD = '/user/change-password/',
+  CHANGE_PASSWORD = '/user/change-password',
   FORGOT_PASSWORD = '/user/forgot',
   USER_LIST = '/user/list',
   USER_DATA = '/user/get',
@@ -52,9 +52,9 @@ export class AuthService {
       .post<any>(this.baseUrl + AuthEndPoint.FORGOT_PASSWORD, payload);
   }
 
-  changePassword(payload: any): Observable<any> {
+  changePassword(payload: any , id:any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + AuthEndPoint.CHANGE_PASSWORD, payload);
+      .patch<any>(this.baseUrl + AuthEndPoint.CHANGE_PASSWORD + '/' + id, payload );
   }
 
   getUserList(userRoles: string): Observable<any> {
