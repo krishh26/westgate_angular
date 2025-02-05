@@ -19,6 +19,7 @@ export class ForgotPasswordComponent extends BaseLogin implements OnInit {
 
   forgotPasswordForm = {
     email: new FormControl("", [Validators.required, Validators.pattern(Patterns.email)]),
+    role: new FormControl("", Validators.required)
   };
 
   forgotForm = new FormGroup(this.forgotPasswordForm, []);
