@@ -191,7 +191,15 @@ export class ProcessManagerTrackerComponent {
       ? this.formatDate(this.trackerEndDate.value)
       : '';
 
-    this.supplierService.getDataBYStatus({ startDate, endDate }).subscribe(
+    // Prepare the request payload with expired and categorisation filters
+    const payload = {
+      startDate,
+      endDate,
+      expired: this.isExpired,  // Pass expired value
+      categorisation: this.selectedCategorisation.join(',') // Pass selected categorisation as a comma-separated string
+    };
+
+    this.supplierService.getDataBYStatus(payload).subscribe(
       (response) => {
         this.showLoader = false;
 
@@ -227,8 +235,10 @@ export class ProcessManagerTrackerComponent {
         console.error('Error fetching data:', error);
       }
     );
+
     this.getProjectList();
   }
+
 
   private formatDate(date: {
     year: number;
