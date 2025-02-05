@@ -34,9 +34,22 @@
                 </div>
 
                 <!-- Add Project Button -->
-                <a routerLink="/process-manager/add-project" class="btn btn-primary btn-sm text-dark ms-3">
+                <!-- <a routerLink="/process-manager/add-project" class="btn btn-primary btn-sm text-dark ms-3">
                     Add Project
-                </a>
+                </a> -->
+
+                <nav id="navbar" class="navbar p-0">
+                    <ul class="p-0 m-0 d-flex align-items-center">
+                        <li class="dropdown position-relative">
+                            <span class="btn btn-primary">+ Add Project</span>
+                            <ul class="dropdown-menu position-absolute">
+                                <li><a routerLink="/process-manager/add-project">Single Entry</a></li>
+                                <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
         </div>
 
@@ -87,7 +100,7 @@
                                     Due Date & Time <i class="bi bi-sort-up"></i>
                                 </th>
                                 <th>Feasibility Status</th>
-                                <th>Feasibility Assign User</th>
+                                <!-- <th>Feasibility Assign User</th> -->
                                 <th>Bid Status</th>
                                 <th>Bid Assign User</th>
                             </tr>
@@ -118,7 +131,7 @@
                                 <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
                                 <td>{{ item?.dueDate | date : "dd/MM/yyyy, h:mm a" }}</td>
                                 <td>{{ item?.status }}</td>
-                                <td>{{ item?.assignFeasibilityUser[0]?.name }}</td>
+                                <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
                                 <td>{{ item?.bidManagerStatus }}</td>
                                 <td>{{ item?.assignBidmanager[0]?.name }}</td>
                             </tr>
