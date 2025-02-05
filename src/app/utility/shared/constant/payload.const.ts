@@ -23,7 +23,8 @@ export const Payload = {
     adminReview: false,
     statusNotInclude: '',
     startCreatedDate: '',
-    endCreatedDate: ''
+    endCreatedDate: '',
+    categorisation: ''
   },
 
   dataByStatus: {

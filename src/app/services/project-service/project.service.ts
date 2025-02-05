@@ -67,7 +67,8 @@ export class ProjectService {
     adminReview?:boolean,
     statusNotInclude?:string,
     startCreatedDate?:string,
-    endCreatedDate?:string
+    endCreatedDate?:string,
+    categorisation?:string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -86,6 +87,9 @@ export class ProjectService {
     }
     if (params?.adminReview) {
       queryParams = queryParams.set('adminReview', params?.adminReview);
+    }
+    if (params?.categorisation) {
+      queryParams = queryParams.set('categorisation', params?.categorisation);
     }
     if (params?.match) {
       queryParams = queryParams.set('match', params?.match);

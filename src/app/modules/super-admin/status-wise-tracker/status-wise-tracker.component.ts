@@ -68,6 +68,10 @@ export class StatusWiseTrackerComponent implements OnInit {
   submissionEndDate: FormControl = new FormControl('');
 
   myControl = new FormControl();
+  isExpired: boolean = false;
+  categorisationChecked: boolean = false;
+  categorisation: string = '';
+  selectedCategorisation: string[] = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -96,9 +100,24 @@ export class StatusWiseTrackerComponent implements OnInit {
     this.getProjectList();
   }
 
+  updateCategorisation(value: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+
+    if (checked) {
+      // Add value if checked
+      this.selectedCategorisation.push(value);
+    } else {
+      // Remove value if unchecked
+      this.selectedCategorisation = this.selectedCategorisation.filter(item => item !== value);
+    }
+
+    this.searchtext(); // Call search function on change
+  }
+
   searchtext() {
     this.showLoader = true;
     console.log('this is called', this.searchText);
+
     // Update payload with filters
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
@@ -107,37 +126,48 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectList.industry = this.selectedIndustries.join(',');
     Payload.projectList.projectType = this.selectedProjectTypes.join(',');
     Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',')
-    Payload.projectList.publishDateRange = (this.publishStartDate.value && this.publishEndDate.value) ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}` : '';
-    Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
+    Payload.projectList.status = this.selectedStatuses.join(',');
+    Payload.projectList.publishDateRange =
+      (this.publishStartDate.value && this.publishEndDate.value)
+        ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
+        : '';
+    Payload.projectList.SubmissionDueDateRange =
+      (this.submissionStartDate.value && this.submissionEndDate.value)
+        ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
+        : '';
     Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
+
+    // Include new checkbox values as a comma-separated string
     Payload.projectList.expired = this.isExpired;
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
+    Payload.projectList.categorisation = this.selectedCategorisation.join(',');
 
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
 
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
 
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
-      } else {
-        this.notificationService.showError(response?.message);
+            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
-
   selectStatus(status: string): void {
     this.selectedBidStatus = '';
     this.selectedStatus = status;
@@ -259,25 +289,23 @@ export class StatusWiseTrackerComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  isExpired: boolean = true;
-
   getProjectList(type?: string) {
     this.showLoader = true;
-  
+
     const startCreatedDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endCreatedDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-  
+
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.expired = this.isExpired;
     Payload.projectList.startCreatedDate = startCreatedDate;
     Payload.projectList.endCreatedDate = endCreatedDate;
-  
+
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
       Payload.projectList.bidManagerStatus = '';
@@ -285,12 +313,12 @@ export class StatusWiseTrackerComponent implements OnInit {
       Payload.projectList.bidManagerStatus = this.status || '';
       Payload.projectList.status = 'Passed';
     }
-  
+
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
-  
+
         if (response?.status === true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
@@ -315,7 +343,7 @@ export class StatusWiseTrackerComponent implements OnInit {
       }
     );
   }
-  
+
 
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days

@@ -3,26 +3,49 @@
     <div class="container-fluid mb-3">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
 
-        <!-- Date Range Section -->
-        <div class="sort-widget d-flex align-items-center">
+        <div class="sort-widget d-flex align-items-center gap-3">
+
+          <div class="d-flex align-items-center gap-3">
+            <!-- Expired Project Checkbox -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="expiredProject" [(ngModel)]="isExpired"
+                (change)="searchtext()">
+              <label class="form-check-label" for="expiredProject">Expired</label>
+            </div>
+
+            <!-- DPS/Framework Checkbox (Value = 1) -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="dpsFramework"
+                (change)="updateCategorisation('DPS/Framework', $event)">
+              <label class="form-check-label" for="dpsFramework">DPS/Framework</label>
+            </div>
+
+            <!-- DTD Checkbox (Value = 2) -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="dtd" (change)="updateCategorisation('DTD', $event)">
+              <label class="form-check-label" for="dtd">DTD</label>
+            </div>
+          </div>
+
+
           <h6 class="p-600 me-3">Date Range</h6>
           <form class="d-flex align-items-center gap-2" (ngSubmit)="getDataByStatus()">
             <div class="input-group">
               <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerStartDate" ngbDatepicker
                 #startDatePicker="ngbDatepicker" />
               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                type="button"></button>
+                type="button">
+              </button>
             </div>
             <div class="input-group">
               <input class="form-control" placeholder="dd-MM-yyyy" [formControl]="trackerEndDate" ngbDatepicker
                 #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()" type="button">
+              </button>
             </div>
           </form>
         </div>
 
-        <!-- Search and Tooltip -->
         <div class="d-flex align-items-center flex-grow-1">
           <div class="form-group mb-0 flex-grow-1">
             <span class="input-icon"><i class="bi bi-search"></i></span>
@@ -31,10 +54,10 @@
               type="text" [(ngModel)]="searchText" (input)="searchtext()" />
           </div>
           <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
-            title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
+            title="Search using BOS ID, Project name, Client name, Website, Notice reference">
+          </i>
         </div>
 
-        <!-- Add Project Dropdown Button -->
         <nav id="navbar" class="navbar p-0">
           <ul class="p-0 m-0 d-flex align-items-center">
             <li class="dropdown position-relative">
@@ -46,9 +69,9 @@
             </li>
           </ul>
         </nav>
-
       </div>
     </div>
+
 
 
 
