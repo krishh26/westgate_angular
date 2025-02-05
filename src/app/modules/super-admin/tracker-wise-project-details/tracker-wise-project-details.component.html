@@ -480,6 +480,10 @@
                 (click)="statusChangeBid('NotAwarded')">
                 Not Awarded
               </button>
+              <button class="btn btn-outline-dark flex-fill m-1" [class.active]="status === 'Nosuppliermatched'"
+                (click)="statusChange('Nosuppliermatched')">
+                No Supplier Matched
+              </button>
             </div>
 
             <!-- Dynamic Comment Section -->

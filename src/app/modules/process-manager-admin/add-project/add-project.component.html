@@ -213,26 +213,10 @@
               </div>
             </div>
             <div class="row">
-              <!-- <div class="col-lg-6 col-xl-6 col-12">
-                                  <div class="row mb-3">
-                                      <label for="inputEmail3" class="col-sm-4 col-form-label">Value</label>
-                                      <div class="col-sm-8">
-                                          <input formControlName="value" type="number" class="form-control">
-                                      </div>
-                                  </div>
-                              </div> -->
-              <div class="col-lg-12 col-xl-12 col-12">
+              <div class="col-lg-6 col-xl-6 col-12">
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-2 col-form-label">Project Type</label>
                   <div class="col-sm-10">
-                    <!-- <select formControlName="projectType" class="form-select">
-                        <option disabled selected hidden value="">
-                          Select Project Type
-                        </option>
-                        <option value="Development">Development</option>
-                        <option value="Product">Product</option>
-                        <option value="Service">Service</option>
-                      </select> -->
                     <ng-select style="padding: 0px !important" placeholder="Select Project Type"
                       class="form-select custom-ng-select-option" [items]="projectTypeList" bindLabel="type"
                       [multiple]="true" bindValue="value" formControlName="projectType" [addTag]="true">
@@ -241,6 +225,21 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-lg-12 col-xl-12 col-12">
+                  <div class="row mb-3">
+                      <label for="inputEmail3" class="col-sm-2 col-form-label">Categorisation</label>
+                      <div class="col-sm-10">
+                          <ng-select style="padding: 0px !important" placeholder="Select Project Type"
+                              class="form-select custom-ng-select-option" [items]="categorisationList"
+                              bindLabel="categorisationtype" [multiple]="false" bindValue="categorisationvalue"
+                              formControlName="projectType" [addTag]="true">
+                          </ng-select>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-2 col-form-label">Mail ID</label>
               <div class="col-sm-10">

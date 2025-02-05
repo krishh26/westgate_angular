@@ -55,6 +55,11 @@ export class AddProjectComponent {
     {type:'Staff Augmentation' , value :'StaffAugmentation'}
   ]
 
+  categorisationList = [
+    { categorisationtype: 'DPS/Framework', categorisationvalue: 'DPS/Framework' },
+    { categorisationtype: 'DTD', categorisationvalue: 'DTD' },
+  ]
+
 
   constructor(
     private route: ActivatedRoute,

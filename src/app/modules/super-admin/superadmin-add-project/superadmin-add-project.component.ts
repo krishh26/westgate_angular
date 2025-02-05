@@ -49,10 +49,15 @@ export class SuperadminAddProjectComponent implements OnInit {
   categoryList: any = [];
   industryList: any = [];
 
-  projectTypeList = [ 
-    {type:'Development/Service' , value :'Development/Service'},
-    {type:'Product' , value :'Product'},
-    {type:'Staff Augmentation' , value :'StaffAugmentation'}
+  projectTypeList = [
+    { type: 'Development/Service', value: 'Development/Service' },
+    { type: 'Product', value: 'Product' },
+    { type: 'Staff Augmentation', value: 'StaffAugmentation' }
+  ]
+
+  categorisationList = [
+    { categorisationtype: 'DPS/Framework', categorisationvalue: 'DPS/Framework' },
+    { categorisationtype: 'DTD', categorisationvalue: 'DTD' },
   ]
 
   constructor(
@@ -115,7 +120,7 @@ export class SuperadminAddProjectComponent implements OnInit {
     }
   }
 
-  
+
   onItemAddIndustry(item: { industry: string }): void {
     // Add type annotation for 'categoryItem'
     console.log(this.industryList)
