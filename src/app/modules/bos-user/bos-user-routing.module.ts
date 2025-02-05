@@ -11,6 +11,7 @@ import { FioDocumentAddEditComponent } from './fio-document-add-edit/fio-documen
 import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: "todo-task",
         component: TodoTasksComponent
+      },
+      {
+        path: "change-password",
+        component: ChangePasswordComponent
       },
       {
         path: "view-project",

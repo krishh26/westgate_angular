@@ -27,6 +27,7 @@ import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { OngoingTodoTaskComponent } from './ongoing-todo-task/ongoing-todo-task.component';
 import { MyDayTodoTaskComponent } from './my-day-todo-task/my-day-todo-task.component';
 import { CompletedTodoTaskComponent } from './completed-todo-task/completed-todo-task.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -47,6 +48,7 @@ import { CompletedTodoTaskComponent } from './completed-todo-task/completed-todo
     OngoingTodoTaskComponent,
     MyDayTodoTaskComponent,
     CompletedTodoTaskComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
