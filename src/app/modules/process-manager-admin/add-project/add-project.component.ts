@@ -33,7 +33,7 @@ export class AddProjectComponent {
     clientName: new FormControl("", Validators.required),
     bidsubmissionhour: new FormControl("", Validators.required),
     bidsubmissionminute: new FormControl("", Validators.required),
-
+    categorisation: new FormControl("", Validators.required),
     // submission: new FormControl("", Validators.required),
     dueDate: new FormControl("", Validators.required),
     noticeReference: new FormControl("", Validators.required),
