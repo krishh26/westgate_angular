@@ -733,16 +733,22 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       this.notificationService.showError('Please select assign to user');
       return;
     }
+    if (!this.dueDate) {
+      this.notificationService.showError('Please select a due date');
+      return;
+    }
     const payload = {
       task: this.projectDetails?.projectName,
       assignTo: [`${this.assignTo}`],
       project: this.projectId,
+      dueDate: this.formatDate(this.dueDate),
     };
     console.log('this is data', payload);
     this.superService.createTask(payload).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('user Assign  Successfully');
+          this.getProjectDetails();
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -751,6 +757,12 @@ export class ProcessManagerTrackerProjectDetailsComponent {
         this.notificationService.showError(error?.message);
       }
     );
+  }
+
+  formatDate(date: any): string {
+    if (!date) return '';
+    const { day, month, year } = date;
+    return `${year}-${month}-${day}`; // Format as 'YYYY-MM-DD'
   }
 
   appointFeasibilityUser(selectedUsers: string[], item: any) {
