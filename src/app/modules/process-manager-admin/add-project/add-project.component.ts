@@ -49,6 +49,13 @@ export class AddProjectComponent {
   categoryList: any = [];
   industryList: any = [];
 
+  projectTypeList = [ 
+    {type:'Development/Service' , value :'Development/Service'},
+    {type:'Product' , value :'Product'},
+    {type:'Staff Augmentation' , value :'StaffAugmentation'}
+  ]
+
+
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
