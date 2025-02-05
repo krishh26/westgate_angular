@@ -7,6 +7,7 @@ import { ProcessManagerTrackerProjectDetailsComponent } from './process-manager-
 import { MyDayTaskProcessManagerComponent } from './my-day-task-process-manager/my-day-task-process-manager.component';
 import { CompletedTaskProcessManagerComponent } from './completed-task-process-manager/completed-task-process-manager.component';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
 
 
 
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: "add-project",
         component: AddProjectComponent
+      },
+      {
+        path: "process-manager-user-profile",
+        component: ProcessManagerUserProfileComponent
       },
     ]
   },

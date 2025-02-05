@@ -17,6 +17,7 @@ import { MyDayTaskProcessManagerComponent } from './my-day-task-process-manager/
 import { CompletedTaskProcessManagerComponent } from './completed-task-process-manager/completed-task-process-manager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { AddProjectComponent } from './add-project/add-project.component';
     ProcessManagerTrackerProjectDetailsComponent,
     MyDayTaskProcessManagerComponent,
     CompletedTaskProcessManagerComponent,
-    AddProjectComponent
+    AddProjectComponent,
+    ProcessManagerUserProfileComponent
   ],
    providers: [NgbActiveModal], 
   exports: [ToDoTasksProcessManagerComponent],
