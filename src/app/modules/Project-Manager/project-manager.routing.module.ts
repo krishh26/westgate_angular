@@ -124,13 +124,17 @@ const routes: Routes = [
         path: 'bid-manager-project-failed',
         component: ProjectManagerFailedProjectComponent,
       },
+      {
+        path: 'bid-manager-user-profile',
+        component: ProjectMangerProfileComponent,
+      },
 
     ],
   },
-  {
-    path: 'profile',
-    component: ProjectMangerProfileComponent,
-  },
+  // {
+  //   path: 'profile',
+  //   component: ProjectMangerProfileComponent,
+  // },
   {
     path: '**',
     pathMatch: 'full',
@@ -142,4 +146,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProjectManagerRoutingModule {}
+export class ProjectManagerRoutingModule { }

@@ -1,7 +1,10 @@
-import { NotificationService } from './../../../services/notification/notification.service';
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+
 
 @Component({
   selector: 'app-boss-user-profile',
@@ -72,6 +75,20 @@ export class BossUserProfileComponent {
       name: "User 3"
     },
   ]
+  showLoader: boolean = false;
+  loginUser: any;
+  changePassword = {
+    newPassword: new FormControl("", [Validators.required]),
+    oldPassword: new FormControl("", [Validators.required]),
+  };
+
+  changePasswordForm = new FormGroup(this.changePassword, []);
+  showOldPassword = false;
+  showNewPassword = false;
+
+  password = 'password';
+  confirmPassword = 'password';
+  showPassword = false;
 
   userDataForm = {
     name: new FormControl("", [Validators.required,]),
@@ -88,11 +105,26 @@ export class BossUserProfileComponent {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService
-  ) { }
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService,
+    private router: Router,
+  ) {
+
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.getUserDetails();
+  }
+
+  public showHidePass(): void {
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.showPassword = true;
+    } else {
+      this.password = 'password';
+      this.showPassword = false;
+    }
   }
 
   getUserDetails(): void {
@@ -107,6 +139,28 @@ export class BossUserProfileComponent {
     }, (error) => {
       this.notificationService.showError(error?.error?.message || 'Error');
     });
+  }
+
+  forgotpassword(): void {
+    this.changePasswordForm.markAllAsTouched();
+    if (this.changePasswordForm.valid) {
+      this.showLoader = true;
+      this.authService.changePassword(this.changePasswordForm.value, this.loginUser?._id).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.router.navigateByUrl('/');
+          this.notificationService.showSuccess(response?.message || 'Password change successfully');
+          console.log(response?.data);
+
+        } else if (response?.data == null) {
+          this.showLoader = false;
+          this.notificationService.showError(response?.message);
+        }
+      }, (error) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Something went wrong!');
+      })
+    }
   }
 
   onSubmit() {
