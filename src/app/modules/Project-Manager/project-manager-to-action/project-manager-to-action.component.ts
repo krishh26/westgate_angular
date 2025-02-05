@@ -53,7 +53,8 @@ export class ProjectManagerToActionComponent {
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
     { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
-    { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' }
+    { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
+    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
   ]
 
   minValue: number = 0;
