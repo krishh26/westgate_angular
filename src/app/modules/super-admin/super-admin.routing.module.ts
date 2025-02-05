@@ -23,6 +23,7 @@ import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
 import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
 import { ApproveRejectProjectComponent } from './approve-reject-project/approve-reject-project.component';
+import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super-admin-user-profile.component';
 
 
 
@@ -83,6 +84,10 @@ const routes: Routes = [
       {
         path: "supplier-user-profile",
         component: SupplierUserProfileDataComponent
+      },
+      {
+        path: "super-admin-user-profile",
+        component: SuperAdminUserProfileComponent
       },
       {
         path: "supplier-user-profile-edit",
