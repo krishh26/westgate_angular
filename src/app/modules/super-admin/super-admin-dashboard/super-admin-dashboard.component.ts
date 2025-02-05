@@ -22,7 +22,7 @@ export class SuperAdminDashboardComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-  categoryWise:any = []
+  categoryWise: any = []
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -49,15 +49,15 @@ export class SuperAdminDashboardComponent {
       (response) => {
         if (response?.status == true) {
           this.showLoader = false;
-          
-          // Store the superdashboard list data
+  
+          // Store the dashboard list data
           this.superdashboardlist = response?.data;
   
-          // Convert categoryWise object to an array of {name, totalProjects}
-          this.categoryWise = Object.keys(response?.data?.categoryWise || {}).map(key => {
-            return { name: key, totalProjects: response.data.categoryWise[key] };
+          // Convert categorisationWise object to an array of {name, totalProjects}
+          this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => {
+            return { name: key, totalProjects: response.data.categorisationWise[key] };
           });
-          
+  
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -70,6 +70,7 @@ export class SuperAdminDashboardComponent {
     );
   }
   
+
   getSuperStatictics() {
     this.showLoader = true;
     this.superService.getsuperstatictics().subscribe(
@@ -77,12 +78,12 @@ export class SuperAdminDashboardComponent {
         if (response?.status == true) {
           this.showLoader = false;
           const responseData = response?.data;
-          
+
           // Convert categoryWise object to an array of {name, totalProjects}
           this.categoryWise = Object.keys(responseData.categoryWise).map(key => {
             return { name: key, totalProjects: responseData.categoryWise[key] };
           });
-  
+
           // Set up chart data if necessary (this part was unchanged)
           const day = this.superstatictics.map((project: any) => project?.day);
           const data = this.superstatictics.map((project: any) => project?.data);
@@ -117,7 +118,7 @@ export class SuperAdminDashboardComponent {
       }
     );
   }
-  
+
 
   getManageUserList() {
     this.showLoader = true;
