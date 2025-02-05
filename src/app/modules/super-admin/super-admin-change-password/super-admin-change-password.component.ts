@@ -4,15 +4,14 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
-import { CustomValidation } from 'src/app/utility/shared/constant/custome-validation';
+import { CustomValidation } from 'src/app/utility/shared/constant/custome-validation';;
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  selector: 'app-super-admin-change-password',
+  templateUrl: './super-admin-change-password.component.html',
+  styleUrls: ['./super-admin-change-password.component.scss']
 })
-export class ChangePasswordComponent {
-
+export class SuperAdminChangePasswordComponent {
   changePassword = {
     newPassword: new FormControl("", [Validators.required]),
     oldPassword: new FormControl("", [Validators.required]),
@@ -48,8 +47,8 @@ export class ChangePasswordComponent {
     if (this.changePasswordForm.valid) {
       this.showLoader = true;
       const payload = {
-        newPassword : this.changePasswordForm.get('newPassword')?.value,
-        oldPassword : this.changePasswordForm.get('oldPassword')?.value
+        newPassword: this.changePasswordForm.get('newPassword')?.value,
+        oldPassword: this.changePasswordForm.get('oldPassword')?.value
       }
       this.authService.changePassword(payload, this.loginUser?._id).subscribe((response) => {
         if (response?.status == true) {
@@ -68,5 +67,4 @@ export class ChangePasswordComponent {
       })
     }
   }
-
 }

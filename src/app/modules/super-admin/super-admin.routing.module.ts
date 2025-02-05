@@ -24,6 +24,9 @@ import { MyDayTasksComponent } from './my-day-tasks/my-day-tasks.component';
 import { CompletedTasksComponent } from './completed-tasks/completed-tasks.component';
 import { ApproveRejectProjectComponent } from './approve-reject-project/approve-reject-project.component';
 import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super-admin-user-profile.component';
+import { SuperAdminChangePasswordComponent } from './super-admin-change-password/super-admin-change-password.component';
+import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
+import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
 
 
 
@@ -125,7 +128,18 @@ const routes: Routes = [
         path: "approve-reject-projects",
         component: ApproveRejectProjectComponent
       },
-
+      {
+        path: "change-password",
+        component: SuperAdminChangePasswordComponent
+      },
+      {
+        path: "drop-after-fesibility-projects",
+        component: DropAfterFesibilityProjectsComponent
+      },
+      {
+        path: "no-supplier-match-projects",
+        component: NoSupplierMatchProjectsComponent
+      },
     ]
   },
   {

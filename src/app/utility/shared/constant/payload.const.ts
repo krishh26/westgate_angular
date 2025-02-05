@@ -20,7 +20,7 @@ export const Payload = {
     myList: '',
     bidManagerStatus: '',
     notAppointed: '',
-    adminReview: false,
+    adminReview: '',
     statusNotInclude: '',
     startCreatedDate: '',
     endCreatedDate: '',

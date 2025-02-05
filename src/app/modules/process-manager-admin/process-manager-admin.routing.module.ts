@@ -8,6 +8,7 @@ import { MyDayTaskProcessManagerComponent } from './my-day-task-process-manager/
 import { CompletedTaskProcessManagerComponent } from './completed-task-process-manager/completed-task-process-manager.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
+import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
 
 
 
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: "process-manager-user-profile",
         component: ProcessManagerUserProfileComponent
+      },
+      {
+        path: "change-password",
+        component: PmAdminChangePasswordComponent
       },
     ]
   },

@@ -36,6 +36,9 @@ import { CompletedTasksComponent } from './completed-tasks/completed-tasks.compo
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ApproveRejectProjectComponent } from './approve-reject-project/approve-reject-project.component';
 import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super-admin-user-profile.component';
+import { SuperAdminChangePasswordComponent } from './super-admin-change-password/super-admin-change-password.component';
+import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
+import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
 
 
 
@@ -67,7 +70,10 @@ import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super
     MyDayTasksComponent,
      CompletedTasksComponent,
      ApproveRejectProjectComponent,
-     SuperAdminUserProfileComponent
+     SuperAdminUserProfileComponent,
+     SuperAdminChangePasswordComponent,
+     DropAfterFesibilityProjectsComponent,
+     NoSupplierMatchProjectsComponent
   ],
   imports: [
     CommonModule,

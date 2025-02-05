@@ -18,6 +18,7 @@ import { CompletedTaskProcessManagerComponent } from './completed-task-process-m
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
+import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
 
 @NgModule({
   imports: [
@@ -42,9 +43,10 @@ import { ProcessManagerUserProfileComponent } from './process-manager-user-profi
     MyDayTaskProcessManagerComponent,
     CompletedTaskProcessManagerComponent,
     AddProjectComponent,
-    ProcessManagerUserProfileComponent
+    ProcessManagerUserProfileComponent,
+    PmAdminChangePasswordComponent
   ],
-   providers: [NgbActiveModal], 
+   providers: [NgbActiveModal],
   exports: [ToDoTasksProcessManagerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

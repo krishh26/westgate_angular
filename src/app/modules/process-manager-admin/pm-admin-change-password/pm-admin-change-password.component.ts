@@ -7,11 +7,11 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { CustomValidation } from 'src/app/utility/shared/constant/custome-validation';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  selector: 'app-pm-admin-change-password',
+  templateUrl: './pm-admin-change-password.component.html',
+  styleUrls: ['./pm-admin-change-password.component.scss']
 })
-export class ChangePasswordComponent {
+export class PmAdminChangePasswordComponent {
 
   changePassword = {
     newPassword: new FormControl("", [Validators.required]),
@@ -68,5 +68,4 @@ export class ChangePasswordComponent {
       })
     }
   }
-
 }

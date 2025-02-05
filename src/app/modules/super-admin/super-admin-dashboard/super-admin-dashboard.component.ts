@@ -6,13 +6,15 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import Chart from 'chart.js/auto';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-super-admin-dashboard',
   templateUrl: './super-admin-dashboard.component.html',
   styleUrls: ['./super-admin-dashboard.component.scss']
 })
 export class SuperAdminDashboardComponent {
-
+  trackerStartDate: FormControl = new FormControl('');
+  trackerEndDate: FormControl = new FormControl('');
   superdashboardlist: any = [];
   superstatictics: any = [];
   supplierUserList: any = [];
@@ -33,31 +35,65 @@ export class SuperAdminDashboardComponent {
   }
 
   ngOnInit(): void {
-    this.getProjectDetails('daily');
+    this.getProjectDetails();
     this.getSuperStatictics();
     this.getManageUserList();
+    this.trackerEndDate.valueChanges.subscribe((res: any) => {
+      if (!this.trackerStartDate.value) {
+        this.notificationService.showError(
+          'Please select a Publish start date'
+        );
+        return;
+      } else {
+        this.getProjectDetails(true);
+      }
+    });
   }
+
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.selectedDuration = duration;
-    this.getProjectDetails(duration);
+    this.getProjectDetails();
   }
 
-  getProjectDetails(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
+  private formatDate(date: {
+    year: number;
+    month: number;
+    day: number;
+  }): string {
+    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
+      date.day
+    ).padStart(2, '0')}`;
+  }
+
+  getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
-    this.superService.getDashboardList({ duration: this.selectedDuration }).subscribe(
+    console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
+    const payload : any = {};
+    if(dateFilter) {
+      const startCreatedDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endCreatedDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+
+      payload['startDate'] = startCreatedDate;
+      payload['endDate'] = endCreatedDate;
+    }
+    this.superService.getDashboardList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
           this.showLoader = false;
-  
+
           // Store the dashboard list data
           this.superdashboardlist = response?.data;
-  
+
           // Convert categorisationWise object to an array of {name, totalProjects}
           this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => {
             return { name: key, totalProjects: response.data.categorisationWise[key] };
           });
-  
+
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -69,7 +105,7 @@ export class SuperAdminDashboardComponent {
       }
     );
   }
-  
+
 
   getSuperStatictics() {
     this.showLoader = true;

@@ -64,7 +64,7 @@ export class ProjectService {
     appointed?: string,
     myList?:string,
     notAppointed?:string,
-    adminReview?:boolean,
+    adminReview?:string,
     statusNotInclude?:string,
     startCreatedDate?:string,
     endCreatedDate?:string,

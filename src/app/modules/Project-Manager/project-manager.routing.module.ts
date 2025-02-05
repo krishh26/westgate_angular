@@ -25,6 +25,7 @@ import { ProjectManagerCompletedComponent } from './project-manager-completed/pr
 import { ProjectManagerInProgressComponent } from './project-manager-in-progress/project-manager-in-progress.component';
 import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
 import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
+import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'todo-task',
         component: TodoTasksComponent,
+      },
+      {
+        path: 'change-password',
+        component: PmChangePasswordComponent,
       },
       {
         path: 'expired-project-list',
