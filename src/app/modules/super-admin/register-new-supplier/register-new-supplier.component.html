@@ -152,11 +152,25 @@
                   placeholder="Enter technology stack">
               </div>
             </div>
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-2 col-form-label">Licensing Details</label>
-              <div class="col-sm-10">
-                <input formControlName="licensingDetails" type="email" class="form-control"
+
+            <div class="row mt-0">
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Licensing Details</label>
+                  <div class="col-sm-8">
+                    <input formControlName="licensingDetails" type="email" class="form-control"
                   placeholder="Enter licensing details">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Other Team Members count</label>
+                  <div class="col-sm-8">
+                    <input formControlName="otheremployeeCount" type="text" class="form-control"
+                      placeholder="Enter Other employee count" (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
               </div>
             </div>
 

@@ -42,7 +42,8 @@ export class RegisterNewSupplierComponent implements OnInit {
       IP_Patents: [''],
       password: [''],
       employeeCount: [''],
-      cybersecurityPractices: ['']
+      cybersecurityPractices: [''],
+      otheremployeeCount: ['']
     });
   }
 
