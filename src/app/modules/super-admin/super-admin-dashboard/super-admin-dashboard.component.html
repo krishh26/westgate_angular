@@ -9,7 +9,7 @@
           <div class="col-12 row">
             <div class="col-3">
               <div class="input-group">
-                <input class="form-control" placeholder="Start Date" [formControl]="trackerStartDate" ngbDatepicker
+                <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate" ngbDatepicker
                   #startDatePicker="ngbDatepicker" />
                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
                   type="button">
@@ -18,7 +18,7 @@
             </div>
             <div class="col-3">
               <div class="input-group">
-                <input class="form-control" placeholder="End Date" [formControl]="trackerEndDate" ngbDatepicker
+                <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate" ngbDatepicker
                   #endDatePicker="ngbDatepicker" />
                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
                   type="button">
