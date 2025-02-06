@@ -92,6 +92,7 @@ export class BossUserBulkEntryComponent {
           industry: parseCommaSeparatedField(row[17]), // Convert industry string to an array
           category: parseCommaSeparatedField(row[18]), // Convert category string to an array
           mailID: replaceNullWithEmptyString(row[19]),
+          categorisation: replaceNullWithEmptyString(row[20]),
         };
       });
 
