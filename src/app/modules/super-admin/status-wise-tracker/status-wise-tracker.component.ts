@@ -49,7 +49,6 @@ export class StatusWiseTrackerComponent implements OnInit {
     ToAction: 'ToAction',
     Nosuppliermatched: 'Nosuppliermatched'
   };
-
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
   selectedProjectTypes: any[] = [];
@@ -62,6 +61,10 @@ export class StatusWiseTrackerComponent implements OnInit {
     floor: 0,
     ceil: 99999999999999999
   };
+  isExpired: boolean = false;
+  categorisationChecked: boolean = false;
+  categorisation: string = '';
+  selectedCategorisation: string[] = [];
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -69,10 +72,6 @@ export class StatusWiseTrackerComponent implements OnInit {
   submissionEndDate: FormControl = new FormControl('');
 
   myControl = new FormControl();
-  isExpired: boolean = false;
-  categorisationChecked: boolean = false;
-  categorisation: string = '';
-  selectedCategorisation: string[] = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -113,6 +112,11 @@ export class StatusWiseTrackerComponent implements OnInit {
     }
 
     this.searchtext(); // Call search function on change
+    this.getDataByStatus();
+  }
+
+  openAddTeamModal() {
+    this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
   }
 
   searchtext() {
@@ -172,11 +176,6 @@ export class StatusWiseTrackerComponent implements OnInit {
   selectStatus(status: string): void {
     this.selectedBidStatus = '';
     this.selectedStatus = status;
-  }
-
-
-  openAddTeamModal() {
-    this.modalService.open(BossUserBulkEntryComponent, { size: 'xl' });
   }
 
   selectBidStatus(status: string): void {
@@ -242,6 +241,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     this.getProjectList();
   }
 
+
   private formatDate(date: {
     year: number;
     month: number;
@@ -288,10 +288,9 @@ export class StatusWiseTrackerComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], {
-      queryParams: { id: projectId },
-    });
+    this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
   }
+
 
   paginate(page: number) {
     this.page = page;
@@ -354,7 +353,6 @@ export class StatusWiseTrackerComponent implements OnInit {
     );
   }
 
-
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return `${days} days`;
@@ -395,5 +393,4 @@ export class StatusWiseTrackerComponent implements OnInit {
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
   }
-
 }
