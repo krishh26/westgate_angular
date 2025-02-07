@@ -20,7 +20,7 @@
               <span [ngClass]="{
                     'selected-user': selectedUserIds.includes(user._id)
                   }" (click)="toggleUserSelection(user._id)">
-                {{ user.userName }}
+                {{ user.userName }} - {{user?.taskcount}}
               </span>
             </li>
             <!-- View More / View Less Link -->

@@ -257,7 +257,8 @@ export class MyDayTaskProcessManagerComponent {
 
   getUserAllList() {
     this.showLoader = true;
-    this.projectManagerService.getUserAllList().subscribe(
+    const taskcount = true
+    this.projectManagerService.getUserallList(taskcount).subscribe(
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(
