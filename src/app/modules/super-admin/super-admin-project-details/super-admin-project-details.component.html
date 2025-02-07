@@ -355,11 +355,6 @@
               <!-- Display Existing Comments -->
               <div *ngIf="commentData?.length" class="comment-list comments-section">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
-                  <!-- <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                    <span class="text-muted"><strong>Date:</strong>
-                      {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
-                  </div> -->
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">
@@ -371,6 +366,7 @@
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
                     <p class="mt-2">{{ item?.comment }}</p>
+                    
                   </div>
                 </div>
               </div>
@@ -457,7 +453,7 @@
             <div class="card-header bg-primary text-white mb-3">
               <h5 class="mb-0">Bid Status</h5>
             </div>
-  
+
             <!-- Status Buttons -->
             <div class="d-flex justify-content-between flex-wrap mb-4">
               <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'Toaction'"
@@ -490,11 +486,11 @@
                 No Supplier Matched
               </button>
             </div>
-  
+
             <!-- Dynamic Comment Section -->
             <div *ngIf="bidStatus" class="status-section comments-section">
               <h6 class="text-secondary mb-3">{{ bidStatus }} Comments</h6>
-  
+
               <!-- Display Existing Comments -->
               <div *ngIf="bidCommentData?.length" class="comment-list">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of bidCommentData">
@@ -516,7 +512,7 @@
                   </div>
                 </div>
               </div>
-  
+
               <!-- Add New Comment -->
               <div class="add-comment d-flex gap-3 align-items-center mt-3">
                 <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
@@ -526,10 +522,11 @@
                 </button>
               </div>
             </div>
-  
+
             <div class="row justify-content-end mb-2 mt-3">
               <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+                <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                  class="btn btn-primary w-100">
                   Save Bid Status
                 </a>
               </div>
