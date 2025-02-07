@@ -288,7 +288,7 @@ export class StatusWiseTrackerComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
 
