@@ -65,6 +65,7 @@ export class ProjectManagerProjectDetailsComponent {
   };
   userList: any = [];
   selectedSupplier: any = [];
+  imageFields = [{ text: '', file: null }];
   // For check bov
   subContracting: boolean = true;
   loginModalMode: boolean = true;
@@ -107,6 +108,7 @@ export class ProjectManagerProjectDetailsComponent {
   feasibilityStatusComment: FormControl = new FormControl('');
   selectedFailReason: string = '';
   failStatusReasons: { tag: string; comment: string }[] = [];
+  projectStrips: any = [];
 
   constructor(
     private projectService: ProjectService,
@@ -119,7 +121,8 @@ export class ProjectManagerProjectDetailsComponent {
     private superService: SuperadminService,
     private projectManagerService: ProjectManagerService,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private superadminService: SuperadminService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -130,6 +133,7 @@ export class ProjectManagerProjectDetailsComponent {
     this.getProjectDetails();
     this.getTask();
     this.getUserAllList();
+    this.getProjectStrips();
     // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -139,6 +143,116 @@ export class ProjectManagerProjectDetailsComponent {
       roles: [''],
     });
   }
+
+  addField() {
+    this.imageFields.push({ text: '', file: null });
+  }
+
+  // Remove a field
+  removeField(index: number) {
+    if (this.imageFields.length > 1) {
+      this.imageFields.splice(index, 1);
+    }
+  }
+
+  // Handle file input change
+  onFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    this.imageFields[index].file = file;
+  }
+
+  // Save fields and close modal
+  saveFields(modalId: number) {
+    const allFilesUploaded = this.imageFields.every((field) => !!field.file);
+    if (!allFilesUploaded) {
+      return;
+    }
+    // this.imageFields = [{ text: '', file: null }];
+    let uploadedImages: any = {};
+    const formData = new FormData();
+    for (const field of this.imageFields) {
+      if (field.file) {
+        formData.append('files', field.file);
+      }
+    }
+    this.feasibilityService.uploadDocument(formData).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.saveImageDetails(response.data, modalId.toString());
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  saveImageDetails(data: any, id: string) {
+    const dataArray = Array.isArray(data) ? data : [data];
+    const mergerdata = dataArray.map((response: any, index: number) => {
+      const field = this.imageFields[index];
+      return {
+        imageText: field.text,
+        key: response.key,
+        url: response.url,
+        fileName: response.fileName,
+      };
+    });
+
+    const payload = {
+      images: mergerdata,
+      projectId: this.projectId,
+    };
+    this.superadminService.updateProjectDetails(payload, id).subscribe(
+      (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.notificationService.showSuccess('images add succesfully');
+          this.imageFields = [{ text: '', file: null }];
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(
+          error?.message || 'Error while uploading'
+        );
+      }
+    );
+  }
+
+  openViewImage(image: any) {
+    this.selectViewImage = image;
+    console.log(this.selectViewImage?.url);
+  }
+
+  getProjectStrips() {
+    this.projectService.getprojectStrips(this.projectId).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectStrips = response?.data?.data;
+          console.log(this.projectStrips);
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+
 
   viewAllComments(userId: string) {
     // Check if the userId is passed correctly
