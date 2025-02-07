@@ -499,30 +499,34 @@
             </div>
 
             <!-- Status Buttons -->
-            <div class="d-flex justify-content-between flex-wrap mb-4">
-              <!-- <button class="btn btn-outline-primary flex-fill m-1" [class.active]="bidStatus === 'ToAction'"
-                (click)="statusChangeBid('Toaction')">
-                To Action
-              </button> -->
-              <button class="btn btn-outline-info flex-fill m-1" [class.active]="bidStatus === 'InSolution'"
-                (click)="statusChangeBid('InSolution')">
+            <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
+                      projectDetails?.bidManagerStatus != 'Awarded' &&
+                      projectDetails?.bidManagerStatus != 'Dropped after feasibility' &&
+                      projectDetails?.bidManagerStatus != 'NotAwarded'
+                    ">
+              <!-- <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Toaction'"
+                      (click)="statusChange('Toaction')">
+                      To Action
+                    </button> -->
+              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
+                (click)="statusChange('InSolution')">
                 In-Solution
               </button>
-              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="bidStatus === 'WaitingForResult'"
-                (click)="statusChangeBid('WaitingForResult')">
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'WaitingForResult'"
+                (click)="statusChange('WaitingForResult')">
                 Waiting For Result
               </button>
               <button class="btn btn-outline-success flex-fill m-1"
-                [class.active]="bidStatus === 'Dropped after feasibility'"
-                (click)="statusChangeBid('Dropped after feasibility')">
+                [class.active]="status === 'Dropped after feasibility'"
+                (click)="statusChange('Dropped after feasibility')">
                 Dropped After Feasibility
               </button>
-              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="bidStatus === 'Awarded'"
-                (click)="statusChangeBid('Awarded')">
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Awarded'"
+                (click)="statusChange('Awarded')">
                 Awarded
               </button>
-              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="bidStatus === 'NotAwarded'"
-                (click)="statusChangeBid('NotAwarded')">
+              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'NotAwarded'"
+                (click)="statusChange('NotAwarded')">
                 Not Awarded
               </button>
               <button class="btn btn-outline-dark flex-fill m-1" [class.active]="status === 'Nosuppliermatched'"
