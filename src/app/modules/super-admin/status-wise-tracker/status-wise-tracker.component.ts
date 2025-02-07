@@ -40,13 +40,14 @@ export class StatusWiseTrackerComponent implements OnInit {
     InProgress: 'InProgress',
     InHold: 'InHold',
     Passed: 'Passed',
-    DroppedAfterFeasibility: 'DroppedAfterFeasibility',
+    DroppedAfterFeasibility: 'Dropped after feasibility',
     InSolution: 'InSolution',
     Shortlisted: 'Shortlisted',
     WaitingForResult: 'WaitingForResult',
     Awarded: 'Awarded',
     NotAwarded: 'NotAwarded',
-    ToAction: 'ToAction'
+    ToAction: 'ToAction',
+    Nosuppliermatched: 'Nosuppliermatched'
   };
 
   selectedCategories: any[] = [];

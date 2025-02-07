@@ -398,7 +398,7 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   statusBaseHideShow() {
-    if (this.status == 'DroppedAfterFeasibility' || this.status == 'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
+    if (this.status == 'Dropped after feasibility' || this.status == 'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
       return false;
     }
     return true;

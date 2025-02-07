@@ -87,7 +87,7 @@ export class ProjectManagerCompletedComponent {
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
+    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
   ]
@@ -296,7 +296,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.bidManagerStatus =  "DroppedAfterFeasibility, Awarded, NotAwarded";
+    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched";
     this.tempPayload.projectList.statusNotInclude = 'Fail'
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(

@@ -98,7 +98,7 @@ showLoader: boolean = false;
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'DroppedAfterFeasibility', bidstatus: 'Dropped after feasibility' },
+    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
   ]
