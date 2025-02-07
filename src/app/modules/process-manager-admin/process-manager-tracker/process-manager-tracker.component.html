@@ -9,7 +9,7 @@
                         <!-- Expired Project Checkbox -->
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="expiredProject" [(ngModel)]="isExpired"
-                                (change)="searchtext()">
+                                (change)="searchtext(); getDataByStatus();">
                             <label class="form-check-label" for="expiredProject">Expired</label>
                         </div>
 

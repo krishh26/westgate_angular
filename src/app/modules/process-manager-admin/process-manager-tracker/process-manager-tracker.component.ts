@@ -112,6 +112,7 @@ export class ProcessManagerTrackerComponent {
     }
 
     this.searchtext(); // Call search function on change
+    this.getDataByStatus();
   }
 
   openAddTeamModal() {

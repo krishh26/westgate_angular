@@ -55,20 +55,26 @@ export class SupplierAdminService {
   getDataBYStatus(params: {
     startDate?: string;
     endDate?: string;
-  }): Observable<any> {
+  } | any): Observable<any> {
     const url = `${this.baseUrl}${SupplierAdminEndPoint.STATUS_WISE_COUNT_VALUE}`;
     let queryParams = new HttpParams();
-  
+
     if (params.startDate) {
       queryParams = queryParams.set('startDate', params.startDate);
     }
     if (params.endDate) {
       queryParams = queryParams.set('endDate', params.endDate);
     }
-  
+    if (params.categorisation) {
+      queryParams = queryParams.set('categorisation', params.categorisation);
+    }
+    if (params.expired) {
+      queryParams = queryParams.set('expired', params.expired);
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
-  
+
 
   getSupplierActivity(supplierId: any): Observable<any> {
     return this.httpClient
