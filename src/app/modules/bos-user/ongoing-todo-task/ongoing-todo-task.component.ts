@@ -153,13 +153,29 @@ export class OngoingTodoTaskComponent {
   }
 
   projectDetails(projectId: any) {
-    this.activeModal.close();
-    if (this.loginUser?.role === 'BOS') {
-      this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
-    } else if (this.loginUser?.role === 'ProjectManager') {
-      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+    const modalElement = document.getElementById('taskDetailsModal');
+    if (modalElement) {
+      modalElement.classList.remove('show'); // Hide modal
+      modalElement.style.display = 'none';
+      document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
+      document.body.style.overflow = ''; // Reset overflow
+      document.body.style.paddingRight = ''; // Reset padding
+  
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Remove modal backdrop
+      }
     }
+  
+    setTimeout(() => {
+      if (this.loginUser?.role === 'BOS') {
+        this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+      } else if (this.loginUser?.role === 'ProjectManager') {
+        this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+      }
+    }, 100);
   }
+  
 
   getTask() {
     this.showLoader = true;
