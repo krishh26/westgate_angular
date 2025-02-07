@@ -26,6 +26,7 @@ import { ProjectManagerInProgressComponent } from './project-manager-in-progress
 import { ProjectManagerProjectDetailsComponent } from './project-manager-project-details/project-manager-project-details.component';
 import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
 import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
+import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
 
 const routes: Routes = [
   {
@@ -132,6 +133,10 @@ const routes: Routes = [
       {
         path: 'bid-manager-user-profile',
         component: ProjectMangerProfileComponent,
+      },
+      {
+        path: "completed-project-details",
+        component: CompletedProjectDetailsComponent
       },
 
     ],
