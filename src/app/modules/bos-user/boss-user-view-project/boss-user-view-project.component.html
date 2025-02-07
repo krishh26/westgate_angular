@@ -1,55 +1,129 @@
 <main id="main">
   <section>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-10 col-xl-10 col-12 mob-mb1">
-        </div>
-        <div class="col-lg-2 col-xl-2 col-12 mob-mb1" style="float: right;">
-          <a routerLink="/boss-user/project-list" class="btn btn-primary text-dark">
-            Back</a>
+
+      <div class="row align-items-center">
+        <div class="col-lg-12 col-xl-12 col-12 d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center">
+            <h4 class="me-3"><strong>Project Title:</strong></h4>
+            <h4>{{ projectDetails?.projectName }}</h4>
+          </div>
+          <div class="ms-auto d-flex">
+            <a routerLink="/boss-user/project-list" class="btn btn-primary text-dark">
+              Back</a>
+          </div>
         </div>
       </div>
-      <div class="table-responsive mt-5 mb-3">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th width="100px">Project Title</th>
-              <!-- <th>Project Description</th> -->
-              <th>BOS ID</th>
-              <th>Publish Date</th>
-              <th>Category</th>
-              <th>Industry</th>
-              <th>Min value (GBP)</th>
-              <th>Max value (GBP)</th>
-              <th>Website</th>
-              <th>Link to notice</th>
-              <th>Created Date</th>
-              <th>Due Date & Time</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><a (click)="projectDetails(projectDetails?._id)"
-                  href="javascript:;">{{projectDetails?.projectName}}</a></td>
-              <!-- <td><a title="{{ projectDetails?.description }}">{{ projectDetails?.description | slice:0:10 }}</a></td> -->
-              <td v-align="middle">{{projectDetails?.BOSID}}</td>
-              <td>{{projectDetails?.publishDate | date:'dd/MM/yyyy'}}</td>
-              <td>{{projectDetails?.category}}</td>
-              <td>{{projectDetails?.industry}}</td>
-              <td>£ {{projectDetails?.minValue}}</td>
-              <td>£ {{projectDetails?.maxValue}}</td>
-              <td><a>{{projectDetails?.website}}</a></td>
-              <td><a href='{{projectDetails?.link}}' target="_blank">Link to Notice</a></td>
-              <td>{{projectDetails?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{projectDetails?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-              <td>
-                <a class="btn btn-primary btn-sm" style="cursor: pointer;"
-                  (click)="editProjectDetails(projectDetails?._id)"><i class="bi bi-pencil-fill"></i></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2"><strong>BOS ID:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.BOSID || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Publish Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.publishDate
+                ? (projectDetails?.publishDate | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Category:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.category || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Industry:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.industry || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Min value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.minValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Max value (GBP):</strong></div>
+              <div class="col-md-10">
+                GBP {{ projectDetails?.maxValue || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Website:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.website || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Link to notice:</strong></div>
+              <div class="col-md-10">
+                <a *ngIf="projectDetails?.link; else noLink" href="{{ projectDetails?.link }}" target="_blank">Link to
+                  Notice</a>
+                <ng-template #noLink>-</ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Created Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.createdAt
+                ? (projectDetails?.createdAt | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Due Date & Time:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.dueDate
+                ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
+                : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>CPV Codes:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.CPVCodes || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Notice Reference:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.noticeReference || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Status:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.status || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Project Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.projectType || "-" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Mail Id:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.mailID || "-" }}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2"><strong>Client Type:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientType || "-" }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2"><strong>Client Name:</strong></div>
+              <div class="col-md-10">
+                {{ projectDetails?.clientName || "-" }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <section class="pageheader bg-dark">
@@ -62,11 +136,40 @@
 
       <section class="pageheader bg-dark">
         <div class="container">
-          <p><strong>Client & FOI Detils</strong></p>
+          <p><strong>Login Details</strong></p>
         </div>
       </section>
 
-      <div class="row mt-5">
+      <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2"><strong>Login ID:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.loginID || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Password:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.password || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Link to portal:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.linkToPortal || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Documents link:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.documentsLink || "-" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <section class="pageheader bg-dark">
+        <div class="container">
+          <p><strong>Client & FOI Detils</strong></p>
+        </div>
+      </section> -->
+
+      <!-- <div class="row mt-5">
         <div class="col-lg-4 col-xl-4 col-12 mb-4">
           <div class="card">
             <div class="card-body">
@@ -154,7 +257,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </section>
 </main>
