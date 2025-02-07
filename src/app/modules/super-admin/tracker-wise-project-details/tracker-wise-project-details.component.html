@@ -154,6 +154,35 @@
 
       <section class="pageheader bg-dark">
         <div class="container">
+          <p><strong>Login Details</strong></p>
+        </div>
+      </section>
+
+      <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2"><strong>Login ID:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.loginID || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Password:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.password || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Link to portal:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.linkToPortal || "-" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Documents link:</strong></div>
+              <div class="col-md-10">{{ projectDetails?.documentsLink || "-" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="pageheader bg-dark">
+        <div class="container">
           <p><strong>Documents</strong></p>
         </div>
       </section>
