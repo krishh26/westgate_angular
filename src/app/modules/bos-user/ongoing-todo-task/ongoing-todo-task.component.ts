@@ -154,12 +154,16 @@ export class OngoingTodoTaskComponent {
 
   projectDetails(projectId: any) {
     this.activeModal.close();
-    this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+    if (this.loginUser?.role === 'BOS') {
+      this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+    } else if (this.loginUser?.role === 'ProjectManager') {
+      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+    }
   }
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id ,status: 'Ongoing'}).subscribe(
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, status: 'Ongoing' }).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format

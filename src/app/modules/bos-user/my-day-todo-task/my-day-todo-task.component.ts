@@ -221,11 +221,12 @@ export class MyDayTodoTaskComponent {
 
   projectDetails(projectId: any) {
     this.activeModal.close();
-    this.router.navigate(['/boss-user/view-project'], {
-      queryParams: { id: projectId },
-    });
+    if (this.loginUser?.role === 'BOS') {
+      this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+    } else if (this.loginUser?.role === 'ProjectManager') {
+      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+    }
   }
-
   getTask() {
     this.showLoader = true;
     this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, myDay: true  }).subscribe(

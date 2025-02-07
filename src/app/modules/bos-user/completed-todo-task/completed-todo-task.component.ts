@@ -73,116 +73,116 @@ export class CompletedTodoTaskComponent {
     this.getProjectList();
   }
 
-  
+
   statusBidChange(status: string) {
     this.bidStatus = status;
     this.bidCommentData = [];
     this.bidManagerStatusComment.reset();
   }
 
-    getProjectList() {
-      this.showLoader = true;
-      this.projectService.getProjectList(Payload.projectList).subscribe(
+  getProjectList() {
+    this.showLoader = true;
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  pushBidStatus() {
+    if (!this.bidManagerStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    // Create a new date instance for the current date and time
+    const currentDate = new Date();
+
+    this.bidCommentData.push({
+      comment: this.bidManagerStatusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      bidManagerStatus: this.bidStatus,
+      userId: this.loginUser?._id,
+    });
+
+    // Reset the comment input field
+    this.bidManagerStatusComment.reset();
+  }
+
+  saveBidStatus(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
+    if (!contractEdit) {
+      if (!this.bidStatus) {
+        return this.notificationService.showError('Please select a status.');
+      }
+
+      if (this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please click the "Add" button to save your comment.'
+        );
+      }
+
+      // Check if the status has at least one comment
+      const hasExistingComment = this.bidCommentData.some(
+        (item) => item.bidManagerStatus === this.bidStatus
+      );
+      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+        return this.notificationService.showError(
+          'Please provide a comment for the selected status.'
+        );
+      }
+      payload = {
+        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatusComment: [
+          ...this.bidCommentData,
+          // ...this.projectDetails?.bidManagerStatusComment,
+        ],
+      };
+    }
+
+    // API call to update project details
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
+      .subscribe(
         (response) => {
-          this.projectList = [];
-          if (response?.status == true) {
-            this.showLoader = false;
-            this.projectList = response?.data?.data;
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            // this.getProjectDetails();
           } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
-          this.showLoader = false;
+          this.notificationService.showError('Failed to update project');
         }
       );
-    }
-  
-    pushBidStatus() {
-      if (!this.bidManagerStatusComment.value) {
-        this.notificationService.showError('Please enter a status comment');
-        return;
-      }
-  
-      // Create a new date instance for the current date and time
-      const currentDate = new Date();
-  
-      this.bidCommentData.push({
-        comment: this.bidManagerStatusComment.value,
-        date: currentDate.toISOString(), // ISO format for standardization (optional)
-        bidManagerStatus: this.bidStatus,
-        userId: this.loginUser?._id,
-      });
-  
-      // Reset the comment input field
-      this.bidManagerStatusComment.reset();
-    }
-  
-    saveBidStatus(type?: string, contractEdit?: boolean) {
-      let payload: any = {};
-      if (!contractEdit) {
-        if (!this.bidStatus) {
-          return this.notificationService.showError('Please select a status.');
-        }
-  
-        if (this.bidManagerStatusComment.value) {
-          return this.notificationService.showError(
-            'Please click the "Add" button to save your comment.'
-          );
-        }
-  
-        // Check if the status has at least one comment
-        const hasExistingComment = this.bidCommentData.some(
-          (item) => item.bidManagerStatus === this.bidStatus
-        );
-        if (!hasExistingComment && !this.bidManagerStatusComment.value) {
-          return this.notificationService.showError(
-            'Please provide a comment for the selected status.'
-          );
-        }
-        payload = {
-          bidManagerStatus: this.bidStatus || '',
-          bidManagerStatusComment: [
-            ...this.bidCommentData,
-            // ...this.projectDetails?.bidManagerStatusComment,
-          ],
-        };
-      }
-  
-      // API call to update project details
-      this.feasibilityService
-        .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
-        .subscribe(
-          (response) => {
-            if (response?.status === true) {
-              this.notificationService.showSuccess(
-                'Project updated successfully'
-              );
-              this.isEditing = false;
-              // this.getProjectDetails();
-            } else {
-              this.notificationService.showError(
-                response?.message || 'Failed to update project'
-              );
-            }
-          },
-          (error) => {
-            this.notificationService.showError('Failed to update project');
-          }
-        );
-    }
-  
-    isBidCommentValid(): boolean {
-      // Validate if a comment exists for the selected status or is added
-      const hasComment = this.bidCommentData.some(
-        (item) => item.bidManagerStatus === this.bidStatus
-      );
-      const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
-      return this.bidStatus && (hasComment || hasUnaddedComment);
-    }
-  
+  }
+
+  isBidCommentValid(): boolean {
+    // Validate if a comment exists for the selected status or is added
+    const hasComment = this.bidCommentData.some(
+      (item) => item.bidManagerStatus === this.bidStatus
+    );
+    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
+    return this.bidStatus && (hasComment || hasUnaddedComment);
+  }
+
 
   openTaskModal(task: any) {
     console.log(task);
@@ -229,14 +229,16 @@ export class CompletedTodoTaskComponent {
 
   projectDetails(projectId: any) {
     this.activeModal.close();
-    this.router.navigate(['/boss-user/view-project'], {
-      queryParams: { id: projectId },
-    });
+    if (this.loginUser?.role === 'BOS') {
+      this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
+    } else if (this.loginUser?.role === 'ProjectManager') {
+      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+    }
   }
-  
+
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id ,status: 'Completed'}).subscribe(
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, status: 'Completed' }).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
