@@ -392,7 +392,7 @@ showLoader: boolean = false;
 
   projectDetails(projectId: any) {
     this.router.navigate(
-      ['/project-manager/project/bid-manager-project-details'],
+      ['/project-manager/project/completed-project-details'],
       { queryParams: { id: projectId } }
     );
   }
