@@ -154,7 +154,23 @@
                                 <input formControlName="CPVCodes" type="text" class="form-control">
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Login ID</label>
+                            <div class="col-sm-8">
+                                <input formControlName="loginID" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password" class="col-sm-4 col-form-label">Password</label>
+                            <div class="col-sm-8">
+                                <input formControlName="password" type="password" class="form-control">
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="col-lg-7 col-xl-7 col-12">
                         <div class="row">
                             <div class="col-lg-6 col-xl-6 col-12">
@@ -228,7 +244,6 @@
                                             bindLabel="type" [multiple]="true" bindValue="value"
                                             formControlName="projectType" [addTag]="true">
                                         </ng-select>
-
                                     </div>
                                 </div>
                             </div>
@@ -240,8 +255,9 @@
                                     <div class="col-sm-10">
                                         <ng-select style="padding: 0px !important" placeholder="Select Categorisation"
                                             class="form-select custom-ng-select-option" [items]="categorisationList"
-                                            bindLabel="categorisationtype" [multiple]="false" bindValue="categorisationvalue"
-                                            formControlName="categorisation" [addTag]="true">
+                                            bindLabel="categorisationtype" [multiple]="false"
+                                            bindValue="categorisationvalue" formControlName="categorisation"
+                                            [addTag]="true">
                                         </ng-select>
 
                                     </div>
@@ -292,6 +308,26 @@
                                     <div class="col-sm-8">
                                         <input formControlName="maxValue" type="text" class="form-control"
                                             aria-label="Max value (GBP)" (keypress)="NumberOnly($event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-0">
+                            <div class="col-lg-6 col-xl-6 col-12">
+                                <div class="row mb-3">
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Link to portal</label>
+                                    <div class="col-sm-8">
+                                        <input formControlName="linkToPortal" type="text" class="form-control"
+                                            aria-label="Link to portal">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-6 col-12">
+                                <div class="row mb-3">
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label">Documents link</label>
+                                    <div class="col-sm-8">
+                                        <input formControlName="documentsLink" type="text" class="form-control"
+                                            aria-label="Documents link">
                                     </div>
                                 </div>
                             </div>

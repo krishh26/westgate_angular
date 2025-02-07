@@ -41,6 +41,10 @@ export class AddProjectComponent {
     minValue: new FormControl("", Validators.required),
     maxValue: new FormControl("", Validators.required),
     bidsubmissiontime: new FormControl("10", Validators.required),
+    documentsLink: new FormControl("", Validators.required),
+    linkToPortal: new FormControl("", Validators.required),
+    password: new FormControl("", Validators.required),
+    loginID: new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
