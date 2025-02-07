@@ -706,10 +706,9 @@
               <p class="mb-1 text-white fw-bold">{{ item?.text }}</p>
             </div>
             <br />
-            <div *ngIf="item.type === 'Image'">
-              <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                [attr.data-bs-target]="'#imageModal_' + item._id">
-                Add
+            <div>
+              <button class="btn btn-danger btn-sm" (click)="deleteStrips(item?._id)">
+                Delete Strip
               </button>
             </div>
           </div>

@@ -652,6 +652,39 @@ export class TrackerWiseProjectDetailsComponent {
     }
   }
 
+    deleteStrips(id: any) {
+      
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to delete this comment?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00B96F',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete!',
+      }).then((result: any) => {
+        if (result?.value) {
+          this.showLoader = true;
+          this.projectService.deleteStrip(id).subscribe(
+            (response: any) => {
+              if (response?.status === true) {
+                this.showLoader = false;
+                this.notificationService.showSuccess('Comment successfully deleted');
+                window.location.reload();
+              } else {
+                this.showLoader = false;
+                this.notificationService.showError(response?.message);
+              }
+            },
+            (error) => {
+              this.showLoader = false;
+              this.notificationService.showError(error?.message);
+            }
+          );
+        }
+      });
+    }
+
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe(

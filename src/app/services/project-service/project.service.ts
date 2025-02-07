@@ -24,7 +24,8 @@ export enum ProjectEndPoint {
   PROJECT_LOGS = '/project/logs/',
   CREATE_STRIP = '/project-detail-title/create',
   PROJECT_STRIP_LIST = '/project-detail-title/list',
-  ADD_TO_MY_LIST = '/project/update/my-list/'
+  ADD_TO_MY_LIST = '/project/update/my-list/',
+  DELETE_STRIPS = '/project-detail-title/delete',
 }
 
 @Injectable({
@@ -169,6 +170,11 @@ export class ProjectService {
   deleteTask(id: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_TASK + '/' + id);
+  }
+  
+  deleteStrip(id: any): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_STRIPS + '/' + id);
   }
 
   deleteComment(payload: any, id: any): Observable<any> {
