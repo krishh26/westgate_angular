@@ -74,6 +74,7 @@ export class TrackerWiseProjectDetailsComponent {
   selectedThumbnailImage!: string;
   selectedImage!: string;
   uploadType: boolean = true;
+  getReasonList: any = [];
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -662,6 +663,7 @@ export class TrackerWiseProjectDetailsComponent {
           this.status = this.projectDetails?.status;
           this.bidStatus = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
+          this.getReasonList = this.projectDetails?.failStatusReason;
           // this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
           this.bidCommentData =

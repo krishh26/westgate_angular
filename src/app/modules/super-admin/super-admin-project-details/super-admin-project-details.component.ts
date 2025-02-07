@@ -148,6 +148,7 @@ export class SuperAdminProjectDetailsComponent {
   logs: any = [];
   FeasibilityuserList: any = [];
   BiduserList: any = [];
+  getReasonList: any = [];
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -621,6 +622,7 @@ export class SuperAdminProjectDetailsComponent {
           this.status = this.projectDetails?.status;
           this.bidStatus = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
+          this.getReasonList = this.projectDetails?.failStatusReason;
           // this.statusComment.setValue(this.projectDetails?.statusComment);
           this.commentData = this.projectDetails?.statusComment || [];
           this.bidCommentData =

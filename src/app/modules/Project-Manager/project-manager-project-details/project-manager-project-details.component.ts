@@ -109,6 +109,7 @@ export class ProjectManagerProjectDetailsComponent {
   selectedFailReason: string = '';
   failStatusReasons: { tag: string; comment: string }[] = [];
   projectStrips: any = [];
+  getReasonList: any = [];
 
   constructor(
     private projectService: ProjectService,
@@ -495,6 +496,7 @@ export class ProjectManagerProjectDetailsComponent {
           this.feasibilityStatus = this.projectDetails?.status;
           this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
+          this.getReasonList = this.projectDetails?.failStatusReason;
           this.feasibilityCommentData =
             this.projectDetails?.statusComment || [];
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list

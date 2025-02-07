@@ -517,10 +517,26 @@
                         Financial Conditions
                       </option>
                       <option value="Not related">Not related</option>
+                      <option value="Other">Other</option>
                     </select>
                     <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
                       <i class="bi bi-plus-lg"></i>
                     </button>
+                  </div>
+
+                  <div *ngIf="getReasonList?.length" class="comment-list comments-section">
+                    <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                      <!-- <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
+                        <span class="text-muted"><strong>Date:</strong>
+                          {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
+                      </div> -->
+                      <div class="comment mb-3">
+  
+                        <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
+                        <p class="mt-2">{{ reason?.tag }}</p>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Display added reasons and comments -->
