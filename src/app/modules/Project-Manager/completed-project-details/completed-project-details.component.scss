@@ -1,0 +1,260 @@
+#accordianTodoList .accordion-button::after,
+#accordianCompletedTodoList .accordion-button::after {
+    margin-right: 0px;
+}
+
+#accordianTodoList .accordion-button:first-child.accordion-button::after {
+    display: none;
+}
+
+#accordianTodoList .accordion-item,
+#accordianCompletedTodoList .accordion-item {
+    border: 1px solid #D9D9D9 !important;
+    margin-bottom: 15px;
+}
+
+.task-icon {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+ul.SecondarytaskList {
+    margin: 0;
+    padding: 0;
+}
+
+ul.SecondarytaskList li {
+    display: block;
+    margin-bottom: 15px;
+    padding: 12px;
+    border: 1px solid #D9D9D9;
+}
+
+.sidebar-widget {
+    background-color: #F5F5F5;
+    border: 1px solid #F0F0F0;
+    padding: 15px 0;
+    position: relative;
+    height: 100%;
+}
+
+ul.sidebar-nav {
+    margin: 0;
+    padding: 0;
+}
+
+ul.sidebar-nav li {
+    display: block;
+}
+
+ul.sidebar-nav li a {
+    display: block;
+    padding: 10px 15px;
+    color: #303030;
+}
+
+ul.sidebar-nav li a:hover,
+ul.sidebar-nav li a.active {
+    color: #FFF;
+    background-color: #0d6efd;
+}
+
+.bluetext {
+    color: #0d6efd;
+}
+
+ul.taskuserList {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul.taskuserList li {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #F5F5F5;
+    border: 1px solid #D9D9D9;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+
+ul.Listgroup {
+    margin: 0;
+    margin-bottom: 15px;
+    padding: 0 22px;
+    list-style-type: none;
+}
+
+ul.Listgroup li {
+    display: block;
+    padding: 10px 0;
+}
+
+ul.Listgroup li .action-mark {
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+}
+
+ul.todo-actionList {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul.todo-actionList li {
+    display: block;
+}
+
+ul.todo-actionList li a {
+    padding: 10px 15px;
+    background-color: #FFF;
+    color: #303030;
+    margin-bottom: 5px;
+    display: block;
+}
+
+ul.todo-actionList li a:hover {
+    color: #0d6efd;
+}
+
+.sidebar-footer-nav {
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #D9D9D9;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+    width: 90%;
+}
+
+.action-button {
+    color: #303030;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    color: #0d6efd;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Ensures the image fits within the circular area */
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.modal-header input {
+    border: none;
+    outline: none;
+    font-weight: bold;
+}
+
+.comments-section {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.border-start {
+    border-left: 1px solid #ddd;
+}
+
+textarea {
+    resize: none;
+}
+
+.comment-item+ul {
+    margin-top: 15px;
+    /* Adds custom space */
+}
+
+.comment-list {
+    margin-top: 15px;
+}
+
+.details-container {
+    padding-left: 1.5rem;
+}
+
+.details-header {
+    font-weight: bold;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.ng-select .custom-ng-select-option {
+    padding: 0 !important;
+}
+
+.selected-user {
+    // background-color: #e0f7fa; /* Light blue */
+    color: red;
+    /* Darker teal */
+    cursor: pointer;
+}
+
+.bg-light-yellow {
+    background-color: #90EE90;
+    /* Light Yellow */
+}
+
+.bg-light-green {
+    background-color: #FFE5B4;
+    /* Light Blue */
+}
+
+.bg-light-orange {
+    background-color: #F9D5D7;
+    /* Light Orange */
+}
+
+.comment-item textarea {
+    resize: none;
+    /* Disable resizing if unnecessary */
+    min-height: 80px;
+    /* Optional: Set a minimum height */
+}
+
+
+
+
+.comments-section {
+    margin-top: 1rem;
+}
+
+.comment {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd; /* Optional: Add separation between comments */
+}
+
+.comment:last-child {
+    border-bottom: none; /* Remove the border for the last comment */
+}
+
+.comment p {
+    margin: 0;
+}
+
+.text-muted {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
