@@ -33,31 +33,31 @@
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
         <div class="accordion-body">
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-            <li *ngFor="let comment of task.todayComments" class="comment-item">
+            <!-- <li *ngFor="let comment of task.todayComments" class="comment-item"> -->
               <div class="row align-items-center mb-3">
                 <div class="col">
                   <div class="d-flex justify-content-between">
                     <p class="mb-0">
-                      {{ comment?.userDetail?.name }}
+                      {{ task.todayComments[0]?.userDetail?.name }}
                     </p>
                     <small class="text-muted">
-                      {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      {{ task.todayComments[0]?.date | date : "dd/MM/yyyy, h:mm a" }}
                     </small>
                   </div>
                   <small class="text-muted d-block">
-                    {{ comment?.userDetail?.role }}
+                    {{ task.todayComments[0]?.userDetail?.role }}
                   </small>
                 </div>
               </div>
               <div class="d-flex justify-content-between">
-                <p>{{ comment?.comment }}</p>
+                <p>{{ task.todayComments[0]?.comment }}</p>
               </div>
-            </li>
+            <!-- </li> -->
           </ul>
           <p *ngIf="!task?.todayComments" class="text-muted">
             No comments available.
           </p>
-          
+
           <!-- <p *ngIf="!task?.comments?.length" class="text-muted">
             No comments available.
           </p> -->

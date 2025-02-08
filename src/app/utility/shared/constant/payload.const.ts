@@ -27,6 +27,34 @@ export const Payload = {
     categorisation: ''
   },
 
+  projectListStatusWiseTracker: {
+    keyword: '',
+    page: '1',
+    limit: '10',
+    applied: false,
+    sortlist: false,
+    match: '',
+    status: '',
+    category: '',
+    industry: '',
+    projectType: '',
+    clientType: '',
+    publishDateRange: '',
+    SubmissionDueDateRange: '',
+    valueRange: '',
+    expired: false,
+    supplierStatus: '',
+    appointed: '',
+    myList: '',
+    bidManagerStatus: '',
+    notAppointed: '',
+    adminReview: '',
+    statusNotInclude: '',
+    startCreatedDate: '',
+    endCreatedDate: '',
+    categorisation: ''
+  },
+
   dataByStatus: {
     endDate: '',
     startDate: '',

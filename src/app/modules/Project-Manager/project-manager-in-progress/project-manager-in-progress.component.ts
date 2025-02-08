@@ -334,7 +334,7 @@ export class ProjectManagerInProgressComponent {
     // this.tempPayload.projectList.clientType =
     //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses.join(',')
+    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses?.length > 0 ? this.selectedBidStatuses.join(',') : 'InSolution, WaitingForResult';
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
