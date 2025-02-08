@@ -408,7 +408,12 @@
                       </small>
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
-                    <p class="mt-2">{{ item?.comment }}</p>
+                    <div class="d-flex justify-content-between">
+                      <p class="mt-2">{{ item?.comment }}</p>
+                      <button class="btn btn-sm text-danger" (click)="deleteComment(item, item?.commentId)">
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
