@@ -98,10 +98,10 @@ export class CompletedTasksComponent {
           if (response?.status === true) {
             this.taskList = response?.data?.data.map((task: any) => ({
               ...task,
-              todayComments: task?.comments || null, // Assigning all comments directly
+              todayComments: task?.comments?.length ? task.comments[0] : null,
             }));
-  
             this.showLoader = false;
+            console.log(this.taskList);
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
@@ -113,7 +113,6 @@ export class CompletedTasksComponent {
         }
       );
   }
-  
 
   onChangeMyday(value: any) {
     console.log(value);
