@@ -225,7 +225,7 @@ export class TrackerWiseProjectDetailsComponent {
               this.notificationService.showSuccess(
                 'Project successfully deleted'
               );
-              this.getProjectDetails();
+              this.router.navigate(['/super-admin/status-wise-tracker'])
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
