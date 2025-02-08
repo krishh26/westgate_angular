@@ -173,7 +173,8 @@
                   <th style="cursor: pointer;" (click)="duedatesort('dueDate')">Due Date & Time <i
                       class="bi bi-sort-up"></i></th>
                   <th>Assign User</th>
-                  <th>Status</th>
+                  <th>Feasibility Status</th>
+                  <th>Bid Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -191,6 +192,7 @@
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>{{item?.assignBidmanager[0]?.name}}</td>
+                  <td>{{item?.status}}</td>
                   <td>{{item?.bidManagerStatus}}</td>
                   <td>
                     <div style="display: flex; gap: 10px;">
