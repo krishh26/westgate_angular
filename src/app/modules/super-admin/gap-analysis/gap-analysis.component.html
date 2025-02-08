@@ -4,7 +4,25 @@
             <div class="col-lg-12 col-xl-12 col-12">
                 <div class="statistic-card">
                     <div class="card-body">
-                        <h5 class="text-theme mb-0"><strong>Gap Analysis</strong></h5>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                          <h5 class="text-theme mb-0"><strong>Gap Analysis</strong></h5>
+                          <form class="d-flex align-items-center gap-2">
+                              <div class="input-group">
+                                  <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate"
+                                      ngbDatepicker #startDatePicker="ngbDatepicker" />
+                                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
+                                      type="button">
+                                  </button>
+                              </div>
+                              <div class="input-group">
+                                  <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
+                                      ngbDatepicker #endDatePicker="ngbDatepicker" />
+                                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                                      type="button">
+                                  </button>
+                              </div>
+                          </form>
+                        </div>
                         <div class="table-responsive mt-5 mb-3">
                             <table class="table table-striped align-middle">
                                 <thead>

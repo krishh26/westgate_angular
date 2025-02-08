@@ -643,7 +643,7 @@ export class TrackerWiseProjectDetailsComponent {
       }
     );
   }
-  
+
   detailPage() {
     this.router.navigate(['/feasibility-user/minimum-eligibility-form'], {
       queryParams: { id: this.projectId },

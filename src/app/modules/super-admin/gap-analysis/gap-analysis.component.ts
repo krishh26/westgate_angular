@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -11,7 +12,8 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
   styleUrls: ['./gap-analysis.component.scss']
 })
 export class GapAnalysisComponent {
-
+  trackerStartDate: FormControl = new FormControl('');
+  trackerEndDate: FormControl = new FormControl('');
   showLoader: boolean = false;
   gapAnalysisData: any = [];
   page: number = pagination.page;
@@ -19,7 +21,7 @@ export class GapAnalysisComponent {
   totalRecords: number = pagination.totalRecords;
   selectedProjects: any[] = [];
   searchText: string = "";
-  filteredData : any[] = [];
+  filteredData: any[] = [];
 
   constructor(
     private superService: SuperadminService,
@@ -32,14 +34,47 @@ export class GapAnalysisComponent {
 
   ngOnInit(): void {
     this.getGapAnalysisData();
+    this.trackerEndDate.valueChanges.subscribe((res: any) => {
+      if (!this.trackerStartDate.value) {
+        this.notificationService.showError(
+          'Please select a Publish start date'
+        );
+        return;
+      } else {
+        this.getGapAnalysisData();
+      }
+    });
+  }
+
+  private formatDate(date: {
+    year: number;
+    month: number;
+    day: number;
+  }): string {
+    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
+      date.day
+    ).padStart(2, '0')}`;
   }
 
   getGapAnalysisData(searchText?: string) {
-    let param : any = {};
-    if(searchText) {
+    let param: any = {};
+    if (searchText) {
       param['keyword'] = searchText
     }
     this.showLoader = true;
+
+    const startDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+
+    if(startDate && endDate) {
+      param['startDate'] = startDate;
+      param['endDate'] = endDate;
+    }
+
     this.gapAnalysisData = [];
     this.superService.getGapAnalysis(param).subscribe(
       (response) => {

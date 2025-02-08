@@ -180,6 +180,7 @@ export class StatusWiseTrackerComponent implements OnInit {
 
   selectBidStatus(status: string): void {
     this.selectedStatus = '';
+    Payload.projectList.sortlist = false;
     this.selectedBidStatus = status;
   }
 
@@ -314,7 +315,6 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectList.expired = this.isExpired;
     Payload.projectList.startCreatedDate = startCreatedDate;
     Payload.projectList.endCreatedDate = endCreatedDate;
-
     if (type === 'feasibility') {
       Payload.projectList.status = this.status || '';
       Payload.projectList.bidManagerStatus = '';
@@ -381,8 +381,10 @@ export class StatusWiseTrackerComponent implements OnInit {
     if (value === 'Shortlisted') {
       // Set shortlisted to true
       Payload.projectList.sortlist = true;
+      this.status = "";
       // Clear other relevant parameters
       Payload.projectList.status = '';
+      Payload.projectList.bidManagerStatus = '';
       // Payload.projectList.bidManagerStatus = '';
     } else {
       // Use the existing filter logic for other statuses
