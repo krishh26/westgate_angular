@@ -206,10 +206,25 @@ export class TodoTasksComponent {
   }
 
   projectDetails(projectId: any) {
-    this.activeModal.close();
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], {
-      queryParams: { id: projectId },
-    });
+    const modalElement = document.getElementById('taskDetailsModal');
+    if (modalElement) {
+      modalElement.classList.remove('show'); // Hide modal
+      modalElement.style.display = 'none';
+      document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
+      document.body.style.overflow = ''; // Reset overflow
+      document.body.style.paddingRight = ''; // Reset padding
+
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Remove modal backdrop
+      }
+    }
+    setTimeout(() => {
+      this.router.navigate(['/super-admin/tracker-wise-project-details'], {
+        queryParams: { id: projectId },
+      });
+    }, 100);
+
   }
 
   addTask() {
