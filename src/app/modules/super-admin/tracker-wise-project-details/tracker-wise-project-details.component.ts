@@ -65,7 +65,6 @@ export class TrackerWiseProjectDetailsComponent {
   supportDocument!: FormGroup;
   projectStage!: FormGroup;
   casestudylist: any = [];
-  statusComment: FormControl = new FormControl('');
   statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
   commentData: any[] = [];
@@ -141,15 +140,18 @@ export class TrackerWiseProjectDetailsComponent {
   imageFields = [{ text: '', file: null }];
   failStatusReasons: { tag: string; comment: string }[] = [];
   selectedFailReason: string = '';
-
+  feasibilityCommentData: any[] = [];
   bidStatus: string = 'Expired';
   bidManagerStatusComment: FormControl = new FormControl('');
+  feasibilityStatus: string = 'Expired';
   bidCommentData: any[] = [];
   selectedUserIds: number[] = [];
   showAllLogs: boolean = false;
   logs: any = [];
   FeasibilityuserList: any = [];
   BiduserList: any = [];
+  feasibilityStatusComment: FormControl = new FormControl('');
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -378,18 +380,23 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   pushStatus() {
-    if (!this.statusComment.value) {
+    if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
+
+    // Create a new date instance for the current date and time
     const currentDate = new Date();
+
     this.commentData.push({
-      comment: this.statusComment.value,
-      date: currentDate.toISOString(),
-      status: this.status,
+      comment: this.bidManagerStatusComment.value,
+      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      bidManagerStatus: this.status,
       userId: this.loginUser?._id,
     });
-    this.statusComment.reset();
+
+    // Reset the comment input field
+    this.bidManagerStatusComment.reset();
   }
 
   getForTitleUserAllList() {
@@ -636,6 +643,7 @@ export class TrackerWiseProjectDetailsComponent {
       }
     );
   }
+  
   detailPage() {
     this.router.navigate(['/feasibility-user/minimum-eligibility-form'], {
       queryParams: { id: this.projectId },
@@ -737,6 +745,35 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+  statusFeasibilityChange(status: string) {
+    this.feasibilityStatus = status;
+    this.feasibilityCommentData = [];
+    this.feasibilityStatusComment.reset();
+  }
+
+  pushFeasilityStatus() {
+    if (!this.feasibilityStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+
+    const currentDate = new Date();
+    this.feasibilityCommentData = [
+      ...this.feasibilityCommentData,
+      {
+        comment: this.feasibilityStatusComment.value,
+        date: currentDate.toISOString(),
+        status: this.feasibilityStatus,
+        userId: this.loginUser?._id,
+      },
+    ];
+
+    this.feasibilityStatusComment.reset();
+
+    // Force UI update
+    // this.cdr.detectChanges();
+  }
+
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
@@ -745,12 +782,13 @@ export class TrackerWiseProjectDetailsComponent {
           this.showLoader = false;
           this.projectDetails = response?.data;
           this.casestudylist = response?.data?.casestudy;
-          this.status = this.projectDetails?.status;
-          this.bidStatus = this.projectDetails?.bidManagerStatus;
+          this.feasibilityStatus = this.projectDetails?.status;
+          this.status = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
           this.getReasonList = this.projectDetails?.failStatusReason;
-          // this.statusComment.setValue(this.projectDetails?.statusComment);
-          this.commentData = this.projectDetails?.statusComment || [];
+          this.commentData = this.projectDetails?.bidManagerStatusComment;
+          this.feasibilityCommentData =
+            this.projectDetails?.statusComment || [];
           this.bidCommentData =
             this.projectDetails?.bidManagerStatusComment || [];
           this.subContractDocument =
@@ -777,7 +815,7 @@ export class TrackerWiseProjectDetailsComponent {
   statusChange(status: string) {
     this.status = status;
     this.commentData = [];
-    this.statusComment.reset();
+    this.bidManagerStatusComment.reset();
   }
 
   statusChangeBid(newStatus: string) {
@@ -960,22 +998,23 @@ export class TrackerWiseProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {};
     if (!contractEdit) {
-      if (this.statusComment.value && this.statusDate.value) {
-        this.commentData.push({
-          comment: this.statusComment.value,
+      if (this.feasibilityStatusComment.value && this.statusDate.value) {
+        this.feasibilityCommentData.push({
+          comment: this.feasibilityStatusComment.value,
           date: this.statusDate.value,
           status: this.status,
           userId: this.loginUser?._id,
         });
       }
 
-      // if (this.bidManagerStatusComment.value && this.statusDate.value) {
-      //   this.commentData.push({
-      //     comment: this.bidManagerStatusComment.value,
-      //     date: this.statusDate.value,
-      //     bidManagerStatus: this.bidStatus,
-      //   });
-      // }
+      if (this.bidManagerStatusComment.value && this.statusDate.value) {
+        this.commentData.push({
+          comment: this.bidManagerStatusComment.value,
+          date: this.statusDate.value,
+          bidManagerStatus: this.status,
+          userId: this.loginUser?._id,
+        });
+      }
 
       payload = {
         subContractingfile: this.subContractDocument || [],
@@ -991,7 +1030,7 @@ export class TrackerWiseProjectDetailsComponent {
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.status || '',
-        statusComment: this.commentData,
+        statusComment: this.feasibilityCommentData,
         bidManagerStatus: this.bidStatus || '',
         bidManagerStatusComment: this.bidCommentData,
         loginDetail: this.projectDetails.loginDetail || '',
@@ -1437,23 +1476,23 @@ export class TrackerWiseProjectDetailsComponent {
     let payload: any = {};
 
     if (!contractEdit) {
-      if (!this.status) {
+      if (!this.feasibilityStatus) {
         return this.notificationService.showError('Please select a status.');
       }
 
       // Check if the status has at least one comment
-      if (this.status !== 'Fail') {
-        const hasExistingComment = this.commentData.some(
-          (item) => item.status === this.status
+      if (this.feasibilityStatus !== 'Fail') {
+        const hasExistingComment = this.feasibilityCommentData.some(
+          (item) => item.status === this.feasibilityStatus
         );
-        if (!hasExistingComment && !this.statusComment.value) {
+        if (!hasExistingComment && !this.feasibilityStatusComment.value) {
           return this.notificationService.showError(
             'Please provide a comment for the selected status.'
           );
         }
 
         // If a comment is filled but not added
-        if (this.statusComment.value) {
+        if (this.feasibilityStatusComment.value) {
           return this.notificationService.showError(
             'Please click the "Add" button to save your comment.'
           );
@@ -1476,9 +1515,9 @@ export class TrackerWiseProjectDetailsComponent {
       payload = {
         projectType: this.projectDetails.projectType,
         clientDocument: this.projectDetails?.clientDocument || [],
-        status: this.status || '',
+        status: this.feasibilityStatus || '',
         statusComment: [
-          ...this.commentData,
+          ...this.feasibilityCommentData,
           ...this.projectDetails?.statusComment,
         ],
         failStatusReason: this.failStatusReasons,
@@ -1513,9 +1552,9 @@ export class TrackerWiseProjectDetailsComponent {
       );
   }
 
+
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
-
     if (!contractEdit) {
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
@@ -1528,8 +1567,8 @@ export class TrackerWiseProjectDetailsComponent {
       }
 
       // Check if the status has at least one comment
-      const hasExistingComment = this.bidCommentData.some(
-        (item) => item.bidManagerStatus === this.bidStatus
+      const hasExistingComment = this.commentData.some(
+        (item) => item.bidManagerStatus === this.status
       );
       if (!hasExistingComment && !this.bidManagerStatusComment.value) {
         return this.notificationService.showError(
@@ -1537,9 +1576,9 @@ export class TrackerWiseProjectDetailsComponent {
         );
       }
       payload = {
-        bidManagerStatus: this.bidStatus || '',
+        bidManagerStatus: this.status || '',
         bidManagerStatusComment: [
-          ...this.bidCommentData,
+          ...this.commentData,
           ...this.projectDetails?.bidManagerStatusComment,
         ],
       };
@@ -1568,21 +1607,32 @@ export class TrackerWiseProjectDetailsComponent {
       );
   }
 
+
   isCommentValid(): boolean {
-    // Validate if a comment exists for the selected status or is added
-    const hasComment = this.commentData.some(
-      (item) => item.status === this.status
+    if (!this.feasibilityStatus) return false;
+
+    // Check if at least one comment exists for the selected status
+    const hasComment = this.feasibilityCommentData.some(
+      (item) => item.status === this.feasibilityStatus
     );
-    const hasUnaddedComment = this.statusComment.value && !hasComment;
-    return this.status && (hasComment || hasUnaddedComment);
+
+    if (this.feasibilityStatus === 'Fail') {
+      return (
+        this.failStatusReasons.length > 0 &&
+        this.failStatusReasons.every((reason) => reason.comment.trim() !== '')
+      );
+    }
+
+    return hasComment;
   }
+
 
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
-    const hasComment = this.bidCommentData.some(
-      (item) => item.bidManagerStatus === this.bidStatus
+    const hasComment = this.commentData.some(
+      (item) => item.bidManagerStatus === this.status
     );
     const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
-    return this.bidStatus && (hasComment || hasUnaddedComment);
+    return this.status && (hasComment || hasUnaddedComment);
   }
 }
