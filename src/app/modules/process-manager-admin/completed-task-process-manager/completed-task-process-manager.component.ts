@@ -232,37 +232,24 @@ export class CompletedTaskProcessManagerComponent {
 
   searchtext() {
     this.showLoader = true;
-
-    // Convert array to string if needed for selectedtype
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
-
-    // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
-    // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
+  
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
         'Completed',
         sortType,
-        priorityType // Use the single priority value here
+        priorityType
       )
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            const today = new Date().toISOString().split("T")[0];
-
-            this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
-
-              return {
-                ...task,
-                todayComments: todayComments?.length ? todayComments : null,
-              };
-            });
-
+            this.taskList = response?.data?.data.map((task: any) => ({
+              ...task,
+              todayComments: task?.comments || null, // Assigning all comments directly
+            }));
+  
             this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);
@@ -275,6 +262,8 @@ export class CompletedTaskProcessManagerComponent {
         }
       );
   }
+
+  
   getUserAllList() {
     this.showLoader = true;
     const taskcount = true
