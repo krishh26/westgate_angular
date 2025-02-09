@@ -235,13 +235,13 @@ export class CompletedTodoTaskComponent {
       document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
       document.body.style.overflow = ''; // Reset overflow
       document.body.style.paddingRight = ''; // Reset padding
-  
+
       const backdrop = document.querySelector('.modal-backdrop');
       if (backdrop) {
         backdrop.remove(); // Remove modal backdrop
       }
     }
-  
+
     setTimeout(() => {
       if (this.loginUser?.role === 'BOS') {
         this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
@@ -259,10 +259,7 @@ export class CompletedTodoTaskComponent {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments?.filter((comment: any) =>
-              comment.date.split("T")[0] === today
-            );
-
+            const todayComments = task?.comments;
             return {
               ...task,
               todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments

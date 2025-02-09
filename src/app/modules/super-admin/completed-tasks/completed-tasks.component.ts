@@ -85,7 +85,6 @@ export class CompletedTasksComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-  
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
@@ -357,7 +356,6 @@ export class CompletedTasksComponent {
     });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
   }
-
   getTask() {
     this.showLoader = true;
     this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed').subscribe(
@@ -366,16 +364,12 @@ export class CompletedTasksComponent {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments?.filter((comment: any) =>
-              comment.date.split("T")[0] === today
-            );
-
+            const todayComments = task?.comments;
             return {
               ...task,
               todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
             };
           });
-
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
