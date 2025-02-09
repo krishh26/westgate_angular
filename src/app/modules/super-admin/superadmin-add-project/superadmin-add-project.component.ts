@@ -204,40 +204,55 @@ export class SuperadminAddProjectComponent implements OnInit {
   // }
 
 
-  // Submit form
   submitForm() {
     this.showLoader = true;
-    let payload = {
-      data: [this.productForm.value]
+    // Get the current form values
+    let formData = this.productForm.value;
+  
+    // Check if minValue or maxValue are empty (or null/undefined) and set to 0 if so
+    if (formData.minValue === "" || formData.minValue == null) {
+      formData.minValue = 0;
     }
+    if (formData.maxValue === "" || formData.maxValue == null) {
+      formData.maxValue = 0;
+    }
+  
+    let payload = { data: [formData] };
+  
     if (this.projectId) {
-      this.projectService.editProject(this.projectId, this.productForm.value).subscribe((response) => {
-        if (response.status) {
-          this.notificationService.showSuccess('', 'Project updated successfully.');
-          this.router.navigate(['/super-admin/status-wise-tracker']);
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-        error => {
+      this.projectService.editProject(this.projectId, formData).subscribe(
+        (response) => {
+          if (response.status) {
+            this.notificationService.showSuccess('', 'Project updated successfully.');
+            this.router.navigate(['/super-admin/status-wise-tracker']);
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
-        })
+        }
+      );
     } else {
-      this.projectService.addProject(payload).subscribe((response) => {
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.notificationService.showSuccess('', 'Project added successfully.');
-          this.router.navigate(['/super-admin/status-wise-tracker']);
-        } else {
-          this.notificationService.showError(response?.message);
+      this.projectService.addProject(payload).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('', 'Project added successfully.');
+            this.router.navigate(['/super-admin/status-wise-tracker']);
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      }, (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      });
+      );
     }
   }
+  
 }
