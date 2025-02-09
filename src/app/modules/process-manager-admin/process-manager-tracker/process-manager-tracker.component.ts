@@ -40,7 +40,7 @@ export class ProcessManagerTrackerComponent {
     InProgress: 'InProgress',
     InHold: 'InHold',
     Passed: 'Passed',
-    'Dropped after feasibility': 'Dropped after feasibility',
+   'Dropped after feasibility': 'Dropped after feasibility',
     InSolution: 'InSolution',
     Shortlisted: 'Shortlisted',
     WaitingForResult: 'WaitingForResult',
@@ -124,29 +124,29 @@ export class ProcessManagerTrackerComponent {
     console.log('this is called', this.searchText);
 
     // Update payload with filters
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.category = this.selectedCategories.join(',');
-    Payload.projectList.industry = this.selectedIndustries.join(',');
-    Payload.projectList.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectList.clientType = this.selectedClientTypes.join(',');
-    Payload.projectList.status = this.selectedStatuses.join(',');
-    Payload.projectList.publishDateRange =
+    Payload.projectListStatusWiseTracker.keyword = this.searchText;
+    Payload.projectListStatusWiseTracker.page = String(this.page);
+    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
+    Payload.projectListStatusWiseTracker.category = this.selectedCategories.join(',');
+    Payload.projectListStatusWiseTracker.industry = this.selectedIndustries.join(',');
+    Payload.projectListStatusWiseTracker.projectType = this.selectedProjectTypes.join(',');
+    Payload.projectListStatusWiseTracker.clientType = this.selectedClientTypes.join(',');
+    Payload.projectListStatusWiseTracker.status = this.status;
+    Payload.projectListStatusWiseTracker.publishDateRange =
       (this.publishStartDate.value && this.publishEndDate.value)
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
         : '';
-    Payload.projectList.SubmissionDueDateRange =
+    Payload.projectListStatusWiseTracker.SubmissionDueDateRange =
       (this.submissionStartDate.value && this.submissionEndDate.value)
         ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
         : '';
-    Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
+    Payload.projectListStatusWiseTracker.valueRange = this.minValue + '-' + this.maxValue;
 
     // Include new checkbox values as a comma-separated string
-    Payload.projectList.expired = this.isExpired;
-    Payload.projectList.categorisation = this.selectedCategorisation.join(',');
+    Payload.projectListStatusWiseTracker.expired = this.isExpired;
+    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
 
-    this.projectService.getProjectList(Payload.projectList).subscribe(
+    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
@@ -180,6 +180,7 @@ export class ProcessManagerTrackerComponent {
 
   selectBidStatus(status: string): void {
     this.selectedStatus = '';
+    Payload.projectListStatusWiseTracker.sortlist = false;
     this.selectedBidStatus = status;
   }
 
@@ -288,7 +289,7 @@ export class ProcessManagerTrackerComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
 
@@ -307,23 +308,22 @@ export class ProcessManagerTrackerComponent {
     const endCreatedDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-
-    Payload.projectList.keyword = this.searchText;
-    Payload.projectList.page = String(this.page);
-    Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.expired = this.isExpired;
-    Payload.projectList.startCreatedDate = startCreatedDate;
-    Payload.projectList.endCreatedDate = endCreatedDate;
-
+    Payload.projectListStatusWiseTracker.adminReview = '';
+    Payload.projectListStatusWiseTracker.keyword = this.searchText;
+    Payload.projectListStatusWiseTracker.page = String(this.page);
+    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
+    Payload.projectListStatusWiseTracker.expired = this.isExpired;
+    Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
+    Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
     if (type === 'feasibility') {
-      Payload.projectList.status = this.status || '';
-      Payload.projectList.bidManagerStatus = '';
+      Payload.projectListStatusWiseTracker.status = this.status || '';
+      Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else if (type === 'bid') {
-      Payload.projectList.bidManagerStatus = this.status || '';
-      Payload.projectList.status = 'Passed';
+      Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
+      Payload.projectListStatusWiseTracker.status = 'Passed';
     }
 
-    this.projectService.getProjectList(Payload.projectList).subscribe(
+    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
@@ -380,14 +380,16 @@ export class ProcessManagerTrackerComponent {
     // Check if the status is "Shortlisted"
     if (value === 'Shortlisted') {
       // Set shortlisted to true
-      Payload.projectList.sortlist = true;
+      Payload.projectListStatusWiseTracker.sortlist = true;
+      this.status = "";
       // Clear other relevant parameters
-      Payload.projectList.status = '';
-      // Payload.projectList.bidManagerStatus = '';
+      Payload.projectListStatusWiseTracker.status = '';
+      Payload.projectListStatusWiseTracker.bidManagerStatus = '';
+      // Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else {
       // Use the existing filter logic for other statuses
       this.status = this.filterObject[value];
-      Payload.projectList.sortlist = false; // Clear shortlisted if not shortlisted
+      Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
     }
 
     // Call the method to get the project list with the updated parameters
