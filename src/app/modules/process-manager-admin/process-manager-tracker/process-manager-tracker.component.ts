@@ -40,7 +40,7 @@ export class ProcessManagerTrackerComponent {
     InProgress: 'InProgress',
     InHold: 'InHold',
     Passed: 'Passed',
-    DroppedAfterFeasibility: 'Dropped after feasibility',
+    'Dropped after feasibility': 'Dropped after feasibility',
     InSolution: 'InSolution',
     Shortlisted: 'Shortlisted',
     WaitingForResult: 'WaitingForResult',
