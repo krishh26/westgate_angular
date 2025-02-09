@@ -34,6 +34,7 @@ export class SupplierUserProfileEditComponent {
     IP_Patents: new FormControl(""),
     employeeCount: new FormControl(""),
     cybersecurityPractices: new FormControl(""),
+    otheremployeeCount: new FormControl("")
   }
 
   supplierDetails: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -53,6 +54,14 @@ export class SupplierUserProfileEditComponent {
     if(this.data) {
       this.supplierDetails.patchValue(this.data);
     }
+  }
+
+  NumberOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
   
   submitForm()

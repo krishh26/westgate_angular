@@ -25,13 +25,8 @@
       <div class="row align-items-end justify-content-between">
         <div class="col-12 d-flex justify-content-between mb-2">
           <h4 class="text-theme"><strong>Supplier Information</strong></h4>
-          <a
-            class="btn btn-primary btn-sm"
-            style="cursor: pointer"
-            routerLink="/super-admin/supplier-user-profile-edit"
-            [state]="supplierDetails"
-            ><i class="bi bi-pencil-fill"></i
-          ></a>
+          <a class="btn btn-primary btn-sm" style="cursor: pointer" routerLink="/super-admin/supplier-user-profile-edit"
+            [state]="supplierDetails"><i class="bi bi-pencil-fill"></i></a>
         </div>
       </div>
 
@@ -52,85 +47,44 @@
                 <td>{{ supplierDetails?.yearOfEstablishment }}</td>
               </tr>
               <tr>
-                <th>Registration Number</th>
-                <td>{{ supplierDetails?.registerNumber }}</td>
-              </tr>
-              <tr>
                 <th>Type of Company</th>
                 <td>{{ supplierDetails?.typeOfCompany }}</td>
-              </tr>
-              <tr>
-                <th>Industry/Sector</th>
-                <td>{{ supplierDetails?.industry_Sector }}</td>
-              </tr>
-              <tr>
-                <th>Company Address</th>
-                <td>{{ supplierDetails?.companyAddress }}</td>
-              </tr>
-              <tr>
-                <th>Developer/Engineer Teams</th>
-                <td>{{ supplierDetails?.developerOrEngineerTeams }}</td>
-              </tr>
-              <tr>
-                <th>Data Privacy Policies</th>
-                <td>{{ supplierDetails?.dataPrivacyPolicies }}</td>
-              </tr>
-              <tr>
-                <th>Security Certifications</th>
-                <td>{{ supplierDetails?.securityCertifications }}</td>
-              </tr>
-              <tr>
-                <th>Email Address</th>
-                <td>{{ supplierDetails?.email }}</td>
-              </tr>
-              <tr>
-                <th>Phone Number</th>
-                <td>{{ supplierDetails?.registerNumber }}</td>
-              </tr>
-              <tr>
-                <th>Customer Support Contact</th>
-                <td>{{ supplierDetails?.customerSupportContact }}</td>
               </tr>
               <tr>
                 <th>VAT or GST Number</th>
                 <td>{{ supplierDetails?.VATOrGSTNumber }}</td>
               </tr>
               <tr>
-                <th>Company Directors/Owners</th>
-                <td>{{ supplierDetails?.companyDirectors_Owners }}</td>
-              </tr>
-              <tr>
-                <th>Compliance Certifications</th>
-                <td>{{ supplierDetails?.complianceCertifications }}</td>
-              </tr>
-              <tr>
-                <th>Products/Services Offered</th>
-                <td>{{ supplierDetails?.products_ServicesOffered }}</td>
-              </tr>
-              <tr>
-                <th>Technology Stack</th>
-                <td>{{ supplierDetails?.technologyStack }}</td>
-              </tr>
-              <tr>
-                <th>Licensing Details</th>
-                <td>{{ supplierDetails?.licensingDetails }}</td>
-              </tr>
-              <tr>
-                <th>IP/Patents</th>
-                <td>{{ supplierDetails?.IP_Patents }}</td>
+                <th>Company Address</th>
+                <td>{{ supplierDetails?.companyAddress }}</td>
               </tr>
               <tr>
                 <th>Employee Count</th>
                 <td>{{ supplierDetails?.employeeCount }}</td>
               </tr>
               <tr>
-                <th>Cybersecurity Practices</th>
-                <td>{{ supplierDetails?.cybersecurityPractices }}</td>
+                <th>Developer/Engineer Teams</th>
+                <td>{{ supplierDetails?.developerOrEngineerTeams }}</td>
               </tr>
-              <!-- <tr>
-                <th>Password</th>
-                <td>{{ supplierDetails?.password }}</td>
-              </tr> -->
+              <tr>
+                <th>Other Team Members count</th>
+                <td>{{ supplierDetails?.otheremployeeCount }}</td>
+              </tr>
+
+              <tr>
+                <th>Email Address</th>
+                <td>{{ supplierDetails?.email }}</td>
+              </tr>
+
+              <tr>
+                <th>Company Directors/Owners</th>
+                <td>{{ supplierDetails?.companyDirectors_Owners }}</td>
+              </tr>
+
+              <tr>
+                <th>Phone Number</th>
+                <td>{{ supplierDetails?.registerNumber }}</td>
+              </tr>
             </tbody>
           </table>
         </div>

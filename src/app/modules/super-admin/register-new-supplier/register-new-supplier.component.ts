@@ -51,8 +51,11 @@ export class RegisterNewSupplierComponent implements OnInit {
     this.superadminService.supplierregister(this.companyForm.value).subscribe((response) => {
       if (response?.status == true) {
         this.showLoader = false;
-        this.notificationService.showSuccess('', 'Supplier admin added successfully.');
-        window.location.reload()
+        this.notificationService.showSuccess('Supplier admin added successfully.');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+       
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
