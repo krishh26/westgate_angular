@@ -512,11 +512,7 @@
               <h5 class="mb-0">Bid Status</h5>
             </div>
 
-            <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
-                      projectDetails?.bidManagerStatus != 'Awarded' &&
-                      projectDetails?.bidManagerStatus != 'Dropped after feasibility' &&
-                      projectDetails?.bidManagerStatus != 'NotAwarded'
-                    ">
+            <div class="d-flex justify-content-between flex-wrap mb-4" >
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution

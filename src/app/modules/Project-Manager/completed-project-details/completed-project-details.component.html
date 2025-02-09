@@ -440,6 +440,17 @@
                   </div>
                 </div>
               </div>
+
+              <div  class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                  <div class="comment mb-3">
+
+                    <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
+                    <p class="mt-2">{{ reason?.tag }}</p>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
