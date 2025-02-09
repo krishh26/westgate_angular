@@ -477,7 +477,14 @@
                           {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
                       </div> -->
                       <div class="comment mb-3">
-
+                        <div class="d-flex justify-content-between align-items-center">
+                          <p class="mb-0 fw-bold">
+                            {{ reason?.userDetails?.name }}
+                          </p>
+                          <small class="text-muted">
+                            {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                          </small>
+                        </div>
                         <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
                         <p class="mt-2">{{ reason?.tag }}</p>
                       </div>

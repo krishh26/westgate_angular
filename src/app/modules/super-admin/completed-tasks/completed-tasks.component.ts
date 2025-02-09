@@ -423,6 +423,7 @@ export class CompletedTasksComponent {
             if (response?.status == true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Task successfully deleted');
+              window.location.reload();
               this.getTask();
             } else {
               this.showLoader = false;

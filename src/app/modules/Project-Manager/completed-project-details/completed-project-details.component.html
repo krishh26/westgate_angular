@@ -174,7 +174,8 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
+              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank"
+                  rel="noopener noreferrer">
                   {{ projectDetails?.documentsLink }}
                 </a></div>
             </div>
@@ -447,10 +448,17 @@
                 </div>
               </div>
 
-              <div  class="comment-list comments-section">
+              <div class="comment-list comments-section">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
                   <div class="comment mb-3">
-
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ reason?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
                     <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
                     <p class="mt-2">{{ reason?.tag }}</p>
                   </div>
