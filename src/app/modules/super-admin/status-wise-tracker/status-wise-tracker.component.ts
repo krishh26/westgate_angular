@@ -131,7 +131,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     Payload.projectListStatusWiseTracker.industry = this.selectedIndustries.join(',');
     Payload.projectListStatusWiseTracker.projectType = this.selectedProjectTypes.join(',');
     Payload.projectListStatusWiseTracker.clientType = this.selectedClientTypes.join(',');
-    Payload.projectListStatusWiseTracker.status = this.selectedStatuses.join(',');
+    Payload.projectListStatusWiseTracker.status = this.status;
     Payload.projectListStatusWiseTracker.publishDateRange =
       (this.publishStartDate.value && this.publishEndDate.value)
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
