@@ -195,11 +195,17 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Link to portal:</strong></div>
-              <div class="col-md-10">{{ projectDetails?.linkToPortal || "-" }}</div>
+              <div class="col-md-10">
+                <a [href]="projectDetails?.linkToPortal" target="_blank" rel="noopener noreferrer">
+                  {{ projectDetails?.linkToPortal }}
+                </a>
+              </div>
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10">{{ projectDetails?.documentsLink || "-" }}</div>
+              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
+                  {{ projectDetails?.documentsLink }}
+                </a></div>
             </div>
           </div>
         </div>
