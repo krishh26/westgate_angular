@@ -163,7 +163,7 @@ export class AddProjectComponent {
         (response) => {
           if (response.status) {
             this.notificationService.showSuccess('', 'Project updated successfully.');
-            this.router.navigate(['/super-admin/status-wise-tracker']);
+            this.router.navigate(['/process-manager/process-manager-tracker']);
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
@@ -180,7 +180,7 @@ export class AddProjectComponent {
           if (response?.status == true) {
             this.showLoader = false;
             this.notificationService.showSuccess('', 'Project added successfully.');
-            this.router.navigate(['/super-admin/status-wise-tracker']);
+            this.router.navigate(['/process-manager/process-manager-tracker']);
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
