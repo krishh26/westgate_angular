@@ -93,6 +93,10 @@ export class BossUserBulkEntryComponent {
           category: parseCommaSeparatedField(row[18]), // Convert category string to an array
           mailID: replaceNullWithEmptyString(row[19]),
           categorisation: replaceNullWithEmptyString(row[20]),
+          documentsLink: replaceNullWithEmptyString(row[21]),
+          linkToPortal: replaceNullWithEmptyString(row[22]),
+          loginID: replaceNullWithEmptyString(row[23]),
+          password: replaceNullWithEmptyString(row[24]),
         };
       });
 
