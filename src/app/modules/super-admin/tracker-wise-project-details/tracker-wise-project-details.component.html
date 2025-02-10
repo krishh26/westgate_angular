@@ -429,6 +429,22 @@
                   </div>
                 </div>
               </div>
+              <div class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ reason?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
+                    <p class="mt-2">{{ reason?.tag }}</p>
+                  </div>
+                </div>
+              </div>
               <!-- Add New Comment -->
               <ng-container>
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
@@ -462,6 +478,7 @@
                         Financial Conditions
                       </option>
                       <option value="Not related">Not related</option>
+                      <option value="No Subcontracting">No Subcontracting</option>
                       <option value="Other">Other</option>
                     </select>
                     <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
@@ -469,13 +486,8 @@
                     </button>
                   </div>
 
-                  <div *ngIf="getReasonList?.length" class="comment-list comments-section">
+                  <div class="comment-list comments-section">
                     <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
-                      <!-- <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted"><strong>Comment:</strong> {{ item.comment }}</span>
-                        <span class="text-muted"><strong>Date:</strong>
-                          {{ item.date | date : "dd/MM/yyyy, h:mm a" }}</span>
-                      </div> -->
                       <div class="comment mb-3">
                         <div class="d-flex justify-content-between align-items-center">
                           <p class="mb-0 fw-bold">
