@@ -103,7 +103,9 @@ export class ProjectManagerCompletedComponent {
     private router: Router,
     private superService: SuperadminService,
       private localStorageService : LocalStorageService
-  ) { }
+  ) { 
+    this.loginUser = this.localStorageService.getLogger();
+   }
 
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
@@ -295,10 +297,11 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.keyword = this.searchText;
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
-    // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched";
-    this.tempPayload.projectList.statusNotInclude = 'Fail'
     this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched";
+    this.tempPayload.projectList.statusNotInclude = 'Fail';
+    console.log(this.tempPayload.projectList);
+    
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
