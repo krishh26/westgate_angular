@@ -40,14 +40,17 @@ export class ProcessManagerTrackerComponent {
     InProgress: 'InProgress',
     InHold: 'InHold',
     Passed: 'Passed',
-   'Dropped after feasibility': 'Dropped after feasibility',
+    'Dropped after feasibility': 'Dropped after feasibility',
     InSolution: 'InSolution',
     Shortlisted: 'Shortlisted',
     WaitingForResult: 'WaitingForResult',
     Awarded: 'Awarded',
     NotAwarded: 'NotAwarded',
     ToAction: 'ToAction',
-    Nosuppliermatched: 'Nosuppliermatched'
+    Nosuppliermatched: 'Nosuppliermatched',
+    'Go-NoGoStage1': 'Go-NoGoStage1',
+    'SupplierConfirmation': 'SupplierConfirmation',
+    'Go-NoGoStage2': 'Go-NoGoStage2'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];

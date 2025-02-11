@@ -47,7 +47,10 @@ export class StatusWiseTrackerComponent implements OnInit {
     Awarded: 'Awarded',
     NotAwarded: 'NotAwarded',
     ToAction: 'ToAction',
-    Nosuppliermatched: 'Nosuppliermatched'
+    Nosuppliermatched: 'Nosuppliermatched' ,
+    'Go-NoGoStage1' : 'Go-NoGoStage1' ,
+    'SupplierConfirmation' : 'SupplierConfirmation',
+    'Go-NoGoStage2' : 'Go-NoGoStage2'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
