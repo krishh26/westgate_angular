@@ -449,6 +449,40 @@ export class MyDayTasksComponent {
     });
   }
 
+  removeTaskFromMyDay(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want remove task from my day ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.removeTaskFromMyDay(id, this.loginUser._id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Task successfully removed from my-day');
+              window.location.reload();
+              this.getTask();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
+
   deleteComment(id: any) {
     let param = {
       commentId: id

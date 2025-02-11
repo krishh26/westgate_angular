@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
@@ -42,7 +43,7 @@ export class MyDayTaskProcessManagerComponent {
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
   ];
-
+  loginUser: any;
 
   constructor(
     private superService: SuperadminService,
@@ -51,7 +52,10 @@ export class MyDayTaskProcessManagerComponent {
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService,
     private router: Router,
-  ) { }
+    private localStorageService: LocalStorageService,
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
+  }
 
   ngOnInit(): void {
     this.getTask();
@@ -191,6 +195,39 @@ export class MyDayTaskProcessManagerComponent {
       this.selectedUsers.push(element?.userId);
     });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
+  }
+
+  removeTaskFromMyDay(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want remove task from my day ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.removeTaskFromMyDay(id, this.loginUser._id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Task successfully removed from my-day');
+              window.location.reload();
+              this.getTask();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
   }
 
   getTask() {

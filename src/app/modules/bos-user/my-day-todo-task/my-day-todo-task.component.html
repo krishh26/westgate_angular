@@ -11,9 +11,8 @@
             }">
           <div>
             <i class="bi bi-circle task-icon"></i>
-            {{ task?.task }}
-            <span *ngIf="task?.pickACategory">
-              ({{ task?.pickACategory }})</span>
+            {{ task?.task }} <span *ngIf="task?.pickACategory">({{ task?.pickACategory }})</span>
+            <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>
           </div>
           <div class="text-end">
             <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
@@ -86,12 +85,23 @@
             <p *ngIf="!modalTask?.discription">No Record Found.</p>
           </div>
 
-          <div class="mb-3" *ngIf="modalTask?.project">
-            <h6><strong>Assigned Project</strong></h6>
-            <a (click)="projectDetails(modalTask?.project?._id)" href="javascript:;">{{ modalTask?.project?.projectName
-              }}</a>
+          <div class="d-flex justify-content-between">
+            <div class="mb-3" *ngIf="modalTask?.project">
+              <h6><strong>Assigned Project</strong></h6>
+              <a (click)="projectDetails(modalTask?.project?._id)" href="javascript:;">{{
+                modalTask?.project?.projectName
+                }}</a>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-secondary mb-2" (click)="removeTaskFromMyDay(modalTask?._id)">
+                Remove From My Day
+              </button>
+            </div>
           </div>
-
+          <div class="mb-3" *ngIf="modalTask?.project">
+            <h6><strong>Status</strong></h6>
+            <p> {{ modalTask?.project?.bidManagerStatus || modalTask?.project?.status }}</p>
+          </div>
           <!-- Comments Section -->
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>

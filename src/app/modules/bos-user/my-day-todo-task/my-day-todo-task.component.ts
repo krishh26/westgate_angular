@@ -9,6 +9,7 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-day-todo-task',
@@ -91,6 +92,39 @@ export class MyDayTodoTaskComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  removeTaskFromMyDay(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want remove task from my day ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.removeTaskFromMyDay(id, this.loginUser._id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Task successfully removed from my-day');
+              window.location.reload();
+              this.getTask();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
   }
 
   pushBidStatus() {
@@ -227,13 +261,13 @@ export class MyDayTodoTaskComponent {
       document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
       document.body.style.overflow = ''; // Reset overflow
       document.body.style.paddingRight = ''; // Reset padding
-  
+
       const backdrop = document.querySelector('.modal-backdrop');
       if (backdrop) {
         backdrop.remove(); // Remove modal backdrop
       }
     }
-  
+
     setTimeout(() => {
       if (this.loginUser?.role === 'BOS') {
         this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
@@ -245,7 +279,7 @@ export class MyDayTodoTaskComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, myDay: true  }).subscribe(
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, myDay: true }).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format

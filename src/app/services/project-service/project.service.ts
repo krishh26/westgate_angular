@@ -20,6 +20,7 @@ export enum ProjectEndPoint {
   CREATE_CATEGORY = '/category/create',
   CREATE_INDUSTRY = '/industry/create',
   DELETE_TASK = '/task/delete',
+  REMOVE_TASK_MY_DAY = '/task/remove-myday',
   DELETE_COMMENT = '/task/delete-comment',
   PROJECT_LOGS = '/project/logs/',
   CREATE_STRIP = '/project-detail-title/create',
@@ -64,13 +65,13 @@ export class ProjectService {
     expired?: boolean,
     supplierStatus?: string,
     appointed?: string,
-    myList?:string,
-    notAppointed?:string,
-    adminReview?:string,
-    statusNotInclude?:string,
-    startCreatedDate?:string,
-    endCreatedDate?:string,
-    categorisation?:string
+    myList?: string,
+    notAppointed?: string,
+    adminReview?: string,
+    statusNotInclude?: string,
+    startCreatedDate?: string,
+    endCreatedDate?: string,
+    categorisation?: string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -172,7 +173,12 @@ export class ProjectService {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_TASK + '/' + id);
   }
-  
+
+  removeTaskFromMyDay(id: any, userId: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + ProjectEndPoint.REMOVE_TASK_MY_DAY + '/' + id, { userId });
+  }
+
   deleteStrip(id: any): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_STRIPS + '/' + id);
@@ -185,11 +191,11 @@ export class ProjectService {
 
   deleteFeasiblityBidComment(payload: any, id: any): Observable<any> {
     return this.httpClient.delete<any>(
-      `${this.baseUrl}${ProjectEndPoint.DELETE_FES_BID_COMMENT}/${id}`, 
+      `${this.baseUrl}${ProjectEndPoint.DELETE_FES_BID_COMMENT}/${id}`,
       { body: payload } // ✅ Pass payload correctly inside options object
     );
   }
-  
+
 
   deleteBulkProject(): Observable<any> {
     return this.httpClient

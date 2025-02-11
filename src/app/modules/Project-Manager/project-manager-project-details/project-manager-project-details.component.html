@@ -174,7 +174,7 @@
               <div class="col-md-2"><strong>Password:</strong></div>
               <div class="col-md-10">{{ projectDetails?.password || "-" }}</div>
             </div>
-           
+
             <div class="row">
               <div class="col-md-2"><strong>Link to portal:</strong></div>
               <div class="col-md-10">
@@ -185,7 +185,8 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
+              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank"
+                  rel="noopener noreferrer">
                   {{ projectDetails?.documentsLink }}
                 </a></div>
             </div>
@@ -633,6 +634,18 @@
               <button class="btn btn-outline-dark flex-fill m-1" [class.active]="status === 'Nosuppliermatched'"
                 (click)="statusChange('Nosuppliermatched')">
                 No Supplier Matched
+              </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'Go-NoGoStage1'"
+                (click)="statusChange('Go-NoGoStage1')">
+                GO-NO GO STAGE 1
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'SupplierConfirmation'"
+                (click)="statusChange('SupplierConfirmation')">
+                SUPPLIER CONFIRMATION
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Go-NoGoStage2'"
+                (click)="statusChange('Go-NoGoStage2')">
+                GO-NO GO STAGE 2
               </button>
             </div>
 

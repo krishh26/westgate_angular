@@ -563,6 +563,18 @@
                 (click)="statusChange('Nosuppliermatched')">
                 No Supplier Matched
               </button>
+              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'Go-NoGoStage1'"
+                (click)="statusChange('Go-NoGoStage1')">
+                GO-NO GO STAGE 1
+              </button>
+              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'SupplierConfirmation'"
+                (click)="statusChange('SupplierConfirmation')">
+                SUPPLIER CONFIRMATION
+              </button>
+              <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Go-NoGoStage2'"
+                (click)="statusChange('Go-NoGoStage2')">
+                GO-NO GO STAGE 2
+              </button>
             </div>
 
             <!-- Dynamic Comment Section -->
