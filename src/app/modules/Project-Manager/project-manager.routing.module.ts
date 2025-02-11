@@ -27,6 +27,7 @@ import { ProjectManagerProjectDetailsComponent } from './project-manager-project
 import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
 import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
 import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
+import { AddEditProjectComponent } from './add-edit-project/add-edit-project.component';
 
 const routes: Routes = [
   {
@@ -138,6 +139,10 @@ const routes: Routes = [
         path: "completed-project-details",
         component: CompletedProjectDetailsComponent
       },
+      {
+        path: "add-edit-project",
+        component: AddEditProjectComponent
+      }
 
     ],
   },

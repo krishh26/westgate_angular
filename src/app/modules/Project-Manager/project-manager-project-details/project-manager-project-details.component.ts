@@ -452,7 +452,7 @@ export class ProjectManagerProjectDetailsComponent {
 
   editProjectDetails(projectId: any) {
     this.router.navigate(
-      ['/feasibility-user/edit-feasibility-project-details'],
+      ['/project-manager/project/add-edit-project'],
       { queryParams: { id: projectId } }
     );
   }

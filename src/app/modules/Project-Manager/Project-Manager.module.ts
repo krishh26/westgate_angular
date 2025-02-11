@@ -37,6 +37,7 @@ import { ProjectManagerProjectDetailsComponent } from './project-manager-project
 import { ProjectManagerFailedProjectComponent } from './project-manager-failed-project/project-manager-failed-project.component';
 import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
 import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
+import { AddEditProjectComponent } from './add-edit-project/add-edit-project.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { CompletedProjectDetailsComponent } from './completed-project-details/co
     ProjectManagerProjectDetailsComponent,
     ProjectManagerFailedProjectComponent,
     PmChangePasswordComponent,
-    CompletedProjectDetailsComponent
+    CompletedProjectDetailsComponent,
+    AddEditProjectComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],
