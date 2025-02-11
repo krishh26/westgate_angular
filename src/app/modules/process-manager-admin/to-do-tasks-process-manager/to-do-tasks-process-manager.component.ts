@@ -158,6 +158,8 @@ export class ToDoTasksProcessManagerComponent {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
+    } else if (paramKey === 'completedTask') {
+      params.completedTask = true; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params
@@ -280,8 +282,8 @@ export class ToDoTasksProcessManagerComponent {
   getUserAllList() {
     this.showLoader = true;
     const taskcount = true;
-     const taskPage = 'Ongoing'
-    this.projectManagerService.getUserallList(taskcount ,taskPage).subscribe(
+    const taskPage = 'Ongoing'
+    this.projectManagerService.getUserallList(taskcount, taskPage).subscribe(
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(

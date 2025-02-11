@@ -270,9 +270,10 @@ export class MyDayTasksComponent {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
-    }
-    else if (paramKey === 'assignProjectId' && paramValue) {
+    } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
+    } else if (paramKey === 'completedTask') {
+      params.completedTask = true; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params
@@ -395,9 +396,9 @@ export class MyDayTasksComponent {
 
   getUserAllList() {
     this.showLoader = true;
-    const taskcount = true ; 
-     const taskPage = 'myDay'
-    this.projectManagerService.getUserallList(taskcount ,taskPage).subscribe(
+    const taskcount = true;
+    const taskPage = 'myDay'
+    this.projectManagerService.getUserallList(taskcount, taskPage).subscribe(
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(

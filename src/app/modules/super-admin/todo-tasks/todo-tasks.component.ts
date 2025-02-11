@@ -297,6 +297,8 @@ export class TodoTasksComponent {
       params.status = paramValue;
     } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
+    } else if (paramKey === 'completedTask') {
+      params.completedTask = true; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params
@@ -431,7 +433,7 @@ export class TodoTasksComponent {
     this.showLoader = true;
     const taskcount = true;
     const taskPage = 'Ongoing'
-    this.projectManagerService.getUserallList(taskcount , taskPage).subscribe(
+    this.projectManagerService.getUserallList(taskcount, taskPage).subscribe(
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(
