@@ -296,7 +296,7 @@ export class ProjectManagerInProgressComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.bidManagerStatus = "InSolution, WaitingForResult";
+    this.tempPayload.projectList.bidManagerStatus = "InSolution, WaitingForResult, Go-NoGoStage1, Go-NoGoStage2, SupplierConfirmation";
     this.tempPayload.projectList.statusNotInclude = 'Fail'
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
