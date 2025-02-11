@@ -26,30 +26,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="col-12">
-            <div class="col-12">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="radio-button" id="radioDaily" value="daily"
-                  (change)="onDurationChange('daily')">
-                <label class="form-check-label" for="radioDaily">Daily</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="radio-button" id="radioWeekly" value="weekly"
-                  (change)="onDurationChange('weekly')">
-                <label class="form-check-label" for="radioWeekly">Weekly</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="radio-button" id="radioMonthly" value="monthly"
-                  (change)="onDurationChange('monthly')">
-                <label class="form-check-label" for="radioMonthly">Monthly</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="radio-button" id="radioYearly" value="yearly"
-                  (change)="onDurationChange('yearly')">
-                <label class="form-check-label" for="radioYearly">Yearly</label>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -69,20 +45,6 @@
                       GBP</p>
                   </div>
                 </div>
-                <!-- <div class="col-4">
-                  <div class="ProjectStatistic">
-                    <h2>{{superdashboardlist?.projectsMatched?.count}}</h2>
-                    <p>Projects Matched</p>
-                    <p class="text-success">Value: £ {{superdashboardlist?.projectsMatched?.maxValue | number: '1.2-2'}} GBP</p>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="ProjectStatistic">
-                    <h2>{{superdashboardlist?.projectsClosed?.count}}</h2>
-                    <p>Projects Closed</p>
-                    <p class="text-success">Value: £ {{superdashboardlist?.projectsClosed?.maxValue | number: '1.2-2'}} GBP</p>
-                  </div>
-                </div> -->
                 <div class="col-4">
                   <div class="ProjectStatistic">
                     <h2>{{superdashboardlist?.projectsAwaiting?.count}}</h2>
@@ -190,7 +152,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -235,38 +196,68 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="col-lg-6 col-xl-6 col-12">
-        <div class="statistic-card">
-          <div class="card-body">
-            <h5 class="text-theme mb-0"><strong>Category Wise Report</strong></h5>
-            <div class="table-responsive mt-5 mb-3">
-              <table class="table table-striped align-middle">
-                <thead>
-                  <tr>
-                    <th width="200px">Category</th>
-                    <th>Total Projects</th>
-                  </tr>
-                </thead>
-                <tbody>
 
-                  <tr>
-                    <td *ngIf="!categoryWise?.length" colspan="2">
-                      <app-no-record-found></app-no-record-found>
-                    </td>
-                  </tr>
-
-                  <tr
-                    *ngFor="let item of categoryWise | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                    <td>{{ item?.name }}</td>
-                    <td>{{ item?.totalProjects !== null ? item.totalProjects : '-' }}</td>
-                  </tr>
-                </tbody>
-              </table>
+    <div class="container-fluid mb-5">
+      <div class="row">
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="statistic-card">
+            <div class="card-body">
+              <h5 class="text-theme mb-0"><strong>Category Wise Report</strong></h5>
+              <div class="table-responsive mt-5 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Category</th>
+                      <th>Total Projects</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!categoryWise?.length" colspan="2">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+                    <tr
+                      *ngFor="let item of categoryWise | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                      <td>{{ item?.name }}</td>
+                      <td>{{ item?.totalProjects !== null ? item.totalProjects : '-' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="statistic-card">
+            <div class="card-body">
+              <h5 class="text-theme mb-0"><strong>Product Type Wise Report</strong></h5>
+              <div class="table-responsive mt-5 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Product Type</th>
+                      <th>Total Projects</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!projectTypeWise?.length" colspan="2">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+                    <tr
+                      *ngFor="let item of projectTypeWise | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                      <td>{{ item?.name }}</td>
+                      <td>{{ item?.totalProjects !== null ? item.totalProjects : '-' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-</main><!-- End #main -->
+</main>

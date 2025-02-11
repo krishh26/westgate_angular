@@ -24,7 +24,9 @@ export class SuperAdminDashboardComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-  categoryWise: any = []
+  categoryWise: any = [];
+  projectTypeWise: any = [];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -69,14 +71,14 @@ export class SuperAdminDashboardComponent {
   getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
     console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
-    const payload : any = {};
-    if(dateFilter) {
+    const payload: any = {};
+    if (dateFilter) {
       const startCreatedDate = this.trackerStartDate.value
-      ? this.formatDate(this.trackerStartDate.value)
-      : '';
-    const endCreatedDate = this.trackerEndDate.value
-      ? this.formatDate(this.trackerEndDate.value)
-      : '';
+        ? this.formatDate(this.trackerStartDate.value)
+        : '';
+      const endCreatedDate = this.trackerEndDate.value
+        ? this.formatDate(this.trackerEndDate.value)
+        : '';
 
       payload['startDate'] = startCreatedDate;
       payload['endDate'] = endCreatedDate;
@@ -93,6 +95,12 @@ export class SuperAdminDashboardComponent {
           this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => {
             return { name: key, totalProjects: response.data.categorisationWise[key] };
           });
+
+          // Convert projectTypeWise object to an array of {name, totalProjects}
+          this.projectTypeWise = Object.keys(response?.data?.projectTypeWise || {}).map(key => ({
+            name: key.trim() ? key : 'Unknown', // Replace empty key with 'Unknown'
+            totalProjects: response.data.projectTypeWise[key],
+          }));
 
         } else {
           this.notificationService.showError(response?.message);

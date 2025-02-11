@@ -5,23 +5,24 @@
                 <div class="statistic-card">
                     <div class="card-body">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                          <h5 class="text-theme mb-0"><strong>Gap Analysis</strong></h5>
-                          <form class="d-flex align-items-center gap-2">
-                              <div class="input-group">
-                                  <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate"
-                                      ngbDatepicker #startDatePicker="ngbDatepicker" />
-                                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                                      type="button">
-                                  </button>
-                              </div>
-                              <div class="input-group">
-                                  <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
-                                      ngbDatepicker #endDatePicker="ngbDatepicker" />
-                                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                                      type="button">
-                                  </button>
-                              </div>
-                          </form>
+                            <h5 class="text-theme mb-0"><strong>Gap Analysis</strong></h5>
+                            <form class="d-flex align-items-center gap-2">
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="DD-MM-YYYY"
+                                        [formControl]="trackerStartDate" ngbDatepicker
+                                        #startDatePicker="ngbDatepicker" />
+                                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                                        (click)="startDatePicker.toggle()" type="button">
+                                    </button>
+                                </div>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
+                                        ngbDatepicker #endDatePicker="ngbDatepicker" />
+                                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                                        (click)="endDatePicker.toggle()" type="button">
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                         <div class="table-responsive mt-5 mb-3">
                             <table class="table table-striped align-middle">
@@ -77,14 +78,13 @@
             </div>
             <div class="modal-body">
                 <div class="row align-items-center justify-content-between">
-                  <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
-                    <div class="form-group mb-0">
-                      <span class="input-icon"><i class="bi bi-search"></i></span>
-                      <input class="form-control control-search"
-                        placeholder="Search comments..."
-                        type="text" [(ngModel)]="searchText" (input)="searchInputChange()">
+                    <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+                        <div class="form-group mb-0">
+                            <span class="input-icon"><i class="bi bi-search"></i></span>
+                            <input class="form-control control-search" placeholder="Search comments..." type="text"
+                                [(ngModel)]="searchText" (input)="searchInputChange()">
+                        </div>
                     </div>
-                  </div>
                 </div>
                 <table class="table table-striped align-middle">
                     <thead>
@@ -92,6 +92,7 @@
                             <th>Project Name</th>
                             <th>Comment</th>
                             <th>Feasibility Status</th>
+                            <th>Assigned Bid User</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,6 +106,7 @@
                                     href="javascript:;">{{project?.projectName}}</a></td>
                             <td>{{ project?.comment }}</td>
                             <td>{{ project?.status }}</td>
+                            <td>{{ project?.assignBidManager?.name }}</td>
                         </tr>
                     </tbody>
                 </table>

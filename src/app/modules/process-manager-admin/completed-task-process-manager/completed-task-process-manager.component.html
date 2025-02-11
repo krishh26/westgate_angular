@@ -225,17 +225,14 @@
                                         <div *ngIf="!comment.isEditing"
                                             class="d-flex justify-content-between align-items-center">
                                             <p>{{ comment.comment }}</p>
-                                            <div>
+                                            <!-- <div>
                                                 <button class="btn btn-sm text-primary me-2"
                                                     (click)="enableEdit(comment)">
                                                     Edit
                                                 </button>
-                                                <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment.commentId)">
-                              Delete
-                            </button> -->
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <div *ngIf="comment.isEditing" class="d-flex flex-column">
+                                        <!-- <div *ngIf="comment.isEditing" class="d-flex flex-column">
                                             <textarea class="form-control mb-2" placeholder="Edit comment..."
                                                 [(ngModel)]="comment.updatedComment" style="width: 100%;"></textarea>
                                             <div class="d-flex justify-content-between">
@@ -247,11 +244,9 @@
                                                     (click)="cancelEdit(comment)">
                                                     Cancel
                                                 </button>
-                                                <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment._id)">
-                              Delete
-                            </button> -->
+                                                
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </li>
                             </ul>
