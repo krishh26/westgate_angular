@@ -175,6 +175,7 @@
                   <th>Assign User</th>
                   <th>Feasibility Status</th>
                   <th>Bid Status</th>
+                  <th>Approval Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,6 +195,7 @@
                   <td>{{item?.assignBidmanager[0]?.name}}</td>
                   <td>{{item?.status}}</td>
                   <td>{{item?.bidManagerStatus}}</td>
+                  <td>{{item?.adminStatusDate | date : "dd/MM/yyyy, h:mm a"}}</td>
                   <td>
                     <div style="display: flex; gap: 10px;">
                       <a class="btn btn-primary btn-sm" style="cursor: pointer;"
