@@ -395,8 +395,9 @@ export class MyDayTasksComponent {
 
   getUserAllList() {
     this.showLoader = true;
-    const taskcount = true
-    this.projectManagerService.getUserallList(taskcount).subscribe(
+    const taskcount = true ; 
+     const taskPage = 'myDay'
+    this.projectManagerService.getUserallList(taskcount ,taskPage).subscribe(
       (response) => {
         if (response?.status === true) {
           this.userList = response?.data?.filter(
