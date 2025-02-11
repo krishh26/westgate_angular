@@ -58,6 +58,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   selectedSuppliers: { [key: string]: { company: string; startDate: any } } =
     {};
   myForm: FormGroup | undefined;
+  feasibilityStatus: string = 'Expired';
   selectedSupplier: any;
   summaryQuestionList: any;
   supportDocument!: FormGroup;
@@ -77,6 +78,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   filteredTasks: any = [];
   showAllLogs: boolean = false;
   logs: any = [];
+  feasibilityCommentData: any[] = [];
   dueDate: any;
   addStripcontrol = {
     text: new FormControl('', Validators.required),
@@ -84,6 +86,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     type: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
   };
+  getReasonList: any = [];
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   selectedImage!: string;
   uploadType: boolean = true;
@@ -642,12 +645,15 @@ export class ProcessManagerTrackerProjectDetailsComponent {
 
           // Assign only the first 3 logs to the logs property
           // this.logs = response?.data?.logs?.slice(0, 3) || [];
-
+          this.getReasonList = this.projectDetails?.failStatusReason;
           this.casestudylist = response?.data?.casestudy;
           this.status = this.projectDetails?.status;
           this.subContracting = this.projectDetails?.subContracting;
+          this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.statusComment.setValue(this.projectDetails?.statusComment);
-
+          this.feasibilityCommentData =
+          this.projectDetails?.statusComment || [];
+          this.feasibilityStatus = this.projectDetails?.status;
           this.subContractDocument =
             this.projectDetails?.subContractingfile || null;
           this.economicalPartnershipQueryFile =
