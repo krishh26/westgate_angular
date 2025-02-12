@@ -106,7 +106,11 @@
                   (click)="onChangeMyday('MyDay')">
                   Add to My Day
                 </button>
+                <button class="btn btn-sm btn-success" (click)="onChange('completedTask', true)">
+                  Completed Task
+                </button>
               </div>
+              
 
               <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
                 <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">

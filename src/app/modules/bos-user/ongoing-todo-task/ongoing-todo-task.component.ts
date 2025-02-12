@@ -116,6 +116,41 @@ export class OngoingTodoTaskComponent {
     );
   }
 
+  onChange(paramKey: string, paramValue: any) {
+    const params: any = {};
+
+    if (paramKey === 'dueDate' && paramValue) {
+      params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
+    } else if (paramKey === 'assignTo' && paramValue) {
+      // Find the deselected users
+      const deselectedUsers = this.assignTo.filter(
+        (id: string) => !paramValue.includes(id)
+      );
+
+      // Find the newly selected users
+      const newSelectedUsers = paramValue.filter(
+        (id: string) => !this.assignTo.includes(id)
+      );
+      // Update the assignTo list
+      this.assignTo = paramValue;
+
+      // Add updated assignTo list to params
+      params.assignTo = this.assignTo;
+    } else if (paramKey === 'pickACategory' && paramValue) {
+      params.pickACategory = paramValue;
+    } else if (paramKey === 'taskStatus' && paramValue) {
+      params.status = paramValue;
+    } else if (paramKey === 'assignProjectId' && paramValue) {
+      params.project = paramValue;
+    } else if (paramKey === 'completedTask') {
+      params.completedTask = true; // Ensure it always sends true
+    }
+
+    // Call the updateTask method with updated params
+    this.updateTask(params);
+  }
+
+
   openTaskModal(task: any) {
     console.log(task);
     this.modalTask = { ...task };
