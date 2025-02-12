@@ -303,7 +303,7 @@ export class TodoTasksComponent {
     } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
-      params.completedTask = true; // Ensure it always sends true
+      params.completedTask = paramValue; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params
