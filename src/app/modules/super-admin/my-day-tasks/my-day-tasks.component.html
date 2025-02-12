@@ -73,10 +73,13 @@
                       'bg-light-orange': task?.pickACategory === 'High'
                   }">
                                 <div>
-                                    <i class="bi bi-circle task-icon"></i>
+                                     
                                     {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory
                                         }})</span>
                                         <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>
+                                        <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                                            Completed
+                                          </button></span>
                                 </div>
                                 <div class="text-end">
                                     <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
