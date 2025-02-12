@@ -43,15 +43,28 @@
 
         <div class="select-container mb-3">
           <div class="row">
-            <div class="col-md-6 mb-2">
-              <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
-                (change)="searchtext()" [multiple]="false" placeholder="Select Type">
-              </ng-select>
+            <div class="col-md-12 mb-2">
+              <div class="flex-grow-1">
+                <div class="form-group mb-0 position-relative">
+                  <span class="input-icon"><i class="bi bi-search"></i></span>
+                  <input class="form-control control-search"
+                    placeholder="Search by Title"
+                    type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+                </div>
+              </div>
             </div>
-            <div class="col-md-6">
-              <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
-                [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
-              </ng-select>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
+                  (change)="searchtext()" [multiple]="false" placeholder="Select Type">
+                </ng-select>
+              </div>
+  
+              <div class="col-md-6 mb-2">
+                <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
+                  [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
+                </ng-select>
+              </div>
             </div>
           </div>
         </div>
@@ -76,13 +89,13 @@
                       'bg-light-orange': task?.pickACategory === 'High'
                 }">
                 <div>
-                   
+
                   {{ task?.task }}
                   <span *ngIf="task?.pickACategory">
                     ({{ task?.pickACategory }})</span>
                   <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
                     }})</span>&nbsp;
-                    <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                  <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
                       Completed
                     </button></span>
                 </div>

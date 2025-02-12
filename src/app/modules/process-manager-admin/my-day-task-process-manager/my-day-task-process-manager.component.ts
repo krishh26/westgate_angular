@@ -32,6 +32,8 @@ export class MyDayTaskProcessManagerComponent {
   selectedUserIds: number[] = [];
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
+  searchText: any;
+  myControl = new FormControl();
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -271,14 +273,15 @@ export class MyDayTaskProcessManagerComponent {
 
     // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
+    const keyword = this.searchText;
     // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
     this.superService
       .getMyTask(
         this.selectedUserIds.join(','),
         true,
         sortType,
-        priorityType // Use the single priority value here
+        priorityType, // Use the single priority value here
+        keyword
       )
       .subscribe(
         (response) => {

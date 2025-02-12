@@ -31,6 +31,8 @@ export class CompletedTaskProcessManagerComponent {
   selectedUserIds: number[] = [];
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
+  searchText: any;
+  myControl = new FormControl();
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -233,12 +235,15 @@ export class CompletedTaskProcessManagerComponent {
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
 
+    const keyword = this.searchText;
+
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
         'Completed',
         sortType,
-        priorityType
+        priorityType,
+        keyword
       )
       .subscribe(
         (response) => {

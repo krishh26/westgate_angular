@@ -30,6 +30,11 @@ export class CompletedTodoTaskComponent {
   status: string = 'Expired';
   statusComment: FormControl = new FormControl('');
   commentData: any[] = [];
+  searchText: any;
+  myControl = new FormControl();
+  selectedtype: any[] = [];
+  selectedpriority: any[] = [];
+  selectedUserIds: number[] = [];
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -98,6 +103,52 @@ export class CompletedTodoTaskComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  
+  searchtext() {
+    this.showLoader = true;
+    const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
+    const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
+    
+    // Pass the searchText (keyword) in the API call
+    const keyword = this.searchText;  // The search text to filter by
+  
+    this.superService
+      .getsuperadmintasks(
+        this.selectedUserIds.join(','),
+        'Ongoing',
+        sortType,
+        priorityType,
+        keyword // Pass it as the keyword in the API request
+      )
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            const today = new Date().toISOString().split("T")[0];
+  
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
+  
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null,
+              };
+            });
+  
+            this.showLoader = false;
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
   }
 
   pushBidStatus() {

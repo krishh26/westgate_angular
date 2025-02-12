@@ -133,7 +133,7 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status: string, sort?: string, pickACategory?: string): Observable<any> {
+  getsuperadmintasks(assignId: string, status: string, sort?: string, pickACategory?: string, keyword?:string): Observable<any> {
     let params = new HttpParams();
 
     if (assignId) {
@@ -148,6 +148,9 @@ export class SuperadminService {
     if (pickACategory) {
       params = params.set('pickACategory', pickACategory);
     }
+    if (keyword) {
+      params = params.set('keyword', keyword);
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,
@@ -156,7 +159,7 @@ export class SuperadminService {
   }
 
 
-  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string): Observable<any> {
+  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string, keyword?:string): Observable<any> {
     let params = new HttpParams();
     if (assignId) {
       params = params.set('assignTo', assignId);
@@ -169,6 +172,9 @@ export class SuperadminService {
     }
     if (pickACategory) {
       params = params.set('pickACategory', pickACategory);
+    }
+    if (keyword) {
+      params = params.set('keyword', keyword);
     }
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,

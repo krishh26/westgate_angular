@@ -44,6 +44,8 @@ export class MyDayTasksComponent {
   loginUser: any;
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
+  searchText: any;
+  myControl = new FormControl();
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -349,37 +351,36 @@ export class MyDayTasksComponent {
 
   searchtext() {
     this.showLoader = true;
-
-    // Convert array to string if needed for selectedtype
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
-
-    // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
-    // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
+    
+    // Pass the searchText (keyword) in the API call
+    const keyword = this.searchText;  // The search text to filter by
+  
     this.superService
-      .getMyTask(
+      .getsuperadmintasks(
         this.selectedUserIds.join(','),
-        true,
+        'Ongoing',
         sortType,
-        priorityType // Use the single priority value here
+        priorityType,
+        keyword // Pass it as the keyword in the API request
       )
       .subscribe(
         (response) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
-
+  
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
               );
-
+  
               return {
                 ...task,
                 todayComments: todayComments?.length ? todayComments : null,
               };
             });
-
+  
             this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);
@@ -392,7 +393,6 @@ export class MyDayTasksComponent {
         }
       );
   }
-
 
   getUserAllList() {
     this.showLoader = true;

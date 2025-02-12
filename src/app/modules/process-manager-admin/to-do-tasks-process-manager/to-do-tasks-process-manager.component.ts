@@ -43,6 +43,8 @@ export class ToDoTasksProcessManagerComponent {
 
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
+  searchText: any;
+  myControl = new FormControl();
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -211,13 +213,16 @@ export class ToDoTasksProcessManagerComponent {
     // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
 
+    const keyword = this.searchText;  // The search text to filter by
+
     // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
         'Ongoing',
         sortType,
-        priorityType // Use the single priority value here
+        priorityType, // Use the single priority value here
+        keyword 
       )
       .subscribe(
         (response) => {
