@@ -185,7 +185,8 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
+              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank"
+                  rel="noopener noreferrer">
                   {{ projectDetails?.documentsLink }}
                 </a></div>
             </div>
@@ -570,7 +571,13 @@
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong>
                       {{ item?.bidManagerStatus }}</small>
-                    <p class="mt-2">{{ item?.comment }}</p>
+                    <div class="d-flex justify-content-between">
+                      <p class="mt-2">{{ item?.comment }}</p>
+                      <button class="btn btn-sm text-danger" (click)="deleteComment(item, item?.commentId)">
+                        Delete
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               </div>
