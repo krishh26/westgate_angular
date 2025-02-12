@@ -14,7 +14,7 @@
             {{ task?.task }}
             <span *ngIf="task?.pickACategory">
               ({{ task?.pickACategory }})</span>
-            <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>
+            <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>&nbsp;
             <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
                 Completed
               </button></span>
