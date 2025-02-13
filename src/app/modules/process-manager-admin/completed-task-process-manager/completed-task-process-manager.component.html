@@ -211,7 +211,11 @@
           </div>
           <div class="mb-3" *ngIf="modalTask?.project">
             <h6><strong>Status</strong></h6>
-            <p> {{ modalTask?.project?.bidManagerStatus || modalTask?.project?.status }}</p>
+            <p> {{ modalTask?.project?.status }}</p>
+          </div>
+          <div class="mb-3" *ngIf="modalTask?.project">
+            <h6><strong>Bid Status</strong></h6>
+            <p> {{ modalTask?.project?.bidManagerStatus}}</p>
           </div>
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
@@ -227,7 +231,7 @@
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">{{ comment?.userDetail?.name }}</p>
                         <small class="text-muted">{{
-                          comment?.createdAt | date : "dd/MM/yyyy, h:mm a"
+                          comment?.date | date : "dd/MM/yyyy, h:mm a"
                           }}</small>
                       </div>
                       <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
