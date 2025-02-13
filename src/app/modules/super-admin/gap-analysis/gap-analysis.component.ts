@@ -22,6 +22,8 @@ export class GapAnalysisComponent {
   selectedProjects: any[] = [];
   searchText: string = "";
   filteredData: any[] = [];
+  gapAnalysisDataDropped: any = [];
+  gapAnalysisDataNoSupplier: any = [];
 
   constructor(
     private superService: SuperadminService,
@@ -34,6 +36,8 @@ export class GapAnalysisComponent {
 
   ngOnInit(): void {
     this.getGapAnalysisData();
+    this.getGapAnalysisDataDropped();
+    this.getGapAnalysisDataNoSupplier();
     this.trackerEndDate.valueChanges.subscribe((res: any) => {
       if (!this.trackerStartDate.value) {
         this.notificationService.showError(
@@ -42,6 +46,8 @@ export class GapAnalysisComponent {
         return;
       } else {
         this.getGapAnalysisData();
+        this.getGapAnalysisDataDropped();
+        this.getGapAnalysisDataNoSupplier();
       }
     });
   }
@@ -81,6 +87,80 @@ export class GapAnalysisComponent {
         if (response?.status) {
           this.showLoader = false;
           this.gapAnalysisData = response?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getGapAnalysisDataDropped(searchText?: string) {
+    let param: any = {};
+    if (searchText) {
+      param['keyword'] = searchText
+    }
+    this.showLoader = true;
+
+    const startDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+
+    if(startDate && endDate) {
+      param['startDate'] = startDate;
+      param['endDate'] = endDate;
+    }
+
+    this.gapAnalysisData = [];
+    this.superService.getGapAnalysisDroppedafterFeasibility(param).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.showLoader = false;
+          this.gapAnalysisDataDropped = response?.data;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getGapAnalysisDataNoSupplier(searchText?: string) {
+    let param: any = {};
+    if (searchText) {
+      param['keyword'] = searchText
+    }
+    this.showLoader = true;
+
+    const startDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+
+    if(startDate && endDate) {
+      param['startDate'] = startDate;
+      param['endDate'] = endDate;
+    }
+
+    this.gapAnalysisData = [];
+    this.superService.getGapAnalysisNosupplierMatched(param).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.showLoader = false;
+          this.gapAnalysisDataNoSupplier = response?.data;
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

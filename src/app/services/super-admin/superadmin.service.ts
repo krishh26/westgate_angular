@@ -25,6 +25,8 @@ export enum SuperAdminEndPoint {
   APPROVE_OR_REJECT_SUPERADMIN = '/project/update/approve-reject-admin',
   ADD_IMAGE_PROJECT_DETAILS = '/project-detail-title/update/',
   GET_GAP_ANALYSIS = '/project/gap-analysis',
+  GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY = '/project/gap-analysis-dafstatus-reason',
+  GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED = '/project/gap-analysis-nosuppliermatched-reason',
 }
 
 @Injectable({
@@ -51,6 +53,20 @@ export class SuperadminService {
   getGapAnalysis(params: any): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_GAP_ANALYSIS,
+      { params }
+    );
+  }
+
+  getGapAnalysisNosupplierMatched(params: any): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED,
+      { params }
+    );
+  }
+
+  getGapAnalysisDroppedafterFeasibility(params: any): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY,
       { params }
     );
   }

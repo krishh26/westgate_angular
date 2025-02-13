@@ -104,12 +104,12 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td *ngIf="!gapAnalysisData?.length" colspan="3">
+                                            <td *ngIf="!gapAnalysisDataDropped?.length" colspan="3">
                                                 <app-no-record-found></app-no-record-found>
                                             </td>
                                         </tr>
                                         <tr
-                                            *ngFor="let item of gapAnalysisData | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                                            *ngFor="let item of gapAnalysisDataDropped | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                                             <td>{{ item?.tag }}</td>
                                             <td>{{ item?.projectCount }}</td>
                                             <td>
@@ -163,21 +163,21 @@
                             <table class="table table-striped align-middle">
                                 <thead>
                                     <tr>
-                                        <th width="200px">Tags</th>
-                                        <th>Total Projects</th>
+                                        <th width="200px">Project Count</th>
+                                        <th>Comments</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td *ngIf="!gapAnalysisData?.length" colspan="3">
+                                        <td *ngIf="!gapAnalysisDataNoSupplier?.length" colspan="3">
                                             <app-no-record-found></app-no-record-found>
                                         </td>
                                     </tr>
                                     <tr
-                                        *ngFor="let item of gapAnalysisData | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                                        <td>{{ item?.tag }}</td>
+                                        *ngFor="let item of gapAnalysisDataNoSupplier | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                                         <td>{{ item?.projectCount }}</td>
+                                        <td>{{ item?.comment }}</td>
                                         <td>
                                             <a class="btn btn-primary btn-sm" style="cursor: pointer;"
                                                 data-bs-toggle="modal" data-bs-target="#viewAllProjects"
