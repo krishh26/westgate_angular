@@ -416,7 +416,13 @@
                       </small>
                     </div>
                     <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
-                    <p class="mt-2">{{ reason?.tag }}</p>
+                    <div class="d-flex justify-content-between">
+                      <p class="mt-2">{{ reason?.tag }}</p>
+                      <button class="btn btn-sm text-danger" (click)="deleteFailedReasons(reason, reason?.commentId)">
+                        Delete Reason
+                      </button>
+                    </div>
+                    
                   </div>
                 </div>
               </div>

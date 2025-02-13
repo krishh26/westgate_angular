@@ -711,6 +711,55 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+  deleteFailedReasons(reason: any, id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+  
+        // Prepare the request payload
+        const param = {
+          failStatusReason: {
+            tag: reason?.tag,
+            comment: reason?.comment,
+            userId: reason?.userId,
+            date: reason?.date,
+            userDetails: {
+              _id: reason?.userDetails?._id,
+              name: reason?.userDetails?.name,
+              email: reason?.userDetails?.email,
+              role: reason?.userDetails?.role,
+              companyName: reason?.userDetails?.companyName,
+            },
+          },
+        };
+  
+        this.projectService.deleteFailedReason(param, this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Comment successfully deleted');
+              window.location.reload();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+  
 
   deleteStrips(id: any) {
 
