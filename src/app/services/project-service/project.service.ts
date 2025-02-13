@@ -27,7 +27,8 @@ export enum ProjectEndPoint {
   PROJECT_STRIP_LIST = '/project-detail-title/list',
   ADD_TO_MY_LIST = '/project/update/my-list/',
   DELETE_STRIPS = '/project-detail-title/delete',
-  DELETE_FES_BID_COMMENT = '/project/delete-comment'
+  DELETE_FES_BID_COMMENT = '/project/delete-comment',
+  DELETE_BID_COMMENT = '/project/delete-bidstatuscomment'
 }
 
 @Injectable({
@@ -192,7 +193,14 @@ export class ProjectService {
   deleteFeasiblityBidComment(payload: any, id: any): Observable<any> {
     return this.httpClient.delete<any>(
       `${this.baseUrl}${ProjectEndPoint.DELETE_FES_BID_COMMENT}/${id}`,
-      { body: payload } // ✅ Pass payload correctly inside options object
+      { body: payload }
+    );
+  }
+
+  deleteBidComment(payload: any, id: any): Observable<any> {
+    return this.httpClient.delete<any>(
+      `${this.baseUrl}${ProjectEndPoint.DELETE_BID_COMMENT}/${id}`,
+      { body: payload }
     );
   }
 
