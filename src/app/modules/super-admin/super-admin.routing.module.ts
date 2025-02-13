@@ -27,6 +27,7 @@ import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super
 import { SuperAdminChangePasswordComponent } from './super-admin-change-password/super-admin-change-password.component';
 import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
 import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
+import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';
 
 
 
@@ -139,6 +140,10 @@ const routes: Routes = [
       {
         path: "no-supplier-match-projects",
         component: NoSupplierMatchProjectsComponent
+      },
+      {
+        path: "approve-reject-project-details",
+        component: ApproveRejectProjectDetailsComponent
       },
     ]
   },

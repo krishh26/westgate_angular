@@ -352,7 +352,7 @@ export class ApproveRejectProjectComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/approve-reject-project-details'], { queryParams: { id: projectId } });
   }
 
   // editProjectDetails(projectId: any) {

@@ -20,11 +20,12 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-tracker-wise-project-details',
-  templateUrl: './tracker-wise-project-details.component.html',
-  styleUrls: ['./tracker-wise-project-details.component.scss'],
+  selector: 'app-approve-reject-project-details',
+  templateUrl: './approve-reject-project-details.component.html',
+  styleUrls: ['./approve-reject-project-details.component.scss']
 })
-export class TrackerWiseProjectDetailsComponent {
+export class ApproveRejectProjectDetailsComponent {
+
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
@@ -225,7 +226,7 @@ export class TrackerWiseProjectDetailsComponent {
               this.notificationService.showSuccess(
                 'Project successfully deleted'
               );
-              this.router.navigate(['/super-admin/status-wise-tracker'])
+              this.router.navigate(['/super-admin/approve-reject-projects'])
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
@@ -935,7 +936,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.saveChanges(type);
 
     if (type == 'next') {
-      this.router.navigate(['/super-admin/status-wise-tracker'], {
+      this.router.navigate(['/super-admin/approve-reject-projects'], {
         queryParams: { id: this.projectId },
       });
     }
@@ -1109,7 +1110,7 @@ export class TrackerWiseProjectDetailsComponent {
             this.isEditing = false;
             this.getProjectDetails();
             if (type == 'save') {
-              this.router.navigate(['/super-admin/status-wise-tracker'], {
+              this.router.navigate(['/super-admin/approve-reject-projects'], {
                 queryParams: { id: this.projectId },
               });
             }
@@ -1685,3 +1686,4 @@ export class TrackerWiseProjectDetailsComponent {
     return this.status && (hasComment || hasUnaddedComment);
   }
 }
+
