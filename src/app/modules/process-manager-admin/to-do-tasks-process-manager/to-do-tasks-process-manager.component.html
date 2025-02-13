@@ -42,22 +42,22 @@
               <div class="flex-grow-1">
                 <div class="form-group mb-0 position-relative">
                   <span class="input-icon"><i class="bi bi-search"></i></span>
-                  <input class="form-control control-search"
-                    placeholder="Search by Title"
-                    type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+                  <input class="form-control control-search" placeholder="Search by Title" type="text"
+                    [(ngModel)]="searchText" (input)="searchtext()" />
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mb-2">
-                <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
-                  (change)="searchtext()" [multiple]="false" placeholder="Select Type">
+                <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value"
+                  [(ngModel)]="selectedtype" (change)="searchtext()" [multiple]="false" placeholder="Select Type">
                 </ng-select>
               </div>
-  
+
               <div class="col-md-6 mb-2">
                 <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
-                  [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
+                  [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false"
+                  placeholder="Select Priority">
                 </ng-select>
               </div>
             </div>
@@ -83,12 +83,13 @@
                       'bg-light-orange': task?.pickACategory === 'High'
                   }">
                 <div>
-                   
+
                   {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory }})</span>
-                  <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>&nbsp;
+                  <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
+                    }})</span>&nbsp;
                   <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
-                    Completed
-                  </button></span>
+                      Completed
+                    </button></span>
                 </div>
                 <div class="text-end">
                   <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
@@ -215,7 +216,11 @@
           </div>
           <div class="mb-3" *ngIf="modalTask?.project">
             <h6><strong>Status</strong></h6>
-            <p> {{ modalTask?.project?.bidManagerStatus || modalTask?.project?.status }}</p>
+            <p> {{ modalTask?.project?.status }}</p>
+          </div>
+          <div class="mb-3" *ngIf="modalTask?.project">
+            <h6><strong>Bid Status</strong></h6>
+            <p> {{ modalTask?.project?.bidManagerStatus}}</p>
           </div>
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
@@ -322,7 +327,13 @@
 
           <div class="detail-item mb-3">
             <button class="btn btn-sm btn-success" (click)="onChange('completedTask', true)">
-              Completed Task
+              Completed
+            </button>
+          </div>
+
+          <div class="detail-item mb-3">
+            <button class="btn btn-sm btn-secondary" (click)="onChange('completedTask', false)">
+              Not Completed
             </button>
           </div>
 

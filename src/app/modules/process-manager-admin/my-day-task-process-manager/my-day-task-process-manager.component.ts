@@ -158,7 +158,7 @@ export class MyDayTaskProcessManagerComponent {
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
     } else if (paramKey === 'completedTask') {
-      params.completedTask = true; // Ensure it always sends true
+      params.completedTask = paramValue; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params

@@ -7,9 +7,8 @@
         <div class="flex-grow-1">
           <div class="form-group mb-0 position-relative">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input class="form-control control-search"
-              placeholder="Search by Title"
-              type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+            <input class="form-control control-search" placeholder="Search by Title" type="text"
+              [(ngModel)]="searchText" (input)="searchtext()" />
           </div>
         </div>
       </div>
@@ -26,12 +25,13 @@
                       'bg-light-orange': task?.pickACategory === 'High'
             }">
           <div>
-             
+
             {{ task?.task }} <span *ngIf="task?.pickACategory">({{ task?.pickACategory }})</span>
-            <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status }})</span>&nbsp;
+            <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
+              }})</span>&nbsp;
             <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
-              Completed
-            </button></span>
+                Completed
+              </button></span>
           </div>
           <div class="text-end">
             <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
@@ -119,7 +119,11 @@
           </div>
           <div class="mb-3" *ngIf="modalTask?.project">
             <h6><strong>Status</strong></h6>
-            <p> {{ modalTask?.project?.bidManagerStatus || modalTask?.project?.status }}</p>
+            <p> {{ modalTask?.project?.status }}</p>
+          </div>
+          <div class="mb-3" *ngIf="modalTask?.project">
+            <h6><strong>Bid Status</strong></h6>
+            <p> {{ modalTask?.project?.bidManagerStatus}}</p>
           </div>
           <!-- Comments Section -->
           <div class="comments-section">
