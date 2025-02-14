@@ -24,6 +24,10 @@ export class GapAnalysisComponent {
   filteredData: any[] = [];
   gapAnalysisDataDropped: any = [];
   gapAnalysisDataNoSupplier: any = [];
+  pageFailed: number = 1;
+  pageDropped: number = 1;
+  pageNoSupplier: number = 1;
+
 
   constructor(
     private superService: SuperadminService,
@@ -63,33 +67,38 @@ export class GapAnalysisComponent {
   }
 
   getGapAnalysisData(searchText?: string) {
-    let param: any = {};
+    let param: any = {
+      page: this.pageFailed, // Use the correct page variable
+      pagesize: this.pagesize,
+    };
+  
     if (searchText) {
-      param['keyword'] = searchText
+      param['keyword'] = searchText;
     }
-    this.showLoader = true;
-
+  
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-
-    if(startDate && endDate) {
+  
+    if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
     }
-
+  
+    this.showLoader = true;
     this.gapAnalysisData = [];
+  
     this.superService.getGapAnalysis(param).subscribe(
       (response) => {
+        this.showLoader = false;
         if (response?.status) {
-          this.showLoader = false;
           this.gapAnalysisData = response?.data;
+          this.totalRecords = response?.totalRecords; // Update total records for pagination
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
@@ -98,35 +107,41 @@ export class GapAnalysisComponent {
       }
     );
   }
+  
 
   getGapAnalysisDataDropped(searchText?: string) {
-    let param: any = {};
+    let param: any = {
+      page: this.pageDropped, // Use the correct page variable
+      pagesize: this.pagesize,
+    };
+  
     if (searchText) {
-      param['keyword'] = searchText
+      param['keyword'] = searchText;
     }
-    this.showLoader = true;
-
+  
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-
-    if(startDate && endDate) {
+  
+    if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
     }
-
-    this.gapAnalysisData = [];
+  
+    this.showLoader = true;
+    this.gapAnalysisDataDropped = [];
+  
     this.superService.getGapAnalysisDroppedafterFeasibility(param).subscribe(
       (response) => {
+        this.showLoader = false;
         if (response?.status) {
-          this.showLoader = false;
           this.gapAnalysisDataDropped = response?.data;
+          this.totalRecords = response?.totalRecords;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
@@ -135,35 +150,41 @@ export class GapAnalysisComponent {
       }
     );
   }
+  
 
   getGapAnalysisDataNoSupplier(searchText?: string) {
-    let param: any = {};
+    let param: any = {
+      page: this.pageNoSupplier, // Use the correct page variable
+      pagesize: this.pagesize,
+    };
+  
     if (searchText) {
-      param['keyword'] = searchText
+      param['keyword'] = searchText;
     }
-    this.showLoader = true;
-
+  
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-
-    if(startDate && endDate) {
+  
+    if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
     }
-
-    this.gapAnalysisData = [];
+  
+    this.showLoader = true;
+    this.gapAnalysisDataNoSupplier = [];
+  
     this.superService.getGapAnalysisNosupplierMatched(param).subscribe(
       (response) => {
+        this.showLoader = false;
         if (response?.status) {
-          this.showLoader = false;
           this.gapAnalysisDataNoSupplier = response?.data;
+          this.totalRecords = response?.totalRecords;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
@@ -172,6 +193,7 @@ export class GapAnalysisComponent {
       }
     );
   }
+  
 
   searchInputChange() {
     this.filteredData = this.selectedProjects.filter(item => {
@@ -186,11 +208,21 @@ export class GapAnalysisComponent {
     this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
   }
 
-  paginate(page: number) {
-    this.page = page;
-    this.getGapAnalysisData();
+  paginate(page: number, type: string) {
+    if (type === 'failed') {
+      this.pageFailed = page;
+      this.getGapAnalysisData(); // Ensure the correct page is fetched
+    } else if (type === 'dropped') {
+      this.pageDropped = page;
+      this.getGapAnalysisDataDropped();
+    } else if (type === 'noSupplier') {
+      this.pageNoSupplier = page;
+      this.getGapAnalysisDataNoSupplier();
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  
+
 
   showProjects(projects: any) {
     this.selectedProjects = [];

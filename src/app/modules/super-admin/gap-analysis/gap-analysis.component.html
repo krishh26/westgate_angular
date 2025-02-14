@@ -3,7 +3,7 @@
 
         <div class="container-fluid mb-3">
             <div class="row">
-                <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4><br/>
+                <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4><br />
             </div>
         </div>
         <div class="container-fluid mb-3">
@@ -23,8 +23,9 @@
                                         </button>
                                     </div>
                                     <div class="input-group">
-                                        <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
-                                            ngbDatepicker #endDatePicker="ngbDatepicker" />
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
                                         <button class="btn btn-outline-secondary bi bi-calendar3"
                                             (click)="endDatePicker.toggle()" type="button">
                                         </button>
@@ -62,8 +63,9 @@
                             <div class="row mt-3 align-items-center">
                                 <div class="row">
                                     <div class="pagination">
-                                        <pagination-controls (pageChange)="paginate($event)"
-                                            [idMaxSize]="100"></pagination-controls>
+                                        <pagination-controls (pageChange)="paginate($event, 'failed')"
+                                            [currentPage]="pageFailed" [itemsPerPage]="pagesize"
+                                            [totalItems]="totalRecords"></pagination-controls>
                                     </div>
                                 </div>
                             </div>
@@ -85,8 +87,9 @@
                                         </button>
                                     </div>
                                     <div class="input-group">
-                                        <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
-                                            ngbDatepicker #endDatePicker="ngbDatepicker" />
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
                                         <button class="btn btn-outline-secondary bi bi-calendar3"
                                             (click)="endDatePicker.toggle()" type="button">
                                         </button>
@@ -124,8 +127,9 @@
                             <div class="row mt-3 align-items-center">
                                 <div class="row">
                                     <div class="pagination">
-                                        <pagination-controls (pageChange)="paginate($event)"
-                                            [idMaxSize]="100"></pagination-controls>
+                                        <pagination-controls (pageChange)="paginate($event, 'dropped')"
+                                            [currentPage]="pageDropped" [itemsPerPage]="pagesize"
+                                            [totalItems]="totalRecords"></pagination-controls>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +167,7 @@
                             <table class="table table-striped align-middle">
                                 <thead>
                                     <tr>
-                                        <th width="200px">Project Count</th>
+                                        <th width="200px">Project Name</th>
                                         <th>Comments</th>
                                         <th></th>
                                     </tr>
@@ -176,13 +180,8 @@
                                     </tr>
                                     <tr
                                         *ngFor="let item of gapAnalysisDataNoSupplier | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                                        <td>{{ item?.projectCount }}</td>
+                                        <td>{{ item?.projects[0]?.projectName }}</td>
                                         <td>{{ item?.comment }}</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" style="cursor: pointer;"
-                                                data-bs-toggle="modal" data-bs-target="#viewAllProjects"
-                                                (click)="showProjects(item?.projects)">View </a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -190,8 +189,9 @@
                         <div class="row mt-3 align-items-center">
                             <div class="row">
                                 <div class="pagination">
-                                    <pagination-controls (pageChange)="paginate($event)"
-                                        [idMaxSize]="100"></pagination-controls>
+                                    <pagination-controls (pageChange)="paginate($event, 'noSupplier')"
+                                        [currentPage]="pageNoSupplier" [itemsPerPage]="pagesize"
+                                        [totalItems]="totalRecords"></pagination-controls>
                                 </div>
                             </div>
                         </div>
