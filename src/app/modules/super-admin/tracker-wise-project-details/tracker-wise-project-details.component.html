@@ -404,6 +404,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="comment-list comments-section">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
                   <div class="comment mb-3">
@@ -422,10 +423,10 @@
                         Delete Reason
                       </button>
                     </div>
-                    
                   </div>
                 </div>
               </div>
+
               <!-- Add New Comment -->
               <ng-container>
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
@@ -503,7 +504,8 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && feasibilityStatus !== 'Fail'"
+                    <a (click)="saveFeasibilityStatus('save')"
+                      [class.disabled]="!isCommentValid() && feasibilityStatus !== 'Fail'"
                       class="btn btn-primary w-100">Save Status</a>
                   </div>
                 </div>
@@ -514,10 +516,12 @@
 
         <div class="col-lg-12 col-xl-12 col-12" *ngIf="projectDetails?.status == 'Passed'">
           <div class="card shadow-sm p-4">
+            <!-- Header -->
             <div class="card-header bg-primary text-white mb-3">
               <h5 class="mb-0">Bid Status</h5>
             </div>
 
+            <!-- Status Buttons -->
             <div class="d-flex justify-content-between flex-wrap mb-4">
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
@@ -559,12 +563,13 @@
             </div>
 
             <!-- Dynamic Comment Section -->
-
-            <div *ngIf="status" class="status-section comments-section">
-              <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
+            <div *ngIf="status" class="status-section">
+              <h6 class="text-secondary mb-3">
+                {{ status }} Comments
+              </h6>
 
               <!-- Display Existing Comments -->
-              <div *ngIf="commentData?.length" class="comment-list">
+              <div *ngIf="commentData?.length" class="comment-list comments-section">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -583,14 +588,36 @@
                         Delete
                       </button>
                     </div>
-
                   </div>
                 </div>
               </div>
 
-              <!-- *ngIf="status !== 'Dropped after feasibility'" -->
+              <div class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ reason?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
+                    <div class="d-flex justify-content-between">
+                      <p class="mt-2">{{ reason?.tag }}</p>
+                      <button class="btn btn-sm text-danger" (click)="deleteFailedReasons(reason, reason?.commentId)">
+                        Delete Reason
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add New Comment -->
               <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
+                  *ngIf="status !== 'Dropped after feasibility'">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
                     placeholder="Add your comment" />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
@@ -599,9 +626,10 @@
                 </div>
               </ng-container>
 
-              <!-- <ng-container>
-                <div class="mt-4">
-                  <div class="d-flex align-items-center gap-3" *ngIf="status === 'Dropped after feasibility'">
+              <!-- Dropper After Feasibility Specific Fields -->
+              <ng-container>
+                <div *ngIf="status === 'Dropped after feasibility'" class="mt-4">
+                  <div class="d-flex align-items-center gap-3">
                     <select class="form-select" [(ngModel)]="selectedFailReason">
                       <option disabled selected hidden value="">
                         Select Dropper After Feasibility
@@ -637,6 +665,7 @@
                     </div>
                   </div>
 
+                  <!-- Display added bid reasons and comments -->
                   <div class="mt-3">
                     <div class="reason-item border rounded p-3 mb-2"
                       *ngFor="let reason of failStatusReasons; let i = index">
@@ -651,21 +680,22 @@
                     </div>
                   </div>
                 </div>
-              </ng-container> -->
-
-            </div>
-            <div class="row justify-content-end mb-2 mt-3">
+              </ng-container>
               <ng-container>
-                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                  <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()  && status !== 'Dropped after feasibility'"
-                    class="btn btn-primary w-100">
-                    Save Bid Status
-                  </a>
+                <div class="row justify-content-end mb-4">
+                  <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                    <a (click)="saveBidStatus('save')"
+                      [class.disabled]="!isBidCommentValid()  && status !== 'Dropped after feasibility'"
+                      class="btn btn-primary w-100">
+                      Save Bid Status
+                    </a>
+                  </div>
                 </div>
               </ng-container>
             </div>
           </div>
         </div>
+
         <br />
       </div>
 
@@ -1145,23 +1175,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div *ngIf="selectedThumbnailImage" class="text-center mt-3">
-                        <img [src]="selectedThumbnailImage" alt="Thumbnail Preview" class="img-fluid" />
-                    </div> -->
-
-<!-- <div class="form-group mb-3">
-                        <label for="imageInput" class="form-label">Upload Image</label>
-                        <input type="file" id="imageInput" class="form-control" accept="image/*"
-                            (change)="onFileSelect($event)" required />
-                        <div *ngIf="addStripForm.get('image')?.touched && addStripForm.get('image')?.invalid"
-                            class="text-danger">
-                            Image is required.
-                        </div>
-                    </div> -->
-
-<!-- <div class="text-center mt-3">
-                        <img *ngIf="media_Obj.videoImage && !selectedImage" [src]="media_Obj.videoImage"
-                            alt="Uploaded Image" class="img-fluid mb-2" />
-                        <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" class="img-fluid mb-2" />
-                    </div> -->

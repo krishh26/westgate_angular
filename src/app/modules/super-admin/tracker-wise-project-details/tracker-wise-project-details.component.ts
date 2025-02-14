@@ -388,12 +388,21 @@ export class TrackerWiseProjectDetailsComponent {
     // Create a new date instance for the current date and time
     const currentDate = new Date();
 
-    this.commentData.push({
-      comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      bidManagerStatus: this.status,
-      userId: this.loginUser?._id,
-    });
+    // Add comment only if it doesn't already exist in the current status
+    const isDuplicate = this.commentData.some(
+      (comment) =>
+        comment.comment === this.bidManagerStatusComment.value &&
+        comment.bidManagerStatus === this.status
+    );
+
+    if (!isDuplicate) {
+      this.commentData.push({
+        comment: this.bidManagerStatusComment.value,
+        date: currentDate.toISOString(), // ISO format for standardization (optional)
+        bidManagerStatus: this.status,
+        userId: this.loginUser?._id,
+      });
+    }
 
     // Reset the comment input field
     this.bidManagerStatusComment.reset();
@@ -1651,9 +1660,9 @@ export class TrackerWiseProjectDetailsComponent {
       );
   }
 
-
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
+
     if (!contractEdit) {
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
@@ -1669,41 +1678,46 @@ export class TrackerWiseProjectDetailsComponent {
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+      if (!hasExistingComment) {
         return this.notificationService.showError(
           'Please provide a bid comment for the selected status.'
         );
       }
+
+      // Merge existing and new comments, removing duplicates
+      const existingComments = this.projectDetails?.bidManagerStatusComment || [];
+      const newComments = [...this.commentData];
+
+      const uniqueComments = Array.from(
+        new Map(
+          [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+        ).values()
+      );
+
+      // **Sort comments in descending order (latest first)**
+      uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
       payload = {
         bidManagerStatus: this.status || '',
-        bidManagerStatusComment: [
-          ...this.commentData,
-          ...this.projectDetails?.bidManagerStatusComment,
-        ],
+        bidManagerStatusComment: uniqueComments, // Now sorted in descending order
       };
     }
 
     // API call to update project details
-    this.feasibilityService
-      .updateProjectDetailsBid(payload, this.projectDetails._id)
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            this.notificationService.showSuccess(
-              'Project updated successfully'
-            );
-            this.isEditing = false;
-            this.getProjectDetails();
-          } else {
-            this.notificationService.showError(
-              response?.message || 'Failed to update project'
-            );
-          }
-        },
-        (error) => {
-          this.notificationService.showError('Failed to update project');
+    this.feasibilityService.updateProjectDetailsBid(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails(); // Refresh project details after save
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
         }
-      );
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
   }
 
 
