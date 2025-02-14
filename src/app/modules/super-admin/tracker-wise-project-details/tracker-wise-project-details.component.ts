@@ -1586,7 +1586,7 @@ export class TrackerWiseProjectDetailsComponent {
         );
         if (!hasExistingComment && !this.feasibilityStatusComment.value) {
           return this.notificationService.showError(
-            'Please provide a comment for the selected status.'
+            'Please provide a feasibility comment for the selected status.'
           );
         }
 
@@ -1671,7 +1671,7 @@ export class TrackerWiseProjectDetailsComponent {
       );
       if (!hasExistingComment && !this.bidManagerStatusComment.value) {
         return this.notificationService.showError(
-          'Please provide a comment for the selected status.'
+          'Please provide a bid comment for the selected status.'
         );
       }
       payload = {

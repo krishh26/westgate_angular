@@ -503,7 +503,7 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
+                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && feasibilityStatus !== 'Fail'"
                       class="btn btn-primary w-100">Save Status</a>
                   </div>
                 </div>
@@ -589,7 +589,7 @@
               </div>
 
               <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3" *ngIf="status !== 'Dropped after feasibility'">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
                     placeholder="Add your comment" />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
@@ -600,13 +600,13 @@
 
               <ng-container>
                 <div class="mt-4">
-                  <div class="d-flex align-items-center gap-3">
+                  <div class="d-flex align-items-center gap-3" *ngIf="status === 'Dropped after feasibility'">
                     <select class="form-select" [(ngModel)]="selectedFailReason">
                       <option disabled selected hidden value="">
                         Select Dropper After Feasibility
                       </option>
                       <option value="Accreditation">Subcontracting No</option>
-                      <option value="Time Constraints">Supplier Dropperd</option>
+                      <option value="Time Constraints">Supplier Dropped</option>
                       <option value="Certification">Time Constrain</option>
                       <option value="Case Study">Rejected In Yes/No Call</option>
                       <option value="Certifications from Subcontractor">
@@ -657,7 +657,7 @@
             <div class="row justify-content-end mb-2 mt-3">
               <ng-container>
                 <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                  <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                  <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()  && status !== 'Dropped after feasibility'"
                     class="btn btn-primary w-100">
                     Save Bid Status
                   </a>
