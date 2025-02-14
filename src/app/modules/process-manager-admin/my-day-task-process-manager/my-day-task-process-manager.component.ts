@@ -2,13 +2,14 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-my-day-task-process-manager',
   templateUrl: './my-day-task-process-manager.component.html',
@@ -34,7 +35,9 @@ export class MyDayTaskProcessManagerComponent {
   selectedpriority: any[] = [];
   searchText: any;
   myControl = new FormControl();
-
+  private modalElement!: HTMLElement;
+  private modalInstance: any;
+  private hiddenEventSubscription!: Subscription;
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
     { projectType: 'Oldest to Newest', value: 'Oldest' }
@@ -62,6 +65,24 @@ export class MyDayTaskProcessManagerComponent {
   ngOnInit(): void {
     this.getTask();
     this.getUserAllList();
+    this.modalElement = document.getElementById('taskDetailsModal') as HTMLElement;
+
+    if (this.modalElement) {
+      this.modalInstance = new bootstrap.Modal(this.modalElement);
+
+      // Listen for modal close event
+      this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
+  }
+
+  onModalClose() {
+    this.selectedStatus = "";
+  }
+
+  ngOnDestroy() {
+    if (this.modalElement) {
+      this.modalElement.removeEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
   }
 
   onDueDateChange(date: NgbDate | null) {

@@ -2,11 +2,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-to-do-tasks-process-manager',
@@ -29,6 +31,9 @@ export class ToDoTasksProcessManagerComponent {
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
+  private modalElement!: HTMLElement;
+  private modalInstance: any;
+  private hiddenEventSubscription!: Subscription;
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -57,6 +62,24 @@ export class ToDoTasksProcessManagerComponent {
   ngOnInit(): void {
     this.getTask();
     this.getUserAllList();
+    this.modalElement = document.getElementById('taskDetailsModal') as HTMLElement;
+
+    if (this.modalElement) {
+      this.modalInstance = new bootstrap.Modal(this.modalElement);
+
+      // Listen for modal close event
+      this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
+  }
+
+  onModalClose() {
+    this.selectedStatus = "";
+  }
+
+  ngOnDestroy() {
+    if (this.modalElement) {
+      this.modalElement.removeEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
   }
 
   onChangeMyday(value: any) {
@@ -222,7 +245,7 @@ export class ToDoTasksProcessManagerComponent {
         'Ongoing',
         sortType,
         priorityType, // Use the single priority value here
-        keyword 
+        keyword
       )
       .subscribe(
         (response) => {

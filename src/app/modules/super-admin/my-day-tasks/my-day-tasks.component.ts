@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -10,7 +11,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
-
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-day-tasks',
@@ -57,7 +58,9 @@ export class MyDayTasksComponent {
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
   ];
-
+  private modalElement!: HTMLElement;
+  private modalInstance: any;
+  private hiddenEventSubscription!: Subscription;
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -75,6 +78,24 @@ export class MyDayTasksComponent {
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
+    this.modalElement = document.getElementById('taskDetailsModal') as HTMLElement;
+
+    if (this.modalElement) {
+      this.modalInstance = new bootstrap.Modal(this.modalElement);
+
+      // Listen for modal close event
+      this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
+  }
+
+  onModalClose() {
+    this.selectedStatus = "";
+  }
+
+  ngOnDestroy() {
+    if (this.modalElement) {
+      this.modalElement.removeEventListener('hidden.bs.modal', this.onModalClose.bind(this));
+    }
   }
 
   onDueDateChange(date: NgbDate | null) {
