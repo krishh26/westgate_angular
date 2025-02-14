@@ -588,8 +588,9 @@
                 </div>
               </div>
 
+              <!-- *ngIf="status !== 'Dropped after feasibility'" -->
               <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3" *ngIf="status !== 'Dropped after feasibility'">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
                     placeholder="Add your comment" />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
@@ -598,7 +599,7 @@
                 </div>
               </ng-container>
 
-              <ng-container>
+              <!-- <ng-container>
                 <div class="mt-4">
                   <div class="d-flex align-items-center gap-3" *ngIf="status === 'Dropped after feasibility'">
                     <select class="form-select" [(ngModel)]="selectedFailReason">
@@ -636,7 +637,6 @@
                     </div>
                   </div>
 
-                  <!-- Display added reasons and comments -->
                   <div class="mt-3">
                     <div class="reason-item border rounded p-3 mb-2"
                       *ngFor="let reason of failStatusReasons; let i = index">
@@ -651,7 +651,7 @@
                     </div>
                   </div>
                 </div>
-              </ng-container>
+              </ng-container> -->
 
             </div>
             <div class="row justify-content-end mb-2 mt-3">
