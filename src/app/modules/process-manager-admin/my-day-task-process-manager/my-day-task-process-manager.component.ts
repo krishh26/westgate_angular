@@ -276,12 +276,13 @@ export class MyDayTaskProcessManagerComponent {
     const keyword = this.searchText;
     // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
     this.superService
-      .getMyTask(
+      .getsuperadmintasks(
         this.selectedUserIds.join(','),
-        true,
+        "",
         sortType,
-        priorityType, // Use the single priority value here
-        keyword
+        priorityType,
+        keyword, // Pass it as the keyword in the API request
+        true
       )
       .subscribe(
         (response) => {

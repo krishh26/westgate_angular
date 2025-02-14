@@ -87,14 +87,14 @@ export class CompletedTasksComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-    
+
     // Pass the searchText (keyword) in the API call
     const keyword = this.searchText;  // The search text to filter by
-  
+
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
-        'Ongoing',
+        'Completed',
         sortType,
         priorityType,
         keyword // Pass it as the keyword in the API request
@@ -103,18 +103,18 @@ export class CompletedTasksComponent {
         (response) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
-  
+
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
               );
-  
+
               return {
                 ...task,
                 todayComments: todayComments?.length ? todayComments : null,
               };
             });
-  
+
             this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);

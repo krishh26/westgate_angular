@@ -149,7 +149,7 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status: string, sort?: string, pickACategory?: string, keyword?:string): Observable<any> {
+  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?:string, myDay?: boolean): Observable<any> {
     let params = new HttpParams();
 
     if (assignId) {
@@ -167,7 +167,9 @@ export class SuperadminService {
     if (keyword) {
       params = params.set('keyword', keyword);
     }
-
+    if (myDay) {
+      params = params.set('myDay', myDay.toString());
+    }
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,
       { params }
