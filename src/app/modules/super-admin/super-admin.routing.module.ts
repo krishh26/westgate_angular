@@ -28,6 +28,8 @@ import { SuperAdminChangePasswordComponent } from './super-admin-change-password
 import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
 import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
 import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';
+import { DroppedAfterGapAnalysisComponent } from './dropped-after-gap-analysis/dropped-after-gap-analysis.component';
+import { NoSupplierGapAnalysisComponent } from './no-supplier-gap-analysis/no-supplier-gap-analysis.component';
 
 
 
@@ -144,6 +146,14 @@ const routes: Routes = [
       {
         path: "approve-reject-project-details",
         component: ApproveRejectProjectDetailsComponent
+      },
+      {
+        path: "no-supplier-matched-gap-analysis",
+        component: NoSupplierGapAnalysisComponent
+      },
+      {
+        path: "dropped-after-feasibility-gap-analysis",
+        component: DroppedAfterGapAnalysisComponent
       },
     ]
   },

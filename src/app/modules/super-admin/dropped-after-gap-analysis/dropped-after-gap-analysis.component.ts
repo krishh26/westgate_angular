@@ -7,12 +7,12 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
-  selector: 'app-gap-analysis',
-  templateUrl: './gap-analysis.component.html',
-  styleUrls: ['./gap-analysis.component.scss']
+  selector: 'app-dropped-after-gap-analysis',
+  templateUrl: './dropped-after-gap-analysis.component.html',
+  styleUrls: ['./dropped-after-gap-analysis.component.scss']
 })
-export class GapAnalysisComponent {
-  trackerStartDate: FormControl = new FormControl('');
+export class DroppedAfterGapAnalysisComponent {
+trackerStartDate: FormControl = new FormControl('');
   trackerEndDate: FormControl = new FormControl('');
   showLoader: boolean = false;
   gapAnalysisData: any = [];
@@ -39,7 +39,7 @@ export class GapAnalysisComponent {
   }
 
   ngOnInit(): void {
-    this.getGapAnalysisData();
+    this.getGapAnalysisDataDropped();
     this.trackerEndDate.valueChanges.subscribe((res: any) => {
       if (!this.trackerStartDate.value) {
         this.notificationService.showError(
@@ -47,7 +47,7 @@ export class GapAnalysisComponent {
         );
         return;
       } else {
-        this.getGapAnalysisData();
+        this.getGapAnalysisDataDropped();
       }
     });
   }
@@ -62,9 +62,9 @@ export class GapAnalysisComponent {
     ).padStart(2, '0')}`;
   }
 
-  getGapAnalysisData(searchText?: string) {
+  getGapAnalysisDataDropped(searchText?: string) {
     let param: any = {
-      page: this.pageFailed, // Use the correct page variable
+      page: this.pageDropped, // Use the correct page variable
       pagesize: this.pagesize,
     };
   
@@ -85,14 +85,14 @@ export class GapAnalysisComponent {
     }
   
     this.showLoader = true;
-    this.gapAnalysisData = [];
+    this.gapAnalysisDataDropped = [];
   
-    this.superService.getGapAnalysis(param).subscribe(
+    this.superService.getGapAnalysisDroppedafterFeasibility(param).subscribe(
       (response) => {
         this.showLoader = false;
         if (response?.status) {
-          this.gapAnalysisData = response?.data;
-          this.totalRecords = response?.totalRecords; // Update total records for pagination
+          this.gapAnalysisDataDropped = response?.data;
+          this.totalRecords = response?.totalRecords;
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -104,6 +104,7 @@ export class GapAnalysisComponent {
     );
   }
   
+
   searchInputChange() {
     this.filteredData = this.selectedProjects.filter(item => {
       const matchesComment = this.searchText
@@ -119,9 +120,10 @@ export class GapAnalysisComponent {
 
   paginate(page: number) {
     this.page = page;
-    this.getGapAnalysisData();
+    this.getGapAnalysisDataDropped();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 
   showProjects(projects: any) {
     this.selectedProjects = [];

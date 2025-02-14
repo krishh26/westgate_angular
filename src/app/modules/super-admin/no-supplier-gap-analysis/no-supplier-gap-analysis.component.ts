@@ -7,11 +7,11 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
-  selector: 'app-gap-analysis',
-  templateUrl: './gap-analysis.component.html',
-  styleUrls: ['./gap-analysis.component.scss']
+  selector: 'app-no-supplier-gap-analysis',
+  templateUrl: './no-supplier-gap-analysis.component.html',
+  styleUrls: ['./no-supplier-gap-analysis.component.scss']
 })
-export class GapAnalysisComponent {
+export class NoSupplierGapAnalysisComponent {
   trackerStartDate: FormControl = new FormControl('');
   trackerEndDate: FormControl = new FormControl('');
   showLoader: boolean = false;
@@ -39,7 +39,7 @@ export class GapAnalysisComponent {
   }
 
   ngOnInit(): void {
-    this.getGapAnalysisData();
+    this.getGapAnalysisDataNoSupplier();
     this.trackerEndDate.valueChanges.subscribe((res: any) => {
       if (!this.trackerStartDate.value) {
         this.notificationService.showError(
@@ -47,7 +47,7 @@ export class GapAnalysisComponent {
         );
         return;
       } else {
-        this.getGapAnalysisData();
+        this.getGapAnalysisDataNoSupplier();
       }
     });
   }
@@ -62,37 +62,37 @@ export class GapAnalysisComponent {
     ).padStart(2, '0')}`;
   }
 
-  getGapAnalysisData(searchText?: string) {
+  getGapAnalysisDataNoSupplier(searchText?: string) {
     let param: any = {
-      page: this.pageFailed, // Use the correct page variable
+      page: this.pageNoSupplier, // Use the correct page variable
       pagesize: this.pagesize,
     };
-  
+
     if (searchText) {
       param['keyword'] = searchText;
     }
-  
+
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-  
+
     if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
     }
-  
+
     this.showLoader = true;
-    this.gapAnalysisData = [];
-  
-    this.superService.getGapAnalysis(param).subscribe(
+    this.gapAnalysisDataNoSupplier = [];
+
+    this.superService.getGapAnalysisNosupplierMatched(param).subscribe(
       (response) => {
         this.showLoader = false;
         if (response?.status) {
-          this.gapAnalysisData = response?.data;
-          this.totalRecords = response?.totalRecords; // Update total records for pagination
+          this.gapAnalysisDataNoSupplier = response?.data;
+          this.totalRecords = response?.totalRecords;
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -103,7 +103,8 @@ export class GapAnalysisComponent {
       }
     );
   }
-  
+
+
   searchInputChange() {
     this.filteredData = this.selectedProjects.filter(item => {
       const matchesComment = this.searchText
@@ -119,9 +120,10 @@ export class GapAnalysisComponent {
 
   paginate(page: number) {
     this.page = page;
-    this.getGapAnalysisData();
+    this.getGapAnalysisDataNoSupplier();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 
   showProjects(projects: any) {
     this.selectedProjects = [];
