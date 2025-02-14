@@ -205,7 +205,7 @@ export class GapAnalysisComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/super-admin-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
   paginate(page: number, type: string) {
