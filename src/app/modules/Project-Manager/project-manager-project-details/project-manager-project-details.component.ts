@@ -108,8 +108,11 @@ export class ProjectManagerProjectDetailsComponent {
   feasibilityStatusComment: FormControl = new FormControl('');
   selectedFailReason: string = '';
   failStatusReasons: { tag: string; comment: string }[] = [];
+  droppedStatusReasons: { tag: string; comment: string }[] = [];
   projectStrips: any = [];
   getReasonList: any = [];
+  getDroppedAfterReasonList: any = [];
+  selectedDroppedAfterFeasibilityReason: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -494,6 +497,7 @@ export class ProjectManagerProjectDetailsComponent {
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.feasibilityStatus = this.projectDetails?.status;
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.getReasonList = this.projectDetails?.failStatusReason;
@@ -974,6 +978,30 @@ export class ProjectManagerProjectDetailsComponent {
     );
   }
 
+  // Method to remove a fail reason
+  removeDroppedReason(index: number) {
+    this.droppedStatusReasons.splice(index, 1);
+  }
+
+  adddroppedReason() {
+    if (!this.selectedDroppedAfterFeasibilityReason) {
+      this.notificationService.showError('Please select a Dropped reason.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.droppedStatusReasons.push({
+      tag: this.selectedDroppedAfterFeasibilityReason,
+      comment: '',
+    });
+    console.log(this.droppedStatusReasons, this.selectedDroppedAfterFeasibilityReason);
+
+
+    // Reset the dropdown selection
+    this.selectedDroppedAfterFeasibilityReason = '';
+  }
+
+
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
     if (!contractEdit) {
@@ -991,18 +1019,49 @@ export class ProjectManagerProjectDetailsComponent {
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+      if (!hasExistingComment && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
-          'Please provide a comment for the selected status.'
+          'Please provide a bid comment for the selected status.'
         );
       }
+      // Merge existing and new comments, removing duplicates
+      const existingComments = this.projectDetails?.bidManagerStatusComment || [];
+      const newComments = [...this.commentData];
+
+      let uniqueComments: any[] = [];
+      if (this.droppedStatusReasons.length > 0) {
+        uniqueComments = Array.from(
+          new Map(
+            [...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      } else {
+        uniqueComments = Array.from(
+          new Map(
+            [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      }
+
+      // **Sort comments in descending order (latest first)**
+      uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
       payload = {
         bidManagerStatus: this.status || '',
-        bidManagerStatusComment: [
-          ...this.commentData,
-          ...this.projectDetails?.bidManagerStatusComment,
-        ],
+        // bidManagerStatusComment: uniqueComments, // Now sorted in descending order
       };
+
+      if (this.droppedStatusReasons.length == 0) {
+        payload['bidManagerStatusComment'] = uniqueComments
+      }
+
+      // If status is 'Dropped after feasibility', include fail reasons
+      if (this.status === 'Dropped after feasibility' && this.droppedStatusReasons.length > 0) {
+        payload.droppedAfterFeasibilityStatusReason = this.droppedStatusReasons.map(reason => ({
+          tag: reason.tag,
+          comment: reason.comment || '' // Ensure an empty comment if none is provided
+        }));
+      }
     }
 
     // API call to update project details
