@@ -4,11 +4,12 @@
             <div class="row align-items-center">
                 <nav>
                     <ul class="projects-nav-tab">
-                        <li routerLink="/super-admin/gap-analysis"><a >Failed</a></li>
+                        <li routerLink="/super-admin/gap-analysis"><a>Failed</a></li>
                         <li routerLink="/super-admin/dropped-after-feasibility-gap-analysis"><a>⁠Dropped after
                                 Feasibility</a>
                         </li>
-                        <li routerLink="/super-admin/no-supplier-matched-gap-analysis"><a  class="active">No Supplier Matched</a></li>
+                        <li routerLink="/super-admin/no-supplier-matched-gap-analysis"><a class="active">No Supplier
+                                Matched</a></li>
                     </ul>
                 </nav>
             </div>
@@ -42,8 +43,9 @@
                                 <thead>
                                     <tr>
                                         <th width="200px">Project Name</th>
+                                        <th width="200px">Assign User</th>
                                         <th>Comments</th>
-                                        <th></th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,7 +58,9 @@
                                         *ngFor="let item of gapAnalysisDataNoSupplier | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
                                         <td><a (click)="projectDetails(item?.projects[0]?._id)" href="javascript:;">{{
                                                 item?.projects[0]?.projectName }}</a></td>
+                                        <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
                                         <td>{{ item?.comment }}</td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -64,7 +68,8 @@
                         <div class="row mt-3 align-items-center">
                             <div class="row">
                                 <div class="pagination">
-                                    <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                                    <pagination-controls (pageChange)="paginate($event)"
+                                        [idMaxSize]="100"></pagination-controls>
                                 </div>
                             </div>
                         </div>
