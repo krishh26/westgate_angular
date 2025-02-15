@@ -74,6 +74,7 @@ export class TrackerWiseProjectDetailsComponent {
   selectedImage!: string;
   uploadType: boolean = true;
   getReasonList: any = [];
+  getDroppedAfterReasonList: any = [];
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -139,7 +140,9 @@ export class TrackerWiseProjectDetailsComponent {
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   imageFields = [{ text: '', file: null }];
   failStatusReasons: { tag: string; comment: string }[] = [];
+  droppedStatusReasons: { tag: string; comment: string }[] = [];
   selectedFailReason: string = '';
+  selectedDroppedAfterFeasibilityReason: string = '';
   feasibilityCommentData: any[] = [];
   bidStatus: string = 'Expired';
   bidManagerStatusComment: FormControl = new FormControl('');
@@ -379,33 +382,80 @@ export class TrackerWiseProjectDetailsComponent {
     this.loginDetailForm.controls['id'].setValue(i);
   }
 
+  pushFeasilityStatus() {
+    if (!this.feasibilityStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+    const currentDate = new Date();
+    this.feasibilityCommentData = [
+      ...this.feasibilityCommentData,
+      {
+        comment: this.feasibilityStatusComment.value,
+        date: currentDate.toISOString(),
+        status: this.feasibilityStatus,
+        userId: this.loginUser?._id,
+      },
+    ];
+    this.feasibilityStatusComment.reset();
+  }
+
   pushStatus() {
     if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
-
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
-
-    // Add comment only if it doesn't already exist in the current status
     const isDuplicate = this.commentData.some(
       (comment) =>
         comment.comment === this.bidManagerStatusComment.value &&
         comment.bidManagerStatus === this.status
     );
-
     if (!isDuplicate) {
       this.commentData.push({
         comment: this.bidManagerStatusComment.value,
-        date: currentDate.toISOString(), // ISO format for standardization (optional)
+        date: currentDate.toISOString(),
         bidManagerStatus: this.status,
         userId: this.loginUser?._id,
       });
     }
-
-    // Reset the comment input field
     this.bidManagerStatusComment.reset();
+  }
+
+  // Method to add a new fail reason
+  addFailReason() {
+    if (!this.selectedFailReason) {
+      this.notificationService.showError('Please select a fail reason.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.failStatusReasons.push({
+      tag: this.selectedFailReason,
+      comment: '',
+    });
+
+    // Reset the dropdown selection
+    this.selectedFailReason = '';
+  }
+
+
+  adddroppedReason() {
+    if (!this.selectedDroppedAfterFeasibilityReason) {
+      this.notificationService.showError('Please select a Dropped reason.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.droppedStatusReasons.push({
+      tag: this.selectedDroppedAfterFeasibilityReason,
+      comment: '',
+    });
+    console.log(this.droppedStatusReasons, this.selectedDroppedAfterFeasibilityReason);
+
+
+    // Reset the dropdown selection
+    this.selectedDroppedAfterFeasibilityReason = '';
   }
 
   getForTitleUserAllList() {
@@ -820,8 +870,56 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
-  deleteStrips(id: any) {
+  deleteDroppedReasons(reason: any, id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
 
+        // Prepare the request payload
+        const param = {
+          droppedAfterFeasibilityStatusReason: {
+            tag: reason?.tag,
+            comment: reason?.comment,
+            userId: reason?.userId,
+            date: reason?.date,
+            userDetails: {
+              _id: reason?.userDetails?._id,
+              name: reason?.userDetails?.name,
+              email: reason?.userDetails?.email,
+              role: reason?.userDetails?.role,
+              companyName: reason?.userDetails?.companyName,
+            },
+          },
+        };
+
+        this.projectService.deletedroppedReason(param, this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Reason successfully deleted');
+              window.location.reload();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
+  deleteStrips(id: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -859,29 +957,6 @@ export class TrackerWiseProjectDetailsComponent {
     this.feasibilityStatusComment.reset();
   }
 
-  pushFeasilityStatus() {
-    if (!this.feasibilityStatusComment.value) {
-      this.notificationService.showError('Please enter a status comment');
-      return;
-    }
-
-    const currentDate = new Date();
-    this.feasibilityCommentData = [
-      ...this.feasibilityCommentData,
-      {
-        comment: this.feasibilityStatusComment.value,
-        date: currentDate.toISOString(),
-        status: this.feasibilityStatus,
-        userId: this.loginUser?._id,
-      },
-    ];
-
-    this.feasibilityStatusComment.reset();
-
-    // Force UI update
-    // this.cdr.detectChanges();
-  }
-
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
@@ -894,6 +969,7 @@ export class TrackerWiseProjectDetailsComponent {
           this.status = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
           this.getReasonList = this.projectDetails?.failStatusReason;
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.feasibilityCommentData =
             this.projectDetails?.statusComment || [];
@@ -923,32 +999,6 @@ export class TrackerWiseProjectDetailsComponent {
   statusChange(status: string) {
     this.status = status;
     this.commentData = [];
-    this.bidManagerStatusComment.reset();
-  }
-
-  statusChangeBid(newStatus: string) {
-    this.bidStatus = newStatus;
-    this.bidCommentData = [];
-    this.bidManagerStatusComment.reset();
-  }
-
-  pushStatusBid() {
-    if (!this.bidManagerStatusComment.value) {
-      this.notificationService.showError('Please enter a status comment');
-      return;
-    }
-
-    // Create a new date instance for the current date and time
-    const currentDate = new Date();
-
-    this.bidCommentData.push({
-      comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      bidManagerStatus: this.bidStatus,
-      userId: this.loginUser?._id,
-    });
-
-    // Reset the comment input field
     this.bidManagerStatusComment.reset();
   }
 
@@ -1548,36 +1598,14 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-  // Method to add a new fail reason
-  addFailReason() {
-    if (!this.selectedFailReason) {
-      this.notificationService.showError('Please select a fail reason.');
-      return;
-    }
-
-    // Check if the reason already exists
-    // if (
-    //   this.failStatusReasons.some(
-    //     (reason) => reason.tag === this.selectedFailReason
-    //   )
-    // ) {
-    //   this.notificationService.showError('This reason is already added.');
-    //   return;
-    // }
-
-    // Add the reason with an empty comment
-    this.failStatusReasons.push({
-      tag: this.selectedFailReason,
-      comment: '',
-    });
-
-    // Reset the dropdown selection
-    this.selectedFailReason = '';
-  }
-
   // Method to remove a fail reason
   removeFailReason(index: number) {
     this.failStatusReasons.splice(index, 1);
+  }
+
+  // Method to remove a fail reason
+  removeDroppedReason(index: number) {
+    this.droppedStatusReasons.splice(index, 1);
   }
 
   saveFeasibilityStatus(type?: string, contractEdit?: boolean) {
@@ -1678,7 +1706,7 @@ export class TrackerWiseProjectDetailsComponent {
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment) {
+      if (!hasExistingComment && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
           'Please provide a bid comment for the selected status.'
         );
@@ -1688,19 +1716,40 @@ export class TrackerWiseProjectDetailsComponent {
       const existingComments = this.projectDetails?.bidManagerStatusComment || [];
       const newComments = [...this.commentData];
 
-      const uniqueComments = Array.from(
-        new Map(
-          [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
-        ).values()
-      );
+      let uniqueComments: any[] = [];
+      if (this.droppedStatusReasons.length > 0) {
+        uniqueComments = Array.from(
+          new Map(
+            [...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      } else {
+        uniqueComments = Array.from(
+          new Map(
+            [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      }
 
       // **Sort comments in descending order (latest first)**
       uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
       payload = {
         bidManagerStatus: this.status || '',
-        bidManagerStatusComment: uniqueComments, // Now sorted in descending order
+        // bidManagerStatusComment: uniqueComments, // Now sorted in descending order
       };
+
+      if (this.droppedStatusReasons.length == 0) {
+        payload['bidManagerStatusComment'] = uniqueComments
+      }
+
+      // If status is 'Dropped after feasibility', include fail reasons
+      if (this.status === 'Dropped after feasibility' && this.droppedStatusReasons.length > 0) {
+        payload.droppedAfterFeasibilityStatusReason = this.droppedStatusReasons.map(reason => ({
+          tag: reason.tag,
+          comment: reason.comment || '' // Ensure an empty comment if none is provided
+        }));
+      }
     }
 
     // API call to update project details

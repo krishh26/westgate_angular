@@ -29,6 +29,7 @@ export enum ProjectEndPoint {
   DELETE_STRIPS = '/project-detail-title/delete',
   DELETE_FES_BID_COMMENT = '/project/delete-comment',
   DELETE_FAILED_REASON = '/project/delete-failreason',
+  DELETE_DROPPED_REASON = '/project/delete-dafstatusreason',
   DELETE_BID_COMMENT = '/project/delete-bidstatuscomment'
 }
 
@@ -211,6 +212,14 @@ export class ProjectService {
       { body: payload }
     );
   }
+
+  deletedroppedReason(payload: any, id: any): Observable<any> {
+    return this.httpClient.delete<any>(
+      `${this.baseUrl}${ProjectEndPoint.DELETE_DROPPED_REASON}/${id}`,
+      { body: payload }
+    );
+  }
+
 
 
   deleteBulkProject(): Observable<any> {

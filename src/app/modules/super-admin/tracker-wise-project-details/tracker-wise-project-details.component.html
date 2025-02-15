@@ -433,7 +433,7 @@
                   <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
                     placeholder="Add your comment" />
                   <button class="btn btn-primary" type="button" (click)="pushFeasilityStatus()">
-                    <i class="bi bi-plus-lg"></i> Add
+                    <i class="bi bi-plus-lg"></i> Add 
                   </button>
                 </div>
               </ng-container>
@@ -464,7 +464,7 @@
                       <option value="Other">Other</option>
                     </select>
                     <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
-                      <i class="bi bi-plus-lg"></i>
+                      <i class="bi bi-plus-lg">Feasibility</i>
                     </button>
                   </div>
 
@@ -593,20 +593,22 @@
               </div>
 
               <div class="comment-list comments-section">
-                <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                <div class="comment-item border rounded p-3 mb-2"
+                  *ngFor="let droppedreason of getDroppedAfterReasonList">
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">
-                        {{ reason?.userDetails?.name }}
+                        {{ droppedreason?.userDetails?.name }}
                       </p>
                       <small class="text-muted">
-                        {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                        {{ droppedreason?.date | date : "dd/MM/yyyy, h:mm a" }}
                       </small>
                     </div>
-                    <small class="text-muted d-block"><strong>Reason :</strong> {{ reason?.comment }}</small>
+                    <small class="text-muted d-block"><strong>Reason :</strong> {{ droppedreason?.comment }}</small>
                     <div class="d-flex justify-content-between">
-                      <p class="mt-2">{{ reason?.tag }}</p>
-                      <button class="btn btn-sm text-danger" (click)="deleteFailedReasons(reason, reason?.commentId)">
+                      <p class="mt-2">{{ droppedreason?.tag }}</p>
+                      <button class="btn btn-sm text-danger"
+                        (click)="deleteDroppedReasons(droppedreason, droppedreason?.commentId)">
                         Delete Reason
                       </button>
                     </div>
@@ -619,7 +621,7 @@
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
                   *ngIf="status !== 'Dropped after feasibility'">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                    placeholder="Add your comment" />
+                    placeholder="Add your comment" autocomplete=false />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
@@ -630,26 +632,26 @@
               <ng-container>
                 <div *ngIf="status === 'Dropped after feasibility'" class="mt-4">
                   <div class="d-flex align-items-center gap-3">
-                    <select class="form-select" [(ngModel)]="selectedFailReason">
+                    <select class="form-select" [(ngModel)]="selectedDroppedAfterFeasibilityReason">
                       <option disabled selected hidden value="">
                         Select Dropper After Feasibility
                       </option>
-                      <option value="Accreditation">Subcontracting No</option>
-                      <option value="Time Constraints">Supplier Dropped</option>
-                      <option value="Certification">Time Constrain</option>
-                      <option value="Case Study">Rejected In Yes/No Call</option>
-                      <option value="Certifications from Subcontractor">
+                      <option value="Subcontracting No">Subcontracting No</option>
+                      <option value="Supplier Dropped">Supplier Dropped</option>
+                      <option value="Time Constrain">Time Constrain</option>
+                      <option value="Rejected In Yes/No Call">Rejected In Yes/No Call</option>
+                      <option value="Supplier Did Not Meet Eligibility Criteria">
                         Supplier Did Not Meet Eligibility Criteria
                       </option>
                       <option value="Other">Other</option>
                     </select>
-                    <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
-                      <i class="bi bi-plus-lg"></i>
+                    <button class="btn btn-outline-primary" type="button" (click)="adddroppedReason()">
+                      <i class="bi bi-plus-lg">Dropped</i>
                     </button>
                   </div>
 
-                  <div class="comment-list comments-section">
-                    <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getReasonList">
+                  <!-- <div class="comment-list comments-section">
+                    <div class="comment-item border rounded p-3 mb-2" *ngFor="let reason of getDroppedAfterReasonList">
                       <div class="comment mb-3">
                         <div class="d-flex justify-content-between align-items-center">
                           <p class="mb-0 fw-bold">
@@ -663,17 +665,17 @@
                         <p class="mt-2">{{ reason?.tag }}</p>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- Display added bid reasons and comments -->
                   <div class="mt-3">
                     <div class="reason-item border rounded p-3 mb-2"
-                      *ngFor="let reason of failStatusReasons; let i = index">
+                      *ngFor="let reason of droppedStatusReasons; let i = index">
                       <div class="d-flex align-items-center">
                         <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
                         <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                          [(ngModel)]="reason.comment" />
-                        <button class="btn btn-sm btn-danger" type="button" (click)="removeFailReason(i)">
+                          [(ngModel)]="reason.comment"/>
+                        <button class="btn btn-sm btn-danger" type="button" (click)="removeDroppedReason(i)">
                           Remove
                         </button>
                       </div>
