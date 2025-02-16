@@ -67,26 +67,26 @@ export class GapAnalysisComponent {
       page: this.pageFailed, // Use the correct page variable
       pagesize: this.pagesize,
     };
-  
+
     if (searchText) {
       param['keyword'] = searchText;
     }
-  
+
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
     const endDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
-  
+
     if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
     }
-  
+
     this.showLoader = true;
     this.gapAnalysisData = [];
-  
+
     this.superService.getGapAnalysis(param).subscribe(
       (response) => {
         this.showLoader = false;
@@ -103,7 +103,7 @@ export class GapAnalysisComponent {
       }
     );
   }
-  
+
   searchInputChange() {
     this.filteredData = this.selectedProjects.filter(item => {
       const matchesComment = this.searchText
@@ -114,7 +114,23 @@ export class GapAnalysisComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    const modalElement = document.getElementById('taskDetailsModal');
+    if (modalElement) {
+      modalElement.classList.remove('show'); // Hide modal
+      modalElement.style.display = 'none';
+      document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
+      document.body.style.overflow = ''; // Reset overflow
+      document.body.style.paddingRight = ''; // Reset padding
+
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Remove modal backdrop
+      }
+    }
+    setTimeout(() => {
+      this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    }, 100);
+
   }
 
   paginate(page: number) {
