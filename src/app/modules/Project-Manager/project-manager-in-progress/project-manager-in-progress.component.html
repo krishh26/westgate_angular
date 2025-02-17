@@ -63,11 +63,10 @@
             <div class="sort-widget mb-3">
               <h6 class="p-600">Bid Status</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Bid Status"
-                  class="form-select custom-ng-select-option" [items]="bidstatusList" bindLabel="bidstatus"
-                  [multiple]="true" bindValue="bidvalue" [(ngModel)]="selectedBidStatuses"
-                  (change)="searchtext()">
+                class="form-select custom-ng-select-option" [items]="bidstatusList" bindLabel="bidstatus"
+                [multiple]="true" bindValue="bidvalue" [(ngModel)]="selectedBidStatuses" (change)="searchtext()">
               </ng-select>
-          </div>
+            </div>
 
             <div class="sort-widget mb-3">
               <h6 class="p-600">Expired Project</h6>
@@ -185,13 +184,23 @@
                   <td v-align="middle">{{item?.BOSID}}</td>
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
-                  <td>{{item?.status}}</td>
-                  <td>{{item?.bidManagerStatus}}</td>
-                  <!-- <td>&nbsp;&nbsp;
-                            <a class="btn btn-primary btn-sm" style="cursor: pointer;"
-                                (click)="editProjectDetails(item?._id)"><i
-                                    class="bi bi-pencil-fill"></i></a>
-                        </td> -->
+                  <td>
+                    <ng-container *ngIf="item?.adminStatus === null; else failStatus">
+                      {{item?.status}}
+                    </ng-container>
+                    <ng-template #failStatus>
+                      <span>Waiting for approval</span>
+                    </ng-template>
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngIf="!(item?.adminStatus === 'Nosuppliermatched' || item?.adminStatus === 'Dropped after feasibility' || item?.adminStatus === 'Fail'); else waitingForApproval">
+                      {{item?.bidManagerStatus}}
+                    </ng-container>
+                    <ng-template #waitingForApproval>
+                      <span>Waiting for approval</span>
+                    </ng-template>
+                  </td>
                 </tr>
               </tbody>
             </table>

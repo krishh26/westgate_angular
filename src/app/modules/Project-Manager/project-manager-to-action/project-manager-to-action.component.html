@@ -163,14 +163,13 @@
                                         </ng-template>
                                     </td>
                                     <td>
-                                        <ng-container *ngIf="!(item?.adminStatus === 'Nosuppliermatched' || item?.adminStatus === 'Dropped after feasibility'); else waitingForApproval">
+                                        <ng-container *ngIf="!(item?.adminStatus === 'Nosuppliermatched' || item?.adminStatus === 'Dropped after feasibility' || item?.adminStatus === 'Fail'); else waitingForApproval">
                                             {{item?.bidManagerStatus}}
                                         </ng-container>
                                         <ng-template #waitingForApproval>
                                             <span>Waiting for approval</span>
                                         </ng-template>
                                     </td>
-                                    
                                 </tr>
                             </tbody>
                         </table>
