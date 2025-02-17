@@ -14,8 +14,8 @@
             </div>
         </div>
         <div class="container-fluid mb-3">
-            <div class="row">
-                <div class="col-lg-12 col-xl-12 col-12">
+            <div class="row mb-3">
+                <div class="col-lg-6 col-xl-6 col-12">
                     <div class="statistic-card">
                         <div class="card-body">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -67,10 +67,123 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-12">
+                    <div class="statistic-card">
+                        <div class="card-body">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <h5 class="text-theme mb-0"><strong>Dropped after Feasibility</strong></h5>
+                                <form class="d-flex align-items-center gap-2">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerStartDate" ngbDatepicker
+                                            #startDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="startDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="endDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="table-responsive mt-5 mb-3">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th width="200px">Tags</th>
+                                            <th>Total Projects</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td *ngIf="!gapAnalysisDataDropped?.length" colspan="3">
+                                                <app-no-record-found></app-no-record-found>
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            *ngFor="let item of gapAnalysisDataDropped | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                                            <td>{{ item?.tag }}</td>
+                                            <td>{{ item?.projectCount }}</td>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                                                    data-bs-toggle="modal" data-bs-target="#viewAllProjects"
+                                                    (click)="showProjects(item?.projects)">View </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xl-12 col-12">
+                    <div class="statistic-card">
+                        <div class="card-body">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <h5 class="text-theme mb-0"><strong>No Supplier Matched</strong></h5>
+                                <form class="d-flex align-items-center gap-2">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerStartDate" ngbDatepicker
+                                            #startDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="startDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="endDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="table-responsive mt-5 mb-3">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th width="200px">Project Name</th>
+                                            <th width="200px">Assign User</th>
+                                            <th>Comments</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td *ngIf="!gapAnalysisDataNoSupplier?.length" colspan="3">
+                                                <app-no-record-found></app-no-record-found>
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            *ngFor="let item of gapAnalysisDataNoSupplier | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                                            <td><a (click)="projectDetails(item?.projects[0]?._id)"
+                                                    href="javascript:;">{{
+                                                    item?.projects[0]?.projectName }}</a></td>
+                                            <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
+                                            <td>{{ item?.comment }}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row mt-3 align-items-center">
                                 <div class="row">
                                     <div class="pagination">
-                                        <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                                        <pagination-controls (pageChange)="paginate($event)"
+                                            [idMaxSize]="100"></pagination-controls>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +220,7 @@
                         <tr>
                             <th>Project Name</th>
                             <th>Comment</th>
-                            <th>Feasibility Status</th>
+                            <!-- <th>Feasibility Status</th> -->
                             <th>Assigned Bid User</th>
                         </tr>
                     </thead>
@@ -121,7 +234,7 @@
                             <td><a (click)="projectDetails(project?._id)"
                                     href="javascript:;">{{project?.projectName}}</a></td>
                             <td>{{ project?.comment }}</td>
-                            <td>{{ project?.status }}</td>
+                            <!-- <td>{{ project?.status }}</td> -->
                             <td>{{ project?.assignBidManager?.name }}</td>
                         </tr>
                     </tbody>

@@ -64,8 +64,8 @@ export class DroppedAfterGapAnalysisComponent {
 
   getGapAnalysisDataDropped(searchText?: string) {
     let param: any = {
-      page: this.pageDropped, // Use the correct page variable
-      pagesize: this.pagesize,
+      // page: this.pageDropped, // Use the correct page variable
+      // pagesize: this.pagesize,
     };
 
     if (searchText) {
