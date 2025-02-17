@@ -122,7 +122,7 @@
                                             <td>{{ item?.projectCount }}</td>
                                             <td>
                                                 <a class="btn btn-primary btn-sm" style="cursor: pointer;"
-                                                    data-bs-toggle="modal" data-bs-target="#viewAllProjects"
+                                                    data-bs-toggle="modal" data-bs-target="#viewProjects"
                                                     (click)="showProjects(item?.projects)">View </a>
                                             </td>
                                         </tr>
@@ -245,6 +245,54 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewProjects" tabindex="-1" aria-labelledby="viewProjectsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between">
+                <h5 class="modal-title" id="ViewDocumentModalLabel">
+                    View All Projects
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+                        <div class="form-group mb-0">
+                            <span class="input-icon"><i class="bi bi-search"></i></span>
+                            <input class="form-control control-search" placeholder="Search comments..." type="text"
+                                [(ngModel)]="searchText" (input)="searchInputChange()">
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Comment</th>
+                            <th>Assigned Bid User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!filteredData?.length">
+                            <td colspan="4">
+                                <app-no-record-found></app-no-record-found>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let project of filteredData">
+                            <td><a (click)="projectDetails(project?._id)" href="javascript:;">{{ project?.projectName
+                                    }}</a></td>
+                            <td>{{ project?.droppedAfterFeasibilityStatusReason?.comment || 'No comment available' }}
+                            </td>
+                            <td>{{ project?.assignBidManager?.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>
