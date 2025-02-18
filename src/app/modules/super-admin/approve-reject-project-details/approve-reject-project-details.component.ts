@@ -25,7 +25,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./approve-reject-project-details.component.scss']
 })
 export class ApproveRejectProjectDetailsComponent {
-
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
@@ -75,6 +74,7 @@ export class ApproveRejectProjectDetailsComponent {
   selectedImage!: string;
   uploadType: boolean = true;
   getReasonList: any = [];
+  getDroppedAfterReasonList: any = [];
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -140,7 +140,9 @@ export class ApproveRejectProjectDetailsComponent {
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
   imageFields = [{ text: '', file: null }];
   failStatusReasons: { tag: string; comment: string }[] = [];
+  droppedStatusReasons: { tag: string; comment: string }[] = [];
   selectedFailReason: string = '';
+  selectedDroppedAfterFeasibilityReason: string = '';
   feasibilityCommentData: any[] = [];
   bidStatus: string = 'Expired';
   bidManagerStatusComment: FormControl = new FormControl('');
@@ -380,24 +382,80 @@ export class ApproveRejectProjectDetailsComponent {
     this.loginDetailForm.controls['id'].setValue(i);
   }
 
+  pushFeasilityStatus() {
+    if (!this.feasibilityStatusComment.value) {
+      this.notificationService.showError('Please enter a status comment');
+      return;
+    }
+    const currentDate = new Date();
+    this.feasibilityCommentData = [
+      ...this.feasibilityCommentData,
+      {
+        comment: this.feasibilityStatusComment.value,
+        date: currentDate.toISOString(),
+        status: this.feasibilityStatus,
+        userId: this.loginUser?._id,
+      },
+    ];
+    this.feasibilityStatusComment.reset();
+  }
+
   pushStatus() {
     if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
-
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
+    const isDuplicate = this.commentData.some(
+      (comment) =>
+        comment.comment === this.bidManagerStatusComment.value &&
+        comment.bidManagerStatus === this.status
+    );
+    if (!isDuplicate) {
+      this.commentData.push({
+        comment: this.bidManagerStatusComment.value,
+        date: currentDate.toISOString(),
+        bidManagerStatus: this.status,
+        userId: this.loginUser?._id,
+      });
+    }
+    this.bidManagerStatusComment.reset();
+  }
 
-    this.commentData.push({
-      comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      bidManagerStatus: this.status,
-      userId: this.loginUser?._id,
+  // Method to add a new fail reason
+  addFailReason() {
+    if (!this.selectedFailReason) {
+      this.notificationService.showError('Please select a fail reason.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.failStatusReasons.push({
+      tag: this.selectedFailReason,
+      comment: '',
     });
 
-    // Reset the comment input field
-    this.bidManagerStatusComment.reset();
+    // Reset the dropdown selection
+    this.selectedFailReason = '';
+  }
+
+
+  adddroppedReason() {
+    if (!this.selectedDroppedAfterFeasibilityReason) {
+      this.notificationService.showError('Please select a Dropped reason.');
+      return;
+    }
+
+    // Add the reason with an empty comment
+    this.droppedStatusReasons.push({
+      tag: this.selectedDroppedAfterFeasibilityReason,
+      comment: '',
+    });
+    console.log(this.droppedStatusReasons, this.selectedDroppedAfterFeasibilityReason);
+
+
+    // Reset the dropdown selection
+    this.selectedDroppedAfterFeasibilityReason = '';
   }
 
   getForTitleUserAllList() {
@@ -603,13 +661,6 @@ export class ApproveRejectProjectDetailsComponent {
     );
   }
 
-  questionDetails(details: any) {
-    localStorage.setItem('ViewQuestionForCoordinator', JSON.stringify(details));
-    this.router.navigate(['bid-submission/bid-question-details'], {
-      queryParams: { id: details?._id },
-    });
-  }
-
   editSummary(summary: any) {
     this.isEditMode = true;
     this.currentSummaryId = summary;
@@ -643,12 +694,6 @@ export class ApproveRejectProjectDetailsComponent {
         );
       }
     );
-  }
-
-  detailPage() {
-    this.router.navigate(['/feasibility-user/minimum-eligibility-form'], {
-      queryParams: { id: this.projectId },
-    });
   }
 
   public showHidePass(): void {
@@ -712,6 +757,57 @@ export class ApproveRejectProjectDetailsComponent {
     });
   }
 
+  deleteBidComment(item: any, id: any) {
+    let param = {
+      commentId: id,
+      bidManagerStatusComment: {
+        comment: item?.comment,
+        date: item?.date,
+        bidManagerStatus: item?.bidManagerStatus,
+        userId: item?.userDetails?._id,
+        userDetails: {
+          _id: item?.userDetails?._id,
+          name: item?.userDetails?.name,
+          email: item?.userDetails?.email,
+          role: item?.userDetails?.role,
+          companyName: item?.userDetails?.companyName
+        }
+      }
+    };
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.deleteBidComment(param, this.projectId).subscribe(
+          (response: any) => {
+            if (response?.status === true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess(
+                'Comment successfully deleted'
+              );
+              window.location.reload();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
   deleteFailedReasons(reason: any, id: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -724,7 +820,7 @@ export class ApproveRejectProjectDetailsComponent {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-  
+
         // Prepare the request payload
         const param = {
           failStatusReason: {
@@ -741,7 +837,7 @@ export class ApproveRejectProjectDetailsComponent {
             },
           },
         };
-  
+
         this.projectService.deleteFailedReason(param, this.projectId).subscribe(
           (response: any) => {
             this.showLoader = false;
@@ -760,10 +856,57 @@ export class ApproveRejectProjectDetailsComponent {
       }
     });
   }
-  
+
+  deleteDroppedReasons(reason: any, id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+
+        // Prepare the request payload
+        const param = {
+          droppedAfterFeasibilityStatusReason: {
+            tag: reason?.tag,
+            comment: reason?.comment,
+            userId: reason?.userId,
+            date: reason?.date,
+            userDetails: {
+              _id: reason?.userDetails?._id,
+              name: reason?.userDetails?.name,
+              email: reason?.userDetails?.email,
+              role: reason?.userDetails?.role,
+              companyName: reason?.userDetails?.companyName,
+            },
+          },
+        };
+
+        this.projectService.deletedroppedReason(param, this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Reason successfully deleted');
+              window.location.reload();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
 
   deleteStrips(id: any) {
-
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -801,29 +944,6 @@ export class ApproveRejectProjectDetailsComponent {
     this.feasibilityStatusComment.reset();
   }
 
-  pushFeasilityStatus() {
-    if (!this.feasibilityStatusComment.value) {
-      this.notificationService.showError('Please enter a status comment');
-      return;
-    }
-
-    const currentDate = new Date();
-    this.feasibilityCommentData = [
-      ...this.feasibilityCommentData,
-      {
-        comment: this.feasibilityStatusComment.value,
-        date: currentDate.toISOString(),
-        status: this.feasibilityStatus,
-        userId: this.loginUser?._id,
-      },
-    ];
-
-    this.feasibilityStatusComment.reset();
-
-    // Force UI update
-    // this.cdr.detectChanges();
-  }
-
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
@@ -836,6 +956,7 @@ export class ApproveRejectProjectDetailsComponent {
           this.status = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
           this.getReasonList = this.projectDetails?.failStatusReason;
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.feasibilityCommentData =
             this.projectDetails?.statusComment || [];
@@ -865,32 +986,6 @@ export class ApproveRejectProjectDetailsComponent {
   statusChange(status: string) {
     this.status = status;
     this.commentData = [];
-    this.bidManagerStatusComment.reset();
-  }
-
-  statusChangeBid(newStatus: string) {
-    this.bidStatus = newStatus;
-    this.bidCommentData = [];
-    this.bidManagerStatusComment.reset();
-  }
-
-  pushStatusBid() {
-    if (!this.bidManagerStatusComment.value) {
-      this.notificationService.showError('Please enter a status comment');
-      return;
-    }
-
-    // Create a new date instance for the current date and time
-    const currentDate = new Date();
-
-    this.bidCommentData.push({
-      comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      bidManagerStatus: this.bidStatus,
-      userId: this.loginUser?._id,
-    });
-
-    // Reset the comment input field
     this.bidManagerStatusComment.reset();
   }
 
@@ -1490,36 +1585,14 @@ export class ApproveRejectProjectDetailsComponent {
     );
   }
 
-  // Method to add a new fail reason
-  addFailReason() {
-    if (!this.selectedFailReason) {
-      this.notificationService.showError('Please select a fail reason.');
-      return;
-    }
-
-    // Check if the reason already exists
-    // if (
-    //   this.failStatusReasons.some(
-    //     (reason) => reason.tag === this.selectedFailReason
-    //   )
-    // ) {
-    //   this.notificationService.showError('This reason is already added.');
-    //   return;
-    // }
-
-    // Add the reason with an empty comment
-    this.failStatusReasons.push({
-      tag: this.selectedFailReason,
-      comment: '',
-    });
-
-    // Reset the dropdown selection
-    this.selectedFailReason = '';
-  }
-
   // Method to remove a fail reason
   removeFailReason(index: number) {
     this.failStatusReasons.splice(index, 1);
+  }
+
+  // Method to remove a fail reason
+  removeDroppedReason(index: number) {
+    this.droppedStatusReasons.splice(index, 1);
   }
 
   saveFeasibilityStatus(type?: string, contractEdit?: boolean) {
@@ -1537,7 +1610,7 @@ export class ApproveRejectProjectDetailsComponent {
         );
         if (!hasExistingComment && !this.feasibilityStatusComment.value) {
           return this.notificationService.showError(
-            'Please provide a comment for the selected status.'
+            'Please provide a feasibility comment for the selected status.'
           );
         }
 
@@ -1602,9 +1675,9 @@ export class ApproveRejectProjectDetailsComponent {
       );
   }
 
-
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
+
     if (!contractEdit) {
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
@@ -1620,41 +1693,67 @@ export class ApproveRejectProjectDetailsComponent {
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment && !this.bidManagerStatusComment.value) {
+      if (!hasExistingComment && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
-          'Please provide a comment for the selected status.'
+          'Please provide a bid comment for the selected status.'
         );
       }
+
+      // Merge existing and new comments, removing duplicates
+      const existingComments = this.projectDetails?.bidManagerStatusComment || [];
+      const newComments = [...this.commentData];
+
+      let uniqueComments: any[] = [];
+      if (this.droppedStatusReasons.length > 0) {
+        uniqueComments = Array.from(
+          new Map(
+            [...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      } else {
+        uniqueComments = Array.from(
+          new Map(
+            [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+          ).values()
+        );
+      }
+
+      // **Sort comments in descending order (latest first)**
+      uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
       payload = {
         bidManagerStatus: this.status || '',
-        bidManagerStatusComment: [
-          ...this.commentData,
-          ...this.projectDetails?.bidManagerStatusComment,
-        ],
+        // bidManagerStatusComment: uniqueComments, // Now sorted in descending order
       };
+
+      if (this.droppedStatusReasons.length == 0) {
+        payload['bidManagerStatusComment'] = uniqueComments
+      }
+
+      // If status is 'Dropped after feasibility', include fail reasons
+      if (this.status === 'Dropped after feasibility' && this.droppedStatusReasons.length > 0) {
+        payload.droppedAfterFeasibilityStatusReason = this.droppedStatusReasons.map(reason => ({
+          tag: reason.tag,
+          comment: reason.comment || '' // Ensure an empty comment if none is provided
+        }));
+      }
     }
 
     // API call to update project details
-    this.feasibilityService
-      .updateProjectDetailsBid(payload, this.projectDetails._id)
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            this.notificationService.showSuccess(
-              'Project updated successfully'
-            );
-            this.isEditing = false;
-            this.getProjectDetails();
-          } else {
-            this.notificationService.showError(
-              response?.message || 'Failed to update project'
-            );
-          }
-        },
-        (error) => {
-          this.notificationService.showError('Failed to update project');
+    this.feasibilityService.updateProjectDetailsBid(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails(); // Refresh project details after save
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
         }
-      );
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
   }
 
 
@@ -1686,4 +1785,3 @@ export class ApproveRejectProjectDetailsComponent {
     return this.status && (hasComment || hasUnaddedComment);
   }
 }
-
