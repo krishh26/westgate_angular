@@ -185,16 +185,17 @@
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
                   <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
                   <td>
-                    <ng-container *ngIf="item?.status === 'Fail' || item?.adminStatus === null; else failStatus">
+                    <ng-container *ngIf="item?.adminStatus === 'Fail'; else failStatus">
                       <span>Waiting for approval</span>
                     </ng-container>
                     <ng-template #failStatus>
                       {{ item?.status }}
                     </ng-template>
                   </td>
+
                   <td>
                     <ng-container
-                      *ngIf="!(item?.adminStatus === 'Nosuppliermatched' || item?.adminStatus === 'Dropped after feasibility' || item?.adminStatus === 'Fail'); else waitingForApproval">
+                      *ngIf="!(item?.adminStatus === 'Nosuppliermatched' || item?.adminStatus === 'Dropped after feasibility'); else waitingForApproval">
                       {{item?.bidManagerStatus}}
                     </ng-container>
                     <ng-template #waitingForApproval>
