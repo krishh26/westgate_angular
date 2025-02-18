@@ -8,19 +8,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="container-fluids mb-3">
-            <div class="row align-items-center">
-                <nav>
-                    <ul class="projects-nav-tab">
-                        <li routerLink="/super-admin/gap-analysis"><a class="active">Failed</a></li>
-                        <li routerLink="/super-admin/dropped-after-feasibility-gap-analysis"><a>⁠Dropped after
-                                Feasibility</a>
-                        </li>
-                        <li routerLink="/super-admin/no-supplier-matched-gap-analysis"><a>No Supplier Matched</a></li>
-                    </ul>
-                </nav>
-            </div>
-            </div> -->
             <div class="row mb-3">
                 <div class="col-lg-6 col-xl-6 col-12">
                     <div class="statistic-card">
@@ -61,8 +48,7 @@
                                                 <app-no-record-found></app-no-record-found>
                                             </td>
                                         </tr>
-                                        <tr
-                                            *ngFor="let item of gapAnalysisData; let i = index">
+                                        <tr *ngFor="let item of gapAnalysisData; let i = index">
                                             <td>{{ item?.tag }}</td>
                                             <td>{{ item?.projectCount }}</td>
                                             <td>
@@ -116,8 +102,7 @@
                                                 <app-no-record-found></app-no-record-found>
                                             </td>
                                         </tr>
-                                        <tr
-                                            *ngFor="let item of gapAnalysisDataDropped; let i = index">
+                                        <tr *ngFor="let item of gapAnalysisDataDropped; let i = index">
                                             <td>{{ item?.tag }}</td>
                                             <td>{{ item?.projectCount }}</td>
                                             <td>

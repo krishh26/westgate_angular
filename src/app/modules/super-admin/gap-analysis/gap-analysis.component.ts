@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as bootstrap from 'bootstrap';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -202,24 +203,34 @@ export class GapAnalysisComponent {
   }
 
   projectDetails(projectId: any) {
-    const modalElement = document.getElementById('taskDetailsModal');
-    if (modalElement) {
-      modalElement.classList.remove('show'); // Hide modal
-      modalElement.style.display = 'none';
-      document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
-      document.body.style.overflow = ''; // Reset overflow
-      document.body.style.paddingRight = ''; // Reset padding
+    const modalElement = document.getElementById('viewAllProjects');
 
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Remove modal backdrop
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide(); // Close the modal properly
       }
     }
-    setTimeout(() => {
-      this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
-    }, 100);
 
+    // Wait a bit to ensure Bootstrap removes modal styles before restoring scrolling
+    setTimeout(() => {
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = ''; // Reset to default behavior
+      document.body.style.paddingRight = '';
+
+      // Remove any leftover modal backdrop
+      document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+      // Force scroll to be enabled
+      document.documentElement.style.overflow = 'auto';
+      document.documentElement.style.height = 'auto';
+
+      // Now navigate to the details page
+      this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
+
+
 
   paginate(page: number) {
     this.page = page;
