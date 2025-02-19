@@ -9,6 +9,7 @@ import { CompletedTaskProcessManagerComponent } from './completed-task-process-m
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
 import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
+import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
 
 
 
@@ -49,6 +50,10 @@ const routes: Routes = [
       {
         path: "change-password",
         component: PmAdminChangePasswordComponent
+      },
+      {
+        path: "dashboard-process-manager",
+        component: DashboardProcessManagerComponent
       },
     ]
   },
