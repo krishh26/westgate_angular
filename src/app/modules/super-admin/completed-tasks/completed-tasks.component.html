@@ -54,7 +54,7 @@
                   (change)="searchtext()" [multiple]="false" placeholder="Select Type">
                 </ng-select>
               </div>
-  
+
               <div class="col-md-6 mb-2">
                 <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
                   [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
@@ -84,7 +84,7 @@
                       'bg-light-orange': task?.pickACategory === 'High'
                   }">
                 <div>
-                   
+
                   {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory
                     }})</span>
                   <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
@@ -275,6 +275,52 @@
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
             </div>
+          </div>
+          <div class="comments-section">
+            <ul class="SecondarytaskList mt-3">
+              <li *ngFor="let comment of transformData(modalTask?.datewiseComments);; let i = index" class="comment-item">
+                <h6> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                <div class="row align-items-center mb-3">
+                  <div class="col">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                      <small class="text-muted">{{
+                        comment?.date | date : "dd/MM/yyyy, h:mm a"
+                        }}</small>
+                    </div>
+                    <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                  </div>
+                </div>
+                <div class="d-flex flex-column mb-3">
+                  <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
+                    <p>{{ comment.comment }}</p>
+                    <div *ngIf="comment?.commentId">
+                      <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
+                        Edit
+                      </button>
+                      <button class="btn btn-sm text-danger" (click)="deleteComment(comment?.commentId)">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="comment.isEditing" class="d-flex flex-column">
+                    <textarea class="form-control mb-2" placeholder="Edit comment..."
+                      [(ngModel)]="comment.updatedComment" style="width: 100%;"></textarea>
+                    <div class="d-flex justify-content-between">
+                      <button class="btn btn-sm btn-success me-2" (click)="updateTaskComment(comment)">
+                        Save
+                      </button>
+                      <button class="btn btn-sm btn-secondary me-2" (click)="cancelEdit(comment)">
+                        Cancel
+                      </button>
+                      <!-- <button class="btn btn-sm text-danger" (click)="deleteTask(comment._id)">
+                          Delete
+                        </button> -->
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
 
         </div>

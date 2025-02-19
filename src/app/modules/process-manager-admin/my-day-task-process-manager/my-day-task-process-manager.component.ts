@@ -85,6 +85,31 @@ export class MyDayTaskProcessManagerComponent {
     }
   }
 
+  // Function to transform the data
+  transformData = (data: any) => {
+    let commentsData: any[] = [];
+    if (!data) {
+      return;
+    }
+    Object.entries(data).forEach(([commentDate, comments]) => {
+      if (Array.isArray(comments)) {
+        comments.forEach(comment => {
+          commentsData.push({
+            commentDate, // Keep the commentDate format
+            ...comment
+          });
+        });
+      } else {
+        commentsData.push({
+          commentDate,
+          comment: comments // No comments available case
+        });
+      }
+    });
+
+    return commentsData;
+  };
+
   onDueDateChange(date: NgbDate | null) {
     this.dueDateValue = date; // Update the local variable
     this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value

@@ -79,6 +79,31 @@ export class MyDayTodoTaskComponent {
     this.getProjectList();
   }
 
+  // Function to transform the data
+  transformData = (data: any) => {
+    let commentsData: any[] = [];
+    if (!data) {
+      return;
+    }
+    Object.entries(data).forEach(([commentDate, comments]) => {
+      if (Array.isArray(comments)) {
+        comments.forEach(comment => {
+          commentsData.push({
+            commentDate, // Keep the commentDate format
+            ...comment
+          });
+        });
+      } else {
+        commentsData.push({
+          commentDate,
+          comment: comments // No comments available case
+        });
+      }
+    });
+
+    return commentsData;
+  };
+
   searchtext() {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
@@ -541,19 +566,19 @@ export class MyDayTodoTaskComponent {
     this.updateTask(params);
   }
 
-    // API call to update the task
-    updateTask(params: any) {
-      this.superService.updateTask(params, this.modalTask._id).subscribe(
-        (response) => {
-          this.getTask();
-          this.notificationService.showSuccess('Task updated Successfully');
-        },
-        (error) => {
-          console.error('Error updating task', error);
-          this.notificationService.showError('Error updating task');
-        }
-      );
-    }
+  // API call to update the task
+  updateTask(params: any) {
+    this.superService.updateTask(params, this.modalTask._id).subscribe(
+      (response) => {
+        this.getTask();
+        this.notificationService.showSuccess('Task updated Successfully');
+      },
+      (error) => {
+        console.error('Error updating task', error);
+        this.notificationService.showError('Error updating task');
+      }
+    );
+  }
 
 
 

@@ -79,14 +79,40 @@ export class OngoingTodoTaskComponent {
     this.getProjectList();
   }
 
+  // Function to transform the data
+  transformData = (data: any) => {
+    let commentsData: any[] = [];
+    if (!data) {
+      return;
+    }
+    Object.entries(data).forEach(([commentDate, comments]) => {
+      if (Array.isArray(comments)) {
+        comments.forEach(comment => {
+          commentsData.push({
+            commentDate, // Keep the commentDate format
+            ...comment
+          });
+        });
+      } else {
+        commentsData.push({
+          commentDate,
+          comment: comments // No comments available case
+        });
+      }
+    });
+
+    return commentsData;
+  };
+
+
   searchtext() {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-    
+
     // Pass the searchText (keyword) in the API call
     const keyword = this.searchText;  // The search text to filter by
-  
+
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
@@ -99,18 +125,18 @@ export class OngoingTodoTaskComponent {
         (response) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
-  
+
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
               );
-  
+
               return {
                 ...task,
                 todayComments: todayComments?.length ? todayComments : null,
               };
             });
-  
+
             this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);
@@ -245,13 +271,13 @@ export class OngoingTodoTaskComponent {
       document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
       document.body.style.overflow = ''; // Reset overflow
       document.body.style.paddingRight = ''; // Reset padding
-  
+
       const backdrop = document.querySelector('.modal-backdrop');
       if (backdrop) {
         backdrop.remove(); // Remove modal backdrop
       }
     }
-  
+
     setTimeout(() => {
       if (this.loginUser?.role === 'BOS') {
         this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
@@ -260,7 +286,7 @@ export class OngoingTodoTaskComponent {
       }
     }, 100);
   }
-  
+
 
   getTask() {
     this.showLoader = true;

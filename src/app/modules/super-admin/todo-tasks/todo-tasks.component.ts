@@ -99,6 +99,31 @@ export class TodoTasksComponent {
     }
   }
 
+  // Function to transform the data
+  transformData = (data: any) => {
+    let commentsData: any[] = [];
+    if(!data) {
+      return;
+    }
+    Object.entries(data).forEach(([commentDate, comments]) => {
+      if (Array.isArray(comments)) {
+        comments.forEach(comment => {
+          commentsData.push({
+            commentDate, // Keep the commentDate format
+            ...comment
+          });
+        });
+      } else {
+        commentsData.push({
+          commentDate,
+          comment: comments // No comments available case
+        });
+      }
+    });
+
+    return commentsData;
+  };
+
   onModalClose() {
     this.selectedStatus = "";
   }

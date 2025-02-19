@@ -54,7 +54,7 @@
                   (change)="searchtext()" [multiple]="false" placeholder="Select Type">
                 </ng-select>
               </div>
-  
+
               <div class="col-md-6 mb-2">
                 <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
                   [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
@@ -83,7 +83,7 @@
                       'bg-light-orange': task?.pickACategory === 'High'
                     }">
                 <div>
-                   
+
                   {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory
                     }})</span>
                   <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
@@ -273,6 +273,29 @@
               <small class="text-muted">{{ comment.time }}</small>
               <p class="mb-1">{{ comment.text }}</p>
             </div>
+          </div>
+          <div class="comments-section">
+            <ul class="SecondarytaskList mt-3">
+              <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
+                <h6> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                <div class="row align-items-center mb-3">
+                  <div class="col">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                      <small class="text-muted">{{
+                        comment?.date | date : "dd/MM/yyyy, h:mm a"
+                        }}</small>
+                    </div>
+                    <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                  </div>
+                </div>
+                <div class="d-flex flex-column">
+                  <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
+                    <p>{{ comment.comment }}</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
 

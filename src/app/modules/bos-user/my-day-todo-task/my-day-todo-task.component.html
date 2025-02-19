@@ -160,6 +160,28 @@
               </ul>
             </div>
           </div>
+          <div class="comments-section">
+              <!-- Display Existing Comments -->
+              <ul class="SecondarytaskList mt-3">
+                <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
+                  <h6> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                  <div class="row align-items-center mb-3">
+                    <div class="col">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                        <small class="text-muted">{{
+                          comment?.date | date : "dd/MM/yyyy, h:mm a"
+                          }}</small>
+                      </div>
+                      <small class="text-muted d-block">{{
+                        comment?.userDetail?.role
+                        }}</small>
+                    </div>
+                  </div>
+                  <p class="mb-1">{{ comment?.comment }}</p>
+                </li>
+              </ul>
+          </div>
         </div>
       </div>
     </div>
