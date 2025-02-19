@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-process-manager-tracker',
   templateUrl: './process-manager-tracker.component.html',
-  styleUrls: ['./process-manager-tracker.component.scss']
+  styleUrls: ['./process-manager-tracker.component.scss'],
 })
 export class ProcessManagerTrackerComponent {
   showLoader: boolean = false;
@@ -49,8 +49,8 @@ export class ProcessManagerTrackerComponent {
     ToAction: 'ToAction',
     Nosuppliermatched: 'Nosuppliermatched',
     'Go-NoGoStage1': 'Go-NoGoStage1',
-    'SupplierConfirmation': 'SupplierConfirmation',
-    'Go-NoGoStage2': 'Go-NoGoStage2'
+    SupplierConfirmation: 'SupplierConfirmation',
+    'Go-NoGoStage2': 'Go-NoGoStage2',
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -62,7 +62,7 @@ export class ProcessManagerTrackerComponent {
   maxValue: number = 99999999999999999;
   options: Options = {
     floor: 0,
-    ceil: 99999999999999999
+    ceil: 99999999999999999,
   };
   isExpired: boolean = false;
   categorisationChecked: boolean = false;
@@ -81,8 +81,8 @@ export class ProcessManagerTrackerComponent {
     private notificationService: NotificationService,
     private router: Router,
     private projectService: ProjectService,
-    private modalService: NgbModal,
-  ) { }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -100,6 +100,11 @@ export class ProcessManagerTrackerComponent {
         this.getDataByStatus();
       }
     });
+    this.trackerStartDate.valueChanges.subscribe((res: any) => {
+      if (this.trackerStartDate.value && this.trackerEndDate.value) {
+        this.getDataByStatus();
+      }
+    });
     this.getProjectList();
   }
 
@@ -111,7 +116,9 @@ export class ProcessManagerTrackerComponent {
       this.selectedCategorisation.push(value);
     } else {
       // Remove value if unchecked
-      this.selectedCategorisation = this.selectedCategorisation.filter(item => item !== value);
+      this.selectedCategorisation = this.selectedCategorisation.filter(
+        (item) => item !== value
+      );
     }
 
     this.searchtext(); // Call search function on change
@@ -130,51 +137,62 @@ export class ProcessManagerTrackerComponent {
     Payload.projectListStatusWiseTracker.keyword = this.searchText;
     Payload.projectListStatusWiseTracker.page = String(this.page);
     Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
-    Payload.projectListStatusWiseTracker.category = this.selectedCategories.join(',');
-    Payload.projectListStatusWiseTracker.industry = this.selectedIndustries.join(',');
-    Payload.projectListStatusWiseTracker.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectListStatusWiseTracker.clientType = this.selectedClientTypes.join(',');
+    Payload.projectListStatusWiseTracker.category =
+      this.selectedCategories.join(',');
+    Payload.projectListStatusWiseTracker.industry =
+      this.selectedIndustries.join(',');
+    Payload.projectListStatusWiseTracker.projectType =
+      this.selectedProjectTypes.join(',');
+    Payload.projectListStatusWiseTracker.clientType =
+      this.selectedClientTypes.join(',');
     Payload.projectListStatusWiseTracker.status = this.status;
     Payload.projectListStatusWiseTracker.publishDateRange =
-      (this.publishStartDate.value && this.publishEndDate.value)
+      this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
         : '';
     Payload.projectListStatusWiseTracker.SubmissionDueDateRange =
-      (this.submissionStartDate.value && this.submissionEndDate.value)
+      this.submissionStartDate.value && this.submissionEndDate.value
         ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
         : '';
-    Payload.projectListStatusWiseTracker.valueRange = this.minValue + '-' + this.maxValue;
+    Payload.projectListStatusWiseTracker.valueRange =
+      this.minValue + '-' + this.maxValue;
 
     // Include new checkbox values as a comma-separated string
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
-    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+    Payload.projectListStatusWiseTracker.categorisation =
+      this.selectedCategorisation.join(',');
 
-    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
-      (response) => {
-        this.projectList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.projectList = response?.data?.data;
+    this.projectService
+      .getProjectList(Payload.projectListStatusWiseTracker)
+      .subscribe(
+        (response) => {
+          this.projectList = [];
+          this.totalRecords = response?.data?.meta_data?.items;
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.projectList = response?.data?.data;
 
-          this.projectList.forEach((project: any) => {
-            const dueDate = new Date(project.dueDate);
-            const currentDate = new Date();
-            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+            this.projectList.forEach((project: any) => {
+              const dueDate = new Date(project.dueDate);
+              const currentDate = new Date();
+              const dateDifference = Math.abs(
+                dueDate.getTime() - currentDate.getTime()
+              );
 
-            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-            this.dateDifference = formattedDateDifference;
-          });
-        } else {
-          this.notificationService.showError(response?.message);
+              const formattedDateDifference: string =
+                this.formatMilliseconds(dateDifference);
+              this.dateDifference = formattedDateDifference;
+            });
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+      );
   }
   selectStatus(status: string): void {
     this.selectedBidStatus = '';
@@ -201,8 +219,8 @@ export class ProcessManagerTrackerComponent {
     const payload = {
       startDate,
       endDate,
-      expired: this.isExpired,  // Pass expired value
-      categorisation: this.selectedCategorisation.join(',') // Pass selected categorisation as a comma-separated string
+      expired: this.isExpired, // Pass expired value
+      categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
     };
 
     this.supplierService.getDataBYStatus(payload).subscribe(
@@ -244,7 +262,6 @@ export class ProcessManagerTrackerComponent {
 
     this.getProjectList();
   }
-
 
   private formatDate(date: {
     year: number;
@@ -292,9 +309,10 @@ export class ProcessManagerTrackerComponent {
   }
 
   projectDetails(projectId: any) {
-    this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
+    this.router.navigate(['/process-manager/process-manager-project-details'], {
+      queryParams: { id: projectId },
+    });
   }
-
 
   paginate(page: number) {
     this.page = page;
@@ -326,34 +344,36 @@ export class ProcessManagerTrackerComponent {
       Payload.projectListStatusWiseTracker.status = 'Passed';
     }
 
-    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
-      (response) => {
-        this.projectList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
+    this.projectService
+      .getProjectList(Payload.projectListStatusWiseTracker)
+      .subscribe(
+        (response) => {
+          this.projectList = [];
+          this.totalRecords = response?.data?.meta_data?.items;
 
-        if (response?.status === true) {
-          this.showLoader = false;
-          this.projectList = response?.data?.data;
-          this.projectList.forEach((project: any) => {
-            const dueDate = new Date(project.dueDate);
-            const currentDate = new Date();
-            const dateDifference = Math.abs(
-              dueDate.getTime() - currentDate.getTime()
-            );
-            const formattedDateDifference: string =
-              this.formatMilliseconds(dateDifference);
-            this.dateDifference = formattedDateDifference;
-          });
-        } else {
-          this.notificationService.showError(response?.message);
+          if (response?.status === true) {
+            this.showLoader = false;
+            this.projectList = response?.data?.data;
+            this.projectList.forEach((project: any) => {
+              const dueDate = new Date(project.dueDate);
+              const currentDate = new Date();
+              const dateDifference = Math.abs(
+                dueDate.getTime() - currentDate.getTime()
+              );
+              const formattedDateDifference: string =
+                this.formatMilliseconds(dateDifference);
+              this.dateDifference = formattedDateDifference;
+            });
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+      );
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -384,7 +404,7 @@ export class ProcessManagerTrackerComponent {
     if (value === 'Shortlisted') {
       // Set shortlisted to true
       Payload.projectListStatusWiseTracker.sortlist = true;
-      this.status = "";
+      this.status = '';
       // Clear other relevant parameters
       Payload.projectListStatusWiseTracker.status = '';
       Payload.projectListStatusWiseTracker.bidManagerStatus = '';
