@@ -181,6 +181,7 @@
                 <th>Bid Status</th>
                 <th>Bid Assign User</th>
                 <th>Log Time</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -217,7 +218,19 @@
                 <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
                 <td>{{ item?.bidManagerStatus }}</td>
                 <td>{{ item?.assignBidmanager[0]?.name }}</td>
-                <td>{{ item?.statusHistory[0]?.date | date : "dd/MM/yyyy" }}</td>
+                <td>
+                  {{ item?.statusHistory[0]?.date | date : "dd/MM/yyyy" }}
+                </td>
+                <td>
+                  <a
+                    class="btn btn-primary btn-sm"
+                    style="cursor: pointer"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewAllProjects"
+                    (click)="showComments(item?.task?.comments)"
+                    >View
+                  </a>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -235,4 +248,53 @@
       </div>
     </div>
   </section>
+
+  <div
+    class="modal fade"
+    id="viewAllProjects"
+    tabindex="-1"
+    aria-labelledby="viewAllProjectsLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div
+          class="modal-header"
+          style="display: flex; justify-content: space-between"
+        >
+          <h6>Task Comments</h6>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="viewComments.length > 0; else noData">
+            <div
+              *ngFor="let comment of viewComments"
+              class="comment-item mt-3 gap-5"
+              style="display: flex; justify-content: space-between"
+            >
+              <div>
+                <div class="comment-text">
+                  <b> {{ comment?.userDetail?.name }}</b>
+                </div>
+                <div class="comment-text">
+                  <b>Comments : </b>{{ comment.comment }}
+                </div>
+              </div>
+              <div class="comment-date">
+                {{ comment.date | date : "yyyy-MM-dd HH:mm:ss" }}
+              </div>
+            </div>
+          </div>
+          <ng-template #noData>
+            <div class="no-data">No Comments available</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
