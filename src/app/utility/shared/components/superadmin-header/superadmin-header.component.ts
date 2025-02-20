@@ -7,17 +7,16 @@ import { NotificationService } from 'src/app/services/notification/notification.
 @Component({
   selector: 'app-superadmin-header',
   templateUrl: './superadmin-header.component.html',
-  styleUrls: ['./superadmin-header.component.scss'],
+  styleUrls: ['./superadmin-header.component.scss']
 })
 export class SuperadminHeaderComponent {
   loginUser: any;
-  isMobileMenuOpen = false;
 
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorageService,
     public router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -30,21 +29,12 @@ export class SuperadminHeaderComponent {
     { title: 'Project Tracker', route: ['/super-admin/status-wise-tracker'] },
     { title: 'TO DO Tasks', route: ['/super-admin/todo-tasks'] },
     { title: 'Gap Analysis', route: ['/super-admin/gap-analysis'] },
-    {
-      title: 'Approve/Reject',
-      route: ['/super-admin/approve-reject-projects'],
-    },
+    { title: 'Approve/Reject', route: ['/super-admin/approve-reject-projects'] },
   ];
 
-  toggleMobileMenu() {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
-
-  closeMobileMenu() {
-    this.isMobileMenuOpen = false; // Close menu when a link is clicked
-  }
 
   logout(): void {
     this.authService.logout();
   }
+
 }

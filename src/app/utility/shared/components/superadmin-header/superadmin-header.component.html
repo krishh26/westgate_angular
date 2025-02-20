@@ -4,7 +4,7 @@
     <a href="javascript:;" class="logo mee-auto"
       ><img src="assets/img/westgate.svg" alt="" class="img-fluid"
     /></a>
-    <!-- <nav id="navbar" class="navbar w-100">
+    <nav id="navbar" class="navbar w-100">
       <ul class="mx-auto">
         <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
           <a
@@ -22,26 +22,6 @@
         </li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
-    </nav> -->
-    <nav id="navbar" class="navbar w-100">
-      <ul class="mx-auto" [class.mobile-active]="isMobileMenuOpen">
-        <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
-          <a
-            [class.active]="item.route.includes(router.url)"
-            class="nav-link"
-            data-toggle="tab"
-            [routerLink]="item.route"
-            (click)="closeMobileMenu()"
-          >
-            <i
-              *ngIf="item.title == 'Live Projects'"
-              class="bi bi-dot text-danger p-22"
-            ></i>
-            <span>{{ item.title }}</span>
-          </a>
-        </li>
-      </ul>
-      <i class="bi bi-list mobile-nav-toggle" (click)="toggleMobileMenu()"></i>
     </nav>
 
     <nav class="navbar">
