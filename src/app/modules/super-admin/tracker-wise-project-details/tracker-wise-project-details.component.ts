@@ -382,23 +382,48 @@ export class TrackerWiseProjectDetailsComponent {
     this.loginDetailForm.controls['id'].setValue(i);
   }
 
-  pushFeasilityStatus() {
+  pushFeasibilityStatus() {
     if (!this.feasibilityStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
+
     const currentDate = new Date();
-    this.feasibilityCommentData = [
-      ...this.feasibilityCommentData,
-      {
-        comment: this.feasibilityStatusComment.value,
-        date: currentDate.toISOString(),
-        status: this.feasibilityStatus,
-        userId: this.loginUser?._id,
-      },
-    ];
+    const newComment = this.feasibilityStatusComment.value.trim(); // Remove extra spaces
+
+    // Ensure feasibilityCommentData is initialized
+    if (!this.feasibilityCommentData) {
+      this.feasibilityCommentData = [];
+    }
+
+    // Debugging: Log current data
+    console.log('Existing Comments:', this.feasibilityCommentData);
+
+    // Check if the same comment with the same status already exists
+    const isDuplicate = this.feasibilityCommentData.some(
+      (comment) =>
+        comment.comment.trim() === newComment &&
+        comment.status === this.feasibilityStatus
+    );
+
+    if (!isDuplicate) {
+      this.feasibilityCommentData = [
+        ...this.feasibilityCommentData,
+        {
+          comment: newComment,
+          date: currentDate.toISOString(),
+          status: this.feasibilityStatus,
+          userId: this.loginUser?._id,
+        },
+      ];
+      console.log('New Comment Added:', this.feasibilityCommentData);
+    } else {
+      console.log('Duplicate comment detected. Skipping push.');
+    }
+
     this.feasibilityStatusComment.reset();
   }
+
 
   pushStatus() {
     if (!this.bidManagerStatusComment.value) {
@@ -1648,14 +1673,29 @@ export class TrackerWiseProjectDetailsComponent {
           );
         }
       }
+
+      // Merge comments and remove duplicates by comment and status
+      const allComments = [
+        ...this.feasibilityCommentData,
+        ...(this.projectDetails?.statusComment || []),
+      ];
+
+      const uniqueComments = allComments.filter((value, index, self) =>
+        index === self.findIndex((t) =>
+          t.comment === value.comment && t.status === value.status
+        )
+      );
+
+      // **Sort comments by date (latest first)**
+      const sortedComments = uniqueComments.sort((a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
       payload = {
         projectType: this.projectDetails.projectType,
         clientDocument: this.projectDetails?.clientDocument || [],
         status: this.feasibilityStatus || '',
-        statusComment: [
-          ...this.feasibilityCommentData,
-          ...this.projectDetails?.statusComment,
-        ],
+        statusComment: sortedComments, // Use sorted comments array
         failStatusReason: this.failStatusReasons,
       };
 
@@ -1671,9 +1711,7 @@ export class TrackerWiseProjectDetailsComponent {
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            this.notificationService.showSuccess(
-              'Project updated successfully'
-            );
+            this.notificationService.showSuccess('Project updated successfully');
             this.isEditing = false;
             this.getProjectDetails();
           } else {
