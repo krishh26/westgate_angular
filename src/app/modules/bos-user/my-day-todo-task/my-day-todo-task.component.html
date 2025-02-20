@@ -140,7 +140,7 @@
               </button>
 
               <!-- Display Existing Comments -->
-              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+              <!-- <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
                 <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
                   <div class="row align-items-center mb-3">
                     <div class="col">
@@ -157,14 +157,14 @@
                   </div>
                   <p class="mb-1">{{ comment?.comment }}</p>
                 </li>
-              </ul>
+              </ul> -->
             </div>
           </div>
           <div class="comments-section">
               <!-- Display Existing Comments -->
               <ul class="SecondarytaskList mt-3">
                 <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
-                  <h6> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                  <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">

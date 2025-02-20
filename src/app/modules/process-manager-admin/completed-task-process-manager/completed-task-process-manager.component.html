@@ -224,7 +224,7 @@
               <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                 Comment
               </button>
-              <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
+              <!-- <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
                 <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
                   <div class="row align-items-center mb-3">
                     <div class="col">
@@ -240,31 +240,10 @@
                   <div class="d-flex flex-column">
                     <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
                       <p>{{ comment.comment }}</p>
-                      <!-- <div>
-                                                <button class="btn btn-sm text-primary me-2"
-                                                    (click)="enableEdit(comment)">
-                                                    Edit
-                                                </button>
-                                            </div> -->
                     </div>
-                    <!-- <div *ngIf="comment.isEditing" class="d-flex flex-column">
-                                            <textarea class="form-control mb-2" placeholder="Edit comment..."
-                                                [(ngModel)]="comment.updatedComment" style="width: 100%;"></textarea>
-                                            <div class="d-flex justify-content-between">
-                                                <button class="btn btn-sm btn-success me-2"
-                                                    (click)="updateTaskComment(comment)">
-                                                    Save
-                                                </button>
-                                                <button class="btn btn-sm btn-secondary me-2"
-                                                    (click)="cancelEdit(comment)">
-                                                    Cancel
-                                                </button>
-
-                                            </div>
-                                        </div> -->
                   </div>
                 </li>
-              </ul>
+              </ul> -->
 
             </div>
             <!-- Comment List -->
@@ -277,7 +256,7 @@
           <div class="comments-section">
             <ul class="SecondarytaskList mt-3">
               <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
-                <h6> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
                 <div class="row align-items-center mb-3">
                   <div class="col">
                     <div class="d-flex justify-content-between">
