@@ -91,8 +91,13 @@ export class TypeWiseProjectListComponent {
     this.getIndustryList();
     this.route.queryParams.subscribe(params => {
       const categorisation = params['categorisation'] || '';
+      const projectType = params['projectType'] || ''; // Get projectType from query params
+
       console.log("Categorisation from Route Params: ", categorisation);
-      this.getProjectList(categorisation);
+      console.log("Project Type from Route Params: ", projectType);
+
+      // Pass both values to getProjectList
+      this.getProjectList(categorisation, projectType);
     });
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
@@ -203,13 +208,14 @@ export class TypeWiseProjectListComponent {
     });
   }
 
-  getProjectList(categorisation: string = '') {
+  getProjectList(categorisation: string = '', projectType: string = '') {
     this.showLoader = true;
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.categorisation = categorisation;
     console.log(Payload.projectList);
+    Payload.projectList.projectType = projectType;
 
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
@@ -337,11 +343,18 @@ export class TypeWiseProjectListComponent {
     this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
   }
 
-  paginate(page: number) {
-    this.page = page;
-    this.getProjectList();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  paginate(event: number) {
+    this.page = event;
+
+    // Preserve filters when paginating
+    this.route.queryParams.subscribe(params => {
+      const categorisation = params['categorisation'] || '';
+      const projectType = params['projectType'] || '';
+
+      this.getProjectList(categorisation, projectType);
+    });
   }
+
 
   sortListProject(projectId: string) {
     const payload = {

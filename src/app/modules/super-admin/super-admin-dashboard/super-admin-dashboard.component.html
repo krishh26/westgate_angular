@@ -403,7 +403,10 @@
                     <tr
                       *ngFor="
                         let item of categoryWise | paginate : { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
-                      <td style="cursor: pointer;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</td>
+                      <!-- <td style="cursor: pointer;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</td> -->
+                      <td>
+                        <a href="javascript:;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</a>
+                      </td>
                       <td>
                         {{ item?.totalProjects !== null ? item.totalProjects : "-" }}
                       </td>
@@ -436,7 +439,9 @@
                     </tr>
                     <tr
                       *ngFor=" let item of projectTypeWise | paginate : { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
-                      <td style="cursor: pointer;">{{ item?.name }}</td>
+                      <td>
+                        <a href="javascript:;" (click)="projectTypeClick(item?.name)">{{ item?.name }}</a>
+                      </td>
                       <td>
                         {{ item?.totalProjects !== null ? item.totalProjects : "-" }}
                       </td>
