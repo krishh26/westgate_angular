@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as bootstrap from 'bootstrap';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -303,27 +304,31 @@ export class CompletedTodoTaskComponent {
   }
 
   projectDetails(projectId: any) {
-    const modalElement = document.getElementById('taskDetailsModal');
-    if (modalElement) {
-      modalElement.classList.remove('show'); // Hide modal
-      modalElement.style.display = 'none';
-      document.body.classList.remove('modal-open'); // Remove Bootstrap modal class
-      document.body.style.overflow = ''; // Reset overflow
-      document.body.style.paddingRight = ''; // Reset padding
+    const modalElement = document.getElementById('viewAllProjects');
 
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Remove modal backdrop
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide(); // Close the modal properly
       }
     }
 
+    // Wait a bit to ensure Bootstrap removes modal styles before restoring scrolling
     setTimeout(() => {
-      if (this.loginUser?.role === 'BOS') {
-        this.router.navigate(['/boss-user/view-project'], { queryParams: { id: projectId } });
-      } else if (this.loginUser?.role === 'ProjectManager') {
-        this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
-      }
-    }, 100);
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = ''; // Reset to default behavior
+      document.body.style.paddingRight = '';
+
+      // Remove any leftover modal backdrop
+      document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+      // Force scroll to be enabled
+      document.documentElement.style.overflow = 'auto';
+      document.documentElement.style.height = 'auto';
+
+      // Now navigate to the details page
+      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+    }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 
   getTask() {
