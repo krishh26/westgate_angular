@@ -73,7 +73,7 @@ export class ProcessManagerTrackerComponent {
   publishEndDate: FormControl = new FormControl('');
   submissionStartDate: FormControl = new FormControl('');
   submissionEndDate: FormControl = new FormControl('');
-
+  viewComments: any;
   myControl = new FormControl();
 
   constructor(
@@ -418,4 +418,10 @@ export class ProcessManagerTrackerComponent {
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
   }
+
+  showComments(data: any) {
+    console.log('this is my view comment', data);
+    this.viewComments = data;
+  }
+
 }
