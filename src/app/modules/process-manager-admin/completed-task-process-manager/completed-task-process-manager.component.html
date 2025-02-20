@@ -86,8 +86,11 @@
 
                   {{ task?.task }} <span *ngIf="task?.pickACategory"> ({{ task?.pickACategory
                     }})</span>
-                  <span *ngIf="task?.project">(Status : {{ task?.project?.bidManagerStatus || task?.project?.status
-                    }})</span>
+                  <span *ngIf="task?.project">
+                    (Status :
+                    {{['Fail', 'Doc not found', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+                    task?.project?.status: task?.project?.bidManagerStatus }} )
+                  </span>&nbsp;
                 </div>
                 <div class="text-end">
                   <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
