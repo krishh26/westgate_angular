@@ -52,6 +52,16 @@ export class SuperAdminDashboardComponent {
     });
   }
 
+  onCategoryClick(category: string | null) {
+    const valueToPass = category && category !== "Unknown" ? category : "";
+    console.log("categorisation:", valueToPass);
+
+    // Navigate and pass queryParams
+    this.router.navigate(['/super-admin/type-wise-project-list'], {
+      queryParams: valueToPass ? { categorisation: valueToPass } : {}
+    });
+  }
+
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.selectedDuration = duration;

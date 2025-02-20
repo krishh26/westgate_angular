@@ -1,7 +1,7 @@
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime } from 'rxjs';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -21,7 +21,7 @@ import { ProjectMailSendComponent } from '../projectMailSend/projectMailSend.com
   styleUrls: ['./type-wise-project-list.component.scss']
 })
 export class TypeWiseProjectListComponent {
- showLoader: boolean = false;
+  showLoader: boolean = false;
   projectList: any = [];
   categoryList: any = [];
   industryList: any = [];
@@ -77,6 +77,7 @@ export class TypeWiseProjectListComponent {
     private localStorageService: LocalStorageService,
     private superService: SuperadminService,
     private modalService: NgbModal,
+    private route: ActivatedRoute
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -88,7 +89,11 @@ export class TypeWiseProjectListComponent {
     });
     this.getcategoryList();
     this.getIndustryList();
-    this.getProjectList();
+    this.route.queryParams.subscribe(params => {
+      const categorisation = params['categorisation'] || '';
+      console.log("Categorisation from Route Params: ", categorisation);
+      this.getProjectList(categorisation);
+    });
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
         this.notificationService.showError('Please select a Publish start date');
@@ -112,19 +117,19 @@ export class TypeWiseProjectListComponent {
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createCategory(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createCategory(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getcategoryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getcategoryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -135,19 +140,19 @@ export class TypeWiseProjectListComponent {
     const found = this.industryList.some((industryItem: { industry: string }) => industryItem.industry === item.industry);
     if (!found) {
       this.showLoader = true;
-    this.projectService.createIndustry(item).subscribe((response) => {
-      if (response?.status == true) {
+      this.projectService.createIndustry(item).subscribe((response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.getIndustryList();
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      }, (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
-        this.getIndustryList();
-  
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
-      }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+      });
     }
   }
 
@@ -187,7 +192,7 @@ export class TypeWiseProjectListComponent {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-         
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -198,36 +203,42 @@ export class TypeWiseProjectListComponent {
     });
   }
 
-  getProjectList() {
+  getProjectList(categorisation: string = '') {
     this.showLoader = true;
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
-      this.projectList = [];
-      this.totalRecords = response?.data?.meta_data?.items;
-      if (response?.status == true) {
-        this.showLoader = false;
-        this.projectList = response?.data?.data;
-         
+    Payload.projectList.categorisation = categorisation;
+    console.log(Payload.projectList);
 
-        this.projectList.forEach((project: any) => {
-          const dueDate = new Date(project.dueDate);
-          const currentDate = new Date();
-          const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+    this.projectService.getProjectList(Payload.projectList).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
 
-          const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-          this.dateDifference = formattedDateDifference;
-        });
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
 
-      } else {
-        this.notificationService.showError(response?.message);
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
-    }, (error) => {
-      this.notificationService.showError(error?.message);
-      this.showLoader = false;
-    });
+    );
   }
 
   searchtext() {
@@ -245,7 +256,7 @@ export class TypeWiseProjectListComponent {
       if (response?.status == true) {
         this.showLoader = false;
         this.projectList = response?.data?.data;
-         
+
 
         this.projectList.forEach((project: any) => {
           const dueDate = new Date(project.dueDate);

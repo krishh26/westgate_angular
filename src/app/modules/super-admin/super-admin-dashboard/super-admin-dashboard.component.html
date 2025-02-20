@@ -9,34 +9,18 @@
           <div class="col-12 row">
             <div class="col-3">
               <div class="input-group">
-                <input
-                  class="form-control"
-                  placeholder="DD-MM-YYYY"
-                  [formControl]="trackerStartDate"
-                  ngbDatepicker
-                  #startDatePicker="ngbDatepicker"
-                />
-                <button
-                  class="btn btn-outline-secondary bi bi-calendar3"
-                  (click)="startDatePicker.toggle()"
-                  type="button"
-                ></button>
+                <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate" ngbDatepicker
+                  #startDatePicker="ngbDatepicker" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
+                  type="button"></button>
               </div>
             </div>
             <div class="col-3">
               <div class="input-group">
-                <input
-                  class="form-control"
-                  placeholder="DD-MM-YYYY"
-                  [formControl]="trackerEndDate"
-                  ngbDatepicker
-                  #endDatePicker="ngbDatepicker"
-                />
-                <button
-                  class="btn btn-outline-secondary bi bi-calendar3"
-                  (click)="endDatePicker.toggle()"
-                  type="button"
-                ></button>
+                <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate" ngbDatepicker
+                  #endDatePicker="ngbDatepicker" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                  type="button"></button>
               </div>
             </div>
           </div>
@@ -60,8 +44,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsPosted?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsPosted?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -74,8 +58,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsAwaiting?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsAwaiting?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -88,8 +72,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsInProgress?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsInProgress?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -102,8 +86,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsInHold?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsInHold?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -118,8 +102,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.TotalDocumentsNotFound?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.TotalDocumentsNotFound?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -132,8 +116,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsPassed?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsPassed?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -146,8 +130,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsFail?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsFail?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -162,8 +146,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusAwaiting?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusAwaiting?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -173,15 +157,15 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist?.projectsBidStatusInSolution?.count
+                      superdashboardlist?.projectsBidStatusInSolution?.count
                       }}
                     </h2>
                     <p>Bid Status In-Solution</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusInSolution
-                          ?.maxValue | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusInSolution
+                      ?.maxValue | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -191,16 +175,16 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist?.projectsBidStatusWaitingForResult
-                          ?.count
+                      superdashboardlist?.projectsBidStatusWaitingForResult
+                      ?.count
                       }}
                     </h2>
                     <p>Bid Status Waiting for Result</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusWaitingForResult
-                          ?.maxValue | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusWaitingForResult
+                      ?.maxValue | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -210,17 +194,17 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist
-                          ?.projectsBidStatusDroppedAfterFeasibility?.count
+                      superdashboardlist
+                      ?.projectsBidStatusDroppedAfterFeasibility?.count
                       }}
                     </h2>
                     <p>Bid Status Dropped After Feasibility</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist
-                          ?.projectsBidStatusDroppedAfterFeasibility?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist
+                      ?.projectsBidStatusDroppedAfterFeasibility?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -235,8 +219,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusAwarded?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusAwarded?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -246,15 +230,15 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist?.projectsBidStatusNotAwarded?.count
+                      superdashboardlist?.projectsBidStatusNotAwarded?.count
                       }}
                     </h2>
                     <p>Bid Status Not Awarded</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusNotAwarded
-                          ?.maxValue | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusNotAwarded
+                      ?.maxValue | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -269,8 +253,8 @@
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusToAction?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusToAction?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -281,15 +265,15 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist?.projectsBidStatusGoNoGoStage1?.count
+                      superdashboardlist?.projectsBidStatusGoNoGoStage1?.count
                       }}
                     </h2>
                     <p>GO-NO GO STAGE 1</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusGoNoGoStage1
-                          ?.maxValue | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusGoNoGoStage1
+                      ?.maxValue | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -300,17 +284,17 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist
-                          ?.projectsBidStatusSupplierConfirmation?.count
+                      superdashboardlist
+                      ?.projectsBidStatusSupplierConfirmation?.count
                       }}
                     </h2>
                     <p>SUPPLIER CONFIRMATION</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist
-                          ?.projectsBidStatusSupplierConfirmation?.maxValue
-                          | number : "1.2-2"
+                      superdashboardlist
+                      ?.projectsBidStatusSupplierConfirmation?.maxValue
+                      | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -321,15 +305,15 @@
                   <div class="ProjectStatistic">
                     <h2>
                       {{
-                        superdashboardlist?.projectsBidStatusGoNoGoStage2?.count
+                      superdashboardlist?.projectsBidStatusGoNoGoStage2?.count
                       }}
                     </h2>
                     <p>GO-NO GO STAGE 2</p>
                     <p class="text-success">
                       Value: £
                       {{
-                        superdashboardlist?.projectsBidStatusGoNoGoStage2
-                          ?.maxValue | number : "1.2-2"
+                      superdashboardlist?.projectsBidStatusGoNoGoStage2
+                      ?.maxValue | number : "1.2-2"
                       }}
                       GBP
                     </p>
@@ -359,8 +343,7 @@
                       </td>
                     </tr>
 
-                    <tr
-                      *ngFor="
+                    <tr *ngFor="
                         let item of supplierUserList
                           | paginate
                             : {
@@ -369,14 +352,13 @@
                                 totalItems: totalRecords
                               };
                         let i = index
-                      "
-                    >
+                      ">
                       <td>{{ item?.name }}</td>
                       <td>
                         {{
-                          item?.lastLogin
-                            ? (item.lastLogin | date : "dd/MM/yyyy h:mm:ss a")
-                            : "-"
+                        item?.lastLogin
+                        ? (item.lastLogin | date : "dd/MM/yyyy h:mm:ss a")
+                        : "-"
                         }}
                       </td>
                     </tr>
@@ -386,10 +368,7 @@
               <div class="row mt-3 align-items-center">
                 <div class="row">
                   <div class="pagination">
-                    <pagination-controls
-                      (pageChange)="paginate($event)"
-                      [idMaxSize]="100"
-                    ></pagination-controls>
+                    <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
                   </div>
                 </div>
               </div>
@@ -423,23 +402,10 @@
                     </tr>
                     <tr
                       *ngFor="
-                        let item of categoryWise
-                          | paginate
-                            : {
-                                itemsPerPage: pagesize,
-                                currentPage: page,
-                                totalItems: totalRecords
-                              };
-                        let i = index
-                      "
-                    >
-                      <td>{{ item?.name || "Unknown" }}</td>
+                        let item of categoryWise | paginate : { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
+                      <td style="cursor: pointer;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</td>
                       <td>
-                        {{
-                          item?.totalProjects !== null
-                            ? item.totalProjects
-                            : "-"
-                        }}
+                        {{ item?.totalProjects !== null ? item.totalProjects : "-" }}
                       </td>
                     </tr>
                   </tbody>
@@ -469,24 +435,10 @@
                       </td>
                     </tr>
                     <tr
-                      *ngFor="
-                        let item of projectTypeWise
-                          | paginate
-                            : {
-                                itemsPerPage: pagesize,
-                                currentPage: page,
-                                totalItems: totalRecords
-                              };
-                        let i = index
-                      "
-                    >
-                      <td>{{ item?.name }}</td>
+                      *ngFor=" let item of projectTypeWise | paginate : { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
+                      <td style="cursor: pointer;">{{ item?.name }}</td>
                       <td>
-                        {{
-                          item?.totalProjects !== null
-                            ? item.totalProjects
-                            : "-"
-                        }}
+                        {{ item?.totalProjects !== null ? item.totalProjects : "-" }}
                       </td>
                     </tr>
                   </tbody>
