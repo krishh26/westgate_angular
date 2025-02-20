@@ -285,7 +285,10 @@
                         comment?.date | date : "dd/MM/yyyy, h:mm a"
                         }}</small>
                     </div>
-                    <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
+                    <small class="text-muted d-block">
+                      {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role
+                      }}
+                  </small>
                   </div>
                 </div>
                 <div class="d-flex flex-column mb-3">

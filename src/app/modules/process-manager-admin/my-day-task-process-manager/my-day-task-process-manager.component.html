@@ -126,8 +126,10 @@
                                                     </small>
                                                 </div>
                                                 <small class="text-muted d-block">
-                                                    {{ comment?.userDetail?.role }}
+                                                    {{ comment?.userDetail?.role === 'BOS' ? 'USER' :
+                                                    comment?.userDetail?.role }}
                                                 </small>
+
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between">
@@ -269,32 +271,38 @@
                         </div>
                     </div>
                     <div class="comments-section">
-                      <ul class="SecondarytaskList mt-3">
-                        <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
-                          <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
-                            <div class="row align-items-center mb-3">
-                                <div class="col">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                                        <small class="text-muted">{{
-                                            comment?.date | date : "dd/MM/yyyy, h:mm a"
-                                            }}</small>
+                        <ul class="SecondarytaskList mt-3">
+                            <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
+                                class="comment-item">
+                                <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{
+                                    comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="mb-0">{{ comment?.userDetail?.name }}</p>
+                                            <small class="text-muted">{{
+                                                comment?.date | date : "dd/MM/yyyy, h:mm a"
+                                                }}</small>
+                                        </div>
+                                        <small class="text-muted d-block">
+                                            {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role
+                                            }}
+                                        </small>
+
                                     </div>
-                                    <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-column">
-                                <div *ngIf="!comment.isEditing"
-                                    class="d-flex justify-content-between align-items-center">
-                                    <p>{{ comment.comment }}</p>
-                                    <!-- <div>
+                                <div class="d-flex flex-column">
+                                    <div *ngIf="!comment.isEditing"
+                                        class="d-flex justify-content-between align-items-center">
+                                        <p>{{ comment.comment }}</p>
+                                        <!-- <div>
                                         <button class="btn btn-sm text-primary me-2"
                                             (click)="enableEdit(comment)">
                                             Edit
                                         </button>
                                     </div> -->
-                                </div>
-                                <!-- <div *ngIf="comment.isEditing" class="d-flex flex-column">
+                                    </div>
+                                    <!-- <div *ngIf="comment.isEditing" class="d-flex flex-column">
                                     <textarea class="form-control mb-2" placeholder="Edit comment..."
                                         [(ngModel)]="comment.updatedComment" style="width: 100%;"></textarea>
                                     <div class="d-flex justify-content-between">
@@ -308,9 +316,9 @@
                                         </button>
                                     </div>
                                 </div> -->
-                            </div>
-                        </li>
-                    </ul>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -366,9 +374,9 @@
 
                     <div class="detail-item mb-3">
                         <button class="btn btn-sm btn-secondary" (click)="onChange('completedTask', false)">
-                          Not Completed
+                            Not Completed
                         </button>
-                      </div>
+                    </div>
 
                     <!-- <div class="detail-item mb-3">
                 <button class="btn btn-sm btn-danger" (click)="deleteTask(modalTask?._id)">
