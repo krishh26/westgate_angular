@@ -1,37 +1,36 @@
 <main id="main">
     <section>
         <div class="container-fluid mb-3">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
-                    <div class="form-group mb-0">
-                        <h4 class="text-theme"><strong>Gap Analysis</strong></h4>
-                    </div>
+            <div class="row align-items-center justify-content-between mb-4">
+                <div class="col-12 d-flex align-items-center gap-3 flex-wrap">
+                    <!-- Heading -->
+                    <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4>
+
+                    <!-- Date Pickers Form -->
+                    <form class="d-flex align-items-center gap-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate"
+                                ngbDatepicker #startDatePicker="ngbDatepicker" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
+                                type="button"></button>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate"
+                                ngbDatepicker #endDatePicker="ngbDatepicker" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
+                                type="button"></button>
+                        </div>
+                    </form>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-lg-6 col-xl-6 col-12">
                     <div class="statistic-card">
                         <div class="card-body">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
                                 <h5 class="text-theme mb-0"><strong>Failed</strong></h5>
-                                <form class="d-flex align-items-center gap-2">
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="DD-MM-YYYY"
-                                            [formControl]="trackerStartDate" ngbDatepicker
-                                            #startDatePicker="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3"
-                                            (click)="startDatePicker.toggle()" type="button">
-                                        </button>
-                                    </div>
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="DD-MM-YYYY"
-                                            [formControl]="trackerEndDate" ngbDatepicker
-                                            #endDatePicker="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary bi bi-calendar3"
-                                            (click)="endDatePicker.toggle()" type="button">
-                                        </button>
-                                    </div>
-                                </form>
+
                             </div>
                             <div class="table-responsive mt-5 mb-3">
                                 <table class="table table-striped align-middle">
@@ -68,7 +67,7 @@
                         <div class="card-body">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
                                 <h5 class="text-theme mb-0"><strong>Dropped after Feasibility</strong></h5>
-                                <form class="d-flex align-items-center gap-2">
+                                <!-- <form class="d-flex align-items-center gap-2">
                                     <div class="input-group">
                                         <input class="form-control" placeholder="DD-MM-YYYY"
                                             [formControl]="trackerStartDate" ngbDatepicker
@@ -85,7 +84,7 @@
                                             (click)="endDatePicker.toggle()" type="button">
                                         </button>
                                     </div>
-                                </form>
+                                </form> -->
                             </div>
                             <div class="table-responsive mt-5 mb-3">
                                 <table class="table table-striped align-middle">
@@ -124,7 +123,7 @@
                         <div class="card-body">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
                                 <h5 class="text-theme mb-0"><strong>No Supplier Matched</strong></h5>
-                                <form class="d-flex align-items-center gap-2">
+                                <!-- <form class="d-flex align-items-center gap-2">
                                     <div class="input-group">
                                         <input class="form-control" placeholder="DD-MM-YYYY"
                                             [formControl]="trackerStartDate" ngbDatepicker
@@ -141,7 +140,7 @@
                                             (click)="endDatePicker.toggle()" type="button">
                                         </button>
                                     </div>
-                                </form>
+                                </form> -->
                             </div>
                             <div class="table-responsive mt-5 mb-3">
                                 <table class="table table-striped align-middle">
