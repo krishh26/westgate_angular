@@ -95,7 +95,7 @@ z<div class="container pt-5">
                     ({{ task?.pickACategory }})</span>
                   <span *ngIf="task?.project">
                     (Status :
-                    {{['Fail', 'Doc not found', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+                    {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
                     task?.project?.status: task?.project?.bidManagerStatus }} )
                   </span>&nbsp;
 
