@@ -246,6 +246,22 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="ProjectStatistic">
+                                      <h2>
+                                        {{ superdashboardlist?.projectsBidStatusToAction?.count }}
+                                      </h2>
+                                      <p>Bid Status To Action</p>
+                                      <p class="text-success">
+                                        Value: £
+                                        {{
+                                        superdashboardlist?.projectsBidStatusToAction?.maxValue
+                                        | number : "1.2-2"
+                                        }}
+                                        GBP
+                                      </p>
+                                    </div>
+                                  </div>
+                                <div class="col-4">
+                                    <div class="ProjectStatistic">
                                         <h2>
                                             {{ superdashboardlist?.projectsBidStatusToAction?.count }}
                                         </h2>
