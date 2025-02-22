@@ -381,6 +381,10 @@
                 (click)="statusFeasibilityChange('DocumentsNotFound')">
                 Document Not Found
               </button>
+              <button class="btn btn-outline-dark flex-fill m-1" [class.active]="feasibilityStatus === 'Not Releted'"
+                (click)="statusFeasibilityChange('Not Releted')">
+                Not Releted
+              </button>
             </div>
 
             <!-- Dynamic Comment Section -->

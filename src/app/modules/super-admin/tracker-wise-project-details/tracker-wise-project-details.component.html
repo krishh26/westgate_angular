@@ -14,7 +14,7 @@
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
               Add Strips
             </a>
-            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer;"
+            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer"
               (click)="editProjectDetails(projectDetails?._id)">
               Edit <i class="bi bi-pencil-fill"></i>
             </a>
@@ -30,7 +30,6 @@
           </div>
         </div>
       </div>
-
 
       <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
         <div class="card">
@@ -185,10 +184,11 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank"
-                  rel="noopener noreferrer">
+              <div class="col-md-10">
+                <a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
                   {{ projectDetails?.documentsLink }}
-                </a></div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -273,10 +273,17 @@
 
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          <p class="mb-0">
+            <strong>Assign Bid User:
+              {{ projectDetails?.assignBidmanager[0]?.name }}</strong>
           </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
+          <p class="mb-0">
+            <strong>Due Date:
+              {{
+              projectDetails?.assignBidmanager[0]?.dueDate
+              | date : "dd/MM/yyyy"
+              }}</strong>
+          </p>
         </div>
       </section>
 
@@ -308,7 +315,6 @@
         </div>
       </div>
 
-
       <div class="row align-items-end mb-4">
         <div class="col-lg-12 col-xl-12 col-12 mb-2">
           <div class="card shadow-sm p-4">
@@ -339,6 +345,10 @@
                 [class.active]="feasibilityStatus === 'DocumentsNotFound'"
                 (click)="statusFeasibilityChange('DocumentsNotFound')">
                 Document Not Found
+              </button>
+              <button class="btn btn-outline-dark flex-fill m-1" [class.active]="feasibilityStatus === 'Not Releted'"
+                (click)="statusFeasibilityChange('Not Releted')">
+                Not Releted
               </button>
             </div>
 
@@ -426,7 +436,9 @@
                         Financial Conditions
                       </option>
                       <option value="Not related">Not related</option>
-                      <option value="No Subcontracting">No Subcontracting</option>
+                      <option value="No Subcontracting">
+                        No Subcontracting
+                      </option>
                       <option value="Other">Other</option>
                     </select>
                     <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
@@ -470,9 +482,9 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveFeasibilityStatus('save')"
-                      [class.disabled]="!isCommentValid() && feasibilityStatus !== 'Fail'"
-                      class="btn btn-primary w-100">Save Status</a>
+                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="
+                        !isCommentValid() && feasibilityStatus !== 'Fail'
+                      " class="btn btn-primary w-100">Save Status</a>
                   </div>
                 </div>
               </ng-container>
@@ -530,9 +542,7 @@
 
             <!-- Dynamic Comment Section -->
             <div *ngIf="status" class="status-section">
-              <h6 class="text-secondary mb-3">
-                {{ status }} Comments
-              </h6>
+              <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
               <!-- Display Existing Comments -->
               <div *ngIf="commentData?.length" class="comment-list comments-section">
@@ -570,11 +580,16 @@
                         {{ droppedreason?.date | date : "dd/MM/yyyy, h:mm a" }}
                       </small>
                     </div>
-                    <small class="text-muted d-block"><strong>Reason :</strong> {{ droppedreason?.comment }}</small>
+                    <small class="text-muted d-block"><strong>Reason :</strong>
+                      {{ droppedreason?.comment }}</small>
                     <div class="d-flex justify-content-between">
                       <p class="mt-2">{{ droppedreason?.tag }}</p>
-                      <button class="btn btn-sm text-danger"
-                        (click)="deleteDroppedReasons(droppedreason, droppedreason?.commentId)">
+                      <button class="btn btn-sm text-danger" (click)="
+                          deleteDroppedReasons(
+                            droppedreason,
+                            droppedreason?.commentId
+                          )
+                        ">
                         Delete Reason
                       </button>
                     </div>
@@ -602,10 +617,14 @@
                       <option disabled selected hidden value="">
                         Select Dropper After Feasibility
                       </option>
-                      <option value="Subcontracting No">Subcontracting No</option>
+                      <option value="Subcontracting No">
+                        Subcontracting No
+                      </option>
                       <option value="Supplier Dropped">Supplier Dropped</option>
                       <option value="Time Constrain">Time Constrain</option>
-                      <option value="Rejected In Yes/No Call">Rejected In Yes/No Call</option>
+                      <option value="Rejected In Yes/No Call">
+                        Rejected In Yes/No Call
+                      </option>
                       <option value="Supplier Did Not Meet Eligibility Criteria">
                         Supplier Did Not Meet Eligibility Criteria
                       </option>
@@ -635,9 +654,10 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveBidStatus('save')"
-                      [class.disabled]="!isBidCommentValid()  && status !== 'Dropped after feasibility'"
-                      class="btn btn-primary w-100">
+                    <a (click)="saveBidStatus('save')" [class.disabled]="
+                        !isBidCommentValid() &&
+                        status !== 'Dropped after feasibility'
+                      " class="btn btn-primary w-100">
                       Save Bid Status
                     </a>
                   </div>
@@ -649,7 +669,6 @@
 
         <br />
       </div>
-
     </div>
   </section>
 
