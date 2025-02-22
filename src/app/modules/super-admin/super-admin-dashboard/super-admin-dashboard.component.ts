@@ -53,24 +53,30 @@ export class SuperAdminDashboardComponent {
   }
 
   onCategoryClick(category: string | null) {
-    const valueToPass = category && category !== "Unknown" ? category : "";
-    console.log("categorisation:", valueToPass);
+    let valueToPass = category && category !== "Unknown" ? category : null;
+
+    console.log("valueToPass:", valueToPass);
 
     // Navigate and pass queryParams
     this.router.navigate(['/super-admin/type-wise-project-list'], {
-      queryParams: valueToPass ? { categorisation: valueToPass } : {}
+      queryParams: { categorisation: valueToPass !== null ? valueToPass : '' },
+      queryParamsHandling: 'merge' // Optional: Keeps existing query params
     });
   }
 
+
   projectTypeClick(projectType: string | null) {
-    const valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : "";
+    let valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : null;
+
     console.log("valueToPassProduct:", valueToPassProduct);
 
     // Navigate and pass queryParams
     this.router.navigate(['/super-admin/type-wise-project-list'], {
-      queryParams: valueToPassProduct ? { projectType: valueToPassProduct } : {}
+      queryParams: { projectType: valueToPassProduct !== null ? valueToPassProduct : '' },
+      queryParamsHandling: 'merge' // Optional: Keeps existing query params
     });
   }
+
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.selectedDuration = duration;

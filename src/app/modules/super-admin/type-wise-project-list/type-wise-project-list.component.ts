@@ -208,14 +208,31 @@ export class TypeWiseProjectListComponent {
     });
   }
 
-  getProjectList(categorisation: string = '', projectType: string = '') {
+  getProjectList(categorisation: string = '', valueToPassProduct: string | null = '') {
     this.showLoader = true;
+
+    console.log("Received valueToPassProduct:", valueToPassProduct); // Debugging log
+
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.categorisation = categorisation;
-    console.log(Payload.projectList);
-    Payload.projectList.projectType = projectType;
+
+    // Ensure categorisation is always set
+    if (categorisation === null || categorisation === undefined) {
+      Payload.projectList.categorisation = ' '; // Space instead of empty string
+    } else {
+      Payload.projectList.categorisation = categorisation;
+    }
+
+    // Ensure projectType is always set
+    if (valueToPassProduct === null || valueToPassProduct === undefined) {
+      Payload.projectList.projectType = ' '; // Space instead of empty string
+    } else {
+      Payload.projectList.projectType = valueToPassProduct;
+    }
+
+    console.log("Final Payload:", Payload.projectList); // Debugging log
 
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
@@ -246,6 +263,7 @@ export class TypeWiseProjectListComponent {
       }
     );
   }
+
 
   searchtext() {
     this.showLoader = true;

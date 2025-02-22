@@ -94,9 +94,6 @@ export class ProjectService {
     if (params?.adminReview) {
       queryParams = queryParams.set('adminReview', params?.adminReview);
     }
-    if (params?.categorisation) {
-      queryParams = queryParams.set('categorisation', params?.categorisation);
-    }
     if (params?.match) {
       queryParams = queryParams.set('match', params?.match);
     }
@@ -127,9 +124,22 @@ export class ProjectService {
     if (params?.industry) {
       queryParams = queryParams.set('industry', params?.industry);
     }
-    if (params?.projectType) {
-      queryParams = queryParams.set('projectType', params?.projectType);
+
+    // Ensure projectType is always passed in the URL
+    if (params?.projectType !== undefined && params?.projectType !== null) {
+      queryParams = queryParams.set('projectType', params.projectType.trim());
+    } else {
+      queryParams = queryParams.set('projectType', ''); // Ensures it's always passed
     }
+
+    // Ensure categorisation is always passed in the URL
+    if (params?.categorisation !== undefined && params?.categorisation !== null) {
+      queryParams = queryParams.set('categorisation', params.categorisation.trim());
+    } else {
+      queryParams = queryParams.set('categorisation', ''); // Ensures it's always passed
+    }
+
+
     if (params?.clientType) {
       queryParams = queryParams.set('clientType', params?.clientType);
     }
