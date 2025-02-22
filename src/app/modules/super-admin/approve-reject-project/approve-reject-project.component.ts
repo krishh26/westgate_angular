@@ -287,7 +287,7 @@ export class ApproveRejectProjectComponent {
     Payload.projectList.limit = String(this.pagesize);
     // Payload.projectList.match = 'partial';
     // Payload.projectList.status = 'Passed';
-    Payload.projectList.adminReview = 'Fail'
+    Payload.projectList.adminReview = 'Fail,Not Releted'
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
