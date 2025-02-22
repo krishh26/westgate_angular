@@ -31,8 +31,10 @@ export class TodoTasksComponent {
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['High', 'Medium', 'Low'];
   statusTaskList: string[] = ['Ongoing', 'Completed'];
+  taskTypeList: string[] = ['Project', 'Other'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
+  selectedTaskType: string | undefined;
   dueDateValue: NgbDate | null = null;
   selectedUserIds: number[] = [];
   projectList: any = [];
@@ -46,6 +48,12 @@ export class TodoTasksComponent {
   statusDate: FormControl = new FormControl('');
   isEditing = false;
   loginUser: any;
+  type: any;
+
+  taskType = [
+    { taskType: 'Project', taskValue: 'Project' },
+    { taskType: 'Other', taskValue: 'Other' }
+  ];
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -296,6 +304,7 @@ export class TodoTasksComponent {
         status: 'Ongoing',
         dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
         assignTo: this.assignTo,
+        type: this.type
       };
       this.superService.createTask(payload).subscribe(
         (response) => {
@@ -360,6 +369,8 @@ export class TodoTasksComponent {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
       params.completedTask = paramValue; // Ensure it always sends true
+    } else if (paramKey === 'type') {
+      params.type = paramValue; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params

@@ -26,11 +26,13 @@ export class MyDayTasksComponent {
   userList: any = [];
   assignTo: any[] = [];
   assignProject: string | undefined;
+  selectedTaskType: string | undefined;
   showAll = false;
   displayedUsers: any[] = [];
   dueDate: FormControl = new FormControl(null);
   categoryList: string[] = ['High', 'Medium', 'Low'];
   statusTaskList: string[] = ['Ongoing', 'Completed'];
+  taskTypeList: string[] = ['Project', 'Other'];
   selectedCategory: string | undefined;
   selectedStatus: string | undefined;
   dueDateValue: NgbDate | null = null;
@@ -47,6 +49,12 @@ export class MyDayTasksComponent {
   selectedpriority: any[] = [];
   searchText: any;
   myControl = new FormControl();
+  type: any;
+
+  taskType = [
+    { taskType: 'Project', taskValue: 'Project' },
+    { taskType: 'Other', taskValue: 'Other' }
+  ];
 
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
@@ -264,6 +272,7 @@ export class MyDayTasksComponent {
         status: 'Ongoing',
         dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
         assignTo: this.assignTo,
+        type: this.type
       };
       this.superService.createTask(payload).subscribe(
         (response) => {
@@ -328,6 +337,8 @@ export class MyDayTasksComponent {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
       params.completedTask = paramValue; // Ensure it always sends true
+    } else if (paramKey === 'type') {
+      params.type = paramValue; // Ensure it always sends true
     }
 
     // Call the updateTask method with updated params
