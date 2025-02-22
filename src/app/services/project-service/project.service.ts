@@ -233,20 +233,12 @@ export class ProjectService {
       queryParams = queryParams.set('industry', params?.industry);
     }
 
-    // Ensure projectType is always passed in the URL
-    if (params?.projectType !== undefined && params?.projectType !== null) {
+    // Only pass one of them (projectType or categorisation)
+    if (params?.projectType && params.projectType.trim() !== '') {
       queryParams = queryParams.set('projectType', params.projectType.trim());
-    } else {
-      queryParams = queryParams.set('projectType', ''); // Ensures it's always passed
-    }
-
-    // Ensure categorisation is always passed in the URL
-    if (params?.categorisation !== undefined && params?.categorisation !== null) {
+    } else if (params?.categorisation && params.categorisation.trim() !== '') {
       queryParams = queryParams.set('categorisation', params.categorisation.trim());
-    } else {
-      queryParams = queryParams.set('categorisation', ''); // Ensures it's always passed
     }
-
 
     if (params?.clientType) {
       queryParams = queryParams.set('clientType', params?.clientType);
