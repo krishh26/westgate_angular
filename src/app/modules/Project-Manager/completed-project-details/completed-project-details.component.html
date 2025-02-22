@@ -498,6 +498,26 @@
                 </div>
               </div>
 
+              <div class="comment-list comments-section">
+                <div class="comment-item border rounded p-3 mb-2"
+                  *ngFor="let droppedreason of getDroppedAfterReasonList">
+                  <div class="comment mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="mb-0 fw-bold">
+                        {{ droppedreason?.userDetails?.name }}
+                      </p>
+                      <small class="text-muted">
+                        {{ droppedreason?.date | date : "dd/MM/yyyy, h:mm a" }}
+                      </small>
+                    </div>
+                    <small class="text-muted d-block"><strong>Reason :</strong> {{ droppedreason?.comment }}</small>
+                    <div class="d-flex justify-content-between">
+                      <p class="mt-2">{{ droppedreason?.tag }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Add New Comment -->
               <!-- <ng-container *ngIf="statusBaseHideShow()">
                 <div class="add-comment d-flex gap-3 align-items-center mt-3">

@@ -107,6 +107,8 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   ForTitleuserList: any = ['FeasibilityAdmin', 'FeasibilityUser', 'ProjectManager', 'SupplierAdmin'];
   displayForTitleedUsers: any = [];
   FeasibilityuserList: any = [];
+  getDroppedAfterReasonList: any = [];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -653,6 +655,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           this.statusComment.setValue(this.projectDetails?.statusComment);
           this.feasibilityCommentData =
           this.projectDetails?.statusComment || [];
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.feasibilityStatus = this.projectDetails?.status;
           this.subContractDocument =
             this.projectDetails?.subContractingfile || null;

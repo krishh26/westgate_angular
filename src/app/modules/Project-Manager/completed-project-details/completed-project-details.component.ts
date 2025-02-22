@@ -48,6 +48,7 @@ export class CompletedProjectDetailsComponent {
   statusDate: FormControl = new FormControl('');
   failStatusReason: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
+  getDroppedAfterReasonList: any = [];
   password = 'password';
   showPassword = false;
   failStatusImage: any;
@@ -495,6 +496,7 @@ export class CompletedProjectDetailsComponent {
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.feasibilityStatus = this.projectDetails?.status;
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.getReasonList = this.projectDetails?.failStatusReason;
