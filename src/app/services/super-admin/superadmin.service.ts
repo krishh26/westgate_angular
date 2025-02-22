@@ -50,12 +50,13 @@ export class SuperadminService {
     );
   }
 
-  getGapAnalysis(params: any): Observable<any> {
+  getGapAnalysis(params: HttpParams): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_GAP_ANALYSIS,
       { params }
     );
   }
+  
 
   getGapAnalysisNosupplierMatched(params: any): Observable<any> {
     return this.httpClient.get<any>(
@@ -149,7 +150,7 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?:string, myDay?: boolean): Observable<any> {
+  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean): Observable<any> {
     let params = new HttpParams();
 
     if (assignId) {
@@ -177,7 +178,7 @@ export class SuperadminService {
   }
 
 
-  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string, keyword?:string): Observable<any> {
+  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string, keyword?: string): Observable<any> {
     let params = new HttpParams();
     if (assignId) {
       params = params.set('assignTo', assignId);

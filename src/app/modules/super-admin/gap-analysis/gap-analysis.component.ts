@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +29,8 @@ export class GapAnalysisComponent {
   pageFailed: number = 1;
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
+  categorywiseList: string[] = ['DPS/Framework', 'DTD'];
+  selectedCategory: string | undefined;
 
 
   constructor(
@@ -57,6 +60,7 @@ export class GapAnalysisComponent {
     });
   }
 
+
   private formatDate(date: {
     year: number;
     month: number;
@@ -67,11 +71,15 @@ export class GapAnalysisComponent {
     ).padStart(2, '0')}`;
   }
 
-  getGapAnalysisData(searchText?: string) {
-    let param: any = {
-      // page: this.pageFailed, // Use the correct page variable
-      // pagesize: this.pagesize,
-    };
+  onCategoryChange(categorisation: string) {
+    this.getGapAnalysisData('', categorisation);
+    this.getGapAnalysisDataDropped('', categorisation);
+    this.getGapAnalysisDataNoSupplier('', categorisation);
+  }
+
+
+  getGapAnalysisData(searchText?: string, categorisation?: string) {
+    let param: any = {};
 
     if (searchText) {
       param['keyword'] = searchText;
@@ -87,6 +95,10 @@ export class GapAnalysisComponent {
     if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
+    }
+
+    if (categorisation) {
+      param['categorisation'] = categorisation;
     }
 
     this.showLoader = true;
@@ -109,11 +121,52 @@ export class GapAnalysisComponent {
     );
   }
 
-  getGapAnalysisDataDropped(searchText?: string) {
-    let param: any = {
-      // page: this.pageDropped, // Use the correct page variable
-      // pagesize: this.pagesize,
-    };
+  getSearchGapAnalysisData(searchText?: string, categorisation?: string) {
+    let params = new HttpParams();
+
+    if (searchText) {
+      params = params.set('keyword', searchText);
+    }
+
+    const startDate = this.trackerStartDate.value
+      ? this.formatDate(this.trackerStartDate.value)
+      : '';
+    const endDate = this.trackerEndDate.value
+      ? this.formatDate(this.trackerEndDate.value)
+      : '';
+
+    if (startDate) {
+      params = params.set('startDate', startDate);
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate);
+    }
+    if (categorisation) {
+      params = params.set('categorisation', categorisation);
+    }
+
+    this.showLoader = true;
+    this.gapAnalysisData = [];
+
+    this.superService.getGapAnalysis(params).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status) {
+          this.gapAnalysisData = response?.data;
+          this.totalRecords = response?.totalRecords; // Update total records for pagination
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getGapAnalysisDataDropped(searchText?: string, categorisation?: string) {
+    let param: any = {};
 
     if (searchText) {
       param['keyword'] = searchText;
@@ -129,6 +182,10 @@ export class GapAnalysisComponent {
     if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
+    }
+
+    if (categorisation) {
+      param['categorisation'] = categorisation;
     }
 
     this.showLoader = true;
@@ -151,9 +208,9 @@ export class GapAnalysisComponent {
     );
   }
 
-  getGapAnalysisDataNoSupplier(searchText?: string) {
+  getGapAnalysisDataNoSupplier(searchText?: string, categorisation?: string) {
     let param: any = {
-      page: this.pageNoSupplier, // Use the correct page variable
+      page: this.pageNoSupplier,
       pagesize: this.pagesize,
     };
 
@@ -171,6 +228,10 @@ export class GapAnalysisComponent {
     if (startDate && endDate) {
       param['startDate'] = startDate;
       param['endDate'] = endDate;
+    }
+
+    if (categorisation) {
+      param['categorisation'] = categorisation;
     }
 
     this.showLoader = true;
@@ -192,6 +253,7 @@ export class GapAnalysisComponent {
       }
     );
   }
+
 
   searchInputChange() {
     this.filteredData = this.selectedProjects.filter(item => {

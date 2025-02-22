@@ -2,11 +2,13 @@
     <section>
         <div class="container-fluid mb-3">
             <div class="row align-items-center justify-content-between mb-4">
-                <div class="col-12 d-flex align-items-center gap-3 flex-wrap">
-                    <!-- Heading -->
+                <!-- Heading -->
+                <div class="col-12 mb-2">
                     <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4>
+                </div>
 
-                    <!-- Date Pickers Form -->
+                <!-- Date Pickers Form -->
+                <div class="col-8">
                     <form class="d-flex align-items-center gap-2">
                         <div class="input-group">
                             <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate"
@@ -21,6 +23,15 @@
                                 type="button"></button>
                         </div>
                     </form>
+                </div>git config --global user.email "you@example.com"
+                git config --global user.name "Your Name"
+
+                <!-- Category Dropdown -->
+                <div class="col-4">
+                    <ng-select id="category" class="form-select custom-ng-select-option w-100"
+                        placeholder="Pick a Category" [items]="categorywiseList" [(ngModel)]="selectedCategory"
+                        (ngModelChange)="onCategoryChange($event)">
+                    </ng-select>
                 </div>
             </div>
 
@@ -28,9 +39,12 @@
                 <div class="col-lg-6 col-xl-6 col-12">
                     <div class="statistic-card">
                         <div class="card-body">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
                                 <h5 class="text-theme mb-0"><strong>Failed</strong></h5>
-
                             </div>
                             <div class="table-responsive mt-5 mb-3">
                                 <table class="table table-striped align-middle">
@@ -51,9 +65,10 @@
                                             <td>{{ item?.tag }}</td>
                                             <td>{{ item?.projectCount }}</td>
                                             <td>
-                                                <a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                                                <a class="btn btn-primary btn-sm" style="cursor: pointer"
                                                     data-bs-toggle="modal" data-bs-target="#viewAllProjects"
-                                                    (click)="showProjects(item?.projects)">View </a>
+                                                    (click)="showProjects(item?.projects)">View
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -65,8 +80,14 @@
                 <div class="col-lg-6 col-xl-6 col-12">
                     <div class="statistic-card">
                         <div class="card-body">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <h5 class="text-theme mb-0"><strong>Dropped after Feasibility</strong></h5>
+                            <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
+                                <h5 class="text-theme mb-0">
+                                    <strong>Dropped after Feasibility</strong>
+                                </h5>
                                 <!-- <form class="d-flex align-items-center gap-2">
                                     <div class="input-group">
                                         <input class="form-control" placeholder="DD-MM-YYYY"
@@ -105,9 +126,10 @@
                                             <td>{{ item?.tag }}</td>
                                             <td>{{ item?.projectCount }}</td>
                                             <td>
-                                                <a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                                                <a class="btn btn-primary btn-sm" style="cursor: pointer"
                                                     data-bs-toggle="modal" data-bs-target="#viewProjects"
-                                                    (click)="showProjects(item?.projects)">View </a>
+                                                    (click)="showProjects(item?.projects)">View
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -121,8 +143,14 @@
                 <div class="col-lg-12 col-xl-12 col-12">
                     <div class="statistic-card">
                         <div class="card-body">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <h5 class="text-theme mb-0"><strong>No Supplier Matched</strong></h5>
+                            <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
+                                <h5 class="text-theme mb-0">
+                                    <strong>No Supplier Matched</strong>
+                                </h5>
                                 <!-- <form class="d-flex align-items-center gap-2">
                                     <div class="input-group">
                                         <input class="form-control" placeholder="DD-MM-YYYY"
@@ -149,7 +177,6 @@
                                             <th width="200px">Project Name</th>
                                             <th width="200px">Assign User</th>
                                             <th>Comments</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -158,14 +185,22 @@
                                                 <app-no-record-found></app-no-record-found>
                                             </td>
                                         </tr>
-                                        <tr
-                                            *ngFor="let item of gapAnalysisDataNoSupplier | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-                                            <td><a (click)="projectDetails(item?.projects[0]?._id)"
-                                                    href="javascript:;">{{
-                                                    item?.projects[0]?.projectName }}</a></td>
+                                        <tr *ngFor="
+                        let item of gapAnalysisDataNoSupplier
+                          | paginate
+                            : {
+                                itemsPerPage: pagesize,
+                                currentPage: page,
+                                totalItems: totalRecords
+                              };
+                        let i = index
+                      ">
+                                            <td>
+                                                <a (click)="projectDetails(item?.projects[0]?._id)"
+                                                    href="javascript:;">{{ item?.projects[0]?.projectName }}</a>
+                                            </td>
                                             <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
                                             <td>{{ item?.comment }}</td>
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -201,7 +236,7 @@
                         <div class="form-group mb-0">
                             <span class="input-icon"><i class="bi bi-search"></i></span>
                             <input class="form-control control-search" placeholder="Search comments..." type="text"
-                                [(ngModel)]="searchText" (input)="searchInputChange()">
+                                [(ngModel)]="searchText" (input)="searchInputChange()" />
                         </div>
                     </div>
                 </div>
@@ -221,8 +256,11 @@
                             </td>
                         </tr>
                         <tr *ngFor="let project of filteredData">
-                            <td><a (click)="projectDetails(project?._id)"
-                                    href="javascript:;">{{project?.projectName}}</a></td>
+                            <td>
+                                <a (click)="projectDetails(project?._id)" href="javascript:;">{{
+                                    project?.projectName
+                                    }}</a>
+                            </td>
                             <td>{{ project?.comment }}</td>
                             <!-- <td>{{ project?.status }}</td> -->
                             <td>{{ project?.assignBidManager?.name }}</td>
@@ -249,7 +287,7 @@
                         <div class="form-group mb-0">
                             <span class="input-icon"><i class="bi bi-search"></i></span>
                             <input class="form-control control-search" placeholder="Search comments..." type="text"
-                                [(ngModel)]="searchText" (input)="searchInputChange()">
+                                [(ngModel)]="searchText" (input)="searchInputChange()" />
                         </div>
                     </div>
                 </div>
@@ -268,15 +306,21 @@
                             </td>
                         </tr>
                         <tr *ngFor="let project of filteredData">
-                            <td><a (click)="projectDetails(project?._id)" href="javascript:;">{{ project?.projectName
-                                    }}</a></td>
-                            <td>{{ project?.droppedAfterFeasibilityStatusReason?.comment || 'No comment available' }}
+                            <td>
+                                <a (click)="projectDetails(project?._id)" href="javascript:;">{{
+                                    project?.projectName
+                                    }}</a>
+                            </td>
+                            <td>
+                                {{
+                                project?.droppedAfterFeasibilityStatusReason?.comment ||
+                                "No comment available"
+                                }}
                             </td>
                             <td>{{ project?.assignBidManager?.name }}</td>
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
