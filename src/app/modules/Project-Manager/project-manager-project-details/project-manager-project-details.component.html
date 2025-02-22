@@ -392,6 +392,14 @@
                 </div>
             </div> -->
 
+      <ng-container>
+        <div class="row justify-content-end mb-3">
+          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+            <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save Documents</a>
+          </div>
+        </div>
+      </ng-container>
+
       <div *ngIf="projectDetails?.bidManagerStatus !== 'Dropped after feasibility'">
 
         <div class="col-lg-12 col-xl-12 col-12 mb-3">
@@ -740,7 +748,8 @@
               <ng-container>
                 <div class="row justify-content-end mb-2 mt-3">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid() && status !== 'Dropped after feasibility'"
+                    <a (click)="saveBidStatus('save')"
+                      [class.disabled]="!isBidCommentValid() && status !== 'Dropped after feasibility'"
                       class="btn btn-primary w-100">
                       Save Bid Status
                     </a>
@@ -750,110 +759,11 @@
             </div>
           </div>
         </div>
-        <br />
-        <!-- <section class="pageheader bg-dark">
-                        <div class="container ">
-                            <p><strong>To-Do Task Comments</strong></p>
-                        </div>
-                    </section><br>
 
-                    <div class="modal-body d-flex">
-                        <div class="flex-grow-1 pe-3">
-                            <div class="comments-section">
-                                <ng-container *ngIf="commentData!.length > 0; else noTasks">
-                                    <div *ngFor="let comment of commentData" class="task-item">
-                                        <ng-container>
-                                            <div class="comment mb-3">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <p class="mb-0 fw-bold">{{ comment?.userDetails?.name }}</p>
-                                                    <small class="text-muted">
-                                                        {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                                    </small>
-                                                </div>
-                                                <small class="text-muted d-block"><strong>Status :</strong> {{
-                                                    comment?.bidManagerStatus
-                                                    }}</small>
-                                                <p class="mt-2">{{ comment?.comment }}</p>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
-                            </div>
-                            <ng-template #noTasks>
-                                <p class="text-muted">No status comments available.</p>
-                            </ng-template>
-                        </div>
-                    </div>
-
-
-                    <div class="modal-body d-flex">
-                        <div class="flex-grow-1 pe-3">
-                            <div class="comments-section">
-                                <ng-container>
-                                    <div *ngFor="let task of filteredTasks" class="task-item">
-                                        <ng-container *ngIf="task?.comments?.length > 0; else noComments">
-                                            <div *ngFor="let comment of task.comments" class="comment mb-3">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <p class="mb-0 fw-bold">{{ comment?.userDetail?.name }}</p>
-                                                    <small class="text-muted">
-                                                        {{ comment?.date | date: 'dd/MM/yyyy, h:mm a' }}
-                                                    </small>
-                                                </div>
-                                                <small class="text-muted d-block">{{ comment?.userDetail?.role }}</small>
-                                                <p class="mt-2">{{ comment?.comment }}</p>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-
-                    <ng-template #noComments>
-                        <p class="text-muted">No comments available.</p>
-                    </ng-template> -->
-
-        <!-- <section class="pageheader bg-dark">
-          <div class="container">
-            <p><strong>Project Logs</strong></p>
-          </div>
-        </section>
         <br />
 
-        <div class="modal-body d-flex">
-          <div class="flex-grow-1 pe-3">
-            <div class="comments-section">
-              <div *ngIf="projectDetails?.logs?.length > 3" class="text-end mt-3">
-                <a class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
-                  View All
-                </a>
-              </div>
-              <ul class="SecondarytaskList mt-3">
-                <li *ngFor="let log of showAllLogs ? logs : logs.slice(0, 3)" class="mb-3">
-                  <div class="comment-item">
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-0" [innerHTML]="log?.log"></p>
-                      <span class="text-muted">
-                        {{ log?.date | date : "dd/MM/yyyy, h:mm a" }}
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <p *ngIf="logs?.length === 0" class="text-center">
-                No records found
-              </p>
-            </div>
-          </div>
-        </div> -->
-        <ng-container>
-          <div class="row justify-content-end">
-            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-              <a (click)="summaryDetail('save')" class="btn btn-dark w-100">Save</a>
-            </div>
-          </div>
-        </ng-container>
       </div>
+
     </div>
 
   </section>
