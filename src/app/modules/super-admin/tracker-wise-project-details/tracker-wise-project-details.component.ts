@@ -1835,4 +1835,9 @@ export class TrackerWiseProjectDetailsComponent {
     const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
     return this.status && (hasComment || hasUnaddedComment);
   }
+
+  removeReadonly(event: Event) {
+    (event.target as HTMLInputElement).removeAttribute('readonly');
+  }
+
 }

@@ -397,7 +397,7 @@
               <ng-container>
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
                   <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
-                    placeholder="Add your comment" />
+                    placeholder="Add your comment" autocomplete="off" readonly (focus)="removeReadonly($event)" />
                   <button class="btn btn-primary" type="button" (click)="pushFeasibilityStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
@@ -587,7 +587,7 @@
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
                   *ngIf="status !== 'Dropped after feasibility'">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                    placeholder="Add your comment" autocomplete=false />
+                    placeholder="Add your comment" autocomplete="off" readonly (focus)="removeReadonly($event)" />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>

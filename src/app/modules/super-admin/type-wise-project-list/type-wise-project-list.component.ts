@@ -234,7 +234,7 @@ export class TypeWiseProjectListComponent {
 
     console.log("Final Payload:", Payload.projectList); // Debugging log
 
-    this.projectService.getProjectList(Payload.projectList).subscribe(
+    this.projectService.getProjectLists(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
