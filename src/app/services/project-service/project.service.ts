@@ -156,7 +156,7 @@ export class ProjectService {
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
-  getProjectLists(params: {
+  getSearchByProduct(params: {
     keyword: string, page: string,
     limit: string,
     applied: boolean,
@@ -233,12 +233,124 @@ export class ProjectService {
       queryParams = queryParams.set('industry', params?.industry);
     }
 
-    // Only pass one of them (projectType or categorisation)
-    if (params?.projectType && params.projectType.trim() !== '') {
-      queryParams = queryParams.set('projectType', params.projectType.trim());
-    } else if (params?.categorisation && params.categorisation.trim() !== '') {
+    // Ensure projectType is always passed
+    queryParams = queryParams.set('projectType', params?.projectType?.trim() || '');
+
+    // Ensure categorisation is passed separately
+    if (params?.categorisation && params.categorisation.trim() !== '') {
       queryParams = queryParams.set('categorisation', params.categorisation.trim());
     }
+
+
+    if (params?.clientType) {
+      queryParams = queryParams.set('clientType', params?.clientType);
+    }
+    if (params?.publishDateRange) {
+      queryParams = queryParams.set('publishDateRange', params?.publishDateRange);
+    }
+    if (params?.SubmissionDueDateRange) {
+      queryParams = queryParams.set('SubmissionDueDateRange', params?.SubmissionDueDateRange);
+    }
+    if (params?.startCreatedDate) {
+      queryParams = queryParams.set('startCreatedDate', params?.startCreatedDate);
+    }
+    if (params?.endCreatedDate) {
+      queryParams = queryParams.set('endCreatedDate', params?.endCreatedDate);
+    }
+    if (params?.valueRange) {
+      queryParams = queryParams.set('valueRange', params?.valueRange);
+    }
+    if (params?.selectedSupplier) { // Add this condition
+      queryParams = queryParams.set('selectedSupplier', params?.selectedSupplier);
+    } if (params?.expired) { // Add this condition
+      queryParams = queryParams.set('expired', params?.expired);
+    }
+    return this.httpClient.get<any>(url, { params: queryParams });
+  }
+
+  getSearchByCategorisation(params: {
+    keyword: string, page: string,
+    limit: string,
+    applied: boolean,
+    sortlist: boolean,
+    match: string,
+    status: string,
+    bidManagerStatus: string,
+    category?: string,
+    supplierId?: string,
+    industry?: string,
+    projectType?: string,
+    clientType?: string,
+    publishDateRange?: string,
+    SubmissionDueDateRange?: string,
+    valueRange?: any,
+    selectedSupplier?: boolean // Add this line
+    expired?: boolean,
+    supplierStatus?: string,
+    appointed?: string,
+    myList?: string,
+    notAppointed?: string,
+    adminReview?: string,
+    statusNotInclude?: string,
+    startCreatedDate?: string,
+    endCreatedDate?: string,
+    categorisation?: string
+  }): Observable<any> {
+    const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('keyword', params?.keyword || '');
+    queryParams = queryParams.set('page', params?.page);
+    queryParams = queryParams.set('limit', params?.limit);
+    if (params?.applied) {
+      queryParams = queryParams.set('applied', params?.applied);
+    }
+    if (params?.sortlist) {
+      queryParams = queryParams.set('sortlist', params?.sortlist);
+    }
+    if (params?.statusNotInclude) {
+      queryParams = queryParams.set('statusNotInclude', params?.statusNotInclude);
+    }
+    if (params?.adminReview) {
+      queryParams = queryParams.set('adminReview', params?.adminReview);
+    }
+    if (params?.match) {
+      queryParams = queryParams.set('match', params?.match);
+    }
+    if (params?.status) {
+      queryParams = queryParams.set('status', params?.status);
+    }
+    if (params?.bidManagerStatus) {
+      queryParams = queryParams.set('bidManagerStatus', params?.bidManagerStatus);
+    }
+    if (params?.supplierStatus) {
+      queryParams = queryParams.set('supplierStatus', params?.supplierStatus);
+    }
+    if (params?.category) {
+      queryParams = queryParams.set('category', params?.category);
+    }
+    if (params?.supplierId) {
+      queryParams = queryParams.set('supplierId', params?.supplierId);
+    }
+    if (params?.appointed) {
+      queryParams = queryParams.set('appointed', params?.appointed);
+    }
+    if (params?.notAppointed) {
+      queryParams = queryParams.set('notAppointed', params?.notAppointed);
+    }
+    if (params?.myList) {
+      queryParams = queryParams.set('myList', params?.myList);
+    }
+    if (params?.industry) {
+      queryParams = queryParams.set('industry', params?.industry);
+    }
+
+    // Ensure categorisation is passed separately
+    if (params?.projectType && params.projectType.trim() !== '') {
+      queryParams = queryParams.set('projectType', params.projectType.trim());
+    }
+
+    queryParams = queryParams.set('categorisation', params.categorisation?.trim() || '');
 
     if (params?.clientType) {
       queryParams = queryParams.set('clientType', params?.clientType);

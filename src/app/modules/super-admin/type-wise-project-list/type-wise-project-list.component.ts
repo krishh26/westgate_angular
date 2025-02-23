@@ -217,48 +217,70 @@ export class TypeWiseProjectListComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
 
-    // Determine which value to pass based on priority
-    if (valueToPassProduct && valueToPassProduct.trim() !== '') {
-      Payload.projectList.projectType = valueToPassProduct;
-      Payload.projectList.categorisation = ''; // Ensure categorisation is empty
-    } else if (categorisation && categorisation.trim() !== '') {
-      Payload.projectList.categorisation = categorisation;
-      Payload.projectList.projectType = ''; // Ensure projectType is empty
-    } else {
-      Payload.projectList.projectType = '';
-      Payload.projectList.categorisation = '';
-    }
+    // Ensure projectType is always passed
+    Payload.projectList.projectType = (valueToPassProduct && valueToPassProduct.trim() !== 'Unknown')
+      ? valueToPassProduct
+      : '';
+
+    // Handle categorisation logic
+    Payload.projectList.categorisation = (categorisation && categorisation.trim() !== '')
+      ? categorisation
+      : '';
 
     console.log("Final Payload:", Payload.projectList); // Debugging log
 
-    this.projectService.getProjectLists(Payload.projectList).subscribe(
-      (response) => {
-        this.projectList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
-
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.projectList = response?.data?.data;
-
-          this.projectList.forEach((project: any) => {
-            const dueDate = new Date(project.dueDate);
-            const currentDate = new Date();
-            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
-
-            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
-            this.dateDifference = formattedDateDifference;
-          });
-
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
+    // Condition to determine which API to call
+    if (categorisation) {
+      // Call API 1 when categorisation is provided
+      this.projectService.getSearchByCategorisation(Payload.projectList).subscribe(
+        (response) => {
+          this.handleApiResponse(response);
+        },
+        (error) => {
+          this.handleApiError(error);
         }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+      );
+    } else {
+      // Call API 2 when categorisation is not provided
+      this.projectService.getSearchByProduct(Payload.projectList).subscribe(
+        (response) => {
+          this.handleApiResponse(response);
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+    }
+  }
+
+  // Function to handle API response
+  private handleApiResponse(response: any) {
+    this.projectList = [];
+    this.totalRecords = response?.data?.meta_data?.items;
+
+    if (response?.status == true) {
+      this.showLoader = false;
+      this.projectList = response?.data?.data;
+
+      this.projectList.forEach((project: any) => {
+        const dueDate = new Date(project.dueDate);
+        const currentDate = new Date();
+        const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+
+        const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+        this.dateDifference = formattedDateDifference;
+      });
+
+    } else {
+      this.notificationService.showError(response?.message);
+      this.showLoader = false;
+    }
+  }
+
+  // Function to handle API errors
+  private handleApiError(error: any) {
+    this.notificationService.showError(error?.message);
+    this.showLoader = false;
   }
 
   searchtext() {
