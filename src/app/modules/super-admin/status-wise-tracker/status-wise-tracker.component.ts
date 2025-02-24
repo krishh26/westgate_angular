@@ -51,6 +51,7 @@ export class StatusWiseTrackerComponent implements OnInit {
     'Go-NoGoStage1': 'Go-NoGoStage1',
     SupplierConfirmation: 'SupplierConfirmation',
     'Go-NoGoStage2': 'Go-NoGoStage2',
+    "Not Releted": 'Not Releted'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -244,6 +245,7 @@ export class StatusWiseTrackerComponent implements OnInit {
               value: FeasibilityStatusValue[status] || 0,
             })
           );
+          console.log("feasibilityData", this.feasibilityData);
 
           // Combine Bid data
           this.bidData = Object.keys(BidStatusCount).map((status) => ({

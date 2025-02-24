@@ -284,6 +284,7 @@ export class NoSupplierMatchProjectsComponent {
       Payload.projectList.page = String(this.page);
       Payload.projectList.limit = String(this.pagesize);
       // Payload.projectList.match = 'partial';
+      Payload.projectList.projectType = "";
       // Payload.projectList.status = 'Passed';
       Payload.projectList.adminReview = 'Nosuppliermatched'
       this.projectService.getProjectList(Payload.projectList).subscribe((response) => {

@@ -43,6 +43,7 @@ import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-d
 import { DroppedAfterGapAnalysisComponent } from './dropped-after-gap-analysis/dropped-after-gap-analysis.component';
 import { NoSupplierGapAnalysisComponent } from './no-supplier-gap-analysis/no-supplier-gap-analysis.component';
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
+import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
 
 
 
@@ -81,7 +82,8 @@ import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise
      ApproveRejectProjectDetailsComponent,
      DroppedAfterGapAnalysisComponent,
      NoSupplierGapAnalysisComponent,
-     TypeWiseProjectListComponent
+     TypeWiseProjectListComponent,
+     FailAproveRejectComponent
   ],
   imports: [
     CommonModule,

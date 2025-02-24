@@ -23,12 +23,11 @@ interface Project {
 }
 
 @Component({
-  selector: 'app-approve-reject-project',
-  templateUrl: './approve-reject-project.component.html',
-  styleUrls: ['./approve-reject-project.component.scss']
+  selector: 'app-fail-aprove-reject',
+  templateUrl: './fail-aprove-reject.component.html',
+  styleUrls: ['./fail-aprove-reject.component.scss']
 })
-export class ApproveRejectProjectComponent {
-
+export class FailAproveRejectComponent {
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
@@ -285,11 +284,11 @@ export class ApproveRejectProjectComponent {
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-    Payload.projectList.projectType = "";
     // Payload.projectList.match = 'partial';
     // Payload.projectList.status = 'Passed';
     // Payload.projectList.adminReview = 'Fail,Not Releted'
-    Payload.projectList.adminReview = 'Not Releted'
+    Payload.projectList.projectType = "";
+    Payload.projectList.adminReview = 'Fail'
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;
