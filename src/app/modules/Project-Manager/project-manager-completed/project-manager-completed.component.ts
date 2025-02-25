@@ -298,7 +298,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     this.tempPayload.projectList.appointed = this.loginUser?.id;
-    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched";
+    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched, Not Releted";
     this.tempPayload.projectList.statusNotInclude = 'Fail';
     console.log(this.tempPayload.projectList);
     
