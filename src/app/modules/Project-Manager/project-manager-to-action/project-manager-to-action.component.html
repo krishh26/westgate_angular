@@ -13,9 +13,7 @@
             <li routerLink="/project-manager/project/bid-manager-completed">
               <a>Completed projects</a>
             </li>
-            <li
-              routerLink="/project-manager/project/bid-manager-project-failed"
-            >
+            <li routerLink="/project-manager/project/bid-manager-project-failed">
               <a>Failed</a>
             </li>
           </ul>
@@ -30,33 +28,17 @@
 
             <div class="sort-widget mb-3">
               <h6 class="p-600">Feasibility Status</h6>
-              <ng-select
-                style="padding: 0px !important"
-                placeholder="Select Status"
-                class="form-select custom-ng-select-option"
-                [items]="statusList"
-                bindLabel="status"
-                [multiple]="true"
-                bindValue="value"
-                [(ngModel)]="selectedStatuses"
-                (change)="searchtext()"
-              >
+              <ng-select style="padding: 0px !important" placeholder="Select Status"
+                class="form-select custom-ng-select-option" [items]="statusList" bindLabel="status" [multiple]="true"
+                bindValue="value" [(ngModel)]="selectedStatuses" (change)="searchtext()">
               </ng-select>
             </div>
 
             <div class="sort-widget mb-3">
               <h6 class="p-600">Bid Status</h6>
-              <ng-select
-                style="padding: 0px !important"
-                placeholder="Select Bid Status"
-                class="form-select custom-ng-select-option"
-                [items]="bidstatusList"
-                bindLabel="bidstatus"
-                [multiple]="true"
-                bindValue="bidvalue"
-                [(ngModel)]="selectedBidStatuses"
-                (change)="searchtext()"
-              >
+              <ng-select style="padding: 0px !important" placeholder="Select Bid Status"
+                class="form-select custom-ng-select-option" [items]="bidstatusList" bindLabel="bidstatus"
+                [multiple]="true" bindValue="bidvalue" [(ngModel)]="selectedBidStatuses" (change)="searchtext()">
               </ng-select>
             </div>
 
@@ -74,36 +56,18 @@
               <form class="row row-cols-sm-auto">
                 <div class="col-6">
                   <div class="input-group mb-2">
-                    <input
-                      class="form-control"
-                      placeholder="DD-MM-YYYY"
-                      name="dp"
-                      [formControl]="publishStartDate"
-                      ngbDatepicker
-                      #d="ngbDatepicker"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="d.toggle()"
-                      type="button"
-                    ></button>
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="publishStartDate"
+                      ngbDatepicker #d="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="DD-MM-YYYY"
-                      name="dp"
-                      [formControl]="publishEndDate"
-                      ngbDatepicker
-                      #d1="ngbDatepicker"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="d1.toggle()"
-                      type="button"
-                    ></button>
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="publishEndDate"
+                      ngbDatepicker #d1="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
               </form>
@@ -114,36 +78,18 @@
               <form class="row row-cols-sm-auto">
                 <div class="col-6">
                   <div class="input-group mb-2">
-                    <input
-                      class="form-control"
-                      placeholder="DD-MM-YYYY"
-                      name="dp"
-                      [formControl]="submissionStartDate"
-                      ngbDatepicker
-                      #d2="ngbDatepicker"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="d2.toggle()"
-                      type="button"
-                    ></button>
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="submissionStartDate"
+                      ngbDatepicker #d2="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="DD-MM-YYYY"
-                      name="dp"
-                      [formControl]="submissionEndDate"
-                      ngbDatepicker
-                      #d3="ngbDatepicker"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="d3.toggle()"
-                      type="button"
-                    ></button>
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="submissionEndDate"
+                      ngbDatepicker #d3="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()"
+                      type="button"></button>
                   </div>
                 </div>
               </form>
@@ -156,29 +102,15 @@
               <!-- Min and Max value input fields -->
               <div class="input-fields">
                 <label for="min-value">Min Value (GBP): </label>
-                <input
-                  id="min-value"
-                  type="number"
-                  [(ngModel)]="minValue"
-                  (change)="changeRange()"
-                />
+                <input id="min-value" type="number" [(ngModel)]="minValue" (change)="changeRange()" />
 
                 <label for="max-value">Max Value (GBP): </label>
-                <input
-                  id="max-value"
-                  type="number"
-                  [(ngModel)]="maxValue"
-                  (change)="changeRange()"
-                />
+                <input id="max-value" type="number" [(ngModel)]="maxValue" (change)="changeRange()" />
               </div>
 
               <!-- ngx-slider component -->
-              <ngx-slider
-                [(value)]="minValue"
-                [(highValue)]="maxValue"
-                [options]="options"
-                (userChange)="changeRange()"
-              >
+              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"
+                (userChange)="changeRange()">
               </ngx-slider>
             </div>
           </div>
@@ -189,24 +121,14 @@
             <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
               <div class="form-group mb-0">
                 <span class="input-icon"><i class="bi bi-search"></i></span>
-                <input
-                  class="form-control control-search"
+                <input class="form-control control-search"
                   placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-                  type="text"
-                  [(ngModel)]="searchText"
-                  (input)="searchtext()"
-                />
+                  type="text" [(ngModel)]="searchText" (input)="searchtext()" />
               </div>
             </div>
-            <div
-              class="col-lg-1 col-xl-1 col-12 mob-mb1"
-              style="margin-right: 350px; cursor: pointer"
-            >
-              <i
-                class="bi bi-info-circle-fill"
-                data-bs-toggle="tooltip"
-                title="Search using BOS ID, Project name, Client name, Website, Notice reference"
-              ></i>
+            <div class="col-lg-1 col-xl-1 col-12 mob-mb1" style="margin-right: 350px; cursor: pointer">
+              <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
+                title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
           </div>
           <div class="table-responsive mt-5 mb-3">
@@ -233,8 +155,7 @@
                   </td>
                 </tr>
 
-                <tr
-                  *ngFor="
+                <tr *ngFor="
                     let item of projectList
                       | paginate
                         : {
@@ -243,22 +164,15 @@
                             totalItems: totalRecords
                           };
                     let i = index
-                  "
-                >
+                  ">
                   <td>
-                    <a
-                      (click)="projectDetails(item?._id)"
-                      href="javascript:;"
-                      >{{ item?.projectName }}</a
-                    >
+                    <a (click)="projectDetails(item?._id)" href="javascript:;">{{ item?.projectName }}</a>
                   </td>
                   <td v-align="middle">{{ item?.BOSID }}</td>
                   <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
                   <td>{{ item?.dueDate | date : "dd/MM/yyyy, h:mm a" }}</td>
                   <td>
-                    <ng-container
-                      *ngIf="item?.adminStatus === 'Fail'; else failStatus"
-                    >
+                    <ng-container *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
                       <span>Waiting for approval</span>
                     </ng-container>
                     <ng-template #failStatus>
@@ -267,15 +181,13 @@
                   </td>
 
                   <td>
-                    <ng-container
-                      *ngIf="
+                    <ng-container *ngIf="
                         !(
                           item?.adminStatus === 'Nosuppliermatched' ||
                           item?.adminStatus === 'Dropped after feasibility'
                         );
                         else waitingForApproval
-                      "
-                    >
+                      ">
                       {{ item?.bidManagerStatus }}
                     </ng-container>
                     <ng-template #waitingForApproval>
@@ -283,12 +195,9 @@
                     </ng-template>
                   </td>
                   <td>
-                    <span
-                      class="status-dot"
-                      [ngStyle]="{
+                    <span class="status-dot" [ngStyle]="{
                         'background-color': getStatusColor(item)
-                      }"
-                    ></span>
+                      }"></span>
                   </td>
                 </tr>
               </tbody>
@@ -297,10 +206,7 @@
           <div class="row mt-3 align-items-center">
             <div class="row">
               <div class="pagination">
-                <pagination-controls
-                  (pageChange)="paginate($event)"
-                  [idMaxSize]="100"
-                ></pagination-controls>
+                <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
               </div>
             </div>
           </div>
