@@ -52,7 +52,7 @@ export class ApproveRejectProjectComponent {
   //   "⁠Passed",
   //   "⁠Submitted"
   // ];
-
+  viewComments: any;
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -140,7 +140,10 @@ export class ApproveRejectProjectComponent {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;
   }
-
+  showComments(data: any) {
+    console.log('this is my view comment', data);
+    this.viewComments = data;
+  }
   getCategoryList() {
     this.showLoader = true;
     this.superService.getCategoryList().subscribe(

@@ -65,7 +65,7 @@ export class NoSupplierMatchProjectsComponent {
     selectedClientTypes: any[] = [];
     selectedStatuses: any[] = [];
     selectedBidStatuses: any[] = [];
-
+    viewComments: any;
     projectTypeList = [
       { projectType: 'Development', value: 'Development' },
       { projectType: 'Product', value: 'Product' },
@@ -133,6 +133,12 @@ export class NoSupplierMatchProjectsComponent {
         }
       });
     }
+
+    showComments(data: any) {
+      console.log('this is my view comment', data);
+      this.viewComments = data;
+    }
+
 
     formatMilliseconds(milliseconds: number): string {
       const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));

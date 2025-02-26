@@ -134,6 +134,7 @@
                   <th>Feasibility Status</th>
                   <th>Bid Status</th>
                   <th>Approval Date</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -165,6 +166,11 @@
                         Reject
                       </a>
                     </div>
+                  </td>
+                  <td>
+                    <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                      data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
+                    </a>
                   </td>
                 </tr>
               </tbody>

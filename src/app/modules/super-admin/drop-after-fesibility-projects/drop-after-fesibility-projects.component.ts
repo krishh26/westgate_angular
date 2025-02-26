@@ -95,7 +95,7 @@ export class DropAfterFesibilityProjectsComponent {
       { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
       { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
     ]
-
+    viewComments: any;
     publishStartDate: FormControl = new FormControl('');
     publishEndDate: FormControl = new FormControl('');
     submissionStartDate: FormControl = new FormControl('');
@@ -137,6 +137,10 @@ export class DropAfterFesibilityProjectsComponent {
     formatMilliseconds(milliseconds: number): string {
       const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
       return `${days} days`;
+    }
+    showComments(data: any) {
+      console.log('this is my view comment', data);
+      this.viewComments = data;
     }
 
     getCategoryList() {

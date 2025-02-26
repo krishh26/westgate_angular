@@ -41,6 +41,7 @@ export class FailAproveRejectComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
+  viewComments: any;
   // statusList: any = [
   //   "Awaiting",
   //   "⁠Documents not found",
@@ -96,6 +97,11 @@ export class FailAproveRejectComponent {
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
   ]
+
+  showComments(data: any) {
+    console.log('this is my view comment', data);
+    this.viewComments = data;
+  }
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
