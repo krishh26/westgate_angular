@@ -29,7 +29,7 @@ interface Project {
 @Component({
   selector: 'app-project-manager-completed',
   templateUrl: './project-manager-completed.component.html',
-  styleUrls: ['./project-manager-completed.component.scss']
+  styleUrls: ['./project-manager-completed.component.scss'],
 })
 export class ProjectManagerCompletedComponent {
   showLoader: boolean = false;
@@ -47,7 +47,6 @@ export class ProjectManagerCompletedComponent {
   industryList: any = [];
   tempPayload: any;
 
-
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -60,7 +59,7 @@ export class ProjectManagerCompletedComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-  selectedBidStatuses:any[]= [];
+  selectedBidStatuses: any[] = [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -79,7 +78,7 @@ export class ProjectManagerCompletedComponent {
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
-    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' },
   ];
 
   bidstatusList = [
@@ -87,10 +86,13 @@ export class ProjectManagerCompletedComponent {
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
+    {
+      bidvalue: 'Dropped after feasibility',
+      bidstatus: 'Dropped after feasibility',
+    },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
-    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
-  ]
+    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+  ];
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -102,10 +104,10 @@ export class ProjectManagerCompletedComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
-      private localStorageService : LocalStorageService
-  ) { 
+    private localStorageService: LocalStorageService
+  ) {
     this.loginUser = this.localStorageService.getLogger();
-   }
+  }
 
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
@@ -298,10 +300,12 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     this.tempPayload.projectList.appointed = this.loginUser?.id;
-    this.tempPayload.projectList.bidManagerStatus =  "Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched, Not Releted";
+    this.tempPayload.projectList.bidManagerStatus =
+      'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched, Not Releted';
     this.tempPayload.projectList.statusNotInclude = 'Fail';
+    this.tempPayload.projectList.status = 'Not Releted';
     console.log(this.tempPayload.projectList);
-    
+
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -337,7 +341,10 @@ export class ProjectManagerCompletedComponent {
     // this.tempPayload.projectList.clientType =
     //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses?.length > 0 ? this.selectedBidStatuses.join(',') : 'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched';
+    this.tempPayload.projectList.bidManagerStatus =
+      this.selectedBidStatuses?.length > 0
+        ? this.selectedBidStatuses.join(',')
+        : 'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched';
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
