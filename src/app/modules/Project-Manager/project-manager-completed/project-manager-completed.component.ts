@@ -79,6 +79,7 @@ export class ProjectManagerCompletedComponent {
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
     { value: 'DocumentsNotFound', status: 'Documents Not Found' },
+    { value: 'Not Releted', status: 'Not Releted' },
   ];
 
   bidstatusList = [
@@ -107,7 +108,7 @@ export class ProjectManagerCompletedComponent {
     private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
-    this.selectedStatuses.push('Not Releted');
+    //this.selectedStatuses.push('Not Releted');
   }
 
   ngOnInit(): void {
@@ -302,11 +303,12 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.limit = String(this.pagesize);
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.tempPayload.projectList.bidManagerStatus =
-      'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched, Not Releted';
+      'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched';
     this.tempPayload.projectList.statusNotInclude = 'Fail';
     this.tempPayload.projectList.status = 'Not Releted';
     this.tempPayload.projectList.expired = true;
 
+    // this.tempPayload.projectList.status = 'Not Releted';
     console.log(this.tempPayload.projectList);
 
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(

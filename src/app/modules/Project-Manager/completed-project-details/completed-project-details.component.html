@@ -9,6 +9,13 @@
           </div>
           <div class="ms-auto d-flex">
             <a routerLink="/project-manager/project/bid-manager-to-action" class="btn btn-primary text-dark">Back</a>
+            <a class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+              Logs
+            </a>
+            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer;"
+              (click)="editProjectDetails(projectDetails?._id)">
+              Edit <i class="bi bi-pencil-fill"></i>
+            </a>
           </div>
         </div>
       </div>
