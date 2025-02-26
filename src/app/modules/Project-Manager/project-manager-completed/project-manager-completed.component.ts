@@ -107,6 +107,7 @@ export class ProjectManagerCompletedComponent {
     private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
+    this.selectedStatuses.push('Not Releted');
   }
 
   ngOnInit(): void {
