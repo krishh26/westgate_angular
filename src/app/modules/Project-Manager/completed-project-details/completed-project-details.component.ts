@@ -454,7 +454,7 @@ export class CompletedProjectDetailsComponent {
 
   editProjectDetails(projectId: any) {
     this.router.navigate(
-      ['/feasibility-user/edit-feasibility-project-details'],
+      ['/project-manager/project/bid-manager-project-details'],
       { queryParams: { id: projectId } }
     );
   }
