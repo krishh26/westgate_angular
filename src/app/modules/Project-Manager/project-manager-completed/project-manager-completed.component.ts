@@ -305,7 +305,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.bidManagerStatus =
       'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched';
     this.tempPayload.projectList.statusNotInclude = 'Fail';
-    this.tempPayload.projectList.status = 'Not Releted';
+    // this.tempPayload.projectList.status = 'Not Releted';
     this.tempPayload.projectList.expired = true;
 
     // this.tempPayload.projectList.status = 'Not Releted';

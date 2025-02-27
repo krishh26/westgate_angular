@@ -36,26 +36,34 @@ export class ProjectManagerService {
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST);
   }
 
-  getUserallList(taskCount: any, taskPage: any): Observable<any> {
+  getUserallList(taskCount: any, taskPage: any, type? :any,pickACategory? :any): Observable<any> {
     let params = new HttpParams().set('taskPage', taskPage); // Always set taskPage
-  
+
     if (taskCount) {
       params = params.set('taskCount', taskCount);
     }
-  
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    if (pickACategory) {
+      params = params.set('pickACategory', pickACategory);
+    }
+
     return this.httpClient.get<any>(
       this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST,
       { params }
     );
   }
-  
+
 
   getUserListProjectManager(userRoles: string, projectId: any): Observable<any> {
     return this.httpClient.get<any>(
       `${this.baseUrl}${ProjectManagerAPIEndPoint.USER_LIST}?userRoles=${userRoles}&projectId=${projectId}`
     );
   }
-  
+
 
   dropUser(payload: any, id: string): Observable<any> {
     return this.httpClient
