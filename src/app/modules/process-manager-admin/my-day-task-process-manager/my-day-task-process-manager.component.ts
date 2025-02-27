@@ -38,6 +38,8 @@ export class MyDayTaskProcessManagerComponent {
   private modalElement!: HTMLElement;
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
+  selectedtasktypes: any[] = [];
+  type: any;
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
     { projectType: 'Oldest to Newest', value: 'Oldest' }
@@ -47,6 +49,10 @@ export class MyDayTaskProcessManagerComponent {
     { priorityValue: 'High', priorityvalue: 'High' },
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
+  ];
+  taskType = [
+    { taskType: 'Project', taskValue: 'Project' },
+    { taskType: 'Other', taskValue: 'Other' }
   ];
   loginUser: any;
 
@@ -327,16 +333,17 @@ export class MyDayTaskProcessManagerComponent {
 
     // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-    const keyword = this.searchText;
-    // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
+    const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
+    const keyword = this.searchText;  // The search text to filter by
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
         "",
         sortType,
         priorityType,
-        keyword, // Pass it as the keyword in the API request
-        true
+        '', // Pass it as the keyword in the API request
+        true,
+        type
       )
       .subscribe(
         (response) => {

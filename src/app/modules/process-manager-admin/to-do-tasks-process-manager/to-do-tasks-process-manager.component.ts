@@ -34,11 +34,17 @@ export class ToDoTasksProcessManagerComponent {
   private modalElement!: HTMLElement;
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
-
+  selectedtasktypes: any[] = [];
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
     { projectType: 'Oldest to Newest', value: 'Oldest' }
   ];
+
+  taskType = [
+    { taskType: 'Project', taskValue: 'Project' },
+    { taskType: 'Other', taskValue: 'Other' }
+  ];
+
 
   filterbyPriority = [
     { priorityValue: 'High', priorityvalue: 'High' },
@@ -268,17 +274,19 @@ export class ToDoTasksProcessManagerComponent {
 
     // Ensure selectedpriority is a single value (not an array)
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
+    const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
     const keyword = this.searchText;  // The search text to filter by
 
     // Call the API with the selectedtype (sortType) and selectedpriority (priorityType)
     this.superService
       .getsuperadmintasks(
-        this.selectedUserIds.join(','),
-        'Ongoing',
-        sortType,
-        priorityType, // Use the single priority value here
-        keyword
+        this.selectedUserIds.join(','),  // assignId
+        'Ongoing',                       // status
+        sortType,                         // sort
+        priorityType,                      // pickACategory
+        '',                               // keyword (empty if not used)
+        undefined,                        // myDay (keep undefined if not used)
+        type
       )
       .subscribe(
         (response) => {

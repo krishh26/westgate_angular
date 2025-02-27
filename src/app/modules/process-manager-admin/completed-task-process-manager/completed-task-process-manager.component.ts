@@ -35,7 +35,7 @@ export class CompletedTaskProcessManagerComponent {
   selectedpriority: any[] = [];
   searchText: any;
   myControl = new FormControl();
-
+  selectedtasktypes: any[] = [];
   filterbyDueDate = [
     { projectType: 'Newest to Oldest', value: 'Newest' },
     { projectType: 'Oldest to Newest', value: 'Oldest' }
@@ -45,6 +45,10 @@ export class CompletedTaskProcessManagerComponent {
     { priorityValue: 'High', priorityvalue: 'High' },
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
+  ];
+  taskType = [
+    { taskType: 'Project', taskValue: 'Project' },
+    { taskType: 'Other', taskValue: 'Other' }
   ];
   private modalElement!: HTMLElement;
   private modalInstance: any;
@@ -291,8 +295,8 @@ export class CompletedTaskProcessManagerComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
-    const keyword = this.searchText;
+    const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
+    const keyword = this.searchText;  // The search text to filter by
 
     this.superService
       .getsuperadmintasks(
@@ -300,7 +304,9 @@ export class CompletedTaskProcessManagerComponent {
         'Completed',
         sortType,
         priorityType,
-        keyword
+        '',                               // keyword (empty if not used)
+        undefined,                        // myDay (keep undefined if not used)
+        type
       )
       .subscribe(
         (response) => {

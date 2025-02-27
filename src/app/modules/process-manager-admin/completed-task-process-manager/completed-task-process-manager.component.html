@@ -49,15 +49,28 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 mb-2">
+              <div class="col-md-4 mb-2">
                 <ng-select [items]="filterbyDueDate" bindLabel="projectType" bindValue="value" [(ngModel)]="selectedtype"
                   (change)="searchtext()" [multiple]="false" placeholder="Select Type">
                 </ng-select>
               </div>
 
-              <div class="col-md-6 mb-2">
+              <div class="col-md-4 mb-2">
                 <ng-select [items]="filterbyPriority" bindLabel="priorityValue" bindValue="priorityvalue"
                   [(ngModel)]="selectedpriority" (change)="searchtext()" [multiple]="false" placeholder="Select Priority">
+                </ng-select>
+              </div>
+              <div class="col-md-4 mb-2">
+                <ng-select
+                  class="custom-ng-select-option"
+                  placeholder="Select Type"
+                  bindLabel="taskType"
+                  bindValue="taskValue"
+                  [(ngModel)]="selectedtasktypes"
+                  (change)="searchtext()"
+                  [multiple]="false"
+                  [items]="taskType"
+                >
                 </ng-select>
               </div>
             </div>
@@ -271,7 +284,7 @@
                     <small class="text-muted d-block">
                       {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
                     </small>
-                    
+
                   </div>
                 </div>
                 <div class="d-flex flex-column">
