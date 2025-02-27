@@ -29,7 +29,7 @@ interface Project {
 @Component({
   selector: 'app-project-manager-to-action',
   templateUrl: './project-manager-to-action.component.html',
-  styleUrls: ['./project-manager-to-action.component.scss']
+  styleUrls: ['./project-manager-to-action.component.scss'],
 })
 export class ProjectManagerToActionComponent {
   showLoader: boolean = false;
@@ -52,10 +52,13 @@ export class ProjectManagerToActionComponent {
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
+    {
+      bidvalue: 'Dropped after feasibility',
+      bidstatus: 'Dropped after feasibility',
+    },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
-    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
-  ]
+    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+  ];
 
   minValue: number = 0;
   maxValue: number = 99999999999999999;
@@ -69,7 +72,7 @@ export class ProjectManagerToActionComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-  selectedBidStatuses:any[]= [];
+  selectedBidStatuses: any[] = [];
 
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
@@ -88,7 +91,7 @@ export class ProjectManagerToActionComponent {
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
-    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' },
   ];
   loginUser: any;
   publishStartDate: FormControl = new FormControl('');
@@ -300,8 +303,9 @@ export class ProjectManagerToActionComponent {
     // this.tempPayload.projectList.myList = this.loginUser?._id;
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     // this.tempPayload.projectList.status = 'Passed'
-    this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted'
-    this.tempPayload.projectList.bidManagerStatus = 'Awaiting'
+    this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
+    this.tempPayload.projectList.bidManagerStatus = 'Awaiting';
+    this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -338,7 +342,10 @@ export class ProjectManagerToActionComponent {
     // this.tempPayload.projectList.clientType =
     //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses?.length > 0 ? this.selectedBidStatuses.join(',') : 'Awaiting';
+    this.tempPayload.projectList.bidManagerStatus =
+      this.selectedBidStatuses?.length > 0
+        ? this.selectedBidStatuses.join(',')
+        : 'Awaiting';
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
@@ -350,7 +357,7 @@ export class ProjectManagerToActionComponent {
     this.tempPayload.projectList.valueRange =
       this.minValue + '-' + this.maxValue;
     console.log(this.tempPayload.projectList);
-    this.tempPayload.projectList.expired = this.isExpired;
+    this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -465,5 +472,27 @@ export class ProjectManagerToActionComponent {
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
+  }
+  getStatusColor(data: any): string {
+    const requiredFields = [
+      'chatgptLink',
+      'loginID',
+      'password',
+      'linkToPortal',
+      'documentsLink',
+      'categorisation',
+      'projectType',
+      'industry',
+      'category',
+    ];
+
+    const isValid = requiredFields.every(
+      (field) =>
+        data[field] !== null &&
+        data[field] !== undefined &&
+        data[field].toString().trim() !== ''
+    );
+
+    return isValid ? 'green' : 'red';
   }
 }

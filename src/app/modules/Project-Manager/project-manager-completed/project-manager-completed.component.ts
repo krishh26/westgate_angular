@@ -305,6 +305,8 @@ export class ProjectManagerCompletedComponent {
       'Dropped after feasibility, Awarded, NotAwarded, Nosuppliermatched, Not Releted';
     this.tempPayload.projectList.statusNotInclude = 'Fail';
     this.tempPayload.projectList.status = 'Not Releted';
+    this.tempPayload.projectList.expired = true;
+
     console.log(this.tempPayload.projectList);
 
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
@@ -357,7 +359,7 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.valueRange =
       this.minValue + '-' + this.maxValue;
     console.log(this.tempPayload.projectList);
-    this.tempPayload.projectList.expired = this.isExpired;
+    this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -472,5 +474,28 @@ export class ProjectManagerCompletedComponent {
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
+  }
+
+  getStatusColor(data: any): string {
+    const requiredFields = [
+      'chatgptLink',
+      'loginID',
+      'password',
+      'linkToPortal',
+      'documentsLink',
+      'categorisation',
+      'projectType',
+      'industry',
+      'category',
+    ];
+
+    const isValid = requiredFields.every(
+      (field) =>
+        data[field] !== null &&
+        data[field] !== undefined &&
+        data[field].toString().trim() !== ''
+    );
+
+    return isValid ? 'green' : 'red';
   }
 }

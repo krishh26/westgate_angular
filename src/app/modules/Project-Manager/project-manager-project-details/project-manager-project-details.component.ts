@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-manager-project-details',
@@ -127,6 +128,7 @@ export class ProjectManagerProjectDetailsComponent {
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
     private superadminService: SuperadminService,
+    private location: Location
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -150,6 +152,9 @@ export class ProjectManagerProjectDetailsComponent {
 
   addField() {
     this.imageFields.push({ text: '', file: null });
+  }
+  goBack() {
+    this.location.back();
   }
 
   // Remove a field
@@ -255,8 +260,6 @@ export class ProjectManagerProjectDetailsComponent {
       }
     );
   }
-
-
 
   viewAllComments(userId: string) {
     // Check if the userId is passed correctly
@@ -454,10 +457,9 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   editProjectDetails(projectId: any) {
-    this.router.navigate(
-      ['/project-manager/project/add-edit-project'],
-      { queryParams: { id: projectId } }
-    );
+    this.router.navigate(['/project-manager/project/add-edit-project'], {
+      queryParams: { id: projectId },
+    });
   }
 
   getTask() {
@@ -497,7 +499,8 @@ export class ProjectManagerProjectDetailsComponent {
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.feasibilityStatus = this.projectDetails?.status;
-          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
+          this.getDroppedAfterReasonList =
+            this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.getReasonList = this.projectDetails?.failStatusReason;
@@ -518,7 +521,12 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   statusBaseHideShow() {
-    if (this.status == 'Dropped after feasibility' || this.status == 'Awarded' || this.status == 'NotAwarded' || this.status == 'Fail') {
+    if (
+      this.status == 'Dropped after feasibility' ||
+      this.status == 'Awarded' ||
+      this.status == 'NotAwarded' ||
+      this.status == 'Fail'
+    ) {
       return false;
     }
     return true;
@@ -978,8 +986,8 @@ export class ProjectManagerProjectDetailsComponent {
     // };
     let param = {
       userId: this.selectedSupplier?._id,
-      projectId: this.projectId
-    }
+      projectId: this.projectId,
+    };
     this.projectService.projectSortList(param).subscribe(
       (response) => {
         if (response?.status == true) {
@@ -1012,13 +1020,14 @@ export class ProjectManagerProjectDetailsComponent {
       tag: this.selectedDroppedAfterFeasibilityReason,
       comment: '',
     });
-    console.log(this.droppedStatusReasons, this.selectedDroppedAfterFeasibilityReason);
-
+    console.log(
+      this.droppedStatusReasons,
+      this.selectedDroppedAfterFeasibilityReason
+    );
 
     // Reset the dropdown selection
     this.selectedDroppedAfterFeasibilityReason = '';
   }
-
 
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
@@ -1043,26 +1052,35 @@ export class ProjectManagerProjectDetailsComponent {
         );
       }
       // Merge existing and new comments, removing duplicates
-      const existingComments = this.projectDetails?.bidManagerStatusComment || [];
+      const existingComments =
+        this.projectDetails?.bidManagerStatusComment || [];
       const newComments = [...this.commentData];
 
       let uniqueComments: any[] = [];
       if (this.droppedStatusReasons.length > 0) {
         uniqueComments = Array.from(
           new Map(
-            [...newComments].map((item) => [item.commentId || item.comment, item])
+            [...newComments].map((item) => [
+              item.commentId || item.comment,
+              item,
+            ])
           ).values()
         );
       } else {
         uniqueComments = Array.from(
           new Map(
-            [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+            [...existingComments, ...newComments].map((item) => [
+              item.commentId || item.comment,
+              item,
+            ])
           ).values()
         );
       }
 
       // **Sort comments in descending order (latest first)**
-      uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      uniqueComments.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
       payload = {
         bidManagerStatus: this.status || '',
@@ -1070,15 +1088,19 @@ export class ProjectManagerProjectDetailsComponent {
       };
 
       if (this.droppedStatusReasons.length == 0) {
-        payload['bidManagerStatusComment'] = uniqueComments
+        payload['bidManagerStatusComment'] = uniqueComments;
       }
 
       // If status is 'Dropped after feasibility', include fail reasons
-      if (this.status === 'Dropped after feasibility' && this.droppedStatusReasons.length > 0) {
-        payload.droppedAfterFeasibilityStatusReason = this.droppedStatusReasons.map(reason => ({
-          tag: reason.tag,
-          comment: reason.comment || '' // Ensure an empty comment if none is provided
-        }));
+      if (
+        this.status === 'Dropped after feasibility' &&
+        this.droppedStatusReasons.length > 0
+      ) {
+        payload.droppedAfterFeasibilityStatusReason =
+          this.droppedStatusReasons.map((reason) => ({
+            tag: reason.tag,
+            comment: reason.comment || '', // Ensure an empty comment if none is provided
+          }));
       }
     }
 
@@ -1179,15 +1201,17 @@ export class ProjectManagerProjectDetailsComponent {
         ...(this.projectDetails?.statusComment || []),
       ];
 
-      const uniqueComments = allComments.filter((value, index, self) =>
-        index === self.findIndex((t) =>
-          t.comment === value.comment && t.status === value.status
-        )
+      const uniqueComments = allComments.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.comment === value.comment && t.status === value.status
+          )
       );
 
       // **Sort comments by date (latest first)**
-      const sortedComments = uniqueComments.sort((a, b) =>
-        new Date(b.date).getTime() - new Date(a.date).getTime()
+      const sortedComments = uniqueComments.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
       payload = {
@@ -1210,7 +1234,9 @@ export class ProjectManagerProjectDetailsComponent {
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            this.notificationService.showSuccess('Project updated successfully');
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
             this.isEditing = false;
             this.getProjectDetails();
           } else {
@@ -1224,7 +1250,6 @@ export class ProjectManagerProjectDetailsComponent {
         }
       );
   }
-
 
   isCommentValid(): boolean {
     if (!this.feasibilityStatus) return false;
@@ -1243,6 +1268,4 @@ export class ProjectManagerProjectDetailsComponent {
 
     return hasComment;
   }
-
-
 }

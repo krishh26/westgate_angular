@@ -29,10 +29,10 @@ interface Project {
 @Component({
   selector: 'app-project-manager-failed-project',
   templateUrl: './project-manager-failed-project.component.html',
-  styleUrls: ['./project-manager-failed-project.component.scss']
+  styleUrls: ['./project-manager-failed-project.component.scss'],
 })
 export class ProjectManagerFailedProjectComponent {
-showLoader: boolean = false;
+  showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
@@ -69,10 +69,10 @@ showLoader: boolean = false;
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-  selectedBidStatuses:any[]= [];
+  selectedBidStatuses: any[] = [];
 
   loginUser: any = [];
-  
+
   projectTypeList = [
     { projectType: 'Development', value: 'Development' },
     { projectType: 'Product', value: 'Product' },
@@ -90,7 +90,7 @@ showLoader: boolean = false;
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
-    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' },
   ];
 
   bidstatusList = [
@@ -98,10 +98,13 @@ showLoader: boolean = false;
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
+    {
+      bidvalue: 'Dropped after feasibility',
+      bidstatus: 'Dropped after feasibility',
+    },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
-    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
-  ]
+    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+  ];
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -113,7 +116,7 @@ showLoader: boolean = false;
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
-     private localStorageService : LocalStorageService
+    private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -309,8 +312,10 @@ showLoader: boolean = false;
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.status = "Fail";
+    this.tempPayload.projectList.status = 'Fail';
     this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.expired = true;
+
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -346,7 +351,8 @@ showLoader: boolean = false;
     // this.tempPayload.projectList.clientType =
     //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses.join(',')
+    this.tempPayload.projectList.bidManagerStatus =
+      this.selectedBidStatuses.join(',');
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
@@ -358,7 +364,7 @@ showLoader: boolean = false;
     this.tempPayload.projectList.valueRange =
       this.minValue + '-' + this.maxValue;
     console.log(this.tempPayload.projectList);
-    this.tempPayload.projectList.expired = this.isExpired;
+    this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -473,5 +479,28 @@ showLoader: boolean = false;
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
+  }
+
+  getStatusColor(data: any): string {
+    const requiredFields = [
+      'chatgptLink',
+      'loginID',
+      'password',
+      'linkToPortal',
+      'documentsLink',
+      'categorisation',
+      'projectType',
+      'industry',
+      'category',
+    ];
+
+    const isValid = requiredFields.every(
+      (field) =>
+        data[field] !== null &&
+        data[field] !== undefined &&
+        data[field].toString().trim() !== ''
+    );
+
+    return isValid ? 'green' : 'red';
   }
 }

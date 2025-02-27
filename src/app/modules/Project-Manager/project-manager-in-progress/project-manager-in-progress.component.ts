@@ -28,10 +28,10 @@ interface Project {
 @Component({
   selector: 'app-project-manager-in-progress',
   templateUrl: './project-manager-in-progress.component.html',
-  styleUrls: ['./project-manager-in-progress.component.scss']
+  styleUrls: ['./project-manager-in-progress.component.scss'],
 })
 export class ProjectManagerInProgressComponent {
- showLoader: boolean = false;
+  showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
@@ -57,7 +57,7 @@ export class ProjectManagerInProgressComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-  selectedBidStatuses:any[]= [];
+  selectedBidStatuses: any[] = [];
 
   loginUser: any = [];
   projectTypeList = [
@@ -77,7 +77,7 @@ export class ProjectManagerInProgressComponent {
     { value: 'InHold', status: 'In Hold' },
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
-    { value: 'DocumentsNotFound', status: 'Documents Not Found' }
+    { value: 'DocumentsNotFound', status: 'Documents Not Found' },
   ];
 
   bidstatusList = [
@@ -85,10 +85,13 @@ export class ProjectManagerInProgressComponent {
     { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
-    { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
+    {
+      bidvalue: 'Dropped after feasibility',
+      bidstatus: 'Dropped after feasibility',
+    },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
-    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
-  ]
+    { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+  ];
 
   publishStartDate: FormControl = new FormControl('');
   publishEndDate: FormControl = new FormControl('');
@@ -100,7 +103,7 @@ export class ProjectManagerInProgressComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
-     private localStorageService : LocalStorageService
+    private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -296,9 +299,12 @@ export class ProjectManagerInProgressComponent {
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     // this.tempPayload.projectList.match = 'partial';
-    this.tempPayload.projectList.bidManagerStatus = "InSolution, WaitingForResult, Go-NoGoStage1, Go-NoGoStage2, SupplierConfirmation";
-    this.tempPayload.projectList.statusNotInclude = 'Fail'
+    this.tempPayload.projectList.bidManagerStatus =
+      'InSolution, WaitingForResult, Go-NoGoStage1, Go-NoGoStage2, SupplierConfirmation';
+    this.tempPayload.projectList.statusNotInclude = 'Fail';
     this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.expired = true;
+
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -334,7 +340,10 @@ export class ProjectManagerInProgressComponent {
     // this.tempPayload.projectList.clientType =
     //   this.selectedClientTypes.join(',');
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses?.length > 0 ? this.selectedBidStatuses.join(',') : 'InSolution, WaitingForResult';
+    this.tempPayload.projectList.bidManagerStatus =
+      this.selectedBidStatuses?.length > 0
+        ? this.selectedBidStatuses.join(',')
+        : 'InSolution, WaitingForResult';
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
@@ -346,7 +355,7 @@ export class ProjectManagerInProgressComponent {
     this.tempPayload.projectList.valueRange =
       this.minValue + '-' + this.maxValue;
     console.log(this.tempPayload.projectList);
-    this.tempPayload.projectList.expired = this.isExpired;
+    this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
@@ -461,5 +470,28 @@ export class ProjectManagerInProgressComponent {
     if (this.maxValue >= this.minValue) {
       this.searchtext();
     }
+  }
+
+  getStatusColor(data: any): string {
+    const requiredFields = [
+      'chatgptLink',
+      'loginID',
+      'password',
+      'linkToPortal',
+      'documentsLink',
+      'categorisation',
+      'projectType',
+      'industry',
+      'category',
+    ];
+
+    const isValid = requiredFields.every(
+      (field) =>
+        data[field] !== null &&
+        data[field] !== undefined &&
+        data[field].toString().trim() !== ''
+    );
+
+    return isValid ? 'green' : 'red';
   }
 }
