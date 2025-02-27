@@ -45,7 +45,7 @@ export class AddEditProjectComponent {
     linkToPortal: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     loginID: new FormControl('', Validators.required),
-    chatgptLink: new FormControl('', Validators.required),
+    chatGptLink: new FormControl('', Validators.required),
   };
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);

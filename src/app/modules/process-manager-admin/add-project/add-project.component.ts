@@ -45,6 +45,7 @@ export class AddProjectComponent {
     linkToPortal: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
     loginID: new FormControl("", Validators.required),
+    chatGptLink: new FormControl(""),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -53,7 +54,7 @@ export class AddProjectComponent {
   categoryList: any = [];
   industryList: any = [];
 
-  projectTypeList = [ 
+  projectTypeList = [
     {type:'Development/Service' , value :'Development/Service'},
     {type:'Product' , value :'Product'},
     {type:'Staff Augmentation' , value :'StaffAugmentation'}
@@ -147,7 +148,7 @@ export class AddProjectComponent {
     this.showLoader = true;
     // Get the current form values
     let formData = this.productForm.value;
-  
+
     // Check if minValue or maxValue are empty (or null/undefined) and set to 0 if so
     if (formData.minValue === "" || formData.minValue == null) {
       formData.minValue = 0;
@@ -155,9 +156,9 @@ export class AddProjectComponent {
     if (formData.maxValue === "" || formData.maxValue == null) {
       formData.maxValue = 0;
     }
-  
+
     let payload = { data: [formData] };
-  
+
     if (this.projectId) {
       this.projectService.editProject(this.projectId, formData).subscribe(
         (response) => {

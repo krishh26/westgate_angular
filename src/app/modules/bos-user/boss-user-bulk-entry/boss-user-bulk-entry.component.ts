@@ -97,6 +97,7 @@ export class BossUserBulkEntryComponent {
           linkToPortal: replaceNullWithEmptyString(row[22]),
           loginID: replaceNullWithEmptyString(row[23]),
           password: replaceNullWithEmptyString(row[24]),
+          chatGptLink: replaceNullWithEmptyString(row[25]),
         };
       });
 
