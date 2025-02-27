@@ -483,7 +483,7 @@ export class ProjectManagerFailedProjectComponent {
 
   getStatusColor(data: any): string {
     const requiredFields = [
-      'chatgptLink',
+      // 'chatgptLink',
       'loginID',
       'password',
       'linkToPortal',

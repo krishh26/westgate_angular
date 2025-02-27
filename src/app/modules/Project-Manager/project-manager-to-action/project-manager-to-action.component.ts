@@ -475,7 +475,7 @@ export class ProjectManagerToActionComponent {
   }
   getStatusColor(data: any): string {
     const requiredFields = [
-      'chatgptLink',
+      // 'chatgptLink',
       'loginID',
       'password',
       'linkToPortal',

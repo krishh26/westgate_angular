@@ -474,7 +474,7 @@ export class ProjectManagerInProgressComponent {
 
   getStatusColor(data: any): string {
     const requiredFields = [
-      'chatgptLink',
+      // 'chatgptLink',
       'loginID',
       'password',
       'linkToPortal',
