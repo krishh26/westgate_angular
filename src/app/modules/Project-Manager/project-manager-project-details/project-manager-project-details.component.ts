@@ -828,14 +828,6 @@ export class ProjectManagerProjectDetailsComponent {
   saveChanges(type?: string, contractEdit?: boolean) {
     let payload: any = {};
     if (!contractEdit) {
-      // if ((this.status == 'InProgress' || this.status == 'InHold' || this.status == 'Passed') && !this.bidManagerStatusComment?.value) {
-      //   return this.notificationService.showError('Please Enter Status Comment');
-      // }
-
-      // if (this.status == 'Expired' && !this.failStatusReason?.value) {
-      //   return this.notificationService.showError('Please Select Status Comment');
-      // }
-
       if (this.feasibilityStatusComment.value && this.statusDate.value) {
         this.feasibilityCommentData.push({
           comment: this.feasibilityStatusComment.value,
@@ -855,14 +847,6 @@ export class ProjectManagerProjectDetailsComponent {
       }
 
       payload = {
-        subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile:
-          this.economicalPartnershipQueryFile || [],
-        FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile:
-          this.economicalPartnershipResponceFile || [],
-        periodOfContractStart: this.projectDetails.periodOfContractStart,
-        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
         subContracting: this.subContracting || '',
         comment: this.comment || '',
@@ -871,7 +855,6 @@ export class ProjectManagerProjectDetailsComponent {
         bidManagerStatusComment: this.commentData,
         status: this.feasibilityStatus || '',
         statusComment: this.feasibilityCommentData,
-        loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
 

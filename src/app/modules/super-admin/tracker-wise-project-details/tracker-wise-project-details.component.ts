@@ -1200,14 +1200,6 @@ export class TrackerWiseProjectDetailsComponent {
       }
 
       payload = {
-        subContractingfile: this.subContractDocument || [],
-        economicalPartnershipQueryFile:
-          this.economicalPartnershipQueryFile || [],
-        FeasibilityOtherDocuments: this.FeasibilityOtherDocuments || [],
-        economicalPartnershipResponceFile:
-          this.economicalPartnershipResponceFile || [],
-        periodOfContractStart: this.projectDetails.periodOfContractStart,
-        periodOfContractEnd: this.projectDetails.periodOfContractEnd,
         projectType: this.projectDetails.projectType,
         subContracting: this.subContracting || '',
         comment: this.comment || '',
@@ -1216,7 +1208,6 @@ export class TrackerWiseProjectDetailsComponent {
         statusComment: this.feasibilityCommentData,
         bidManagerStatus: this.bidStatus || '',
         bidManagerStatusComment: this.bidCommentData,
-        loginDetail: this.projectDetails.loginDetail || '',
         failStatusImage: this.failStatusImage || '',
       };
 

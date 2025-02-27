@@ -291,33 +291,13 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     // Update the saveChanges method to include failStatusReasons
     saveChanges(type?: string, contractEdit?: boolean) {
       let payload: any = {};
-  
+
       if (!contractEdit) {
         // Validation for status
         if (!this.status) {
           return this.notificationService.showError('Please select a status.');
         }
-  
-        // Validation for comment
-        // if (!this.statusComment.value && !this.commentData.some(item => item.status === this.status)) {
-        //   return this.notificationService.showError('Please provide a comment for the selected status.');
-        // }
-  
-        // Add the comment to commentData only if it's provided
-        // if (this.statusComment.value && this.statusDate.value) {
-        //   this.commentData.push({
-        //     comment: this.statusComment.value,
-        //     date: this.statusDate.value,
-        //     status: this.status,
-        //     userId: this.loginUser?._id
-        //   });
-        //   this.statusComment.reset(); // Clear the comment field after adding
-        // }
-  
-        // Prepare payload
         payload = {
-          // periodOfContractStart: this.projectDetails.periodOfContractStart,
-          // periodOfContractEnd: this.projectDetails.periodOfContractEnd,
           projectType: this.projectDetails.projectType,
           clientDocument: this.projectDetails?.clientDocument || [],
           status: this.status || '',
@@ -326,7 +306,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           // failStatusReason: this.failStatusReasons,
         };
       }
-  
+
       // For contract edit
       if (contractEdit) {
         payload = {
@@ -335,7 +315,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           projectType: this.projectDetails.projectType,
         };
       }
-  
+
       // API call to update project details
       this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
         (response) => {
