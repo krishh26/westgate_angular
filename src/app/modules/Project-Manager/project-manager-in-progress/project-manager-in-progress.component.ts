@@ -481,8 +481,8 @@ export class ProjectManagerInProgressComponent {
       'documentsLink',
       'categorisation',
       'projectType',
-      'industry',
-      'category',
+      // 'industry',
+      // 'category',
     ];
 
     const isValid = requiredFields.every(
