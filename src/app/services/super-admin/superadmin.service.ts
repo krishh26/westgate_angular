@@ -56,7 +56,7 @@ export class SuperadminService {
       { params }
     );
   }
-  
+
 
   getGapAnalysisNosupplierMatched(params: any): Observable<any> {
     return this.httpClient.get<any>(
@@ -150,7 +150,7 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean): Observable<any> {
+  getsuperadmintasks(assignId: string, status?: string,  sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean ,type?: string): Observable<any> {
     let params = new HttpParams();
 
     if (assignId) {
@@ -170,6 +170,9 @@ export class SuperadminService {
     }
     if (myDay) {
       params = params.set('myDay', myDay.toString());
+    }
+    if (type) {
+      params = params.set('type', type.toString());
     }
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,

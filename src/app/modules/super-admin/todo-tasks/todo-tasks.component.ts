@@ -68,6 +68,7 @@ export class TodoTasksComponent {
 
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
+  selectedtasktypes: any[] = [];
   searchText: any;
   myControl = new FormControl();
 
@@ -425,17 +426,19 @@ export class TodoTasksComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
-    // Pass the searchText (keyword) in the API call
+    const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
     const keyword = this.searchText;  // The search text to filter by
 
     this.superService
       .getsuperadmintasks(
-        this.selectedUserIds.join(','),
-        'Ongoing',
-        sortType,
-        priorityType,
-        keyword // Pass it as the keyword in the API request
+        this.selectedUserIds.join(','),  // assignId
+        'Ongoing',                       // status
+        sortType,                         // sort
+        priorityType,                      // pickACategory
+        '',                               // keyword (empty if not used)
+        undefined,                        // myDay (keep undefined if not used)
+        type                              // type (correct placement)
+
       )
       .subscribe(
         (response) => {
