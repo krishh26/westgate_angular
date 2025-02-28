@@ -17,6 +17,7 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/project-coordinator.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-process-manager-tracker-project-details',
   templateUrl: './process-manager-tracker-project-details.component.html',
@@ -123,7 +124,8 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
     private superService: SuperadminService,
-    private superadminService: SuperadminService
+    private superadminService: SuperadminService,
+    private location: Location
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -150,6 +152,11 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       roles: ['']
     });
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 
   uploadDocuments(event: any): void {
     if (event.target.files && event.target.files[0]) {
