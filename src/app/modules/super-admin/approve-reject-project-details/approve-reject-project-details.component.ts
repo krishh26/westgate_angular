@@ -18,7 +18,7 @@ import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-approve-reject-project-details',
   templateUrl: './approve-reject-project-details.component.html',
@@ -169,7 +169,8 @@ export class ApproveRejectProjectDetailsComponent {
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
     private superadminService: SuperadminService,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private location: Location
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -1006,6 +1007,10 @@ export class ApproveRejectProjectDetailsComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   statusChange(status: string) {
