@@ -423,11 +423,11 @@ export class MyDayTasksComponent {
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
-        "",
-        sortType,
-        priorityType,
-        '', // Pass it as the keyword in the API request
-        true,
+        "",                              // status (keep empty as before)
+        sortType,                        // sort
+        priorityType,                     // pickACategory
+        keyword,                         // ✅ Pass the keyword correctly here
+        true,                             // myDay
         type
       )
       .subscribe(

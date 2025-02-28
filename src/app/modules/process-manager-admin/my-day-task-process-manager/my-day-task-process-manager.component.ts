@@ -341,7 +341,7 @@ export class MyDayTaskProcessManagerComponent {
         "",
         sortType,
         priorityType,
-        '', // Pass it as the keyword in the API request
+        keyword,
         true,
         type
       )

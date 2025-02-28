@@ -427,47 +427,35 @@ export class TodoTasksComponent {
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
-    const keyword = this.searchText;  // The search text to filter by
+    const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is not undefined
 
-    this.superService
-      .getsuperadmintasks(
+    console.log('Searching for:', keyword); // Debugging log
+
+    this.superService.getsuperadmintasks(
         this.selectedUserIds.join(','),  // assignId
         'Ongoing',                       // status
         sortType,                         // sort
         priorityType,                      // pickACategory
-        '',                               // keyword (empty if not used)
-        undefined,                        // myDay (keep undefined if not used)
-        type                              // type (correct placement)
-
-      )
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            const today = new Date().toISOString().split("T")[0];
-
-            this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
-
-              return {
-                ...task,
-                todayComments: todayComments?.length ? todayComments : null,
-              };
-            });
-
-            this.showLoader = false;
-          } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
-          }
-        },
-        (error) => {
-          this.notificationService.showError(error?.message);
-          this.showLoader = false;
+        keyword,                          // keyword (Make sure this is passed correctly)
+        undefined,                        // myDay
+        type                              // type
+    )
+    .subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.taskList = response?.data?.data;
+        } else {
+          this.notificationService.showError(response?.message);
         }
-      );
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
+
 
 
 

@@ -284,7 +284,7 @@ export class ToDoTasksProcessManagerComponent {
         'Ongoing',                       // status
         sortType,                         // sort
         priorityType,                      // pickACategory
-        '',                               // keyword (empty if not used)
+        keyword,                         // keyword (empty if not used)
         undefined,                        // myDay (keep undefined if not used)
         type
       )
