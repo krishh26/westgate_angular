@@ -10,6 +10,7 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
 import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
 import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 
 
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: '',
     component: ProcessManagerAdminComponent,
     children: [
+      {
+        path: "date-picker",
+        component: DatePickerComponent
+      },
       {
         path: "to-do-tasks-process-manager",
         component: ToDoTasksProcessManagerComponent

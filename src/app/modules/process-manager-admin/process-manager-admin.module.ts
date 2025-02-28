@@ -20,6 +20,7 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { ProcessManagerUserProfileComponent } from './process-manager-user-profile/process-manager-user-profile.component';
 import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
 import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { DashboardProcessManagerComponent } from './dashboard-process-manager/da
     AddProjectComponent,
     ProcessManagerUserProfileComponent,
     PmAdminChangePasswordComponent,
-    DashboardProcessManagerComponent
+    DashboardProcessManagerComponent,
+    DatePickerComponent
   ],
    providers: [NgbActiveModal],
   exports: [ToDoTasksProcessManagerComponent],
