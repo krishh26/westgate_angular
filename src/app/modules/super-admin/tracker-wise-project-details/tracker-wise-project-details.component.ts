@@ -18,6 +18,7 @@ import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
@@ -169,7 +170,8 @@ export class TrackerWiseProjectDetailsComponent {
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
     private superadminService: SuperadminService,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private location: Location
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -202,7 +204,9 @@ export class TrackerWiseProjectDetailsComponent {
       roles: [''],
     });
   }
-
+  goBack() {
+    this.location.back();
+  }
   editProjectDetails(projectId: any) {
     this.router.navigate(['/super-admin/super-admin-add-project'], {
       queryParams: { id: projectId },
@@ -228,7 +232,7 @@ export class TrackerWiseProjectDetailsComponent {
               this.notificationService.showSuccess(
                 'Project successfully deleted'
               );
-              this.router.navigate(['/super-admin/status-wise-tracker'])
+              this.router.navigate(['/super-admin/status-wise-tracker']);
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
@@ -424,7 +428,6 @@ export class TrackerWiseProjectDetailsComponent {
     this.feasibilityStatusComment.reset();
   }
 
-
   pushStatus() {
     if (!this.bidManagerStatusComment.value) {
       this.notificationService.showError('Please enter a status comment');
@@ -464,7 +467,6 @@ export class TrackerWiseProjectDetailsComponent {
     this.selectedFailReason = '';
   }
 
-
   adddroppedReason() {
     if (!this.selectedDroppedAfterFeasibilityReason) {
       this.notificationService.showError('Please select a Dropped reason.');
@@ -476,8 +478,10 @@ export class TrackerWiseProjectDetailsComponent {
       tag: this.selectedDroppedAfterFeasibilityReason,
       comment: '',
     });
-    console.log(this.droppedStatusReasons, this.selectedDroppedAfterFeasibilityReason);
-
+    console.log(
+      this.droppedStatusReasons,
+      this.selectedDroppedAfterFeasibilityReason
+    );
 
     // Reset the dropdown selection
     this.selectedDroppedAfterFeasibilityReason = '';
@@ -757,9 +761,9 @@ export class TrackerWiseProjectDetailsComponent {
           name: item?.userDetails?.name,
           email: item?.userDetails?.email,
           role: item?.userDetails?.role,
-          companyName: item?.userDetails?.companyName
-        }
-      }
+          companyName: item?.userDetails?.companyName,
+        },
+      },
     };
 
     Swal.fire({
@@ -773,24 +777,26 @@ export class TrackerWiseProjectDetailsComponent {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.projectService.deleteFeasiblityBidComment(param, this.projectId).subscribe(
-          (response: any) => {
-            if (response?.status === true) {
+        this.projectService
+          .deleteFeasiblityBidComment(param, this.projectId)
+          .subscribe(
+            (response: any) => {
+              if (response?.status === true) {
+                this.showLoader = false;
+                this.notificationService.showSuccess(
+                  'Comment successfully deleted'
+                );
+                window.location.reload();
+              } else {
+                this.showLoader = false;
+                this.notificationService.showError(response?.message);
+              }
+            },
+            (error) => {
               this.showLoader = false;
-              this.notificationService.showSuccess(
-                'Comment successfully deleted'
-              );
-              window.location.reload();
-            } else {
-              this.showLoader = false;
-              this.notificationService.showError(response?.message);
+              this.notificationService.showError(error?.message);
             }
-          },
-          (error) => {
-            this.showLoader = false;
-            this.notificationService.showError(error?.message);
-          }
-        );
+          );
       }
     });
   }
@@ -808,9 +814,9 @@ export class TrackerWiseProjectDetailsComponent {
           name: item?.userDetails?.name,
           email: item?.userDetails?.email,
           role: item?.userDetails?.role,
-          companyName: item?.userDetails?.companyName
-        }
-      }
+          companyName: item?.userDetails?.companyName,
+        },
+      },
     };
 
     Swal.fire({
@@ -880,7 +886,9 @@ export class TrackerWiseProjectDetailsComponent {
           (response: any) => {
             this.showLoader = false;
             if (response?.status === true) {
-              this.notificationService.showSuccess('Comment successfully deleted');
+              this.notificationService.showSuccess(
+                'Comment successfully deleted'
+              );
               window.location.reload();
             } else {
               this.notificationService.showError(response?.message);
@@ -925,21 +933,25 @@ export class TrackerWiseProjectDetailsComponent {
           },
         };
 
-        this.projectService.deletedroppedReason(param, this.projectId).subscribe(
-          (response: any) => {
-            this.showLoader = false;
-            if (response?.status === true) {
-              this.notificationService.showSuccess('Reason successfully deleted');
-              window.location.reload();
-            } else {
-              this.notificationService.showError(response?.message);
+        this.projectService
+          .deletedroppedReason(param, this.projectId)
+          .subscribe(
+            (response: any) => {
+              this.showLoader = false;
+              if (response?.status === true) {
+                this.notificationService.showSuccess(
+                  'Reason successfully deleted'
+                );
+                window.location.reload();
+              } else {
+                this.notificationService.showError(response?.message);
+              }
+            },
+            (error) => {
+              this.showLoader = false;
+              this.notificationService.showError(error?.message);
             }
-          },
-          (error) => {
-            this.showLoader = false;
-            this.notificationService.showError(error?.message);
-          }
-        );
+          );
       }
     });
   }
@@ -960,7 +972,9 @@ export class TrackerWiseProjectDetailsComponent {
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
-              this.notificationService.showSuccess('Comment successfully deleted');
+              this.notificationService.showSuccess(
+                'Comment successfully deleted'
+              );
               window.location.reload();
             } else {
               this.showLoader = false;
@@ -994,7 +1008,8 @@ export class TrackerWiseProjectDetailsComponent {
           this.status = this.projectDetails?.bidManagerStatus;
           this.subContracting = this.projectDetails?.subContracting;
           this.getReasonList = this.projectDetails?.failStatusReason;
-          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
+          this.getDroppedAfterReasonList =
+            this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.feasibilityCommentData =
             this.projectDetails?.statusComment || [];
@@ -1680,15 +1695,17 @@ export class TrackerWiseProjectDetailsComponent {
         ...(this.projectDetails?.statusComment || []),
       ];
 
-      const uniqueComments = allComments.filter((value, index, self) =>
-        index === self.findIndex((t) =>
-          t.comment === value.comment && t.status === value.status
-        )
+      const uniqueComments = allComments.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.comment === value.comment && t.status === value.status
+          )
       );
 
       // **Sort comments by date (latest first)**
-      const sortedComments = uniqueComments.sort((a, b) =>
-        new Date(b.date).getTime() - new Date(a.date).getTime()
+      const sortedComments = uniqueComments.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
       payload = {
@@ -1711,7 +1728,9 @@ export class TrackerWiseProjectDetailsComponent {
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            this.notificationService.showSuccess('Project updated successfully');
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
             this.isEditing = false;
             this.getProjectDetails();
           } else {
@@ -1751,26 +1770,35 @@ export class TrackerWiseProjectDetailsComponent {
       }
 
       // Merge existing and new comments, removing duplicates
-      const existingComments = this.projectDetails?.bidManagerStatusComment || [];
+      const existingComments =
+        this.projectDetails?.bidManagerStatusComment || [];
       const newComments = [...this.commentData];
 
       let uniqueComments: any[] = [];
       if (this.droppedStatusReasons.length > 0) {
         uniqueComments = Array.from(
           new Map(
-            [...newComments].map((item) => [item.commentId || item.comment, item])
+            [...newComments].map((item) => [
+              item.commentId || item.comment,
+              item,
+            ])
           ).values()
         );
       } else {
         uniqueComments = Array.from(
           new Map(
-            [...existingComments, ...newComments].map((item) => [item.commentId || item.comment, item])
+            [...existingComments, ...newComments].map((item) => [
+              item.commentId || item.comment,
+              item,
+            ])
           ).values()
         );
       }
 
       // **Sort comments in descending order (latest first)**
-      uniqueComments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      uniqueComments.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
       payload = {
         bidManagerStatus: this.status || '',
@@ -1778,35 +1806,44 @@ export class TrackerWiseProjectDetailsComponent {
       };
 
       if (this.droppedStatusReasons.length == 0) {
-        payload['bidManagerStatusComment'] = uniqueComments
+        payload['bidManagerStatusComment'] = uniqueComments;
       }
 
       // If status is 'Dropped after feasibility', include fail reasons
-      if (this.status === 'Dropped after feasibility' && this.droppedStatusReasons.length > 0) {
-        payload.droppedAfterFeasibilityStatusReason = this.droppedStatusReasons.map(reason => ({
-          tag: reason.tag,
-          comment: reason.comment || '' // Ensure an empty comment if none is provided
-        }));
+      if (
+        this.status === 'Dropped after feasibility' &&
+        this.droppedStatusReasons.length > 0
+      ) {
+        payload.droppedAfterFeasibilityStatusReason =
+          this.droppedStatusReasons.map((reason) => ({
+            tag: reason.tag,
+            comment: reason.comment || '', // Ensure an empty comment if none is provided
+          }));
       }
     }
 
     // API call to update project details
-    this.feasibilityService.updateProjectDetailsBid(payload, this.projectDetails._id).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Project updated successfully');
-          this.isEditing = false;
-          this.getProjectDetails(); // Refresh project details after save
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to update project');
+    this.feasibilityService
+      .updateProjectDetailsBid(payload, this.projectDetails._id)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess(
+              'Project updated successfully'
+            );
+            this.isEditing = false;
+            this.getProjectDetails(); // Refresh project details after save
+          } else {
+            this.notificationService.showError(
+              response?.message || 'Failed to update project'
+            );
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Failed to update project');
         }
-      },
-      (error) => {
-        this.notificationService.showError('Failed to update project');
-      }
-    );
+      );
   }
-
 
   isCommentValid(): boolean {
     if (!this.feasibilityStatus) return false;
@@ -1826,7 +1863,6 @@ export class TrackerWiseProjectDetailsComponent {
     return hasComment;
   }
 
-
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
     const hasComment = this.commentData.some(
@@ -1839,5 +1875,4 @@ export class TrackerWiseProjectDetailsComponent {
   removeReadonly(event: Event) {
     (event.target as HTMLInputElement).removeAttribute('readonly');
   }
-
 }

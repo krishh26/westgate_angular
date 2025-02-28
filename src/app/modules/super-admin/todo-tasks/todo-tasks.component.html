@@ -156,14 +156,14 @@
                         "Fail",
                         "DocumentsNotFound",
                         "Awaiting",
-                        "Inhold"
+                        "Inhold",
+                        "Not Releted"
                       ].includes(task?.project?.status)
                         ? task?.project?.status
                         : task?.project?.bidManagerStatus
                     }}
                     ) </span
                   >&nbsp;
-
                   <span *ngIf="task?.completedTask == true"
                     ><button class="btn btn-sm btn-success mt-2">
                       Completed

@@ -400,7 +400,7 @@ export class ProjectManagerInProgressComponent {
 
   paginate(page: number) {
     this.page = page;
-    this.getProjectList();
+    this.searchtext();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
