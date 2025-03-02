@@ -493,13 +493,17 @@
                     <div *ngIf="comment?.commentId">
                       <button
                         class="btn btn-sm text-primary me-2"
-                        (click)="enableEdit(comment)"
+                        (mousedown)="
+                          enableEdit(comment); $event.stopPropagation()
+                        "
                       >
                         Edit
                       </button>
                       <button
                         class="btn btn-sm text-danger"
-                        (click)="deleteComment(comment?.commentId)"
+                        (mousedown)="
+                          deleteComment(comment); $event.stopPropagation()
+                        "
                       >
                         Delete
                       </button>
