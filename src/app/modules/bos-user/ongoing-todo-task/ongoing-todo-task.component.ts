@@ -110,13 +110,12 @@ export class OngoingTodoTaskComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
-    // Pass the searchText (keyword) in the API call
+    const assignTo = this.loginUser?.id;
     const keyword = this.searchText;  // The search text to filter by
 
     this.superService
       .getsuperadmintasks(
-        this.selectedUserIds.join(','),
+        assignTo,
         'Ongoing',
         sortType,
         priorityType,

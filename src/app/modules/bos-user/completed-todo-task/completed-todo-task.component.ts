@@ -135,13 +135,13 @@ export class CompletedTodoTaskComponent {
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
-
+    const assignTo = this.loginUser?.id;
     // Pass the searchText (keyword) in the API call
     const keyword = this.searchText;  // The search text to filter by
 
     this.superService
       .getsuperadmintasks(
-        this.selectedUserIds.join(','),
+        assignTo,
         'Completed',
         sortType,
         priorityType,
