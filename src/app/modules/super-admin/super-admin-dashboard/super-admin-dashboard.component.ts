@@ -83,31 +83,38 @@ export class SuperAdminDashboardComponent {
     this.getProjectDetails();
   }
 
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+  onStartDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.trackerStartDate.setValue(input.value); // YYYY-MM-DD
+    console.log('Selected Start Date:', input.value);
+  }
+
+  onEndDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.trackerEndDate.setValue(input.value); // YYYY-MM-DD
+    console.log('Selected End Date:', input.value);
+  }
+
+  private formatDate(date: string): string {
+    if (!date) return '';
+    const dateParts = date.split('-'); // Splitting YYYY-MM-DD
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to DD-MM-YYYY
   }
 
   getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
     console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
     const payload: any = {};
+
+
     if (dateFilter) {
-      const startCreatedDate = this.trackerStartDate.value
-        ? this.formatDate(this.trackerStartDate.value)
-        : '';
-      const endCreatedDate = this.trackerEndDate.value
-        ? this.formatDate(this.trackerEndDate.value)
-        : '';
+      const startCreatedDate = this.trackerStartDate.value || ''; // Already in YYYY-MM-DD format
+      const endCreatedDate = this.trackerEndDate.value || ''; // Already in YYYY-MM-DD format
 
       payload['startDate'] = startCreatedDate;
       payload['endDate'] = endCreatedDate;
     }
+
     this.superService.getDashboardList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
