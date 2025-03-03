@@ -450,15 +450,15 @@
                   >
                     <p>{{ comment.comment }}</p>
                     <div *ngIf="comment?.commentId">
-                      <button
+                      <!-- <button
                         class="btn btn-sm text-primary me-2"
                         (click)="enableEdit(comment)"
                       >
                         Edit
-                      </button>
+                      </button> -->
                       <button
                         class="btn btn-sm text-danger"
-                        (click)="deleteComment(comment?.commentId)"
+                        (click)="deleteComment(comment?.commentId); $event.stopPropagation()"
                       >
                         Delete
                       </button>

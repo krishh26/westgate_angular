@@ -357,10 +357,10 @@
                   <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
                     <p>{{ comment.comment }}</p>
                     <div *ngIf="comment?.commentId">
-                      <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
+                      <!-- <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
                         Edit
-                      </button>
-                      <button class="btn btn-sm text-danger" (click)="deleteComment(comment?.commentId)">
+                      </button> -->
+                      <button class="btn btn-sm text-danger" (click)="deleteComment(comment?.commentId); $event.stopPropagation()">
                         Delete
                       </button>
                     </div>
