@@ -28,17 +28,12 @@
           <h6 class="p-600 me-3">Date Range</h6>
           <form class="d-flex align-items-center gap-2" (ngSubmit)="getDataByStatus()">
             <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerStartDate" ngbDatepicker
-                #startDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="startDatePicker.toggle()"
-                type="submit"></button>
+              <input class="form-control" type="date" [formControl]="trackerStartDate" />
             </div>
             <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="trackerEndDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="submit"></button>
+              <input class="form-control" type="date" [formControl]="trackerEndDate" />
             </div>
+            <button class="btn btn-primary" type="submit">submit</button>
           </form>
         </div>
 

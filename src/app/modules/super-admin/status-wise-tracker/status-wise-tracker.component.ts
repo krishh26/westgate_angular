@@ -91,22 +91,6 @@ export class StatusWiseTrackerComponent implements OnInit {
       this.searchText = res.toLowerCase();
     });
     this.getDataByStatus();
-    this.trackerEndDate.valueChanges.subscribe((res: any) => {
-      if (!this.trackerStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
-        return;
-      } else {
-        this.getDataByStatus();
-      }
-    });
-
-    this.trackerStartDate.valueChanges.subscribe((res: any) => {
-      if (this.trackerStartDate.value && this.trackerEndDate.value) {
-        this.getDataByStatus();
-      }
-    });
     this.getProjectList();
   }
 
@@ -210,6 +194,7 @@ export class StatusWiseTrackerComponent implements OnInit {
   getDataByStatus() {
     this.showLoader = true;
 
+    // Format the start and end dates before using them in the payload
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
@@ -225,10 +210,10 @@ export class StatusWiseTrackerComponent implements OnInit {
       categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
     };
 
+    // Call the service to fetch data
     this.supplierService.getDataBYStatus(payload).subscribe(
       (response) => {
         this.showLoader = false;
-
         if (response?.status) {
           const {
             FeasibilityStatusCount,
@@ -245,7 +230,6 @@ export class StatusWiseTrackerComponent implements OnInit {
               value: FeasibilityStatusValue[status] || 0,
             })
           );
-          console.log("feasibilityData", this.feasibilityData);
 
           // Combine Bid data
           this.bidData = Object.keys(BidStatusCount).map((status) => ({
@@ -254,26 +238,37 @@ export class StatusWiseTrackerComponent implements OnInit {
             value: BidStatusValue[status] || 0,
           }));
         } else {
-          console.error('Failed to fetch data:', response?.message);
+          this.notificationService.showError(response?.message);
         }
       },
       (error) => {
         this.showLoader = false;
-        console.error('Error fetching data:', error);
+        this.notificationService.showError(error?.message);
       }
     );
 
     this.getProjectList();
   }
 
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+
+  private formatDate(date: any): string {
+    if (!date) return '';
+
+    let formattedDate;
+    if (date instanceof Date) {
+      // If date is a Date object
+      formattedDate = date.toISOString().split('T')[0]; // Extracts yyyy-MM-dd
+    } else if (typeof date === 'string') {
+      // If date is already in a string format
+      formattedDate = date;
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      // If date is an object { year, month, day }
+      formattedDate = `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+    } else {
+      formattedDate = '';
+    }
+
+    return formattedDate;
   }
 
   isDesc: boolean = false;
