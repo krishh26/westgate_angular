@@ -57,7 +57,7 @@ export class SuperadminAddProjectComponent implements OnInit {
   projectTypeList = [
     { type: 'Development/Service', value: 'Development/Service' },
     { type: 'Product', value: 'Product' },
-    { type: 'Staff Augmentation', value: 'StaffAugmentation' }
+    { type: 'Staff arugmentation', value: 'Staff Augmentation' }
   ]
 
   categorisationList = [
