@@ -489,7 +489,7 @@
                     *ngIf="!comment.isEditing"
                     class="d-flex justify-content-between align-items-center"
                   >
-                    <p>{{ comment.comment }}</p>
+                    <p>{{ comment?.comment }}</p>
                     <div *ngIf="comment?.commentId">
                       <!-- <button
                         class="btn btn-sm text-primary me-2"
@@ -502,7 +502,7 @@
                       <button
                         class="btn btn-sm text-danger"
                         (mousedown)="
-                          deleteComment(comment); $event.stopPropagation()
+                          deleteComment(comment?.commentId); $event.stopPropagation()
                         "
                       >
                         Delete

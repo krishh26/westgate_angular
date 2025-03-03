@@ -553,6 +553,7 @@ export class TodoTasksComponent {
     let param = {
       commentId: id,
     };
+    debugger
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
