@@ -82,7 +82,7 @@ export class ProcessManagerTrackerComponent {
     private router: Router,
     private projectService: ProjectService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -90,21 +90,6 @@ export class ProcessManagerTrackerComponent {
       this.searchText = res.toLowerCase();
     });
     this.getDataByStatus();
-    this.trackerEndDate.valueChanges.subscribe((res: any) => {
-      if (!this.trackerStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
-        return;
-      } else {
-        this.getDataByStatus();
-      }
-    });
-    this.trackerStartDate.valueChanges.subscribe((res: any) => {
-      if (this.trackerStartDate.value && this.trackerEndDate.value) {
-        this.getDataByStatus();
-      }
-    });
     this.getProjectList();
   }
 
@@ -263,14 +248,24 @@ export class ProcessManagerTrackerComponent {
     this.getProjectList();
   }
 
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+  private formatDate(date: any): string {
+    if (!date) return '';
+
+    let formattedDate;
+    if (date instanceof Date) {
+      // If date is a Date object
+      formattedDate = date.toISOString().split('T')[0]; // Extracts yyyy-MM-dd
+    } else if (typeof date === 'string') {
+      // If date is already in a string format
+      formattedDate = date;
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      // If date is an object { year, month, day }
+      formattedDate = `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+    } else {
+      formattedDate = '';
+    }
+
+    return formattedDate;
   }
 
   isDesc: boolean = false;

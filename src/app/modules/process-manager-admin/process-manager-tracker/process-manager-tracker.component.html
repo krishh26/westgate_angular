@@ -1,102 +1,51 @@
 <main id="main">
   <section class="casestudy-section">
     <div class="container-fluid mb-3">
-      <div
-        class="d-flex align-items-center justify-content-between flex-wrap gap-3"
-      >
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div class="sort-widget d-flex align-items-center gap-3">
           <div class="d-flex align-items-center gap-3">
             <!-- Expired Project Checkbox -->
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="expiredProject"
-                [(ngModel)]="isExpired"
-                (change)="searchtext(); getDataByStatus()"
-              />
-              <label class="form-check-label" for="expiredProject"
-                >Expired</label
-              >
+              <input class="form-check-input" type="checkbox" id="expiredProject" [(ngModel)]="isExpired"
+                (change)="searchtext(); getDataByStatus()" />
+              <label class="form-check-label" for="expiredProject">Expired</label>
             </div>
 
             <!-- DPS/Framework Checkbox (Value = 1) -->
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="dpsFramework"
-                (change)="updateCategorisation('DPS/Framework', $event)"
-              />
-              <label class="form-check-label" for="dpsFramework"
-                >DPS/Framework</label
-              >
+              <input class="form-check-input" type="checkbox" id="dpsFramework"
+                (change)="updateCategorisation('DPS/Framework', $event)" />
+              <label class="form-check-label" for="dpsFramework">DPS/Framework</label>
             </div>
 
             <!-- DTD Checkbox (Value = 2) -->
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="dtd"
-                (change)="updateCategorisation('DTD', $event)"
-              />
+              <input class="form-check-input" type="checkbox" id="dtd" (change)="updateCategorisation('DTD', $event)" />
               <label class="form-check-label" for="dtd">DTD</label>
             </div>
           </div>
 
           <h6 class="p-600 me-3">Date Range</h6>
-          <form
-            class="d-flex align-items-center gap-2"
-            (ngSubmit)="getDataByStatus()"
-          >
+          <form class="d-flex align-items-center gap-2" (ngSubmit)="getDataByStatus()">
             <div class="input-group">
-              <input
-                class="form-control"
-                placeholder="DD-MM-YYYY"
-                [formControl]="trackerStartDate"
-                ngbDatepicker
-                #startDatePicker="ngbDatepicker"
-              />
-              <button
-                class="btn btn-outline-secondary bi bi-calendar3"
-                (click)="startDatePicker.toggle()"
-                type="button"
-              ></button>
+              <input class="form-control" type="date" [formControl]="trackerStartDate" />
             </div>
             <div class="input-group">
-              <input
-                class="form-control"
-                placeholder="DD-MM-YYYY"
-                [formControl]="trackerEndDate"
-                ngbDatepicker
-                #endDatePicker="ngbDatepicker"
-              />
-              <button
-                class="btn btn-outline-secondary bi bi-calendar3"
-                (click)="endDatePicker.toggle()"
-                type="button"
-              ></button>
+              <input class="form-control" type="date" [formControl]="trackerEndDate" />
             </div>
+            <button class="btn btn-primary" type="submit">submit</button>
           </form>
         </div>
 
         <div class="d-flex align-items-center flex-grow-1">
           <div class="form-group mb-0 flex-grow-1">
             <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input
-              class="form-control control-search"
+            <input class="form-control control-search"
               placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-              type="text"
-              [(ngModel)]="searchText"
-              (input)="searchtext()"
-            />
+              type="text" [(ngModel)]="searchText" (input)="searchtext()" />
           </div>
-          <i
-            class="bi bi-info-circle-fill ms-2"
-            data-bs-toggle="tooltip"
-            title="Search using BOS ID, Project name, Client name, Website, Notice reference"
-          >
+          <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
+            title="Search using BOS ID, Project name, Client name, Website, Notice reference">
           </i>
         </div>
 
@@ -119,17 +68,11 @@
     <div class="container-fluid">
       <div class="row">
         <h5 class="text-theme"><strong>Feasibility Status</strong></h5>
-        <div
-          class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4"
-          style="cursor: pointer"
-        >
+        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of feasibilityData" class="me-3">
-              <div
-                (click)="filter(item.status, 'feasibility')"
-                (click)="selectStatus(item.status)"
-                [ngClass]="{ 'text-danger': selectedStatus === item.status }"
-              >
+              <div (click)="filter(item.status, 'feasibility')" (click)="selectStatus(item.status)"
+                [ngClass]="{ 'text-danger': selectedStatus === item.status }">
                 {{ item.status }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
@@ -140,17 +83,11 @@
 
       <div class="row">
         <h5 class="text-theme"><strong>Bid Status</strong></h5>
-        <div
-          class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4"
-          style="cursor: pointer"
-        >
+        <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
           <ul class="taskuserList d-flex flex-wrap list-unstyled">
             <li *ngFor="let item of bidData" class="me-3">
-              <div
-                (click)="filter(item.status, 'bid')"
-                (click)="selectBidStatus(item.status)"
-                [ngClass]="{ 'text-danger': selectedBidStatus === item.status }"
-              >
+              <div (click)="filter(item.status, 'bid')" (click)="selectBidStatus(item.status)"
+                [ngClass]="{ 'text-danger': selectedBidStatus === item.status }">
                 {{ item.status }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
@@ -189,8 +126,7 @@
                 </td>
               </tr>
 
-              <tr
-                *ngFor="
+              <tr *ngFor="
                   let item of projectList
                     | paginate
                       : {
@@ -199,12 +135,11 @@
                           totalItems: totalRecords
                         };
                   let i = index
-                "
-              >
+                ">
                 <td>
                   <a href="javascript:;" (click)="projectDetails(item?._id)">{{
                     item?.projectName
-                  }}</a>
+                    }}</a>
                 </td>
                 <td v-align="middle">{{ item?.BOSID }}</td>
                 <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
@@ -231,10 +166,7 @@
         <div class="row mt-3 align-items-center">
           <div class="row">
             <div class="pagination">
-              <pagination-controls
-                (pageChange)="paginate($event)"
-                [idMaxSize]="100"
-              ></pagination-controls>
+              <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
             </div>
           </div>
         </div>
