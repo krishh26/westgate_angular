@@ -3,21 +3,22 @@
     <div class="container-fluid mb-5">
       <div class="row">
         <div class="col-12 mb-3">
-          <h4 class="text-theme"><strong>Welcome Admin !</strong></h4>
+          <h4 class="text-theme"><strong>Welcome Admin!</strong></h4>
         </div>
         <div class="col-12">
-          <div class="col-12 row">
+          <div class="row">
             <div class="col-3">
               <div class="input-group">
-                <input class="form-control" type="date" [formControl]="trackerStartDate"
-                  (change)="onStartDateChange($event)" />
+                <input class="form-control" type="date" [formControl]="trackerStartDate" />
               </div>
             </div>
             <div class="col-3">
               <div class="input-group">
-                <input class="form-control" type="date" [formControl]="trackerEndDate"
-                  (change)="onEndDateChange($event)" />
+                <input class="form-control" type="date" [formControl]="trackerEndDate" />
               </div>
+            </div>
+            <div class="col-1" style="margin-top: 5px;">
+              <button class="btn btn-primary w-100" (click)="onSubmitDaterange()">Submit</button>
             </div>
           </div>
         </div>

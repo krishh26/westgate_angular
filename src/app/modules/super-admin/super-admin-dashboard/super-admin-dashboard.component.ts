@@ -40,16 +40,6 @@ export class SuperAdminDashboardComponent {
     this.getProjectDetails();
     this.getSuperStatictics();
     this.getManageUserList();
-    this.trackerEndDate.valueChanges.subscribe((res: any) => {
-      if (!this.trackerStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
-        return;
-      } else {
-        this.getProjectDetails(true);
-      }
-    });
   }
 
   onCategoryClick(category: string | null) {
@@ -63,6 +53,20 @@ export class SuperAdminDashboardComponent {
       queryParamsHandling: 'merge' // Optional: Keeps existing query params
     });
   }
+
+  onSubmitDaterange() {
+    const startDate = this.trackerStartDate.value;
+    const endDate = this.trackerEndDate.value;
+
+    if (!startDate || !endDate) {
+      this.notificationService.showError("Please select both dates!");
+      return;
+    }
+
+    console.log("Filtering data from", startDate, "to", endDate);
+    this.getProjectDetails(true);
+  }
+
 
 
   projectTypeClick(projectType: string | null) {

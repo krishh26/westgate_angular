@@ -7,20 +7,17 @@
           <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4>
         </div>
 
-        <!-- Date Pickers Form -->
         <div class="col-8">
-          <form class="d-flex align-items-center gap-2">
+          <form class="d-flex align-items-center gap-2" (ngSubmit)="onSubmitDaterange()">
             <div class="input-group">
-              <input class="form-control" type="date" [formControl]="trackerStartDate"
-                (change)="onStartDateChange($event)" />
+              <input class="form-control" type="date" [formControl]="trackerStartDate" />
             </div>
             <div class="input-group">
-              <input class="form-control" type="date" [formControl]="trackerEndDate"
-                (change)="onEndDateChange($event)" />
+              <input class="form-control" type="date" [formControl]="trackerEndDate" />
             </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
-
 
         <!-- Category Dropdown -->
         <div class="col-4">

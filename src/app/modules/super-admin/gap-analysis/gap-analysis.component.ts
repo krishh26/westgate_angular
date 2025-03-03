@@ -46,19 +46,33 @@ export class GapAnalysisComponent {
     this.getGapAnalysisData();
     this.getGapAnalysisDataNoSupplier();
     this.getGapAnalysisDataDropped();
-    this.trackerEndDate.valueChanges.subscribe((res: any) => {
-      if (!this.trackerStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
-        return;
-      } else {
-        this.getGapAnalysisData();
-        this.getGapAnalysisDataNoSupplier();
-        this.getGapAnalysisDataDropped();
-      }
-    });
   }
+
+  submitFilters() {
+    if (!this.trackerStartDate.value || !this.trackerEndDate.value) {
+      this.notificationService.showError('Please select both Start and End dates');
+      return;
+    }
+
+    this.getGapAnalysisData();
+    this.getGapAnalysisDataNoSupplier();
+    this.getGapAnalysisDataDropped();
+  }
+
+  onSubmitDaterange() {
+    const startDate = this.trackerStartDate.value;
+    const endDate = this.trackerEndDate.value;
+
+    if (!startDate || !endDate) {
+      this.notificationService.showError('Please select both start and end dates.');
+      return;
+    }
+
+    this.getGapAnalysisData();
+    this.getGapAnalysisDataNoSupplier();
+    this.getGapAnalysisDataDropped();
+  }
+
 
   onStartDateChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -76,17 +90,11 @@ export class GapAnalysisComponent {
     }
   }
 
-  private formatDate(date: string): string {
-    if (!date) return '';
-
-    const dateParts = date.split('-'); // Splitting YYYY-MM-DD
-    if (dateParts.length === 3) {
-      return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to DD-MM-YYYY
-    }
-
-    return '';
+  formatDate(date: string | null): string | null {
+    if (!date) return null;
+    const formattedDate = new Date(date).toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+    return formattedDate;
   }
-
 
   onCategoryChange(categorisation: string) {
     this.getGapAnalysisData('', categorisation);
