@@ -95,6 +95,11 @@ export class AddProjectComponent {
     return true;
   }
 
+  removeReadonly(event: Event) {
+    (event.target as HTMLInputElement).removeAttribute('readonly');
+  }
+
+
   patchProjectValue() {
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
       this.productForm.patchValue(response?.data)

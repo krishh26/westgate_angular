@@ -104,6 +104,10 @@ export class SuperadminAddProjectComponent implements OnInit {
       })
   }
 
+  removeReadonly(event: Event) {
+    (event.target as HTMLInputElement).removeAttribute('readonly');
+  }
+
   onItemAddCategory(item: { category: string }): void {
     // Add type annotation for 'categoryItem'
     const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);

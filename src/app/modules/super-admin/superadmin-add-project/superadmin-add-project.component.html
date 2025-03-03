@@ -64,14 +64,18 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Login ID</label>
               <div class="col-sm-8">
-                <input formControlName="loginID" type="text" class="form-control">
+                <input formControlName="loginID" type="text" class="form-control"  autocomplete="off"
+                readonly
+                (focus)="removeReadonly($event)">
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="password" class="col-sm-4 col-form-label">Password</label>
               <div class="col-sm-8">
-                <input formControlName="password" type="password" class="form-control">
+                <input formControlName="password" type="password" class="form-control"  autocomplete="off"
+                readonly
+                (focus)="removeReadonly($event)">
               </div>
             </div>
 
