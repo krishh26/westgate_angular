@@ -60,16 +60,33 @@ export class GapAnalysisComponent {
     });
   }
 
-
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+  onStartDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.trackerStartDate.setValue(input.value); // Store in YYYY-MM-DD for date picker
+      console.log('Selected Start Date:', input.value);
+    }
   }
+
+  onEndDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.trackerEndDate.setValue(input.value); // Store in YYYY-MM-DD for date picker
+      console.log('Selected End Date:', input.value);
+    }
+  }
+
+  private formatDate(date: string): string {
+    if (!date) return '';
+
+    const dateParts = date.split('-'); // Splitting YYYY-MM-DD
+    if (dateParts.length === 3) {
+      return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to DD-MM-YYYY
+    }
+
+    return '';
+  }
+
 
   onCategoryChange(categorisation: string) {
     this.getGapAnalysisData('', categorisation);
@@ -85,12 +102,8 @@ export class GapAnalysisComponent {
       param['keyword'] = searchText;
     }
 
-    const startDate = this.trackerStartDate.value
-      ? this.formatDate(this.trackerStartDate.value)
-      : '';
-    const endDate = this.trackerEndDate.value
-      ? this.formatDate(this.trackerEndDate.value)
-      : '';
+    const startDate = this.trackerStartDate.value ? this.formatDate(this.trackerStartDate.value) : '';
+    const endDate = this.trackerEndDate.value ? this.formatDate(this.trackerEndDate.value) : '';
 
     if (startDate && endDate) {
       param['startDate'] = startDate;
