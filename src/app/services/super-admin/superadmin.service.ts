@@ -27,6 +27,7 @@ export enum SuperAdminEndPoint {
   GET_GAP_ANALYSIS = '/project/gap-analysis',
   GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY = '/project/gap-analysis-dafstatus-reason',
   GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED = '/project/gap-analysis-nosuppliermatched-reason',
+  EXPORT_EXCEL = '/project/export-csv'
 }
 
 @Injectable({
@@ -41,6 +42,10 @@ export class SuperadminService {
     private localStorageService: LocalStorageService
   ) {
     this.baseUrl = environment.baseUrl;
+  }
+
+  exportProjects() {
+    window.open(this.baseUrl + SuperAdminEndPoint.EXPORT_EXCEL, "_blank");
   }
 
   getDashboardList(params: any): Observable<any> {
@@ -150,7 +155,7 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status?: string,  sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean ,type?: string): Observable<any> {
+  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean, type?: string): Observable<any> {
     let params = new HttpParams();
 
     if (assignId) {

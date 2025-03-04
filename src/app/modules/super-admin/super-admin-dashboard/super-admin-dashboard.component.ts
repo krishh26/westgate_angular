@@ -54,6 +54,10 @@ export class SuperAdminDashboardComponent {
     });
   }
 
+  export() {
+    this.superService.exportProjects();
+  }
+
   onSubmitDaterange() {
     const startDate = this.trackerStartDate.value;
     const endDate = this.trackerEndDate.value;

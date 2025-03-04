@@ -17,8 +17,9 @@
                 <input class="form-control" type="date" [formControl]="trackerEndDate" />
               </div>
             </div>
-            <div class="col-1" style="margin-top: 5px;">
-              <button class="btn btn-primary w-100" (click)="onSubmitDaterange()">Submit</button>
+            <div class="col-2 d-flex gap-2 align-items-center">
+              <button class="btn btn-primary" (click)="onSubmitDaterange()">Submit</button>
+              <button class="btn btn-primary" type="button" (click)="export()">Download Excel</button>
             </div>
           </div>
         </div>
