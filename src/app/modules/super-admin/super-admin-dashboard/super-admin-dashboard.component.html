@@ -7,18 +7,18 @@
         </div>
         <div class="col-12">
           <div class="row">
-            <div class="col-3">
-              <div class="input-group">
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-6">
+              <div class="form-group">
                 <input class="form-control" type="date" [formControl]="trackerStartDate" />
               </div>
             </div>
-            <div class="col-3">
-              <div class="input-group">
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-6">
+              <div class="form-group">
                 <input class="form-control" type="date" [formControl]="trackerEndDate" />
               </div>
             </div>
-            <div class="col-1" style="margin-top: 5px;">
-              <button class="btn btn-primary w-100" (click)="onSubmitDaterange()">Submit</button>
+            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12">
+              <button class="btn btn-primary w-100 btn-lg" (click)="onSubmitDaterange()">Submit</button>
             </div>
           </div>
         </div>
@@ -28,14 +28,14 @@
     <div class="container-fluid mb-5">
       <div class="row">
         <div class="col-lg-6 col-xl-6 col-12">
-          <div class="statistic-card">
+          <div class="statistic-card mb-4">
             <div class="card-body card-header card-header-blue">
               <h5 class="text-theme">
                 <strong>Admin Dashboard Report</strong>
               </h5>
               <br />
               <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsPosted?.count }}</h2>
                     <p>Projects Posted</p>
@@ -49,7 +49,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsAwaiting?.count }}</h2>
                     <p>Projects Awaiting</p>
@@ -63,7 +63,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsInProgress?.count }}</h2>
                     <p>Projects In-Progress</p>
@@ -77,7 +77,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsInHold?.count }}</h2>
                     <p>Projects In-Hold</p>
@@ -91,7 +91,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{ superdashboardlist?.TotalDocumentsNotFound?.count }}
@@ -107,7 +107,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsPassed?.count }}</h2>
                     <p>Projects Passed</p>
@@ -121,7 +121,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>{{ superdashboardlist?.projectsFail?.count }}</h2>
                     <p>Projects Failed</p>
@@ -135,7 +135,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{ superdashboardlist?.projectsBidStatusAwaiting?.count }}
@@ -151,7 +151,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -169,7 +169,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -188,7 +188,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -208,7 +208,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{ superdashboardlist?.projectsBidStatusAwarded?.count }}
@@ -224,7 +224,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -242,7 +242,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{ superdashboardlist?.projectsBidStatusToAction?.count }}
@@ -258,7 +258,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{ superdashboardlist?.projectsBidStatusNosuppliermatched?.count }}
@@ -275,7 +275,7 @@
                   </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -294,7 +294,7 @@
                   </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -315,7 +315,7 @@
                   </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-12">
                   <div class="ProjectStatistic">
                     <h2>
                       {{
@@ -339,10 +339,10 @@
         </div>
 
         <div class="col-lg-6 col-xl-6 col-12">
-          <div class="statistic-card">
+          <div class="statistic-card mb-4">
             <div class="card-body">
               <h5 class="text-theme"><strong>Suppliers Statistics</strong></h5>
-              <div class="table-responsive mt-5 mb-3">
+              <div class="table-responsive mt-3">
                 <table class="table table-striped align-middle">
                   <thead>
                     <tr>
@@ -392,15 +392,15 @@
       </div>
     </div>
 
-    <div class="container-fluid mb-5">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-lg-6 col-xl-6 col-12">
-          <div class="statistic-card">
+          <div class="statistic-card mb-4">
             <div class="card-body">
               <h5 class="text-theme mb-0">
                 <strong>Category Wise Report</strong>
               </h5>
-              <div class="table-responsive mt-5 mb-3">
+              <div class="table-responsive mt-3 mb-3">
                 <table class="table table-striped align-middle">
                   <thead>
                     <tr>
@@ -432,12 +432,12 @@
           </div>
         </div>
         <div class="col-lg-6 col-xl-6 col-12">
-          <div class="statistic-card">
+          <div class="statistic-card mb-4">
             <div class="card-body">
               <h5 class="text-theme mb-0">
                 <strong>Product Type Wise Report</strong>
               </h5>
-              <div class="table-responsive mt-5 mb-3">
+              <div class="table-responsive mt-3 mb-3">
                 <table class="table table-striped align-middle">
                   <thead>
                     <tr>

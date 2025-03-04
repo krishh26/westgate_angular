@@ -1930,3 +1930,9 @@ Media Query CSS
     right: -90px;
   }
 }
+@media (min-width: 320px) and (max-width: 767px)
+{
+.mob-w-100{
+  width: 100%;
+}
+}

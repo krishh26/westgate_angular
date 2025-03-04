@@ -15,7 +15,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
-          <div id="profile-menu-nav"><br><br>
+          <div id="profile-menu-nav" style="padding: 1rem 0.5rem;">
             <div class="sort-widget mb-3">
               <h6 class="p-600">Feasibility Status</h6>
               <ng-select style="padding: 0px !important;" placeholder="Select Status"
@@ -88,10 +88,10 @@
               <h6 class="p-600">Value (GBP)</h6>
 
               <!-- Min and Max value input fields -->
-              <div class="input-fields">
+              <div class="input-fields mb-3">
                 <label for="min-value">Min Value (GBP): </label>
-                <input id="min-value" type="number" [(ngModel)]="minValue" (change)="changeRange()" />
-
+                <input id="min-value" class="mob-mb1" type="number" [(ngModel)]="minValue" (change)="changeRange()" />
+                
                 <label for="max-value">Max Value (GBP): </label>
                 <input id="max-value" type="number" [(ngModel)]="maxValue" (change)="changeRange()" />
               </div>
