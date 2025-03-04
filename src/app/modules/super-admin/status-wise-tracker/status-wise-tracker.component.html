@@ -1,8 +1,8 @@
 <main id="main">
   <section class="casestudy-section">
     <div class="container-fluid mb-3">
-      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-        <div class="sort-widget d-flex align-items-center gap-3">
+      <div class="row align-items-center mb-4">
+        <div class="col-lg-4 col-xl-4 col-md-6 col-sm-6 col-12 mob-mb1">
           <div class="d-flex align-items-center gap-3">
             <!-- Expired Project Checkbox -->
             <div class="form-check">
@@ -24,45 +24,54 @@
               <label class="form-check-label" for="dtd">DTD</label>
             </div>
           </div>
-
-          <h6 class="p-600 me-3">Date Range</h6>
-          <form class="d-flex align-items-center gap-2" (ngSubmit)="getDataByStatus()">
-            <div class="input-group">
-              <input class="form-control" type="date" [formControl]="trackerStartDate" />
-            </div>
-            <div class="input-group">
-              <input class="form-control" type="date" [formControl]="trackerEndDate" />
-            </div>
-            <button class="btn btn-primary" type="submit">submit</button>
+        </div>
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12 mob-mb1">          
+          <form (ngSubmit)="getDataByStatus()">
+            <div class="row align-items-center">
+              <div class="col-lg-4 col-xl-4 col-sm-4 col-md-4 col-12 mob-mb1">
+                <div class="input-group">
+                  <input class="form-control" type="date" [formControl]="trackerStartDate" />
+                </div>
+              </div>
+              <div class="col-lg-4 col-xl-4 col-sm-4 col-md-4 col-12 mob-mb1">
+                <div class="input-group">
+                  <input class="form-control" type="date" [formControl]="trackerEndDate" />
+                </div>
+              </div>
+              <div class="col-lg-4 col-xl-4 col-sm-4 col-md-4 col-12">
+                <button class="btn btn-primary btn-lg mob-w-100" type="submit">submit</button>
+              </div>
+            </div> 
           </form>
         </div>
-
-        <div class="d-flex align-items-center flex-grow-1">
-          <div class="form-group mb-0 flex-grow-1">
-            <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input class="form-control control-search"
-              placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-              type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+        <div class="col-lg-2 col-xl-2 col-12">
+          <nav id="navbar" class="navbar p-0">
+            <ul class="p-0 m-0 d-flex align-items-center">
+              <li class="dropdown position-relative">
+                <button class="btn btn-primary mob-w-100 btn-lg">+ Add Project</button>
+                <ul class="dropdown-menu position-absolute">
+                  <li>
+                    <a routerLink="/super-admin/super-admin-add-project">Single Entry</a>
+                  </li>
+                  <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
           </div>
-          <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
-            title="Search using BOS ID, Project name, Client name, Website, Notice reference">
-          </i>
-        </div>
-
-        <nav id="navbar" class="navbar p-0">
-          <ul class="p-0 m-0 d-flex align-items-center">
-            <li class="dropdown position-relative">
-              <span class="btn btn-primary">+ Add Project</span>
-              <ul class="dropdown-menu position-absolute">
-                <li>
-                  <a routerLink="/super-admin/super-admin-add-project">Single Entry</a>
-                </li>
-                <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
       </div>
+      <div class="d-flex align-items-center flex-grow-1">
+        <div class="form-group mb-0 flex-grow-1">
+          <span class="input-icon"><i class="bi bi-search"></i></span>
+          <input class="form-control control-search"
+            placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+            type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+        </div>
+        <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
+          title="Search using BOS ID, Project name, Client name, Website, Notice reference">
+        </i>
+      </div>
+      
     </div>
 
     <div class="container-fluid">
