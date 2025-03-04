@@ -5,10 +5,18 @@
       <div class="row align-items-center">
         <nav>
           <ul class="projects-nav-tab">
-            <li routerLink="/super-admin/supplier-user-profile"><a>Profile</a></li>
-            <li routerLink="/super-admin/admin-case-study-list"><a class="active">Case Studies</a></li>
-            <li routerLink="/super-admin/super-admin-supplier-users-list"><a>Users</a></li>
-            <li routerLink="/super-admin/supplier-user-activity"><a>Activity</a></li>
+            <li routerLink="/super-admin/supplier-user-profile">
+              <a>Profile</a>
+            </li>
+            <li routerLink="/super-admin/admin-case-study-list">
+              <a class="active">Case Studies</a>
+            </li>
+            <li routerLink="/super-admin/super-admin-supplier-users-list">
+              <a>Users</a>
+            </li>
+            <li routerLink="/super-admin/supplier-user-activity">
+              <a>Activity</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -33,7 +41,7 @@
             </nav>
           </div>
         </div>
-        
+
         <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
           <div class="table-responsive mt-5 mb-3">
             <table class="table table-striped align-middle">
@@ -76,8 +84,9 @@
                   <td>{{item?.contractValue}}</td>
                   <td>{{item?.resourcesUsed}}</td>
                   <td>{{item?.clientName}}</td>
-                  <td><a class="btn btn-primary btn-sm" style="cursor: pointer;" routerLink="/super-admin/add-new-case-study" [state]="item"
-                    ><i class="bi bi-pencil-fill"></i></a></td>
+                  <td><a class="btn btn-primary btn-sm" style="cursor: pointer;"
+                      routerLink="/super-admin/add-new-case-study" [state]="item"><i class="bi bi-pencil-fill"></i></a>
+                  </td>
                 </tr>
               </tbody>
             </table>
