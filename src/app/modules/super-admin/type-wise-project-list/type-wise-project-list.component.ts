@@ -216,7 +216,7 @@ export class TypeWiseProjectListComponent {
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
-
+    Payload.projectList.notRelatedDashboard = true;
     // Ensure projectType is always passed
     Payload.projectList.projectType = (valueToPassProduct && valueToPassProduct.trim() !== 'Unknown')
       ? valueToPassProduct
@@ -292,6 +292,7 @@ export class TypeWiseProjectListComponent {
     Payload.projectList.SubmissionDueDateRange = (this.submissionStartDate.value && this.submissionEndDate.value) ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}` : '';
     Payload.projectList.valueRange = this.minValue + '-' + this.maxValue;
     Payload.projectList.expired = this.isExpired;
+    Payload.projectList.notRelatedDashboard = true;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

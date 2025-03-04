@@ -24,7 +24,8 @@ export const Payload = {
     statusNotInclude: '',
     startCreatedDate: '',
     endCreatedDate: '',
-    categorisation: ''
+    categorisation: '',
+    notRelatedDashboard: false
   },
 
   projectListStatusWiseTracker: {

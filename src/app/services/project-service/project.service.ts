@@ -182,7 +182,8 @@ export class ProjectService {
     statusNotInclude?: string,
     startCreatedDate?: string,
     endCreatedDate?: string,
-    categorisation?: string
+    categorisation?: string,
+    notRelatedDashboard?: boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -204,6 +205,9 @@ export class ProjectService {
     }
     if (params?.match) {
       queryParams = queryParams.set('match', params?.match);
+    }
+    if (params?.notRelatedDashboard) {
+      queryParams = queryParams.set('notRelatedDashboard', params?.notRelatedDashboard);
     }
     if (params?.status) {
       queryParams = queryParams.set('status', params?.status);
@@ -294,7 +298,8 @@ export class ProjectService {
     statusNotInclude?: string,
     startCreatedDate?: string,
     endCreatedDate?: string,
-    categorisation?: string
+    categorisation?: string,
+    notRelatedDashboard?: boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -319,6 +324,9 @@ export class ProjectService {
     }
     if (params?.status) {
       queryParams = queryParams.set('status', params?.status);
+    }
+    if (params?.notRelatedDashboard) {
+      queryParams = queryParams.set('notRelatedDashboard', params?.notRelatedDashboard);
     }
     if (params?.bidManagerStatus) {
       queryParams = queryParams.set('bidManagerStatus', params?.bidManagerStatus);
