@@ -237,10 +237,10 @@
           <div class="card">
             <ul class="project-document">
               <!-- Document List -->
-              <li *ngFor="let item of projectDetails?.projectComment" class="list-group-item">
+              <li *ngFor="let item of projectDetails?.westGetDocument" class="list-group-item">
                 <div class="row">
                   <div class="col-5 text-center">
-                    <p class="mb-0">{{ item?.comment }}</p>
+                    <p class="mb-0">{{ item?.name }}</p>
                   </div>
                   <div class="col-7 text-center">
                     <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
@@ -860,13 +860,14 @@
           <div class="card p-3 mt-3">
             <div class="row g-3 align-items-center">
               <div class="col-md-8 col-sm-12">
-                <input type="text" [(ngModel)]="commentName" [ngModelOptions]="{ standalone: true }"
+                <input type="text" [(ngModel)]="documentName" [ngModelOptions]="{ standalone: true }"
                   class="form-control" placeholder="Enter Document Name" aria-label="Document Name" />
               </div>
               <div class="col-md-4 col-sm-12">
                 <label class="btn btn-outline-primary w-100">
                   <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                  <input type="file" id="uploadClientDocument" (change)="uploadDocuments($event)" hidden
+                  <input type="file" id="uploadClientDocument"
+                    (change)="uploadDocument($event, documentUploadType.westGetDocument)" hidden
                     aria-label="Upload Document" />
                 </label>
               </div>
@@ -877,7 +878,6 @@
     </div>
   </div>
 </div>
-
 <!-- View Document Modal -->
 <div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
   aria-hidden="true">

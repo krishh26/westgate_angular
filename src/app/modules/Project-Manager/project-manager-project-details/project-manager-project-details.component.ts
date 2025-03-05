@@ -640,17 +640,13 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   summaryDetail(type: string) {
-    // if (!this.projectDetails?.clientDocument.length) {
-    //   return this.notificationService.showError('Upload Client Document');
-    // }
-    // if (!this.projectDetails?.loginDetail.length) {
-    //   return this.notificationService.showError('Upload Login Detail');
-    // }
+    if (!this.projectDetails?.clientDocument.length) {
+      return this.notificationService.showError('Upload Client Document');
+    }
+    if (!this.projectDetails?.westGetDocument.length) {
+      return this.notificationService.showError('Upload westGet Document');
+    }
     this.saveChanges(type);
-
-    // if (type == 'next') {
-    //   this.router.navigate(['/feasibility-user/summary-note-questions'], { queryParams: { id: this.projectId } });
-    // }
   }
 
   uploadDocument(event: any, type: string): void {
@@ -851,6 +847,7 @@ export class ProjectManagerProjectDetailsComponent {
         subContracting: this.subContracting || '',
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
+        westGetDocument: this.projectDetails?.westGetDocument || [],
         bidManagerStatus: this.status || '',
         bidManagerStatusComment: this.commentData,
         status: this.feasibilityStatus || '',

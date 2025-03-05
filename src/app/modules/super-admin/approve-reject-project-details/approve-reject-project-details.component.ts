@@ -94,6 +94,7 @@ export class ApproveRejectProjectDetailsComponent {
   ];
   dueDate: any;
   displayForTitleedUsers: any = [];
+  westGetDocument: any[] = [];
   assignTo: any;
   loginModalMode: boolean = true;
   projectStrips: any = [];
@@ -1055,6 +1056,9 @@ export class ApproveRejectProjectDetailsComponent {
     if (!this.projectDetails?.clientDocument.length) {
       return this.notificationService.showError('Upload Client Document');
     }
+    if (!this.projectDetails?.westGetDocument.length) {
+      return this.notificationService.showError('Upload westGet Document');
+    }
     // if (!this.projectDetails?.loginDetail.length) {
     //   return this.notificationService.showError('Upload Login Detail');
     // }
@@ -1129,17 +1133,19 @@ export class ApproveRejectProjectDetailsComponent {
               this.documentName = '';
             }
 
-            if (type == this.documentUploadType.loginDetailDocument) {
-              if (!this.loginName) {
-                return this.notificationService.showError('Enter Name');
+            if (type == this.documentUploadType.westGetDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a westgate document Name'
+                );
               }
-              this.loginDetailDocument = response?.data;
+              this.westGetDocument = response?.data;
               let objToBePushed = {
-                name: this.loginName,
+                name: this.documentName,
                 file: response?.data,
               };
-              this.projectDetails.loginDetail.push(objToBePushed);
-              this.loginName = '';
+              this.projectDetails.westGetDocument.push(objToBePushed);
+              this.documentName = '';
             }
 
             return this.notificationService.showSuccess(response?.message);
@@ -1196,6 +1202,7 @@ export class ApproveRejectProjectDetailsComponent {
         subContracting: this.subContracting || '',
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
+        westGetDocument: this.projectDetails?.westGetDocument || [],
         status: this.status || '',
         statusComment: this.feasibilityCommentData,
         bidManagerStatus: this.bidStatus || '',

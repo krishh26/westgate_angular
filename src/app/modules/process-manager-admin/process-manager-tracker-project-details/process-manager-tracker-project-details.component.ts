@@ -34,6 +34,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   currentDate: Date = new Date();
   selectedDocument: any;
   clientDocument: any[] = [];
+  westGetDocument: any[] = [];
   loginDetailDocument: any[] = [];
   subContractDocument: any;
   economicalPartnershipQueryFile: any;
@@ -259,6 +260,21 @@ export class ProcessManagerTrackerProjectDetailsComponent {
               this.documentName = '';
             }
 
+            if (type == this.documentUploadType.westGetDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a westgate document Name'
+                );
+              }
+              this.westGetDocument = response?.data;
+              let objToBePushed = {
+                name: this.documentName,
+                file: response?.data,
+              };
+              this.projectDetails.westGetDocument.push(objToBePushed);
+              this.documentName = '';
+            }
+
             if (type == this.documentUploadType.loginDetailDocument) {
               if (!this.loginName) {
                 return this.notificationService.showError('Enter Name');
@@ -292,53 +308,51 @@ export class ProcessManagerTrackerProjectDetailsComponent {
     // if (!this.projectDetails?.clientDocument.length) {
     //   return this.notificationService.showError('Upload Client Document');
     // }
+    if (!this.projectDetails?.clientDocument.length) {
+      return this.notificationService.showError('Upload Client Document');
+    }
+    if (!this.projectDetails?.westGetDocument.length) {
+      return this.notificationService.showError('Upload westGet Document');
+    }
     this.saveChanges(type);
   }
 
-    // Update the saveChanges method to include failStatusReasons
-    saveChanges(type?: string, contractEdit?: boolean) {
-      let payload: any = {};
+  // Update the saveChanges method to include failStatusReasons
+  saveChanges(type?: string, contractEdit?: boolean) {
+    let payload: any = {};
 
-      if (!contractEdit) {
-        // Validation for status
-        if (!this.status) {
-          return this.notificationService.showError('Please select a status.');
-        }
-        payload = {
-          projectType: this.projectDetails.projectType,
-          clientDocument: this.projectDetails?.clientDocument || [],
-          status: this.status || '',
-          statusComment: this.commentData,
-          // failStatusImage: this.failStatusImage || '',
-          // failStatusReason: this.failStatusReasons,
-        };
+    if (!contractEdit) {
+      // Validation for status
+      if (!this.status) {
+        return this.notificationService.showError('Please select a status.');
       }
-
-      // For contract edit
-      if (contractEdit) {
-        payload = {
-          periodOfContractStart: this.projectDetails.periodOfContractStart,
-          periodOfContractEnd: this.projectDetails.periodOfContractEnd,
-          projectType: this.projectDetails.projectType,
-        };
-      }
-
-      // API call to update project details
-      this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
-        (response) => {
-          if (response?.status === true) {
-            this.notificationService.showSuccess('Project updated successfully');
-            this.isEditing = false;
-            this.getProjectDetails();
-          } else {
-            this.notificationService.showError(response?.message || 'Failed to update project');
-          }
-        },
-        (error) => {
-          this.notificationService.showError('Failed to update project');
-        }
-      );
+      payload = {
+        projectType: this.projectDetails.projectType,
+        clientDocument: this.projectDetails?.clientDocument || [],
+        westGetDocument: this.projectDetails?.westGetDocument || [],
+        status: this.status || '',
+        statusComment: this.commentData,
+        // failStatusImage: this.failStatusImage || '',
+        // failStatusReason: this.failStatusReasons,
+      };
     }
+
+    // API call to update project details
+    this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Project updated successfully');
+          this.isEditing = false;
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update project');
+        }
+      },
+      (error) => {
+        this.notificationService.showError('Failed to update project');
+      }
+    );
+  }
 
   onFileSelect(event: any): void {
     const file = event.target.files[0];
@@ -641,7 +655,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.statusComment.setValue(this.projectDetails?.statusComment);
           this.feasibilityCommentData =
-          this.projectDetails?.statusComment || [];
+            this.projectDetails?.statusComment || [];
           this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.feasibilityStatus = this.projectDetails?.status;
           this.subContractDocument =
