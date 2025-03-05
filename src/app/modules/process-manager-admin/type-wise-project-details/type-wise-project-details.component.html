@@ -1,0 +1,100 @@
+<main id="main">
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+          <div class="row align-items-center justify-content-between">
+            <!-- Left Section: Search Bar and Info Icon -->
+            <div
+              class="col-lg-7 col-xl-7 col-md-7 col-12 d-flex align-items-center mb-2"
+            >
+              <!-- Search Bar -->
+              <div class="flex-grow-1">
+                <div class="form-group mb-0 position-relative">
+                  <span class="input-icon"><i class="bi bi-search"></i></span>
+                  <input
+                    class="form-control control-search"
+                    placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+                    type="text"
+                    [(ngModel)]="searchText"
+                    (input)="searchtext()"
+                  />
+                </div>
+              </div>
+              <!-- Info Icon -->
+              <div class="ms-3" style="cursor: pointer">
+                <i
+                  class="bi bi-info-circle-fill"
+                  data-bs-toggle="tooltip"
+                  title="Search using BOS ID, Project name, Client name, Website, Notice reference"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive mt-5 mb-3">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>Project Title</th>
+                <th>BOS ID</th>
+                <th style="cursor: pointer" (click)="sort('publishDate')">
+                  Publish Date <i class="bi bi-sort-up"></i>
+                </th>
+                <th style="cursor: pointer" (click)="duedatesort('dueDate')">
+                  Due Date & Time <i class="bi bi-sort-up"></i>
+                </th>
+                <th>Feasibility Status</th>
+                <th>Bid Status</th>
+                <th>Bid User</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td *ngIf="!projectList?.length" colspan="14">
+                  <app-no-record-found></app-no-record-found>
+                </td>
+              </tr>
+
+              <tr
+                *ngFor="
+                  let item of projectList
+                    | paginate
+                      : {
+                          itemsPerPage: pagesize,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  let i = index
+                "
+              >
+                <td>
+                  <a (click)="projectDetails(item?._id)" href="javascript:;">{{
+                    item?.projectName
+                  }}</a>
+                </td>
+                <td v-align="middle">{{ item?.BOSID }}</td>
+                <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
+                <td>{{ item?.dueDate | date : "dd/MM/yyyy" }}</td>
+                <td>{{ item?.status }}</td>
+                <td>{{ item?.bidManagerStatus }}</td>
+                <td>{{ item?.assignBidmanager[0]?.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row mt-3 align-items-center">
+          <div class="row">
+            <div class="pagination">
+              <pagination-controls
+                (pageChange)="paginate($event)"
+                [idMaxSize]="100"
+              ></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

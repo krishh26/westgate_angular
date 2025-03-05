@@ -11,6 +11,7 @@ import { ProcessManagerUserProfileComponent } from './process-manager-user-profi
 import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-admin-change-password.component';
 import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
 
 
 
@@ -59,6 +60,10 @@ const routes: Routes = [
       {
         path: "dashboard-process-manager",
         component: DashboardProcessManagerComponent
+      },
+      {
+        path: "type-wise-project-list",
+        component: TypeWiseProjectDetailsComponent
       },
     ]
   },

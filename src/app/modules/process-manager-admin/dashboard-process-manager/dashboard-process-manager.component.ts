@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./dashboard-process-manager.component.scss']
 })
 export class DashboardProcessManagerComponent {
-  trackerStartDate: FormControl = new FormControl('');
+ trackerStartDate: FormControl = new FormControl('');
   trackerEndDate: FormControl = new FormControl('');
   superdashboardlist: any = [];
   superstatictics: any = [];
@@ -41,15 +41,48 @@ export class DashboardProcessManagerComponent {
     this.getProjectDetails();
     this.getSuperStatictics();
     this.getManageUserList();
-    this.trackerEndDate.valueChanges.subscribe((res: any) => {
-      if (!this.trackerStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
-        return;
-      } else {
-        this.getProjectDetails(true);
-      }
+  }
+
+  onCategoryClick(category: string | null) {
+    let valueToPass = category && category !== "Unknown" ? category : null;
+
+    console.log("valueToPass:", valueToPass);
+
+    // Navigate and pass queryParams
+    this.router.navigate(['/process-manager/type-wise-project-list'], {
+      queryParams: { categorisation: valueToPass !== null ? valueToPass : '' },
+      queryParamsHandling: 'merge' // Optional: Keeps existing query params
+    });
+  }
+
+  export() {
+    this.superService.exportProjects();
+  }
+
+  onSubmitDaterange() {
+    const startDate = this.trackerStartDate.value;
+    const endDate = this.trackerEndDate.value;
+
+    if (!startDate || !endDate) {
+      this.notificationService.showError("Please select both dates!");
+      return;
+    }
+
+    console.log("Filtering data from", startDate, "to", endDate);
+    this.getProjectDetails(true);
+  }
+
+
+
+  projectTypeClick(projectType: string | null) {
+    let valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : null;
+
+    console.log("valueToPassProduct:", valueToPassProduct);
+
+    // Navigate and pass queryParams
+    this.router.navigate(['/process-manager/type-wise-project-list'], {
+      queryParams: { projectType: valueToPassProduct !== null ? valueToPassProduct : '' },
+      queryParamsHandling: 'merge' // Optional: Keeps existing query params
     });
   }
 
@@ -59,31 +92,38 @@ export class DashboardProcessManagerComponent {
     this.getProjectDetails();
   }
 
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+  onStartDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.trackerStartDate.setValue(input.value); // YYYY-MM-DD
+    console.log('Selected Start Date:', input.value);
+  }
+
+  onEndDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.trackerEndDate.setValue(input.value); // YYYY-MM-DD
+    console.log('Selected End Date:', input.value);
+  }
+
+  private formatDate(date: string): string {
+    if (!date) return '';
+    const dateParts = date.split('-'); // Splitting YYYY-MM-DD
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to DD-MM-YYYY
   }
 
   getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
     console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
     const payload: any = {};
+
+
     if (dateFilter) {
-      const startCreatedDate = this.trackerStartDate.value
-        ? this.formatDate(this.trackerStartDate.value)
-        : '';
-      const endCreatedDate = this.trackerEndDate.value
-        ? this.formatDate(this.trackerEndDate.value)
-        : '';
+      const startCreatedDate = this.trackerStartDate.value || ''; // Already in YYYY-MM-DD format
+      const endCreatedDate = this.trackerEndDate.value || ''; // Already in YYYY-MM-DD format
 
       payload['startDate'] = startCreatedDate;
       payload['endDate'] = endCreatedDate;
     }
+
     this.superService.getDashboardList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
