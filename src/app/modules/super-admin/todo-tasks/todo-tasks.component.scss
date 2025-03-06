@@ -225,6 +225,44 @@ textarea {
     background-color: #F9D5D7;
     /* Light Orange */
 }
+
+
+/* Make the entire comment block red for Admin */
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
+/* Apply red color to comment text, delete button, and date when Admin */
+.admin-comment .comment-text,
+.admin-comment .comment-date {
+  color: red !important;
+}
+
+/* Ensure ALL delete buttons have a red border */
+.delete-btn {
+  border: 1px solid red !important;
+  color: red !important;
+}
+
+/* EXCLUDE Name and Role from being red */
+.admin-comment .user-name,
+.admin-comment .user-role {
+  color: black !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 .comment-item textarea {
     resize: none; /* Disable resizing if unnecessary */
     min-height: 80px; /* Optional: Set a minimum height */

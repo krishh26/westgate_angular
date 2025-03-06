@@ -129,37 +129,36 @@
               </button>
             </h2>
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
-              <div class="accordion-body">
+              <div class="accordion-body comment-container"
+                   [ngClass]="{ 'admin-comment': task?.todayComments[0]?.userDetail?.role === 'Admin' }">
+
                 <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-                  <!-- <li *ngFor="let comment of task.todayComments" class="comment-item"> -->
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">
+                        <p class="mb-0 user-name">
                           {{ task.todayComments[0]?.userDetail?.name }}
                         </p>
-                        <small class="text-muted">
-                          {{
-                          task.todayComments[0]?.date
-                          | date : "dd/MM/yyyy, h:mm a"
-                          }}
+                        <small class="comment-date">
+                          {{ task.todayComments[0]?.date | date : "dd/MM/yyyy, h:mm a" }}
                         </small>
                       </div>
-                      <small class="text-muted d-block">
+                      <small class="text-muted user-role d-block">
                         {{ task.todayComments[0]?.userDetail?.role }}
                       </small>
                     </div>
                   </div>
                   <div class="d-flex justify-content-between">
-                    <p>{{ task.todayComments[0]?.comment }}</p>
+                    <p class="comment-text">{{ task.todayComments[0]?.comment }}</p>
                   </div>
-                  <!-- </li> -->
                 </ul>
+
                 <p *ngIf="!task?.todayComments" class="text-muted">
                   No comments available.
                 </p>
               </div>
             </div>
+
           </div>
         </div>
         <div *ngIf="!taskList?.length">
@@ -301,24 +300,23 @@
             </div>
             <div class="comments-section">
               <ul class="SecondarytaskList mt-3">
-                <li *ngFor="
-                  let comment of transformData(modalTask?.datewiseComments);
-                  let i = index
-                " class="comment-item">
-                  <h6 *ngIf="
-                    comment?.comment == 'No comments available for this date'
-                  ">
+                <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
+                    class="comment-item p-2"
+                    [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+
+                  <h6 *ngIf="comment?.comment == 'No comments available for this date'">
                     {{ comment?.commentDate | date : "dd/MM/yyyy" }}
                   </h6>
+
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                        <small class="text-muted">{{
-                          comment?.date | date : "dd/MM/yyyy, h:mm a"
-                          }}</small>
+                        <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                        <small class="comment-date" *ngIf="comment?.date">
+                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                        </small>
                       </div>
-                      <small class="text-muted d-block">
+                      <small class="user-role d-block">
                         {{
                         comment?.userDetail?.role === "BOS"
                         ? "USER"
@@ -327,17 +325,32 @@
                       </small>
                     </div>
                   </div>
+
                   <div class="d-flex flex-column mb-3">
                     <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
-                      <p [ngClass]="{ 'text-danger': comment?.userDetail?.role === 'Admin' }">{{ comment?.comment }}</p>
+                      <p class="comment-text">
+                        {{ comment?.comment }}
+                      </p>
                       <div *ngIf="comment?.commentId">
-                        <button class="btn btn-sm text-danger"
-                          (click)="deleteComment(comment?.commentId); $event.stopPropagation()">
+                        <button class="btn btn-sm delete-btn" (mousedown)="deleteComment(comment?.commentId); $event.stopPropagation()">
                           Delete
                         </button>
                       </div>
                     </div>
+
+                    <div *ngIf="comment.isEditing" class="d-flex flex-column">
+                      <textarea class="form-control mb-2" placeholder="Edit comment..." [(ngModel)]="comment.updatedComment" style="width: 100%"></textarea>
+                      <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-success me-2" (click)="updateTaskComment(comment)">
+                          Save
+                        </button>
+                        <button class="btn btn-sm btn-secondary me-2" (click)="cancelEdit(comment)">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   </div>
+
                 </li>
               </ul>
             </div>
