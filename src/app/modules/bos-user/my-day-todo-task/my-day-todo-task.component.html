@@ -54,7 +54,8 @@
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
         <div class="accordion-body">
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-            <li *ngFor="let comment of task.todayComments" class="comment-item">
+            <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+              [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
               <div class="row align-items-center mb-3">
                 <div class="col">
                   <div class="d-flex justify-content-between">
@@ -68,7 +69,7 @@
                   <small class="text-muted d-block">
                     {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
                   </small>
-                  
+
                 </div>
               </div>
               <div class="d-flex justify-content-between">
@@ -165,27 +166,29 @@
             </div>
           </div>
           <div class="comments-section">
-              <!-- Display Existing Comments -->
-              <ul class="SecondarytaskList mt-3">
-                <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
-                  <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
-                  <div class="row align-items-center mb-3">
-                    <div class="col">
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                        <small class="text-muted">{{
-                          comment?.date | date : "dd/MM/yyyy, h:mm a"
-                          }}</small>
-                      </div>
-                      <small class="text-muted d-block">
-                        {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
-                      </small>
-                      
+            <!-- Display Existing Comments -->
+            <ul class="SecondarytaskList mt-3">
+              <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
+                class="comment-item p-2"  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date :
+                  "dd/MM/yyyy" }} </h6>
+                <div class="row align-items-center mb-3">
+                  <div class="col">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                      <small class="comment-date">{{
+                        comment?.date | date : "dd/MM/yyyy, h:mm a"
+                        }}</small>
                     </div>
+                    <small class="user-role d-block">
+                      {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
+                    </small>
+
                   </div>
-                  <p class="mb-1">{{ comment?.comment }}</p>
-                </li>
-              </ul>
+                </div>
+                <p class="mb-1">{{ comment?.comment }}</p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@
         </button>
       </h2>
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
-        <div class="accordion-body">
+        <div class="accordion-body comment-container" [ngClass]="{ 'admin-comment': task?.todayComments[0]?.userDetail?.role === 'Admin' }">
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
             <!-- <li *ngFor="let comment of task.todayComments" class="comment-item"> -->
             <div class="row align-items-center mb-3">
@@ -153,20 +153,20 @@
           </div>
           <div class="comments-section">
             <ul class="SecondarytaskList mt-3">
-              <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item">
+              <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item p-2"  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
                 <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
                 <div class="row align-items-center mb-3">
                   <div class="col">
                     <div class="d-flex justify-content-between">
-                      <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                      <small class="text-muted">{{
+                      <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                      <small class="comment-date">{{
                         comment?.date | date : "dd/MM/yyyy, h:mm a"
                         }}</small>
                     </div>
-                    <small class="text-muted d-block">
+                    <small class="user-role d-block">
                       {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
                     </small>
-                    
+
                   </div>
                 </div>
                 <p class="mb-1">{{ comment?.comment }}</p>
