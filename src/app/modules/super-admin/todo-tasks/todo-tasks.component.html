@@ -350,7 +350,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h4>{{ modalTask?.task }}</h4>
+        <h4>{{ modalTask?.task }} </h4>
         <button
           type="button"
           class="btn-close"
@@ -540,143 +540,145 @@
               </ul>
             </div>
           </div>
-          <br />
-  
-          <!-- Right Sidebar: Task Details -->
-          <div class="details-container border-left-right ps-3">
-            <h5 class="details-header mb-3">Details</h5>
-  
-            <!-- Due Date Section -->
-            <div class="detail-item">
-              <label for="dueDate" class="form-label"
-                ><strong>Due Date:</strong></label
-              >
-              <div class="input-group">
-                <input
-                  id="dueDate"
-                  class="form-control"
-                  style="max-width: 200px"
-                  placeholder="DD-MM-YYYY"
-                  name="dueDate"
-                  [(ngModel)]="dueDateValue"
-                  (ngModelChange)="onChange('dueDate', $event)"
-                  ngbDatepicker
-                  #d="ngbDatepicker"
-                />
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  (click)="d.toggle()"
+          <div class="col-lg-4 col-xl-4 col-12">
+            <div class="details-container border-left-right ps-3">
+              <h5 class="details-header mb-3">Details</h5>
+    
+              <!-- Due Date Section -->
+              <div class="detail-item">
+                <label for="dueDate" class="form-label"
+                  ><strong>Due Date:</strong></label
                 >
-                  <i class="bi bi-calendar"></i>
+                <div class="input-group">
+                  <input
+                    id="dueDate"
+                    class="form-control"
+                    style="max-width: 200px"
+                    placeholder="DD-MM-YYYY"
+                    name="dueDate"
+                    [(ngModel)]="dueDateValue"
+                    (ngModelChange)="onChange('dueDate', $event)"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="d.toggle()"
+                  >
+                    <i class="bi bi-calendar"></i>
+                  </button>
+                </div>
+              </div>
+    
+              <!-- Assignee Section -->
+              <div class="detail-item mb-3">
+                <label for="assignTo" class="form-label"
+                  ><strong>Assignee:</strong></label
+                >
+                <ng-select
+                  id="assignTo"
+                  class="form-select custom-ng-select-option"
+                  placeholder="Select Assign User"
+                  [multiple]="true"
+                  bindLabel="userName"
+                  bindValue="_id"
+                  [items]="userList"
+                  [(ngModel)]="assignTo"
+                  (ngModelChange)="onChange('assignTo', $event)"
+                >
+                </ng-select>
+              </div>
+    
+              <!-- Category Section -->
+              <div class="detail-item mb-3">
+                <label for="category" class="form-label"
+                  ><strong>Select Priority:</strong></label
+                >
+                <ng-select
+                  id="category"
+                  class="form-select custom-ng-select-option"
+                  placeholder="Pick a Category"
+                  [items]="categoryList"
+                  [(ngModel)]="selectedCategory"
+                  (ngModelChange)="onChange('pickACategory', $event)"
+                >
+                </ng-select>
+              </div>
+    
+              <!-- task status Section -->
+              <div class="detail-item mb-3">
+                <label for="taskstatus" class="form-label"
+                  ><strong>Task Status:</strong></label
+                >
+                <ng-select
+                  id="taskstatus"
+                  class="form-select custom-ng-select-option"
+                  placeholder="Pick a Status"
+                  [items]="statusTaskList"
+                  [(ngModel)]="selectedStatus"
+                  (ngModelChange)="onChange('taskStatus', $event)"
+                >
+                </ng-select>
+              </div>
+    
+              <!-- task type Section -->
+              <div class="detail-item mb-3">
+                <label for="type" class="form-label"
+                  ><strong>Task Type:</strong></label
+                >
+                <ng-select
+                  id="type"
+                  class="form-select custom-ng-select-option"
+                  placeholder="Pick a Type"
+                  [items]="taskTypeList"
+                  [(ngModel)]="selectedTaskType"
+                  (ngModelChange)="onChange('type', $event)"
+                >
+                </ng-select>
+              </div>
+    
+              <div class="detail-item mb-3">
+                <button
+                  class="btn btn-sm btn-primary"
+                  [(ngModel)]="selectedStatus"
+                  (click)="onChangeMyday('MyDay')"
+                >
+                  Add to My Day
+                </button>
+              </div>
+    
+              <div class="detail-item mb-3">
+                <button
+                  class="btn btn-sm btn-success"
+                  (click)="onChange('completedTask', true)"
+                >
+                  Completed
+                </button>
+              </div>
+    
+              <div class="detail-item mb-3">
+                <button
+                  class="btn btn-sm btn-secondary"
+                  (click)="onChange('completedTask', false)"
+                >
+                  Not Completed
+                </button>
+              </div>
+    
+              <div class="detail-item mb-3">
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteTask(modalTask?._id)"
+                >
+                  Delete
                 </button>
               </div>
             </div>
-  
-            <!-- Assignee Section -->
-            <div class="detail-item mb-3">
-              <label for="assignTo" class="form-label"
-                ><strong>Assignee:</strong></label
-              >
-              <ng-select
-                id="assignTo"
-                class="form-select custom-ng-select-option"
-                placeholder="Select Assign User"
-                [multiple]="true"
-                bindLabel="userName"
-                bindValue="_id"
-                [items]="userList"
-                [(ngModel)]="assignTo"
-                (ngModelChange)="onChange('assignTo', $event)"
-              >
-              </ng-select>
-            </div>
-  
-            <!-- Category Section -->
-            <div class="detail-item mb-3">
-              <label for="category" class="form-label"
-                ><strong>Select Priority:</strong></label
-              >
-              <ng-select
-                id="category"
-                class="form-select custom-ng-select-option"
-                placeholder="Pick a Category"
-                [items]="categoryList"
-                [(ngModel)]="selectedCategory"
-                (ngModelChange)="onChange('pickACategory', $event)"
-              >
-              </ng-select>
-            </div>
-  
-            <!-- task status Section -->
-            <div class="detail-item mb-3">
-              <label for="taskstatus" class="form-label"
-                ><strong>Task Status:</strong></label
-              >
-              <ng-select
-                id="taskstatus"
-                class="form-select custom-ng-select-option"
-                placeholder="Pick a Status"
-                [items]="statusTaskList"
-                [(ngModel)]="selectedStatus"
-                (ngModelChange)="onChange('taskStatus', $event)"
-              >
-              </ng-select>
-            </div>
-  
-            <!-- task type Section -->
-            <div class="detail-item mb-3">
-              <label for="type" class="form-label"
-                ><strong>Task Type:</strong></label
-              >
-              <ng-select
-                id="type"
-                class="form-select custom-ng-select-option"
-                placeholder="Pick a Type"
-                [items]="taskTypeList"
-                [(ngModel)]="selectedTaskType"
-                (ngModelChange)="onChange('type', $event)"
-              >
-              </ng-select>
-            </div>
-  
-            <div class="detail-item mb-3">
-              <button
-                class="btn btn-sm btn-primary"
-                [(ngModel)]="selectedStatus"
-                (click)="onChangeMyday('MyDay')"
-              >
-                Add to My Day
-              </button>
-            </div>
-  
-            <div class="detail-item mb-3">
-              <button
-                class="btn btn-sm btn-success"
-                (click)="onChange('completedTask', true)"
-              >
-                Completed
-              </button>
-            </div>
-  
-            <div class="detail-item mb-3">
-              <button
-                class="btn btn-sm btn-secondary"
-                (click)="onChange('completedTask', false)"
-              >
-                Not Completed
-              </button>
-            </div>
-  
-            <div class="detail-item mb-3">
-              <button
-                class="btn btn-sm btn-danger"
-                (click)="deleteTask(modalTask?._id)"
-              >
-                Delete
-              </button>
-            </div>
           </div>
+  
+          <!-- Right Sidebar: Task Details -->
+         
         </div>
       </div>
     </div>
