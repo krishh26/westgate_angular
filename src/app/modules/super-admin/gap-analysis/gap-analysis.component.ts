@@ -30,8 +30,11 @@ export class GapAnalysisComponent {
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
   categorywiseList: string[] = ['DPS/Framework', 'DTD'];
+  projectwiseList: string[] = ['Product', 'Development/Service', 'Staff Augmentation' ];
   selectedCategory: string | undefined;
-
+  selectedProduct: string | undefined;
+  selectedCategorisation: string = '';
+  selectedProjectType: string = '';
 
   constructor(
     private superService: SuperadminService,
@@ -96,14 +99,35 @@ export class GapAnalysisComponent {
     return formattedDate;
   }
 
-  onCategoryChange(categorisation: string) {
-    this.getGapAnalysisData('', categorisation);
-    this.getGapAnalysisDataDropped('', categorisation);
-    this.getGapAnalysisDataNoSupplier('', categorisation);
-  }
+//   onCategoryChange(categorisation: string) {
+//     this.getGapAnalysisData('', categorisation);
+//     this.getGapAnalysisDataDropped('', categorisation);
+//     this.getGapAnalysisDataNoSupplier('', categorisation);
+//   }
 
+//   onProductChange(projectType: string) {
+//     this.getGapAnalysisData('', '', projectType);
+//     this.getGapAnalysisDataDropped('', '', projectType);
+//     this.getGapAnalysisDataNoSupplier('', '', projectType);
+// }
 
-  getGapAnalysisData(searchText?: string, categorisation?: string) {
+onCategoryChange(categorisation: string) {
+  this.selectedCategorisation = categorisation;
+  this.filterGapAnalysisData();
+}
+
+onProductChange(projectType: string) {
+  this.selectedProjectType = projectType;
+  this.filterGapAnalysisData();
+}
+
+filterGapAnalysisData() {
+  this.getGapAnalysisData('', this.selectedCategorisation, this.selectedProjectType);
+  this.getGapAnalysisDataDropped('', this.selectedCategorisation, this.selectedProjectType);
+  this.getGapAnalysisDataNoSupplier('', this.selectedCategorisation, this.selectedProjectType);
+}
+
+  getGapAnalysisData(searchText?: string, categorisation?: string, projectType?:string) {
     let param: any = {};
 
     if (searchText) {
@@ -120,6 +144,10 @@ export class GapAnalysisComponent {
 
     if (categorisation) {
       param['categorisation'] = categorisation;
+    }
+
+    if (projectType) {
+      param['projectType'] = projectType;
     }
 
     this.showLoader = true;
@@ -142,7 +170,7 @@ export class GapAnalysisComponent {
     );
   }
 
-  getSearchGapAnalysisData(searchText?: string, categorisation?: string) {
+  getSearchGapAnalysisData(searchText?: string, categorisation?: string, projectType?: string) {
     let params = new HttpParams();
 
     if (searchText) {
@@ -165,6 +193,9 @@ export class GapAnalysisComponent {
     if (categorisation) {
       params = params.set('categorisation', categorisation);
     }
+    if (projectType) {
+      params = params.set('projectType', projectType);
+    }
 
     this.showLoader = true;
     this.gapAnalysisData = [];
@@ -186,7 +217,7 @@ export class GapAnalysisComponent {
     );
   }
 
-  getGapAnalysisDataDropped(searchText?: string, categorisation?: string) {
+  getGapAnalysisDataDropped(searchText?: string, categorisation?: string,  projectType?: string) {
     let param: any = {};
 
     if (searchText) {
@@ -209,6 +240,10 @@ export class GapAnalysisComponent {
       param['categorisation'] = categorisation;
     }
 
+    if (projectType) {
+      param['projectType'] = projectType;
+    }
+
     this.showLoader = true;
     this.gapAnalysisDataDropped = [];
 
@@ -229,7 +264,7 @@ export class GapAnalysisComponent {
     );
   }
 
-  getGapAnalysisDataNoSupplier(searchText?: string, categorisation?: string) {
+  getGapAnalysisDataNoSupplier(searchText?: string, categorisation?: string, projectType?:string) {
     let param: any = {
       page: this.pageNoSupplier,
       pagesize: this.pagesize,
@@ -253,6 +288,10 @@ export class GapAnalysisComponent {
 
     if (categorisation) {
       param['categorisation'] = categorisation;
+    }
+
+    if (projectType) {
+      param['projectType'] = projectType;
     }
 
     this.showLoader = true;
