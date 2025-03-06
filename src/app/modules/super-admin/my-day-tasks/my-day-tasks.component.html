@@ -162,7 +162,7 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-between">
-                      <p>{{ comment?.comment }}</p>
+                      <p  [ngClass]="{ 'text-danger': comment?.userDetail?.role === 'Admin' }" >{{ comment?.comment }}</p>
                     </div>
                   </li>
                 </ul>
@@ -253,7 +253,7 @@
               <p>{{ modalTask?.discription }}</p>
               <p *ngIf="!modalTask?.discription">No Record Found.</p>
             </div>
-  
+
             <div class="mb-3">
               <h6><strong>Assigned Project</strong></h6>
               <a (click)="projectDetails(modalTask?.project?._id)" href="javascript:;">{{ modalTask?.project?.projectName
@@ -356,7 +356,7 @@
                   </div>
                   <div class="d-flex flex-column mb-3">
                     <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
-                      <p>{{ comment.comment }}</p>
+                      <p  [ngClass]="{ 'text-danger': comment?.userDetail?.role === 'Admin' }" >{{ comment.comment }}</p>
                       <div *ngIf="comment?.commentId">
                         <!-- <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
                           Edit
@@ -386,12 +386,12 @@
               </ul>
             </div>
           </div>
-  
+
           <!-- Right Sidebar: Task Details -->
           <div class="col-lg-4 col-xl-4 col-12">
             <div class="details-container border-left-right ps-3">
               <h5 class="details-header mb-3">Details</h5>
-    
+
               <!-- Due Date Section -->
               <div class="detail-item">
                 <label for="dueDate" class="form-label"><strong>Due Date:</strong></label>
@@ -404,7 +404,7 @@
                   </button>
                 </div>
               </div>
-    
+
               <!-- Assignee Section -->
               <div class="detail-item mb-3">
                 <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
@@ -413,7 +413,7 @@
                   (ngModelChange)="onChange('assignTo', $event)">
                 </ng-select>
               </div>
-    
+
               <!-- Assignee Section -->
               <!-- <div class="detail-item mb-3">
                   <label for="assignTo" class="form-label"><strong>Assign Project :</strong></label>
@@ -422,7 +422,7 @@
                     (ngModelChange)="onChange('assignProjectId', $event)">
                   </ng-select>
                 </div> -->
-    
+
               <!-- Category Section -->
               <div class="detail-item mb-3">
                 <label for="category" class="form-label"><strong>Select Priority:</strong></label>
@@ -430,7 +430,7 @@
                   [items]="categoryList" [(ngModel)]="selectedCategory" (ngModelChange)="onChange('pickACategory', $event)">
                 </ng-select>
               </div>
-    
+
               <!-- task status Section -->
               <div class="detail-item mb-3">
                 <label for="taskstatus" class="form-label"><strong>Task Status:</strong></label>
@@ -438,7 +438,7 @@
                   [items]="statusTaskList" [(ngModel)]="selectedStatus" (ngModelChange)="onChange('taskStatus', $event)">
                 </ng-select>
               </div>
-    
+
               <!-- task type Section -->
               <div class="detail-item mb-3">
                 <label for="type" class="form-label"><strong>Task Type:</strong></label>
@@ -446,7 +446,7 @@
                   [items]="taskTypeList" [(ngModel)]="selectedTaskType" (ngModelChange)="onChange('type', $event)">
                 </ng-select>
               </div>
-    
+
               <div class="detail-item mb-3">
                 <button class="btn btn-sm btn-secondary mb-2" (click)="removeTaskFromMyDay(modalTask?._id)">
                   Remove From My Day
@@ -468,7 +468,7 @@
             </div>
           </div>
         </div>
-       
+
       </div>
     </div>
   </div>
