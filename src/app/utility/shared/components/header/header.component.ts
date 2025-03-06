@@ -12,6 +12,9 @@ import { NotificationService } from 'src/app/services/notification/notification.
 export class HeaderComponent {
 
   loginUser: any;
+  isMobileNavOpen = false;
+  isDropdownOpen = false;
+
 
   constructor(
     private authService: AuthService,
@@ -23,15 +26,30 @@ export class HeaderComponent {
   }
 
   navUrlArr = [
-    // { title: 'Home', route: ['/boss-user/home'] },
-    // { title: 'Live Projects', route: ['/boss-user/project-list'] },
-    { title: 'TO DO TASKS', route: ['/boss-user/todo-task'] },
-
+    { title: 'TO DO TASKS', route: '/boss-user/todo-task' },
   ];
+
 
 
   logout(): void {
     this.authService.logout();
+    this.closeMobileNav();
   }
 
+  // Toggle Mobile Navigation
+  toggleMobileNav() {
+    this.isMobileNavOpen = !this.isMobileNavOpen;
+  }
+
+  // Close Mobile Navigation when clicking a link
+  closeMobileNav() {
+    this.isMobileNavOpen = false;
+    this.isDropdownOpen = false;
+  }
+
+  // Toggle Dropdown Menu
+  toggleDropdown(event: Event) {
+    event.stopPropagation(); // Prevents event bubbling
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 }

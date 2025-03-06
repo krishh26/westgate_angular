@@ -12,7 +12,9 @@ import { NotificationService } from 'src/app/services/notification/notification.
 })
 export class ProcessManagerHeaderComponent {
 
-loginUser: any;
+  loginUser: any;
+  isMobileNavOpen = false;
+  isDropdownOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -24,17 +26,32 @@ loginUser: any;
   }
 
   navUrlArr = [
-    // { title: 'Home', route: ['/boss-user/home'] },
-    // { title: 'Live Projects', route: ['/boss-user/project-list'] },
-    { title: 'Dashboard', route: ['/process-manager/dashboard-process-manager'] },
-    { title: 'Project Tracker', route: ['/process-manager/process-manager-tracker'] },
-    { title: 'TO DO TASKS', route: ['/process-manager/to-do-tasks-process-manager'] },
+    { title: 'Dashboard', route: '/process-manager/dashboard-process-manager' },
+    { title: 'Project Tracker', route: '/process-manager/process-manager-tracker' },
+    { title: 'TO DO TASKS', route: '/process-manager/to-do-tasks-process-manager' },
 
   ];
 
 
   logout(): void {
     this.authService.logout();
+    this.closeMobileNav();
   }
 
+  // Toggle Mobile Navigation
+  toggleMobileNav() {
+    this.isMobileNavOpen = !this.isMobileNavOpen;
+  }
+
+  // Close Mobile Navigation when clicking a link
+  closeMobileNav() {
+    this.isMobileNavOpen = false;
+    this.isDropdownOpen = false;
+  }
+
+  // Toggle Dropdown Menu
+  toggleDropdown(event: Event) {
+    event.stopPropagation(); // Prevents event bubbling
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 }

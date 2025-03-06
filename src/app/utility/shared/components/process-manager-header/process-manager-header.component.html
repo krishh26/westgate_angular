@@ -33,3 +33,56 @@
     </nav>
   </div>
 </header>
+
+
+
+
+<!-- ======= Header ======= -->
+<header id="header">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <a href="javascript:;" class="logo me-auto">
+      <img src="assets/img/westgate.svg" alt="Logo" class="img-fluid" />
+    </a>
+
+    <!-- Mobile Toggle Button -->
+    <button class="mobile-nav-toggle" (click)="toggleMobileNav()">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <nav id="navbar" class="navbar w-100" [ngClass]="{ 'active': isMobileNavOpen }">
+      <ul class="mx-auto">
+        <li class="nav-link noarrowdrop" *ngFor="let item of navUrlArr">
+          <a [class.active]="router.url.includes(item.route)" class="nav-link" data-toggle="tab"
+            [routerLink]="item.route" (click)="closeMobileNav()">
+            <i *ngIf="item.title == 'Live Projects'" class="bi bi-dot text-danger p-22"></i>
+            <span>{{ item.title }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- User Profile Dropdown -->
+    <nav class="navbar">
+      <ul class="d-block">
+        <li class="dropdown">
+          <a href="javascript:;" (click)="toggleDropdown($event)">
+            <span class="mobile-hide">
+              {{
+              loginUser?.name.length > 20
+              ? (loginUser?.name | slice:0:20) + "..."
+              : loginUser?.name
+              }}
+            </span>
+            <i class="bi bi-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
+            <li><a routerLink="/process-manager/process-manager-user-profile" (click)="closeMobileNav()">Profile Setting</a>
+            </li>
+            <li><a routerLink="/process-manager/change-password" (click)="closeMobileNav()">Security</a></li>
+            <li><a style="cursor: pointer" (click)="logout(); closeMobileNav()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

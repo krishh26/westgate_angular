@@ -10,6 +10,8 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 })
 export class ProjectMangerHeaderTwoComponent {
   loginUser: any;
+  isMobileNavOpen = false;
+  isDropdownOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -28,5 +30,23 @@ export class ProjectMangerHeaderTwoComponent {
 
   logout(): void {
     this.authService.logout();
+    this.closeMobileNav();
+  }
+
+  // Toggle Mobile Navigation
+  toggleMobileNav() {
+    this.isMobileNavOpen = !this.isMobileNavOpen;
+  }
+
+  // Close Mobile Navigation when clicking a link
+  closeMobileNav() {
+    this.isMobileNavOpen = false;
+    this.isDropdownOpen = false;
+  }
+
+  // Toggle Dropdown Menu
+  toggleDropdown(event: Event) {
+    event.stopPropagation(); // Prevents event bubbling
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }
