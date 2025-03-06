@@ -27,7 +27,8 @@ export enum SuperAdminEndPoint {
   GET_GAP_ANALYSIS = '/project/gap-analysis',
   GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY = '/project/gap-analysis-dafstatus-reason',
   GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED = '/project/gap-analysis-nosuppliermatched-reason',
-  EXPORT_EXCEL = '/project/export-csv'
+  EXPORT_EXCEL = '/project/export-csv',
+  EXPORT_DATABASE ='/database/export'
 }
 
 @Injectable({
@@ -46,6 +47,10 @@ export class SuperadminService {
 
   exportProjects() {
     window.open(this.baseUrl + SuperAdminEndPoint.EXPORT_EXCEL, "_blank");
+  }
+
+  exportDatabase() {
+    window.open(this.baseUrl + SuperAdminEndPoint.EXPORT_DATABASE, "_blank");
   }
 
   getDashboardList(params: any): Observable<any> {
