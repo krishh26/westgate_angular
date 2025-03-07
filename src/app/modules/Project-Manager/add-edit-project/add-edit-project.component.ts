@@ -61,10 +61,8 @@ export class AddEditProjectComponent {
   ];
 
   categorisationList = [
-    {
-      categorisationtype: 'DPS/Framework',
-      categorisationvalue: 'DPS/Framework',
-    },
+    { categorisationtype: 'DPS', categorisationvalue: 'DPS' },
+    { categorisationtype: 'Framework', categorisationvalue: 'Framework' },
     { categorisationtype: 'DTD', categorisationvalue: 'DTD' },
   ];
 
@@ -74,7 +72,7 @@ export class AddEditProjectComponent {
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getcategoryList();

@@ -61,7 +61,8 @@ export class AddProjectComponent {
   ]
 
   categorisationList = [
-    { categorisationtype: 'DPS/Framework', categorisationvalue: 'DPS/Framework' },
+    { categorisationtype: 'DPS', categorisationvalue: 'DPS' },
+    { categorisationtype: 'Framework', categorisationvalue: 'Framework' },
     { categorisationtype: 'DTD', categorisationvalue: 'DTD' },
   ]
 

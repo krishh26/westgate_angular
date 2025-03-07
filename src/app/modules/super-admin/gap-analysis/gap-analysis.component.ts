@@ -29,8 +29,8 @@ export class GapAnalysisComponent {
   pageFailed: number = 1;
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
-  categorywiseList: string[] = ['DPS/Framework', 'DTD'];
-  projectwiseList: string[] = ['Product', 'Development/Service', 'Staff Augmentation' ];
+  categorywiseList: string[] = ['DPS', 'Framework', 'DTD'];
+  projectwiseList: string[] = ['Product', 'Development/Service', 'Staff Augmentation'];
   selectedCategory: string | undefined;
   selectedProduct: string | undefined;
   selectedCategorisation: string = '';
@@ -99,35 +99,35 @@ export class GapAnalysisComponent {
     return formattedDate;
   }
 
-//   onCategoryChange(categorisation: string) {
-//     this.getGapAnalysisData('', categorisation);
-//     this.getGapAnalysisDataDropped('', categorisation);
-//     this.getGapAnalysisDataNoSupplier('', categorisation);
-//   }
+  //   onCategoryChange(categorisation: string) {
+  //     this.getGapAnalysisData('', categorisation);
+  //     this.getGapAnalysisDataDropped('', categorisation);
+  //     this.getGapAnalysisDataNoSupplier('', categorisation);
+  //   }
 
-//   onProductChange(projectType: string) {
-//     this.getGapAnalysisData('', '', projectType);
-//     this.getGapAnalysisDataDropped('', '', projectType);
-//     this.getGapAnalysisDataNoSupplier('', '', projectType);
-// }
+  //   onProductChange(projectType: string) {
+  //     this.getGapAnalysisData('', '', projectType);
+  //     this.getGapAnalysisDataDropped('', '', projectType);
+  //     this.getGapAnalysisDataNoSupplier('', '', projectType);
+  // }
 
-onCategoryChange(categorisation: string) {
-  this.selectedCategorisation = categorisation;
-  this.filterGapAnalysisData();
-}
+  onCategoryChange(categorisation: string) {
+    this.selectedCategorisation = categorisation;
+    this.filterGapAnalysisData();
+  }
 
-onProductChange(projectType: string) {
-  this.selectedProjectType = projectType;
-  this.filterGapAnalysisData();
-}
+  onProductChange(projectType: string) {
+    this.selectedProjectType = projectType;
+    this.filterGapAnalysisData();
+  }
 
-filterGapAnalysisData() {
-  this.getGapAnalysisData('', this.selectedCategorisation, this.selectedProjectType);
-  this.getGapAnalysisDataDropped('', this.selectedCategorisation, this.selectedProjectType);
-  this.getGapAnalysisDataNoSupplier('', this.selectedCategorisation, this.selectedProjectType);
-}
+  filterGapAnalysisData() {
+    this.getGapAnalysisData('', this.selectedCategorisation, this.selectedProjectType);
+    this.getGapAnalysisDataDropped('', this.selectedCategorisation, this.selectedProjectType);
+    this.getGapAnalysisDataNoSupplier('', this.selectedCategorisation, this.selectedProjectType);
+  }
 
-  getGapAnalysisData(searchText?: string, categorisation?: string, projectType?:string) {
+  getGapAnalysisData(searchText?: string, categorisation?: string, projectType?: string) {
     let param: any = {};
 
     if (searchText) {
@@ -217,7 +217,7 @@ filterGapAnalysisData() {
     );
   }
 
-  getGapAnalysisDataDropped(searchText?: string, categorisation?: string,  projectType?: string) {
+  getGapAnalysisDataDropped(searchText?: string, categorisation?: string, projectType?: string) {
     let param: any = {};
 
     if (searchText) {
@@ -264,7 +264,7 @@ filterGapAnalysisData() {
     );
   }
 
-  getGapAnalysisDataNoSupplier(searchText?: string, categorisation?: string, projectType?:string) {
+  getGapAnalysisDataNoSupplier(searchText?: string, categorisation?: string, projectType?: string) {
     let param: any = {
       page: this.pageNoSupplier,
       pagesize: this.pagesize,
