@@ -327,13 +327,13 @@
         <div class="container d-flex justify-content-between align-items-center">
           <p class="mb-0">
             <strong>Assign Bid User:
-              {{ projectDetails?.assignBidmanager?.length ? projectDetails.assignBidmanager[0]?.name : 'N/A' }}</strong>
+              {{projectDetails?.assignBidmanager?.[0]?.name}}</strong>
           </p>
           <p class="mb-0">
             <strong>Due Date:
               {{
-              projectDetails?.assignBidmanager?.length ? (projectDetails.assignBidmanager[0]?.dueDate | date :
-              "dd/MM/yyyy") : 'N/A'
+              (projectDetails?.assignBidmanager?.[0]?.dueDate | date :
+              "dd/MM/yyyy")
               }}</strong>
           </p>
         </div>
