@@ -22,7 +22,7 @@
               Logs
             </a>
 
-            <a (click)="goBack()"  class="btn btn-primary text-dark">
+            <a (click)="goBack()" class="btn btn-primary text-dark">
               Back
             </a>
           </div>
@@ -325,23 +325,33 @@
 
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Bid User : {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          <p class="mb-0">
+            <strong>Assign Bid User:
+              {{ projectDetails?.assignBidmanager?.length ? projectDetails.assignBidmanager[0]?.name : 'N/A' }}</strong>
           </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
+          <p class="mb-0">
+            <strong>Due Date:
+              {{
+              projectDetails?.assignBidmanager?.length ? (projectDetails.assignBidmanager[0]?.dueDate | date :
+              "dd/MM/yyyy") : 'N/A'
+              }}</strong>
+          </p>
         </div>
       </section>
 
       <div class="row align-items-end mb-4">
         <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-              [(ngModel)]="assignTo">
-            </ng-select>
-          </div>
+          <form autocomplete="off">
+            <div class="detail-item">
+              <label>Assign To</label>
+              <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+                class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
+                [(ngModel)]="assignTo">
+              </ng-select>
+            </div>
+          </form>
         </div>
+
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
             <label>Due Date</label>
@@ -353,8 +363,9 @@
             </div>
           </div>
         </div>
+
         <div class="col-lg-2 col-md-2 col-sm-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="assignUser()">
+          <button type="button" class="btn btn-primary w-100" (click)="assignUser()">
             Submit
           </button>
         </div>
@@ -440,8 +451,7 @@
             </div>
 
             <div class="comment-list comments-section">
-              <div class="comment-item border rounded p-3 mb-2"
-                *ngFor="let droppedreason of getDroppedAfterReasonList">
+              <div class="comment-item border rounded p-3 mb-2" *ngFor="let droppedreason of getDroppedAfterReasonList">
                 <div class="comment mb-3">
                   <div class="d-flex justify-content-between align-items-center">
                     <p class="mb-0 fw-bold">
@@ -926,3 +936,35 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewClientDocLabel">
+          Client Document : {{ selectedDocument?.name }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-danger" role="alert">
+        ⚠ Important Notice : If you are unable to view any documents, please
+        note that the files may have been uploaded as a ZIP file. Kindly
+        download the ZIP file to access the documents.
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="modal-body">
+            <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
+              <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
+                height="600px"></ngx-extended-pdf-viewer>
+            </ng-container>
+            <ng-template #otherFormats>
+              <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
+                [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px"></iframe>
+              <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
