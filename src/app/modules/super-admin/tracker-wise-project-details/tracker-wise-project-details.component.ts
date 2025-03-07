@@ -47,7 +47,7 @@ export class TrackerWiseProjectDetailsComponent {
   documentName: string = '';
   loginName: string = '';
   isEditing = false;
-  status: string = 'Expired';
+  status: string = 'Awaiting';
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
@@ -146,7 +146,7 @@ export class TrackerWiseProjectDetailsComponent {
   selectedFailReason: string = '';
   selectedDroppedAfterFeasibilityReason: string = '';
   feasibilityCommentData: any[] = [];
-  bidStatus: string = 'Expired';
+  bidStatus: string = '';
   bidManagerStatusComment: FormControl = new FormControl('');
   feasibilityStatus: string = 'Expired';
   bidCommentData: any[] = [];
@@ -1219,7 +1219,7 @@ export class TrackerWiseProjectDetailsComponent {
 
       payload = {
         projectType: this.projectDetails.projectType,
-        subContracting: this.subContracting || '',
+        // subContracting: this.subContracting || '',
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         westGetDocument: this.projectDetails?.westGetDocument || [],
