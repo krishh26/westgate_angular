@@ -47,7 +47,7 @@ export class TrackerWiseProjectDetailsComponent {
   documentName: string = '';
   loginName: string = '';
   isEditing = false;
-  status: string = 'Awaiting';
+  status: string = '';
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
@@ -325,14 +325,8 @@ export class TrackerWiseProjectDetailsComponent {
       return;
     }
 
-    // Format the dueDate
-    let formattedDueDate: string | null = null;
-    if (this.dueDate) {
-      const { year, month, day } = this.dueDate;
-      formattedDueDate = `${year}-${month.toString().padStart(2, '0')}-${day
-        .toString()
-        .padStart(2, '0')}`;
-    }
+    // Directly use dueDate (since it's already a string from input type="date")
+    const formattedDueDate = this.dueDate ? this.dueDate : null;
 
     const payload = {
       task: this.projectDetails?.projectName,

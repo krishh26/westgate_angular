@@ -280,7 +280,7 @@
           <p class="mb-0">
             <strong>Due Date:
               {{
-            (projectDetails?.assignBidmanager?.[0]?.dueDate | date :
+              (projectDetails?.assignBidmanager?.[0]?.dueDate | date :
               "dd/MM/yyyy")
               }}</strong>
           </p>
@@ -295,7 +295,7 @@
               <label>Assign To</label>
               <ng-select style="padding: 0px !important" placeholder="Select Assign User"
                 class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-                [(ngModel)]="assignTo">
+                [(ngModel)]="assignTo" name="assignTo">
               </ng-select>
             </div>
           </form>
@@ -305,10 +305,7 @@
           <div class="detail-item">
             <label>Due Date</label>
             <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input class="form-control" type="date" [(ngModel)]="dueDate" name="dueDate" />
             </div>
           </div>
         </div>
@@ -319,6 +316,7 @@
           </button>
         </div>
       </div>
+
 
 
       <div class="row align-items-end mb-4">

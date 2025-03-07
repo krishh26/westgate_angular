@@ -289,40 +289,6 @@
         </ng-container>
       </div>
 
-      <!-- <section class="pageheader bg-dark mb-3">
-        <div class="container">
-          <p><strong>Assign Feasibility User : {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong></p>
-        </div>
-      </section> -->
-
-      <!-- <div class="row align-items-end mb-4">
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id"
-              [items]="FeasibilityuserList" [(ngModel)]="assignTo">
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Due Date</label>
-            <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="assignUser()">
-            Submit
-          </button>
-        </div>
-      </div> -->
-
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
           <p class="mb-0">
@@ -346,7 +312,7 @@
               <label>Assign To</label>
               <ng-select style="padding: 0px !important" placeholder="Select Assign User"
                 class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-                [(ngModel)]="assignTo">
+                [(ngModel)]="assignTo" name="assignTo">
               </ng-select>
             </div>
           </form>
@@ -356,10 +322,7 @@
           <div class="detail-item">
             <label>Due Date</label>
             <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input class="form-control" type="date" [(ngModel)]="dueDate" name="dueDate" />
             </div>
           </div>
         </div>
@@ -370,6 +333,7 @@
           </button>
         </div>
       </div>
+
       <div class="col-lg-12 col-xl-12 col-12 mb-2">
         <div class="card shadow-sm p-4">
           <!-- Header -->

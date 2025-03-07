@@ -45,7 +45,7 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   loginName: string = '';
   commentName: string = '';
   isEditing = false;
-  status: string = 'Expired';
+  status: string = '';
   FeasibilityOtherDocuments: any = [];
   password = 'password';
   showPassword = false;
@@ -740,22 +740,23 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       this.notificationService.showError('Please select assign to user');
       return;
     }
-    if (!this.dueDate) {
-      this.notificationService.showError('Please select a due date');
-      return;
-    }
+
+    // Directly use dueDate (since it's already a string from input type="date")
+    const formattedDueDate = this.dueDate ? this.dueDate : null;
+
     const payload = {
       task: this.projectDetails?.projectName,
       assignTo: [`${this.assignTo}`],
       project: this.projectId,
-      dueDate: this.formatDate(this.dueDate),
+      dueDate: formattedDueDate,
     };
+
     console.log('this is data', payload);
+
     this.superService.createTask(payload).subscribe(
       (response) => {
         if (response?.status === true) {
-          this.notificationService.showSuccess('user Assign  Successfully');
-          this.getProjectDetails();
+          this.notificationService.showSuccess('User assigned successfully');
         } else {
           this.notificationService.showError(response?.message);
         }
