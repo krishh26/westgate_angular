@@ -418,7 +418,7 @@ export class FeasibilityManagerProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectStrips = response?.data?.data;
-          console.log(this.projectStrips);
+
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

@@ -234,7 +234,7 @@ export class SuperAdminProjectDetailsComponent {
         }
       });
     }
-  
+
 
   getProjectLogs() {
     this.showLoader = true;
@@ -1217,7 +1217,7 @@ export class SuperAdminProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectStrips = response?.data?.data;
-          console.log(this.projectStrips);
+
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

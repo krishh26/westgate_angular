@@ -113,7 +113,7 @@ export class FeasibilityProjectDetailsComponent {
     private fb: FormBuilder,
     private projectManagerService: ProjectManagerService,
     private localStorageService: LocalStorageService,
-    
+
   ) {
     this.loginUser = this.localStorageService.getLogger();
     this.route.queryParams.subscribe((params) => {
@@ -373,7 +373,7 @@ export class FeasibilityProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectStrips = response?.data?.data;
-          console.log(this.projectStrips);
+
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
