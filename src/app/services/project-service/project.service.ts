@@ -30,7 +30,8 @@ export enum ProjectEndPoint {
   DELETE_FES_BID_COMMENT = '/project/delete-comment',
   DELETE_FAILED_REASON = '/project/delete-failreason',
   DELETE_DROPPED_REASON = '/project/delete-dafstatusreason',
-  DELETE_BID_COMMENT = '/project/delete-bidstatuscomment'
+  DELETE_BID_COMMENT = '/project/delete-bidstatuscomment',
+  DELETE_DOCUMENT = '/project/delete-document'
 }
 
 @Injectable({
@@ -400,6 +401,16 @@ export class ProjectService {
     return this.httpClient
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_PROJECT + '/' + id);
   }
+
+  deleteDocument(projectId: string, payload: { name: string; type: string }): Observable<any> {
+    return this.httpClient.delete<any>(
+      `${this.baseUrl}${ProjectEndPoint.DELETE_DOCUMENT}/${projectId}`, // Pass projectId in URL
+      {
+        body: payload, // Send name & type in body
+      }
+    );
+  }
+
 
   deleteTask(id: any): Observable<any> {
     return this.httpClient

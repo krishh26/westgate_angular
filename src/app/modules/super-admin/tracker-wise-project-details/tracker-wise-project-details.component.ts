@@ -248,6 +248,40 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+  deleteDocuments(name: string, type: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete ${type}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+
+        const payload = { name, type }; // Only sending name & type
+
+        this.projectService.deleteDocument(this.projectId, payload).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess(`${type} successfully deleted`);
+              this.router.navigate(['/super-admin/status-wise-tracker']);
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
   getProjectLogs() {
     this.showLoader = true;
     this.projectService.getProjectLogs(this.projectId).subscribe(
