@@ -11,11 +11,18 @@
               <label class="form-check-label" for="expiredProject">Expired</label>
             </div>
 
-            <!-- DPS/Framework Checkbox (Value = 1) -->
+            <!-- DPS Checkbox (Value = 1) -->
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="dpsFramework"
-                (change)="updateCategorisation('DPS/Framework', $event)" />
-              <label class="form-check-label" for="dpsFramework">DPS/Framework</label>
+              <input class="form-check-input" type="checkbox" id="dps"
+                (change)="updateCategorisation('DPS', $event)" />
+              <label class="form-check-label" for="dps">DPS</label>
+            </div>
+
+             <!-- Framework Checkbox (Value = 3) -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="Framework"
+                (change)="updateCategorisation('Framework', $event)" />
+              <label class="form-check-label" for="Framework">Framework</label>
             </div>
 
             <!-- DTD Checkbox (Value = 2) -->
@@ -25,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12 mob-mb1">          
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12 mob-mb1">
           <form (ngSubmit)="getDataByStatus()">
             <div class="row align-items-center">
               <div class="col-lg-4 col-xl-4 col-sm-4 col-md-4 col-12 mob-mb1">
@@ -41,7 +48,7 @@
               <div class="col-lg-4 col-xl-4 col-sm-4 col-md-4 col-12">
                 <button class="btn btn-primary btn-lg mob-w-100" type="submit">submit</button>
               </div>
-            </div> 
+            </div>
           </form>
         </div>
         <div class="col-lg-2 col-xl-2 col-12">
@@ -71,7 +78,7 @@
           title="Search using BOS ID, Project name, Client name, Website, Notice reference">
         </i>
       </div>
-      
+
     </div>
 
     <div class="container-fluid">
