@@ -432,22 +432,48 @@ export class TodoTasksComponent {
     console.log('Searching for:', keyword); // Debugging log
 
     this.superService.getsuperadmintasks(
-        this.selectedUserIds.join(','),  // assignId
-        'Ongoing',                       // status
-        sortType,                         // sort
-        priorityType,                      // pickACategory
-        keyword,                          // keyword (Make sure this is passed correctly)
-        undefined,                        // myDay
-        type                              // type
+      this.selectedUserIds.join(','),  // assignId
+      'Ongoing',                       // status
+      sortType,                         // sort
+      priorityType,                      // pickACategory
+      keyword,                          // keyword (Make sure this is passed correctly)
+      undefined,                        // myDay
+      type                              // type
     )
-    .subscribe(
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.taskList = response?.data?.data;
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+          this.showLoader = false;
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+        }
+      );
+
+    this.getUserAllList(priorityType , type);
+  }
+
+  getUserAllList(priorityType: string = '' , type: string = '' ) {
+    this.showLoader = true;
+    const taskcount = true;
+    const taskPage = 'Ongoing'
+    this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
       (response) => {
         if (response?.status === true) {
-          this.taskList = response?.data?.data;
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
+          this.showLoader = false;
         }
-        this.showLoader = false;
       },
       (error) => {
         this.notificationService.showError(error?.message);
@@ -455,9 +481,6 @@ export class TodoTasksComponent {
       }
     );
   }
-
-
-
 
   getTask() {
     this.showLoader = true;
@@ -490,30 +513,6 @@ export class TodoTasksComponent {
           this.showLoader = false;
         }
       );
-  }
-
-  getUserAllList() {
-    this.showLoader = true;
-    const taskcount = true;
-    const taskPage = 'Ongoing'
-    this.projectManagerService.getUserallList(taskcount, taskPage).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.userList = response?.data?.filter(
-            (user: any) => user?.role !== 'SupplierAdmin'
-          );
-          this.displayedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
   }
 
   deleteTask(id: any) {
@@ -745,6 +744,8 @@ export class TodoTasksComponent {
     }
     this.getTask();
   }
+
+
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
     if (!contractEdit) {

@@ -36,7 +36,7 @@ export class ProjectManagerService {
       .get<any>(this.baseUrl + ProjectManagerAPIEndPoint.USER_LIST);
   }
 
-  getUserallList(taskCount: any, taskPage: any, type? :any,pickACategory? :any): Observable<any> {
+  getUserallList(taskCount: any, taskPage: any,pickACategory? :any, type? :any): Observable<any> {
     let params = new HttpParams().set('taskPage', taskPage); // Always set taskPage
 
     if (taskCount) {
