@@ -14,7 +14,7 @@
             <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark me-2">
               Add Strips
             </a>
-            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer;"
+            <a class="btn btn-primary btn-sm text-dark me-2" style="cursor: pointer"
               (click)="editProjectDetails(projectDetails?._id)">
               Edit <i class="bi bi-pencil-fill"></i>
             </a>
@@ -30,7 +30,6 @@
           </div>
         </div>
       </div>
-
 
       <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
         <div class="card">
@@ -185,10 +184,11 @@
             </div>
             <div class="row">
               <div class="col-md-2"><strong>Documents link:</strong></div>
-              <div class="col-md-10"><a [href]="projectDetails?.documentsLink" target="_blank"
-                  rel="noopener noreferrer">
+              <div class="col-md-10">
+                <a [href]="projectDetails?.documentsLink" target="_blank" rel="noopener noreferrer">
                   {{ projectDetails?.documentsLink }}
-                </a></div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -214,13 +214,23 @@
                     </p>
                   </div>
                   <div class="col-7 text-center">
-                    <a href="href:;" class="btn btn-primarysm me-2" data-bs-toggle="modal"
-                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)"><i class="bi bi-eye-fill"></i>
-                      View</a>
-                    <a href="href:;" (click)="download(item?.file?.url, item?.name)" class="btn btn-primarysm"><i
-                        class="bi bi-file-earmark-arrow-down-fill"></i>
-                      Download</a>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
+                      data-bs-target="#ViewClientDoc" (click)="openDocument(item)">
+                      <i class="bi bi-eye-fill"></i> View
+                    </a>
+
+                    <a href="javascript:void(0);" (click)="download(item?.file?.url, item?.name)"
+                      class="btn btn-primary btn-sm me-2">
+                      <i class="bi bi-file-earmark-arrow-down-fill"></i> Download
+                    </a>
+
+                    <a href="javascript:void(0);" (click)="deleteDocuments(item?.name, 'clientDocument')"
+                      class="btn btn-danger btn-sm">
+                      <i class="bi bi-trash-fill"></i> Delete
+                    </a>
+
                   </div>
+
                 </div>
               </li>
             </ul>
@@ -228,7 +238,6 @@
               class="btn btn-dark btn-sm add-card-btn">
               <i class="bi bi-plus-lg"></i>
             </button>
-            <!-- (click)="hideShowForm()" -->
           </div>
         </div>
 
@@ -247,9 +256,13 @@
                       data-bs-target="#ViewClientDoc" (click)="openDocument(item)">
                       <i class="bi bi-eye-fill"></i> View
                     </a>
-                    <a href="href:;" class="btn btn-primarysm" (click)="download(item?.file?.url, item?.name)">
-                      <i class="bi bi-file-earmark-arrow-down-fill"></i>
-                      Download
+                    <a href="javascript:void(0);" (click)="download(item?.file?.url, item?.name)"
+                      class="btn btn-primary btn-sm me-2">
+                      <i class="bi bi-file-earmark-arrow-down-fill"></i> Download
+                    </a>
+                    <a href="javascript:void(0);" (click)="deleteDocuments(item?.name, 'westgateDocument')"
+                      class="btn btn-danger btn-sm ">
+                      <i class="bi bi-trash-fill"></i> Delete
                     </a>
                   </div>
                 </div>
@@ -261,6 +274,7 @@
             </button>
           </div>
         </div>
+
         <ng-container>
           <div class="row justify-content-end mb-3">
             <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
@@ -270,84 +284,52 @@
         </ng-container>
       </div>
 
-
-      <!-- <section class="pageheader bg-dark">
-        <div class="container">
-          <p><strong>Client Detils</strong></p>
-        </div>
-      </section> -->
-
-      <!--client details-->
-      <!-- <div class="row mt-5">
-        <div class="col-lg-4 col-xl-4 col-12 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-lg-4 col-xl-4 col-12">
-                  <h6 class="text-theme"><strong>Client Detils</strong></h6>
-                </div>
-                <div class="col-lg-7 col-xl-7 col-12">
-                  <p class="p-13 mb-0">
-                    Mail ID : {{ projectDetails?.mailID }}
-                  </p>
-                  <p class="p-13 mb-0">
-                    Client Type : {{ projectDetails?.clientType }}
-                  </p>
-                  <p class="p-13 mb-0">
-                    Client Name : {{ projectDetails?.clientName }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <section class="pageheader bg-dark mb-3">
-        <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Feasibility User: {{projectDetails?.assignFeasibilityUser[0]?.name}}</strong>
-          </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignFeasibilityUser[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
-        </div>
-      </section> -->
-
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
-          <p class="mb-0"><strong>Assign Bid User: {{projectDetails?.assignBidmanager[0]?.name}}</strong>
+          <p class="mb-0">
+            <strong>Assign Bid User:
+              {{projectDetails?.assignBidmanager?.[0]?.name}}</strong>
           </p>
-          <p class="mb-0"><strong>Due Date: {{projectDetails?.assignBidmanager[0]?.dueDate |
-              date:'dd/MM/yyyy'}}</strong></p>
+          <p class="mb-0">
+            <strong>Due Date:
+              {{
+              (projectDetails?.assignBidmanager?.[0]?.dueDate | date :
+              "dd/MM/yyyy")
+              }}</strong>
+          </p>
         </div>
       </section>
 
+
       <div class="row align-items-end mb-4">
         <div class="col-lg-5 col-md-5 col-sm-12">
-          <div class="detail-item">
-            <label>Assign To</label>
-            <ng-select style="padding: 0px !important" placeholder="Select Assign User"
-              class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
-              [(ngModel)]="assignTo">
-            </ng-select>
-          </div>
+          <form autocomplete="off">
+            <div class="detail-item">
+              <label>Assign To</label>
+              <ng-select style="padding: 0px !important" placeholder="Select Assign User"
+                class="form-select custom-ng-select-option" bindLabel="userName" bindValue="_id" [items]="BiduserList"
+                [(ngModel)]="assignTo" name="assignTo">
+              </ng-select>
+            </div>
+          </form>
         </div>
+
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="detail-item">
             <label>Due Date</label>
             <div class="input-group">
-              <input class="form-control" placeholder="DD-MM-YYYY" [(ngModel)]="dueDate" ngbDatepicker
-                #endDatePicker="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-                type="button"></button>
+              <input class="form-control" type="date" [(ngModel)]="dueDate" name="dueDate" />
             </div>
           </div>
         </div>
+
         <div class="col-lg-2 col-md-2 col-sm-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="assignUser()">
+          <button type="button" class="btn btn-primary w-100" (click)="assignUser()">
             Submit
           </button>
         </div>
       </div>
+
 
 
       <div class="row align-items-end mb-4">
@@ -442,7 +424,7 @@
               <ng-container>
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
                   <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
-                    placeholder="Add your comment" />
+                    placeholder="Add your comment" autocomplete="off" readonly (focus)="removeReadonly($event)" />
                   <button class="btn btn-primary" type="button" (click)="pushFeasibilityStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
@@ -471,7 +453,9 @@
                         Financial Conditions
                       </option>
                       <option value="Not related">Not related</option>
-                      <option value="No Subcontracting">No Subcontracting</option>
+                      <option value="No Subcontracting">
+                        No Subcontracting
+                      </option>
                       <option value="Other">Other</option>
                     </select>
                     <button class="btn btn-outline-primary" type="button" (click)="addFailReason()">
@@ -515,9 +499,9 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveFeasibilityStatus('save')"
-                      [class.disabled]="!isCommentValid() && feasibilityStatus !== 'Fail'"
-                      class="btn btn-primary w-100">Save Status</a>
+                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="
+                        !isCommentValid() && feasibilityStatus !== 'Fail'
+                      " class="btn btn-primary w-100">Save Status</a>
                   </div>
                 </div>
               </ng-container>
@@ -575,9 +559,7 @@
 
             <!-- Dynamic Comment Section -->
             <div *ngIf="status" class="status-section">
-              <h6 class="text-secondary mb-3">
-                {{ status }} Comments
-              </h6>
+              <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
               <!-- Display Existing Comments -->
               <div *ngIf="commentData?.length" class="comment-list comments-section">
@@ -615,11 +597,16 @@
                         {{ droppedreason?.date | date : "dd/MM/yyyy, h:mm a" }}
                       </small>
                     </div>
-                    <small class="text-muted d-block"><strong>Reason :</strong> {{ droppedreason?.comment }}</small>
+                    <small class="text-muted d-block"><strong>Reason :</strong>
+                      {{ droppedreason?.comment }}</small>
                     <div class="d-flex justify-content-between">
                       <p class="mt-2">{{ droppedreason?.tag }}</p>
-                      <button class="btn btn-sm text-danger"
-                        (click)="deleteDroppedReasons(droppedreason, droppedreason?.commentId)">
+                      <button class="btn btn-sm text-danger" (click)="
+                          deleteDroppedReasons(
+                            droppedreason,
+                            droppedreason?.commentId
+                          )
+                        ">
                         Delete Reason
                       </button>
                     </div>
@@ -632,7 +619,7 @@
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
                   *ngIf="status !== 'Dropped after feasibility'">
                   <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                    placeholder="Add your comment" autocomplete=false />
+                    placeholder="Add your comment" autocomplete="off" readonly (focus)="removeReadonly($event)" />
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
@@ -647,10 +634,14 @@
                       <option disabled selected hidden value="">
                         Select Dropper After Feasibility
                       </option>
-                      <option value="Subcontracting No">Subcontracting No</option>
+                      <option value="Subcontracting No">
+                        Subcontracting No
+                      </option>
                       <option value="Supplier Dropped">Supplier Dropped</option>
                       <option value="Time Constrain">Time Constrain</option>
-                      <option value="Rejected In Yes/No Call">Rejected In Yes/No Call</option>
+                      <option value="Rejected In Yes/No Call">
+                        Rejected In Yes/No Call
+                      </option>
                       <option value="Supplier Did Not Meet Eligibility Criteria">
                         Supplier Did Not Meet Eligibility Criteria
                       </option>
@@ -680,9 +671,10 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveBidStatus('save')"
-                      [class.disabled]="!isBidCommentValid()  && status !== 'Dropped after feasibility'"
-                      class="btn btn-primary w-100">
+                    <a (click)="saveBidStatus('save')" [class.disabled]="
+                        !isBidCommentValid() &&
+                        status !== 'Dropped after feasibility'
+                      " class="btn btn-primary w-100">
                       Save Bid Status
                     </a>
                   </div>
@@ -694,7 +686,6 @@
 
         <br />
       </div>
-
     </div>
   </section>
 
@@ -777,40 +768,6 @@
   </section>
 </main>
 
-<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ViewScreenshotLabel">
-          Add Client Document
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="viewClientDocumentForm">
-          <div class="card p-3 mt-3">
-            <div class="row g-3 align-items-center">
-              <div class="col-md-8 col-sm-12">
-                <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
-                  aria-label="Document Name" />
-              </div>
-              <div class="col-md-4 col-sm-12">
-                <label class="btn btn-outline-primary w-100">
-                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
-                  <input type="file" id="uploadClientDocument" (change)="
-                      uploadDocument($event, documentUploadType.clientDocument)
-                    " hidden aria-label="Upload Document" />
-                </label>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="ViewProjectLogs" tabindex="-1" aria-labelledby="ViewProjectLogsLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
@@ -840,6 +797,41 @@
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="addClientDocument" tabindex="-1" aria-labelledby="addClientDocumentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewScreenshotLabel">
+          Add Client Document
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="viewClientDocumentForm">
+          <div class="card p-3 mt-3">
+            <div class="row g-3 align-items-center">
+              <div class="col-md-8 col-sm-12">
+                <input type="text" [(ngModel)]="documentName" class="form-control" placeholder="Enter Document Name"
+                  aria-label="Document Name" />
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <label class="btn btn-outline-primary w-100">
+                  <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload
+                  <input type="file" id="uploadClientDocument" (change)="
+                      uploadDocument($event, documentUploadType.clientDocument)
+                    " hidden aria-label="Upload Document" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -878,36 +870,7 @@
     </div>
   </div>
 </div>
-<!-- View Document Modal -->
-<div class="modal fade" id="ViewDocumentModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
-        <h5 class="modal-title" id="ViewDocumentModalLabel">
-          FOI Document ({{ selectedDocument?.name }})
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
-        </ng-container>
-        <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- Login detail From modal -->
 <div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
@@ -1001,167 +964,170 @@
       </div>
       <div class="modal-body">
         <div class="modal-body">
-          <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
-            <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
+          <div class="modal-body">
+            <ng-container *ngIf="isPdf(selectedDocument?.file?.url); else otherFormats">
+              <ngx-extended-pdf-viewer [src]="selectedDocument?.file?.url" useBrowserLocale="true"
+                height="600px"></ngx-extended-pdf-viewer>
+            </ng-container>
+            <ng-template #otherFormats>
+              <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
+                [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px"></iframe>
+              <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Document Modal -->
+  <div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="display: flex; justify-content: space-between">
+          <h5 class="modal-title" id="ViewDocumentModalLabel">
+            Case Study ({{ selectViewImage?.imageText }})
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
+            <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
               height="600px"></ngx-extended-pdf-viewer>
           </ng-container>
           <ng-template #otherFormats>
-            <iframe *ngIf="isWordOrExcel(selectedDocument?.file?.url)"
-              [src]="getDocumentViewerUrl(selectedDocument?.file?.url)" style="width: 100%; height: 600px"></iframe>
-            <img *ngIf="isImage(selectedDocument?.file?.url)" [src]="selectedDocument?.file?.url" class="img-fluid" />
+            <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
+              style="width: 100%; height: 600px"></iframe>
+            <img *ngIf="isImage(selectViewImage?.key)" [src]="selectViewImage?.url" class="img-fluid" />
           </ng-template>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- View Document Modal -->
-<div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
-        <h5 class="modal-title" id="ViewDocumentModalLabel">
-          Case Study ({{ selectedDocument?.name }})
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="isPdf(selectedDocument?.link?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectedDocument?.link?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
-        </ng-container>
-        <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectedDocument?.link?.url)"
-            [src]="getDocumentViewerUrl(selectedDocument?.link?.url)" style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectedDocument?.link?.url)" [src]="selectedDocument?.link?.url" class="img-fluid" />
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- View StripAdd Modal -->
-<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Radio Buttons to Select Upload Type -->
-        <div class="form-group d-flex align-items-center mb-4">
-          <label class="me-3">Select Type:</label>
-          <div class="form-check me-3">
-            <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
-              (change)="selectUploadType(true)" />
-            <label for="textOption" class="form-check-label">Text</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
-              (change)="selectUploadType(false)" />
-            <label for="imageOption" class="form-check-label">Image</label>
-          </div>
+  <!-- View StripAdd Modal -->
+  <div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <!-- Conditional Rendering Based on Upload Type -->
-        <div *ngIf="uploadType; else imageUploadSection">
-          <!-- Text Upload Section -->
-          <div class="form-group mb-3">
-            <label for="textInput" class="form-label">Strip Heading :</label>
-            <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
-            <div *ngIf="
-                addStripcontrol.text.touched && addStripcontrol.text.invalid
-              " class="text-danger">
-              Text is required.
+        <div class="modal-body">
+          <!-- Radio Buttons to Select Upload Type -->
+          <div class="form-group d-flex align-items-center mb-4">
+            <label class="me-3">Select Type:</label>
+            <div class="form-check me-3">
+              <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
+                (change)="selectUploadType(true)" />
+              <label for="textOption" class="form-check-label">Text</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
+                (change)="selectUploadType(false)" />
+              <label for="imageOption" class="form-check-label">Image</label>
             </div>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="textInput" class="form-label">Strip Description :</label>
-            <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
-              formControlName="description"></textarea>
-            <div *ngIf="
+          <!-- Conditional Rendering Based on Upload Type -->
+          <div *ngIf="uploadType; else imageUploadSection">
+            <!-- Text Upload Section -->
+            <div class="form-group mb-3">
+              <label for="textInput" class="form-label">Strip Heading :</label>
+              <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
+              <div *ngIf="
+                addStripcontrol.text.touched && addStripcontrol.text.invalid
+              " class="text-danger">
+                Text is required.
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="textInput" class="form-label">Strip Description :</label>
+              <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
+                formControlName="description"></textarea>
+              <div *ngIf="
                 addStripcontrol.description.touched &&
                 addStripcontrol.description.invalid
               " class="text-danger">
-              Description is required.
+                Description is required.
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
+                [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+              </ng-select>
             </div>
           </div>
 
-          <div class="form-group mb-3">
-            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
-            </ng-select>
-          </div>
-        </div>
-
-        <!-- Image Upload Section -->
-        <ng-template #imageUploadSection>
-          <div class="form-group mb-3">
-            <label for="imageTextInput" class="form-label">Strip Heading :</label>
-            <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
-              formControlName="imageText" />
-            <div *ngIf="
+          <!-- Image Upload Section -->
+          <ng-template #imageUploadSection>
+            <div class="form-group mb-3">
+              <label for="imageTextInput" class="form-label">Strip Heading :</label>
+              <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
+                formControlName="imageText" />
+              <div *ngIf="
                 addStripcontrol.imageText.touched &&
                 addStripcontrol.imageText.invalid
               " class="text-danger">
-              Image Text is required.
+                Image Text is required.
+              </div>
             </div>
-          </div>
 
-          <div class="form-group mb-3">
-            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
-            </ng-select>
-          </div>
-        </ng-template>
+            <div class="form-group mb-3">
+              <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
+                [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+              </ng-select>
+            </div>
+          </ng-template>
 
-        <div class="row justify-content-end mt-4">
-          <div class="col-auto">
-            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
-              Add
-            </button>
+          <div class="row justify-content-end mt-4">
+            <div class="col-auto">
+              <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
+                Add
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- View Strip image Modal -->
-<div class="modal fade" id="viewstripimage" tabindex="-1" aria-labelledby="viewstripimageLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
-        <h5 class="modal-title" id="ViewDocumentModalLabel">
-          Strip Image ({{ selectViewImage?.imageText }})
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
-          <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
-        </ng-container>
-        <ng-template #otherFormats>
-          <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
-            style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(selectViewImage?.url)" [src]="selectViewImage?.url" class="img-fluid" />
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
+  <!-- View Strip image Modal -->
+  <div class="modal fade" id="viewstripimage" tabindex="-1" aria-labelledby="viewstripimageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="display: flex; justify-content: space-between">
+          <h5 class="modal-title" id="ViewDocumentModalLabel">
+            Strip Image ({{ selectViewImage?.imageText }})
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ng-container *ngIf="selectViewImage">
+            <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
+              <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
+                height="600px"></ngx-extended-pdf-viewer>
+            </ng-container>
+            <ng-template #otherFormats>
+              <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
+                style="width: 100%; height: 600px"></iframe>
+              <img *ngIf="isImage(selectViewImage?.url)" [src]="selectViewImage?.url" class="img-fluid" />
+            </ng-template>
+          </ng-container>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
