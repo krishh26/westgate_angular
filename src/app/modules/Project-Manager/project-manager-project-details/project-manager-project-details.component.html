@@ -284,7 +284,7 @@
                 <ng-container>
                   <ng-select style="padding: 0px !important" placeholder="Select Supplier"
                     class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name"
-                    bindValue="_id" (change)="selectSupplier($event)" [addTag]="true" [clearable]="false">
+                    bindValue="_id" (change)="selectSupplier($event)" [multiple]="true" [addTag]="true" [clearable]="false">
                     <!-- Disable Clear Button -->
                   </ng-select>
                 </ng-container>
