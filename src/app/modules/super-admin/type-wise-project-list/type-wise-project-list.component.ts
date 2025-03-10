@@ -217,6 +217,7 @@ export class TypeWiseProjectListComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.notRelatedDashboard = true;
+    Payload.projectList.expired = true
     // Ensure projectType is always passed
     Payload.projectList.projectType = (valueToPassProduct && valueToPassProduct.trim() !== 'Unknown')
       ? valueToPassProduct
