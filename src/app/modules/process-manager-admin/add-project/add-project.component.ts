@@ -45,7 +45,7 @@ export class AddProjectComponent {
     password: new FormControl(""),
     loginID: new FormControl(""),
     chatGptLink: new FormControl(""),
-  }
+  };
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
   showLoader: boolean = false;
@@ -149,7 +149,28 @@ export class AddProjectComponent {
   }
 
 
+  validateForm(): boolean {
+    return [
+      this.addEditProjectForm.projectName?.value?.trim(),
+      this.addEditProjectForm.BOSID?.value?.trim(),
+      this.addEditProjectForm.publishDate?.value?.trim(),
+      this.addEditProjectForm.clientName?.value?.trim(),
+      this.addEditProjectForm.dueDate?.value?.trim(),
+      this.addEditProjectForm.link?.value?.trim(),
+      this.addEditProjectForm.website?.value?.trim(),
+      this.addEditProjectForm.noticeReference?.value?.trim(),
+      this.addEditProjectForm.clientType?.value?.trim()
+    ].every(field => field && field.length > 0);
+  }
+
+
   submitForm() {
+
+    if (!this.validateForm()) {
+      this.notificationService.showError("Please fill all required fields.");
+      return;
+    }
+
     this.showLoader = true;
     // Get the current form values
     let formData = this.productForm.value;
