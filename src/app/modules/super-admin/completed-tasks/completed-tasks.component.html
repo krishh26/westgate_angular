@@ -130,7 +130,7 @@
             </h2>
             <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
               <div class="accordion-body comment-container"
-                   [ngClass]="{ 'admin-comment': task?.todayComments[0]?.userDetail?.role === 'Admin' }">
+                   [ngClass]="{ 'admin-comment': task?.todayComments?.[0]?.userDetail?.role === 'Admin' }">
 
                 <ul class="SecondarytaskList" *ngIf="task?.todayComments">
                   <div class="row align-items-center mb-3">
