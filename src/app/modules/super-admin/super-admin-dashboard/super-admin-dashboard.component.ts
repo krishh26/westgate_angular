@@ -168,8 +168,8 @@ export class SuperAdminDashboardComponent {
           const responseData = response?.data;
 
           // Convert categoryWise object to an array of {name, totalProjects}
-          this.categoryWise = Object.keys(responseData.categoryWise).map(key => {
-            return { name: key, totalProjects: responseData.categoryWise[key] };
+          this.categoryWise = Object.keys(responseData?.categoryWise).map(key => {
+            return { name: key, totalProjects: responseData?.categoryWise[key] };
           });
 
           // Set up chart data if necessary (this part was unchanged)
