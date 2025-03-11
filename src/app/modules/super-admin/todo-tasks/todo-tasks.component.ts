@@ -355,9 +355,8 @@ export class TodoTasksComponent {
     const params: any = {};
 
     if (paramKey === 'dueDate' && paramValue) {
-      params.dueDate = paramValue.year && paramValue.month && paramValue.day
-        ? `${paramValue.year}-${paramValue.month}-${paramValue.day}`
-        : null;
+      // ✅ Since `type="date"` gives a string (YYYY-MM-DD), use it directly
+      params.dueDate = paramValue;
     }
     else if (paramKey === 'assignTo' && paramValue) {
       // Find the deselected users
@@ -373,21 +372,17 @@ export class TodoTasksComponent {
       // Handle the deselected users
       if (deselectedUsers.length > 0) {
         console.log('Deselected User:', deselectedUsers[0]);
-        // Example: Pass deselected user to an API
         this.processDeselectedUser(deselectedUsers[0]);
       }
 
       // Handle the newly selected users
       if (newSelectedUsers.length > 0) {
         console.log('Newly Selected User:', newSelectedUsers[0]);
-        // Example: Pass newly selected user to an API
         this.processSelectedUser(newSelectedUsers[0]);
       }
 
       // Update the assignTo list
       this.assignTo = paramValue;
-
-      // Add updated assignTo list to params
       params.assignTo = this.assignTo;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
@@ -396,9 +391,9 @@ export class TodoTasksComponent {
     } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
-      params.completedTask = paramValue; // Ensure it always sends true
+      params.completedTask = paramValue;
     } else if (paramKey === 'type') {
-      params.type = paramValue; // Ensure it always sends true
+      params.type = paramValue;
     }
 
     // Call the updateTask method with updated params
