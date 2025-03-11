@@ -208,12 +208,7 @@
       </div>
       <div class="modal-body">
         <label>Due Date</label>
-        <div class="input-group">
-          <input class="form-control" placeholder="DD-MM-YYYY" [formControl]="dueDate" ngbDatepicker
-            #endDatePicker="ngbDatepicker" />
-          <button class="btn btn-outline-secondary bi bi-calendar3" (click)="endDatePicker.toggle()"
-            type="button"></button>
-        </div>
+        <input class="form-control" type="date" [(ngModel)]="dueDate" />
       </div>
       <div class="modal-body">
         <label>Assign To</label>

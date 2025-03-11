@@ -142,11 +142,15 @@ export class TodoTasksComponent {
       this.modalElement.removeEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
   }
-
   onDueDateChange(date: NgbDate | null) {
-    this.dueDateValue = date; // Update the local variable
-    this.onChange('dueDate', date); // Pass the 'dueDate' key and the updated value
+    if (date) {
+      const formattedDate = `${date.year}-${this.padZero(date.month)}-${this.padZero(date.day)}`;
+      this.dueDate.setValue(formattedDate); // ✅ Correct way to update FormControl
+    } else {
+      this.dueDate.setValue(null);
+    }
   }
+
 
   getProjectList() {
     this.showLoader = true;
@@ -303,7 +307,7 @@ export class TodoTasksComponent {
         discription: this.taskDetails,
         task: this.taskTitle,
         status: 'Ongoing',
-        dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
+        dueDate: this.dueDate ? this.formatDate(this.dueDate) : null,
         assignTo: this.assignTo,
         type: this.type
       };
@@ -327,12 +331,35 @@ export class TodoTasksComponent {
     }
   }
 
+  formatDate(date: any): string {
+    if (!date) return ''; // Handle null case
+
+    if (typeof date === 'string') {
+      return date; // If already in YYYY-MM-DD format, return as is
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      // If using NgbDate object
+      return `${date.year}-${this.padZero(date.month)}-${this.padZero(date.day)}`;
+    }
+
+    // Convert Date object to YYYY-MM-DD
+    const d = new Date(date);
+    return `${d.getFullYear()}-${this.padZero(d.getMonth() + 1)}-${this.padZero(d.getDate())}`;
+  }
+
+  // Helper function to add leading zero to single-digit months/days
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
   onChange(paramKey: string, paramValue: any) {
     const params: any = {};
 
     if (paramKey === 'dueDate' && paramValue) {
-      params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
-    } else if (paramKey === 'assignTo' && paramValue) {
+      params.dueDate = paramValue.year && paramValue.month && paramValue.day
+        ? `${paramValue.year}-${paramValue.month}-${paramValue.day}`
+        : null;
+    }
+    else if (paramKey === 'assignTo' && paramValue) {
       // Find the deselected users
       const deselectedUsers = this.assignTo.filter(
         (id: string) => !paramValue.includes(id)
@@ -455,10 +482,10 @@ export class TodoTasksComponent {
         }
       );
 
-    this.getUserAllList(priorityType , type);
+    this.getUserAllList(priorityType, type);
   }
 
-  getUserAllList(priorityType: string = '' , type: string = '' ) {
+  getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
     const taskcount = true;
     const taskPage = 'Ongoing'
@@ -672,16 +699,6 @@ export class TodoTasksComponent {
     this.displayedUsers = this.showAll
       ? this.userList
       : this.userList.slice(0, 7);
-  }
-
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
   }
 
   newComment: string = '';
