@@ -40,7 +40,7 @@ export class SuperadminAddProjectComponent implements OnInit {
     CPVCodes: new FormControl("", Validators.required),
     minValue: new FormControl("", Validators.required),
     maxValue: new FormControl("", Validators.required),
-    bidsubmissiontime: new FormControl("10", Validators.required),
+    bidsubmissiontime: new FormControl("12", Validators.required),
     documentsLink: new FormControl("", Validators.required),
     linkToPortal: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
