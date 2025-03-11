@@ -325,7 +325,7 @@ export class CompletedTasksComponent {
         discription: this.taskDetails,
         task: this.taskTitle,
         status: 'Ongoing',
-        dueDate: this.dueDate.value ? this.formatDate(this.dueDate.value) : '',
+        dueDate: this.dueDate ? this.formatDate(this.dueDate) : null,
         assignTo: this.assignTo,
       };
       this.superService.createTask(payload).subscribe(
@@ -352,8 +352,10 @@ export class CompletedTasksComponent {
     const params: any = {};
 
     if (paramKey === 'dueDate' && paramValue) {
-      params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
-    } else if (paramKey === 'assignTo' && paramValue) {
+      // ✅ Since `type="date"` gives a string (YYYY-MM-DD), use it directly
+      params.dueDate = paramValue;
+    }
+    else if (paramKey === 'assignTo' && paramValue) {
       // Find the deselected users
       const deselectedUsers = this.assignTo.filter(
         (id: string) => !paramValue.includes(id)
@@ -367,29 +369,28 @@ export class CompletedTasksComponent {
       // Handle the deselected users
       if (deselectedUsers.length > 0) {
         console.log('Deselected User:', deselectedUsers[0]);
-        // Example: Pass deselected user to an API
         this.processDeselectedUser(deselectedUsers[0]);
       }
 
       // Handle the newly selected users
       if (newSelectedUsers.length > 0) {
         console.log('Newly Selected User:', newSelectedUsers[0]);
-        // Example: Pass newly selected user to an API
         this.processSelectedUser(newSelectedUsers[0]);
       }
 
       // Update the assignTo list
       this.assignTo = paramValue;
-
-      // Add updated assignTo list to params
       params.assignTo = this.assignTo;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
     } else if (paramKey === 'taskStatus' && paramValue) {
       params.status = paramValue;
-    }
-    else if (paramKey === 'assignProjectId' && paramValue) {
+    } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
+    } else if (paramKey === 'completedTask') {
+      params.completedTask = paramValue;
+    } else if (paramKey === 'type') {
+      params.type = paramValue;
     }
 
     // Call the updateTask method with updated params
@@ -594,14 +595,24 @@ export class CompletedTasksComponent {
       : this.userList.slice(0, 7);
   }
 
-  private formatDate(date: {
-    year: number;
-    month: number;
-    day: number;
-  }): string {
-    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(
-      date.day
-    ).padStart(2, '0')}`;
+  formatDate(date: any): string {
+    if (!date) return ''; // Handle null case
+
+    if (typeof date === 'string') {
+      return date; // If already in YYYY-MM-DD format, return as is
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      // If using NgbDate object
+      return `${date.year}-${this.padZero(date.month)}-${this.padZero(date.day)}`;
+    }
+
+    // Convert Date object to YYYY-MM-DD
+    const d = new Date(date);
+    return `${d.getFullYear()}-${this.padZero(d.getMonth() + 1)}-${this.padZero(d.getDate())}`;
+  }
+
+  // Helper function to add leading zero to single-digit months/days
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
   }
 
   newComment: string = '';
