@@ -114,6 +114,7 @@ export class ProjectManagerProjectDetailsComponent {
   getReasonList: any = [];
   getDroppedAfterReasonList: any = [];
   selectedDroppedAfterFeasibilityReason: string = '';
+  westGetDocument: any[] = [];
 
   constructor(
     private projectService: ProjectService,
@@ -640,13 +641,13 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   summaryDetail(type: string) {
-    // if (!this.projectDetails?.clientDocument.length) {
-    //   return this.notificationService.showError('Upload Client Document');
-    // }
-    // if (!this.projectDetails?.westGetDocument.length) {
-    //   return this.notificationService.showError('Upload westGet Document');
-    // }
     this.saveChanges(type);
+
+    if (type == 'next') {
+      this.router.navigate(['/project/bid-manager-to-action'], {
+        queryParams: { id: this.projectId },
+      });
+    }
   }
 
   uploadDocument(event: any, type: string): void {
@@ -662,8 +663,37 @@ export class ProjectManagerProjectDetailsComponent {
           this.spinner.hide();
 
           if (response?.status) {
+            // Sub-contract document
+            if (type == this.documentUploadType.subContractDocument) {
+              this.subContractDocument = response?.data;
+            }
+
+            // Economical partnership query document
+            if (type == this.documentUploadType.economicalPartnershipQuery) {
+              this.economicalPartnershipQueryFile = response?.data;
+            }
+
+            // Other query document
+            if (
+              type == this.documentUploadType.otherQueryDocument ||
+              type == this.documentUploadType.otherDocument
+            ) {
+              let objToBePushed = {
+                name: this.loginName,
+                type: type,
+                file: response?.data,
+              };
+              this.FeasibilityOtherDocuments.push(objToBePushed);
+              this.loginName = '';
+            }
+
             if (type == this.documentUploadType.failStatusImage) {
               this.failStatusImage = response?.data;
+            }
+
+            // Economical partnership response document
+            if (type == this.documentUploadType.economicalPartnershipResponse) {
+              this.economicalPartnershipResponceFile = response?.data;
             }
 
             //client document
@@ -682,17 +712,19 @@ export class ProjectManagerProjectDetailsComponent {
               this.documentName = '';
             }
 
-            if (type == this.documentUploadType.loginDetailDocument) {
-              if (!this.loginName) {
-                return this.notificationService.showError('Enter Name');
+            if (type == this.documentUploadType.westGetDocument) {
+              if (!this.documentName) {
+                return this.notificationService.showError(
+                  'Enter a westgate document Name'
+                );
               }
-              this.loginDetailDocument = response?.data;
+              this.westGetDocument = response?.data;
               let objToBePushed = {
-                name: this.loginName,
+                name: this.documentName,
                 file: response?.data,
               };
-              this.projectDetails.loginDetail.push(objToBePushed);
-              this.loginName = '';
+              this.projectDetails.westGetDocument.push(objToBePushed);
+              this.documentName = '';
             }
 
             return this.notificationService.showSuccess(response?.message);
@@ -844,7 +876,6 @@ export class ProjectManagerProjectDetailsComponent {
 
       payload = {
         projectType: this.projectDetails.projectType,
-        subContracting: this.subContracting || '',
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         westGetDocument: this.projectDetails?.westGetDocument || [],
@@ -873,7 +904,7 @@ export class ProjectManagerProjectDetailsComponent {
       };
     }
     this.feasibilityService
-      .updateProjectDetailsBid(payload, this.projectDetails._id)
+      .updateProjectDetails(payload, this.projectDetails._id)
       .subscribe(
         (response) => {
           if (response?.status === true) {

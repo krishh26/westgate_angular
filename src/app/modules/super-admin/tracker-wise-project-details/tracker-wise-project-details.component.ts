@@ -1035,7 +1035,6 @@ export class TrackerWiseProjectDetailsComponent {
           this.casestudylist = response?.data?.casestudy;
           this.feasibilityStatus = this.projectDetails?.status;
           this.status = this.projectDetails?.bidManagerStatus;
-          this.subContracting = this.projectDetails?.subContracting;
           this.getReasonList = this.projectDetails?.failStatusReason;
           this.getDroppedAfterReasonList =
             this.projectDetails?.droppedAfterFeasibilityStatusReason;
@@ -1044,12 +1043,6 @@ export class TrackerWiseProjectDetailsComponent {
             this.projectDetails?.statusComment || [];
           this.bidCommentData =
             this.projectDetails?.bidManagerStatusComment || [];
-          this.subContractDocument =
-            this.projectDetails?.subContractingfile || null;
-          this.economicalPartnershipQueryFile =
-            this.projectDetails?.economicalPartnershipQueryFile || null;
-          this.economicalPartnershipResponceFile =
-            this.projectDetails?.economicalPartnershipResponceFile || null;
           this.FeasibilityOtherDocuments =
             this.projectDetails?.FeasibilityOtherDocuments || null;
           this.failStatusImage = this.projectDetails?.failStatusImage || null;
@@ -1107,16 +1100,13 @@ export class TrackerWiseProjectDetailsComponent {
     // if (!this.projectDetails?.clientDocument.length) {
     //   return this.notificationService.showError('Upload Client Document');
     // }
-    // if (!this.projectDetails?.westGetDocument.length) {
-    //   return this.notificationService.showError('Upload westGet Document');
-    // }
     this.saveChanges(type);
 
-    if (type == 'next') {
-      this.router.navigate(['/super-admin/status-wise-tracker'], {
-        queryParams: { id: this.projectId },
-      });
-    }
+    // if (type == 'next') {
+    //   this.router.navigate(['/super-admin/status-wise-tracker'], {
+    //     queryParams: { id: this.projectId },
+    //   });
+    // }
   }
 
   uploadDocument(event: any, type: string): void {
