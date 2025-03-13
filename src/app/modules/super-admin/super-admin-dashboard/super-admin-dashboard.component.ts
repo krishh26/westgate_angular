@@ -26,6 +26,7 @@ export class SuperAdminDashboardComponent {
   totalRecords: number = pagination.totalRecords;
   categoryWise: any = [];
   projectTypeWise: any = [];
+  selectedCategorisation: string[] = [];
 
   constructor(
     private superService: SuperadminService,
@@ -111,6 +112,68 @@ export class SuperAdminDashboardComponent {
     if (!date) return '';
     const dateParts = date.split('-'); // Splitting YYYY-MM-DD
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to DD-MM-YYYY
+  }
+
+  updateCategorisation(value: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+
+    if (checked) {
+      // Add value if checked
+      this.selectedCategorisation.push(value);
+    } else {
+      // Remove value if unchecked
+      this.selectedCategorisation = this.selectedCategorisation.filter(
+        (item) => item !== value
+      );
+    }
+
+    this.searchtext(); // Call search function on change
+    //this.getDataByStatus();
+  }
+
+  searchtext(dateFilter?: boolean) {
+    this.showLoader = true;
+    console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
+    const payload: any = {};
+
+
+    if (dateFilter) {
+      const startCreatedDate = this.trackerStartDate.value || ''; // Already in YYYY-MM-DD format
+      const endCreatedDate = this.trackerEndDate.value || ''; // Already in YYYY-MM-DD format
+
+      payload['startDate'] = startCreatedDate;
+      payload['endDate'] = endCreatedDate;
+    }
+
+    this.superService.getDashboardList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+
+          // Store the dashboard list data
+          this.superdashboardlist = response?.data;
+
+          // Convert categorisationWise object to an array of {name, totalProjects}
+          this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => {
+            return { name: key, totalProjects: response.data.categorisationWise[key] };
+          });
+
+          // Convert projectTypeWise object to an array of {name, totalProjects}
+          this.projectTypeWise = Object.keys(response?.data?.projectTypeWise || {}).map(key => ({
+            name: key.trim() ? key : 'Unknown', // Replace empty key with 'Unknown'
+            totalProjects: response.data.projectTypeWise[key],
+          }));
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   getProjectDetails(dateFilter?: boolean) {
