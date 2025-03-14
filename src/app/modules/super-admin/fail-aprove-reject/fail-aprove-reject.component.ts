@@ -294,7 +294,8 @@ export class FailAproveRejectComponent {
     // Payload.projectList.status = 'Passed';
     // Payload.projectList.adminReview = 'Fail,Not Releted'
     Payload.projectList.projectType = "";
-    Payload.projectList.adminReview = 'Fail'
+    Payload.projectList.adminReview = 'Fail';
+    Payload.projectList.expired = true;
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       this.totalRecords = response?.data?.meta_data?.items;

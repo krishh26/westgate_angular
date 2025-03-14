@@ -290,7 +290,8 @@ export class DropAfterFesibilityProjectsComponent {
       // Payload.projectList.match = 'partial';
       // Payload.projectList.status = 'Passed';
       Payload.projectList.projectType = "";
-      Payload.projectList.adminReview = 'Dropped after feasibility'
+      Payload.projectList.adminReview = 'Dropped after feasibility';
+      Payload.projectList.expired = true;
       this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;

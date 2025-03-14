@@ -292,7 +292,8 @@ export class NoSupplierMatchProjectsComponent {
       // Payload.projectList.match = 'partial';
       Payload.projectList.projectType = "";
       // Payload.projectList.status = 'Passed';
-      Payload.projectList.adminReview = 'Nosuppliermatched'
+      Payload.projectList.adminReview = 'Nosuppliermatched';
+      Payload.projectList.expired = true;
       this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
