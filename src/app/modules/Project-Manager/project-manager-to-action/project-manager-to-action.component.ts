@@ -118,27 +118,34 @@ export class ProjectManagerToActionComponent {
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
+
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Publish start date'
-        );
+        this.notificationService.showError('Please select a Publish start date');
         return;
       } else {
         this.searchtext();
       }
     });
+
     this.submissionEndDate.valueChanges?.subscribe((res: any) => {
       if (!this.submissionStartDate.value) {
-        this.notificationService.showError(
-          'Please select a Submission start date'
-        );
+        this.notificationService.showError('Please select a Submission start date');
         return;
       } else {
         this.searchtext();
       }
     });
+
+    // Check if the reload has already happened
+    if (!localStorage.getItem('pageReloaded')) {
+      localStorage.setItem('pageReloaded', 'true'); // Set flag to prevent further reloads
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   }
+
 
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));

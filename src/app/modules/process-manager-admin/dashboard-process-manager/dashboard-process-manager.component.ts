@@ -27,6 +27,7 @@ export class DashboardProcessManagerComponent {
   totalRecords: number = pagination.totalRecords;
   categoryWise: any = [];
   projectTypeWise: any = [];
+  selectedCategorisation: string[] = [];
 
   constructor(
     private superService: SuperadminService,
@@ -57,6 +58,67 @@ export class DashboardProcessManagerComponent {
 
   export() {
     this.superService.exportProjects();
+  }
+
+  updateCategorisation(value: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+
+    if (checked) {
+      // Add value if checked
+      this.selectedCategorisation.push(value);
+    } else {
+      // Remove value if unchecked
+      this.selectedCategorisation = this.selectedCategorisation.filter(
+        (item) => item !== value
+      );
+    }
+
+    this.searchtext(); // Call search function on change
+    //this.getDataByStatus();
+  }
+
+  searchtext(dateFilter?: boolean) {
+    this.showLoader = true;
+
+    const payload: any = {};
+
+    // Pass the selected categorisation as a query parameter (comma-separated values)
+    if (this.selectedCategorisation.length > 0) {
+      payload['categorisation'] = this.selectedCategorisation.join(',');
+    }
+
+    if (dateFilter) {
+      payload['startDate'] = this.trackerStartDate.value || '';
+      payload['endDate'] = this.trackerEndDate.value || '';
+    }
+
+    this.superService.getDashboardList(payload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.showLoader = false;
+
+          this.superdashboardlist = response?.data;
+
+          this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => ({
+            name: key,
+            totalProjects: response.data.categorisationWise[key],
+          }));
+
+          this.projectTypeWise = Object.keys(response?.data?.projectTypeWise || {}).map(key => ({
+            name: key.trim() ? key : 'Unknown',
+            totalProjects: response.data.projectTypeWise[key],
+          }));
+
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   onSubmitDaterange() {

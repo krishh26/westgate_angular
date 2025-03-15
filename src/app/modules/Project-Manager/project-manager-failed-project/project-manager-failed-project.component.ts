@@ -150,6 +150,13 @@ export class ProjectManagerFailedProjectComponent {
         this.searchtext();
       }
     });
+    // Check if the reload has already happened
+    if (!localStorage.getItem('pageReloaded')) {
+      localStorage.setItem('pageReloaded', 'true'); // Set flag to prevent further reloads
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   }
 
   formatMilliseconds(milliseconds: number): string {
