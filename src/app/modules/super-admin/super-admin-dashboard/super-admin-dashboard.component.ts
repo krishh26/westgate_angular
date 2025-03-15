@@ -133,34 +133,33 @@ export class SuperAdminDashboardComponent {
 
   searchtext(dateFilter?: boolean) {
     this.showLoader = true;
-    console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
+
     const payload: any = {};
 
+    // Pass the selected categorisation as a query parameter (comma-separated values)
+    if (this.selectedCategorisation.length > 0) {
+      payload['categorisation'] = this.selectedCategorisation.join(',');
+    }
 
     if (dateFilter) {
-      const startCreatedDate = this.trackerStartDate.value || ''; // Already in YYYY-MM-DD format
-      const endCreatedDate = this.trackerEndDate.value || ''; // Already in YYYY-MM-DD format
-
-      payload['startDate'] = startCreatedDate;
-      payload['endDate'] = endCreatedDate;
+      payload['startDate'] = this.trackerStartDate.value || '';
+      payload['endDate'] = this.trackerEndDate.value || '';
     }
 
     this.superService.getDashboardList(payload).subscribe(
       (response) => {
-        if (response?.status == true) {
+        if (response?.status === true) {
           this.showLoader = false;
 
-          // Store the dashboard list data
           this.superdashboardlist = response?.data;
 
-          // Convert categorisationWise object to an array of {name, totalProjects}
-          this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => {
-            return { name: key, totalProjects: response.data.categorisationWise[key] };
-          });
+          this.categoryWise = Object.keys(response?.data?.categorisationWise || {}).map(key => ({
+            name: key,
+            totalProjects: response.data.categorisationWise[key],
+          }));
 
-          // Convert projectTypeWise object to an array of {name, totalProjects}
           this.projectTypeWise = Object.keys(response?.data?.projectTypeWise || {}).map(key => ({
-            name: key.trim() ? key : 'Unknown', // Replace empty key with 'Unknown'
+            name: key.trim() ? key : 'Unknown',
             totalProjects: response.data.projectTypeWise[key],
           }));
 
@@ -175,6 +174,7 @@ export class SuperAdminDashboardComponent {
       }
     );
   }
+
 
   getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
