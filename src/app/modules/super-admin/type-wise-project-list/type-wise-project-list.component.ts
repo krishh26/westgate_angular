@@ -115,6 +115,13 @@ export class TypeWiseProjectListComponent {
         this.searchtext()
       }
     });
+    // Check if the reload has already happened
+    if (!localStorage.getItem('pageReloade')) {
+      localStorage.setItem('pageReloade', 'true'); // Set flag to prevent further reloads
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   }
 
   onItemAddCategory(item: { category: string }): void {
