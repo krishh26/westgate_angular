@@ -116,7 +116,7 @@ export class ProcessManagerTrackerComponent {
 
   searchtext() {
     this.showLoader = true;
-    console.log('this is called', this.searchText);
+    // console.log('this is called', this.searchText);
 
     // Update payload with filters
     Payload.projectListStatusWiseTracker.keyword = this.searchText;

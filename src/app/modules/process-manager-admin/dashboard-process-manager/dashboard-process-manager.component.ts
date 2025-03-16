@@ -174,7 +174,7 @@ export class DashboardProcessManagerComponent {
 
   getProjectDetails(dateFilter?: boolean) {
     this.showLoader = true;
-    console.log("this.trackerStartDate", this.trackerStartDate, this.trackerStartDate.value);
+
     const payload: any = {};
 
 

@@ -58,7 +58,7 @@ export class AdminAddCaseStudyComponent {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-      console.log(this.supplierData?._id);
+
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");
@@ -113,7 +113,7 @@ export class AdminAddCaseStudyComponent {
       if (response?.message == "Industry fetched successfully") {
         this.showLoader = false;
         this.industryList = response?.data;
-         
+
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
@@ -128,7 +128,7 @@ export class AdminAddCaseStudyComponent {
   submitForm() {
     if (this.data) {
       const payload = {
-        ...this.data, 
+        ...this.data,
         ...this.productForm.value,
       };
       this.showLoader = true;

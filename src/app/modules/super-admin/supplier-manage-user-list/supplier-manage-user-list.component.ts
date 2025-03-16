@@ -31,7 +31,7 @@ export class SupplierManageUserListComponent {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-      console.log(this.supplierData?._id);
+
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");

@@ -34,7 +34,7 @@ export class SupplierUserActivityComponent {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-      console.log(this.supplierData?._id);
+
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");
@@ -68,20 +68,20 @@ export class SupplierUserActivityComponent {
       (response) => {
         if (response?.status) {
           this.supplierDetails = response.data;
-  
+
           // Extract dates (keys)
           this.dates = Object.keys(this.supplierDetails);
-  
+
           // Find the maximum number of login times
           const maxEntries = Math.max(
             ...Object.values(this.supplierDetails).map((times) => (times as any[]).length)
           );
-  
+
           // Prepare rows
           this.rows = Array.from({ length: maxEntries }, (_, rowIndex) =>
             this.dates.map((date) => this.supplierDetails[date][rowIndex]?.loginTime || "")
           );
-  
+
           this.showLoader = false;
         } else {
           console.error('Failed to fetch supplier activity:', response?.message);
@@ -94,5 +94,5 @@ export class SupplierUserActivityComponent {
       }
     );
   }
-  
+
 }

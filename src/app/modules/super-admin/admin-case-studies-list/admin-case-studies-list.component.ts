@@ -53,7 +53,7 @@ export class AdminCaseStudiesListComponent {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-      console.log(this.supplierData?._id);
+
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");
@@ -93,7 +93,7 @@ export class AdminCaseStudiesListComponent {
     Payload.casestudyList.page = String(this.page);
     Payload.casestudyList.limit = String(this.pagesize);
     Payload.casestudyList.userId = this.supplierID;
-  
+
     this.supplierService.getadminCaseStudyList(Payload.casestudyList).subscribe((response) => {
       console.log('API response:', response);
       if (response?.status === true) {
@@ -110,7 +110,7 @@ export class AdminCaseStudiesListComponent {
       this.showLoader = false;
     });
   }
-  
+
 
   addCaseStudy() {
     const data = new FormData();
