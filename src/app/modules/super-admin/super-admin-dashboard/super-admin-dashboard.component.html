@@ -30,19 +30,22 @@
               <div class="d-flex align-items-center gap-3">
                 <!-- DPS Checkbox -->
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="dps" (change)="updateCategorisation('DPS', $event)" />
+                  <input class="form-check-input" type="checkbox" id="dps"
+                    (change)="updateCategorisation('DPS', $event)" />
                   <label class="form-check-label" for="dps">DPS</label>
                 </div>
 
                 <!-- Framework Checkbox -->
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="Framework" (change)="updateCategorisation('Framework', $event)" />
+                  <input class="form-check-input" type="checkbox" id="Framework"
+                    (change)="updateCategorisation('Framework', $event)" />
                   <label class="form-check-label" for="Framework">Framework</label>
                 </div>
 
                 <!-- DTD Checkbox -->
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="dtd" (change)="updateCategorisation('DTD', $event)" />
+                  <input class="form-check-input" type="checkbox" id="dtd"
+                    (change)="updateCategorisation('DTD', $event)" />
                   <label class="form-check-label" for="dtd">DTD</label>
                 </div>
               </div>
@@ -70,10 +73,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsPosted?.maxValue
+                      (superdashboardlist?.projectsPosted?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -84,10 +87,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsAwaiting?.maxValue
+                      (superdashboardlist?.projectsAwaiting?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -98,10 +101,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsInProgress?.maxValue
+                      (superdashboardlist?.projectsInProgress?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -112,10 +115,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsInHold?.maxValue
+                      (superdashboardlist?.projectsInHold?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -128,10 +131,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.TotalDocumentsNotFound?.maxValue
+                      (superdashboardlist?.TotalDocumentsNotFound?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -142,10 +145,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsPassed?.maxValue
+                      (superdashboardlist?.projectsPassed?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -156,10 +159,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsFail?.maxValue
+                      (superdashboardlist?.projectsFail?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -172,10 +175,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusAwaiting?.maxValue
+                      (superdashboardlist?.projectsBidStatusAwaiting?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -190,10 +193,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusInSolution
-                      ?.maxValue | number : "1.2-2"
+                      (superdashboardlist?.projectsBidStatusInSolution
+                      ?.maxValue/ 1000000) | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -209,10 +212,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusWaitingForResult
-                      ?.maxValue | number : "1.2-2"
+                      (superdashboardlist?.projectsBidStatusWaitingForResult
+                      ?.maxValue/ 1000000) | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -228,11 +231,11 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist
-                      ?.projectsBidStatusDroppedAfterFeasibility?.maxValue
+                      (superdashboardlist
+                      ?.projectsBidStatusDroppedAfterFeasibility?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -263,10 +266,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusNotAwarded
-                      ?.maxValue | number : "1.2-2"
+                      (superdashboardlist?.projectsBidStatusNotAwarded
+                      ?.maxValue/ 1000000) | number : "1.2-2"
                       }}
-                      GBP
+                      M GBP
                     </p>
                   </div>
                 </div>
@@ -279,10 +282,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusToAction?.maxValue
+                      (superdashboardlist?.projectsBidStatusToAction?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                     M GBP
                     </p>
                   </div>
                 </div>
@@ -295,10 +298,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusNosuppliermatched?.maxValue
+                      (superdashboardlist?.projectsBidStatusNosuppliermatched?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                     M GBP
                     </p>
                   </div>
                 </div>
@@ -314,10 +317,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusGoNoGoStage1
-                      ?.maxValue | number : "1.2-2"
+                      (superdashboardlist?.projectsBidStatusGoNoGoStage1
+                      ?.maxValue/ 1000000) | number : "1.2-2"
                       }}
-                      GBP
+                     M GBP
                     </p>
                   </div>
                 </div>
@@ -334,11 +337,11 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist
-                      ?.projectsBidStatusSupplierConfirmation?.maxValue
+                      (superdashboardlist
+                      ?.projectsBidStatusSupplierConfirmation?.maxValue/ 1000000)
                       | number : "1.2-2"
                       }}
-                      GBP
+                     M GBP
                     </p>
                   </div>
                 </div>
@@ -354,10 +357,10 @@
                     <p class="text-success">
                       Value: £
                       {{
-                      superdashboardlist?.projectsBidStatusGoNoGoStage2
-                      ?.maxValue | number : "1.2-2"
+                      (superdashboardlist?.projectsBidStatusGoNoGoStage2
+                      ?.maxValue/ 1000000) | number : "1.2-2"
                       }}
-                      GBP
+                     M GBP
                     </p>
                   </div>
                 </div>
