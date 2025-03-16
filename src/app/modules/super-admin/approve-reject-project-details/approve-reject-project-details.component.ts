@@ -344,6 +344,7 @@ export class ApproveRejectProjectDetailsComponent {
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('User assigned successfully');
+          this.getProjectDetails();
         } else {
           this.notificationService.showError(response?.message);
         }
