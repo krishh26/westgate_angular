@@ -175,9 +175,6 @@
                   No comments available.
                 </p>
 
-                <!-- <p *ngIf="!task?.comments?.length" class="text-muted">
-                  No comments available.
-                </p> -->
               </div>
             </div>
           </div>
@@ -276,48 +273,6 @@
                 <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                   Comment
                 </button>
-                <!-- <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
-                  <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
-                    <div class="row align-items-center mb-3">
-                      <div class="col">
-                        <div class="d-flex justify-content-between">
-                          <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                          <small class="text-muted">{{
-                            comment?.date | date : "dd/MM/yyyy, h:mm a"
-                            }}</small>
-                        </div>
-                        <small class="text-muted d-block">{{
-                          comment?.userDetail?.role
-                          }}</small>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-column mb-3">
-                      <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
-                        <p>{{ comment.comment }}</p>
-                        <div>
-                          <button class="btn btn-sm text-primary me-2" (click)="enableEdit(comment)">
-                            Edit
-                          </button>
-                          <button class="btn btn-sm text-danger" (click)="deleteComment(comment?.commentId)">
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                      <div *ngIf="comment.isEditing" class="d-flex flex-column">
-                        <textarea class="form-control mb-2" placeholder="Edit comment..."
-                          [(ngModel)]="comment.updatedComment" style="width: 100%"></textarea>
-                        <div class="d-flex justify-content-between">
-                          <button class="btn btn-sm btn-success me-2" (click)="updateTaskComment(comment)">
-                            Save
-                          </button>
-                          <button class="btn btn-sm btn-secondary me-2" (click)="cancelEdit(comment)">
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul> -->
               </div>
               <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
                 <strong>{{ comment?.user }} </strong>
