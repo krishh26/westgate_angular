@@ -407,7 +407,13 @@ export class ProjectManagerInProgressComponent {
 
   paginate(page: number) {
     this.page = page;
-    this.searchtext();
+
+    if (this.searchText && this.searchText.trim() !== '') {
+      this.searchtext();
+    } else {
+      this.getProjectList();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
