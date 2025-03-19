@@ -24,6 +24,8 @@ export class ExpertiseListComponent {
   supplierData: any = [];
   selectedFiles: File[] = [];
   supplierDetails: any = [];
+  viewDocs:any;
+  supplierFiles: any  = []
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -106,6 +108,8 @@ export class ExpertiseListComponent {
         if (response?.status) {
           this.supplierDetails = response.data;
           this.showLoader = false;
+          this.supplierFiles = response.files;
+
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
           this.showLoader = false;
@@ -117,4 +121,10 @@ export class ExpertiseListComponent {
       }
     );
   }
+
+  showDocuments(expertise: string) {
+    this.viewDocs = this.supplierFiles.filter((file: any) => file.expertise === expertise);
+  }
+
+
 }

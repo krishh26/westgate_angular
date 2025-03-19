@@ -45,6 +45,11 @@
               <td>
                 <input type="file" multiple (change)="onFilesSelected($event, item)" />
               </td>
+              <td>
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">View
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -52,3 +57,43 @@
     </div>
   </section>
 </main>
+
+<div class="modal fade" id="viewAllDocuments" tabindex="-1" aria-labelledby="viewAllProjectsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between">
+        <h6>Uploaded Files</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Expertise</th>
+                <th>Uploaded At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!viewDocs?.length">
+                <td colspan="4">No Files Available for this Expertise</td>
+              </tr>
+              <tr *ngFor="let file of viewDocs">
+                <td>{{ file.fileName }}</td>
+                <td>{{ file.expertise }}</td>
+                <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank">Download</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
