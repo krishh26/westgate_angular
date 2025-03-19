@@ -1,1 +1,50 @@
-<p>expertise-view works!</p>
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluids mb-3">
+      <div class="row align-items-center">
+        <nav>
+          <ul class="projects-nav-tab">
+            <li routerLink="/super-admin/super-admin-supplier">
+              <a>Profile</a>
+            </li>
+            <li routerLink="/super-admin/expertise-view">
+              <a class="active">Expertise-view</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+          <h4 class="text-theme mb-4"><strong>Expertise view</strong></h4>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Expertise</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td *ngIf="!expertiseList?.length" colspan="8">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of expertiseList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+              <td><a href="javascript:;">{{item?.userName}}</a></td>
+              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+              <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>

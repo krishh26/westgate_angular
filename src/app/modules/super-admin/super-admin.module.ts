@@ -43,6 +43,7 @@ import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-d
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
 import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
+import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
 
 
 
@@ -81,7 +82,8 @@ import { ExpertiseListComponent } from './expertise-list/expertise-list.componen
      ApproveRejectProjectDetailsComponent,
      TypeWiseProjectListComponent,
      FailAproveRejectComponent,
-     ExpertiseListComponent
+     ExpertiseListComponent,
+     ExpertiseViewComponent
   ],
   imports: [
     CommonModule,
