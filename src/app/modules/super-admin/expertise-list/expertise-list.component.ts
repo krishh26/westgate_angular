@@ -82,6 +82,7 @@ export class ExpertiseListComponent {
       formData.append('files', file);
     });
     formData.append('expertise', expertise);
+    formData.append('supplierId', this.supplierID);
 
     this.superService.uploadByTag(formData).subscribe(
       (response: any) => {
