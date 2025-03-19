@@ -70,7 +70,7 @@ export class SupplierHeaderComponent implements OnInit {
       this.routerSubscription.unsubscribe();
     }
   }
-  
+
   // get list notification
   getNotificationList() {
     this.projectNotificationService.getNotificationList().subscribe((response) => {

@@ -40,8 +40,6 @@ import { SuperAdminChangePasswordComponent } from './super-admin-change-password
 import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
 import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
 import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';
-import { DroppedAfterGapAnalysisComponent } from './dropped-after-gap-analysis/dropped-after-gap-analysis.component';
-import { NoSupplierGapAnalysisComponent } from './no-supplier-gap-analysis/no-supplier-gap-analysis.component';
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
 
@@ -80,8 +78,6 @@ import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reje
      DropAfterFesibilityProjectsComponent,
      NoSupplierMatchProjectsComponent,
      ApproveRejectProjectDetailsComponent,
-     DroppedAfterGapAnalysisComponent,
-     NoSupplierGapAnalysisComponent,
      TypeWiseProjectListComponent,
      FailAproveRejectComponent
   ],

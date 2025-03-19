@@ -8,7 +8,7 @@
               <a>Profile</a>
             </li>
             <li routerLink="/super-admin/admin-case-study-list">
-              <a>Case Studies</a>
+              <a>Historical Data</a>
             </li>
             <li routerLink="/super-admin/super-admin-supplier-users-list">
               <a>Users</a>
@@ -36,13 +36,13 @@
               </tr>
             </thead>
             <tbody>
-  
+
               <tr>
                 <td *ngIf="!rows?.length" colspan="7">
                   <app-no-record-found></app-no-record-found>
                 </td>
               </tr>
-  
+
               <tr *ngFor="let row of rows">
                 <td *ngFor="let time of row">{{ time }}</td>
               </tr>
