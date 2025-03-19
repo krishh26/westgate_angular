@@ -20,6 +20,10 @@ export class ExpertiseListComponent {
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   showLoader: boolean = false;
+  supplierID: string = '';
+  supplierData: any = [];
+  selectedFiles: File[] = [];
+
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -30,40 +34,64 @@ export class ExpertiseListComponent {
   ) { }
 
   ngOnInit() {
-
-  }
-
-  deleteUser(id: any) {
-    let params = {
-      "id": id,
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      this.supplierID = this.supplierData?._id;
+    } else {
+      console.log("No supplier data found in localStorage");
     }
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete `,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#00B96F',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete!'
-    }).then((result: any) => {
-      if (result?.value) {
-        this.showLoader = true;
-        this.supplierService.deleteUser(params).subscribe((response: any) => {
-          if (response?.status == true) {
-            this.showLoader = false;
-            this.notificationService.showSuccess('User successfully deleted');
-            // this.getManageUserList();
-          } else {
-            this.showLoader = false;
-            this.notificationService.showError(response?.message);
-          }
-        }, (error) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.message);
-        });
-      }
-    });
+    this.getSupplierdata();
   }
 
+  getSupplierdata() {
+    this.showLoader = true;
+    this.supplierService.getSupplierDetails(this.supplierID).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseList = response?.expertiseList;
+        } else {
+          console.error('Failed to fetch supplier data:', response?.message);
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching supplier data:', error);
+        this.showLoader = false;
+      }
+    );
+  }
 
+  onFilesSelected(event: any, expertise: string) {
+    this.selectedFiles = Array.from(event.target.files);
+    if (this.selectedFiles.length > 0) {
+      this.uploadFiles(expertise);
+    }
+  }
+
+  uploadFiles(expertise: string) {
+    if (!this.selectedFiles.length) {
+      this.notificationService.showError('Please select files to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    this.selectedFiles.forEach(file => {
+      formData.append('files', file);
+    });
+    formData.append('expertise', expertise);
+
+    this.superService.uploadByTag(formData).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Files uploaded successfully!');
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+      }
+    );
+  }
 }

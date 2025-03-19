@@ -11,7 +11,7 @@
               <a>Historical Data</a>
             </li>
             <li routerLink="/super-admin/expertise-list">
-              <a  class="active">Case Studies</a>
+              <a class="active">Case Studies</a>
             </li>
             <li routerLink="/super-admin/supplier-user-activity">
               <a>Activity</a>
@@ -31,22 +31,20 @@
           <thead>
             <tr>
               <th>Expertise</th>
-              <th></th>
+              <th>Upload Files</th>
             </tr>
           </thead>
           <tbody>
-
-            <tr>
-              <td *ngIf="!expertiseList?.length" colspan="8">
+            <tr *ngIf="!expertiseList?.length">
+              <td colspan="2">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
-
-            <tr
-              *ngFor="let item of expertiseList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-              <td><a href="javascript:;">{{item?.userName}}</a></td>
-              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-              <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td>
+            <tr *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              <td>{{ item }}</td>
+              <td>
+                <input type="file" multiple (change)="onFilesSelected($event, item)" />
+              </td>
             </tr>
           </tbody>
         </table>

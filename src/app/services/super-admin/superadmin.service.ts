@@ -28,7 +28,8 @@ export enum SuperAdminEndPoint {
   GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY = '/project/gap-analysis-dafstatus-reason',
   GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED = '/project/gap-analysis-nosuppliermatched-reason',
   EXPORT_EXCEL = '/project/export-csv',
-  EXPORT_DATABASE ='/database/export'
+  EXPORT_DATABASE ='/database/export',
+  UPLOAD_BY_TAGS = '/web-user/uploadByTag'
 }
 
 @Injectable({
@@ -131,6 +132,13 @@ export class SuperadminService {
   createTask(payload: any): Observable<any> {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.CREATE_TASK,
+      payload
+    );
+  }
+
+  uploadByTag(payload: any): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.UPLOAD_BY_TAGS,
       payload
     );
   }
