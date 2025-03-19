@@ -23,6 +23,7 @@ export class ExpertiseListComponent {
   supplierID: string = '';
   supplierData: any = [];
   selectedFiles: File[] = [];
+  supplierDetails: any = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -42,6 +43,7 @@ export class ExpertiseListComponent {
       console.log("No supplier data found in localStorage");
     }
     this.getSupplierdata();
+    this.getSupplierdetail();
   }
 
   getSupplierdata() {
@@ -85,12 +87,32 @@ export class ExpertiseListComponent {
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Files uploaded successfully!');
+          this.getSupplierdetail();
         } else {
           this.notificationService.showError(response?.message);
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
+      }
+    );
+  }
+
+  getSupplierdetail() {
+    this.showLoader = true;
+    this.supplierService.getSupplierDetails(this.supplierID).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.supplierDetails = response.data;
+          this.showLoader = false;
+        } else {
+          console.error('Failed to fetch supplier data:', response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        console.error('Error fetching supplier data:', error);
+        this.showLoader = false;
       }
     );
   }
