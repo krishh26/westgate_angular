@@ -30,6 +30,7 @@ import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/n
 import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';;
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
+import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
 
 
 
@@ -146,6 +147,10 @@ const routes: Routes = [
       {
         path: "approve-reject-project-details",
         component: ApproveRejectProjectDetailsComponent
+      },
+      {
+        path: "expertise-list",
+        component: ExpertiseListComponent
       },
 
       {

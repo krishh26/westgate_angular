@@ -42,6 +42,7 @@ import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/n
 import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
+import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
 
 
 
@@ -79,7 +80,8 @@ import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reje
      NoSupplierMatchProjectsComponent,
      ApproveRejectProjectDetailsComponent,
      TypeWiseProjectListComponent,
-     FailAproveRejectComponent
+     FailAproveRejectComponent,
+     ExpertiseListComponent
   ],
   imports: [
     CommonModule,
