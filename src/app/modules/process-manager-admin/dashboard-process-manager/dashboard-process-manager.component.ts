@@ -56,6 +56,18 @@ export class DashboardProcessManagerComponent {
     });
   }
 
+  projectTypeClick(projectType: string | null) {
+    let valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : null;
+
+    console.log("valueToPassProduct:", valueToPassProduct);
+
+    // Navigate and pass queryParams
+    this.router.navigate(['/process-manager/type-wise-project-list'], {
+      queryParams: { projectType: valueToPassProduct !== null ? valueToPassProduct : '' },
+      queryParamsHandling: 'merge' // Optional: Keeps existing query params
+    });
+  }
+
   export() {
     this.superService.exportProjects();
   }
@@ -133,21 +145,6 @@ export class DashboardProcessManagerComponent {
     console.log("Filtering data from", startDate, "to", endDate);
     this.getProjectDetails(true);
   }
-
-
-
-  projectTypeClick(projectType: string | null) {
-    let valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : null;
-
-    console.log("valueToPassProduct:", valueToPassProduct);
-
-    // Navigate and pass queryParams
-    this.router.navigate(['/process-manager/type-wise-project-list'], {
-      queryParams: { projectType: valueToPassProduct !== null ? valueToPassProduct : '' },
-      queryParamsHandling: 'merge' // Optional: Keeps existing query params
-    });
-  }
-
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.selectedDuration = duration;

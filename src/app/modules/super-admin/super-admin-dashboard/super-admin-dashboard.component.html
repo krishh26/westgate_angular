@@ -448,7 +448,6 @@
                     <tr
                       *ngFor="
                         let item of categoryWise | paginate : { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index ">
-                      <!-- <td style="cursor: pointer;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</td> -->
                       <td>
                         <a href="javascript:;" (click)="onCategoryClick(item?.name)">{{ item?.name || "Unknown" }}</a>
                       </td>

@@ -219,6 +219,7 @@ export class TypeWiseProjectDetailsComponent {
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.notRelatedDashboard = true;
+    Payload.projectList.expired = true
     // Ensure projectType is always passed
     Payload.projectList.projectType = (valueToPassProduct && valueToPassProduct.trim() !== 'Unknown')
       ? valueToPassProduct
@@ -254,7 +255,6 @@ export class TypeWiseProjectDetailsComponent {
       );
     }
   }
-
   // Function to handle API response
   private handleApiResponse(response: any) {
     this.projectList = [];
@@ -320,6 +320,7 @@ export class TypeWiseProjectDetailsComponent {
       this.showLoader = false;
     });
   }
+
 
   isDesc: boolean = false;
   column: string = 'publishDate';
