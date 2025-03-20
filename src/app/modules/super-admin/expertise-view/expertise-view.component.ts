@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./expertise-view.component.scss']
 })
 export class ExpertiseViewComponent {
-
+  @ViewChild('viewDocumentsModal', { static: false }) viewDocumentsModal!: TemplateRef<any>;
   expertiseList: any = [];
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
@@ -37,7 +37,7 @@ export class ExpertiseViewComponent {
     private router: Router,
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
-    private modalService: NgbModal,
+    public modalService: NgbModal, // Changed from private to public
   ) { }
 
   ngOnInit() {
@@ -99,24 +99,6 @@ export class ExpertiseViewComponent {
       }
     );
   }
-
-  // getSupplierList() {
-  //   this.showLoader = true;
-  //   this.superService.getSupplierListsExpertiseWise().subscribe(
-  //     (response) => {
-  //       if (response?.status) {
-  //         this.supplierList = response?.data;
-  //       } else {
-  //         console.error('Failed to fetch supplier data:', response?.message);
-  //       }
-  //       this.showLoader = false;
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching supplier data:', error);
-  //       this.showLoader = false;
-  //     }
-  //   );
-  // }
 
   getSupplierdetail() {
     this.showLoader = true;
@@ -183,12 +165,11 @@ export class ExpertiseViewComponent {
     this.superService.getSupplierListsExpertiseWise({ expertise }).subscribe(
       (response) => {
         if (response?.status) {
-          // Extract data from response
           const data = response?.data || [];
-
-          // Map supplier details to expertiseWiseSupplierList
           this.expertiseWiseSupplierList = data.map((entry: any) => ({
             name: entry?.supplier?.name || 'Unknown',
+            supplierId: entry?.supplier?._id,
+            files: entry?.files || []
           }));
         } else {
           this.expertiseWiseSupplierList = [];
@@ -205,5 +186,9 @@ export class ExpertiseViewComponent {
   }
 
 
+  viewSupplierDocuments(supplier: any) {
+    this.supplierFiles = supplier.files;
+    this.modalService.open(this.viewDocumentsModal); // Open new modal using template reference
+  }
 
 }

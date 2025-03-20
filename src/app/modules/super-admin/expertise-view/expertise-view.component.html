@@ -86,7 +86,9 @@
               </tr>
               <tr *ngFor="let item of expertiseWiseSupplierList">
                 <td>{{ item?.name }}</td>
-
+                <td>
+                  <button class="btn btn-primary btn-sm" (click)="viewSupplierDocuments(item)">View</button>
+                </td>
                 <!-- <td>
                   <div class="d-flex gap-2">
                     <a class="btn btn-primary btn-sm" [href]="item.fileUrl" target="_blank" title="Download">
@@ -106,3 +108,31 @@
   </div>
 </div>
 
+<!-- Second Modal for Viewing Documents -->
+<ng-template #viewDocumentsModal>
+  <div class="modal-header">
+    <h6>Documents for Supplier</h6>
+    <button type="button" class="btn-close" (click)="modalService.dismissAll()"></button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!supplierFiles?.length">
+          <td colspan="2">No documents available</td>
+        </tr>
+        <tr *ngFor="let file of supplierFiles">
+          <td>{{ file?.fileName }}</td>
+          <td>
+            <a [href]="file?.fileUrl" class="btn btn-success btn-sm" target="_blank">Download</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
