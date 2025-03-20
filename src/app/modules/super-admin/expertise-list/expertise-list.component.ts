@@ -24,8 +24,8 @@ export class ExpertiseListComponent {
   supplierData: any = [];
   selectedFiles: File[] = [];
   supplierDetails: any = [];
-  viewDocs:any;
-  supplierFiles: any  = []
+  viewDocs: any;
+  supplierFiles: any = []
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -67,11 +67,23 @@ export class ExpertiseListComponent {
   }
 
   onFilesSelected(event: any, expertise: string) {
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
     this.selectedFiles = Array.from(event.target.files);
+
+    const invalidFiles = this.selectedFiles.filter(file => !allowedTypes.includes(file.type));
+
+    if (invalidFiles.length > 0) {
+      alert('Only PDF or Word files (.pdf, .doc, .docx) are allowed.');
+      this.selectedFiles = [];
+      return;
+    }
+
     if (this.selectedFiles.length > 0) {
       this.uploadFiles(expertise);
     }
   }
+
 
   uploadFiles(expertise: string) {
     if (!this.selectedFiles.length) {
@@ -124,6 +136,39 @@ export class ExpertiseListComponent {
 
   showDocuments(expertise: string) {
     this.viewDocs = this.supplierFiles.filter((file: any) => file.expertise === expertise);
+  }
+
+  deleteDoc(fileId: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this document?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+
+        this.superService.deleteDocumentExpertise(fileId).subscribe(
+          (response: any) => {
+            if (response?.status === true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Document successfully deleted');
+              window.location.reload(); // Optional: Refresh data
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
   }
 
 

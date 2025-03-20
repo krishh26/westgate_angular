@@ -28,8 +28,9 @@ export enum SuperAdminEndPoint {
   GET_GAP_ANALYSIS_DROPPERD_AFTER_FEASIBILITY = '/project/gap-analysis-dafstatus-reason',
   GET_GAP_ANALYSIS_NO_SUPPLIER_MATCHED = '/project/gap-analysis-nosuppliermatched-reason',
   EXPORT_EXCEL = '/project/export-csv',
-  EXPORT_DATABASE ='/database/export',
-  UPLOAD_BY_TAGS = '/web-user/uploadByTag'
+  EXPORT_DATABASE = '/database/export',
+  UPLOAD_BY_TAGS = '/web-user/uploadByTag',
+  DELETE_EXPERTISE_DOCUMENT = '/web-user/deleteFile'
 }
 
 @Injectable({
@@ -142,6 +143,14 @@ export class SuperadminService {
       payload
     );
   }
+
+  deleteDocumentExpertise(fileId: string): Observable<any> {
+    const url = `${this.baseUrl}${SuperAdminEndPoint.DELETE_EXPERTISE_DOCUMENT}`;
+    const body = { fileId };
+
+    return this.httpClient.request<any>('DELETE', url, { body });
+  }
+
 
   updateTask(payload: any, id: string): Observable<any> {
     return this.httpClient.patch<any>(

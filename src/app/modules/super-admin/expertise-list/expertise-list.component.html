@@ -40,10 +40,11 @@
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
-            <tr *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+            <tr
+              *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{ item }}</td>
               <td>
-                <input type="file" multiple (change)="onFilesSelected($event, item)" />
+                <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />
               </td>
               <td>
                 <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
@@ -86,7 +87,14 @@
                 <td>{{ file.expertise }}</td>
                 <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
                 <td>
-                  <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank">Download</a>
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-primary btn-sm" [href]="file.fileUrl" target="_blank" title="Download">
+                      <i class="bi bi-download"></i>
+                    </a>
+                    <a (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
+                      <i class="bi bi-trash3-fill"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -96,4 +104,3 @@
     </div>
   </div>
 </div>
-
