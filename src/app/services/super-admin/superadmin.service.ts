@@ -30,7 +30,9 @@ export enum SuperAdminEndPoint {
   EXPORT_EXCEL = '/project/export-csv',
   EXPORT_DATABASE = '/database/export',
   UPLOAD_BY_TAGS = '/web-user/uploadByTag',
-  DELETE_EXPERTISE_DOCUMENT = '/web-user/deleteFile'
+  DELETE_EXPERTISE_DOCUMENT = '/web-user/deleteFile',
+  EXPERTISE_LIST = '/web-user/expertise-list',
+  GET_SUPPLIER_EXPERTISE = '/web-user/get-suppliers'
 }
 
 @Injectable({
@@ -61,6 +63,14 @@ export class SuperadminService {
       { params }
     );
   }
+
+  getSupplierListsExpertiseWise(params: any): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_SUPPLIER_EXPERTISE,
+      { params }
+    );
+  }
+
 
   getGapAnalysis(params: HttpParams): Observable<any> {
     return this.httpClient.get<any>(
@@ -142,6 +152,14 @@ export class SuperadminService {
       this.baseUrl + SuperAdminEndPoint.UPLOAD_BY_TAGS,
       payload
     );
+  }
+
+  getExpertiseList(): Observable<any> {
+    const url = `${this.baseUrl}${SuperAdminEndPoint.EXPERTISE_LIST}`;
+    let queryParams = new HttpParams();
+    // queryParams = queryParams.set('page', params?.page);
+    // queryParams = queryParams.set('limit', params?.limit);
+    return this.httpClient.get<any>(url, { params: queryParams });
   }
 
   deleteDocumentExpertise(fileId: string): Observable<any> {

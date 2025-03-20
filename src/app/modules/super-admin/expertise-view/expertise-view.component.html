@@ -25,22 +25,33 @@
           <thead>
             <tr>
               <th>Expertise</th>
-              <th></th>
+              <th>Supllier Count</th>
+              <th>View Supplier</th>
             </tr>
           </thead>
           <tbody>
-
-            <tr>
-              <td *ngIf="!expertiseList?.length" colspan="8">
+            <tr *ngIf="!expertiseList?.length">
+              <td colspan="3">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
-
             <tr
-              *ngFor="let item of expertiseList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-              <td><a href="javascript:;">{{item?.userName}}</a></td>
-              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-              <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td>
+              *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              <td>{{ item?.expertise }}</td>
+              <td>{{ item?.count }}</td>
+              <td>
+
+                <!-- <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">View
+                </a> -->
+
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">
+                  View
+                </a>
+
+
+              </td>
             </tr>
           </tbody>
         </table>
@@ -48,3 +59,46 @@
     </div>
   </section>
 </main>
+<div class="modal fade" id="viewAllDocuments" tabindex="-1" aria-labelledby="viewAllProjectsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between">
+        <h6>Supplier List</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>Supplier Name</th>
+                <th>Document</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!expertiseWiseSupplierList?.length">
+                <td colspan="2">No supplier available for this expertise</td>
+              </tr>
+              <tr *ngFor="let item of expertiseWiseSupplierList">
+                <td>{{ item?.name }}</td>
+
+                <!-- <td>
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-primary btn-sm" [href]="item.fileUrl" target="_blank" title="Download">
+                      <i class="bi bi-download"></i>
+                    </a>
+                    <a (click)="deleteDoc(item?._id)" class="btn btn-danger btn-sm" title="Delete">
+                      <i class="bi bi-trash3-fill"></i>
+                    </a>
+                  </div>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

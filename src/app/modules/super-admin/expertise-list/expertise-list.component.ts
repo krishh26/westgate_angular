@@ -25,7 +25,7 @@ export class ExpertiseListComponent {
   selectedFiles: File[] = [];
   supplierDetails: any = [];
   viewDocs: any;
-  supplierFiles: any = []
+  supplierFiles: any = [];
 
   constructor(
     private supplierService: SupplierAdminService,
