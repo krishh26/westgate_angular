@@ -314,8 +314,6 @@ export class ProjectManagerCompletedComponent {
     this.tempPayload.projectList.statusNotInclude = 'Fail';
     // this.tempPayload.projectList.status = 'Not Releted';
     this.tempPayload.projectList.expired = true;
-
-    // this.tempPayload.projectList.status = 'Not Releted';
     console.log(this.tempPayload.projectList);
 
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
