@@ -210,51 +210,43 @@ export class TypeWiseProjectDetailsComponent {
     });
   }
 
-  getProjectList(categorisation: string | null = '', valueToPassProduct: string | null = '') {
+  getProjectList(categorisation: string | null = '', projectType: string | null = '') {
     this.showLoader = true;
-
-    console.log("Received valueToPassProduct:", valueToPassProduct); // Debugging log
-
+    console.log(categorisation , 'categorisation');
+    console.log(projectType , 'projectType');
     Payload.projectList.keyword = this.searchText;
     Payload.projectList.page = String(this.page);
     Payload.projectList.limit = String(this.pagesize);
     Payload.projectList.notRelatedDashboard = true;
-    Payload.projectList.expired = true
-    // Ensure projectType is always passed
-    Payload.projectList.projectType = (valueToPassProduct && valueToPassProduct.trim() !== 'Unknown')
-      ? valueToPassProduct
-      : '';
+    Payload.projectList.expired = true;
 
-    // Handle categorisation logic
-    Payload.projectList.categorisation = (categorisation && categorisation.trim() !== '')
-      ? categorisation
-      : '';
+    // if (categorisation === 'Unknown Category') {
+    //   categorisation = '';
+    // }
+    // if (projectType === 'Unknown ProjectType') {
+    //   projectType = '';
+    // }
 
-    console.log("Final Payload:", Payload.projectList); // Debugging log
+    Payload.projectList.categorisation = categorisation === 'Unknown Category' ? '': categorisation?.trim() || '';
+    Payload.projectList.projectType = projectType === 'Unknown ProjectType' ? '': projectType?.trim() || ''
 
-    // Condition to determine which API to call
+
+    console.log("Final Payload:", Payload.projectList);
+
     if (categorisation) {
-      // Call API 1 when categorisation is provided
       this.projectService.getSearchByCategorisation(Payload.projectList).subscribe(
-        (response) => {
-          this.handleApiResponse(response);
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
+        (response) => this.handleApiResponse(response),
+        (error) => this.handleApiError(error)
       );
     } else {
-      // Call API 2 when categorisation is not provided
       this.projectService.getSearchByProduct(Payload.projectList).subscribe(
-        (response) => {
-          this.handleApiResponse(response);
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
+        (response) => this.handleApiResponse(response),
+        (error) => this.handleApiError(error)
       );
     }
   }
+
+
   // Function to handle API response
   private handleApiResponse(response: any) {
     this.projectList = [];
