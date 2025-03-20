@@ -154,11 +154,20 @@ export class SuperadminService {
     );
   }
 
-  getExpertiseList(): Observable<any> {
+  getExpertiseList(params: any = {}): Observable<any> {
     const url = `${this.baseUrl}${SuperAdminEndPoint.EXPERTISE_LIST}`;
     let queryParams = new HttpParams();
-    // queryParams = queryParams.set('page', params?.page);
-    // queryParams = queryParams.set('limit', params?.limit);
+
+    // if (params?.page) {
+    //   queryParams = queryParams.set('page', params.page);
+    // }
+    // if (params?.limit) {
+    //   queryParams = queryParams.set('limit', params.limit);
+    // }
+    if (params?.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 

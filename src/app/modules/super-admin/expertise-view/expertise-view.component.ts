@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,8 +26,10 @@ export class ExpertiseViewComponent {
   supplierDetails: any = [];
   supplierData: any = [];
   supplierID: string = '';
-  supplierList : any = [];
-  expertiseWiseSupplierList : any = [];
+  supplierList: any = [];
+  expertiseWiseSupplierList: any = [];
+  searchText: any;
+  myControl = new FormControl();
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -39,6 +42,10 @@ export class ExpertiseViewComponent {
 
   ngOnInit() {
     const storedData = localStorage.getItem("supplierData");
+    this.myControl.valueChanges.subscribe((res: any) => {
+      let storeTest = res;
+      this.searchText = res.toLowerCase();
+    });
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
       this.supplierID = this.supplierData?._id;
@@ -47,6 +54,32 @@ export class ExpertiseViewComponent {
     }
     this.getExpertise();
     // this.getSupplierList();
+  }
+
+  searchtext() {
+    this.showLoader = true;
+
+    const params = {
+      search: this.searchText?.trim() || '', // Trim to remove unnecessary spaces
+      // page: this.page,
+      // limit: this.pagesize
+    };
+
+    this.superService.getExpertiseList(params).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseList = response?.data;
+          this.totalRecords = response?.totalRecords;
+        } else {
+          console.error('Failed to fetch supplier data:', response?.message);
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching supplier data:', error);
+        this.showLoader = false;
+      }
+    );
   }
 
   getExpertise() {
