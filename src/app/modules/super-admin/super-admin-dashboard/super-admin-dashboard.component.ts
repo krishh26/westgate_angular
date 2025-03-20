@@ -44,14 +44,24 @@ export class SuperAdminDashboardComponent {
   }
 
   onCategoryClick(category: string | null) {
-    let valueToPass = category && category !== "Unknown" ? category : null;
+    // Handle Unknown or empty category
+    const valueToPass = category && category !== "Unknown Category" ? category : '';
+    console.log("Navigating with Categorisation:", valueToPass);
 
-    console.log("valueToPass:", valueToPass);
+    this.router.navigate(['/super-admin/type-wise-project-list'], {
+      queryParams: { categorisation: category },
+      queryParamsHandling: 'merge' // Keeps existing projectType
+    });
+  }
+
+  projectTypeClick(projectType: string | null) {
+    const valueToPassProduct = projectType && projectType !== "Unknown ProjectType" ? projectType : '';
+    console.log("Navigating with Project Type:", valueToPassProduct);
 
     // Navigate and pass queryParams
     this.router.navigate(['/super-admin/type-wise-project-list'], {
-      queryParams: { categorisation: valueToPass !== null ? valueToPass : '' },
-      queryParamsHandling: 'merge' // Optional: Keeps existing query params
+      queryParams: { projectType: projectType },
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -75,21 +85,6 @@ export class SuperAdminDashboardComponent {
     console.log("Filtering data from", startDate, "to", endDate);
     this.getProjectDetails(true);
   }
-
-
-
-  projectTypeClick(projectType: string | null) {
-    let valueToPassProduct = projectType && projectType !== "Unknown" ? projectType : null;
-
-    console.log("valueToPassProduct:", valueToPassProduct);
-
-    // Navigate and pass queryParams
-    this.router.navigate(['/super-admin/type-wise-project-list'], {
-      queryParams: { projectType: valueToPassProduct !== null ? valueToPassProduct : '' },
-      queryParamsHandling: 'merge' // Optional: Keeps existing query params
-    });
-  }
-
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
     this.selectedDuration = duration;
