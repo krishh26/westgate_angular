@@ -7,6 +7,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import Swal from 'sweetalert2';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-sub-expertise-list',
@@ -26,6 +27,8 @@ export class SubExpertiseListComponent implements OnInit {
   viewDocs: any;
   showLoader: boolean = false;
   files : any  = []
+  newSubExpertise: string = '';
+  subExpertiseTags: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -152,5 +155,54 @@ export class SubExpertiseListComponent implements OnInit {
     );
   }
 
+  addTag() {
+    if (this.newSubExpertise?.trim()) {
+      // Check if the tag already exists
+      if (!this.subExpertiseTags.includes(this.newSubExpertise.trim())) {
+        this.subExpertiseTags.push(this.newSubExpertise.trim());
+      } else {
+        this.notificationService.showInfo('This tag already exists');
+      }
+      this.newSubExpertise = ''; // Clear the input
+    }
+  }
 
+  removeTag(index: number) {
+    this.subExpertiseTags.splice(index, 1);
+  }
+
+  saveSubExpertise() {
+    if (this.subExpertiseTags.length === 0) {
+      this.notificationService.showError('Please add at least one sub expertise tag');
+      return;
+    }
+
+    // Prepare data with only the expertise being updated
+    const expertiseData = {
+      expertiseName: this.expertiseName,
+      subExpertise: this.subExpertiseTags
+    };
+
+    this.superService.updateSupplierExpertise(this.supplierId, expertiseData).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Sub expertise tags added successfully!');
+          this.subExpertiseTags = []; // Reset the tags array
+          this.getSubExpertise(); // Refresh the list
+
+          // Close the modal
+          const modalElement = document.getElementById('addSubExpertiseModal');
+          if (modalElement) {
+            const modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.hide();
+          }
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add sub expertise tags');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add sub expertise tags');
+      }
+    );
+  }
 }

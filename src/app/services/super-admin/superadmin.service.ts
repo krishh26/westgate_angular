@@ -32,7 +32,8 @@ export enum SuperAdminEndPoint {
   UPLOAD_BY_TAGS = '/web-user/uploadByTag',
   DELETE_EXPERTISE_DOCUMENT = '/web-user/deleteFile',
   EXPERTISE_LIST = '/web-user/expertise-list',
-  GET_SUPPLIER_EXPERTISE = '/web-user/get-suppliers'
+  GET_SUPPLIER_EXPERTISE = '/web-user/get-suppliers',
+  USER_UPDATE = '/user/update'
 }
 
 @Injectable({
@@ -309,6 +310,16 @@ export class SuperadminService {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.ADD_IMAGE_PROJECT_DETAILS + id,
       payload
+    );
+  }
+
+  updateSupplierExpertise(supplierId: string, expertiseData: any): Observable<any> {
+    const headers = { 'supplierId': supplierId };
+
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.USER_UPDATE}/${supplierId}`,
+      expertiseData,
+      { headers }
     );
   }
 }
