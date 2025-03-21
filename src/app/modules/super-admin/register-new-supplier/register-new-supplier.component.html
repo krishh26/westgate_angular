@@ -8,7 +8,7 @@
           </div><br>
         </div>
       </div>
-      <form (ngSubmit)="submitForm(); $event.preventDefault()">
+      <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm">
         <div class="row">
           <div class="col-lg-6 col-xl-6 col-12">
             <div class="row mb-3">
@@ -88,7 +88,7 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">POC details</label>
               <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.poc_details" name="pocdetails" type="text" class="form-control" placeholder="Enter email address">
+                <input [(ngModel)]="companyForm.poc_details" name="pocdetails" type="text" class="form-control" placeholder="Enter details">
               </div>
             </div>
 
@@ -102,22 +102,32 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Expertise</label>
               <div class="col-sm-8">
-                <div class="form-control p-2" style="min-height: 42px;">
-                  <!-- Display tags -->
-                  <span *ngFor="let tag of companyForm.expertise; let i = index" class="badge bg-primary me-2">
-                    {{ tag }}
-                    <button type="button" class="btn-close ms-2" (click)="removeTag(i)"></button>
-                  </span>
+                <div class="form-control p-2">
+                  <!-- Display expertise items -->
+                  <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-2">
+                    <div class="d-flex align-items-center">
+                      <span class="badge bg-primary me-2">
+                        {{ expertise.name }}
+                      </span>
+                      <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                    </div>
+                  </div>
 
-                  <!-- Input for adding tags -->
-                  <input
-                    #tagInput
-                    type="text"
-                    class="border-0"
-                    (keydown.enter)="addTag(tagInput.value, $event); tagInput.value=''"
-                    (keydown.space)="addTag(tagInput.value, $event); tagInput.value=''"
-                    placeholder="Add expertise and press Enter or Space"
-                  />
+                  <!-- Input field for adding expertise -->
+                  <div class="mt-2">
+                    <div class="row g-2">
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="currentExpertise"
+                          name="expertiseName"
+                          placeholder="Enter expertise name and press Enter"
+                          (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

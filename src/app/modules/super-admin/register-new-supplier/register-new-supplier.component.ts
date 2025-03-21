@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
+interface Expertise {
+  name: string;
+  subExpertise: null;
+}
+
 @Component({
   selector: 'app-register-new-supplier',
   templateUrl: './register-new-supplier.component.html',
@@ -10,6 +15,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class RegisterNewSupplierComponent implements OnInit {
   companyForm: any = {};
   showLoader: boolean = false;
+  currentExpertise: string = '';
 
   constructor(
     private superadminService: SuperadminService,
@@ -48,19 +54,19 @@ export class RegisterNewSupplierComponent implements OnInit {
     };
   }
 
-  addTag(value: string, event: any) {
-    event.preventDefault(); // Prevent form submission
-    const tag = value.trim();
-    if (tag && !this.companyForm.expertise.includes(tag)) {
-      this.companyForm.expertise.push(tag);
+  addExpertise() {
+    if (this.currentExpertise) {
+      this.companyForm.expertise.push({
+        name: this.currentExpertise.trim(),
+        subExpertise: null
+      });
+      this.currentExpertise = '';
     }
   }
 
-  // Remove tag
-  removeTag(index: number) {
+  removeExpertise(index: number) {
     this.companyForm.expertise.splice(index, 1);
   }
-
 
   submitForm() {
     console.log('Submitting Data:', this.companyForm);
@@ -80,6 +86,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       this.showLoader = false;
     });
   }
+
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
