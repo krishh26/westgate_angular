@@ -44,6 +44,7 @@ import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
 import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
 import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
+import { SubExpertiseListComponent } from './sub-expertise-list/sub-expertise-list.component';
 
 
 
@@ -83,7 +84,8 @@ import { ExpertiseViewComponent } from './expertise-view/expertise-view.componen
     TypeWiseProjectListComponent,
     FailAproveRejectComponent,
     ExpertiseListComponent,
-    ExpertiseViewComponent
+    ExpertiseViewComponent,
+    SubExpertiseListComponent
   ],
   imports: [
     CommonModule,

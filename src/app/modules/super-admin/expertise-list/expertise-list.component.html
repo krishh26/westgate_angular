@@ -31,28 +31,30 @@
           <thead>
             <tr>
               <th>Expertise</th>
-              <th>Upload Files</th>
+              <!-- <th>Upload Files</th> -->
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="!expertiseList?.length">
-              <td colspan="2">
+              <td colspan="3">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
             <tr
               *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{ item }}</td>
-              <td>
+              <!-- <td>
                 <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />
-              </td>
+              </td> -->
               <td>
-                <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
-                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">View
-                </a>
+              <td>
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" (click)="navigateToSubExpertise(item)">View
+                  Sub Expertise</a>
               </td>
+
             </tr>
           </tbody>
+
         </table>
       </div>
     </div>
