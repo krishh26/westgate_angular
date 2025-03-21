@@ -45,6 +45,10 @@ import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reje
 import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
 import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
 import { SubExpertiseListComponent } from './sub-expertise-list/sub-expertise-list.component';
+import { ResourcesAddComponent } from './resources-add/resources-add.component';
+import { ResourcesListComponent } from './resources-list/resources-list.component';
+import { ResourcesViewComponent } from './resources-view/resources-view.component';
+import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bulk.component';
 
 
 
@@ -85,7 +89,11 @@ import { SubExpertiseListComponent } from './sub-expertise-list/sub-expertise-li
     FailAproveRejectComponent,
     ExpertiseListComponent,
     ExpertiseViewComponent,
-    SubExpertiseListComponent
+    SubExpertiseListComponent,
+    ResourcesAddComponent,
+    ResourcesListComponent,
+    ResourcesViewComponent,
+    ResourcesAddBulkComponent
   ],
   imports: [
     CommonModule,

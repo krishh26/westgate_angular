@@ -33,6 +33,9 @@ import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reje
 import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
 import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
 import { SubExpertiseListComponent } from './sub-expertise-list/sub-expertise-list.component';
+import { ResourcesListComponent } from './resources-list/resources-list.component';
+import { ResourcesAddComponent } from './resources-add/resources-add.component';
+import { ResourcesViewComponent } from './resources-view/resources-view.component';
 
 
 
@@ -171,6 +174,20 @@ const routes: Routes = [
         path: "expertise-view",
         component: ExpertiseViewComponent
       },
+
+      {
+        path: "resources-view",
+        component: ResourcesViewComponent
+      },
+      {
+        path: "resources-add",
+        component: ResourcesAddComponent
+      },
+      {
+        path: "resources-list",
+        component: ResourcesListComponent
+      },
+
     ]
   },
   {

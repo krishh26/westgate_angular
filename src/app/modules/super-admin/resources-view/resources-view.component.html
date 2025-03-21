@@ -1,0 +1,67 @@
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluids mb-3">
+      <div class="row align-items-center">
+        <nav>
+          <ul class="projects-nav-tab">
+            <li routerLink="/super-admin/super-admin-supplier">
+              <a>Profile</a>
+            </li>
+            <li routerLink="/super-admin/expertise-view">
+              <a>Expertise-view</a>
+            </li>
+            <li routerLink="/super-admin/resources-view">
+              <a class="active">Resources-view</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+          <h4 class="text-theme mb-4"><strong>Expertise view</strong></h4>
+        </div>
+      </div>
+      <div class="d-flex align-items-center flex-grow-1">
+        <div class="form-group mb-0 flex-grow-1">
+          <span class="input-icon"><i class="bi bi-search"></i></span>
+          <input class="form-control control-search" placeholder="Search by Expertise" type="text"
+            [(ngModel)]="searchText" (input)="searchtext()" />
+        </div>
+        <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
+          title="Search using BOS ID, Project name, Client name, Website, Notice reference">
+        </i>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Expertise</th>
+              <th>Supllier Count</th>
+              <th>View Supplier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!resourcesList?.length">
+              <td colspan="3">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+            <tr
+              *ngFor="let item of resourcesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              <td>{{ item?.expertise }}</td>
+              <td>{{ item?.count }}</td>
+              <!-- <td>
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">
+                  View
+                </a>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>

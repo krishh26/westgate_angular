@@ -10,6 +10,9 @@
             <li routerLink="/super-admin/expertise-view">
               <a class="active">Expertise-view</a>
             </li>
+            <li routerLink="/super-admin/resources-view">
+              <a>Resources-view</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -36,7 +39,7 @@
           <thead>
             <tr>
               <th>Expertise</th>
-              <th>Supllier Count</th>
+              <!-- <th>Supllier Count</th> -->
               <th>View Supplier</th>
             </tr>
           </thead>
@@ -49,7 +52,7 @@
             <tr
               *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{ item?.expertise }}</td>
-              <td>{{ item?.count }}</td>
+              <!-- <td>{{ item?.count }}</td> -->
               <td>
                 <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
                   data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">

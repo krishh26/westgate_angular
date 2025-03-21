@@ -1,0 +1,89 @@
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluids mb-3">
+      <div class="row align-items-center">
+        <nav>
+          <ul class="projects-nav-tab">
+            <li routerLink="/super-admin/supplier-user-profile">
+              <a>Profile</a>
+            </li>
+            <li routerLink="/super-admin/admin-case-study-list">
+              <a>Historical Data</a>
+            </li>
+            <li routerLink="/super-admin/expertise-list">
+              <a>Case Studies</a>
+            </li>
+            <li routerLink="/super-admin/resources-list">
+              <a class="active">Resources</a>
+            </li>
+            <li routerLink="/super-admin/supplier-user-activity">
+              <a>Activity</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+            <h4 class="text-theme mb-4"><strong>Resources List</strong></h4>
+          </div>
+          <div class="col-lg-2 col-xl-2 col-12">
+            <nav id="navbar" class="navbar">
+              <ul>
+                <li class="dropdown">
+                  <span class="btn btn-outline-white w-100">+ Add Resources</span>
+                  <ul>
+                    <li><a routerLink="/super-admin/resources-add">Single Entry</a></li>
+                    <li><a (click)="openAddResourceModal()">Bulk Entry</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th></th>
+              <th>User Name</th>
+              <th>Mail ID</th>
+              <th>User ID</th>
+              <th>Domain</th>
+              <th>Department</th>
+              <th>Joined</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td *ngIf="!resourcesList?.length" colspan="8">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of resourcesList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+              <td>
+                <div class="avtar32">
+                  <img src="assets/img/face1.jpg" />
+                </div>
+              </td>
+              <td><a href="javascript:;">{{item?.userName}}</a></td>
+              <td><a href="javascript:;">{{item?.email}}</a></td>
+              <td>{{item?._id}}</td>
+              <td>{{item?.domain}}</td>
+              <td>{{item?.department}}</td>
+              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+              <!-- <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
