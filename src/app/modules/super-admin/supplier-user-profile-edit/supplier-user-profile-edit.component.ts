@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
-import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 
 @Component({
@@ -11,89 +9,77 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
   styleUrls: ['./supplier-user-profile-edit.component.scss']
 })
 export class SupplierUserProfileEditComponent {
-  addEditProjectForm = {
-    companyName: new FormControl(""),
-    website: new FormControl(""),
-    yearOfEstablishment: new FormControl(""),
-    registrationNumber: new FormControl(""),
-    TypeOfCompany: new FormControl(""),
-    industry_Sector: new FormControl(""),
-    companyAddress: new FormControl(""),
-    developerOrEngineerTeams: new FormControl(""),
-    dataPrivacyPolicies: new FormControl(""),
-    securityCertifications: new FormControl(""),
-    email: new FormControl(""),
-    customerSupportContact: new FormControl(""),
-    companyContactNumber: new FormControl(""),
-    VATOrGSTNumber: new FormControl(""),
-    companyDirectors_Owners: new FormControl(""),
-    complianceCertifications: new FormControl(""),
-    products_ServicesOffered: new FormControl(""),
-    technologyStack: new FormControl(""),
-    licensingDetails: new FormControl(""),
-    IP_Patents: new FormControl(""),
-    employeeCount: new FormControl(""),
-    cybersecurityPractices: new FormControl(""),
-    otheremployeeCount: new FormControl("")
-  }
+  supplierDetails: any = {
+    companyName: '',
+    website: '',
+    yearOfEstablishment: '',
+    registrationNumber: '',
+    TypeOfCompany: '',
+    industry_Sector: '',
+    companyAddress: '',
+    developerOrEngineerTeams: '',
+    dataPrivacyPolicies: '',
+    securityCertifications: '',
+    email: '',
+    customerSupportContact: '',
+    companyContactNumber: '',
+    VATOrGSTNumber: '',
+    companyDirectors_Owners: '',
+    complianceCertifications: '',
+    products_ServicesOffered: '',
+    technologyStack: '',
+    licensingDetails: '',
+    IP_Patents: '',
+    employeeCount: '',
+    cybersecurityPractices: '',
+    otheremployeeCount: '',
+    number: '',
+  };
 
-  supplierDetails: FormGroup = new FormGroup(this.addEditProjectForm);
   showLoader: boolean = false;
-  data:any;
+
   constructor(
     private notificationService: NotificationService,
     private router: Router,
     private supplierService: SupplierAdminService
-
   ) {
     const navigation = this.router.getCurrentNavigation();
-    this.data = navigation?.extras.state;
-  }
-
-  ngOnInit(): void {
-    if(this.data) {
-      this.supplierDetails.patchValue(this.data);
+    const data = navigation?.extras.state;
+    if (data) {
+      this.supplierDetails = { ...this.supplierDetails, ...data };
     }
   }
 
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
+    return !(charCode > 31 && (charCode < 48 || charCode > 57));
   }
-  
-  submitForm()
-  {
-    if (this.supplierDetails.invalid) {
-      this.supplierDetails.markAllAsTouched();
+
+  submitForm() {
+    if (!this.supplierDetails.companyName || !this.supplierDetails.email) {
+      this.notificationService.showError('Company Name and Email are required.');
       return;
     }
-   
-      const payload:any = {
-        ...this.data, 
-        ...this.supplierDetails.value,
-      }
-      
-      this.showLoader = true;
-      this.supplierService.updateSuppilerDetails(payload,this.data._id).subscribe(
-        (response) => {
-          if (response?.status === true) {
-            this.showLoader = false;
-            this.notificationService.showSuccess('', 'Supplier Details  Edit successfully.');
-            this.router.navigate(['/super-admin/supplier-user-profile']);
-          } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
-          }
-        },
-        (error) => {
-          this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
+    const payload = {
+      ...this.supplierDetails,
+    };
+
+    this.showLoader = true;
+    this.supplierService.updateSuppilerDetails(payload, this.supplierDetails._id).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          this.notificationService.showSuccess('', 'Supplier Details Edited successfully.');
+          this.router.navigate(['/super-admin/supplier-user-profile']);
+        } else {
+          this.notificationService.showError(response?.message);
         }
-      );
-      return
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
-  
 }
