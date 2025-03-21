@@ -68,9 +68,13 @@ export class ExpertiseListComponent {
 
   navigateToSubExpertise(expertise: any) {
     this.router.navigate(['/super-admin/sub-expertise-list'], {
-      queryParams: { expertiseName: expertise }
+      queryParams: {
+        expertiseName: expertise,
+        supplierId: this.supplierID
+      }
     });
   }
+
 
   onFilesSelected(event: any, expertise: string) {
     const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
