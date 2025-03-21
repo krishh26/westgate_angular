@@ -42,7 +42,9 @@ export class RegisterNewSupplierComponent implements OnInit {
       employeeCount: '',
       cybersecurityPractices: '',
       otheremployeeCount: '',
-      expertise: []
+      expertise: [],
+      certifications: '',
+      poc_details: ''
     };
   }
 
