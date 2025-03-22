@@ -341,10 +341,14 @@ export class SuperadminService {
     );
   }
 
-  getCandidatesList(page: number, limit: number): Observable<any> {
+  getCandidatesList(page: number, limit: number, search?: string): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
 
     return this.httpClient.get<any>(
       `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_GET_LIST}`,

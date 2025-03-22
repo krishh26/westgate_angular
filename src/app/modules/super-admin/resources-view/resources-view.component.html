@@ -25,7 +25,14 @@
           </div>
         </div>
       </div>
-
+      <div class="d-flex align-items-center flex-grow-1">
+        <div class="form-group mb-0 flex-grow-1">
+          <span class="input-icon"><i class="bi bi-search"></i></span>
+          <input class="form-control control-search"
+            placeholder="Search by Expertise"
+            type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+        </div>
+      </div>
       <!-- Loading spinner -->
       <div *ngIf="loading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">

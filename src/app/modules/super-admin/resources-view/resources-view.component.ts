@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -30,18 +30,25 @@ export class ResourcesViewComponent implements OnInit {
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
+    private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
     public modalService: NgbModal,
   ) { }
 
   ngOnInit() {
-    this.getCandidatesList();
+    // Check for search parameter in the URL
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.searchText = params['search'];
+      }
+      this.getCandidatesList();
+    });
   }
 
   getCandidatesList() {
     this.loading = true;
-    this.superService.getCandidatesList(this.page, this.pagesize).subscribe(
+    this.superService.getCandidatesList(this.page, this.pagesize, this.searchText).subscribe(
       (response: any) => {
         this.loading = false;
         if (response && response.status) {
@@ -60,6 +67,7 @@ export class ResourcesViewComponent implements OnInit {
 
   pageChanged(event: any) {
     this.page = event;
+    this.updateUrlQueryParams();
     this.getCandidatesList();
   }
 
@@ -74,6 +82,18 @@ export class ResourcesViewComponent implements OnInit {
   }
 
   searchtext() {
-    // Implement search functionality if needed
+    this.page = 1; // Reset to first page when searching
+    this.updateUrlQueryParams();
+    this.getCandidatesList();
+  }
+
+  updateUrlQueryParams() {
+    // Update URL with search parameter without reloading the page
+    const queryParams = this.searchText ? { search: this.searchText } : {};
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge'
+    });
   }
 }
