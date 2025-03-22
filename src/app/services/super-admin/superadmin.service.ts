@@ -33,7 +33,10 @@ export enum SuperAdminEndPoint {
   DELETE_EXPERTISE_DOCUMENT = '/web-user/deleteFile',
   EXPERTISE_LIST = '/web-user/expertise-list',
   GET_SUPPLIER_EXPERTISE = '/web-user/get-suppliers',
-  USER_UPDATE = '/user/update'
+  USER_UPDATE = '/user/update',
+  CANDIDATE_ADD = '/candidate/add',
+  CANDIDATE_GET = '/candidate/get',
+  CANDIDATE_GET_LIST = '/candidate/get-list'
 }
 
 @Injectable({
@@ -320,6 +323,30 @@ export class SuperadminService {
       `${this.baseUrl}${SuperAdminEndPoint.USER_UPDATE}/${supplierId}`,
       expertiseData,
       { headers }
+    );
+  }
+
+  addCandidate(candidateData: any): Observable<any> {
+    return this.httpClient.post<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_ADD}`,
+      candidateData
+    );
+  }
+
+  getCandidatesBySupplier(supplierId: string): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_GET}/${supplierId}`
+    );
+  }
+
+  getCandidatesList(page: number, limit: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.httpClient.get<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_GET_LIST}`,
+      { params }
     );
   }
 }

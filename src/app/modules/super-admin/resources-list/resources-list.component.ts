@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -16,16 +16,18 @@ import { ResourcesAddBulkComponent } from '../resources-add-bulk/resources-add-b
   templateUrl: './resources-list.component.html',
   styleUrls: ['./resources-list.component.scss']
 })
-export class ResourcesListComponent {
+export class ResourcesListComponent implements OnInit {
 
   resourcesList: any = [];
+  candidatesList: any = [];
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-
+  loading: boolean = false;
+  supplierID: string = '';
+  supplierData: any = [];
 
   constructor(
-    private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
     private sanitizer: DomSanitizer,
@@ -33,10 +35,48 @@ export class ResourcesListComponent {
     private modalService: NgbModal,
   ) { }
 
-  ngOnInit() {}
-
-  openAddResourceModal() {
- this.modalService.open(ResourcesAddBulkComponent, { size: 'xl' });
+  ngOnInit() {
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      this.supplierID = this.supplierData?._id;
+    } else {
+      console.log("No supplier data found in localStorage");
+    }
+    this.getCandidatesList();
   }
 
+  getCandidatesList() {
+    this.loading = true;
+    this.superService.getCandidatesList(this.page, this.pagesize).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response && response.status) {
+          this.candidatesList = response.data || [];
+          this.totalRecords = response.totalRecords || 0;
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch candidate data');
+        }
+      },
+      (error: any) => {
+        this.loading = false;
+        this.notificationService.showError(error?.message || 'An error occurred while fetching candidate data');
+      }
+    );
+  }
+
+  pageChanged(event: any) {
+    this.page = event;
+    this.getCandidatesList();
+  }
+
+  openAddResourceModal() {
+    this.modalService.open(ResourcesAddBulkComponent, { size: 'xl' });
+  }
+
+  viewCandidateDetails(candidate: any) {
+    // Store candidate details in local storage or state management solution
+    // Navigate to details page or open a modal
+    console.log('View candidate details', candidate);
+  }
 }
