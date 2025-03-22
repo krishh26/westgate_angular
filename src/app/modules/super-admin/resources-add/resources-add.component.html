@@ -39,9 +39,6 @@
                   <option value="" selected hidden>Select Gender</option>
                   <option *ngFor="let option of genderOptions" [value]="option">{{option}}</option>
                 </select>
-                <div *ngIf="userProfileForm.get('gender')?.invalid && userProfileForm.get('gender')?.touched" class="text-danger">
-                  Gender is required.
-                </div>
               </div>
             </div>
 
@@ -71,9 +68,6 @@
               <label class="col-sm-4 col-form-label">Year of Graduation</label>
               <div class="col-sm-8">
                 <input formControlName="yearOfGraduation" type="number" class="form-control" placeholder="Enter graduation year" (keypress)="NumberOnly($event)">
-                <div *ngIf="userProfileForm.get('yearOfGraduation')?.invalid && userProfileForm.get('yearOfGraduation')?.touched" class="text-danger">
-                  Valid graduation year is required.
-                </div>
               </div>
             </div>
 
@@ -248,9 +242,6 @@
               <label class="col-sm-4 col-form-label">Overtime Charges ($)</label>
               <div class="col-sm-8">
                 <input formControlName="overtimeCharges" type="number" class="form-control" placeholder="Enter overtime charges" (keypress)="NumberOnly($event)">
-                <div *ngIf="userProfileForm.get('overtimeCharges')?.invalid && userProfileForm.get('overtimeCharges')?.touched" class="text-danger">
-                  Valid overtime charges are required.
-                </div>
               </div>
             </div>
           </div>
@@ -286,9 +277,6 @@
                     <label class="col-sm-4 col-form-label">Client Name</label>
                     <div class="col-sm-8">
                       <input formControlName="clientName" type="text" class="form-control" placeholder="Enter client name">
-                      <div *ngIf="projectForm?.get('clientName')?.invalid && projectForm?.get('clientName')?.touched" class="text-danger">
-                        Client name is required.
-                      </div>
                     </div>
                   </div>
 
@@ -318,9 +306,6 @@
                     <label class="col-sm-4 col-form-label">Team Size</label>
                     <div class="col-sm-8">
                       <input formControlName="teamSize" type="number" class="form-control" placeholder="Enter team size" (keypress)="NumberOnly($event)">
-                      <div *ngIf="projectForm?.get('teamSize')?.invalid && projectForm?.get('teamSize')?.touched" class="text-danger">
-                        Valid team size is required.
-                      </div>
                     </div>
                   </div>
 
@@ -328,9 +313,6 @@
                     <label class="col-sm-4 col-form-label">Contribution (%)</label>
                     <div class="col-sm-8">
                       <input formControlName="contributionPercentage" type="number" class="form-control" placeholder="Enter contribution percentage" (keypress)="NumberOnly($event)">
-                      <div *ngIf="projectForm?.get('contributionPercentage')?.invalid && projectForm?.get('contributionPercentage')?.touched" class="text-danger">
-                        Valid contribution percentage is required.
-                      </div>
                     </div>
                   </div>
 
@@ -341,9 +323,6 @@
                         <option value="" selected hidden>Select Complexity</option>
                         <option *ngFor="let option of projectComplexityOptions" [value]="option">{{option}}</option>
                       </select>
-                      <div *ngIf="projectForm?.get('projectComplexity')?.invalid && projectForm?.get('projectComplexity')?.touched" class="text-danger">
-                        Project complexity is required.
-                      </div>
                     </div>
                   </div>
 
@@ -371,9 +350,6 @@
                     <label class="col-sm-4 col-form-label">Outcome Impact</label>
                     <div class="col-sm-8">
                       <input formControlName="outcomeImpact" type="text" class="form-control" placeholder="Enter outcome impact">
-                      <div *ngIf="projectForm?.get('outcomeImpact')?.invalid && projectForm?.get('outcomeImpact')?.touched" class="text-danger">
-                        Outcome impact is required.
-                      </div>
                     </div>
                   </div>
 
@@ -381,9 +357,6 @@
                     <label class="col-sm-4 col-form-label">Client Feedback</label>
                     <div class="col-sm-8">
                       <input formControlName="clientFeedback" type="text" class="form-control" placeholder="Enter client feedback">
-                      <div *ngIf="projectForm?.get('clientFeedback')?.invalid && projectForm?.get('clientFeedback')?.touched" class="text-danger">
-                        Client feedback is required.
-                      </div>
                     </div>
                   </div>
                 </div>

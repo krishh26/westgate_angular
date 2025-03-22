@@ -72,7 +72,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+            <tr
+              *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{candidate?.fullName}}</td>
               <td>{{candidate?.jobTitle}}</td>
               <td>{{candidate?.totalExperience}} years</td>
@@ -96,62 +97,27 @@
                 <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- No candidates message -->
-      <div *ngIf="!loading && candidatesList?.length === 0" class="alert alert-info text-center">
-        <app-no-record-found></app-no-record-found>
-      </div>
-
-      <!-- Pagination -->
-      <div *ngIf="candidatesList?.length > 0" class="d-flex justify-content-center mt-4">
-        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
-      </div>
-
-      <!-- Original Table (Commented out) -->
-      <!--
-      <div class="table-responsive">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th></th>
-              <th>User Name</th>
-              <th>Mail ID</th>
-              <th>User ID</th>
-              <th>Domain</th>
-              <th>Department</th>
-              <th>Joined</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
 
             <tr>
-              <td *ngIf="!resourcesList?.length" colspan="8">
+              <td *ngIf="!candidatesList?.length" colspan="13">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
-
-            <tr
-              *ngFor="let item of resourcesList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-              <td>
-                <div class="avtar32">
-                  <img src="assets/img/face1.jpg" />
-                </div>
-              </td>
-              <td><a href="javascript:;">{{item?.userName}}</a></td>
-              <td><a href="javascript:;">{{item?.email}}</a></td>
-              <td>{{item?._id}}</td>
-              <td>{{item?.domain}}</td>
-              <td>{{item?.department}}</td>
-              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-            </tr>
           </tbody>
         </table>
       </div>
-      -->
+      <!-- <div class="row mt-3 align-items-center">
+        <div class="row">
+          <div class="pagination">
+            <pagination-controls [idMaxSize]="100" (pageChange)="pageChanged($event)"></pagination-controls>
+          </div>
+        </div>
+      </div> -->
+      <!-- Pagination -->
+      <div *ngIf="candidatesList?.length > 0" class="d-flex justify-content-start mt-4">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+      </div>
+
     </div>
   </section>
 </main>

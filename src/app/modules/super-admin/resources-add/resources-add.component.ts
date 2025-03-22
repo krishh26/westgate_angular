@@ -33,11 +33,13 @@ export class ResourcesAddComponent implements OnInit {
   // Dropdown options
   genderOptions = ['Male', 'Female', 'Other'];
   languageOptions = [
-    'Spoken','Written languages'
+    'Spoken', 'Written languages'
   ];
-  projectComplexityOptions = ['Simple', 'Moderate', 'Complex'];
+  projectComplexityOptions = ['Simple', 'Medium', 'Complex'];
 
   showLoader: boolean = false;
+  supplierID: string = '';
+  supplierData: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -49,15 +51,27 @@ export class ResourcesAddComponent implements OnInit {
     this.userProfileForm = this.createUserProfileForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const storedData = localStorage.getItem("supplierData");
+    if (storedData) {
+      this.supplierData = JSON.parse(storedData);
+      this.supplierID = this.supplierData?._id;
+      this.userProfileForm.patchValue({
+        supplierId: this.supplierID
+      });
+    } else {
+      console.log("No supplier data found in localStorage");
+    }
+  }
 
   createUserProfileForm(): FormGroup {
     return this.fb.group({
+      supplierId: [''],
       fullName: ['', Validators.required],
-      gender: ['', Validators.required],
+      gender: [''],
       nationality: ['', Validators.required],
       highestQualification: ['', Validators.required],
-      yearOfGraduation: ['', [Validators.required, Validators.min(1950), Validators.max(new Date().getFullYear())]],
+      yearOfGraduation: [''],
       totalExperience: ['', [Validators.required, Validators.min(0)]],
       jobTitle: ['', Validators.required],
       startDate: ['', Validators.required],
@@ -65,7 +79,7 @@ export class ResourcesAddComponent implements OnInit {
       availableFrom: ['', Validators.required],
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
       workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
-      overtimeCharges: ['', [Validators.required, Validators.min(0)]],
+      overtimeCharges: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
     });
   }
@@ -73,16 +87,16 @@ export class ResourcesAddComponent implements OnInit {
   createProjectForm(): FormGroup {
     return this.fb.group({
       projectName: ['', Validators.required],
-      clientName: ['', Validators.required],
+      clientName: [''],
       projectDuration: ['', Validators.required],
       industryDomain: ['', Validators.required],
       projectDescription: ['', Validators.required],
       keyResponsibilities: ['', Validators.required],
-      teamSize: ['', [Validators.required, Validators.min(1)]],
-      contributionPercentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      projectComplexity: ['', Validators.required],
-      outcomeImpact: ['', Validators.required],
-      clientFeedback: ['', Validators.required]
+      teamSize: [''],
+      contributionPercentage: [''],
+      projectComplexity: [''],
+      outcomeImpact: [''],
+      clientFeedback: ['']
     });
   }
 
@@ -168,6 +182,9 @@ export class ResourcesAddComponent implements OnInit {
 
     // Prepare the data in the required format
     const formData = this.userProfileForm.value;
+
+    // Make sure we're using the current supplierId
+    formData.supplierId = this.supplierID;
 
     // Add the array fields that are managed separately
     const userData = {

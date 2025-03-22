@@ -53,8 +53,8 @@ export class ResourcesListComponent implements OnInit {
       (response: any) => {
         this.loading = false;
         if (response && response.status) {
-          this.candidatesList = response.data || [];
-          this.totalRecords = response.totalRecords || 0;
+          this.candidatesList = response?.data?.data || [];
+          this.totalRecords = response?.totalRecords || 0;
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch candidate data');
         }
