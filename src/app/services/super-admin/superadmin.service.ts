@@ -36,7 +36,9 @@ export enum SuperAdminEndPoint {
   USER_UPDATE = '/user/update',
   CANDIDATE_ADD = '/candidate/add',
   CANDIDATE_GET = '/candidate/get',
-  CANDIDATE_GET_LIST = '/candidate/get-list'
+  CANDIDATE_GET_LIST = '/candidate/get-list',
+  CANDIDATE_SUPPLIER_WISE = '/candidate/get/',
+  CANDIDATE_LIST = '/candidate/list'
 }
 
 @Injectable({
@@ -346,6 +348,17 @@ export class SuperadminService {
 
     return this.httpClient.get<any>(
       `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_GET_LIST}`,
+      { params }
+    );
+  }
+
+  getCandidatesByListId(listId: string, page: number, limit: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.httpClient.get<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_LIST}/${listId}`,
       { params }
     );
   }

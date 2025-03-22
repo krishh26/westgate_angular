@@ -43,12 +43,13 @@ export class ResourcesListComponent implements OnInit {
     } else {
       console.log("No supplier data found in localStorage");
     }
+    // Using a fixed list ID now: '67b60d775c16e4e640eee7dc'
     this.getCandidatesList();
   }
 
   getCandidatesList() {
     this.loading = true;
-    this.superService.getCandidatesList(this.page, this.pagesize).subscribe(
+    this.superService.getCandidatesByListId(this.supplierID, this.page, this.pagesize).subscribe(
       (response: any) => {
         this.loading = false;
         if (response && response.status) {
