@@ -56,6 +56,20 @@ export class ExpertiseViewComponent {
     // this.getSupplierList();
   }
 
+  navigateToSubExpertise(expertise: any) {
+    this.router.navigate(['/super-admin/sub-expertise-list'], {
+      queryParams: {
+        expertiseName: expertise,
+        supplierId: this.supplierID,
+        source: 'expertise-view'
+      },
+      state: {
+        from: 'expertise-view'
+      }
+    });
+  }
+
+
   searchtext() {
     this.showLoader = true;
 

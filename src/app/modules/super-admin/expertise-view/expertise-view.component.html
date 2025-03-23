@@ -37,7 +37,7 @@
             <tr>
               <th>Expertise</th>
               <!-- <th>Supllier Count</th> -->
-              <th>View Supplier</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -51,11 +51,15 @@
               <td>{{ item?.expertise }}</td>
               <!-- <td>{{ item?.count }}</td> -->
               <td>
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" (click)="navigateToSubExpertise(item)">View
+                  Sub Expertise</a>
+              </td>
+              <!-- <td>
                 <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
                   data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">
                   View
                 </a>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

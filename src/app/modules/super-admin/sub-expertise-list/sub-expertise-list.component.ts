@@ -26,9 +26,11 @@ export class SubExpertiseListComponent implements OnInit {
   supplierID: string = '';
   viewDocs: any;
   showLoader: boolean = false;
-  files : any  = []
+  files: any = []
   newSubExpertise: string = '';
   subExpertiseTags: string[] = [];
+  showAddButton: boolean = true;
+  isFromExpertiseView: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,9 +43,45 @@ export class SubExpertiseListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Check if coming from expertise-view
+    if (this.router.getCurrentNavigation()?.extras?.state) {
+      const navigationState = this.router.getCurrentNavigation()?.extras?.state;
+      if (navigationState && navigationState['from'] === 'expertise-view') {
+        this.showAddButton = false;
+        this.isFromExpertiseView = true;
+      }
+    }
+
+    // Check if URL contains expertise-view
+    const previousUrl = this.router.url;
+    if (previousUrl.includes('/super-admin/expertise-view')) {
+      this.showAddButton = false;
+      this.isFromExpertiseView = true;
+    }
+
     this.route.queryParams.subscribe(params => {
+      // Get expertise name and supplierId from query params
       this.expertiseName = params['expertiseName'];
       this.supplierId = params['supplierId'];
+
+      // Also set supplierID to use in other methods
+      if (this.supplierId) {
+        this.supplierID = this.supplierId;
+      }
+
+      // Check for source parameter
+      if (params['source'] === 'expertise-view') {
+        this.showAddButton = false;
+        this.isFromExpertiseView = true;
+      }
+
+      console.log('Loading sub-expertise list for:', {
+        expertiseName: this.expertiseName,
+        supplierId: this.supplierId,
+        isFromExpertiseView: this.isFromExpertiseView
+      });
+
+      // Fetch sub-expertise data
       this.getSubExpertise();
     });
   }
@@ -72,18 +110,26 @@ export class SubExpertiseListComponent implements OnInit {
       return;
     }
 
+    // Check if we have a supplier ID
+    if (!this.supplierId && !this.supplierID) {
+      this.notificationService.showError('Supplier ID is missing, cannot upload files.');
+      return;
+    }
+
     const formData = new FormData();
     this.selectedFiles.forEach(file => {
       formData.append('files', file);
     });
-    formData.append('expertise', expertise);
-    formData.append('supplierId', this.supplierID);
+    formData.append('expertise', this.expertiseName);
+    formData.append('subExpertise', expertise);
+    formData.append('supplierId', this.supplierId || this.supplierID);
 
     this.superService.uploadByTag(formData).subscribe(
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Files uploaded successfully!');
-          // this.getSupplierdetail();
+          // Refresh the file list after upload
+          this.getSubExpertise();
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -128,31 +174,113 @@ export class SubExpertiseListComponent implements OnInit {
   }
 
   viewUploadedDocuments(subExpertise: string) {
-    console.log(subExpertise);
+    console.log('Viewing documents for:', subExpertise);
 
+    // Filter files by subExpertise
     this.viewDocs = this.files?.filter((file: any) => file?.subExpertise === subExpertise);
 
-    if (this.viewDocs?.length === 0) {
+    if (!this.viewDocs || this.viewDocs.length === 0) {
       this.notificationService.showInfo(`No files available for ${subExpertise}`);
+      this.viewDocs = [];
+
+      // Still open the modal but it will show "No Files Available"
+      const modalElement = document.getElementById('viewAllDocuments');
+      if (modalElement) {
+        this.modalService.open(modalElement, { centered: true });
+      }
       return;
     }
 
-    this.modalService.open(document.getElementById('viewAllDocuments'), { centered: true });
+    // Open the modal
+    const modalElement = document.getElementById('viewAllDocuments');
+    if (modalElement) {
+      this.modalService.open(modalElement, { centered: true });
+    }
   }
 
   getSubExpertise() {
-    this.supplierService.getSupplierDetails(this.supplierId).subscribe(
-      (response) => {
-        if (response?.status) {
-          const expertiseData = response?.data?.expertise?.find((item: any) => item.name === this.expertiseName);
-          this.subExpertiseList = expertiseData?.subExpertise || [];
-          this.files = response?.files || [];
+    if (!this.expertiseName) {
+      console.error('Expertise name is missing');
+      return;
+    }
+
+    if (this.isFromExpertiseView) {
+      // For expertise-view path, we need to get all expertises and then filter
+      this.superService.getExpertiseList().subscribe(
+        (response) => {
+          if (response?.status) {
+            // Find all expertise entries with the matching name
+            const matchingExpertises = response?.data?.filter((item: any) => item.name === this.expertiseName);
+
+            if (matchingExpertises && matchingExpertises.length > 0) {
+              // Collect all unique subExpertise values
+              const allSubExpertises = new Set<string>();
+
+              matchingExpertises.forEach((expertise: any) => {
+                if (expertise.subExpertise && Array.isArray(expertise.subExpertise)) {
+                  expertise.subExpertise.forEach((sub: string) => allSubExpertises.add(sub));
+                }
+              });
+
+              this.subExpertiseList = Array.from(allSubExpertises);
+              this.totalRecords = this.subExpertiseList.length;
+            } else {
+              console.error(`Expertise with name "${this.expertiseName}" not found`);
+              this.subExpertiseList = [];
+            }
+          } else {
+            console.error('Error fetching expertise data:', response?.message);
+            this.subExpertiseList = [];
+          }
+        },
+        (error) => {
+          console.error('Error fetching sub-expertise:', error);
+          this.subExpertiseList = [];
         }
-      },
-      (error) => {
-        console.error('Error fetching sub-expertise:', error);
+      );
+    } else {
+      // For other paths, we filter by supplier ID
+      if (!this.supplierId) {
+        console.error('Supplier ID is missing');
+        return;
       }
-    );
+
+      this.supplierService.getSupplierDetails(this.supplierId).subscribe(
+        (response) => {
+          if (response?.status) {
+            // Find all expertise entries with the matching name for this supplier
+            const matchingExpertises = response?.data?.expertise?.filter((item: any) =>
+              item.name === this.expertiseName
+            );
+
+            if (matchingExpertises && matchingExpertises.length > 0) {
+              // Collect all unique subExpertise values
+              const allSubExpertises = new Set<string>();
+
+              matchingExpertises.forEach((expertise: any) => {
+                if (expertise.subExpertise && Array.isArray(expertise.subExpertise)) {
+                  expertise.subExpertise.forEach((sub: string) => allSubExpertises.add(sub));
+                }
+              });
+
+              this.subExpertiseList = Array.from(allSubExpertises);
+              this.totalRecords = this.subExpertiseList.length;
+              this.files = response?.files || [];
+            } else {
+              console.error(`Expertise with name "${this.expertiseName}" not found for supplier ID ${this.supplierId}`);
+              this.subExpertiseList = [];
+            }
+          } else {
+            console.error('Error fetching supplier data:', response?.message);
+            this.subExpertiseList = [];
+          }
+        },
+        (error) => {
+          console.error('Error fetching sub-expertise:', error);
+          this.subExpertiseList = [];
+        }
+      );
+    }
   }
 
   addTag() {
@@ -177,13 +305,20 @@ export class SubExpertiseListComponent implements OnInit {
       return;
     }
 
+    // Check if we have a supplier ID
+    if (!this.supplierId && !this.supplierID) {
+      this.notificationService.showError('Supplier ID is missing, cannot save sub-expertise tags.');
+      return;
+    }
+
     // Prepare data with only the expertise being updated
     const expertiseData = {
-      expertiseName: this.expertiseName,
-      subExpertise: this.subExpertiseTags
+      expertise: this.expertiseName,
+      subExpertise: this.subExpertiseTags,
+      supplierId: this.supplierId || this.supplierID
     };
 
-    this.superService.updateSupplierExpertise(this.supplierId, expertiseData).subscribe(
+    this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Sub expertise tags added successfully!');

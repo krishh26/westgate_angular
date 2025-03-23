@@ -1,57 +1,10 @@
-<!-- <div class="container mt-4">
-  <h4>Sub Expertise for {{ expertiseName }}</h4>
-
-  <div *ngIf="subExpertiseList?.length; else noData">
-    <div class="table-responsive">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th>Sub Expertise Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let sub of subExpertiseList">
-            <td>{{ sub }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <ng-template #noData>
-    <p>No Sub Expertise available for {{ expertiseName }}</p>
-  </ng-template>
-</div> -->
 <main id="main">
   <section class="casestudy-section">
-    <div class="container-fluids mb-3">
-      <div class="row align-items-center">
-        <nav>
-          <ul class="projects-nav-tab">
-            <li routerLink="/super-admin/supplier-user-profile">
-              <a>Profile</a>
-            </li>
-            <li routerLink="/super-admin/admin-case-study-list">
-              <a>Historical Data</a>
-            </li>
-            <li routerLink="/super-admin/expertise-list">
-              <a class="active">Case Studies</a>
-            </li>
-            <li routerLink="/super-admin/resources-list">
-              <a>Resources</a>
-            </li>
-            <li routerLink="/super-admin/supplier-user-activity">
-              <a>Activity</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
     <div class="container-fluid">
       <div class="d-flex align-items-center justify-content-between">
         <h4 class="text-theme mb-0"><strong>Sub Expertise List</strong></h4>
         <div>
-          <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addSubExpertiseModal">
+          <button *ngIf="showAddButton" class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addSubExpertiseModal">
             Add Sub
           </button>
           <a routerLink="/super-admin/expertise-list" class="btn btn-primary btn-sm">
@@ -75,7 +28,7 @@
               </td>
             </tr>
             <tr
-              *ngFor="let item of subExpertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              *ngFor="let item of subExpertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: subExpertiseList.length }; let i = index">
               <td>{{ item }}</td>
               <td>
                 <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />

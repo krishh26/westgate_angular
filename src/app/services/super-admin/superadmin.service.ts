@@ -38,7 +38,8 @@ export enum SuperAdminEndPoint {
   CANDIDATE_GET = '/candidate/get',
   CANDIDATE_GET_LIST = '/candidate/get-list',
   CANDIDATE_SUPPLIER_WISE = '/candidate/get/',
-  CANDIDATE_LIST = '/candidate/list'
+  CANDIDATE_LIST = '/candidate/list',
+  ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise'
 }
 
 @Injectable({
@@ -334,6 +335,14 @@ export class SuperadminService {
       candidateData
     );
   }
+
+  addExpertiseandSubExpertise(candidateData: any): Observable<any> {
+    return this.httpClient.post<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.ADD_EXPERTISE_AND_SUBEXPERTISE}`,
+      candidateData
+    );
+  }
+
 
   getCandidatesBySupplier(supplierId: string): Observable<any> {
     return this.httpClient.get<any>(
