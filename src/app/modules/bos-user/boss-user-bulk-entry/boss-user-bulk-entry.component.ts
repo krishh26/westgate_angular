@@ -112,7 +112,7 @@ export class BossUserBulkEntryComponent {
         (res) => {
           this.spinner.hide();
           if (res?.status == true) {
-            this.showLoader = false;
+
             console.log('1', res?.status);
             console.log(res);
 
@@ -123,13 +123,13 @@ export class BossUserBulkEntryComponent {
             this.spinner.hide();
             console.log('1', res?.status);
             this.notificationService.showError(res?.message);
-            this.showLoader = false;
+
           }
         },
         (error) => {
           this.spinner.hide();
           this.notificationService.showError(error?.error?.message);
-          this.showLoader = false;
+
         }
       );
     };

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
   templateUrl: './resources-add-bulk.component.html',
   styleUrls: ['./resources-add-bulk.component.scss']
 })
-export class ResourcesAddBulkComponent {
+export class ResourcesAddBulkComponent implements OnInit {
 
   showLoader: boolean = false;
   supplierData: any = [];
@@ -26,15 +26,12 @@ export class ResourcesAddBulkComponent {
     private superService: SuperadminService,
     private activeModal: NgbActiveModal,
     private spinner: NgxSpinnerService
-  ) {
-    this.supplierData = localStorage.getItem("supplierData");
-  }
+  ) { }
 
   ngOnInit(): void {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");
@@ -134,6 +131,4 @@ export class ResourcesAddBulkComponent {
     close() {
       this.activeModal.close();
     }
-
-
 }

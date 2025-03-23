@@ -8,6 +8,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-sub-expertise-list',
@@ -40,6 +41,7 @@ export class SubExpertiseListComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
     private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -123,14 +125,16 @@ export class SubExpertiseListComponent implements OnInit {
     formData.append('expertise', this.expertiseName);
     formData.append('subExpertise', expertise);
     formData.append('supplierId', this.supplierId || this.supplierID);
-
+    this.spinner.show();
     this.superService.uploadByTag(formData).subscribe(
       (response: any) => {
         if (response?.status) {
+          this.spinner.hide();
           this.notificationService.showSuccess('Files uploaded successfully!');
           // Refresh the file list after upload
           this.getSubExpertise();
         } else {
+          this.spinner.hide();
           this.notificationService.showError(response?.message);
         }
       },
