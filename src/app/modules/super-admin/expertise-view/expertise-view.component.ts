@@ -56,15 +56,11 @@ export class ExpertiseViewComponent {
     // this.getSupplierList();
   }
 
-  navigateToSubExpertise(expertise: any) {
-    this.router.navigate(['/super-admin/sub-expertise-list'], {
+  navigateToSubExpertise(item: any) {
+    this.router.navigate(['/super-admin/sub-expertise-view'], {
       queryParams: {
-        expertiseName: expertise,
-        supplierId: this.supplierID,
-        source: 'expertise-view'
-      },
-      state: {
-        from: 'expertise-view'
+        expertiseName: item.expertise,
+        subExpertiseList: JSON.stringify(item.subExpertise)
       }
     });
   }

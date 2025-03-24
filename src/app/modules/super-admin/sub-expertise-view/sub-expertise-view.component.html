@@ -12,17 +12,19 @@
           <thead>
             <tr>
               <th>Sub Expertise</th>
+              <th>Supplier Count</th>
               <th>View Documents</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="!subExpertiseList?.length">
-              <td colspan="2">
+              <td colspan="3">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
             <tr *ngFor="let item of subExpertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: subExpertiseList.length }">
-              <td>{{ item }}</td>
+              <td>{{ item.name || 'Unnamed Sub-expertise' }}</td>
+              <td>{{ item.supplierCount || 0 }}</td>
               <td>
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                   data-bs-target="#viewAllDocuments" (click)="viewUploadedDocuments(item)">View</button>

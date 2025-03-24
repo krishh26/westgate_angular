@@ -37,55 +37,21 @@ export class SubExpertiseViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.expertiseName = params['expertiseName'];
-      this.getSubExpertise();
+      const subExpertiseListStr = params['subExpertiseList'];
+      if (subExpertiseListStr) {
+        this.subExpertiseList = JSON.parse(subExpertiseListStr);
+        this.totalRecords = this.subExpertiseList.length;
+      }
     });
   }
 
-  getSubExpertise() {
-    if (!this.expertiseName) {
-      console.error('Expertise name is missing');
-      return;
-    }
+  viewUploadedDocuments(subExpertise: any) {
+    console.log('Viewing documents for:', subExpertise.name);
 
-    this.superService.getExpertiseList().subscribe(
-      (response) => {
-        if (response?.status) {
-          const matchingExpertises = response?.data?.filter((item: any) => item.name === this.expertiseName);
-
-          if (matchingExpertises && matchingExpertises.length > 0) {
-            const allSubExpertises = new Set<string>();
-
-            matchingExpertises.forEach((expertise: any) => {
-              if (expertise.subExpertise && Array.isArray(expertise.subExpertise)) {
-                expertise.subExpertise.forEach((sub: string) => allSubExpertises.add(sub));
-              }
-            });
-
-            this.subExpertiseList = Array.from(allSubExpertises);
-            this.totalRecords = this.subExpertiseList.length;
-          } else {
-            console.error(`Expertise with name "${this.expertiseName}" not found`);
-            this.subExpertiseList = [];
-          }
-        } else {
-          console.error('Error fetching expertise data:', response?.message);
-          this.subExpertiseList = [];
-        }
-      },
-      (error) => {
-        console.error('Error fetching sub-expertise:', error);
-        this.subExpertiseList = [];
-      }
-    );
-  }
-
-  viewUploadedDocuments(subExpertise: string) {
-    console.log('Viewing documents for:', subExpertise);
-
-    this.viewDocs = this.files?.filter((file: any) => file?.subExpertise === subExpertise);
+    this.viewDocs = this.files?.filter((file: any) => file?.subExpertise === subExpertise.name);
 
     if (!this.viewDocs || this.viewDocs.length === 0) {
-      this.notificationService.showInfo(`No files available for ${subExpertise}`);
+      this.notificationService.showInfo(`No files available for ${subExpertise.name}`);
       this.viewDocs = [];
 
       const modalElement = document.getElementById('viewAllDocuments');
@@ -135,6 +101,6 @@ export class SubExpertiseViewComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/super-admin/expertise-list']);
+    this.router.navigate(['/super-admin/expertise-view']);
   }
 }
