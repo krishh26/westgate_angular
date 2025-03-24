@@ -55,6 +55,8 @@ export class ResourcesListComponent implements OnInit {
         if (response && response.status) {
           this.candidatesList = response?.data?.data || [];
           this.totalRecords = response?.totalRecords || 0;
+          // Store candidates list in localStorage
+          localStorage.setItem('candidatesList', JSON.stringify(this.candidatesList));
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch candidate data');
         }
@@ -76,8 +78,10 @@ export class ResourcesListComponent implements OnInit {
   }
 
   viewCandidateDetails(candidate: any) {
-    // Store candidate details in local storage or state management solution
-    // Navigate to details page or open a modal
-    console.log('View candidate details', candidate);
+    this.router.navigate(['/super-admin/resources-details'], {
+      queryParams: {
+        candidateId: candidate._id
+      }
+    });
   }
 }

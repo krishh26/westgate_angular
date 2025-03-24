@@ -36,6 +36,8 @@ import { SubExpertiseListComponent } from './sub-expertise-list/sub-expertise-li
 import { ResourcesListComponent } from './resources-list/resources-list.component';
 import { ResourcesAddComponent } from './resources-add/resources-add.component';
 import { ResourcesViewComponent } from './resources-view/resources-view.component';
+import { ResourcesDetailsPageComponent } from './resources-details-page/resources-details-page.component';
+import { ResourcesDetailsComponent } from './resources-details/resources-details.component';
 
 
 
@@ -186,6 +188,10 @@ const routes: Routes = [
       {
         path: "resources-list",
         component: ResourcesListComponent
+      },
+      {
+        path: "resources-details",
+        component: ResourcesDetailsComponent
       },
 
     ]
