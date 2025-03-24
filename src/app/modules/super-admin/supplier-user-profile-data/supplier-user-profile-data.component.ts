@@ -126,4 +126,33 @@ export class SupplierUserProfileDataComponent {
     );
   }
 
+  deleteSupplier(id: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this supplier?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.supplierService.deleteSupplierUser(id).subscribe((response: any) => {
+          if (response?.status) {
+            this.showLoader = false;
+            this.notificationService.showSuccess('Supplier successfully deleted');
+            this.router.navigate(['/super-admin/super-admin-supplier']);
+          } else {
+            this.showLoader = false;
+            this.notificationService.showError(response?.message);
+          }
+        }, (error: any) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
+  }
+
 }
