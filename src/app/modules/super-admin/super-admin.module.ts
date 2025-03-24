@@ -49,8 +49,8 @@ import { ResourcesAddComponent } from './resources-add/resources-add.component';
 import { ResourcesListComponent } from './resources-list/resources-list.component';
 import { ResourcesViewComponent } from './resources-view/resources-view.component';
 import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bulk.component';
-
-
+import { AddRolesComponent } from './add-roles/add-roles.component';
+import { RolesListComponent } from './roles-list/roles-list.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +93,7 @@ import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bu
     ResourcesAddComponent,
     ResourcesListComponent,
     ResourcesViewComponent,
-    ResourcesAddBulkComponent,
+    ResourcesAddBulkComponent
   ],
   imports: [
     CommonModule,
@@ -106,7 +106,9 @@ import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bu
     NgSelectModule,
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    AddRolesComponent,
+    RolesListComponent
   ],
   providers: [NgbActiveModal],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -37,8 +37,8 @@ import { ResourcesListComponent } from './resources-list/resources-list.componen
 import { ResourcesAddComponent } from './resources-add/resources-add.component';
 import { ResourcesViewComponent } from './resources-view/resources-view.component';
 import { ResourcesDetailsComponent } from './resources-details/resources-details.component';
-
-
+import { AddRolesComponent } from './add-roles/add-roles.component';
+import { RolesListComponent } from './roles-list/roles-list.component';
 
 const routes: Routes = [
   {
@@ -192,7 +192,14 @@ const routes: Routes = [
         path: "resources-details",
         component: ResourcesDetailsComponent
       },
-
+      {
+        path: "add-roles",
+        component: AddRolesComponent
+      },
+      {
+        path: "roles-list",
+        component: RolesListComponent
+      },
     ]
   },
   {

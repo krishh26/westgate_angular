@@ -39,7 +39,10 @@ export enum SuperAdminEndPoint {
   CANDIDATE_GET_LIST = '/candidate/get-list',
   CANDIDATE_SUPPLIER_WISE = '/candidate/get/',
   CANDIDATE_LIST = '/candidate/list',
-  ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise'
+  ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise',
+  ROLES_LIST = '/roles/get-list',
+  ROLES_ADD = '/roles/add',
+  ROLES_DELETE = '/roles/delete'
 }
 
 @Injectable({
@@ -373,6 +376,25 @@ export class SuperadminService {
     return this.httpClient.get<any>(
       `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_LIST}/${listId}`,
       { params }
+    );
+  }
+
+  getRolesList(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.ROLES_LIST
+    );
+  }
+
+  addRole(roleData: { name: string }): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.ROLES_ADD,
+      roleData
+    );
+  }
+
+  deleteRole(roleId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      this.baseUrl + SuperAdminEndPoint.ROLES_DELETE + '/' + roleId
     );
   }
 }
