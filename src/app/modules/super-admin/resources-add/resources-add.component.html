@@ -92,6 +92,26 @@
             </div>
 
             <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Other Job Title</label>
+              <div class="col-sm-8">
+                <input formControlName="otherJobTitle" type="text" class="form-control" placeholder="Enter other job title">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Role</label>
+              <div class="col-sm-8">
+                <select formControlName="roleId" class="form-select">
+                  <option value="" selected hidden>Select Role</option>
+                  <option *ngFor="let role of rolesList" [value]="role._id">{{role.name}}</option>
+                </select>
+                <div *ngIf="userProfileForm.get('roleId')?.invalid && userProfileForm.get('roleId')?.touched" class="text-danger">
+                  Role is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Start Date</label>
               <div class="col-sm-8">
                 <input formControlName="startDate" type="date" class="form-control">

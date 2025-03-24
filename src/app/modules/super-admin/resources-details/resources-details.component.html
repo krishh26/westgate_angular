@@ -53,6 +53,14 @@
                   <input type="text" class="form-control" [value]="candidateDetails?.jobTitle" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
+                  <label class="form-label">Role</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.roleId?.name" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Other Job Title</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.otherJobTitle" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
                   <label class="form-label">Total Experience</label>
                   <input type="text" class="form-control" [value]="candidateDetails?.totalExperience + ' years'" readonly>
                 </div>

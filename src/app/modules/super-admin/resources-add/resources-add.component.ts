@@ -12,7 +12,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 export class ResourcesAddComponent implements OnInit {
 
   // Form controls for the user profile
-  userProfileForm: FormGroup;
+  userProfileForm: FormGroup = this.fb.group({});
 
   // Arrays to store tag-like inputs
   previousEmployers: string[] = [];
@@ -40,6 +40,7 @@ export class ResourcesAddComponent implements OnInit {
   showLoader: boolean = false;
   supplierID: string = '';
   supplierData: any = [];
+  rolesList: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +49,8 @@ export class ResourcesAddComponent implements OnInit {
     private notificationService: NotificationService,
     private route: ActivatedRoute,
   ) {
-    this.userProfileForm = this.createUserProfileForm();
+    this.initializeForm();
+    this.getRolesList();
   }
 
   ngOnInit(): void {
@@ -64,8 +66,8 @@ export class ResourcesAddComponent implements OnInit {
     }
   }
 
-  createUserProfileForm(): FormGroup {
-    return this.fb.group({
+  initializeForm() {
+    this.userProfileForm = this.fb.group({
       supplierId: [''],
       fullName: ['', Validators.required],
       gender: [''],
@@ -80,6 +82,8 @@ export class ResourcesAddComponent implements OnInit {
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
       workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       overtimeCharges: [''],
+      roleId: ['', Validators.required],
+      otherJobTitle: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
     });
   }
@@ -257,5 +261,20 @@ export class ResourcesAddComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  getRolesList() {
+    this.superService.getRolesList().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.rolesList = response?.data?.roles || [];
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch roles');
+        }
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred while fetching roles');
+      }
+    });
   }
 }
