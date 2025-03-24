@@ -49,7 +49,6 @@ import { ResourcesAddComponent } from './resources-add/resources-add.component';
 import { ResourcesListComponent } from './resources-list/resources-list.component';
 import { ResourcesViewComponent } from './resources-view/resources-view.component';
 import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bulk.component';
-import { ResourcesDetailsPageComponent } from './resources-details-page/resources-details-page.component';
 
 
 
@@ -95,7 +94,6 @@ import { ResourcesDetailsPageComponent } from './resources-details-page/resource
     ResourcesListComponent,
     ResourcesViewComponent,
     ResourcesAddBulkComponent,
-    ResourcesDetailsPageComponent
   ],
   imports: [
     CommonModule,
