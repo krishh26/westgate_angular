@@ -13,9 +13,6 @@
             <li routerLink="/super-admin/role-wise-resources-list">
               <a class="active">Resources-view</a>
             </li>
-            <!-- <li routerLink="/super-admin/roles-list">
-              <a>Roles</a>
-            </li> -->
           </ul>
         </nav>
       </div>
@@ -24,11 +21,11 @@
       <div class="row">
         <div class="row align-items-center justify-content-between">
           <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
-            <h4 class="text-theme mb-4">Role Wise Resources</h4>
+            <h4 class="text-theme mb-4">Roles List</h4>
           </div>
           <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4">
-            <button class="btn btn-primary btn-sm" routerLink="/super-admin/role-wise-resources-list">
-              <i class="bi bi-arrow-left"></i> Back to Roles
+            <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
+              <i class="bi bi-person-badge"></i> Add Role
             </button>
           </div>
         </div>
@@ -37,7 +34,7 @@
         <div class="form-group mb-0 flex-grow-1">
           <span class="input-icon"><i class="bi bi-search"></i></span>
           <input class="form-control control-search"
-            placeholder="Search resources"
+            placeholder="Search roles"
             type="text" [(ngModel)]="searchText" (input)="searchtext()" />
         </div>
       </div>
@@ -48,36 +45,22 @@
         </div>
       </div>
 
-      <!-- Candidates table -->
-      <div *ngIf="!loading && candidatesList && candidatesList.length > 0" class="table-responsive">
+      <!-- Roles table -->
+      <div *ngIf="!loading && rolesList && rolesList.length > 0" class="table-responsive">
         <table class="table table-striped align-middle">
           <thead>
             <tr>
-              <th>Full Name</th>
-              <th>Job Title</th>
-              <th>Experience</th>
-              <th>Technical Skills</th>
-              <th>Status</th>
+              <th>Role Name</th>
+              <th>Created Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
-              <td>{{candidate?.fullName}}</td>
-              <td>{{candidate?.jobTitle}}</td>
-              <td>{{candidate?.totalExperience}} years</td>
+            <tr *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              <td>{{role?.name}}</td>
+              <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>
-                <div class="d-flex flex-wrap gap-1">
-                  <span *ngFor="let skill of candidate?.technicalSkills?.split(',')" class="badge bg-secondary">{{skill.trim()}}</span>
-                </div>
-              </td>
-              <td>
-                <span [class]="'badge ' + (candidate?.status === 'Active' ? 'bg-success' : 'bg-warning')">
-                  {{candidate?.status}}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View</button>
               </td>
             </tr>
           </tbody>
@@ -87,8 +70,8 @@
         </div>
       </div>
 
-      <div *ngIf="!loading && (!candidatesList || candidatesList.length === 0)" class="text-center">
-        <p>No resources found for this role.</p>
+      <div *ngIf="!loading && (!rolesList || rolesList.length === 0)" class="text-center">
+        <p>No roles found.</p>
       </div>
     </div>
   </section>

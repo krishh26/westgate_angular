@@ -27,7 +27,7 @@ import { SuperAdminUserProfileComponent } from './super-admin-user-profile/super
 import { SuperAdminChangePasswordComponent } from './super-admin-change-password/super-admin-change-password.component';
 import { DropAfterFesibilityProjectsComponent } from './drop-after-fesibility-projects/drop-after-fesibility-projects.component';
 import { NoSupplierMatchProjectsComponent } from './no-supplier-match-projects/no-supplier-match-projects.component';
-import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';;
+import { ApproveRejectProjectDetailsComponent } from './approve-reject-project-details/approve-reject-project-details.component';
 import { TypeWiseProjectListComponent } from './type-wise-project-list/type-wise-project-list.component';
 import { FailAproveRejectComponent } from './fail-aprove-reject/fail-aprove-reject.component';
 import { ExpertiseListComponent } from './expertise-list/expertise-list.component';
@@ -41,6 +41,7 @@ import { AddRolesComponent } from './add-roles/add-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-view.component';
 import { ResourcesViewDetailsComponent } from './resources-view-details/resources-view-details.component';
+import { RoleWiseResourcesListComponent } from './role-wise-resources-list/role-wise-resources-list.component';
 
 const routes: Routes = [
   {
@@ -83,7 +84,6 @@ const routes: Routes = [
         path: "add-new-supplier",
         component: RegisterNewSupplierComponent
       },
-
       {
         path: "add-new-case-study",
         component: AdminAddCaseStudyComponent
@@ -164,7 +164,6 @@ const routes: Routes = [
         path: "sub-expertise-list",
         component: SubExpertiseListComponent
       },
-
       {
         path: "type-wise-project-list",
         component: TypeWiseProjectListComponent
@@ -177,7 +176,6 @@ const routes: Routes = [
         path: "expertise-view",
         component: ExpertiseViewComponent
       },
-
       {
         path: "resources-view",
         component: ResourcesViewComponent
@@ -210,6 +208,10 @@ const routes: Routes = [
         path: "resources-view-details",
         component: ResourcesViewDetailsComponent
       },
+      {
+        path: "role-wise-resources-list",
+        component: RoleWiseResourcesListComponent
+      }
     ]
   },
   {

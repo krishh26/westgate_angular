@@ -9,6 +9,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import Swal from 'sweetalert2';
 import { ResourcesAddBulkComponent } from '../resources-add-bulk/resources-add-bulk.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-resources-view',
@@ -25,6 +26,7 @@ export class ResourcesViewComponent implements OnInit {
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
   loading: boolean = false;
+  roleId: string = '';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -34,6 +36,7 @@ export class ResourcesViewComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
     public modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -42,7 +45,13 @@ export class ResourcesViewComponent implements OnInit {
       if (params['search']) {
         this.searchText = params['search'];
       }
-      this.getCandidatesList();
+      if (params['roleId']) {
+        this.roleId = params['roleId'];
+        this.getRoleWiseCandidates();
+      } else {
+        // If no roleId, load all candidates
+        this.getCandidatesList();
+      }
     });
   }
 
@@ -63,6 +72,24 @@ export class ResourcesViewComponent implements OnInit {
         this.notificationService.showError(error?.message || 'An error occurred while fetching candidate data');
       }
     );
+  }
+
+  getRoleWiseCandidates() {
+    this.loading = true;
+    this.spinner.show();
+    this.superService.getCandidatesByRole(this.roleId).subscribe({
+      next: (response) => {
+        this.candidatesList = response.data || [];
+        this.totalRecords = this.candidatesList.length;
+        this.loading = false;
+        this.spinner.hide();
+      },
+      error: (error) => {
+        console.error('Error fetching candidates:', error);
+        this.loading = false;
+        this.spinner.hide();
+      }
+    });
   }
 
   pageChanged(event: any) {

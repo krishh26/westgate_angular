@@ -42,7 +42,8 @@ export enum SuperAdminEndPoint {
   ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise',
   ROLES_LIST = '/roles/get-list',
   ROLES_ADD = '/roles/add',
-  ROLES_DELETE = '/roles/delete'
+  ROLES_DELETE = '/roles/delete',
+  ROLES_CANDIDATES = '/roles/candidates'
 }
 
 @Injectable({
@@ -400,5 +401,11 @@ export class SuperadminService {
 
   deleteDocumentResource(fileId: string) {
     return this.httpClient.delete(`${this.baseUrl}/delete-document-resource/${fileId}`);
+  }
+
+  getCandidatesByRole(roleId: string): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.ROLES_CANDIDATES}/${roleId}`
+    );
   }
 }
