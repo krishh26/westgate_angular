@@ -397,4 +397,8 @@ export class SuperadminService {
       this.baseUrl + SuperAdminEndPoint.ROLES_DELETE + '/' + roleId
     );
   }
+
+  deleteDocumentResource(fileId: string) {
+    return this.httpClient.delete(`${this.baseUrl}/delete-document-resource/${fileId}`);
+  }
 }

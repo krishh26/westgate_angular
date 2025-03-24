@@ -76,9 +76,28 @@ export class ResourcesViewComponent implements OnInit {
   }
 
   viewCandidateDetails(candidate: any) {
-    // Store candidate details in local storage or state management solution
-    // Navigate to details page or open a modal
-    console.log('View candidate details', candidate);
+    this.router.navigate(['/super-admin/resources-view-details'], {
+      queryParams: {
+        resourceName: candidate.fullName,
+        resourceList: JSON.stringify([{
+          name: candidate.fullName,
+          supplierCount: 1,
+          details: {
+            jobTitle: candidate.jobTitle,
+            experience: candidate.totalExperience,
+            qualification: candidate.highestQualification,
+            yearOfGraduation: candidate.yearOfGraduation,
+            gender: candidate.gender,
+            nationality: candidate.nationality,
+            technicalSkills: candidate.technicalSkills,
+            languages: candidate.languagesKnown,
+            hourlyRate: candidate.hourlyRate,
+            workingHours: candidate.workingHoursPerWeek,
+            availableFrom: candidate.availableFrom
+          }
+        }])
+      }
+    });
   }
 
   searchtext() {

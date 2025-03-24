@@ -52,6 +52,7 @@ import { ResourcesAddBulkComponent } from './resources-add-bulk/resources-add-bu
 import { AddRolesComponent } from './add-roles/add-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-view.component';
+import { ResourcesViewDetailsComponent } from './resources-view-details/resources-view-details.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,9 @@ import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-vi
     ResourcesListComponent,
     ResourcesViewComponent,
     ResourcesAddBulkComponent,
-    SubExpertiseViewComponent
+    SubExpertiseViewComponent,
+    ResourcesViewDetailsComponent
+
   ],
   imports: [
     CommonModule,

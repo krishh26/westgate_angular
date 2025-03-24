@@ -40,6 +40,7 @@ import { ResourcesDetailsComponent } from './resources-details/resources-details
 import { AddRolesComponent } from './add-roles/add-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-view.component';
+import { ResourcesViewDetailsComponent } from './resources-view-details/resources-view-details.component';
 
 const routes: Routes = [
   {
@@ -204,6 +205,10 @@ const routes: Routes = [
       {
         path: "sub-expertise-view",
         component: SubExpertiseViewComponent
+      },
+      {
+        path: "resources-view-details",
+        component: ResourcesViewDetailsComponent
       },
     ]
   },
