@@ -1,0 +1,81 @@
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center justify-content-between">
+        <h4 class="text-theme mb-0"><strong>Sub Expertise View</strong></h4>
+        <button class="btn btn-primary btn-sm" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i> Back
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Sub Expertise</th>
+              <th>View Documents</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!subExpertiseList?.length">
+              <td colspan="2">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+            <tr *ngFor="let item of subExpertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: subExpertiseList.length }">
+              <td>{{ item }}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                  data-bs-target="#viewAllDocuments" (click)="viewUploadedDocuments(item)">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal fade" id="viewAllDocuments" tabindex="-1" aria-labelledby="viewAllProjectsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6>Uploaded Files</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Uploaded At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!viewDocs?.length">
+                <td colspan="3">No Files Available</td>
+              </tr>
+              <tr *ngFor="let file of viewDocs">
+                <td>{{ file.fileName }}</td>
+                <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
+                <td>
+                  <a class="btn btn-primary btn-sm" [href]="file.fileUrl" target="_blank" title="Download">
+                    <i class="bi bi-download"></i>
+                  </a>
+                  <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
