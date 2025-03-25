@@ -30,6 +30,9 @@ export class ExpertiseViewComponent {
   expertiseWiseSupplierList: any = [];
   searchText: any;
   myControl = new FormControl();
+  startDate: string = '';
+  endDate: string = '';
+
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -65,14 +68,38 @@ export class ExpertiseViewComponent {
     });
   }
 
+  applyDateFilter() {
+    this.showLoader = true;
+    const params = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      search: this.searchText?.trim() || ''
+    };
+
+    this.superService.getExpertiseList(params).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseList = response?.data;
+          this.totalRecords = response?.totalRecords;
+        } else {
+          console.error('Failed to fetch supplier data:', response?.message);
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching supplier data:', error);
+        this.showLoader = false;
+      }
+    );
+  }
 
   searchtext() {
     this.showLoader = true;
 
     const params = {
-      search: this.searchText?.trim() || '', // Trim to remove unnecessary spaces
-      // page: this.page,
-      // limit: this.pagesize
+      search: this.searchText?.trim() || '',
+      startDate: this.startDate,
+      endDate: this.endDate
     };
 
     this.superService.getExpertiseList(params).subscribe(
@@ -94,7 +121,13 @@ export class ExpertiseViewComponent {
 
   getExpertise() {
     this.showLoader = true;
-    this.superService.getExpertiseList().subscribe(
+    const params = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      search: this.searchText?.trim() || ''
+    };
+
+    this.superService.getExpertiseList(params).subscribe(
       (response) => {
         if (response?.status) {
           this.expertiseList = response?.data;
@@ -199,6 +232,13 @@ export class ExpertiseViewComponent {
   viewSupplierDocuments(supplier: any) {
     this.supplierFiles = supplier.files;
     this.modalService.open(this.viewDocumentsModal); // Open new modal using template reference
+  }
+
+  clearFilters() {
+    this.startDate = '';
+    this.endDate = '';
+    this.searchText = '';
+    this.getExpertise();
   }
 
 }
