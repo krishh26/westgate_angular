@@ -13,40 +13,56 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
   imports: [CommonModule, FormsModule, RouterModule]
 })
 export class AddRolesComponent implements OnInit {
-  roleData = {
-    name: ''
+  roleData: any = {
+    name: '',
+    otherRoles: []
   };
-  isLoading = false;
+  isLoading: boolean = false;
+  newOtherRole: string = '';
+  otherRoles: string[] = [];
 
   constructor(
     private superService: SuperadminService,
-    private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    if (!this.roleData.name.trim()) {
-      this.notificationService.showError('Please enter a role name');
+  addOtherRole(): void {
+    if (this.newOtherRole?.trim() && !this.otherRoles.includes(this.newOtherRole.trim())) {
+      this.otherRoles.push(this.newOtherRole.trim());
+      this.newOtherRole = '';
+    }
+  }
+
+  removeOtherRole(index: number): void {
+    this.otherRoles.splice(index, 1);
+  }
+
+  onSubmit(): void {
+    if (!this.roleData.name) {
+      this.notificationService.showError('Please enter role name');
       return;
     }
 
     this.isLoading = true;
+    this.roleData.otherRoles = this.otherRoles;
+
     this.superService.addRole(this.roleData).subscribe({
       next: (response: any) => {
         this.isLoading = false;
-        if (response && response.status) {
+        if (response.status) {
           this.notificationService.showSuccess('Role added successfully');
           this.router.navigate(['/super-admin/roles-list']);
         } else {
-          this.notificationService.showError(response?.message || 'Failed to add role');
+          this.notificationService.showError(response.message || 'Failed to add role');
         }
       },
       error: (error: any) => {
         this.isLoading = false;
-        this.notificationService.showError(error?.message || 'An error occurred while adding the role');
+        this.notificationService.showError(error.message || 'An error occurred while adding role');
       }
     });
   }
