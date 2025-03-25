@@ -143,11 +143,23 @@ export class SuperadminService {
     );
   }
 
-  getSUpplierList(params: { page: string; limit: string }): Observable<any> {
+  getSUpplierList(params: any): Observable<any> {
     const url = `${this.baseUrl}${SuperAdminEndPoint.SUPPLIERUSER_LIST}`;
     let queryParams = new HttpParams();
-    queryParams = queryParams.set('page', params?.page);
-    queryParams = queryParams.set('limit', params?.limit);
+
+    if (params?.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params?.limit) {
+      queryParams = queryParams.set('limit', params.limit);
+    }
+    if (params?.startDate) {
+      queryParams = queryParams.set('startDate', params.startDate);
+    }
+    if (params?.endDate) {
+      queryParams = queryParams.set('endDate', params.endDate);
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
@@ -380,9 +392,22 @@ export class SuperadminService {
     );
   }
 
-  getRolesList(): Observable<any> {
+  getRolesList(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params.startDate) {
+      queryParams = queryParams.set('startDate', params.startDate);
+    }
+    if (params.endDate) {
+      queryParams = queryParams.set('endDate', params.endDate);
+    }
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+
     return this.httpClient.get<any>(
-      this.baseUrl + SuperAdminEndPoint.ROLES_LIST
+      this.baseUrl + SuperAdminEndPoint.ROLES_LIST,
+      { params: queryParams }
     );
   }
 

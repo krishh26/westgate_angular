@@ -24,6 +24,8 @@ export class SuperAdminSupplierComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
+  startDate: string = '';
+  endDate: string = '';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -44,7 +46,7 @@ export class SuperAdminSupplierComponent {
   }
 
   deleteBulkProject() {
-    
+
   }
 
   onToggleSwitch(item: any) {
@@ -99,9 +101,22 @@ export class SuperAdminSupplierComponent {
 
   getManageUserList() {
     this.showLoader = true;
-    Payload.supplierUserList.page = String(this.page);
-    Payload.supplierUserList.limit = String(this.pagesize);
-    this.superService.getSUpplierList(Payload.supplierUserList).subscribe(
+
+    // Create payload as a more flexible object
+    const payload: any = {
+      page: String(this.page),
+      limit: String(this.pagesize)
+    };
+
+    // Add date filters if they exist
+    if (this.startDate) {
+      payload.startDate = this.startDate;
+    }
+    if (this.endDate) {
+      payload.endDate = this.endDate;
+    }
+
+    this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         this.supplierUserList = [];
         if (response?.status == true) {
@@ -120,6 +135,10 @@ export class SuperAdminSupplierComponent {
     );
   }
 
+  applyDateFilter() {
+    this.page = 1;
+    this.getManageUserList();
+  }
 
   projectDetails(projectId: any, item: any) {
     let data = item;

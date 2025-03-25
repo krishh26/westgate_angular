@@ -30,6 +30,28 @@
           </a>
         </div>
       </div>
+
+      <!-- Date Filters -->
+      <div class="row mt-3 mb-3">
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-2">
+          <label class="form-label">Start Date</label>
+          <div class="input-group">
+            <input type="date" class="form-control" [(ngModel)]="startDate" name="startDate">
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-2">
+          <label class="form-label">End Date</label>
+          <div class="input-group">
+            <input type="date" class="form-control" [(ngModel)]="endDate" name="endDate">
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2 d-flex align-items-end">
+          <button class="btn btn-primary w-100" (click)="applyDateFilter()" style="height: 38px;">
+            <i class="bi bi-funnel"></i> Filter
+          </button>
+        </div>
+      </div>
+
       <div class="table-responsive mb-3">
         <table class="table table-striped align-middle">
           <thead>

@@ -15,6 +15,8 @@ export class RoleWiseResourcesListComponent implements OnInit {
   pagesize: number = 10;
   totalRecords: number = 0;
   searchText: string = '';
+  startDate: string = '';
+  endDate: string = '';
 
   constructor(
     private superadminService: SuperadminService,
@@ -29,7 +31,19 @@ export class RoleWiseResourcesListComponent implements OnInit {
   getRolesList() {
     this.loading = true;
     this.spinner.show();
-    this.superadminService.getRolesList().subscribe({
+    const queryParams: any = {};
+
+    if (this.startDate) {
+      queryParams.startDate = this.startDate;
+    }
+    if (this.endDate) {
+      queryParams.endDate = this.endDate;
+    }
+    if (this.searchText) {
+      queryParams.search = this.searchText;
+    }
+
+    this.superadminService.getRolesList(queryParams).subscribe({
       next: (response) => {
         this.rolesList = response.data?.roles || [];
         this.totalRecords = this.rolesList.length;
@@ -59,5 +73,10 @@ export class RoleWiseResourcesListComponent implements OnInit {
     this.router.navigate(['/super-admin/resources-view'], {
       queryParams: { roleId: role._id }
     });
+  }
+
+  applyDateFilter() {
+    this.page = 1;
+    this.getRolesList();
   }
 }
