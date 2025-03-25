@@ -131,12 +131,13 @@
                 <th>Bid Status</th>
                 <th>Bid Assign User</th>
                 <th>Log Time</th>
+                <!-- <th>Documents</th> -->
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td *ngIf="!projectList?.length" colspan="14">
+                <td *ngIf="!projectList?.length" colspan="15">
                   <app-no-record-found></app-no-record-found>
                 </td>
               </tr>
@@ -173,6 +174,11 @@
                   <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
                     data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
                   </a>
+                </td>
+                <td>
+                  <span *ngIf="!item?.westGetDocument?.length" class="text-danger">
+                    <i class="bi bi-circle-fill"></i>
+                  </span>
                 </td>
               </tr>
             </tbody>
