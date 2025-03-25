@@ -33,14 +33,21 @@
           </div>
         </div>
       </div>
-      <div class="d-flex align-items-center flex-grow-1">
+
+      <!-- Search Box -->
+      <div class="d-flex align-items-center flex-grow-1 mb-3">
         <div class="form-group mb-0 flex-grow-1">
           <span class="input-icon"><i class="bi bi-search"></i></span>
-          <input class="form-control control-search"
-            placeholder="Search resources"
-            type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+          <input
+            class="form-control control-search"
+            placeholder="Search resources within this role"
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="searchtext()"
+          />
         </div>
       </div>
+
       <!-- Loading spinner -->
       <div *ngIf="loading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
@@ -78,13 +85,16 @@
             </tr>
           </tbody>
         </table>
-        <div class="d-flex justify-content-center mt-3">
-          <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
-        </div>
       </div>
 
-      <div *ngIf="!loading && (!candidatesList || candidatesList.length === 0)" class="text-center">
+      <!-- No data message -->
+      <div *ngIf="!loading && (!candidatesList || candidatesList.length === 0)" class="text-center py-4">
         <p>No resources found for this role.</p>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="candidatesList && candidatesList.length > 0" class="d-flex justify-content-center mt-3">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
   </section>

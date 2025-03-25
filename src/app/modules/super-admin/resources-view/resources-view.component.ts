@@ -40,52 +40,58 @@ export class ResourcesViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Check for search parameter in the URL
+    // Get roleId from localStorage if available
+    const savedRoleId = localStorage.getItem('selectedRoleId');
+
     this.route.queryParams.subscribe(params => {
-      if (params['search']) {
-        this.searchText = params['search'];
-      }
       if (params['roleId']) {
+        // If roleId is in URL, save it and use it
         this.roleId = params['roleId'];
+        localStorage.setItem('selectedRoleId', this.roleId);
+        this.getRoleWiseCandidates();
+      } else if (savedRoleId) {
+        // If no roleId in URL but exists in localStorage, restore it
+        this.roleId = savedRoleId;
+        // Update URL with the saved roleId
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { roleId: this.roleId },
+          queryParamsHandling: 'merge'
+        });
         this.getRoleWiseCandidates();
       } else {
-        // If no roleId, load all candidates
-        this.getCandidatesList();
+        // If no roleId anywhere, redirect to roles list
+        this.router.navigate(['/super-admin/role-wise-resources-list']);
       }
     });
-  }
 
-  getCandidatesList() {
-    this.loading = true;
-    this.superService.getCandidatesList(this.page, this.pagesize, this.searchText).subscribe(
-      (response: any) => {
-        this.loading = false;
-        if (response && response.status) {
-          this.candidatesList = response.data || [];
-          this.totalRecords = response.totalRecords || 0;
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to fetch candidate data');
-        }
-      },
-      (error: any) => {
-        this.loading = false;
-        this.notificationService.showError(error?.message || 'An error occurred while fetching candidate data');
-      }
-    );
+    this.myControl.valueChanges.subscribe((res: any) => {
+      this.searchText = res?.toLowerCase();
+      this.getRoleWiseCandidates();
+    });
   }
 
   getRoleWiseCandidates() {
     this.loading = true;
     this.spinner.show();
-    this.superService.getCandidatesByRole(this.roleId).subscribe({
+
+    // Create query string with parameters
+    const queryString = `?page=${this.page}&limit=${this.pagesize}${this.searchText ? `&search=${this.searchText}` : ''}`;
+
+    this.superService.getCandidatesByRole(this.roleId + queryString).subscribe({
       next: (response) => {
-        this.candidatesList = response.data || [];
-        this.totalRecords = this.candidatesList.length;
+        if (response?.status) {
+          this.candidatesList = response.data || [];
+          this.totalRecords = response.totalRecords || 0;
+        } else {
+          this.notificationService.showError('Failed to fetch candidates data');
+        }
         this.loading = false;
         this.spinner.hide();
       },
       error: (error) => {
         console.error('Error fetching candidates:', error);
+        this.notificationService.showError(error?.message || 'Error fetching candidates');
         this.loading = false;
         this.spinner.hide();
       }
@@ -94,8 +100,8 @@ export class ResourcesViewComponent implements OnInit {
 
   pageChanged(event: any) {
     this.page = event;
-    this.updateUrlQueryParams();
-    this.getCandidatesList();
+    this.updateUrlWithParams();
+    this.getRoleWiseCandidates();
   }
 
   openAddResourceModal() {
@@ -128,18 +134,28 @@ export class ResourcesViewComponent implements OnInit {
   }
 
   searchtext() {
-    this.page = 1; // Reset to first page when searching
-    this.updateUrlQueryParams();
-    this.getCandidatesList();
+    this.page = 1;
+    this.updateUrlWithParams();
+    this.getRoleWiseCandidates();
   }
 
-  updateUrlQueryParams() {
-    // Update URL with search parameter without reloading the page
-    const queryParams = this.searchText ? { search: this.searchText } : {};
+  // Add new method to update URL params
+  private updateUrlWithParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: queryParams,
+      queryParams: {
+        roleId: this.roleId,
+        page: this.page,
+        search: this.searchText || null
+      },
       queryParamsHandling: 'merge'
     });
+  }
+
+  // Update ngOnDestroy to clean up if needed
+  ngOnDestroy() {
+    // Optionally clear the stored roleId when leaving the component
+    // Uncomment if you want to clear it when leaving the page
+    // localStorage.removeItem('selectedRoleId');
   }
 }
