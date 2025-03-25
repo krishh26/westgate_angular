@@ -408,4 +408,12 @@ export class SuperadminService {
       `${this.baseUrl}${SuperAdminEndPoint.ROLES_CANDIDATES}/${roleId}`
     );
   }
+
+  getRoleById(roleId: string) {
+    return this.httpClient.get(`${this.baseUrl}/roles/${roleId}`);
+  }
+
+  updateRole(roleId: string, data: any) {
+    return this.httpClient.put(`${this.baseUrl}/roles/update/${roleId}`, data);
+  }
 }

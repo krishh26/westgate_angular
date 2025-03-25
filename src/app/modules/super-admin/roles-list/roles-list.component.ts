@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
@@ -17,7 +17,8 @@ export class RolesListComponent implements OnInit {
 
   constructor(
     private superService: SuperadminService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,5 +59,10 @@ export class RolesListComponent implements OnInit {
         }
       });
     }
+  }
+
+  editRole(roleId: string) {
+    // Navigate to edit page with role ID
+    this.router.navigate(['/super-admin/edit-roles', roleId]);
   }
 }

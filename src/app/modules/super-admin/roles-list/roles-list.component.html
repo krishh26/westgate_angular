@@ -44,9 +44,9 @@
                       <td>{{role.activeSuppliersCount}}</td>
                       <td class="text-end">
                         <div class="d-flex justify-content-end gap-2">
-                          <!-- <button class="btn btn-sm btn-primary" [routerLink]="['/super-admin/edit-roles', role._id]">
+                          <button class="btn btn-sm btn-primary" (click)="editRole(role._id)">
                             <i class="bi bi-pencil"></i>
-                          </button> -->
+                          </button>
                           <button class="btn btn-sm btn-danger" (click)="deleteRole(role._id)">
                             <i class="bi bi-trash"></i>
                           </button>
