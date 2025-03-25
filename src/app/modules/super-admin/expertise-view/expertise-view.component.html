@@ -37,6 +37,8 @@
             <tr>
               <th>Expertise</th>
               <th>Total Sub Expertise</th>
+              <th>Total Supplier</th>
+              <th>Active Supplier</th>
               <th></th>
             </tr>
           </thead>
@@ -50,6 +52,8 @@
               *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{ item?.expertise }}</td>
               <td>{{ item?.totalSubExpertise || 0 }}</td>
+              <td>{{ item?.totalSupplierCount || 0 }}</td>
+              <td>{{ item?.activeSupplierCount || 0 }}</td>
               <td>
                 <a class="btn btn-primary btn-sm" style="cursor: pointer" (click)="navigateToSubExpertise(item)">View</a>
               </td>

@@ -33,9 +33,8 @@
       <div class="d-flex align-items-center flex-grow-1">
         <div class="form-group mb-0 flex-grow-1">
           <span class="input-icon"><i class="bi bi-search"></i></span>
-          <input class="form-control control-search"
-            placeholder="Search roles"
-            type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+          <input class="form-control control-search" placeholder="Search roles" type="text" [(ngModel)]="searchText"
+            (input)="searchtext()" />
         </div>
       </div>
       <!-- Loading spinner -->
@@ -52,13 +51,18 @@
             <tr>
               <th>Role Name</th>
               <th>Created Date</th>
+              <th>Total Supplier</th>
+              <th>Active Supplier</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+            <tr
+              *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{role?.name}}</td>
               <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
+              <td>{{role?.totalSuppliersCount}}</td>
+              <td>{{role?.activeSuppliersCount}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View</button>
               </td>
