@@ -445,6 +445,6 @@ export class SuperadminService {
   }
 
   updateRole(roleId: string, data: any) {
-    return this.httpClient.put(`${this.baseUrl}/roles/update/${roleId}`, data);
+    return this.httpClient.patch(`${this.baseUrl}/roles/update/${roleId}`, data);
   }
 }

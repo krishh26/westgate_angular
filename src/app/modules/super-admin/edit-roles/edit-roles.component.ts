@@ -33,32 +33,34 @@ export class EditRolesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roleId = this.route.snapshot.params['id'];
-    if (this.roleId) {
-      this.getRoleDetails();
+    // Get data from router state
+    const currentState = history.state;
+    console.log('Complete state received:', currentState); // Log complete state
+    const roleData = currentState.roleData;
+
+    if (roleData) {
+      this.roleId = roleData._id;
+      this.setRoleData(roleData);
+    } else {
+      this.notificationService.showError('No role data found');
+      this.router.navigate(['/super-admin/roles-list']);
     }
   }
 
-  getRoleDetails() {
-    this.isLoading = true;
-    this.superService.getRoleById(this.roleId).subscribe({
-      next: (response: any) => {
-        this.isLoading = false;
-        if (response && response.status) {
-          const roleData = response.data;
-          this.roleForm.patchValue({
-            name: roleData.name
-          });
-          this.otherRoles = roleData.otherRoles || [];
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to fetch role details');
-        }
-      },
-      error: (error: any) => {
-        this.isLoading = false;
-        this.notificationService.showError(error?.message || 'An error occurred while fetching role details');
-      }
+  setRoleData(roleData: any) {
+    console.log('Setting role data:', roleData); // Log the data being set
+
+    // Set form values
+    this.roleForm.patchValue({
+      name: roleData.name || ''
     });
+
+    // Set other roles - check for both possible property names
+    const otherRolesData = roleData.otherRoles || roleData.other_roles || [];
+    console.log('Other roles data:', otherRolesData); // Log other roles data
+
+    this.otherRoles = Array.isArray(otherRolesData) ? [...otherRolesData] : [];
+    console.log('Final other roles array:', this.otherRoles); // Log final array
   }
 
   addOtherRole(): void {
@@ -76,9 +78,11 @@ export class EditRolesComponent implements OnInit {
     if (this.roleForm.valid) {
       this.isLoading = true;
       const formData = {
-        ...this.roleForm.value,
-        otherRoles: this.otherRoles
+        name: this.roleForm.get('name')?.value,
+        otherRoles: this.otherRoles // Make sure this is included
       };
+
+      console.log('Submitting form data:', formData); // For debugging
 
       this.superService.updateRole(this.roleId, formData).subscribe({
         next: (response: any) => {
@@ -94,6 +98,12 @@ export class EditRolesComponent implements OnInit {
           this.isLoading = false;
           this.notificationService.showError(error?.message || 'An error occurred while updating the role');
         }
+      });
+    } else {
+      // Mark all fields as touched to trigger validation messages
+      Object.keys(this.roleForm.controls).forEach(key => {
+        const control = this.roleForm.get(key);
+        control?.markAsTouched();
       });
     }
   }
