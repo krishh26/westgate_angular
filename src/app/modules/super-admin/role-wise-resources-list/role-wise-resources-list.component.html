@@ -7,7 +7,7 @@
             <li routerLink="/super-admin/super-admin-supplier">
               <a>Supplier</a>
             </li>
-            <li routerLink="/super-admin/expertise-view">
+            <li routerLink="/super-admin/expertise-view" *ngIf="isToggled">
               <a>Expertise-view</a>
             </li>
             <li routerLink="/super-admin/role-wise-resources-list">
@@ -20,8 +20,16 @@
     <div class="container-fluid">
       <div class="row">
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+          <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-8">
             <h4 class="text-theme mb-4">Roles List</h4>
+          </div>
+          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4 d-flex align-items-center">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="toggleSwitch" [(ngModel)]="isToggled">
+              <label class="form-check-label ms-2" for="toggleSwitch">
+                {{ isToggled ? 'ON' : 'OFF' }}
+              </label>
+            </div>
           </div>
           <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4">
             <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
