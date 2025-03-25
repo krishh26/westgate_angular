@@ -57,7 +57,7 @@
               <th>Job Title</th>
               <th>Experience</th>
               <th>Technical Skills</th>
-              <th>Status</th>
+              <th>Supplier Name</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -68,14 +68,10 @@
               <td>{{candidate?.totalExperience}} years</td>
               <td>
                 <div class="d-flex flex-wrap gap-1">
-                  <span *ngFor="let skill of candidate?.technicalSkills?.split(',')" class="badge bg-secondary">{{skill.trim()}}</span>
+                  <span *ngFor="let skill of candidate?.technicalSkills" class="badge bg-secondary">{{skill}}</span>
                 </div>
               </td>
-              <td>
-                <span [class]="'badge ' + (candidate?.status === 'Active' ? 'bg-success' : 'bg-warning')">
-                  {{candidate?.status}}
-                </span>
-              </td>
+              <td>{{candidate?.supplierId?.name}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
               </td>
