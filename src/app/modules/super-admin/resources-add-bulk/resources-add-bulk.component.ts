@@ -3,10 +3,8 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'src/app/services/notification/notification.service';
-import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import * as XLSX from 'xlsx';
-
 
 @Component({
   selector: 'app-resources-add-bulk',
@@ -14,13 +12,12 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./resources-add-bulk.component.scss']
 })
 export class ResourcesAddBulkComponent implements OnInit {
-
   showLoader: boolean = false;
   supplierData: any = [];
   supplierID: string = '';
+  roleId: string = '';
 
   constructor(
-    private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
@@ -30,6 +27,8 @@ export class ResourcesAddBulkComponent implements OnInit {
 
   ngOnInit(): void {
     const storedData = localStorage.getItem("supplierData");
+    this.roleId = localStorage.getItem("selectedRoleId") || '';
+
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
       this.supplierID = this.supplierData?._id;
@@ -38,97 +37,118 @@ export class ResourcesAddBulkComponent implements OnInit {
     }
   }
 
-    onFileChange(event: any) {
-      const target: DataTransfer = <DataTransfer>(event.target);
+  onFileChange(event: any) {
+    const target: DataTransfer = <DataTransfer>(event.target);
 
-      if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    if (target.files.length !== 1) {
+      this.notificationService.showError('Please select only one file');
+      return;
+    }
 
-      const reader: FileReader = new FileReader();
+    const reader: FileReader = new FileReader();
 
-      reader.onload = (e: any) => {
-        /* read workbook */
+    reader.onload = (e: any) => {
+      try {
         const bstr: string = e.target.result;
         const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-
-        /* grab first sheet */
         const wsname: string = wb.SheetNames[0];
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
-        /* save data */
         let data = <any[][]>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
 
-        // Remove the first row (A1 row) which contains headers
+        // Remove header row and empty rows
         const headers = data[0];
-        data = data.slice(1);
+        data = data.slice(1).filter(row => row.length > 0);
 
-        // Filter out empty arrays
-        data = data.filter(row => row.length > 0);
+        // Convert Excel data to resource objects with all fields matching resources-add
+        const jsonData = data.map(row => ({
+          roleId: this.roleId,
+          supplierId: this.supplierID,
+          fullName: this.getValueOrEmpty(row[0]),
+          email: this.getValueOrEmpty(row[1]),
+          phoneNumber: this.getValueOrEmpty(row[2]),
+          jobTitle: this.getValueOrEmpty(row[3]),
+          totalExperience: this.getValueOrEmpty(row[4]),
+          highestQualification: this.getValueOrEmpty(row[5]),
+          yearOfGraduation: this.getValueOrEmpty(row[6]),
+          gender: this.getValueOrEmpty(row[7]),
+          nationality: this.getValueOrEmpty(row[8]),
+          currentLocation: this.getValueOrEmpty(row[9]),
+          preferredLocation: this.getValueOrEmpty(row[10]),
+          technicalSkills: this.convertToArray(row[11]),
+          domainExpertise: this.convertToArray(row[12]),
+          certifications: this.convertToArray(row[13]),
+          languagesKnown: this.convertToArray(row[14]),
+          hourlyRate: this.getValueOrEmpty(row[15]),
+          workingHoursPerWeek: this.getValueOrEmpty(row[16]),
+          availableFrom: this.convertExcelDate(row[17]),
+          noticePeriod: this.getValueOrEmpty(row[18]),
+          totalCost: this.getValueOrEmpty(row[19]),
+          resourceType: this.getValueOrEmpty(row[20]),
+          employmentType: this.getValueOrEmpty(row[21]),
+          currentCTC: this.getValueOrEmpty(row[22]),
+          expectedCTC: this.getValueOrEmpty(row[23]),
+          willingToRelocate: this.getValueOrEmpty(row[24]) === 'true',
+          resumeUrl: this.getValueOrEmpty(row[25])
+        }));
 
-        // Function to replace null or undefined values with empty strings
-        const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
+        this.uploadResources(jsonData);
+      } catch (error) {
+        this.spinner.hide();
+        this.notificationService.showError('Error processing file. Please check the file format.');
+      }
+    };
 
-        // Function to convert Excel date serial to human-readable date
-        const convertExcelDate = (serial: number) => {
-          const excelEpoch = new Date(Date.UTC(1900, 0, 1)); // Excel epoch starts on 1900-01-01
-          const days = Math.floor(serial - 2); // Subtract 2 to adjust for Excel leap year bug
-          excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
-          return excelEpoch.toISOString().split('T')[0]; // Convert to ISO string and remove time
-        };
+    reader.readAsBinaryString(target.files[0]);
+  }
 
-        // Map the data to desired JSON format with null values replaced
-        const jsonData = data.map(row => {
-          return {
-            userId: this.supplierID,
-            date: typeof row[0] === 'number' ? convertExcelDate(row[0]) : replaceNullWithEmptyString(row[0]),
-            name: replaceNullWithEmptyString(row[1]),
-            category: replaceNullWithEmptyString(row[2]),
-            industry: replaceNullWithEmptyString(row[3]),
-            type: replaceNullWithEmptyString(row[4]),
-            description: replaceNullWithEmptyString(row[5]),
-            contractDuration: typeof row[6] === 'number' ? convertExcelDate(row[6]) : replaceNullWithEmptyString(row[6]),
-            technologies: replaceNullWithEmptyString(row[7]),
-            maintenance: replaceNullWithEmptyString(row[8]),
-            contractValue: replaceNullWithEmptyString(row[9]),
-            resourcesUsed: replaceNullWithEmptyString(row[10]),
-            clientName: replaceNullWithEmptyString(row[11]),
-          };
-        });
+  private getValueOrEmpty(value: any): any {
+    return value == null ? "" : value;
+  }
 
-        console.log(jsonData);
-        const payload = {
-          data: jsonData
-        };
-        this.spinner.show();
-        this.projectService.addBulkCaseStudy(payload).subscribe(
-          (res) => {
-            this.spinner.hide();
-            if (res?.status == true) {
-              this.showLoader = false;
-              console.log('1', res?.status);
-              console.log(res);
+  private convertToArray(value: string): string[] {
+    if (!value) return [];
+    return value.split(',').map(item => item.trim());
+  }
 
-              this.notificationService.showSuccess(res?.message);
-              window.location.reload();
-              this.router.navigate(['/super-admin/resources-list']);
-            } else {
-              this.spinner.hide();
-              console.log('1', res?.status);
-              this.notificationService.showError(res?.message);
-              this.showLoader = false;
-            }
-          },
-          (error) => {
-            this.spinner.hide();
-            this.notificationService.showError(error?.error?.message);
-            this.showLoader = false;
-          }
-        );
-      };
+  private convertExcelDate(serial: number): string {
+    if (!serial) return '';
+    const excelEpoch = new Date(Date.UTC(1900, 0, 1));
+    const days = Math.floor(serial - 2);
+    excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
+    return excelEpoch.toISOString().split('T')[0];
+  }
 
-      reader.readAsBinaryString(target.files[0]);
+  private convertToBoolean(value: any): boolean {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'string') {
+      return value.toLowerCase() === 'true' || value.toLowerCase() === 'yes';
     }
+    return false;
+  }
 
-    close() {
-      this.activeModal.close();
-    }
+  private uploadResources(resources: any[]) {
+    this.spinner.show();
+    const payload = { data: resources };
+
+    this.superService.addCandidate(payload).subscribe({
+      next: (response) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.notificationService.showSuccess('Resources uploaded successfully');
+          this.activeModal.close('success');
+          window.location.reload();
+        } else {
+          this.notificationService.showError(response?.message || 'Upload failed');
+        }
+      },
+      error: (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'Error uploading resources');
+      }
+    });
+  }
+
+  close() {
+    this.activeModal.close();
+  }
 }
