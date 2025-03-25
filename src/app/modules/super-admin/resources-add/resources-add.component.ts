@@ -75,27 +75,27 @@ export class ResourcesAddComponent implements OnInit {
       highestQualification: ['', Validators.required],
       yearOfGraduation: [''],
       totalExperience: ['', [Validators.required, Validators.min(0)]],
-      jobTitle: ['', Validators.required],
+      // jobTitle: ['', Validators.required],
       startDate: ['', Validators.required],
       keyResponsibilities: ['', Validators.required],
       availableFrom: ['', Validators.required],
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
-      workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
-      overtimeCharges: [''],
+      // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
+      // overtimeCharges: [''],
       roleId: ['', Validators.required],
-      otherJobTitle: [''],
+      //  otherJobTitle: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
     });
   }
 
   createProjectForm(): FormGroup {
     return this.fb.group({
-      projectName: ['', Validators.required],
+      projectName: [''],
       clientName: [''],
-      projectDuration: ['', Validators.required],
-      industryDomain: ['', Validators.required],
-      projectDescription: ['', Validators.required],
-      keyResponsibilities: ['', Validators.required],
+      projectDuration: [''],
+      industryDomain: [''],
+      projectDescription: [''],
+      keyResponsibilities: [''],
       teamSize: [''],
       contributionPercentage: [''],
       projectComplexity: [''],
@@ -178,9 +178,12 @@ export class ResourcesAddComponent implements OnInit {
 
   // Form submission
   submitForm(): void {
-    if (this.userProfileForm.invalid) {
+    if (this.userProfileForm.invalid || this.technicalSkills.length === 0) {
       // Mark all fields as touched to trigger validation messages
       this.markFormGroupTouched(this.userProfileForm);
+      if (this.technicalSkills.length === 0) {
+        this.notificationService.showError('Technical Skills are required');
+      }
       return;
     }
 

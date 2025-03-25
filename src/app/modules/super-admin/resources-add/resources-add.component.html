@@ -26,7 +26,8 @@
               <label class="col-sm-4 col-form-label">Full Name</label>
               <div class="col-sm-8">
                 <input formControlName="fullName" type="text" class="form-control" placeholder="Enter full name">
-                <div *ngIf="userProfileForm.get('fullName')?.invalid && userProfileForm.get('fullName')?.touched" class="text-danger">
+                <div *ngIf="userProfileForm.get('fullName')?.invalid && userProfileForm.get('fullName')?.touched"
+                  class="text-danger">
                   Full name is required.
                 </div>
               </div>
@@ -46,7 +47,8 @@
               <label class="col-sm-4 col-form-label">Nationality</label>
               <div class="col-sm-8">
                 <input formControlName="nationality" type="text" class="form-control" placeholder="Enter nationality">
-                <div *ngIf="userProfileForm.get('nationality')?.invalid && userProfileForm.get('nationality')?.touched" class="text-danger">
+                <div *ngIf="userProfileForm.get('nationality')?.invalid && userProfileForm.get('nationality')?.touched"
+                  class="text-danger">
                   Nationality is required.
                 </div>
               </div>
@@ -55,8 +57,11 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Highest Qualification</label>
               <div class="col-sm-8">
-                <input formControlName="highestQualification" type="text" class="form-control" placeholder="Enter highest qualification">
-                <div *ngIf="userProfileForm.get('highestQualification')?.invalid && userProfileForm.get('highestQualification')?.touched" class="text-danger">
+                <input formControlName="highestQualification" type="text" class="form-control"
+                  placeholder="Enter highest qualification">
+                <div
+                  *ngIf="userProfileForm.get('highestQualification')?.invalid && userProfileForm.get('highestQualification')?.touched"
+                  class="text-danger">
                   Highest qualification is required.
                 </div>
               </div>
@@ -67,21 +72,25 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Year of Graduation</label>
               <div class="col-sm-8">
-                <input formControlName="yearOfGraduation" type="number" class="form-control" placeholder="Enter graduation year" (keypress)="NumberOnly($event)">
+                <input formControlName="yearOfGraduation" type="number" class="form-control"
+                  placeholder="Enter graduation year" (keypress)="NumberOnly($event)">
               </div>
             </div>
 
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Total Experience (Years)</label>
               <div class="col-sm-8">
-                <input formControlName="totalExperience" type="number" class="form-control" placeholder="Enter total experience" (keypress)="NumberOnly($event)">
-                <div *ngIf="userProfileForm.get('totalExperience')?.invalid && userProfileForm.get('totalExperience')?.touched" class="text-danger">
+                <input formControlName="totalExperience" type="number" class="form-control"
+                  placeholder="Enter total experience" (keypress)="NumberOnly($event)">
+                <div
+                  *ngIf="userProfileForm.get('totalExperience')?.invalid && userProfileForm.get('totalExperience')?.touched"
+                  class="text-danger">
                   Valid total experience is required.
                 </div>
               </div>
             </div>
 
-            <div class="row mb-3">
+            <!-- <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Job Title</label>
               <div class="col-sm-8">
                 <input formControlName="jobTitle" type="text" class="form-control" placeholder="Enter job title">
@@ -89,14 +98,14 @@
                   Job title is required.
                 </div>
               </div>
-            </div>
+            </div> -->
 
-            <div class="row mb-3">
+            <!-- <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Other Job Title</label>
               <div class="col-sm-8">
                 <input formControlName="otherJobTitle" type="text" class="form-control" placeholder="Enter other job title">
               </div>
-            </div>
+            </div> -->
 
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Role</label>
@@ -105,7 +114,8 @@
                   <option value="" selected hidden>Select Role</option>
                   <option *ngFor="let role of rolesList" [value]="role._id">{{role.name}}</option>
                 </select>
-                <div *ngIf="userProfileForm.get('roleId')?.invalid && userProfileForm.get('roleId')?.touched" class="text-danger">
+                <div *ngIf="userProfileForm.get('roleId')?.invalid && userProfileForm.get('roleId')?.touched"
+                  class="text-danger">
                   Role is required.
                 </div>
               </div>
@@ -115,7 +125,8 @@
               <label class="col-sm-4 col-form-label">Start Date</label>
               <div class="col-sm-8">
                 <input formControlName="startDate" type="date" class="form-control">
-                <div *ngIf="userProfileForm.get('startDate')?.invalid && userProfileForm.get('startDate')?.touched" class="text-danger">
+                <div *ngIf="userProfileForm.get('startDate')?.invalid && userProfileForm.get('startDate')?.touched"
+                  class="text-danger">
                   Start date is required.
                 </div>
               </div>
@@ -126,8 +137,11 @@
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Key Responsibilities</label>
               <div class="col-sm-10">
-                <textarea formControlName="keyResponsibilities" class="form-control" rows="3" placeholder="Enter key responsibilities"></textarea>
-                <div *ngIf="userProfileForm.get('keyResponsibilities')?.invalid && userProfileForm.get('keyResponsibilities')?.touched" class="text-danger">
+                <textarea formControlName="keyResponsibilities" class="form-control" rows="3"
+                  placeholder="Enter key responsibilities"></textarea>
+                <div
+                  *ngIf="userProfileForm.get('keyResponsibilities')?.invalid && userProfileForm.get('keyResponsibilities')?.touched"
+                  class="text-danger">
                   Key responsibilities are required.
                 </div>
               </div>
@@ -145,14 +159,17 @@
               <label class="col-sm-4 col-form-label">Previous Employers</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="newEmployer" [ngModelOptions]="{standalone: true}" placeholder="Add previous employer">
+                  <input type="text" class="form-control" [(ngModel)]="newEmployer"
+                    [ngModelOptions]="{standalone: true}" placeholder="Add previous employer">
                   <button class="btn btn-outline-primary" type="button" (click)="addEmployer()">Add</button>
                 </div>
                 <div *ngIf="previousEmployers.length > 0" class="mt-2">
                   <div class="d-flex flex-wrap gap-2">
-                    <div *ngFor="let employer of previousEmployers; let i = index" class="badge bg-primary p-2 d-flex align-items-center">
+                    <div *ngFor="let employer of previousEmployers; let i = index"
+                      class="badge bg-primary p-2 d-flex align-items-center">
                       {{employer}}
-                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeEmployer(i)"></button>
+                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                        (click)="removeEmployer(i)"></button>
                     </div>
                   </div>
                 </div>
@@ -163,14 +180,20 @@
               <label class="col-sm-4 col-form-label">Technical Skills</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="newTechnicalSkill" [ngModelOptions]="{standalone: true}" placeholder="Add technical skill">
+                  <input type="text" class="form-control" [(ngModel)]="newTechnicalSkill"
+                    [ngModelOptions]="{standalone: true}" placeholder="Add technical skill">
                   <button class="btn btn-outline-primary" type="button" (click)="addTechnicalSkill()">Add</button>
+                </div>
+                <div *ngIf="technicalSkills.length === 0" class="text-danger">
+                  Technical skills are required.
                 </div>
                 <div *ngIf="technicalSkills.length > 0" class="mt-2">
                   <div class="d-flex flex-wrap gap-2">
-                    <div *ngFor="let skill of technicalSkills; let i = index" class="badge bg-primary p-2 d-flex align-items-center">
+                    <div *ngFor="let skill of technicalSkills; let i = index"
+                      class="badge bg-primary p-2 d-flex align-items-center">
                       {{skill}}
-                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeTechnicalSkill(i)"></button>
+                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                        (click)="removeTechnicalSkill(i)"></button>
                     </div>
                   </div>
                 </div>
@@ -183,14 +206,17 @@
               <label class="col-sm-4 col-form-label">Soft Skills</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="newSoftSkill" [ngModelOptions]="{standalone: true}" placeholder="Add soft skill">
+                  <input type="text" class="form-control" [(ngModel)]="newSoftSkill"
+                    [ngModelOptions]="{standalone: true}" placeholder="Add soft skill">
                   <button class="btn btn-outline-primary" type="button" (click)="addSoftSkill()">Add</button>
                 </div>
                 <div *ngIf="softSkills.length > 0" class="mt-2">
                   <div class="d-flex flex-wrap gap-2">
-                    <div *ngFor="let skill of softSkills; let i = index" class="badge bg-primary p-2 d-flex align-items-center">
+                    <div *ngFor="let skill of softSkills; let i = index"
+                      class="badge bg-primary p-2 d-flex align-items-center">
                       {{skill}}
-                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeSoftSkill(i)"></button>
+                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                        (click)="removeSoftSkill(i)"></button>
                     </div>
                   </div>
                 </div>
@@ -209,9 +235,11 @@
                 </div>
                 <div *ngIf="languagesKnown.length > 0" class="mt-2">
                   <div class="d-flex flex-wrap gap-2">
-                    <div *ngFor="let language of languagesKnown; let i = index" class="badge bg-primary p-2 d-flex align-items-center">
+                    <div *ngFor="let language of languagesKnown; let i = index"
+                      class="badge bg-primary p-2 d-flex align-items-center">
                       {{language}}
-                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeLanguage(i)"></button>
+                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                        (click)="removeLanguage(i)"></button>
                     </div>
                   </div>
                 </div>
@@ -230,7 +258,9 @@
               <label class="col-sm-4 col-form-label">Available From</label>
               <div class="col-sm-8">
                 <input formControlName="availableFrom" type="date" class="form-control">
-                <div *ngIf="userProfileForm.get('availableFrom')?.invalid && userProfileForm.get('availableFrom')?.touched" class="text-danger">
+                <div
+                  *ngIf="userProfileForm.get('availableFrom')?.invalid && userProfileForm.get('availableFrom')?.touched"
+                  class="text-danger">
                   Available from date is required.
                 </div>
               </div>
@@ -239,15 +269,17 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Hourly Rate ($)</label>
               <div class="col-sm-8">
-                <input formControlName="hourlyRate" type="number" class="form-control" placeholder="Enter hourly rate" (keypress)="NumberOnly($event)">
-                <div *ngIf="userProfileForm.get('hourlyRate')?.invalid && userProfileForm.get('hourlyRate')?.touched" class="text-danger">
+                <input formControlName="hourlyRate" type="number" class="form-control" placeholder="Enter hourly rate"
+                  (keypress)="NumberOnly($event)">
+                <div *ngIf="userProfileForm.get('hourlyRate')?.invalid && userProfileForm.get('hourlyRate')?.touched"
+                  class="text-danger">
                   Valid hourly rate is required.
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-6 col-xl-6 col-12">
+          <!-- <div class="col-lg-6 col-xl-6 col-12">
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Working Hours/Week</label>
               <div class="col-sm-8">
@@ -264,7 +296,7 @@
                 <input formControlName="overtimeCharges" type="number" class="form-control" placeholder="Enter overtime charges" (keypress)="NumberOnly($event)">
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Projects Section -->
           <div class="col-12 mb-4 mt-4">
@@ -273,10 +305,12 @@
           </div>
 
           <div class="col-12" formArrayName="projectsWorkedOn">
-            <div *ngFor="let projectForm of projectsWorkedOn.controls; let i = index" [formGroupName]="i" class="border p-3 mb-4 rounded">
+            <div *ngFor="let projectForm of projectsWorkedOn.controls; let i = index" [formGroupName]="i"
+              class="border p-3 mb-4 rounded">
               <div class="d-flex justify-content-between mb-3">
                 <h6 class="text-dark">Project {{i + 1}}</h6>
-                <button type="button" class="btn btn-danger btn-sm" (click)="removeProject(i)" *ngIf="projectsWorkedOn.length > 1">
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeProject(i)"
+                  *ngIf="projectsWorkedOn.length > 1">
                   Remove Project
                 </button>
               </div>
@@ -286,37 +320,32 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Project Name</label>
                     <div class="col-sm-8">
-                      <input formControlName="projectName" type="text" class="form-control" placeholder="Enter project name">
-                      <div *ngIf="projectForm?.get('projectName')?.invalid && projectForm?.get('projectName')?.touched" class="text-danger">
-                        Project name is required.
-                      </div>
+                      <input formControlName="projectName" type="text" class="form-control"
+                        placeholder="Enter project name">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Client Name</label>
                     <div class="col-sm-8">
-                      <input formControlName="clientName" type="text" class="form-control" placeholder="Enter client name">
+                      <input formControlName="clientName" type="text" class="form-control"
+                        placeholder="Enter client name">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Project Duration</label>
                     <div class="col-sm-8">
-                      <input formControlName="projectDuration" type="text" class="form-control" placeholder="e.g. 2021-2023">
-                      <div *ngIf="projectForm?.get('projectDuration')?.invalid && projectForm?.get('projectDuration')?.touched" class="text-danger">
-                        Project duration is required.
-                      </div>
+                      <input formControlName="projectDuration" type="text" class="form-control"
+                        placeholder="e.g. 2021-2023">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Industry Domain</label>
                     <div class="col-sm-8">
-                      <input formControlName="industryDomain" type="text" class="form-control" placeholder="Enter industry domain">
-                      <div *ngIf="projectForm?.get('industryDomain')?.invalid && projectForm?.get('industryDomain')?.touched" class="text-danger">
-                        Industry domain is required.
-                      </div>
+                      <input formControlName="industryDomain" type="text" class="form-control"
+                        placeholder="Enter industry domain">
                     </div>
                   </div>
                 </div>
@@ -325,14 +354,16 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Team Size</label>
                     <div class="col-sm-8">
-                      <input formControlName="teamSize" type="number" class="form-control" placeholder="Enter team size" (keypress)="NumberOnly($event)">
+                      <input formControlName="teamSize" type="number" class="form-control" placeholder="Enter team size"
+                        (keypress)="NumberOnly($event)">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Contribution (%)</label>
                     <div class="col-sm-8">
-                      <input formControlName="contributionPercentage" type="number" class="form-control" placeholder="Enter contribution percentage" (keypress)="NumberOnly($event)">
+                      <input formControlName="contributionPercentage" type="number" class="form-control"
+                        placeholder="Enter contribution percentage" (keypress)="NumberOnly($event)">
                     </div>
                   </div>
 
@@ -350,14 +381,18 @@
                     <label class="col-sm-4 col-form-label">Tech Stack</label>
                     <div class="col-sm-8">
                       <div class="input-group">
-                        <input type="text" class="form-control" [(ngModel)]="newTechStack" [ngModelOptions]="{standalone: true}" placeholder="Add tech stack">
+                        <input type="text" class="form-control" [(ngModel)]="newTechStack"
+                          [ngModelOptions]="{standalone: true}" placeholder="Add tech stack">
                         <button class="btn btn-outline-primary" type="button" (click)="addTechStack(i)">Add</button>
                       </div>
-                      <div *ngIf="projectTechStacks && projectTechStacks[i] && projectTechStacks[i].length > 0" class="mt-2">
+                      <div *ngIf="projectTechStacks && projectTechStacks[i] && projectTechStacks[i].length > 0"
+                        class="mt-2">
                         <div class="d-flex flex-wrap gap-2">
-                          <div *ngFor="let tech of projectTechStacks[i]; let j = index" class="badge bg-primary p-2 d-flex align-items-center">
+                          <div *ngFor="let tech of projectTechStacks[i]; let j = index"
+                            class="badge bg-primary p-2 d-flex align-items-center">
                             {{tech}}
-                            <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeTechStack(i, j)"></button>
+                            <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                              (click)="removeTechStack(i, j)"></button>
                           </div>
                         </div>
                       </div>
@@ -369,14 +404,16 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Outcome Impact</label>
                     <div class="col-sm-8">
-                      <input formControlName="outcomeImpact" type="text" class="form-control" placeholder="Enter outcome impact">
+                      <input formControlName="outcomeImpact" type="text" class="form-control"
+                        placeholder="Enter outcome impact">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Client Feedback</label>
                     <div class="col-sm-8">
-                      <input formControlName="clientFeedback" type="text" class="form-control" placeholder="Enter client feedback">
+                      <input formControlName="clientFeedback" type="text" class="form-control"
+                        placeholder="Enter client feedback">
                     </div>
                   </div>
                 </div>
@@ -385,20 +422,16 @@
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Project Description</label>
                     <div class="col-sm-10">
-                      <textarea formControlName="projectDescription" class="form-control" rows="2" placeholder="Enter project description"></textarea>
-                      <div *ngIf="projectForm?.get('projectDescription')?.invalid && projectForm?.get('projectDescription')?.touched" class="text-danger">
-                        Project description is required.
-                      </div>
+                      <textarea formControlName="projectDescription" class="form-control" rows="2"
+                        placeholder="Enter project description"></textarea>
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Key Responsibilities</label>
                     <div class="col-sm-10">
-                      <textarea formControlName="keyResponsibilities" class="form-control" rows="2" placeholder="Enter key responsibilities"></textarea>
-                      <div *ngIf="projectForm?.get('keyResponsibilities')?.invalid && projectForm?.get('keyResponsibilities')?.touched" class="text-danger">
-                        Key responsibilities are required.
-                      </div>
+                      <textarea formControlName="keyResponsibilities" class="form-control" rows="2"
+                        placeholder="Enter key responsibilities"></textarea>
                     </div>
                   </div>
                 </div>
