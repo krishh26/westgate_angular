@@ -13,16 +13,16 @@ export class SupplierUserProfileEditComponent {
     companyName: '',
     website: '',
     yearOfEstablishment: '',
-    registrationNumber: '',
-    TypeOfCompany: '',
+    registerNumber: '',
+    typeOfCompany: '',
     industry_Sector: '',
     companyAddress: '',
     developerOrEngineerTeams: '',
     dataPrivacyPolicies: '',
     securityCertifications: '',
     email: '',
+    number: '',
     customerSupportContact: '',
-    companyContactNumber: '',
     VATOrGSTNumber: '',
     companyDirectors_Owners: '',
     complianceCertifications: '',
@@ -33,10 +33,13 @@ export class SupplierUserProfileEditComponent {
     employeeCount: '',
     cybersecurityPractices: '',
     otheremployeeCount: '',
-    number: '',
+    expertise: [],
+    certifications: '',
+    poc_details: ''
   };
 
   showLoader: boolean = false;
+  currentExpertise: string = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -50,6 +53,23 @@ export class SupplierUserProfileEditComponent {
     }
   }
 
+  addExpertise() {
+    if (this.currentExpertise) {
+      if (!this.supplierDetails.expertise) {
+        this.supplierDetails.expertise = [];
+      }
+      this.supplierDetails.expertise.push({
+        name: this.currentExpertise.trim(),
+        subExpertise: null
+      });
+      this.currentExpertise = '';
+    }
+  }
+
+  removeExpertise(index: number) {
+    this.supplierDetails.expertise.splice(index, 1);
+  }
+
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
@@ -61,16 +81,12 @@ export class SupplierUserProfileEditComponent {
       return;
     }
 
-    const payload = {
-      ...this.supplierDetails,
-    };
-
     this.showLoader = true;
-    this.supplierService.updateSuppilerDetails(payload, this.supplierDetails._id).subscribe(
+    this.supplierService.updateSuppilerDetails(this.supplierDetails, this.supplierDetails._id).subscribe(
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
-          this.notificationService.showSuccess('', 'Supplier Details Edited successfully.');
+          this.notificationService.showSuccess('Supplier Details Updated successfully.');
           this.router.navigate(['/super-admin/supplier-user-profile']);
         } else {
           this.notificationService.showError(response?.message);

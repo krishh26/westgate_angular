@@ -37,6 +37,43 @@
               </div>
             </div>
 
+            <!-- Add these fields after the Year of Establishment field -->
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Employee Count</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter Employee count" (keypress)="NumberOnly($event)">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.developerOrEngineerTeams" name="developerOrEngineerTeams" type="text" class="form-control" placeholder="Enter developer/engineer teams">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Other Team Members Count</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.otheremployeeCount" name="otheremployeeCount" type="text" class="form-control" placeholder="Enter Other employee count" (keypress)="NumberOnly($event)">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Company Directors/Owners</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.companyDirectors_Owners" name="companyDirectors_Owners" type="text" class="form-control" placeholder="Enter company directors/owners">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Certifications</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.certifications" name="certifications" type="text" class="form-control" placeholder="Enter certifications">
+              </div>
+            </div>
+
             <div class="row mb-3">
               <label for="VATOrGSTNumber" class="col-sm-4 col-form-label">VAT or GST Number</label>
               <div class="col-sm-8">
@@ -62,6 +99,132 @@
               <label for="email" class="col-sm-4 col-form-label">Email Address</label>
               <div class="col-sm-8">
                 <input [(ngModel)]="supplierDetails.email" name="email" type="text" class="form-control" placeholder="Enter email address">
+              </div>
+            </div>
+
+            <!-- Added new fields -->
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Registration Number</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.registerNumber" name="registerNumber" type="text" class="form-control" placeholder="Enter Registration Number">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Type of Company</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.typeOfCompany" name="typeOfCompany" type="text" class="form-control" placeholder="Enter Company Type">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Industry Sector</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.industry_Sector" name="industry_Sector" type="text" class="form-control" placeholder="Enter Industry Sector">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Data Privacy Policies</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.dataPrivacyPolicies" name="dataPrivacyPolicies" type="text" class="form-control" placeholder="Enter Data Privacy Policies">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Security Certifications</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.securityCertifications" name="securityCertifications" type="text" class="form-control" placeholder="Enter Security Certifications">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Customer Support Contact</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.customerSupportContact" name="customerSupportContact" type="text" class="form-control" placeholder="Enter Customer Support Contact">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Compliance Certifications</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.complianceCertifications" name="complianceCertifications" type="text" class="form-control" placeholder="Enter Compliance Certifications">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Products/Services Offered</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.products_ServicesOffered" name="products_ServicesOffered" type="text" class="form-control" placeholder="Enter Products/Services">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Technology Stack</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.technologyStack" name="technologyStack" type="text" class="form-control" placeholder="Enter Technology Stack">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Licensing Details</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.licensingDetails" name="licensingDetails" type="text" class="form-control" placeholder="Enter Licensing Details">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">IP/Patents</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.IP_Patents" name="IP_Patents" type="text" class="form-control" placeholder="Enter IP/Patents">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Cybersecurity Practices</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.cybersecurityPractices" name="cybersecurityPractices" type="text" class="form-control" placeholder="Enter Cybersecurity Practices">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">POC Details</label>
+              <div class="col-sm-8">
+                <input [(ngModel)]="supplierDetails.poc_details" name="poc_details" type="text" class="form-control" placeholder="Enter POC Details">
+              </div>
+            </div>
+
+            <!-- Expertise Section -->
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Expertise</label>
+              <div class="col-sm-8">
+                <div class="form-control p-2">
+                  <!-- Display expertise items -->
+                  <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-2">
+                    <div class="d-flex align-items-center">
+                      <span class="badge bg-primary me-2">
+                        {{ expertise.name }}
+                      </span>
+                      <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                    </div>
+                  </div>
+
+                  <!-- Input field for adding expertise -->
+                  <div class="mt-2">
+                    <div class="row g-2">
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="currentExpertise"
+                          name="expertiseName"
+                          placeholder="Enter expertise name and press Enter"
+                          (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
