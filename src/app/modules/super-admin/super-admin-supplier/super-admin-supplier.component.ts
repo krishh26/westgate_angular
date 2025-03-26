@@ -17,7 +17,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
   styleUrls: ['./super-admin-supplier.component.scss']
 })
 export class SuperAdminSupplierComponent {
-
+  showExpertiseView: boolean = false;
   showLoader: boolean = false;
   supplierUserList: any = [];
   switchFlag: boolean = false;
@@ -38,6 +38,15 @@ export class SuperAdminSupplierComponent {
 
   ngOnInit(): void {
     this.getManageUserList();
+  }
+
+  toggleExpertiseView() {
+    this.showExpertiseView = !this.showExpertiseView;
+    if (this.showExpertiseView) {
+      this.router.navigate(['/super-admin/expertise-view']);
+    } else {
+      this.router.navigate(['/super-admin/super-admin-supplier']);
+    }
   }
 
 

@@ -59,6 +59,10 @@ export class ExpertiseViewComponent {
     // this.getSupplierList();
   }
 
+  navigateToSupplier() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
   navigateToSubExpertise(item: any) {
     this.router.navigate(['/super-admin/sub-expertise-view'], {
       queryParams: {
