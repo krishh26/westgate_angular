@@ -85,6 +85,13 @@
             </tr>
           </thead>
           <tbody>
+
+            <tr>
+              <td *ngIf="!rolesList?.length" colspan="13">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
             <tr
               *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{role?.name}}</td>

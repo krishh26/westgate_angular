@@ -55,7 +55,7 @@
       </div>
 
       <!-- Candidate table -->
-      <div *ngIf="!loading && candidatesList?.length > 0" class="table-responsive">
+      <div class="table-responsive">
         <table class="table table-striped align-middle">
           <thead>
             <tr>
@@ -74,6 +74,13 @@
             </tr>
           </thead>
           <tbody>
+
+            <tr>
+              <td *ngIf="!candidatesList?.length" colspan="13">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
             <tr
               *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{candidate?.fullName}}</td>
@@ -100,12 +107,6 @@
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteCandidates(candidate._id)">
                   <i class="bi bi-trash"></i>
                 </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td *ngIf="!candidatesList?.length" colspan="13">
-                <app-no-record-found></app-no-record-found>
               </td>
             </tr>
           </tbody>

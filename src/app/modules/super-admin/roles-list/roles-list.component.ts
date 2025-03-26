@@ -3,13 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles-list',
   templateUrl: './roles-list.component.html',
   styleUrls: ['./roles-list.component.scss'],
-  standalone: true,
-  imports: [CommonModule, RouterModule]
 })
 export class RolesListComponent implements OnInit {
   rolesList: any[] = [];
@@ -46,21 +45,32 @@ export class RolesListComponent implements OnInit {
   }
 
   deleteRole(roleId: string) {
-    if (confirm('Are you sure you want to delete this role?')) {
-      this.superService.deleteRole(roleId).subscribe({
-        next: (response: any) => {
-          if (response && response.status) {
-            this.notificationService.showSuccess('Role deleted successfully');
-            this.getRolesList(); // Refresh the list
-          } else {
-            this.notificationService.showError(response?.message || 'Failed to delete role');
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteRole(roleId).subscribe({
+          next: (response: any) => {
+            if (response && response.status) {
+              this.notificationService.showSuccess('Role deleted successfully');
+              this.getRolesList(); // Refresh the list
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete role');
+            }
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting the role');
           }
-        },
-        error: (error: any) => {
-          this.notificationService.showError(error?.message || 'An error occurred while deleting the role');
-        }
-      });
-    }
+        });
+      }
+    });
   }
 
   editRole(roleId: string) {

@@ -100,7 +100,8 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
     ResourcesAddBulkComponent,
     SubExpertiseViewComponent,
     ResourcesViewDetailsComponent,
-    RoleWiseResourcesListComponent
+    RoleWiseResourcesListComponent,
+    RolesListComponent
   ],
   imports: [
     CommonModule,
@@ -115,7 +116,7 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
     AddRolesComponent,
-    RolesListComponent,
+    // RolesListComponent,
     EditRolesComponent
   ],
   providers: [NgbActiveModal],

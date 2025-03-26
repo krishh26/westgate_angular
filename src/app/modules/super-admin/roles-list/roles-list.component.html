@@ -38,6 +38,13 @@
                     </tr>
                   </thead>
                   <tbody>
+
+                    <tr>
+                      <td *ngIf="!rolesList?.length" colspan="13">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+
                     <tr *ngFor="let role of rolesList">
                       <td>{{role.name}}</td>
                       <td>{{role.totalSuppliersCount}}</td>
@@ -52,9 +59,6 @@
                           </button>
                         </div>
                       </td>
-                    </tr>
-                    <tr *ngIf="!rolesList.length">
-                      <td colspan="2" class="text-center">No roles found</td>
                     </tr>
                   </tbody>
                 </table>
