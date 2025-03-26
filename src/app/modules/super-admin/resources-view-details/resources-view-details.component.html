@@ -61,10 +61,6 @@
                   <input type="text" class="form-control" [value]="'$' + resourceList[0]?.details?.hourlyRate" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Working Hours</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.workingHours + ' hrs/week'" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
                   <label class="form-label">Available From</label>
                   <input type="text" class="form-control" [value]="resourceList[0]?.details?.availableFrom | date: 'dd/MM/yyyy'" readonly>
                 </div>

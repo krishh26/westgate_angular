@@ -40,62 +40,113 @@ export class ResourcesAddBulkComponent implements OnInit {
   onFileChange(event: any) {
     const target: DataTransfer = <DataTransfer>(event.target);
 
-    if (target.files.length !== 1) {
-      this.notificationService.showError('Please select only one file');
-      return;
-    }
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
 
     const reader: FileReader = new FileReader();
 
     reader.onload = (e: any) => {
-      try {
-        const bstr: string = e.target.result;
-        const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-        const wsname: string = wb.SheetNames[0];
-        const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-        let data = <any[][]>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+      /* read workbook */
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
-        // Remove header row and empty rows
-        const headers = data[0];
-        data = data.slice(1).filter(row => row.length > 0);
+      /* grab first sheet */
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-        // Convert Excel data to resource objects with all fields matching resources-add
-        const jsonData = data.map(row => ({
+      /* save data */
+      let data = <any[][]>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+
+      // Remove the first row (A1 row) which contains headers
+      const headers = data[0];
+      data = data.slice(1);
+
+      // Filter out empty arrays
+      data = data.filter(row => row.length > 0);
+
+      // Function to replace null or undefined values with empty strings
+      const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
+
+      // Function to convert Excel date serial to human-readable date
+      const convertExcelDate = (serial: number) => {
+        const excelEpoch = new Date(Date.UTC(1900, 0, 1)); // Excel epoch starts on 1900-01-01
+        const days = Math.floor(serial - 2); // Subtract 2 to adjust for Excel leap year bug
+        excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
+        return excelEpoch.toISOString().split('T')[0]; // Convert to ISO string and remove time
+      };
+
+      const jsonData = data.map(row => {
+        const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
+
+        // Convert a comma-separated string to an array, or return an empty array if the string is empty
+        const parseCommaSeparatedField = (value: string) => {
+          const cleanedValue = replaceNullWithEmptyString(value);
+          return cleanedValue ? cleanedValue.split(',').map((item: any) => item.trim()) : [];
+        };
+
+        // Get hourly rate as a number
+        const hourlyRateValue = row[13];
+        const hourlyRate = hourlyRateValue ? Number(hourlyRateValue) : 0;
+
+        return {
           roleId: this.roleId,
           supplierId: this.supplierID,
           fullName: this.getValueOrEmpty(row[0]),
-          email: this.getValueOrEmpty(row[1]),
-          phoneNumber: this.getValueOrEmpty(row[2]),
-          jobTitle: this.getValueOrEmpty(row[3]),
-          totalExperience: this.getValueOrEmpty(row[4]),
-          highestQualification: this.getValueOrEmpty(row[5]),
-          yearOfGraduation: this.getValueOrEmpty(row[6]),
-          gender: this.getValueOrEmpty(row[7]),
-          nationality: this.getValueOrEmpty(row[8]),
-          currentLocation: this.getValueOrEmpty(row[9]),
-          preferredLocation: this.getValueOrEmpty(row[10]),
-          technicalSkills: this.convertToArray(row[11]),
-          domainExpertise: this.convertToArray(row[12]),
-          certifications: this.convertToArray(row[13]),
-          languagesKnown: this.convertToArray(row[14]),
-          hourlyRate: this.getValueOrEmpty(row[15]),
-          workingHoursPerWeek: this.getValueOrEmpty(row[16]),
-          availableFrom: this.convertExcelDate(row[17]),
-          noticePeriod: this.getValueOrEmpty(row[18]),
-          totalCost: this.getValueOrEmpty(row[19]),
-          resourceType: this.getValueOrEmpty(row[20]),
-          employmentType: this.getValueOrEmpty(row[21]),
-          currentCTC: this.getValueOrEmpty(row[22]),
-          expectedCTC: this.getValueOrEmpty(row[23]),
-          willingToRelocate: this.getValueOrEmpty(row[24]) === 'true',
-          resumeUrl: this.getValueOrEmpty(row[25])
-        }));
+          gender: this.getValueOrEmpty(row[1]),
+          nationality: this.getValueOrEmpty(row[2]),
+          highestQualification: this.getValueOrEmpty(row[3]),
+          yearOfGraduation: this.getValueOrEmpty(row[4]),
+          totalExperience: this.getValueOrEmpty(row[5]),
+          startDate: this.getValueOrEmpty(row[6]),
+          keyResponsibilities: this.getValueOrEmpty(row[7]),
+          previousEmployers: this.getValueOrEmpty(row[8]),
+          technicalSkills: this.getValueOrEmpty(row[9]),
+          softSkills: this.getValueOrEmpty(row[10]),
+          languagesKnown: this.convertToArray(row[11]),
+          availableFrom: this.convertToArray(row[12]),
+          hourlyRate: hourlyRate,
+          projectName: this.convertToArray(row[14]),
+          clientName: this.getValueOrEmpty(row[15]),
+          projectDuration: this.getValueOrEmpty(row[16]),
+          industryDomain: this.convertExcelDate(row[17]),
+          projectDescription: this.getValueOrEmpty(row[18]),
+          techStackUsed: this.getValueOrEmpty(row[19]),
+          teamSize: this.getValueOrEmpty(row[20]),
+          contributionPercentage: this.getValueOrEmpty(row[21]),
+          projectComplexity: this.getValueOrEmpty(row[22]),
+          outcomeImpact: this.getValueOrEmpty(row[23]),
+          clientFeedback: this.getValueOrEmpty(row[24]),
+        };
+      });
 
-        this.uploadResources(jsonData);
-      } catch (error) {
-        this.spinner.hide();
-        this.notificationService.showError('Error processing file. Please check the file format.');
-      }
+      console.log(jsonData);
+      const payload = {
+        data: jsonData
+      };
+      this.spinner.show();
+      this.superService.addCandidate(payload).subscribe(
+        (res) => {
+          this.spinner.hide();
+          if (res?.status == true) {
+
+            console.log('1', res?.status);
+            console.log(res);
+
+            this.notificationService.showSuccess(res?.message);
+            window.location.reload();
+            this.router.navigate(['/super-admin/resources-list']);
+          } else {
+            this.spinner.hide();
+            console.log('1', res?.status);
+            this.notificationService.showError(res?.message);
+
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError(error?.error?.message);
+
+        }
+      );
     };
 
     reader.readAsBinaryString(target.files[0]);
@@ -105,17 +156,38 @@ export class ResourcesAddBulkComponent implements OnInit {
     return value == null ? "" : value;
   }
 
-  private convertToArray(value: string): string[] {
+  private convertToArray(value: any): string[] {
     if (!value) return [];
-    return value.split(',').map(item => item.trim());
+    // Convert value to string if it's not already
+    const stringValue = String(value);
+    return stringValue.split(',').map(item => item.trim());
   }
 
-  private convertExcelDate(serial: number): string {
-    if (!serial) return '';
-    const excelEpoch = new Date(Date.UTC(1900, 0, 1));
-    const days = Math.floor(serial - 2);
-    excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
-    return excelEpoch.toISOString().split('T')[0];
+  private convertExcelDate(value: any): string {
+    if (!value) return '';
+
+    try {
+      // If it's already a date string, return it
+      if (typeof value === 'string') {
+        return value;
+      }
+
+      // Convert to number if it's not already
+      const serial = Number(value);
+      if (isNaN(serial)) return '';
+
+      const excelEpoch = new Date(Date.UTC(1900, 0, 1));
+      const days = Math.floor(serial - 2);
+      excelEpoch.setUTCDate(excelEpoch.getUTCDate() + days);
+
+      // Check if the date is valid before converting to ISO string
+      if (isNaN(excelEpoch.getTime())) return '';
+
+      return excelEpoch.toISOString().split('T')[0];
+    } catch (error) {
+      console.error('Error converting date:', error);
+      return '';
+    }
   }
 
   private convertToBoolean(value: any): boolean {
