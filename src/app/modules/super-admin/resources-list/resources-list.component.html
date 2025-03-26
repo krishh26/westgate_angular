@@ -96,7 +96,10 @@
               <td>{{candidate?.workingHoursPerWeek}} hrs/week</td>
               <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td>
               <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteCandidates(candidate._id)">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
 

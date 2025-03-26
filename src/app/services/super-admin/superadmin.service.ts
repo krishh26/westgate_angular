@@ -43,7 +43,8 @@ export enum SuperAdminEndPoint {
   ROLES_LIST = '/roles/get-list',
   ROLES_ADD = '/roles/add',
   ROLES_DELETE = '/roles/delete',
-  ROLES_CANDIDATES = '/roles/candidates'
+  ROLES_CANDIDATES = '/roles/candidates',
+  DELETE_CANDIDATE = '/candidate/delete'
 }
 
 @Injectable({
@@ -447,4 +448,11 @@ export class SuperadminService {
   updateRole(roleId: string, data: any) {
     return this.httpClient.patch(`${this.baseUrl}/roles/update/${roleId}`, data);
   }
+
+  deleteCandidate(candidateId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      this.baseUrl + SuperAdminEndPoint.DELETE_CANDIDATE + '/' + candidateId
+    );
+  }
+
 }

@@ -84,4 +84,30 @@ export class ResourcesListComponent implements OnInit {
       }
     });
   }
+
+    deleteCandidates(id: any) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to delete `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00B96F',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete!'
+      }).then((result: any) => {
+        if (result?.value) {
+          this.superService.deleteCandidate(id).subscribe((response: any) => {
+            if (response?.status == true) {
+              this.notificationService.showSuccess('User successfully deleted');
+              this.getCandidatesList();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          }, (error) => {
+            this.notificationService.showError(error?.message);
+          });
+        }
+      });
+    }
+
 }
