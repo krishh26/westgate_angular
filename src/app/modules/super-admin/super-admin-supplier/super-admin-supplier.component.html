@@ -7,7 +7,7 @@
             <li routerLink="/super-admin/super-admin-supplier">
               <a class="active">Supplier</a>
             </li>
-            <li routerLink="/super-admin/expertise-view" *ngIf="isToggled">
+            <li routerLink="/super-admin/expertise-view">
               <a>Expertise-view</a>
             </li>
             <li routerLink="/super-admin/role-wise-resources-list">
@@ -25,12 +25,6 @@
           </div>
         </div>
         <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4 d-flex align-items-center">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="toggleSwitch" [(ngModel)]="isToggled">
-            <label class="form-check-label ms-2" for="toggleSwitch">Experties-view
-              {{ isToggled ? 'ON' : 'OFF' }}
-            </label>
-          </div>
         </div>
         <div class="col-lg-5 col-xl-5 col-md-5 col-6 d-flex justify-content-end gap-2 mb-2">
           <a routerLink="/super-admin/add-new-supplier" class="btn btn-primary btn-sm">

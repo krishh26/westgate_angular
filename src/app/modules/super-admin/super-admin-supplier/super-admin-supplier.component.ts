@@ -26,7 +26,6 @@ export class SuperAdminSupplierComponent {
   totalRecords: number = pagination.totalRecords;
   startDate: string = '';
   endDate: string = '';
-  isToggled: boolean = false;
 
   constructor(
     private supplierService: SupplierAdminService,
