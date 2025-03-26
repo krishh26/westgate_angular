@@ -55,6 +55,8 @@ import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-vi
 import { ResourcesViewDetailsComponent } from './resources-view-details/resources-view-details.component';
 import { RoleWiseResourcesListComponent } from './role-wise-resources-list/role-wise-resources-list.component';
 import { EditRolesComponent } from './edit-roles/edit-roles.component';
+import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
+import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
 
 @NgModule({
   declarations: [
@@ -96,12 +98,14 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
     SubExpertiseListComponent,
     ResourcesAddComponent,
     ResourcesListComponent,
-    ResourcesViewComponent,
     ResourcesAddBulkComponent,
     SubExpertiseViewComponent,
     ResourcesViewDetailsComponent,
     RoleWiseResourcesListComponent,
-    RolesListComponent
+    RolesListComponent,
+    ResourcesViewComponent,
+    TeamProductivityViewComponent,
+    ResourcesProductivityViewComponent
   ],
   imports: [
     CommonModule,
@@ -116,7 +120,6 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
     AddRolesComponent,
-    // RolesListComponent,
     EditRolesComponent
   ],
   providers: [NgbActiveModal],

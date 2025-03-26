@@ -43,6 +43,8 @@ import { SubExpertiseViewComponent } from './sub-expertise-view/sub-expertise-vi
 import { ResourcesViewDetailsComponent } from './resources-view-details/resources-view-details.component';
 import { RoleWiseResourcesListComponent } from './role-wise-resources-list/role-wise-resources-list.component';
 import { EditRolesComponent } from './edit-roles/edit-roles.component';
+import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
+import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
 
 const routes: Routes = [
   {
@@ -216,7 +218,15 @@ const routes: Routes = [
       {
         path: "edit-roles/:id",
         component: EditRolesComponent
-      }
+      },
+      {
+        path: "resources-productivity-view",
+        component: ResourcesProductivityViewComponent
+      },
+      {
+        path: "team-productivity-view",
+        component: TeamProductivityViewComponent
+      },
     ]
   },
   {
