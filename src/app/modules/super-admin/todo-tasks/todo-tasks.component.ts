@@ -223,11 +223,6 @@ export class TodoTasksComponent {
         status: this.status || '',
         statusComment: this.commentData,
       };
-
-      // Add fail reason if applicable
-      if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
-      }
     }
 
     // API call to update project details
@@ -839,5 +834,50 @@ export class TodoTasksComponent {
 
     // Reset the comment input field
     this.bidManagerStatusComment.reset();
+  }
+
+  togglePinComment(comment: any, task: any) {
+    const payload = {
+      commentId: comment.commentId,
+      isPinned: !comment.isPinned
+    };
+
+    // this.projectService.updateCommentPin(payload, task._id).subscribe(
+    //   (response: any) => {
+    //     if (response?.status === true) {
+    //       this.notificationService.showSuccess(
+    //         comment.isPinned ? 'Comment unpinned successfully' : 'Comment pinned successfully'
+    //       );
+    //       this.getTask(); // Refresh the task list
+    //     } else {
+    //       this.notificationService.showError(response?.message);
+    //     }
+    //   },
+    //   (error) => {
+    //     this.notificationService.showError(error?.message);
+    //   }
+    // );
+  }
+
+  togglePinTask(task: any) {
+    const payload = {
+      isPinned: !task.isPinned
+    };
+
+    // this.superService.updateTask(payload, task._id).subscribe(
+    //   (response) => {
+    //     if (response?.status === true) {
+    //       this.notificationService.showSuccess(
+    //         task.isPinned ? 'Task unpinned successfully' : 'Task pinned successfully'
+    //       );
+    //       this.getTask(); // Refresh the task list
+    //     } else {
+    //       this.notificationService.showError(response?.message);
+    //     }
+    //   },
+    //   (error) => {
+    //     this.notificationService.showError(error?.message);
+    //   }
+    // );
   }
 }

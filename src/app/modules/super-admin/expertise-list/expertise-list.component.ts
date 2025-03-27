@@ -53,7 +53,7 @@ export class ExpertiseListComponent {
     this.supplierService.getSupplierDetails(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.expertiseList.map((item: any) => item.name); // Extract only expertise names
+          this.expertiseList = response?.expertiseCount.map((item: any) => item.name); // Extract only expertise names
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
         }
