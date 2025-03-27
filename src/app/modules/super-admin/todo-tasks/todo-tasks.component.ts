@@ -843,15 +843,15 @@ export class TodoTasksComponent {
     }
 
     const payload = {
-      isPinned: !comment.isPinned
+      pin: !comment.pin
     };
 
     this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
       (response: any) => {
         if (response?.status) {
-          this.notificationService.showSuccess(comment.isPinned ? 'Comment unpinned successfully' : 'Comment pinned successfully');
+          this.notificationService.showSuccess(comment.pin ? 'Comment unpinned successfully' : 'Comment pinned successfully');
           // Update the comment's pinned status
-          comment.isPinned = !comment.isPinned;
+          comment.pin = !comment.pin;
           // Refresh the task list to show updated pinned status
           this.getTask();
         } else {
