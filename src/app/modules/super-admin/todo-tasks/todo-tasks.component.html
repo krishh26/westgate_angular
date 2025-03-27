@@ -337,7 +337,7 @@
                       </p>
                       <div *ngIf="comment?.commentId" class="d-flex gap-2">
                         <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
-                          <i class="bi" [ngClass]="{'bi-pin-fill': comment?.isPinned, 'bi-pin': !comment?.isPinned}"></i>
+                          <i class="bi" [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
                         </button>
                         <button class="btn btn-sm delete-btn"
                           (mousedown)="deleteComment(comment?.commentId); $event.stopPropagation()">

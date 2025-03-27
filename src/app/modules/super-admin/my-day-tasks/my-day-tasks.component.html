@@ -169,9 +169,14 @@
                       <p class="comment-text">
                         {{ comment?.comment }}
                       </p>
-                      <!-- <button class="btn btn-sm delete-btn" (click)="deleteComments(comment?.commentId, task)">
-                        Delete
-                      </button> -->
+                      <div *ngIf="comment?.commentId" class="d-flex gap-2">
+                        <!-- <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, task); $event.stopPropagation()">
+                          <i class="bi" [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
+                        </button> -->
+                        <button class="btn btn-sm delete-btn" (click)="deleteComment(comment?.commentId, task)">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                      </div>
                     </div>
 
                   </li>
@@ -360,11 +365,14 @@
                       <p class="comment-text">
                         {{ comment?.comment }}
                       </p>
-                      <!-- <div *ngIf="comment?.commentId">
-                        <button class="btn btn-sm delete-btn" (mousedown)="deleteComment(comment?.commentId); $event.stopPropagation()">
-                          Delete
+                      <div *ngIf="comment?.commentId" class="d-flex gap-2">
+                        <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                          <i class="bi" [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
                         </button>
-                      </div> -->
+                        <button class="btn btn-sm delete-btn" (click)="deleteComment(comment?.commentId, modalTask)">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                      </div>
                     </div>
 
                     <div *ngIf="comment.isEditing" class="d-flex flex-column">

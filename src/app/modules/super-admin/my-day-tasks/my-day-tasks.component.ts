@@ -194,10 +194,6 @@ export class MyDayTasksComponent {
         statusComment: this.commentData,
       };
 
-      // Add fail reason if applicable
-      if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
-      }
     }
 
     // API call to update project details
@@ -548,7 +544,7 @@ export class MyDayTasksComponent {
   }
 
 
-  deleteComment(id: any) {
+  deleteComment(id: any, task: any) {
     let param = {
       commentId: id
     };
@@ -563,7 +559,7 @@ export class MyDayTasksComponent {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.projectService.deleteComment(param, this.modalTask._id).subscribe(
+        this.projectService.deleteComment(param, task._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
@@ -699,5 +695,63 @@ export class MyDayTasksComponent {
       this.selectedUserIds.push(userId);
     }
     this.getTask();
+  }
+
+  togglePinComment(comment: any, task: any) {
+    if (!comment?.commentId || !task?._id) {
+      this.notificationService.showError('Missing required data for pinning comment');
+      return;
+    }
+
+    const payload = {
+      pin: !comment.pinnedAt
+    };
+
+    this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess(comment.pinnedAt ? 'Comment unpinned successfully' : 'Comment pinned successfully');
+          // Update the comment's pinned status
+          comment.pinnedAt = comment.pinnedAt ? null : new Date().toISOString();
+
+          // Store current scroll position
+          const currentScrollPosition = window.scrollY;
+
+          // Refresh the task list
+          this.showLoader = true;
+          this.superService.getMyTask(this.selectedUserIds.join(','), true)
+            .subscribe(
+              (response) => {
+                if (response?.status === true) {
+                  const today = new Date().toISOString().split("T")[0];
+                  this.taskList = response?.data?.data.map((task: any) => {
+                    const todayComments = task?.comments?.filter((comment: any) =>
+                      comment.date.split("T")[0] === today
+                    );
+                    return {
+                      ...task,
+                      todayComments: todayComments?.length ? todayComments : null,
+                    };
+                  });
+                  // Restore scroll position after data is loaded
+                  window.scrollTo(0, currentScrollPosition);
+                } else {
+                  this.notificationService.showError(response?.message);
+                }
+                this.showLoader = false;
+              },
+              (error) => {
+                this.notificationService.showError(error?.message);
+                this.showLoader = false;
+              }
+            );
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update comment pin status');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to update comment pin status');
+      }
+    );
   }
 }
