@@ -98,7 +98,7 @@ export class ResourcesAddComponent implements OnInit {
       keyResponsibilities: [''],
       teamSize: [''],
       contributionPercentage: [''],
-      projectComplexity: [''],
+      projectComplexity: [null],
       outcomeImpact: [''],
       clientFeedback: ['']
     });
@@ -202,10 +202,11 @@ export class ResourcesAddComponent implements OnInit {
       languagesKnown: this.languagesKnown
     };
 
-    // Add tech stack to each project
+    // Add tech stack to each project and handle null projectComplexity
     userData.projectsWorkedOn = userData.projectsWorkedOn.map((project: any, index: number) => {
+      const { projectComplexity, ...projectWithoutComplexity } = project;  // Destructure to remove projectComplexity
       return {
-        ...project,
+        ...projectWithoutComplexity,
         techStackUsed: this.projectTechStacks[index]
       };
     });
