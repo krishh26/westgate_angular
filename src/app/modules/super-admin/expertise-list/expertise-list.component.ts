@@ -7,6 +7,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import Swal from 'sweetalert2';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-expertise-list',
@@ -26,6 +27,9 @@ export class ExpertiseListComponent {
   supplierDetails: any = [];
   viewDocs: any;
   supplierFiles: any = [];
+  newExpertise: string = '';
+  newSubExpertise: string = '';
+  subExpertiseTags: string[] = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -181,5 +185,64 @@ export class ExpertiseListComponent {
     });
   }
 
+  addSubExpertiseTag() {
+    if (this.newSubExpertise?.trim()) {
+      if (!this.subExpertiseTags.includes(this.newSubExpertise.trim())) {
+        this.subExpertiseTags.push(this.newSubExpertise.trim());
+      } else {
+        this.notificationService.showInfo('This sub expertise already exists');
+      }
+      this.newSubExpertise = '';
+    }
+  }
+
+  removeSubExpertiseTag(index: number) {
+    this.subExpertiseTags.splice(index, 1);
+  }
+
+  saveExpertise() {
+    if (!this.newExpertise?.trim()) {
+      this.notificationService.showError('Please enter an expertise name');
+      return;
+    }
+
+    if (this.subExpertiseTags.length === 0) {
+      this.notificationService.showError('Please add at least one sub expertise');
+      return;
+    }
+
+    if (!this.supplierID) {
+      this.notificationService.showError('Supplier ID is missing, cannot save expertise.');
+      return;
+    }
+
+    const expertiseData = {
+      supplierId: this.supplierID,
+      expertise: this.newExpertise.trim(),
+      subExpertise: this.subExpertiseTags
+    };
+
+    this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Expertise and sub expertise added successfully!');
+          this.newExpertise = '';
+          this.subExpertiseTags = [];
+          this.getSupplierdata();
+          window.location.reload();
+          const modalElement = document.getElementById('addExpertiseModal');
+          if (modalElement) {
+            const modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.hide();
+          }
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add expertise');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add expertise');
+      }
+    );
+  }
 
 }
