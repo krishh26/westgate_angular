@@ -837,47 +837,31 @@ export class TodoTasksComponent {
   }
 
   togglePinComment(comment: any, task: any) {
+    if (!comment?.commentId || !task?._id) {
+      this.notificationService.showError('Missing required data for pinning comment');
+      return;
+    }
+
     const payload = {
-      commentId: comment.commentId,
       isPinned: !comment.isPinned
     };
 
-    // this.projectService.updateCommentPin(payload, task._id).subscribe(
-    //   (response: any) => {
-    //     if (response?.status === true) {
-    //       this.notificationService.showSuccess(
-    //         comment.isPinned ? 'Comment unpinned successfully' : 'Comment pinned successfully'
-    //       );
-    //       this.getTask(); // Refresh the task list
-    //     } else {
-    //       this.notificationService.showError(response?.message);
-    //     }
-    //   },
-    //   (error) => {
-    //     this.notificationService.showError(error?.message);
-    //   }
-    // );
+    this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess(comment.isPinned ? 'Comment unpinned successfully' : 'Comment pinned successfully');
+          // Update the comment's pinned status
+          comment.isPinned = !comment.isPinned;
+          // Refresh the task list to show updated pinned status
+          this.getTask();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update comment pin status');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to update comment pin status');
+      }
+    );
   }
 
-  togglePinTask(task: any) {
-    const payload = {
-      isPinned: !task.isPinned
-    };
-
-    // this.superService.updateTask(payload, task._id).subscribe(
-    //   (response) => {
-    //     if (response?.status === true) {
-    //       this.notificationService.showSuccess(
-    //         task.isPinned ? 'Task unpinned successfully' : 'Task pinned successfully'
-    //       );
-    //       this.getTask(); // Refresh the task list
-    //     } else {
-    //       this.notificationService.showError(response?.message);
-    //     }
-    //   },
-    //   (error) => {
-    //     this.notificationService.showError(error?.message);
-    //   }
-    // );
-  }
 }

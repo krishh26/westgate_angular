@@ -455,4 +455,8 @@ export class SuperadminService {
     );
   }
 
+  updateCommentPin(taskId: string, commentId: string, payload: any) {
+    return this.httpClient.patch(`${this.baseUrl}/task/${taskId}/comments/${commentId}/pin`, payload);
+  }
+
 }
