@@ -61,7 +61,7 @@
         </div>
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2 d-flex align-items-end">
           <button class="btn btn-primary w-100" (click)="applyDateFilter()" style="height: 38px;">
-          Search
+            Search
           </button>
         </div>
       </div>
@@ -81,6 +81,8 @@
               <th>Created Date</th>
               <th>Total Supplier</th>
               <th>Active Supplier</th>
+              <th>Total Candidate</th>
+              <th>Active Candidate</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -98,6 +100,8 @@
               <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{role?.totalSuppliersCount}}</td>
               <td>{{role?.activeSuppliersCount}}</td>
+              <td>{{role?.activeSuppliersCount}}</td>
+              <td>{{role?.activeCandidatesCount}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View</button>
               </td>

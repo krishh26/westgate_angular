@@ -34,6 +34,8 @@
                       <th>Role Name</th>
                       <th>Total Supplier</th>
                       <th>Active Supplier</th>
+                      <th>Total Candidate</th>
+                      <th>Active Candidate</th>
                       <th class="text-end">Actions</th>
                     </tr>
                   </thead>
@@ -46,15 +48,17 @@
                     </tr>
 
                     <tr *ngFor="let role of rolesList">
-                      <td>{{role.name}}</td>
-                      <td>{{role.totalSuppliersCount}}</td>
-                      <td>{{role.activeSuppliersCount}}</td>
+                      <td>{{role?.name}}</td>
+                      <td>{{role?.totalSuppliersCount}}</td>
+                      <td>{{role?.activeSuppliersCount}}</td>
+                      <td>{{role?.activeSuppliersCount}}</td>
+                      <td>{{role?.activeCandidatesCount}}</td>
                       <td class="text-end">
                         <div class="d-flex justify-content-end gap-2">
-                          <button class="btn btn-sm btn-primary" (click)="editRole(role._id)">
+                          <button class="btn btn-sm btn-primary" (click)="editRole(role?._id)">
                             <i class="bi bi-pencil"></i>
                           </button>
-                          <button class="btn btn-sm btn-danger" (click)="deleteRole(role._id)">
+                          <button class="btn btn-sm btn-danger" (click)="deleteRole(role?._id)">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
