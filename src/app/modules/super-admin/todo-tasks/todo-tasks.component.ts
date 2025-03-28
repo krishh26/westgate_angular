@@ -115,6 +115,11 @@ export class TodoTasksComponent {
       return;
     }
     Object.entries(data).forEach(([commentDate, comments]) => {
+      // Skip the pinnedComments property
+      if (commentDate === 'pinnedComments') {
+        return;
+      }
+
       if (Array.isArray(comments)) {
         comments.forEach(comment => {
           commentsData.push({

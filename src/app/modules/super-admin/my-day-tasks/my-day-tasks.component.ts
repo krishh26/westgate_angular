@@ -103,6 +103,9 @@ export class MyDayTasksComponent {
       return;
     }
     Object.entries(data).forEach(([commentDate, comments]) => {
+      if (commentDate === 'pinnedComments') {
+        return;
+      }
       if (Array.isArray(comments)) {
         comments.forEach(comment => {
           commentsData.push({
