@@ -45,6 +45,7 @@ import { RoleWiseResourcesListComponent } from './role-wise-resources-list/role-
 import { EditRolesComponent } from './edit-roles/edit-roles.component';
 import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
 import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
+import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
 
 const routes: Routes = [
   {
@@ -118,6 +119,10 @@ const routes: Routes = [
       {
         path: "todo-tasks",
         component: TodoTasksComponent
+      },
+      {
+        path: "todo-task-view-page/:id",
+        component: TodoTaskViewPageComponent
       },
       {
         path: "my-day-tasks",

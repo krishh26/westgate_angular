@@ -1,0 +1,153 @@
+.card {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  border: none;
+
+  .card-header {
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.comments-section {
+  margin-top: 20px;
+
+  .comment-item {
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &.admin-comment {
+      background-color: #f0f7ff;
+
+      &:hover {
+        background-color: #e5f1ff;
+      }
+    }
+
+    // Pinned comments with background and border
+    &.pinned-comment {
+      background-color: #f1f5ff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #e8f0ff;
+      }
+    }
+
+    // Comment items with no background, only border
+    &.no-bg {
+      background-color: transparent;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .user-role {
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    .comment-text {
+      margin-top: 5px;
+      word-break: break-word;
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+}
+
+.comments-scroll-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+.pin-btn, .delete-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #212529;
+  }
+}
+
+.pin-btn:hover {
+  color: #0d6efd;
+}
+
+.delete-btn:hover {
+  color: #dc3545;
+}
+
+.details-container {
+  padding: 15px;
+  border-left: 1px solid #eee;
+
+  .details-header {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .detail-item {
+    margin-bottom: 15px;
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .mob-mb1 {
+    margin-bottom: 1rem;
+  }
+
+  .details-container {
+    border-left: none;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+}

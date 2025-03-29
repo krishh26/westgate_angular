@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
@@ -11,14 +11,14 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+declare var bootstrap: any;
 
 @Component({
-  selector: 'app-todo-tasks',
-  templateUrl: './todo-tasks.component.html',
-  styleUrls: ['./todo-tasks.component.scss'],
-  providers: [NgbActiveModal], // Add here
+  selector: 'app-todo-task-view-page',
+  templateUrl: './todo-task-view-page.component.html',
+  styleUrls: ['./todo-task-view-page.component.scss']
 })
-export class TodoTasksComponent implements OnInit {
+export class TodoTaskViewPageComponent implements OnInit {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -72,13 +72,18 @@ export class TodoTasksComponent implements OnInit {
   searchText: any;
   myControl = new FormControl();
 
+  modalTask: any = {};
+  selectedUsers: any = [];
+  previousPage: string = '/super-admin/todo-tasks'; // Default back navigation
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
     public activeModal: NgbActiveModal,
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService,
-    private router: Router,
+    public router: Router,
+    private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService
   ) {
@@ -90,9 +95,85 @@ export class TodoTasksComponent implements OnInit {
       let storeTest = res;
       this.searchText = res.toLowerCase();
     });
-    this.getTask();
+
+    // Check if we have a return URL in query params
+    this.route.queryParams.subscribe(params => {
+      if (params['returnUrl']) {
+        this.previousPage = params['returnUrl'];
+      }
+    });
+
+    // Get task ID from route params
+    this.route.params.subscribe(params => {
+      const taskId = params['id'];
+      if (taskId) {
+        this.loadTaskDetails(taskId);
+      } else {
+        // Redirect to task list page if no ID specified
+        this.router.navigate([this.previousPage]);
+      }
+    });
+
     this.getUserAllList();
     this.getProjectList();
+  }
+
+  loadTaskDetails(taskId: string) {
+    this.showLoader = true;
+
+    // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '')
+      .subscribe(
+        (response: any) => {
+          if (response?.status === true) {
+            // Find the task with matching ID
+            const task = response?.data?.data.find((t: any) => t._id === taskId);
+
+            if (task) {
+              this.setupTaskDetails(task);
+              this.showLoader = false;
+            } else {
+              this.notificationService.showError('Task not found');
+              this.router.navigate([this.previousPage]);
+              this.showLoader = false;
+            }
+          } else {
+            this.notificationService.showError(response?.message || 'Error loading task details');
+            this.showLoader = false;
+          }
+        },
+        (error: any) => {
+          this.notificationService.showError(error?.message || 'Error loading task details');
+          this.showLoader = false;
+        }
+      );
+  }
+
+  setupTaskDetails(task: any) {
+    this.assignTo = [];
+    this.selectedUsers = [];
+    task?.assignTo?.map((element: any) => {
+      this.assignTo.push(element?.userId);
+      this.selectedUsers.push(element?.userId);
+    });
+    this.modalTask = { ...task }; // Deep copy to avoid direct binding
+
+    // Set form values
+    this.selectedCategory = this.modalTask.priority;
+    this.selectedStatus = this.modalTask.status;
+    this.selectedTaskType = this.modalTask.type;
+    if (this.modalTask.dueDate) {
+      this.dueDateValue = this.formatDateToNgbDate(this.modalTask.dueDate);
+    }
+  }
+
+  formatDateToNgbDate(dateString: string): any {
+    const date = new Date(dateString);
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate()
+    };
   }
 
   // Function to transform the data
@@ -251,8 +332,31 @@ export class TodoTasksComponent implements OnInit {
   }
 
   projectDetails(projectId: any) {
-    // Simply navigate to the project details page
-    this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    const modalElement = document.getElementById('viewAllProjects');
+
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide(); // Close the modal properly
+      }
+    }
+
+    // Wait a bit to ensure Bootstrap removes modal styles before restoring scrolling
+    setTimeout(() => {
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = ''; // Reset to default behavior
+      document.body.style.paddingRight = '';
+
+      // Remove any leftover modal backdrop
+      document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+      // Force scroll to be enabled
+      document.documentElement.style.overflow = 'auto';
+      document.documentElement.style.height = 'auto';
+
+      // Now navigate to the details page
+      this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+    }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 
   addTask() {
@@ -386,8 +490,6 @@ export class TodoTasksComponent implements OnInit {
     );
   }
 
-  modalTask: any = {};
-  selectedUsers: any = [];
   openTaskModal(task: any) {
     this.assignTo = [];
     this.selectedUsers = [];
@@ -494,7 +596,7 @@ export class TodoTasksComponent implements OnInit {
   deleteTask(id: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: `Do you want to delete `,
+      text: `Do you want to delete this task?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#00B96F',
@@ -508,8 +610,7 @@ export class TodoTasksComponent implements OnInit {
             if (response?.status == true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Task successfully deleted');
-              window.location.reload();
-              this.getTask();
+              this.router.navigate([this.previousPage]);
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
@@ -528,7 +629,6 @@ export class TodoTasksComponent implements OnInit {
     let param = {
       commentId: id,
     };
-    debugger
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -544,10 +644,8 @@ export class TodoTasksComponent implements OnInit {
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
-              this.notificationService.showSuccess(
-                'Comment successfully deleted'
-              );
-              window.location.reload();
+              this.notificationService.showSuccess('Comment successfully deleted');
+              this.loadTaskDetails(this.modalTask._id);
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
@@ -853,13 +951,9 @@ export class TodoTasksComponent implements OnInit {
     );
   }
 
-  // Navigate to task detail page instead of opening modal
-  navigateToTaskDetail(task: any) {
-    if (task && task._id) {
-      this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
-    } else {
-      this.notificationService.showError('Task ID not found');
-    }
+  // Navigate back to the previous page
+  goBack() {
+    this.router.navigate([this.previousPage]);
   }
 
 }

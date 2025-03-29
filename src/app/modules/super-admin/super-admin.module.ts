@@ -57,6 +57,7 @@ import { RoleWiseResourcesListComponent } from './role-wise-resources-list/role-
 import { EditRolesComponent } from './edit-roles/edit-roles.component';
 import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
 import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
+import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
 
 @NgModule({
   declarations: [
@@ -105,8 +106,10 @@ import { ResourcesProductivityViewComponent } from './resources-productivity-vie
     RolesListComponent,
     ResourcesViewComponent,
     TeamProductivityViewComponent,
-    ResourcesProductivityViewComponent
+    ResourcesProductivityViewComponent,
+    TodoTaskViewPageComponent
   ],
+
   imports: [
     CommonModule,
     SharedModule,
@@ -120,7 +123,7 @@ import { ResourcesProductivityViewComponent } from './resources-productivity-vie
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
     AddRolesComponent,
-    EditRolesComponent
+    EditRolesComponent,
   ],
   providers: [NgbActiveModal],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
