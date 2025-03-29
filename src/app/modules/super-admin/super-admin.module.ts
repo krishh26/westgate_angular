@@ -58,7 +58,7 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
 import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
 import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
 import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
-
+import { NgxEditorModule } from 'ngx-editor';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -122,6 +122,7 @@ import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
+    NgxEditorModule,
     AddRolesComponent,
     EditRolesComponent,
   ],

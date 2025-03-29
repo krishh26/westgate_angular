@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Editor, Toolbar } from 'ngx-editor';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -11,6 +12,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-todo-tasks',
@@ -18,7 +20,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./todo-tasks.component.scss'],
   providers: [NgbActiveModal], // Add here
 })
-export class TodoTasksComponent implements OnInit {
+export class TodoTasksComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -50,6 +52,11 @@ export class TodoTasksComponent implements OnInit {
   loginUser: any;
   type: any;
 
+  // Editor related properties
+  editor!: Editor;
+  taskForm!: FormGroup;
+  @ViewChild('taskModal') taskModal!: ElementRef;
+
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
     { taskType: 'Other', taskValue: 'Other' }
@@ -72,6 +79,17 @@ export class TodoTasksComponent implements OnInit {
   searchText: any;
   myControl = new FormControl();
 
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -80,12 +98,21 @@ export class TodoTasksComponent implements OnInit {
     private projectService: ProjectService,
     private router: Router,
     private feasibilityService: FeasibilityService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
   ngOnInit(): void {
+    // Initialize editor
+    this.editor = new Editor();
+
+    // Initialize task form
+    this.taskForm = this.fb.group({
+      description: ['', Validators.required]
+    });
+
     this.myControl.valueChanges.subscribe((res: any) => {
       let storeTest = res;
       this.searchText = res.toLowerCase();
@@ -93,6 +120,10 @@ export class TodoTasksComponent implements OnInit {
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
   }
 
   // Function to transform the data
@@ -256,22 +287,32 @@ export class TodoTasksComponent implements OnInit {
   }
 
   addTask() {
-    if (this.taskDetails.trim()) {
+    if (this.taskTitle.trim() && this.taskForm.valid) {
+      const description = this.taskForm.get('description')?.value;
+
       const payload = {
-        discription: this.taskDetails,
+        discription: description,
         task: this.taskTitle,
         status: 'Ongoing',
-        dueDate: this.dueDate ? this.formatDate(this.dueDate) : null,
+        dueDate: this.dueDate.value,
         assignTo: this.assignTo,
         type: this.type
       };
+
       this.superService.createTask(payload).subscribe(
         (response) => {
           if (response?.status === true) {
             this.notificationService.showSuccess('Task Created Successfully');
             this.getTask();
-            // this.activeModal.close();
-            window.location.reload();
+            // Reset form
+            this.taskForm.reset();
+            this.taskTitle = '';
+            // Close modal
+            const modalElement = document.getElementById('exampleModal');
+            if (modalElement) {
+              const modal = bootstrap.Modal.getInstance(modalElement);
+              if (modal) modal.hide();
+            }
           } else {
             this.notificationService.showError(response?.message);
           }
@@ -281,7 +322,7 @@ export class TodoTasksComponent implements OnInit {
         }
       );
     } else {
-      this.notificationService.showError('Please Enter Task Details');
+      this.notificationService.showError('Please enter a task title and description');
     }
   }
 

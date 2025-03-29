@@ -97,7 +97,7 @@
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
               <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
-                (click)="openTaskModal(task)" data-bs-toggle="modal" data-bs-target="#taskDetailsModal" [ngClass]="{
+              (click)="navigateToTaskDetail(task)"  [ngClass]="{
                   'bg-light-yellow': task?.pickACategory === 'low',
                   'bg-light-green': task?.pickACategory === 'Medium',
                   'bg-light-orange': task?.pickACategory === 'High'
@@ -166,16 +166,20 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                      <p class="comment-text">
-                        {{ comment?.comment }}
+                      <p class="comment-text" [innerHTML]="comment?.comment">
+                        <!-- {{ comment?.comment }} -->
                       </p>
                       <div *ngIf="comment?.commentId" class="d-flex gap-2">
                         <!-- <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, task); $event.stopPropagation()">
                           <i class="bi" [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
                         </button> -->
-                        <button class="btn btn-sm delete-btn" (click)="deleteComment(comment?.commentId, task)">
+                        <!-- <button class="btn btn-sm delete-btn" (click)="deleteComment(comment?.commentId, task)">
                           <i class="bi bi-trash3"></i>
-                        </button>
+                        </button> -->
+                        <button class="btn btn-sm delete-btn"
+                        (mousedown)="deleteComment(comment?.commentId, task); $event.stopPropagation()">
+                        <i class="bi bi-trash3"></i>
+                      </button>
                       </div>
                     </div>
 

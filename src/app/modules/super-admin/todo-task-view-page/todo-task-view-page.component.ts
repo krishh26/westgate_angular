@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
@@ -12,13 +12,13 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
-
+import { Editor, Toolbar } from 'ngx-editor';
 @Component({
   selector: 'app-todo-task-view-page',
   templateUrl: './todo-task-view-page.component.html',
   styleUrls: ['./todo-task-view-page.component.scss']
 })
-export class TodoTaskViewPageComponent implements OnInit {
+export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -76,6 +76,21 @@ export class TodoTaskViewPageComponent implements OnInit {
   selectedUsers: any = [];
   previousPage: string = '/super-admin/todo-tasks'; // Default back navigation
 
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  editor!: Editor;
+  commentForm!: FormGroup;
+  newComment: string = '';
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -85,7 +100,8 @@ export class TodoTaskViewPageComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -116,6 +132,18 @@ export class TodoTaskViewPageComponent implements OnInit {
 
     this.getUserAllList();
     this.getProjectList();
+
+    // Initialize the editor
+    this.editor = new Editor();
+
+    // Initialize the comment form
+    this.commentForm = this.fb.group({
+      description: ['', Validators.required]
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
   }
 
   loadTaskDetails(taskId: string) {
@@ -748,56 +776,41 @@ export class TodoTaskViewPageComponent implements OnInit {
       : this.userList.slice(0, 7);
   }
 
-  newComment: string = '';
+  addComment(id: string) {
+    if (this.commentForm.valid) {
+      const comment = this.commentForm.get('description')?.value;
+      if (comment?.trim().length > 0) {
+        this.showLoader = true;
+        const payload = { comment: comment.trim() };
 
-  addComment(comment: string, id: string) {
-    if (comment?.trim().length > 0) {
-      this.showLoader = true;
-      const payload = { comment: comment.trim() };
-
-      this.superService.addComments(payload, id).subscribe(
-        (response) => {
-          this.showLoader = false;
-          if (response?.status === true) {
-            this.notificationService.showSuccess('Comment added successfully');
-            window.location.reload();
-            const newComment = {
-              text: comment.trim(),
-            };
-            this.modalTask.comments = [
-              ...(this.modalTask.comments || []),
-              newComment,
-            ];
-
-            this.newComment = '';
-          } else {
+        this.superService.addComments(payload, id).subscribe(
+          (response) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Comment added successfully');
+              this.commentForm.reset();
+              // Reload the task details
+              this.loadTaskDetails(id);
+            } else {
+              this.notificationService.showError(
+                response?.message || 'Failed to add comment'
+              );
+            }
+          },
+          (error) => {
+            this.showLoader = false;
             this.notificationService.showError(
-              response?.message || 'Failed to add comment'
+              error?.message || 'An error occurred'
             );
           }
-        },
-        (error) => {
-          this.showLoader = false;
-          this.notificationService.showError(
-            error?.message || 'An error occurred'
-          );
-        }
-      );
+        );
+      } else {
+        this.notificationService.showError('Comment cannot be empty');
+      }
     } else {
-      this.notificationService.showError('Comment cannot be empty');
+      this.notificationService.showError('Please enter a comment');
     }
   }
-
-  // Edit a comment
-  editComment(index: number) {
-    this.newComment = this.modalTask.comments[index].text;
-    this.modalTask.comments.splice(index, 1); // Remove old comment
-  }
-
-  // Delete a comment
-  // deleteComment(index: number) {
-  //   this.modalTask.comments.splice(index, 1);
-  // }
 
   toggleUserSelection(userId: number): void {
     const index = this.selectedUserIds.indexOf(userId);
@@ -808,7 +821,6 @@ export class TodoTaskViewPageComponent implements OnInit {
     }
     this.getTask();
   }
-
 
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
@@ -934,6 +946,7 @@ export class TodoTaskViewPageComponent implements OnInit {
                 } else {
                   this.notificationService.showError(response?.message);
                 }
+                window.location.reload();
                 this.showLoader = false;
               },
               (error) => {
