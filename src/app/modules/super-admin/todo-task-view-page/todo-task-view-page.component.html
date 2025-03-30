@@ -166,63 +166,71 @@
                   </div>
                 </div>
 
-                <!-- Assignee Section -->
-                <div class="detail-item mb-3">
-                  <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
-                  <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
-                    [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
-                    (ngModelChange)="onChange('assignTo', $event)">
-                  </ng-select>
+                <!-- Assignee and Priority in one row -->
+                <div class="row g-2 mb-3">
+                  <!-- Assignee Section -->
+                  <div class="col-12 col-md-6">
+                    <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
+                    <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
+                      [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
+                      (ngModelChange)="onChange('assignTo', $event)">
+                    </ng-select>
+                  </div>
+
+                  <!-- Category Section -->
+                  <div class="col-12 col-md-6">
+                    <label for="category" class="form-label"><strong>Select Priority:</strong></label>
+                    <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
+                      [items]="categoryList" [(ngModel)]="selectedCategory"
+                      (ngModelChange)="onChange('pickACategory', $event)">
+                    </ng-select>
+                  </div>
                 </div>
 
-                <!-- Category Section -->
-                <div class="detail-item mb-3">
-                  <label for="category" class="form-label"><strong>Select Priority:</strong></label>
-                  <ng-select id="category" class="form-select custom-ng-select-option" placeholder="Pick a Category"
-                    [items]="categoryList" [(ngModel)]="selectedCategory"
-                    (ngModelChange)="onChange('pickACategory', $event)">
-                  </ng-select>
+                <!-- Task Status and Task Type in one row -->
+                <div class="row g-2 mb-3">
+                  <!-- task status Section -->
+                  <div class="col-12 col-md-6">
+                    <label for="taskstatus" class="form-label"><strong>Task Status:</strong></label>
+                    <ng-select id="taskstatus" class="form-select custom-ng-select-option" placeholder="Pick a Status"
+                      [items]="statusTaskList" [(ngModel)]="selectedStatus"
+                      (ngModelChange)="onChange('taskStatus', $event)">
+                    </ng-select>
+                  </div>
+
+                  <!-- task type Section -->
+                  <div class="col-12 col-md-6">
+                    <label for="type" class="form-label"><strong>Task Type:</strong></label>
+                    <ng-select id="type" class="form-select custom-ng-select-option" placeholder="Pick a Type"
+                      [items]="taskTypeList" [(ngModel)]="selectedTaskType" (ngModelChange)="onChange('type', $event)">
+                    </ng-select>
+                  </div>
                 </div>
 
-                <!-- task status Section -->
+                <!-- Buttons in one row -->
                 <div class="detail-item mb-3">
-                  <label for="taskstatus" class="form-label"><strong>Task Status:</strong></label>
-                  <ng-select id="taskstatus" class="form-select custom-ng-select-option" placeholder="Pick a Status"
-                    [items]="statusTaskList" [(ngModel)]="selectedStatus"
-                    (ngModelChange)="onChange('taskStatus', $event)">
-                  </ng-select>
-                </div>
-
-                <!-- task type Section -->
-                <div class="detail-item mb-3">
-                  <label for="type" class="form-label"><strong>Task Type:</strong></label>
-                  <ng-select id="type" class="form-select custom-ng-select-option" placeholder="Pick a Type"
-                    [items]="taskTypeList" [(ngModel)]="selectedTaskType" (ngModelChange)="onChange('type', $event)">
-                  </ng-select>
-                </div>
-
-                <div class="detail-item mb-3">
-                  <button class="btn btn-primary" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
-                    Add to My Day
-                  </button>
-                </div>
-
-                <div class="detail-item mb-3">
-                  <button class="btn btn-success" (click)="onChange('completedTask', true)">
-                    Completed
-                  </button>
-                </div>
-
-                <div class="detail-item mb-3">
-                  <button class="btn btn-secondary" (click)="onChange('completedTask', false)">
-                    Not Completed
-                  </button>
-                </div>
-
-                <div class="detail-item mb-3">
-                  <button class="btn btn-danger" (click)="deleteTask(modalTask?._id)">
-                    Delete
-                  </button>
+                  <div class="row g-2">
+                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                      <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
+                        Add to My Day
+                      </button>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                      <button class="btn btn-success w-100" (click)="onChange('completedTask', true)">
+                        Completed
+                      </button>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                      <button class="btn btn-secondary w-100" (click)="onChange('completedTask', false)">
+                        Not Completed
+                      </button>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3">
+                      <button class="btn btn-danger w-100" (click)="deleteTask(modalTask?._id)">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
