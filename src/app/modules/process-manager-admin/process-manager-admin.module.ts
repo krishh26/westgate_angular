@@ -22,7 +22,7 @@ import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-ad
 import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
-
+import { NgxEditorModule } from 'ngx-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +35,8 @@ import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/typ
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgxEditorModule
   ],
   declarations: [
     ProcessManagerAdminComponent,

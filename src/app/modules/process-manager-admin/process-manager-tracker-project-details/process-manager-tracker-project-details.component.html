@@ -630,7 +630,7 @@
     <!-- Redesigned Description -->
     <div class="bg-white py-3" *ngIf="item?.type != 'Image'">
       <p class="text-secondary mb-0 fw-bold"> </p>
-      <p class="text-dark mb-0">{{ item?.description }}</p>
+      <p class="text-dark mb-0" [innerHTML]="item?.description"></p>
     </div>
 
     <!-- <div class="container py-4">
@@ -748,8 +748,16 @@
 
           <div class="form-group mb-3">
             <label for="textInput" class="form-label">Strip Description :</label>
-            <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
-              formControlName="description"></textarea>
+            <!-- <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
+              formControlName="description"></textarea> -->
+
+            <div class="NgxEditor__Wrapper">
+              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
+              </ngx-editor-menu>
+              <ngx-editor [editor]="editor" rows="5" formControlName="description" [disabled]="false"
+                [placeholder]="'Type here...'"></ngx-editor>
+            </div>
+
             <div *ngIf="
                 addStripcontrol.description.touched &&
                 addStripcontrol.description.invalid

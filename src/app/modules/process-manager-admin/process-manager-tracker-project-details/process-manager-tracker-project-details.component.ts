@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -18,12 +18,15 @@ import { ProjectCoordinatorService } from 'src/app/services/project-coordinator/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Location } from '@angular/common';
+import { Editor, Toolbar } from 'ngx-editor';
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-process-manager-tracker-project-details',
   templateUrl: './process-manager-tracker-project-details.component.html',
   styleUrls: ['./process-manager-tracker-project-details.component.scss'],
 })
-export class ProcessManagerTrackerProjectDetailsComponent {
+export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
 
   showLoader: boolean = false;
@@ -111,6 +114,22 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   FeasibilityuserList: any = [];
   getDroppedAfterReasonList: any = [];
 
+    // Editor related properties
+    editor!: Editor;
+    taskForm!: FormGroup;
+    @ViewChild('taskModal') taskModal!: ElementRef;
+
+    toolbar: Toolbar = [
+      ['bold', 'italic'],
+      ['underline', 'strike'],
+      ['code', 'blockquote'],
+      ['ordered_list', 'bullet_list'],
+      [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+      ['link', 'image'],
+      ['text_color', 'background_color'],
+      ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -138,6 +157,10 @@ export class ProcessManagerTrackerProjectDetailsComponent {
   }
 
   ngOnInit(): void {
+
+     // Initialize editor
+     this.editor = new Editor();
+
     this.getProjectDetails();
     this.getUserAllList();
     //this.getForTitleUserAllList();
@@ -152,6 +175,11 @@ export class ProcessManagerTrackerProjectDetailsComponent {
       imageText: [''],
       roles: ['']
     });
+  }
+
+  ngOnDestroy(): void {
+    // Destroy the editor to prevent memory leaks
+    this.editor.destroy();
   }
 
   goBack() {
