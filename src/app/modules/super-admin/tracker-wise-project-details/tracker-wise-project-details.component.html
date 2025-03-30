@@ -875,83 +875,6 @@
   </div>
 </div>
 
-
-<!-- Login detail From modal -->
-<div class="modal fade" id="loginDetailModal" tabindex="-1" aria-labelledby="ViewLogin" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" [formGroup]="loginDetailForm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ViewLogin">Add Login Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label>Company Name</label>
-        <input type="text" formControlName="companyName" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['companyName'].touched && loginDetailForm.controls['companyName']?.errors?.['required']">
-          Please Company Name
-        </div>
-        <label>Website Link</label>
-        <input type="text" formControlName="link" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['link'].touched && loginDetailForm.controls['link']?.errors?.['required']">
-          Please enter Website Link
-        </div>
-        <label>Login Id</label>
-        <input type="text" formControlName="loginID" class="form-control" />
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['loginID'].touched && loginDetailForm.controls['loginID']?.errors?.['required']">
-          Please enter Login Id
-        </div>
-        <label>Password</label>
-        <input [type]="password" formControlName="password" class="form-control" />
-        <span class="showicon" *ngIf="!showPassword" (click)="showHidePass()"><i class="bi bi-eye-fill"></i></span>
-        <span class="showicon" *ngIf="showPassword" (click)="showHidePass()"><i class="bi bi-eye-slash-fill"></i></span>
-        <div class="text-danger" style="color: red"
-          *ngIf="loginDetailForm.controls['password'].touched && loginDetailForm.controls['password']?.errors?.['required']">
-          Please enter Password
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-            <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" [disabled]="!loginDetailForm.valid"
-              class="btn btn-dark w-100">
-              Add
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="ViewUploadedDocument" tabindex="-1" aria-labelledby="ViewUploadedDocumentModal"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="display: flex; justify-content: space-between">
-        <h5 class="modal-title" id="ViewUploadedDocumentModal">Document</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="isPdf(uploadedDocument?.url); else otherFormatsForDocument">
-          <ngx-extended-pdf-viewer [src]="uploadedDocument?.url" useBrowserLocale="true"
-            height="600px"></ngx-extended-pdf-viewer>
-        </ng-container>
-        <ng-template #otherFormatsForDocument>
-          <iframe *ngIf="isWordOrExcel(uploadedDocument?.url)" [src]="getDocumentViewerUrl(uploadedDocument?.url)"
-            style="width: 100%; height: 600px"></iframe>
-          <img *ngIf="isImage(uploadedDocument?.url)" [src]="uploadedDocument?.url" class="img-fluid" />
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="ViewClientDoc" tabindex="-1" aria-labelledby="ViewClientDocLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -984,125 +907,97 @@
     </div>
   </div>
 
-  <!-- View Document Modal -->
-  <div class="modal fade" id="ViewCaseModal" tabindex="-1" aria-labelledby="ViewDocumentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header" style="display: flex; justify-content: space-between">
-          <h5 class="modal-title" id="ViewDocumentModalLabel">
-            Case Study ({{ selectViewImage?.imageText }})
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ng-container *ngIf="isPdf(selectViewImage?.url); else otherFormats">
-            <ngx-extended-pdf-viewer [src]="selectViewImage?.url" useBrowserLocale="true"
-              height="600px"></ngx-extended-pdf-viewer>
-          </ng-container>
-          <ng-template #otherFormats>
-            <iframe *ngIf="isWordOrExcel(selectViewImage?.url)" [src]="getDocumentViewerUrl(selectViewImage?.url)"
-              style="width: 100%; height: 600px"></iframe>
-            <img *ngIf="isImage(selectViewImage?.key)" [src]="selectViewImage?.url" class="img-fluid" />
-          </ng-template>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-        </div>
+<!-- View StripAdd Modal -->
+<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    </div>
-  </div>
 
-  <!-- View StripAdd Modal -->
-  <div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ViewLogin">Add Strip Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-body">
+        <!-- Radio Buttons to Select Upload Type -->
+        <div class="form-group d-flex align-items-center mb-4">
+          <label class="me-3">Select Type:</label>
+          <div class="form-check me-3">
+            <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
+              (change)="selectUploadType(true)" />
+            <label for="textOption" class="form-check-label">Text</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
+              (change)="selectUploadType(false)" />
+            <label for="imageOption" class="form-check-label">Image</label>
+          </div>
         </div>
 
-        <div class="modal-body">
-          <!-- Radio Buttons to Select Upload Type -->
-          <div class="form-group d-flex align-items-center mb-4">
-            <label class="me-3">Select Type:</label>
-            <div class="form-check me-3">
-              <input type="radio" id="textOption" class="form-check-input" formControlName="type" value="Text"
-                (change)="selectUploadType(true)" />
-              <label for="textOption" class="form-check-label">Text</label>
-            </div>
-            <div class="form-check">
-              <input type="radio" id="imageOption" class="form-check-input" formControlName="type" value="Image"
-                (change)="selectUploadType(false)" />
-              <label for="imageOption" class="form-check-label">Image</label>
+        <!-- Conditional Rendering Based on Upload Type -->
+        <div *ngIf="uploadType; else imageUploadSection">
+          <!-- Text Upload Section -->
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label">Strip Heading :</label>
+            <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
+            <div *ngIf="
+                addStripcontrol.text.touched && addStripcontrol.text.invalid
+              " class="text-danger">
+              Text is required.
             </div>
           </div>
 
-          <!-- Conditional Rendering Based on Upload Type -->
-          <div *ngIf="uploadType; else imageUploadSection">
-            <!-- Text Upload Section -->
-            <div class="form-group mb-3">
-              <label for="textInput" class="form-label">Strip Heading :</label>
-              <input type="text" id="textInput" class="form-control" placeholder="Enter Text" formControlName="text" />
-              <div *ngIf="
-                addStripcontrol.text.touched && addStripcontrol.text.invalid
-              " class="text-danger">
-                Text is required.
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <label for="textInput" class="form-label">Strip Description :</label>
-              <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
-                formControlName="description"></textarea>
-              <div *ngIf="
+          <div class="form-group mb-3">
+            <label for="textInput" class="form-label">Strip Description :</label>
+            <textarea type="text" id="textInput" class="form-control" placeholder="Enter Description"
+              formControlName="description"></textarea>
+            <div *ngIf="
                 addStripcontrol.description.touched &&
                 addStripcontrol.description.invalid
               " class="text-danger">
-                Description is required.
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-                [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
-              </ng-select>
+              Description is required.
             </div>
           </div>
 
-          <!-- Image Upload Section -->
-          <ng-template #imageUploadSection>
-            <div class="form-group mb-3">
-              <label for="imageTextInput" class="form-label">Strip Heading :</label>
-              <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
-                formControlName="imageText" />
-              <div *ngIf="
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
+              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+            </ng-select>
+          </div>
+
+        </div>
+
+        <!-- Image Upload Section -->
+        <ng-template #imageUploadSection>
+          <div class="form-group mb-3">
+            <label for="imageTextInput" class="form-label">Strip Heading :</label>
+            <input type="text" id="imageTextInput" class="form-control" placeholder="Enter Text"
+              formControlName="imageText" />
+            <div *ngIf="
                 addStripcontrol.imageText.touched &&
                 addStripcontrol.imageText.invalid
               " class="text-danger">
-                Image Text is required.
-              </div>
+              Image Text is required.
             </div>
+          </div>
 
-            <div class="form-group mb-3">
-              <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-                [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
-              </ng-select>
-            </div>
-          </ng-template>
+          <div class="form-group mb-3">
+            <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
+              [multiple]="true" bindLabel="name" [items]="ForTitleuserList" formControlName="roles">
+            </ng-select>
+          </div>
 
-          <div class="row justify-content-end mt-4">
-            <div class="col-auto">
-              <button (click)="addtitle()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
-                Add
-              </button>
-            </div>
+        </ng-template>
+
+        <div class="row justify-content-end mt-4">
+          <div class="col-auto">
+            <button (click)="addStrips()" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dark">
+              Add
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
   <!-- View Strip image Modal -->
   <div class="modal fade" id="viewstripimage" tabindex="-1" aria-labelledby="viewstripimageLabel" aria-hidden="true">
