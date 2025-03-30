@@ -9,8 +9,6 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
   selector: 'app-add-roles',
   templateUrl: './add-roles.component.html',
   styleUrls: ['./add-roles.component.scss'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class AddRolesComponent implements OnInit {
   roleData: any = {

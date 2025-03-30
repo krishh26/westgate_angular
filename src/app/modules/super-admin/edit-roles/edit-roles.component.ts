@@ -9,8 +9,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-edit-roles',
   templateUrl: './edit-roles.component.html',
   styleUrls: ['./edit-roles.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule]
 })
 export class EditRolesComponent implements OnInit {
   roleForm: FormGroup;

@@ -107,7 +107,9 @@ import { NgxEditorModule } from 'ngx-editor';
     ResourcesViewComponent,
     TeamProductivityViewComponent,
     ResourcesProductivityViewComponent,
-    TodoTaskViewPageComponent
+    TodoTaskViewPageComponent,
+    AddRolesComponent,
+    EditRolesComponent,
   ],
 
   imports: [
@@ -123,8 +125,7 @@ import { NgxEditorModule } from 'ngx-editor';
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
     NgxEditorModule,
-    AddRolesComponent,
-    EditRolesComponent,
+
   ],
   providers: [NgbActiveModal],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
