@@ -42,6 +42,9 @@ export class ResourcesAddComponent implements OnInit {
   supplierData: any = [];
   rolesList: any[] = [];
 
+  // Add a class property to store the candidate ID if in edit mode
+  candidateId: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -64,6 +67,15 @@ export class ResourcesAddComponent implements OnInit {
     } else {
       console.log("No supplier data found in localStorage");
     }
+
+    // Check if we're in edit mode by looking for candidateId in query params
+    this.route.queryParams.subscribe(params => {
+      if (params['candidateId']) {
+        this.candidateId = params['candidateId'];
+        // Load candidate data from localStorage instead of API
+        this.loadCandidateDataFromStorage();
+      }
+    });
   }
 
   initializeForm() {
@@ -222,22 +234,64 @@ export class ResourcesAddComponent implements OnInit {
     // Show loader
     this.showLoader = true;
 
-    // Call service to save data
-    this.superService.addCandidate(finalData).subscribe(
-      (response: any) => {
-        this.showLoader = false;
-        if (response.status) {
-          this.notificationService.showSuccess('Candidate profile added successfully');
-          this.router.navigate(['/super-admin/resources-list']);
-        } else {
-          this.notificationService.showError(response.message || 'Failed to add candidate profile');
+    // Determine if we're updating or creating
+    if (this.candidateId) {
+      // Add the ID to the data for update
+      userData._id = this.candidateId;
+      console.log('Updating candidate with ID:', this.candidateId);
+
+      // Create a simplified update structure that matches what the backend expects
+      const updateData = {
+        data: userData  // Since backend might expect a single object instead of an array
+      };
+
+      console.log('Update data:', updateData);
+
+      // Update existing candidate
+      this.superService.updateCandidate(this.candidateId, updateData).subscribe(
+        (response: any) => {
+          console.log('Update response:', response);
+          this.showLoader = false;
+          if (response.status) {
+            // Clear the stored candidate data
+            localStorage.removeItem('editCandidateData');
+
+            // Trigger a refresh of the candidate list when returning to the list view
+            localStorage.setItem('refreshCandidatesList', 'true');
+
+            this.notificationService.showSuccess('Candidate profile updated successfully');
+            // Navigate with skipLocationChange to force component reload
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['/super-admin/resources-list']);
+            });
+          } else {
+            this.notificationService.showError(response.message || 'Failed to update candidate profile');
+          }
+        },
+        (error: any) => {
+          console.error('Update error:', error);
+          this.showLoader = false;
+          this.notificationService.showError(error.message || 'An error occurred while updating candidate profile');
         }
-      },
-      (error: any) => {
-        this.showLoader = false;
-        this.notificationService.showError(error.message || 'An error occurred while adding candidate profile');
-      }
-    );
+      );
+    } else {
+      // Create new candidate
+      this.superService.addCandidate(finalData).subscribe(
+        (response: any) => {
+          this.showLoader = false;
+          if (response.status) {
+            this.notificationService.showSuccess('Candidate profile added successfully');
+            this.router.navigate(['/super-admin/resources-list']);
+          } else {
+            this.notificationService.showError(response.message || 'Failed to add candidate profile');
+          }
+        },
+        (error: any) => {
+          this.showLoader = false;
+          this.notificationService.showError(error.message || 'An error occurred while adding candidate profile');
+        }
+      );
+    }
   }
 
   // Helper function to mark all form controls as touched
@@ -280,5 +334,86 @@ export class ResourcesAddComponent implements OnInit {
         this.notificationService.showError(error?.message || 'An error occurred while fetching roles');
       }
     });
+  }
+
+  // Helper function to format date for input fields
+  formatDateForInput(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  }
+
+  // Function to load candidate data from localStorage
+  loadCandidateDataFromStorage() {
+    const storedCandidateData = localStorage.getItem('editCandidateData');
+    if (storedCandidateData) {
+      const candidateData = JSON.parse(storedCandidateData);
+
+      // Patch the form with candidate data
+      this.userProfileForm.patchValue({
+        supplierId: candidateData.supplierId,
+        fullName: candidateData.fullName,
+        gender: candidateData.gender,
+        nationality: candidateData.nationality,
+        highestQualification: candidateData.highestQualification,
+        yearOfGraduation: candidateData.yearOfGraduation,
+        totalExperience: candidateData.totalExperience,
+        startDate: candidateData.startDate,
+        keyResponsibilities: candidateData.keyResponsibilities,
+        availableFrom: this.formatDateForInput(candidateData.availableFrom),
+        hourlyRate: candidateData.hourlyRate,
+        roleId: candidateData.roleId
+      });
+
+      // Set the arrays for tag-like inputs
+      if (candidateData.previousEmployers) {
+        this.previousEmployers = [...candidateData.previousEmployers];
+      }
+      if (candidateData.technicalSkills) {
+        this.technicalSkills = [...candidateData.technicalSkills];
+      }
+      if (candidateData.softSkills) {
+        this.softSkills = [...candidateData.softSkills];
+      }
+      if (candidateData.languagesKnown) {
+        this.languagesKnown = [...candidateData.languagesKnown];
+      }
+
+      // Handle projects worked on
+      if (candidateData.projectsWorkedOn && candidateData.projectsWorkedOn.length > 0) {
+        // Clear the default empty project
+        while (this.projectsWorkedOn.length) {
+          this.projectsWorkedOn.removeAt(0);
+        }
+        this.projectTechStacks = [];
+
+        // Add each project from the data
+        candidateData.projectsWorkedOn.forEach((project: any, index: number) => {
+          this.projectsWorkedOn.push(this.fb.group({
+            projectName: [project.projectName || ''],
+            clientName: [project.clientName || ''],
+            projectDuration: [project.projectDuration || ''],
+            industryDomain: [project.industryDomain || ''],
+            projectDescription: [project.projectDescription || ''],
+            keyResponsibilities: [project.keyResponsibilities || ''],
+            teamSize: [project.teamSize || ''],
+            contributionPercentage: [project.contributionPercentage || ''],
+            projectComplexity: [project.projectComplexity || null],
+            outcomeImpact: [project.outcomeImpact || ''],
+            clientFeedback: [project.clientFeedback || '']
+          }));
+
+          // Add tech stack for this project
+          this.projectTechStacks.push(project.techStackUsed || []);
+        });
+      }
+
+      // After loading the data, clear it from localStorage to avoid issues if the user refreshes
+      // Comment out this line if you need to persist the data across refreshes
+      // localStorage.removeItem('editCandidateData');
+    } else {
+      this.notificationService.showError('Failed to load candidate data');
+      this.router.navigate(['/super-admin/resources-list']);
+    }
   }
 }

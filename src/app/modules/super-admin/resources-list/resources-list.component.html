@@ -60,7 +60,6 @@
           <thead>
             <tr>
               <th>Full Name</th>
-              <th>Job Title</th>
               <th>Experience</th>
               <th>Qualification</th>
               <th>Gender</th>
@@ -84,7 +83,6 @@
             <tr
               *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{candidate?.fullName}}</td>
-              <td>{{candidate?.jobTitle}}</td>
               <td>{{candidate?.totalExperience}} years</td>
               <td>{{candidate?.highestQualification}} ({{candidate?.yearOfGraduation}})</td>
               <td>{{candidate?.gender}}</td>
@@ -104,6 +102,9 @@
               <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                <button class="btn btn-sm btn-warning ms-2" (click)="editCandidate(candidate)">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteCandidates(candidate._id)">
                   <i class="bi bi-trash"></i>
                 </button>

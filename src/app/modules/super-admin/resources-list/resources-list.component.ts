@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { ResourcesAddBulkComponent } from '../resources-add-bulk/resources-add-b
   templateUrl: './resources-list.component.html',
   styleUrls: ['./resources-list.component.scss']
 })
-export class ResourcesListComponent implements OnInit {
+export class ResourcesListComponent implements OnInit, AfterViewInit {
 
   resourcesList: any = [];
   candidatesList: any = [];
@@ -45,6 +45,17 @@ export class ResourcesListComponent implements OnInit {
     }
     // Using a fixed list ID now: '67b60d775c16e4e640eee7dc'
     this.getCandidatesList();
+  }
+
+  ngAfterViewInit() {
+    // Check if we need to refresh the list (set by edit component)
+    const refreshNeeded = localStorage.getItem('refreshCandidatesList');
+    if (refreshNeeded === 'true') {
+      // Clear the flag
+      localStorage.removeItem('refreshCandidatesList');
+      // Refresh the list
+      this.getCandidatesList();
+    }
   }
 
   getCandidatesList() {
@@ -80,34 +91,44 @@ export class ResourcesListComponent implements OnInit {
   viewCandidateDetails(candidate: any) {
     this.router.navigate(['/super-admin/resources-details'], {
       queryParams: {
+        candidateId: candidate?._id
+      }
+    });
+  }
+
+  editCandidate(candidate: any) {
+    // Store the candidate data in localStorage for the edit form
+    localStorage.setItem('editCandidateData', JSON.stringify(candidate));
+    this.router.navigate(['/super-admin/resources-add'], {
+      queryParams: {
         candidateId: candidate._id
       }
     });
   }
 
-    deleteCandidates(id: any) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `Do you want to delete `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#00B96F',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Delete!'
-      }).then((result: any) => {
-        if (result?.value) {
-          this.superService.deleteCandidate(id).subscribe((response: any) => {
-            if (response?.status == true) {
-              this.notificationService.showSuccess('User successfully deleted');
-              this.getCandidatesList();
-            } else {
-              this.notificationService.showError(response?.message);
-            }
-          }, (error) => {
-            this.notificationService.showError(error?.message);
-          });
-        }
-      });
-    }
+  deleteCandidates(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteCandidate(id).subscribe((response: any) => {
+          if (response?.status == true) {
+            this.notificationService.showSuccess('User successfully deleted');
+            this.getCandidatesList();
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+        }, (error) => {
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
+  }
 
 }
