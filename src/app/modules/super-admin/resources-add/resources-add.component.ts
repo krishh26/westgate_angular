@@ -94,7 +94,7 @@ export class ResourcesAddComponent implements OnInit {
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
       // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       // overtimeCharges: [''],
-      roleId: ['', Validators.required],
+      roleId: [[], Validators.required],
       //  otherJobTitle: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
     });
@@ -196,6 +196,13 @@ export class ResourcesAddComponent implements OnInit {
       if (this.technicalSkills.length === 0) {
         this.notificationService.showError('Technical Skills are required');
       }
+      return;
+    }
+
+    // Ensure at least one role is selected
+    const selectedRoles = this.userProfileForm.get('roleId')?.value;
+    if (!selectedRoles || selectedRoles.length === 0) {
+      this.notificationService.showError('At least one role must be selected');
       return;
     }
 
@@ -362,7 +369,7 @@ export class ResourcesAddComponent implements OnInit {
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
         hourlyRate: candidateData.hourlyRate,
-        roleId: candidateData.roleId
+        roleId: candidateData.roleId || (candidateData.roleId ? [candidateData.roleId] : [])
       });
 
       // Set the arrays for tag-like inputs
