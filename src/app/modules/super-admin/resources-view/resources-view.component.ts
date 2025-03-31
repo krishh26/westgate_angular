@@ -10,6 +10,8 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import Swal from 'sweetalert2';
 import { ResourcesAddBulkComponent } from '../resources-add-bulk/resources-add-bulk.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ResourcesCommentModalComponent } from '../resources-comment-modal/resources-comment-modal.component';
+import { SuperadminCommentModalComponent } from '../superadmin-comment-modal/superadmin-comment-modal.component';
 
 @Component({
   selector: 'app-resources-view',
@@ -69,6 +71,70 @@ export class ResourcesViewComponent implements OnInit {
       this.searchText = res?.toLowerCase();
       this.getRoleWiseCandidates();
     });
+  }
+
+  onToggleSwitch(item: any) {
+    console.log('Toggle switch clicked, new state:', item.active);
+
+    // If switching to inactive (false), open the comment modal
+    if (item.active === false) {
+      this.openCommentModal(item);
+    } else {
+      // If switching to active (true), update directly
+      const payload = {
+        data: {
+          active: true,
+          inactiveComment: '' // Clear any previous inactive comment
+        }
+      };
+
+      console.log('Activating candidate with payload:', payload);
+
+      this.superService.updateCandidate(item._id, payload).subscribe(
+        (response: any) => {
+          console.log('Activation response:', response);
+          if (response?.status) {
+            this.notificationService.showSuccess(response?.message || 'Candidate activated successfully');
+            this.getRoleWiseCandidates();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to activate candidate');
+            item.active = false; // Revert the toggle if there's an error
+          }
+        },
+        (error: any) => {
+          console.error('Error activating candidate:', error);
+          this.notificationService.showError(error?.error?.message || 'Error activating candidate');
+          // Revert the toggle if there's an error
+          item.active = false;
+        }
+      );
+    }
+  }
+
+  openCommentModal(item: any) {
+    console.log('Opening comment modal for candidate:', item);
+
+    // Create and initialize the modal component
+    const modalRef = this.modalService.open(SuperadminCommentModalComponent, { centered: true });
+    modalRef.componentInstance.supplier = item;
+    modalRef.componentInstance.itemType = 'candidate';
+    modalRef.componentInstance.sourceComponent = 'resources-view';
+
+    // Handle the result when modal is closed
+    modalRef.result.then(
+      (result) => {
+        console.log('Modal closed with result:', result);
+        // Refresh the data after successful comment submission
+        if (result) {
+          this.getRoleWiseCandidates();
+        }
+      },
+      (reason) => {
+        // If dismissed, revert the toggle switch state
+        console.log('Modal dismissed:', reason);
+        item.active = true; // Revert the toggle if modal was dismissed
+      }
+    );
   }
 
   getRoleWiseCandidates() {

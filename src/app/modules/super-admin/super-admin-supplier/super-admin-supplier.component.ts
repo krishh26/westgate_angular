@@ -62,22 +62,34 @@ export class SuperAdminSupplierComponent {
   }
 
   onToggleSwitch(item: any) {
-    if (!item.active) {
+    console.log('Toggle switch clicked, new state:', item.active);
+
+    // When switching to inactive (false), open the comment modal
+    if (item.active === false) {
       this.openCommentModal(item);
     } else {
+      // When switching to active (true), update directly
       const payload = {
-        active: true // Set the active field to true when the switch is turned on
-      }
+        active: true
+      };
+
+      console.log('Activating supplier with payload:', payload);
+
       this.authservice.updateUser(item._id, payload).subscribe(
         (response: any) => {
+          console.log('Activation response:', response);
           if (response?.status) {
-            this.notificationService.showSuccess(response?.message);
+            this.notificationService.showSuccess(response?.message || 'Supplier activated successfully');
             this.getManageUserList();
-            //   this.activeModal.close();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to activate supplier');
+            item.active = false; // Revert the toggle if there's an error
           }
         },
-        (error) => {
-          this.notificationService.showError(error?.error?.message || 'Error');
+        (error: any) => {
+          console.error('Error activating supplier:', error);
+          this.notificationService.showError(error?.error?.message || 'Error activating supplier');
+          item.active = false; // Revert the toggle if there's an error
         }
       );
     }
@@ -192,13 +204,23 @@ export class SuperAdminSupplierComponent {
 
 
   openCommentModal(item: any) {
+    console.log('Opening comment modal for supplier:', item);
+
     const modalRef = this.modalService.open(SuperadminCommentModalComponent, { centered: true });
     modalRef.componentInstance.supplier = item;
-    modalRef.result.then((comment) => {
-      console.log('Comment received:', comment);
-    }).catch((err) => {
-      console.log('Modal dismissed');
-    });
+    modalRef.componentInstance.itemType = 'supplier';
+    modalRef.componentInstance.sourceComponent = 'super-admin-supplier';
+
+    modalRef.result.then(
+      (result) => {
+        console.log('Modal closed with result:', result);
+        this.getManageUserList();
+      },
+      (reason) => {
+        console.log('Modal dismissed:', reason);
+        item.active = true; // Revert the toggle if modal was dismissed
+      }
+    );
   }
 
 }

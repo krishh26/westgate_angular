@@ -465,11 +465,8 @@ export class SuperadminService {
     );
   }
 
-  updateCandidate(candidateId: string, candidateData: any): Observable<any> {
-    return this.httpClient.patch<any>(
-      `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_UPDATE}/${candidateId}`,
-      candidateData
-    );
+  updateCandidate(candidateId: string, payload: any): Observable<any> {
+    return this.httpClient.patch(`${this.baseUrl}/candidate/update/${candidateId}`, payload);
   }
 
   updateCommentPin(taskId: string, commentId: string, payload: any) {
