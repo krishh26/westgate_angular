@@ -1,3 +1,4 @@
+import { TodoTaskViewDetailsComponent } from './todo-task-view-details/todo-task-view-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BOSUserRoutingModule } from './bos-user-routing.module';
@@ -48,7 +49,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     OngoingTodoTaskComponent,
     MyDayTodoTaskComponent,
     CompletedTodoTaskComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    TodoTaskViewDetailsComponent
   ],
   imports: [
     CommonModule,
