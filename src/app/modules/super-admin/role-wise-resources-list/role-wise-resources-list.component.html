@@ -80,10 +80,10 @@
               <th>Role Name</th>
               <th>Sub Role Name</th>
               <th>Created Date</th>
-              <th>Total Supplier</th>
+              <!-- <th>Total Supplier</th>
               <th>Active Supplier</th>
               <th>Total Candidate</th>
-              <th>Active Candidate</th>
+              <th>Active Candidate</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -109,10 +109,10 @@
                 </div>
               </td>
               <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td>{{role?.totalSuppliersCount}}</td>
+              <!-- <td>{{role?.totalSuppliersCount}}</td>
               <td>{{role?.activeSuppliersCount}}</td>
               <td>{{role?.totalCandidatesCount}}</td>
-              <td>{{role?.activeCandidatesCount}}</td>
+              <td>{{role?.activeCandidatesCount}}</td> -->
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View</button>
               </td>
