@@ -12,6 +12,7 @@ import { PmAdminChangePasswordComponent } from './pm-admin-change-password/pm-ad
 import { DashboardProcessManagerComponent } from './dashboard-process-manager/dashboard-process-manager.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
+import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
 
 
 
@@ -64,6 +65,10 @@ const routes: Routes = [
       {
         path: "type-wise-project-list",
         component: TypeWiseProjectDetailsComponent
+      },
+      {
+        path: "todo-task-view-details/:id",
+        component: TodoTaskViewDetailsPageComponent
       },
     ]
   },

@@ -23,6 +23,7 @@ import { DashboardProcessManagerComponent } from './dashboard-process-manager/da
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -51,7 +52,8 @@ import { NgxEditorModule } from 'ngx-editor';
     PmAdminChangePasswordComponent,
     DashboardProcessManagerComponent,
     DatePickerComponent,
-    TypeWiseProjectDetailsComponent
+    TypeWiseProjectDetailsComponent,
+    TodoTaskViewDetailsPageComponent
   ],
    providers: [NgbActiveModal],
   exports: [ToDoTasksProcessManagerComponent],
