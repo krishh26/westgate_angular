@@ -18,17 +18,19 @@ export class AdminAddCaseStudyComponent {
 
   addEditProjectForm = {
     name: new FormControl("", Validators.required),
-    category: new FormControl("", Validators.required),
-    industry: new FormControl("", Validators.required),
-    type: new FormControl("", Validators.required),
-    date: new FormControl("", Validators.required),
-    resourcesUsed: new FormControl("", Validators.required),
     clientName: new FormControl("", Validators.required),
-    contractValue: new FormControl("", Validators.required),
+    type: new FormControl("", Validators.required),
+    industry: new FormControl("", Validators.required),
     description: new FormControl("", Validators.required),
+    problem: new FormControl("", Validators.required),
+    solutionProvided: new FormControl("", Validators.required),
     technologies: new FormControl("", Validators.required),
-    maintenance: new FormControl("", Validators.required),
-    contractDuration: new FormControl("", Validators.required),
+    resourcesUsed: new FormControl("", Validators.required),
+    contractValue: new FormControl("", Validators.required),
+    date: new FormControl("", Validators.required),
+    duration: new FormControl("", Validators.required),
+    resultAchieved: new FormControl("", Validators.required),
+    lessonsLearned: new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
@@ -156,17 +158,14 @@ export class AdminAddCaseStudyComponent {
     }
 
     this.showLoader = true;
-    const formData = new FormData();
-    for (const key in this.productForm.value) {
-      if (this.productForm.value.hasOwnProperty(key)) {
-        formData.append(key, this.productForm.value[key]);
-      }
-    }
 
-    // Manually pass the supplierID
-    formData.append('userId', this.supplierID);
+    // Create JSON payload instead of FormData
+    const payload = {
+      ...this.productForm.value,
+      userId: this.supplierID
+    };
 
-    this.supplierService.addCaseStudy(formData).subscribe(
+    this.supplierService.addCaseStudy(payload).subscribe(
       (response) => {
         if (response?.status === true) {
           this.showLoader = false;
