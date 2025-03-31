@@ -27,6 +27,8 @@ export class SuperAdminSupplierComponent {
   startDate: string = '';
   endDate: string = '';
   search: string = '';
+  activeSuppliers: number = 0;
+  inactiveSuppliers: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -70,6 +72,7 @@ export class SuperAdminSupplierComponent {
         (response: any) => {
           if (response?.status) {
             this.notificationService.showSuccess(response?.message);
+            this.getManageUserList();
             //   this.activeModal.close();
           }
         },
@@ -131,7 +134,7 @@ export class SuperAdminSupplierComponent {
       payload.endDate = this.endDate;
     }
     if (this.search) {
-      payload.search = this.search;
+      payload.searchText = this.search;
     }
 
     this.superService.getSUpplierList(payload).subscribe(
@@ -141,6 +144,15 @@ export class SuperAdminSupplierComponent {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
           this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          // Get active and inactive suppliers count from response
+          if (response?.data?.count) {
+            this.activeSuppliers = response?.data?.count?.active || 0;
+            this.inactiveSuppliers = (response?.data?.count?.total || 0);
+          } else {
+            // Fallback to calculating from the current page data
+            this.calculateSupplierCounts();
+          }
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -151,6 +163,14 @@ export class SuperAdminSupplierComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  // Helper method to calculate supplier counts
+  calculateSupplierCounts() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      this.activeSuppliers = this.supplierUserList.filter((supplier: any) => supplier.active).length;
+      this.inactiveSuppliers = this.supplierUserList.length - this.activeSuppliers;
+    }
   }
 
   applyDateFilter() {
