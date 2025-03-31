@@ -51,6 +51,7 @@ export class ProcessManagerTrackerComponent {
     'Go-NoGoStage1': 'Go-NoGoStage1',
     SupplierConfirmation: 'SupplierConfirmation',
     'Go-NoGoStage2': 'Go-NoGoStage2',
+    "Not Releted": 'Not Releted'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -82,7 +83,7 @@ export class ProcessManagerTrackerComponent {
     private router: Router,
     private projectService: ProjectService,
     private modalService: NgbModal
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -193,6 +194,7 @@ export class ProcessManagerTrackerComponent {
   getDataByStatus() {
     this.showLoader = true;
 
+    // Format the start and end dates before using them in the payload
     const startDate = this.trackerStartDate.value
       ? this.formatDate(this.trackerStartDate.value)
       : '';
@@ -208,10 +210,10 @@ export class ProcessManagerTrackerComponent {
       categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
     };
 
+    // Call the service to fetch data
     this.supplierService.getDataBYStatus(payload).subscribe(
       (response) => {
         this.showLoader = false;
-
         if (response?.status) {
           const {
             FeasibilityStatusCount,
@@ -236,17 +238,18 @@ export class ProcessManagerTrackerComponent {
             value: BidStatusValue[status] || 0,
           }));
         } else {
-          console.error('Failed to fetch data:', response?.message);
+          this.notificationService.showError(response?.message);
         }
       },
       (error) => {
         this.showLoader = false;
-        console.error('Error fetching data:', error);
+        this.notificationService.showError(error?.message);
       }
     );
 
     this.getProjectList();
   }
+
 
   private formatDate(date: any): string {
     if (!date) return '';
@@ -308,6 +311,7 @@ export class ProcessManagerTrackerComponent {
       queryParams: { id: projectId },
     });
   }
+
 
   paginate(page: number) {
     this.page = page;
@@ -419,4 +423,11 @@ export class ProcessManagerTrackerComponent {
     this.viewComments = data;
   }
 
+  // Method to check if there are any pinned comments
+  hasPinnedComments(): boolean {
+    if (!this.viewComments || this.viewComments.length === 0) {
+      return false;
+    }
+    return this.viewComments.some((comment: any) => comment?.pinnedAt);
+  }
 }
