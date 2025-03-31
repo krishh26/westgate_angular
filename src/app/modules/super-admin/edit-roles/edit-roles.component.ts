@@ -77,7 +77,7 @@ export class EditRolesComponent implements OnInit {
       this.isLoading = true;
       const formData = {
         name: this.roleForm.get('name')?.value,
-        otherRoles: this.otherRoles // Make sure this is included
+        otherRole: this.otherRoles // Make sure this is included
       };
 
       console.log('Submitting form data:', formData); // For debugging
