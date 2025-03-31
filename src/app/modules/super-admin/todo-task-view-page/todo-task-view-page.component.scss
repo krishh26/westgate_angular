@@ -1,5 +1,5 @@
 .card {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: none;
 
@@ -10,8 +10,22 @@
   }
 }
 
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
 .comments-section {
   margin-top: 20px;
+
+  /* When a comment is both pinned and from admin */
+  .pinned-comment.admin-comment {
+    background-color: #f1f5ff !important;
+    border: 1px solid red !important;
+    color: red !important;
+  }
 
   .comment-item {
     border-radius: 4px;
@@ -100,7 +114,8 @@
   }
 }
 
-.pin-btn, .delete-btn {
+.pin-btn,
+.delete-btn {
   background: transparent;
   border: none;
   color: #6c757d;
