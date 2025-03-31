@@ -38,6 +38,7 @@ import { ProjectManagerFailedProjectComponent } from './project-manager-failed-p
 import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
 import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
 import { AddEditProjectComponent } from './add-edit-project/add-edit-project.component';
+import { NgxEditorModule } from 'ngx-editor';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { AddEditProjectComponent } from './add-edit-project/add-edit-project.com
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
     BOSUserModule,
+    NgxEditorModule
   ],
   declarations: [
     ProjectManagerComponent,
