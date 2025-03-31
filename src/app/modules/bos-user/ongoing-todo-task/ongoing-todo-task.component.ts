@@ -91,10 +91,11 @@ export class OngoingTodoTaskComponent {
   }
 
   ngOnInit(): void {
-    this.editor = new Editor();
+
     this.getTask();
     // this.getUserAllList();
     this.getProjectList();
+    this.editor = new Editor();
   }
 
   ngOnDestroy(): void {
