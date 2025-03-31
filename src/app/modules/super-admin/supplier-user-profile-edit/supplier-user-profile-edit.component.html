@@ -12,215 +12,177 @@
     <br />
 
     <div class="container-fluid">
-      <form (ngSubmit)="submitForm()">
+      <form (ngSubmit)="submitForm()" autocomplete="off" novalidate>
         <div class="row">
-          <div class="col-lg-6 col-xl-6 col-12">
-            <!-- Company Name -->
-            <div class="row mb-3">
-              <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name" />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="website" class="col-sm-4 col-form-label">Company Website</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.website" name="website" type="text" class="form-control" placeholder="Enter company website">
-              </div>
-            </div>
-
-            <!-- Year of Establishment -->
-            <div class="row mb-3">
-              <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year of Establishment</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.yearOfEstablishment" name="yearOfEstablishment" type="text" class="form-control" placeholder="Enter Year of Establishment" (keypress)="NumberOnly($event)" />
-              </div>
-            </div>
-
-            <!-- Add these fields after the Year of Establishment field -->
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Employee Count</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter Employee count" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.developerOrEngineerTeams" name="developerOrEngineerTeams" type="text" class="form-control" placeholder="Enter developer/engineer teams">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Other Team Members Count</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.otheremployeeCount" name="otheremployeeCount" type="text" class="form-control" placeholder="Enter Other employee count" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Company Directors/Owners</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.companyDirectors_Owners" name="companyDirectors_Owners" type="text" class="form-control" placeholder="Enter company directors/owners">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Certifications</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.certifications" name="certifications" type="text" class="form-control" placeholder="Enter certifications">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="VATOrGSTNumber" class="col-sm-4 col-form-label">VAT or GST Number</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.VATOrGSTNumber" name="VATOrGSTNumber" type="text" class="form-control" placeholder="Enter VAT or GST number">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.companyAddress" name="companyAddress" type="text" class="form-control" placeholder="Enter company address">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="number" class="col-sm-4 col-form-label">Phone Number</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.number" name="number" type="text" class="form-control" placeholder="Enter phone number" maxlength="10" minlength="10" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="email" class="col-sm-4 col-form-label">Email Address</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.email" name="email" type="text" class="form-control" placeholder="Enter email address">
-              </div>
-            </div>
-
-            <!-- Added new fields -->
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Registration Number</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.registerNumber" name="registerNumber" type="text" class="form-control" placeholder="Enter Registration Number">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Type of Company</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.typeOfCompany" name="typeOfCompany" type="text" class="form-control" placeholder="Enter Company Type">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Industry Sector</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.industry_Sector" name="industry_Sector" type="text" class="form-control" placeholder="Enter Industry Sector">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Data Privacy Policies</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.dataPrivacyPolicies" name="dataPrivacyPolicies" type="text" class="form-control" placeholder="Enter Data Privacy Policies">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Security Certifications</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.securityCertifications" name="securityCertifications" type="text" class="form-control" placeholder="Enter Security Certifications">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Customer Support Contact</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.customerSupportContact" name="customerSupportContact" type="text" class="form-control" placeholder="Enter Customer Support Contact">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Compliance Certifications</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.complianceCertifications" name="complianceCertifications" type="text" class="form-control" placeholder="Enter Compliance Certifications">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Products/Services Offered</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.products_ServicesOffered" name="products_ServicesOffered" type="text" class="form-control" placeholder="Enter Products/Services">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Technology Stack</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.technologyStack" name="technologyStack" type="text" class="form-control" placeholder="Enter Technology Stack">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Licensing Details</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.licensingDetails" name="licensingDetails" type="text" class="form-control" placeholder="Enter Licensing Details">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">IP/Patents</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.IP_Patents" name="IP_Patents" type="text" class="form-control" placeholder="Enter IP/Patents">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Cybersecurity Practices</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.cybersecurityPractices" name="cybersecurityPractices" type="text" class="form-control" placeholder="Enter Cybersecurity Practices">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">POC Details</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="supplierDetails.poc_details" name="poc_details" type="text" class="form-control" placeholder="Enter POC Details">
-              </div>
-            </div>
-
-            <!-- Expertise Section -->
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Expertise</label>
-              <div class="col-sm-8">
-                <div class="form-control p-2">
-                  <!-- Display expertise items -->
-                  <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-2">
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-primary me-2">
-                        {{ expertise.name }}
-                      </span>
-                      <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                    </div>
+          <div class="col-12">
+            <div class="row">
+              <!-- Company Name / Website -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.companyName" name="companyName" type="text" class="form-control"
+                      placeholder="Enter Company Name" />
                   </div>
+                </div>
+              </div>
 
-                  <!-- Input field for adding expertise -->
-                  <div class="mt-2">
-                    <div class="row g-2">
-                      <div class="col-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="currentExpertise"
-                          name="expertiseName"
-                          placeholder="Enter expertise name and press Enter"
-                          (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
-                        >
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="website" class="col-sm-4 col-form-label">Company Website</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.website" name="website" type="text" class="form-control"
+                      placeholder="Enter company website">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Year of Establishment / VAT or GST Number -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year of Establishment</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.yearOfEstablishment" name="yearOfEstablishment" type="text"
+                      class="form-control" placeholder="Enter Year of Establishment" (keypress)="NumberOnly($event)" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="VATOrGSTNumber" class="col-sm-4 col-form-label">VAT or GST Number</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.VATOrGSTNumber" name="VATOrGSTNumber" type="text"
+                      class="form-control" placeholder="Enter VAT or GST number">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company Address / Employee Count -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.companyAddress" name="companyAddress" type="text"
+                      class="form-control" placeholder="Enter company address">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Employee Count</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text"
+                      class="form-control" placeholder="Enter Employee count" (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Developer Teams / Other Team Members -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.developerOrEngineerTeams" name="developerOrEngineerTeams"
+                      type="text" class="form-control" placeholder="Enter developer/engineer teams">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Other Team Members Count</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.otheremployeeCount" name="otheremployeeCount" type="text"
+                      class="form-control" placeholder="Enter Other employee count" (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company Directors / Phone Number -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Company Directors/Owners</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.companyDirectors_Owners" name="companyDirectors_Owners"
+                      type="text" class="form-control" placeholder="Enter company directors/owners">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="number" class="col-sm-4 col-form-label">Phone Number</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.number" name="number" type="text" class="form-control"
+                      placeholder="Enter phone number" maxlength="10" minlength="10" (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email / POC Details -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="email" class="col-sm-4 col-form-label">Email Address</label>
+                  <div class="col-sm-8">
+                    <!-- Hidden fields to prevent autofill -->
+                    <input type="text" style="display:none;">
+                    <input type="password" style="display:none;">
+                    <!-- Actual email field -->
+                    <input [(ngModel)]="supplierDetails.email" name="email_{{randomString}}" type="text"
+                      class="form-control" placeholder="Enter email address" autocomplete="nope">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">POC Details</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.poc_details" name="poc_details" type="text" class="form-control"
+                      placeholder="Enter POC Details">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Certifications / Expertise -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Certifications</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.certifications" name="certifications" type="text"
+                      class="form-control" placeholder="Enter certifications">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Expertise Section -->
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label">Expertise</label>
+                  <div class="col-sm-8">
+                    <div class="form-control p-2">
+                      <!-- Display expertise items -->
+                      <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-2">
+                        <div class="d-flex align-items-center">
+                          <span class="badge bg-primary me-2">
+                            {{ expertise.name }}
+                          </span>
+                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                        </div>
+                      </div>
+
+                      <!-- Input field for adding expertise -->
+                      <div class="mt-2">
+                        <div class="row g-2">
+                          <div class="col-12">
+                            <input type="text" class="form-control" [(ngModel)]="currentExpertise"
+                              name="expertiseName_{{randomString}}" placeholder="Enter expertise name and press Enter"
+                              (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
+                              autocomplete="nope">
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -233,8 +195,9 @@
         <!-- Submit Button -->
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button type="button" routerLink="/super-admin/supplier-user-profile" class="btn btn-primary">Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary">Edit Supplier</button>
+            <button type="button" routerLink="/super-admin/supplier-user-profile"
+              class="btn btn-primary">Back</button>&nbsp;
+            <button type="submit" class="btn btn-primary">Update Supplier</button>
           </div>
         </div>
       </form>

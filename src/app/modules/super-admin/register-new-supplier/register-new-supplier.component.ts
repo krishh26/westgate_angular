@@ -16,11 +16,15 @@ export class RegisterNewSupplierComponent implements OnInit {
   companyForm: any = {};
   showLoader: boolean = false;
   currentExpertise: string = '';
+  randomString: string = '';
 
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
-  ) { }
+  ) {
+    // Generate a random string to prevent form autofill
+    this.randomString = Math.random().toString(36).substring(2, 15);
+  }
 
   ngOnInit(): void {
     this.companyForm = {

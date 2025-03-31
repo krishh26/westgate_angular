@@ -40,12 +40,16 @@ export class SupplierUserProfileEditComponent {
 
   showLoader: boolean = false;
   currentExpertise: string = '';
+  randomString: string = '';
 
   constructor(
     private notificationService: NotificationService,
     private router: Router,
     private supplierService: SupplierAdminService
   ) {
+    // Generate a random string to prevent form autofill
+    this.randomString = Math.random().toString(36).substring(2, 15);
+
     const navigation = this.router.getCurrentNavigation();
     const data = navigation?.extras.state;
     if (data) {

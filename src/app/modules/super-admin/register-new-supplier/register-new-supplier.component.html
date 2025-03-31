@@ -8,135 +8,174 @@
           </div><br>
         </div>
       </div>
-      <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm">
+      <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm" autocomplete="off" novalidate>
         <div class="row">
-          <div class="col-lg-6 col-xl-6 col-12">
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Company Name</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.name" name="name" class="form-control" placeholder="Enter company name">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Company Website</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.website" name="website" type="text" class="form-control" placeholder="Enter company website">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Year of Establishment</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.yearOfEstablishment" name="yearOfEstablishment" type="text" class="form-control" placeholder="Enter year of establishment" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">VAT or GST Number</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.VATOrGSTNumber" name="VATOrGSTNumber" type="text" class="form-control" placeholder="Enter VAT or GST number">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Company Address</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.companyAddress" name="companyAddress" type="text" class="form-control" placeholder="Enter company address">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Employee Count</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter Employee count" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.developerOrEngineerTeams" name="developerOrEngineerTeams" type="text" class="form-control" placeholder="Enter developer/engineer">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Other Team Members count</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.otheremployeeCount" name="otheremployeeCount" type="text" class="form-control" placeholder="Enter Other employee count" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Company Directors/Owners</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.companyDirectors_Owners" name="companyDirectors_Owners" type="text" class="form-control" placeholder="Enter company directors">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Phone Number</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.number" name="number" type="text" class="form-control" placeholder="Enter phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Email Address</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.email" name="email" type="text" class="form-control" placeholder="Enter email address">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">POC details</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.poc_details" name="pocdetails" type="text" class="form-control" placeholder="Enter details">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Certifications</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.certifications" name="certifications" type="text" class="form-control" placeholder="Enter certifications">
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Expertise</label>
-              <div class="col-sm-8">
-                <div class="form-control p-2">
-                  <!-- Display expertise items -->
-                  <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-2">
-                    <div class="d-flex align-items-center">
-                      <span class="badge bg-primary me-2">
-                        {{ expertise.name }}
-                      </span>
-                      <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                    </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.name" name="name" class="form-control" placeholder="Enter company name" id="companyName">
                   </div>
+                </div>
+              </div>
 
-                  <!-- Input field for adding expertise -->
-                  <div class="mt-2">
-                    <div class="row g-2">
-                      <div class="col-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="currentExpertise"
-                          name="expertiseName"
-                          placeholder="Enter expertise name and press Enter"
-                          (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
-                        >
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="companyWebsite" class="col-sm-4 col-form-label">Company Website</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.website" name="website" type="text" class="form-control" placeholder="Enter company website" id="companyWebsite">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="yearEstablishment" class="col-sm-4 col-form-label">Year of Establishment</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.yearOfEstablishment" name="yearOfEstablishment" type="text" class="form-control" placeholder="Enter year of establishment" (keypress)="NumberOnly($event)" id="yearEstablishment">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="vatGst" class="col-sm-4 col-form-label">VAT or GST Number</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.VATOrGSTNumber" name="VATOrGSTNumber" type="text" class="form-control" placeholder="Enter VAT or GST number" id="vatGst">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.companyAddress" name="companyAddress" type="text" class="form-control" placeholder="Enter company address" id="companyAddress">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="employeeCount" class="col-sm-4 col-form-label">Employee Count</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter Employee count" (keypress)="NumberOnly($event)" id="employeeCount">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="developerTeams" class="col-sm-4 col-form-label">Developer/Engineer Teams</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.developerOrEngineerTeams" name="developerOrEngineerTeams" type="text" class="form-control" placeholder="Enter developer/engineer" id="developerTeams">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="otherTeamCount" class="col-sm-4 col-form-label">Other Team Members count</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.otheremployeeCount" name="otheremployeeCount" type="text" class="form-control" placeholder="Enter Other employee count" (keypress)="NumberOnly($event)" id="otherTeamCount">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="directors" class="col-sm-4 col-form-label">Company Directors/Owners</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.companyDirectors_Owners" name="companyDirectors_Owners" type="text" class="form-control" placeholder="Enter company directors" id="directors">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.number" name="number" type="text" class="form-control" placeholder="Enter phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="phoneNumber">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="email" class="col-sm-4 col-form-label">Email Address</label>
+                  <div class="col-sm-8">
+                    <!-- Hidden fields to prevent autofill -->
+                    <input type="text" style="display:none;">
+                    <input type="password" style="display:none;">
+                    <!-- Actual email field -->
+                    <input [(ngModel)]="companyForm.email" name="email_{{randomString}}" type="text" class="form-control" placeholder="Enter email address" id="email" autocomplete="nope">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="pocDetails" class="col-sm-4 col-form-label">POC details</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.poc_details" name="pocdetails" type="text" class="form-control" placeholder="Enter details" id="pocDetails">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="certifications" class="col-sm-4 col-form-label">Certifications</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.certifications" name="certifications" type="text" class="form-control" placeholder="Enter certifications" id="certifications">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
+                  <div class="col-sm-8">
+                    <div class="form-control p-2">
+                      <!-- Display expertise items -->
+                      <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-2">
+                        <div class="d-flex align-items-center">
+                          <span class="badge bg-primary me-2">
+                            {{ expertise.name }}
+                          </span>
+                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                        </div>
+                      </div>
+
+                      <!-- Input field for adding expertise -->
+                      <div class="mt-2">
+                        <div class="row g-2">
+                          <div class="col-12">
+                            <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="currentExpertise"
+                              name="expertiseName"
+                              placeholder="Enter expertise name and press Enter"
+                              (keydown.enter)="$event.preventDefault(); $event.stopPropagation(); addExpertise(); currentExpertise=''"
+                              id="expertise"
+                            >
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Password</label>
-              <div class="col-sm-8">
-                <input [(ngModel)]="companyForm.password" name="password" type="password" class="form-control" placeholder="Enter password">
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="password" class="col-sm-4 col-form-label">Password</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="companyForm.password" name="password_{{randomString}}" type="password" class="form-control" placeholder="Enter password" id="password" autocomplete="new-password">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
