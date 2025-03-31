@@ -564,5 +564,64 @@ export class OngoingTodoTaskComponent {
     return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 
+    togglePinComment(comment: any, task: any) {
+    if (!comment?.commentId || !task?._id) {
+      this.notificationService.showError('Missing required data for pinning comment');
+      return;
+    }
+
+    const payload = {
+      pin: !comment.pinnedAt
+    };
+
+    this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess(comment.pinnedAt ? 'Comment unpinned successfully' : 'Comment pinned successfully');
+          // Update the comment's pinned status
+          comment.pinnedAt = comment.pinnedAt ? null : new Date().toISOString();
+
+          // Store current scroll position
+          const currentScrollPosition = window.pageYOffset;
+
+          // Refresh the task list
+          this.showLoader = true;
+          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
+            .subscribe(
+              (response) => {
+                if (response?.status === true) {
+                  const today = new Date().toISOString().split("T")[0];
+                  this.taskList = response?.data?.data.map((task: any) => {
+                    const todayComments = task?.comments?.filter((comment: any) =>
+                      comment.date.split("T")[0] === today
+                    );
+                    return {
+                      ...task,
+                      todayComments: todayComments?.length ? todayComments : null,
+                    };
+                  });
+                  // Restore scroll position after data is loaded
+                  window.scrollTo(0, currentScrollPosition);
+                } else {
+                  this.notificationService.showError(response?.message);
+                }
+                window.location.reload();
+                this.showLoader = false;
+              },
+              (error) => {
+                this.notificationService.showError(error?.message);
+                this.showLoader = false;
+              }
+            );
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update comment pin status');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to update comment pin status');
+      }
+    );
+  }
+
 
 }

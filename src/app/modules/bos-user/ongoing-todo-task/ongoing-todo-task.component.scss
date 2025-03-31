@@ -236,6 +236,19 @@ textarea {
   color: red !important;
 }
 
+/* Style for pinned comments */
+.pinned-comment {
+  background-color: #f1f5ff !important;
+  border-radius: 5px;
+}
+
+/* When a comment is both pinned and from admin */
+.pinned-comment.admin-comment {
+  background-color: #f1f5ff !important;
+  border: 1px solid red !important;
+  color: red !important;
+}
+
 /* Apply red color to comment text, delete button, and date when Admin */
 .admin-comment .comment-text,
 .admin-comment .comment-date {
@@ -265,6 +278,23 @@ textarea {
   border-left: 1px solid #D9D9D9;
   border-right: 1px solid #D9D9D9;
 }
+
+
+.pin-btn, .delete-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #212529;
+  }
+}
+
+.pin-btn:hover {
+  color: #0d6efd;
+}
+
 
 @media (min-width: 320px) and (max-width: 767px) {
   .border-left-right {

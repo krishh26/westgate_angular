@@ -216,9 +216,15 @@ export class SuperadminService {
     );
   }
 
-  updateComment(payload: any, id: string, taskID: string): Observable<any> {
-    return this.httpClient.patch<any>(
-      this.baseUrl + SuperAdminEndPoint.UPDATE_COMMENT + '/' + taskID,
+  updateComment(payload: any, taskId?: string, userId?: string): Observable<any> {
+    if (taskId) {
+      return this.httpClient.patch<any>(
+        this.baseUrl + SuperAdminEndPoint.UPDATE_COMMENT + '/' + taskId,
+        payload
+      );
+    }
+    return this.httpClient.put<any>(
+      this.baseUrl + '/tasks/comments/' + payload.commentId,
       payload
     );
   }
@@ -457,6 +463,16 @@ export class SuperadminService {
 
   updateCommentPin(taskId: string, commentId: string, payload: any) {
     return this.httpClient.patch(`${this.baseUrl}/task/${taskId}/comments/${commentId}/pin`, payload);
+  }
+
+  // Toggle pin status of a comment
+  togglePinComment(payload: any, taskId: string): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/tasks/${taskId}/comments/toggle-pin`, payload);
+  }
+
+  // Delete a comment
+  deleteComment(commentId: string): Observable<any> {
+    return this.httpClient.delete(`${this.baseUrl}/tasks/comments/${commentId}`);
   }
 
 }
