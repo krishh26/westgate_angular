@@ -260,4 +260,23 @@ textarea {
   color: black !important;
 }
 
+.pin-btn {
+  color: #6c757d;
+  transition: color 0.3s ease;
 
+  &:hover {
+    color: #0d6efd;
+  }
+
+  &.pinned {
+    color: #0d6efd;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

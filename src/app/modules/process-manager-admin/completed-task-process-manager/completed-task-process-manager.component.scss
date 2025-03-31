@@ -227,6 +227,18 @@ textarea {
   /* Light Orange */
 }
 
+.comment-item textarea {
+  resize: none;
+  /* Disable resizing if unnecessary */
+  min-height: 80px;
+  /* Optional: Set a minimum height */
+}
+
+.border-left-right {
+  border-left: 1px solid #D9D9D9;
+  border-right: 1px solid #D9D9D9;
+}
+
 
 /* Make the entire comment block red for Admin */
 .admin-comment {
@@ -254,17 +266,7 @@ textarea {
   color: black !important;
 }
 
-.comment-item textarea {
-  resize: none;
-  /* Disable resizing if unnecessary */
-  min-height: 80px;
-  /* Optional: Set a minimum height */
-}
 
-.border-left-right {
-  border-left: 1px solid #D9D9D9;
-  border-right: 1px solid #D9D9D9;
-}
 
 @media (min-width: 320px) and (max-width: 767px) {
   .border-left-right {

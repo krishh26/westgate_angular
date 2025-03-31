@@ -1,23 +1,24 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { Editor, Toolbar } from 'ngx-editor';
 import { Subscription } from 'rxjs';
+import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
-import Swal from 'sweetalert2';
-import * as bootstrap from 'bootstrap';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
-import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
-import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import Swal from 'sweetalert2';
+declare var bootstrap: any;
 @Component({
   selector: 'app-to-do-tasks-process-manager',
   templateUrl: './to-do-tasks-process-manager.component.html',
   styleUrls: ['./to-do-tasks-process-manager.component.scss']
 })
-export class ToDoTasksProcessManagerComponent {
+export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
    taskTitle: string = '';
    showLoader: boolean = false;
@@ -299,6 +300,15 @@ export class ToDoTasksProcessManagerComponent {
        this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
      }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
    }
+
+     // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
+    }
+  }
 
    addTask() {
      if (this.taskDetails.trim()) {
