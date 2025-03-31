@@ -13,6 +13,7 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
 import { Editor, Toolbar } from 'ngx-editor';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-todo-task-view-details-page',
@@ -102,7 +103,8 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -149,6 +151,7 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
   loadTaskDetails(taskId: string) {
     this.showLoader = true;
+    this.spinner.show();
 
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
     this.superService.getsuperadmintasks('', '', '', '', '', false, '')
@@ -160,20 +163,21 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
             if (task) {
               this.setupTaskDetails(task);
-              this.showLoader = false;
             } else {
               this.notificationService.showError('Task not found');
               this.router.navigate([this.previousPage]);
-              this.showLoader = false;
             }
           } else {
             this.notificationService.showError(response?.message || 'Error loading task details');
-            this.showLoader = false;
           }
+          this.showLoader = false;
+          this.spinner.hide();
         },
         (error: any) => {
           this.notificationService.showError(error?.message || 'Error loading task details');
           this.showLoader = false;
+          this.spinner.hide();
+          this.router.navigate([this.previousPage]);
         }
       );
   }
@@ -246,22 +250,21 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
   getProjectList() {
     this.showLoader = true;
-    this.projectService.getProjectList(Payload.projectList).subscribe(
-      (response) => {
-        this.projectList = [];
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.projectList = response?.data?.data;
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
+    this.spinner.show();
+    this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
+      this.projectList = [];
+      if (response?.status == true) {
+        this.projectList = response?.data?.data;
+      } else {
+        this.notificationService.showError(response?.message);
       }
-    );
+      this.showLoader = false;
+      this.spinner.hide();
+    }, (error) => {
+      this.notificationService.showError(error?.message);
+      this.showLoader = false;
+      this.spinner.hide();
+    });
   }
 
   statusChange(status: string) {
@@ -507,14 +510,19 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
   // API call to update the task
   updateTask(params: any) {
+    this.showLoader = true;
+    this.spinner.show();
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
-        this.getTask();
         this.notificationService.showSuccess('Task updated Successfully');
+        // Reload task details
+        this.loadTaskDetails(this.modalTask._id);
       },
       (error) => {
         console.error('Error updating task', error);
         this.notificationService.showError('Error updating task');
+        this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -567,8 +575,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
   getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
+    this.spinner.show();
     const taskcount = true;
-    const taskPage = 'Ongoing'
+    const taskPage = 'Ongoing';
     this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
       (response) => {
         if (response?.status === true) {
@@ -576,15 +585,16 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
             (user: any) => user?.role !== 'SupplierAdmin'
           );
           this.displayedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
+        this.showLoader = false;
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -778,39 +788,40 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
   }
 
   addComment(id: string) {
-    if (this.commentForm.valid) {
-      const comment = this.commentForm.get('description')?.value;
-      if (comment?.trim().length > 0) {
-        this.showLoader = true;
-        const payload = { comment: comment.trim() };
+    const commentContent = this.commentForm.get('description')?.value;
 
-        this.superService.addComments(payload, id).subscribe(
-          (response) => {
-            this.showLoader = false;
-            if (response?.status === true) {
-              this.notificationService.showSuccess('Comment added successfully');
-              this.commentForm.reset();
-              // Reload the task details
-              this.loadTaskDetails(id);
-            } else {
-              this.notificationService.showError(
-                response?.message || 'Failed to add comment'
-              );
-            }
-          },
-          (error) => {
-            this.showLoader = false;
-            this.notificationService.showError(
-              error?.message || 'An error occurred'
-            );
-          }
-        );
-      } else {
-        this.notificationService.showError('Comment cannot be empty');
-      }
-    } else {
-      this.notificationService.showError('Please enter a comment');
+    if (!commentContent || !id) {
+      this.notificationService.showError('Please add a comment');
+      return;
     }
+
+    this.showLoader = true;
+    this.spinner.show();
+    const payload = {
+      comment: commentContent,
+      taskId: id,
+      userId: this.loginUser?.id
+    };
+
+    this.superService.addComments(payload, id).subscribe(
+      (response: any) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Comment added successfully');
+          this.commentForm.reset();
+          // Reload task details
+          this.loadTaskDetails(id);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add comment');
+          this.showLoader = false;
+          this.spinner.hide();
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred');
+        this.showLoader = false;
+        this.spinner.hide();
+      }
+    );
   }
 
   toggleUserSelection(userId: number): void {

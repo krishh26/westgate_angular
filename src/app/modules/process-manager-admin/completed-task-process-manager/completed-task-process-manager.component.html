@@ -1,4 +1,9 @@
 <div class="container pt-5">
+  <!-- Loading Spinner -->
+  <ngx-spinner *ngIf="showLoader" type="ball-clip-rotate" size="medium" color="#5cb85c">
+    <p style="color: white">Loading...</p>
+  </ngx-spinner>
+
   <div class="row">
     <div class="col-lg-2 col-xl-2 col-md-2 col-sm-3 col-12">
       <div class="sidebar-widget">

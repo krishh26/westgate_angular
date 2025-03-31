@@ -12,6 +12,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var bootstrap: any;
 
 @Component({
@@ -80,6 +81,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -151,6 +153,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
 
   searchtext() {
     this.showLoader = true;
+    this.spinner.show();
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
@@ -182,16 +185,16 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
               todayComments: todayComments?.length ? todayComments : null,
             };
           });
-
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
+        this.showLoader = false;
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -207,18 +210,20 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
 
   getProjectList() {
     this.showLoader = true;
+    this.spinner.show();
     this.projectService.getProjectList(Payload.projectList).subscribe((response) => {
       this.projectList = [];
       if (response?.status == true) {
-        this.showLoader = false;
         this.projectList = response?.data?.data;
       } else {
         this.notificationService.showError(response?.message);
-        this.showLoader = false;
       }
+      this.showLoader = false;
+      this.spinner.hide();
     }, (error) => {
       this.notificationService.showError(error?.message);
       this.showLoader = false;
+      this.spinner.hide();
     });
   }
 
@@ -419,6 +424,8 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
 
   // API call to update the task
   updateTask(params: any) {
+    this.showLoader = true;
+    this.spinner.show();
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
         this.getTask();
@@ -427,6 +434,8 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
       (error) => {
         console.error('Error updating task', error);
         this.notificationService.showError('Error updating task');
+        this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -444,6 +453,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
   }
   getTask() {
     this.showLoader = true;
+    this.spinner.show();
     this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed').subscribe(
       (response) => {
         if (response?.status === true) {
@@ -456,21 +466,23 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
               todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
             };
           });
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
+        this.showLoader = false;
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
 
   getUserAllList() {
     this.showLoader = true;
+    this.spinner.show();
     const taskcount = true;
     const taskPage = 'Completed'
     this.projectManagerService.getUserallList(taskcount, taskPage).subscribe(
@@ -480,15 +492,16 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
             (user: any) => user?.role !== 'SupplierAdmin'
           );
           this.displayedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
+        this.showLoader = false;
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }

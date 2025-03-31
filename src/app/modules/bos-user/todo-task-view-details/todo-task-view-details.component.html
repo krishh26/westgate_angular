@@ -1,4 +1,9 @@
 <div class="container-fluid py-4">
+  <!-- Loading Spinner -->
+  <ngx-spinner *ngIf="showLoader" type="ball-clip-rotate" size="medium" color="#5cb85c">
+    <p style="color: white">Loading...</p>
+  </ngx-spinner>
+
   <div class="row">
     <div class="col-12">
       <div class="card shadow">
