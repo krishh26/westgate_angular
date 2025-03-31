@@ -64,6 +64,35 @@
                   <label class="form-label">Available From</label>
                   <input type="text" class="form-control" [value]="resourceList[0]?.details?.availableFrom | date: 'dd/MM/yyyy'" readonly>
                 </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Status</label>
+                  <div class="d-flex align-items-center">
+                    <span class="badge" [ngClass]="resourceList[0]?.details?.active ? 'bg-success' : 'bg-danger'">
+                      {{ resourceList[0]?.details?.active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inactive Information (shown only if resource is inactive) -->
+              <div class="row mb-4" *ngIf="resourceList[0]?.details?.active === false">
+                <div class="col-12">
+                  <h5 class="text-danger mb-3">Inactive Information</h5>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Reason for Inactivation</label>
+                  <div class="p-3 border rounded inactive-info-container">
+                    <p class="mb-1">{{ resourceList[0]?.details?.inactiveComment || 'No comment provided' }}</p>
+                    <small class="text-muted" *ngIf="resourceList[0]?.details?.inactiveDate">
+                      <i class="bi bi-clock me-1"></i>
+                      {{ resourceList[0]?.details?.inactiveDate | date: 'dd/MM/yyyy, h:mm a' }}
+                    </small>
+                    <small class="text-muted" *ngIf="!resourceList[0]?.details?.inactiveDate">
+                      <i class="bi bi-clock me-1"></i>
+                      N/A
+                    </small>
+                  </div>
+                </div>
               </div>
 
               <!-- Skills and Languages -->

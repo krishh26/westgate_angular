@@ -39,8 +39,27 @@ export class ResourcesViewDetailsComponent implements OnInit {
       if (params['resourceList']) {
         try {
           this.resourceList = JSON.parse(params['resourceList']);
+
+          // Process and enhance the resource data
+          this.resourceList.forEach((resource: any) => {
+            // Add default values for missing properties
+            if (resource.details) {
+              resource.details.active = resource.details.active !== undefined ? resource.details.active : true;
+
+              // Format dates properly if they exist
+              if (resource.details.inactiveDate) {
+                // Convert string date to Date object if needed
+                if (typeof resource.details.inactiveDate === 'string') {
+                  resource.details.inactiveDate = new Date(resource.details.inactiveDate);
+                }
+              }
+            }
+          });
+
           this.filteredResourceList = [...this.resourceList];
           this.totalRecords = this.resourceList.length;
+
+          console.log('Processed resource list:', this.resourceList);
         } catch (error) {
           console.error('Error parsing resource list:', error);
           this.resourceList = [];

@@ -175,6 +175,8 @@ export class ResourcesViewComponent implements OnInit {
   }
 
   viewCandidateDetails(candidate: any) {
+    console.log('Viewing candidate details:', candidate);
+
     this.router.navigate(['/super-admin/resources-view-details'], {
       queryParams: {
         resourceName: candidate.fullName,
@@ -192,7 +194,10 @@ export class ResourcesViewComponent implements OnInit {
             languages: candidate.languagesKnown,
             hourlyRate: candidate.hourlyRate,
             workingHours: candidate.workingHoursPerWeek,
-            availableFrom: candidate.availableFrom
+            availableFrom: candidate.availableFrom,
+            active: candidate.active,
+            inactiveComment: candidate.inactiveComment,
+            inactiveDate: candidate.inactiveDate
           }
         }])
       }
