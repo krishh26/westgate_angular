@@ -210,22 +210,22 @@
                 <!-- Buttons in one row -->
                 <div class="detail-item mb-3">
                   <div class="row g-2">
-                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                    <div class="col-12 mb-2">
                       <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
                         Add to My Day
                       </button>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                    <div class="col-12 mb-2">
                       <button class="btn btn-success w-100" (click)="onChange('completedTask', true)">
                         Completed
                       </button>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                    <div class="col-12 mb-2">
                       <button class="btn btn-secondary w-100" (click)="onChange('completedTask', false)">
                         Not Completed
                       </button>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-3">
+                    <div class="col-12">
                       <button class="btn btn-danger w-100" (click)="deleteTask(modalTask?._id)">
                         Delete
                       </button>
