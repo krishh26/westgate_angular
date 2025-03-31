@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as bootstrap from 'bootstrap';
+import { Toolbar } from 'ngx-editor';
+import { Editor } from 'ngx-editor';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -61,6 +63,20 @@ export class MyDayTodoTaskComponent {
   selectedpriority: any[] = [];
   selectedUserIds: number[] = [];
 
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  editor!: Editor;
+  commentForm!: FormGroup;
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -78,7 +94,73 @@ export class MyDayTodoTaskComponent {
     this.getTask();
     // this.getUserAllList();
     this.getProjectList();
+    this.getProjectList();
+    this.editor = new Editor();
   }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
+  }
+
+  togglePinComment(comment: any, task: any) {
+    if (!comment?.commentId || !task?._id) {
+      this.notificationService.showError('Missing required data for pinning comment');
+      return;
+    }
+
+    const payload = {
+      pin: !comment.pinnedAt
+    };
+
+    this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess(comment.pinnedAt ? 'Comment unpinned successfully' : 'Comment pinned successfully');
+          // Update the comment's pinned status
+          comment.pinnedAt = comment.pinnedAt ? null : new Date().toISOString();
+
+          // Store current scroll position
+          const currentScrollPosition = window.pageYOffset;
+
+          // Refresh the task list
+          this.showLoader = true;
+          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
+            .subscribe(
+              (response) => {
+                if (response?.status === true) {
+                  const today = new Date().toISOString().split("T")[0];
+                  this.taskList = response?.data?.data.map((task: any) => {
+                    const todayComments = task?.comments?.filter((comment: any) =>
+                      comment.date.split("T")[0] === today
+                    );
+                    return {
+                      ...task,
+                      todayComments: todayComments?.length ? todayComments : null,
+                    };
+                  });
+                  // Restore scroll position after data is loaded
+                  window.scrollTo(0, currentScrollPosition);
+                } else {
+                  this.notificationService.showError(response?.message);
+                }
+                window.location.reload();
+                this.showLoader = false;
+              },
+              (error) => {
+                this.notificationService.showError(error?.message);
+                this.showLoader = false;
+              }
+            );
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update comment pin status');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to update comment pin status');
+      }
+    );
+  }
+
 
   // Function to transform the data
   transformData = (data: any) => {

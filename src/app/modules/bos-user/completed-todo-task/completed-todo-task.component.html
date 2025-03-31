@@ -20,20 +20,23 @@
       <h2 class="accordion-header" [id]="'flush-TodoList' + i">
         <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
           data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)" [ngClass]="{
-            'bg-light-yellow': task?.pickACategory === 'low',
+           'bg-light-yellow': task?.pickACategory === 'low',
                       'bg-light-green': task?.pickACategory === 'Medium',
                       'bg-light-orange': task?.pickACategory === 'High'
-            }">
+          }">
           <div>
 
             {{ task?.task }}
             <span *ngIf="task?.pickACategory">
               ({{ task?.pickACategory }})</span>
-              <span *ngIf="task?.project">
-                (Status :
-                {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
-                task?.project?.status: task?.project?.bidManagerStatus }} )
-              </span>&nbsp;
+            <span *ngIf="task?.project">
+              (Status :
+              {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+              task?.project?.status: task?.project?.bidManagerStatus }} )
+            </span>&nbsp;
+            <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                Completed
+              </button></span>
           </div>
           <div class="text-end">
             <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
@@ -51,36 +54,34 @@
         </button>
       </h2>
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
-        <div class="accordion-body comment-container" [ngClass]="{ 'admin-comment': task?.todayComments[0]?.userDetail?.role === 'Admin' }">
+        <div class="accordion-body">
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-            <!-- <li *ngFor="let comment of task.todayComments" class="comment-item"> -->
-            <div class="row align-items-center mb-3">
-              <div class="col">
-                <div class="d-flex justify-content-between">
-                  <p class="mb-0">
-                    {{ task.todayComments[0]?.userDetail?.name }}
-                  </p>
-                  <small class="text-muted">
-                    {{ task.todayComments[0]?.date | date : "dd/MM/yyyy, h:mm a" }}
+            <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+              [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+              <div class="row align-items-center mb-3">
+                <div class="col">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0 user-name">
+                      {{ comment?.userDetail?.name }}
+                    </p>
+                    <small class="comment-date">
+                      {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    </small>
+                  </div>
+                  <small class="user-role d-block">
+                    {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
                   </small>
+
                 </div>
-                <small class="text-muted d-block">
-                  {{ task.todayComments[0]?.userDetail?.role }}
-                </small>
               </div>
-            </div>
-            <div class="d-flex justify-content-between">
-              <p>{{ task.todayComments[0]?.comment }}</p>
-            </div>
-            <!-- </li> -->
+              <div class="d-flex justify-content-between">
+                <p [innerHTML]="comment?.comment"></p>
+              </div>
+            </li>
           </ul>
           <p *ngIf="!task?.todayComments" class="text-muted">
             No comments available.
           </p>
-
-          <!-- <p *ngIf="!task?.comments?.length" class="text-muted">
-            No comments available.
-          </p> -->
         </div>
       </div>
     </div>
@@ -119,61 +120,106 @@
             <h6><strong>Bid Status</strong></h6>
             <p> {{ modalTask?.project?.bidManagerStatus}}</p>
           </div>
-          <!-- Comments Section -->
+
           <div class="comments-section">
             <h6><strong>Comment</strong></h6>
             <div class="mb-2">
-              <!-- Textarea for Adding Comment -->
-              <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment">
-                </textarea>
-              <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
-                Comment
-              </button>
+              <!-- <textarea class="form-control" placeholder="Add a comment..." [(ngModel)]="newComment">
+              </textarea> -->
 
-              <!-- Display Existing Comments -->
-              <!-- <ul class="SecondarytaskList mt-3" *ngIf="modalTask?.comments?.length > 0">
-                <li *ngFor="let comment of modalTask.comments; let i = index" class="comment-item">
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
+                </ngx-editor-menu>
+                <ngx-editor [editor]="editor" rows="5"  [(ngModel)]="newComment" [disabled]="false"
+                  [placeholder]="'Type here...'"></ngx-editor>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
+                  Comment
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="comments-section">
+            <!-- Pinned Comments Section -->
+            <div *ngIf="modalTask?.datewiseComments?.pinnedComments?.length > 0" class="mb-4">
+              <h6 class="mt-3"><i class="bi bi-pin-fill text-primary"></i> <strong>Pinned Comments</strong></h6>
+              <ul class="SecondarytaskList">
+                <li *ngFor="let comment of modalTask.datewiseComments.pinnedComments"
+                    class="comment-item p-3 pinned-comment"
+                    [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                  <div class="row align-items-center mb-2">
+                    <div class="col">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                        <small class="comment-date" *ngIf="comment?.date">
+                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                        </small>
+                      </div>
+                      <small class="user-role d-block">
+                        {{ comment?.userDetail?.role === "BOS" ? "USER" : comment?.userDetail?.role }}
+                      </small>
+                    </div>
+                  </div>
+                  <p class="comment-text" [innerHTML]="comment?.comment"></p>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                      <i class="bi bi-pin-fill text-primary"></i> Unpin
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <h6 class="mt-3"><strong>All Comments</strong></h6>
+            <div class="comments-scroll-container">
+              <ul class="SecondarytaskList mt-3">
+                <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
+                  class="comment-item p-3 no-bg">
+
+                  <h6 *ngIf="comment?.comment == 'No comments available for this date'">
+                    {{ comment?.commentDate | date : "dd/MM/yyyy" }}
+                  </h6>
+
                   <div class="row align-items-center mb-3">
                     <div class="col">
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">{{ comment?.userDetail?.name }}</p>
-                        <small class="text-muted">{{
-                          comment?.date | date : "dd/MM/yyyy, h:mm a"
-                          }}</small>
+                        <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                        <small class="comment-date" *ngIf="comment?.date">
+                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                        </small>
                       </div>
-                      <small class="text-muted d-block">{{
-                        comment?.userDetail?.role
-                        }}</small>
+                      <small class="user-role d-block">
+                        {{
+                        comment?.userDetail?.role === "BOS"
+                        ? "USER"
+                        : comment?.userDetail?.role
+                        }}
+                      </small>
                     </div>
                   </div>
-                  <p class="mb-1">{{ comment?.comment }}</p>
+
+                  <div class="d-flex flex-column mb-3">
+                    <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
+
+                      <p class="comment-text" [innerHTML]="comment?.comment"></p>
+
+                      <div *ngIf="comment?.commentId" class="d-flex gap-2">
+                        <button class="btn btn-sm pin-btn"
+                          (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                          <i class="bi"
+                            [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                 </li>
-              </ul> -->
+              </ul>
             </div>
           </div>
-          <div class="comments-section">
-            <ul class="SecondarytaskList mt-3">
-              <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index" class="comment-item p-2"  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
-                <h6 *ngIf="comment?.comment == 'No comments available for this date'"> {{ comment?.commentDate | date : "dd/MM/yyyy" }} </h6>
-                <div class="row align-items-center mb-3">
-                  <div class="col">
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
-                      <small class="comment-date">{{
-                        comment?.date | date : "dd/MM/yyyy, h:mm a"
-                        }}</small>
-                    </div>
-                    <small class="user-role d-block">
-                      {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
-                    </small>
-
-                  </div>
-                </div>
-                <p class="mb-1">{{ comment?.comment }}</p>
-              </li>
-            </ul>
-          </div>
-
         </div>
       </div>
     </div>

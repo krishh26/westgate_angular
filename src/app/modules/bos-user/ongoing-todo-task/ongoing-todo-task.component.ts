@@ -565,7 +565,7 @@ export class OngoingTodoTaskComponent {
     return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 
-    togglePinComment(comment: any, task: any) {
+  togglePinComment(comment: any, task: any) {
     if (!comment?.commentId || !task?._id) {
       this.notificationService.showError('Missing required data for pinning comment');
       return;
