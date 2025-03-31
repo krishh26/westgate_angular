@@ -421,4 +421,12 @@ export class StatusWiseTrackerComponent implements OnInit {
     console.log('this is my view comment', data);
     this.viewComments = data;
   }
+
+  // Method to check if there are any pinned comments
+  hasPinnedComments(): boolean {
+    if (!this.viewComments || this.viewComments.length === 0) {
+      return false;
+    }
+    return this.viewComments.some((comment: any) => comment?.pinnedAt);
+  }
 }

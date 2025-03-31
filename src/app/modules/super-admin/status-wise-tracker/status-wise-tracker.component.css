@@ -82,7 +82,7 @@ ul.SecondarytaskList li{
     display: block;
     margin-bottom: 15px;
     padding: 12px;
-    border: 1px solid #D9D9D9;
+    /* border: 1px solid #D9D9D9; */
 }
 .sidebar-widget{
     background-color: #F5F5F5;
@@ -103,7 +103,7 @@ ul.sidebar-nav li a{
     padding: 10px 15px;
     color: #303030;
 }
-ul.sidebar-nav li a:hover, ul.sidebar-nav li a.active {    
+ul.sidebar-nav li a:hover, ul.sidebar-nav li a.active {
     color: #FFF;
     background-color: #0d6efd;
 }
@@ -176,3 +176,87 @@ ul.todo-actionList li a{
  .action-button:hover{
     color: #0d6efd;
  }
+
+/* Add styles for comments section */
+.comments-section {
+  margin-top: 20px;
+}
+
+.comment-item {
+  border-radius: 4px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.comment-item:hover {
+  background-color: #f5f5f5;
+}
+
+.comment-item.admin-comment {
+  background-color: #f0f7ff;
+}
+
+.comment-item.admin-comment:hover {
+  background-color: #e5f1ff;
+}
+
+/* Pinned comments styling */
+.comment-item.pinned-comment {
+  background-color: #f1f5ff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: none;
+  position: relative;
+}
+
+.comment-item.pinned-comment:hover {
+  background-color: #e8f0ff;
+}
+
+.comment-item.pinned-comment .bi-pin-fill {
+  color: #6c757d;
+  font-size: 14px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* Comment items with no background, only border */
+.comment-item.no-bg {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.comment-item.no-bg:hover {
+  background-color: transparent;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.user-role {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.comment-text {
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.comment-date {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* Comments scrolling container */
+.comments-scroll-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}

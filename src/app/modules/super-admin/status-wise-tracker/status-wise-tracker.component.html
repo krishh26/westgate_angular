@@ -206,28 +206,65 @@
         <div class="modal-body d-flex">
           <div class="flex-grow-1 pe-3">
             <div class="comments-section">
-              <ul class="SecondarytaskList mt-3">
-                <li *ngFor="let comment of viewComments" class="mb-3">
-                  <div class="comment-item">
-                    <!-- Username on top -->
-                    <div class="comment-text">
-                      <b>{{ comment?.userDetail?.name }}</b>
-                    </div>
-                    <!-- Comment and Date on the next line -->
-                    <div class="d-flex justify-content-between mt-1">
-                      <div class="comment-text">
-                        {{ comment.comment }}
+              <!-- Pinned Comments Section -->
+              <div *ngIf="viewComments && viewComments.length > 0">
+                <h6 class="mt-2 mb-3" *ngIf="hasPinnedComments()"><i class="bi bi-pin-fill" style="color: #6c757d;"></i> <strong>Pinned Comments</strong></h6>
+                <ul class="SecondarytaskList" *ngIf="hasPinnedComments()">
+                  <li *ngFor="let comment of viewComments" class="mb-3" [hidden]="!comment?.pinnedAt">
+                    <div class="comment-item p-3 pinned-comment">
+                      <!-- Pin icon at top right -->
+                      <i class="bi bi-pin-fill" style="position: absolute; top: 12px; right: 12px; color: #6c757d;"></i>
+
+                      <!-- Username and role -->
+                      <div class="row align-items-center mb-2">
+                        <div class="col">
+                          <div class="d-flex justify-content-between">
+                            <p class="mb-0 user-name"><strong>{{ comment?.userDetail?.name }}</strong></p>
+                            <small class="comment-date" *ngIf="comment?.date">
+                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                            </small>
+                          </div>
+                          <small class="user-role d-block text-muted">
+                            {{ comment?.userDetail?.role === "BOS" ? "USER" : comment?.userDetail?.role }}
+                          </small>
+                        </div>
                       </div>
-                      <div class="comment-date text-muted">
-                        {{ comment.date | date : "dd/MM/yyyy, h:mm a" }}
+
+                      <!-- Comment content -->
+                      <div class="comment-text" [innerHTML]="comment?.comment"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Regular Comments Section -->
+              <h6 class="mt-3 mb-2"><strong>All Comments</strong></h6>
+              <ul class="SecondarytaskList mt-2">
+                <li *ngFor="let comment of viewComments" class="mb-3" [hidden]="comment?.pinnedAt">
+                  <div class="comment-item p-3" style="border: 1px solid #dee2e6; border-radius: 4px;">
+                    <!-- Username and role -->
+                    <div class="row align-items-center mb-2">
+                      <div class="col">
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0 user-name"><strong>{{ comment?.userDetail?.name }}</strong></p>
+                          <small class="comment-date" *ngIf="comment?.date">
+                            {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                          </small>
+                        </div>
+                        <small class="user-role d-block text-muted">
+                          {{ comment?.userDetail?.role === "BOS" ? "USER" : comment?.userDetail?.role }}
+                        </small>
                       </div>
                     </div>
+
+                    <!-- Comment content -->
+                    <div class="comment-text" [innerHTML]="comment?.comment"></div>
                   </div>
                 </li>
               </ul>
-              <ng-template #noData>
-                <div class="no-data">No Comments available</div>
-              </ng-template>
+              <div *ngIf="!viewComments || viewComments.length === 0" class="no-data">
+                No Comments available
+              </div>
             </div>
           </div>
         </div>
