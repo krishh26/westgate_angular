@@ -161,6 +161,9 @@ export class SuperadminService {
     if (params?.endDate) {
       queryParams = queryParams.set('endDate', params.endDate);
     }
+    if (params?.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
 
     return this.httpClient.get<any>(url, { params: queryParams });
   }

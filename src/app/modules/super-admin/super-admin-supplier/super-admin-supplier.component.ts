@@ -26,6 +26,7 @@ export class SuperAdminSupplierComponent {
   totalRecords: number = pagination.totalRecords;
   startDate: string = '';
   endDate: string = '';
+  search: string = '';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -108,6 +109,11 @@ export class SuperAdminSupplierComponent {
     });
   }
 
+  searchtext() {
+    this.page = 1;
+    this.getManageUserList();
+  }
+
   getManageUserList() {
     this.showLoader = true;
 
@@ -123,6 +129,9 @@ export class SuperAdminSupplierComponent {
     }
     if (this.endDate) {
       payload.endDate = this.endDate;
+    }
+    if (this.search) {
+      payload.search = this.search;
     }
 
     this.superService.getSUpplierList(payload).subscribe(

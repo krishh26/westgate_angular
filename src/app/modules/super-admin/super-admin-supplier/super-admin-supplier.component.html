@@ -34,7 +34,13 @@
             {{ showExpertiseView ? 'Hide Expertise View' : 'Show Expertise View' }}
           </button>
         </div>
-
+        <div class="d-flex align-items-center flex-grow-1">
+          <div class="form-group mb-0 flex-grow-1">
+            <span class="input-icon"><i class="bi bi-search"></i></span>
+            <input class="form-control control-search" placeholder="Search roles" type="text" [(ngModel)]="search"
+              (input)="searchtext()" />
+          </div>
+        </div>
       </div>
 
       <!-- Date Filters -->
@@ -69,6 +75,13 @@
             </tr>
           </thead>
           <tbody>
+
+            <tr>
+              <td *ngIf="!supplierUserList?.length" colspan="5">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
             <tr
               *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{item?.name}}</td>
