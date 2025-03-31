@@ -29,6 +29,7 @@ import { OngoingTodoTaskComponent } from './ongoing-todo-task/ongoing-todo-task.
 import { MyDayTodoTaskComponent } from './my-day-todo-task/my-day-todo-task.component';
 import { CompletedTodoTaskComponent } from './completed-todo-task/completed-todo-task.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { NgxEditorModule } from 'ngx-editor';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -64,6 +65,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     NgxSliderModule,
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
+    NgxEditorModule
   ],
   exports: [TodoTasksComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

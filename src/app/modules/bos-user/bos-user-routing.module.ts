@@ -12,6 +12,7 @@ import { BossUserBulkEntryComponent } from './boss-user-bulk-entry/boss-user-bul
 import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { TodoTaskViewDetailsComponent } from './todo-task-view-details/todo-task-view-details.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: "todo-task",
         component: TodoTasksComponent
+      },
+      {
+        path: "todo-task-view-details",
+        component: TodoTaskViewDetailsComponent
       },
       {
         path: "change-password",
