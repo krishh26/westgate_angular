@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as bootstrap from 'bootstrap';
+import { Toolbar } from 'ngx-editor';
+import { Editor } from 'ngx-editor';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -61,6 +63,20 @@ export class OngoingTodoTaskComponent {
   selectedtype: any[] = [];
   selectedUserIds: number[] = [];
 
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  editor!: Editor;
+  commentForm!: FormGroup;
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -75,9 +91,14 @@ export class OngoingTodoTaskComponent {
   }
 
   ngOnInit(): void {
+    this.editor = new Editor();
     this.getTask();
     // this.getUserAllList();
     this.getProjectList();
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
   }
 
   // Function to transform the data

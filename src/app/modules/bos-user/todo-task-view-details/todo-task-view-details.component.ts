@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as bootstrap from 'bootstrap';
+import { Editor, Toolbar } from 'ngx-editor';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -10,18 +11,19 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-todo-task-view-details',
   templateUrl: './todo-task-view-details.component.html',
   styleUrls: ['./todo-task-view-details.component.scss']
 })
-export class TodoTaskViewDetailsComponent {
+export class TodoTaskViewDetailsComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
-  taskList: any = [];
-  userList: any = [];
+  taskList: any[] = [];
+  userList: any[] = [];
   assignTo: any[] = [];
   modalTask: any = {};
   newComment: string = '';
@@ -50,16 +52,31 @@ export class TodoTaskViewDetailsComponent {
   isEditing = false;
   projectId: string = '';
   projectDetail: any = [];
-  projectList: any = [];
+  projectList: any[] = [];
   bidStatus: string = 'Expired';
   bidCommentData: any[] = [];
   bidManagerStatusComment: FormControl = new FormControl('');
-  selectedStatus: string | undefined;
+  selectedStatus: string = '';
   searchText: any;
   myControl = new FormControl();
   selectedpriority: any[] = [];
   selectedtype: any[] = [];
   selectedUserIds: number[] = [];
+  previousPage: string = '/bos-user/todo-task';
+
+  editor: Editor;
+  commentForm: FormGroup;
+
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
 
   constructor(
     private superService: SuperadminService,
@@ -67,24 +84,52 @@ export class TodoTaskViewDetailsComponent {
     public activeModal: NgbActiveModal,
     private localStorageService: LocalStorageService,
     private router: Router,
+    private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService,
+    private fb: FormBuilder
   ) {
     this.loginUser = this.localStorageService.getLogger();
+    this.editor = new Editor();
+    this.commentForm = this.fb.group({
+      description: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
-    this.getTask();
-    // this.getUserAllList();
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.loadTaskDetails(params['id']);
+      } else {
+        // Try to get the task from localStorage as a fallback
+        const savedTask = localStorage.getItem('selectedTask');
+        if (savedTask) {
+          this.modalTask = JSON.parse(savedTask);
+        } else {
+          this.notificationService.showError('Task not found');
+          this.goBack();
+        }
+      }
+    });
+
     this.getProjectList();
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
+  }
+
+  // Navigate back to the previous page
+  goBack() {
+    this.router.navigate([this.previousPage]);
   }
 
   // Function to transform the data
   transformData = (data: any) => {
     let commentsData: any[] = [];
     if (!data) {
-      return;
+      return [];
     }
     Object.entries(data).forEach(([commentDate, comments]) => {
       if (Array.isArray(comments)) {
@@ -105,6 +150,38 @@ export class TodoTaskViewDetailsComponent {
     return commentsData;
   };
 
+  // Method to add comment using ngx-editor
+  addCommentWithEditor(taskId: string): void {
+    const commentContent = this.commentForm.get('description')?.value;
+    if (!commentContent || !taskId) {
+      this.notificationService.showError('Please add a comment');
+      return;
+    }
+
+    this.showLoader = true;
+    const payload = {
+      comment: commentContent,
+      taskId: taskId,
+      userId: this.loginUser?.id
+    };
+
+    this.superService.addComments(payload, taskId).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Comment added successfully');
+          this.commentForm.reset();
+          this.getTask(); // Reload tasks to show the new comment
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add comment');
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'An error occurred');
+      }
+    );
+  }
 
   searchtext() {
     this.showLoader = true;
@@ -122,7 +199,7 @@ export class TodoTaskViewDetailsComponent {
         keyword // Pass it as the keyword in the API request
       )
       .subscribe(
-        (response) => {
+        (response: any) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
 
@@ -143,7 +220,7 @@ export class TodoTaskViewDetailsComponent {
             this.showLoader = false;
           }
         },
-        (error) => {
+        (error: any) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
@@ -161,11 +238,11 @@ export class TodoTaskViewDetailsComponent {
   // API call to update the task
   updateTask(params: any) {
     this.superService.updateTask(params, this.modalTask._id).subscribe(
-      (response) => {
+      (response: any) => {
         this.getTask();
         this.notificationService.showSuccess('Task updated Successfully');
       },
-      (error) => {
+      (error: any) => {
         console.error('Error updating task', error);
         this.notificationService.showError('Error updating task');
       }
@@ -175,7 +252,7 @@ export class TodoTaskViewDetailsComponent {
   getProjectList() {
     this.showLoader = true;
     this.projectService.getProjectList(Payload.projectList).subscribe(
-      (response) => {
+      (response: any) => {
         this.projectList = [];
         if (response?.status == true) {
           this.showLoader = false;
@@ -185,7 +262,7 @@ export class TodoTaskViewDetailsComponent {
           this.showLoader = false;
         }
       },
-      (error) => {
+      (error: any) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
@@ -238,7 +315,7 @@ export class TodoTaskViewDetailsComponent {
       const payload = { comment: comment.trim() };
 
       this.superService.addComments(payload, id).subscribe(
-        (response) => {
+        (response: any) => {
           this.showLoader = false;
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
@@ -253,7 +330,7 @@ export class TodoTaskViewDetailsComponent {
             this.notificationService.showError(response?.message || 'Failed to add comment');
           }
         },
-        (error) => {
+        (error: any) => {
           this.showLoader = false;
           this.notificationService.showError(error?.message || 'An error occurred');
         }
@@ -294,7 +371,7 @@ export class TodoTaskViewDetailsComponent {
   getTask() {
     this.showLoader = true;
     this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, status: 'Ongoing' }).subscribe(
-      (response) => {
+      (response: any) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
@@ -309,13 +386,18 @@ export class TodoTaskViewDetailsComponent {
             };
           });
 
+          // If we have a taskList but no modalTask yet, use the first item
+          if (this.taskList.length > 0 && !this.modalTask) {
+            this.modalTask = this.taskList[0];
+          }
+
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
       },
-      (error) => {
+      (error: any) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
@@ -409,13 +491,13 @@ export class TodoTaskViewDetailsComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason.value];
       }
     }
 
     // API call to update project details
     this.feasibilityService.updateProjectDetails(payload, this.modalTask?.project?._id).subscribe(
-      (response) => {
+      (response: any) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Project updated successfully');
           this.isEditing = false;
@@ -424,7 +506,7 @@ export class TodoTaskViewDetailsComponent {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
       },
-      (error) => {
+      (error: any) => {
         this.notificationService.showError('Failed to update project');
       }
     );
@@ -433,7 +515,7 @@ export class TodoTaskViewDetailsComponent {
   getProjectDetails() {
     this.showLoader = true;
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
-      (response) => {
+      (response: any) => {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectDetail = response?.data;
@@ -447,7 +529,7 @@ export class TodoTaskViewDetailsComponent {
           this.showLoader = false;
         }
       },
-      (error) => {
+      (error: any) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
       }
@@ -515,7 +597,7 @@ export class TodoTaskViewDetailsComponent {
     this.feasibilityService
       .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
       .subscribe(
-        (response) => {
+        (response: any) => {
           if (response?.status === true) {
             this.notificationService.showSuccess(
               'Project updated successfully'
@@ -528,7 +610,7 @@ export class TodoTaskViewDetailsComponent {
             );
           }
         },
-        (error) => {
+        (error: any) => {
           this.notificationService.showError('Failed to update project');
         }
       );
@@ -543,5 +625,42 @@ export class TodoTaskViewDetailsComponent {
     return this.bidStatus && (hasComment || hasUnaddedComment);
   }
 
+  loadTaskDetails(taskId: string) {
+    this.showLoader = true;
+    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, status: 'Ongoing' }).subscribe(
+      (response: any) => {
+        if (response?.status === true) {
+          const today = new Date().toISOString().split("T")[0];
 
+          this.taskList = response?.data?.data.map((task: any) => {
+            const todayComments = task?.comments?.filter((comment: any) =>
+              comment.date.split("T")[0] === today
+            );
+
+            return {
+              ...task,
+              todayComments: todayComments?.length ? todayComments : null,
+            };
+          });
+
+          // Find the task with the matching ID
+          this.modalTask = this.taskList.find(task => task._id === taskId);
+
+          if (!this.modalTask) {
+            this.notificationService.showError('Task not found');
+            this.goBack();
+          }
+
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
 }

@@ -53,7 +53,6 @@ import { FeasibilityProjectsCompletedComponent } from './feasibility-projects-co
         NgxSpinnerModule,
         NgxSliderModule,
         NgxExtendedPdfViewerModule,
-        BOSUserModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
