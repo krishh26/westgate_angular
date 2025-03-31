@@ -99,12 +99,14 @@
               *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{role?.name}}</td>
               <td>
-                <span *ngIf="role?.otherRole && role.otherRole.length > 0">
-                  <span *ngFor="let subRole of role.otherRole; let last = last">
-                    {{subRole}}{{!last ? ', ' : ''}}
+                <div class="d-flex flex-wrap gap-1">
+                  <span *ngIf="role?.otherRole && role.otherRole.length > 0">
+                    <span *ngFor="let subRole of role.otherRole">
+                      <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
+                    </span>
                   </span>
-                </span>
-                <span *ngIf="!role?.otherRole || role.otherRole.length === 0">-</span>
+                  <span *ngIf="!role?.otherRole || role.otherRole.length === 0">-</span>
+                </div>
               </td>
               <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
               <td>{{role?.totalSuppliersCount}}</td>
