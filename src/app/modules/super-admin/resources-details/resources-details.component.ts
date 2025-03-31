@@ -62,4 +62,9 @@ export class ResourcesDetailsComponent implements OnInit {
   goBack() {
     this.router.navigate(['/super-admin/resources-list']);
   }
+
+  // Helper method to check if roleId is an array
+  isRoleArray(): boolean {
+    return this.candidateDetails?.roleId && Array.isArray(this.candidateDetails.roleId);
+  }
 }

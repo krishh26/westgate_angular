@@ -356,6 +356,23 @@ export class ResourcesAddComponent implements OnInit {
     if (storedCandidateData) {
       const candidateData = JSON.parse(storedCandidateData);
 
+      // Map the roleId array to extract just the IDs for the select input
+      let roleIds: string[] = [];
+      if (candidateData.roleId && Array.isArray(candidateData.roleId)) {
+        // If roleId is an array of objects with _id property
+        if (candidateData.roleId.length > 0 && typeof candidateData.roleId[0] === 'object') {
+          roleIds = candidateData.roleId.map((role: any) => role._id);
+        }
+        // If roleId is already an array of strings
+        else {
+          roleIds = candidateData.roleId;
+        }
+      }
+      // If roleId is a single string, convert to array
+      else if (candidateData.roleId) {
+        roleIds = [candidateData.roleId];
+      }
+
       // Patch the form with candidate data
       this.userProfileForm.patchValue({
         supplierId: candidateData.supplierId,
@@ -369,7 +386,7 @@ export class ResourcesAddComponent implements OnInit {
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
         hourlyRate: candidateData.hourlyRate,
-        roleId: candidateData.roleId || (candidateData.roleId ? [candidateData.roleId] : [])
+        roleId: roleIds
       });
 
       // Set the arrays for tag-like inputs
