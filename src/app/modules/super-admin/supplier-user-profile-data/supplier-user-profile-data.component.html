@@ -59,6 +59,10 @@
                 <td>{{ supplierDetails?.typeOfCompany }}</td>
               </tr>
               <tr>
+                <th>Industry/Sector</th>
+                <td>{{ supplierDetails?.industry_Sector }}</td>
+              </tr>
+              <tr>
                 <th>VAT or GST Number</th>
                 <td>{{ supplierDetails?.VATOrGSTNumber }}</td>
               </tr>
@@ -78,20 +82,87 @@
                 <th>Other Team Members count</th>
                 <td>{{ supplierDetails?.otheremployeeCount }}</td>
               </tr>
-
               <tr>
                 <th>Email Address</th>
                 <td>{{ supplierDetails?.email }}</td>
               </tr>
-
+              <tr>
+                <th>Phone Number</th>
+                <td>{{ supplierDetails?.registerNumber }}</td>
+              </tr>
               <tr>
                 <th>Company Directors/Owners</th>
                 <td>{{ supplierDetails?.companyDirectors_Owners }}</td>
               </tr>
-
               <tr>
-                <th>Phone Number</th>
-                <td>{{ supplierDetails?.registerNumber }}</td>
+                <th>Data Privacy Policies</th>
+                <td>{{ supplierDetails?.dataPrivacyPolicies }}</td>
+              </tr>
+              <tr>
+                <th>Security Certifications</th>
+                <td>{{ supplierDetails?.securityCertifications }}</td>
+              </tr>
+              <tr>
+                <th>Customer Support Contact</th>
+                <td>{{ supplierDetails?.customerSupportContact }}</td>
+              </tr>
+              <tr>
+                <th>Compliance Certifications</th>
+                <td>{{ supplierDetails?.complianceCertifications }}</td>
+              </tr>
+              <tr>
+                <th>Products/Services Offered</th>
+                <td>{{ supplierDetails?.products_ServicesOffered }}</td>
+              </tr>
+              <tr>
+                <th>Technology Stack</th>
+                <td>{{ supplierDetails?.technologyStack }}</td>
+              </tr>
+              <tr>
+                <th>Licensing Details</th>
+                <td>{{ supplierDetails?.licensingDetails }}</td>
+              </tr>
+              <tr>
+                <th>IP/Patents</th>
+                <td>{{ supplierDetails?.IP_Patents }}</td>
+              </tr>
+              <tr>
+                <th>Cybersecurity Practices</th>
+                <td>{{ supplierDetails?.cybersecurityPractices }}</td>
+              </tr>
+              <tr>
+                <th>Certifications</th>
+                <td>{{ supplierDetails?.certifications }}</td>
+              </tr>
+              <tr>
+                <th>POC Details</th>
+                <td>{{ supplierDetails?.poc_details }}</td>
+              </tr>
+              <tr>
+                <th>Expertise</th>
+                <td>
+                  <ul class="list-unstyled mb-0">
+                    <li *ngFor="let expertise of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
+                      {{ expertise.name }}
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <th>Active Status</th>
+                <td>
+                  <span [class]="supplierDetails?.active ? 'badge bg-success' : 'badge bg-danger'">
+                    {{ supplierDetails?.active ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Status Comment</th>
+                <td>{{ supplierDetails?.activeStatus || 'N/A' }}</td>
+              </tr>
+              <tr>
+                <th>Active Since</th>
+                <td>{{ supplierDetails?.activeSince ? (supplierDetails?.activeSince | date:'medium') : 'N/A' }}</td>
               </tr>
             </tbody>
           </table>

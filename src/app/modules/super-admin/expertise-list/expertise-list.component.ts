@@ -28,8 +28,6 @@ export class ExpertiseListComponent {
   viewDocs: any;
   supplierFiles: any = [];
   newExpertise: string = '';
-  newSubExpertise: string = '';
-  subExpertiseTags: string[] = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -57,7 +55,7 @@ export class ExpertiseListComponent {
     this.supplierService.getSupplierDetails(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.expertiseCount.map((item: any) => item.name); // Extract only expertise names
+          this.expertiseList = response?.expertiseCount.map((item: any) => item.name);
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
         }
@@ -79,54 +77,6 @@ export class ExpertiseListComponent {
     });
   }
 
-
-  onFilesSelected(event: any, expertise: string) {
-    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-
-    this.selectedFiles = Array.from(event.target.files);
-
-    const invalidFiles = this.selectedFiles.filter(file => !allowedTypes.includes(file.type));
-
-    if (invalidFiles.length > 0) {
-      alert('Only PDF or Word files (.pdf, .doc, .docx) are allowed.');
-      this.selectedFiles = [];
-      return;
-    }
-
-    if (this.selectedFiles.length > 0) {
-      this.uploadFiles(expertise);
-    }
-  }
-
-
-  uploadFiles(expertise: string) {
-    if (!this.selectedFiles.length) {
-      this.notificationService.showError('Please select files to upload.');
-      return;
-    }
-
-    const formData = new FormData();
-    this.selectedFiles.forEach(file => {
-      formData.append('files', file);
-    });
-    formData.append('expertise', expertise);
-    formData.append('supplierId', this.supplierID);
-
-    this.superService.uploadByTag(formData).subscribe(
-      (response: any) => {
-        if (response?.status) {
-          this.notificationService.showSuccess('Files uploaded successfully!');
-          this.getSupplierdetail();
-        } else {
-          this.notificationService.showError(response?.message);
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-      }
-    );
-  }
-
   getSupplierdetail() {
     this.showLoader = true;
     this.supplierService.getSupplierDetails(this.supplierID).subscribe(
@@ -135,7 +85,6 @@ export class ExpertiseListComponent {
           this.supplierDetails = response.data;
           this.showLoader = false;
           this.supplierFiles = response.files;
-
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
           this.showLoader = false;
@@ -146,10 +95,6 @@ export class ExpertiseListComponent {
         this.showLoader = false;
       }
     );
-  }
-
-  showDocuments(expertise: string) {
-    this.viewDocs = this.supplierFiles.filter((file: any) => file.expertise === expertise);
   }
 
   deleteDoc(fileId: any) {
@@ -164,13 +109,12 @@ export class ExpertiseListComponent {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-
         this.superService.deleteDocumentExpertise(fileId).subscribe(
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Document successfully deleted');
-              window.location.reload(); // Optional: Refresh data
+              window.location.reload();
             } else {
               this.showLoader = false;
               this.notificationService.showError(response?.message);
@@ -185,29 +129,9 @@ export class ExpertiseListComponent {
     });
   }
 
-  addSubExpertiseTag() {
-    if (this.newSubExpertise?.trim()) {
-      if (!this.subExpertiseTags.includes(this.newSubExpertise.trim())) {
-        this.subExpertiseTags.push(this.newSubExpertise.trim());
-      } else {
-        this.notificationService.showInfo('This sub expertise already exists');
-      }
-      this.newSubExpertise = '';
-    }
-  }
-
-  removeSubExpertiseTag(index: number) {
-    this.subExpertiseTags.splice(index, 1);
-  }
-
   saveExpertise() {
     if (!this.newExpertise?.trim()) {
       this.notificationService.showError('Please enter an expertise name');
-      return;
-    }
-
-    if (this.subExpertiseTags.length === 0) {
-      this.notificationService.showError('Please add at least one sub expertise');
       return;
     }
 
@@ -219,15 +143,14 @@ export class ExpertiseListComponent {
     const expertiseData = {
       supplierId: this.supplierID,
       expertise: this.newExpertise.trim(),
-      subExpertise: this.subExpertiseTags
+      subExpertise: []
     };
 
     this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
       (response: any) => {
         if (response?.status) {
-          this.notificationService.showSuccess('Expertise and sub expertise added successfully!');
+          this.notificationService.showSuccess('Expertise added successfully!');
           this.newExpertise = '';
-          this.subExpertiseTags = [];
           this.getSupplierdata();
           window.location.reload();
           const modalElement = document.getElementById('addExpertiseModal');
@@ -244,5 +167,4 @@ export class ExpertiseListComponent {
       }
     );
   }
-
 }

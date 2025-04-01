@@ -129,34 +129,12 @@
           <input type="text" class="form-control" id="expertiseName" [(ngModel)]="newExpertise"
             placeholder="Enter expertise name">
         </div>
-
-        <!-- Sub Expertise Field -->
-        <div class="form-group mb-3">
-          <label for="subExpertiseName">Sub Expertise</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="subExpertiseName" [(ngModel)]="newSubExpertise"
-              placeholder="Enter sub expertise name" (keyup.enter)="addSubExpertiseTag()">
-            <button class="btn btn-outline-primary" type="button" (click)="addSubExpertiseTag()">Add</button>
-          </div>
-          <small class="text-muted">Press Enter or click Add to add each sub expertise</small>
-        </div>
-
-        <!-- Display Sub Expertise Tags -->
-        <div *ngIf="subExpertiseTags.length > 0" class="mt-3">
-          <h6>Added Sub Expertise:</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <div *ngFor="let tag of subExpertiseTags; let i = index" class="badge bg-primary p-2 d-flex align-items-center">
-              {{tag}}
-              <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;" (click)="removeSubExpertiseTag(i)"></button>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary btn-sm" (click)="saveExpertise()"
-          [disabled]="!newExpertise || subExpertiseTags.length === 0">
-          Save All
+          [disabled]="!newExpertise">
+          Save
         </button>
       </div>
     </div>
