@@ -210,6 +210,18 @@ export class SuperadminAddProjectComponent implements OnInit {
 
 
   submitForm() {
+    if (this.productForm.invalid) {
+      // Mark all fields as touched to trigger validation display
+      Object.keys(this.productForm.controls).forEach(key => {
+        const control = this.productForm.get(key);
+        control?.markAsTouched();
+      });
+
+      // Show error notification
+      this.notificationService.showError('Please fill in all required fields');
+      return;
+    }
+
     this.showLoader = true;
     // Get the current form values
     let formData = this.productForm.value;

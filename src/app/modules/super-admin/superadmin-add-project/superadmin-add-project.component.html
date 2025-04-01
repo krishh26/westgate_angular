@@ -8,12 +8,18 @@
               <label for="inputEmail3" class="col-sm-4 col-form-label">Project Name *</label>
               <div class="col-sm-8">
                 <textarea formControlName="projectName" class="form-control" rows="3" cols="100"></textarea>
+                <div class="error-message" *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched">
+                  Project name is required
+                </div>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">BOS ID *</label>
               <div class="col-sm-8">
                 <input formControlName="BOSID" type="text" class="form-control">
+                <div class="error-message" *ngIf="productForm.get('BOSID')?.invalid && productForm.get('BOSID')?.touched">
+                  BOS ID is required
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -21,12 +27,18 @@
               <div class="col-sm-8">
                 <input formControlName="publishDate" type="text" class="form-control"
                   placeholder="Auto Detect System Calendar">
+                <div class="error-message" *ngIf="productForm.get('publishDate')?.invalid && productForm.get('publishDate')?.touched">
+                  Publish date is required
+                </div>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Submission Due Date *</label>
               <div class="col-sm-8">
                 <input formControlName="dueDate" type="date" class="form-control" placeholder="Start Date">
+                <div class="error-message" *ngIf="productForm.get('dueDate')?.invalid && productForm.get('dueDate')?.touched">
+                  Due date is required
+                </div>
                 <div class="row mt-2">
                   <div class="col-sm-12">
                     <input formControlName="bidsubmissiontime" type="text" class="form-control"
@@ -45,12 +57,18 @@
                   <option value="ContractFinder">Contract Finder</option>
                   <option value="Other">Other</option>
                 </select>
+                <div class="error-message" *ngIf="productForm.get('website')?.invalid && productForm.get('website')?.touched">
+                  Website is required
+                </div>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Notice Reference *</label>
               <div class="col-sm-8">
                 <input formControlName="noticeReference" type="text" class="form-control">
+                <div class="error-message" *ngIf="productForm.get('noticeReference')?.invalid && productForm.get('noticeReference')?.touched">
+                  Notice reference is required
+                </div>
               </div>
             </div>
 
@@ -120,6 +138,9 @@
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Link to notice *</label>
                   <div class="col-sm-8">
                     <input formControlName="link" type="text" class="form-control">
+                    <div class="error-message" *ngIf="productForm.get('link')?.invalid && productForm.get('link')?.touched">
+                      Link to notice is required
+                    </div>
                   </div>
                 </div>
               </div>
@@ -185,6 +206,9 @@
                       <option value="PublicSector">Public Sector</option>
                       <option value="PrivateSector">Private Sector</option>
                     </select>
+                    <div class="error-message" *ngIf="productForm.get('clientType')?.invalid && productForm.get('clientType')?.touched">
+                      Client type is required
+                    </div>
                   </div>
                 </div>
               </div>
@@ -193,6 +217,9 @@
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name *</label>
                   <div class="col-sm-8">
                     <input formControlName="clientName" type="text" class="form-control">
+                    <div class="error-message" *ngIf="productForm.get('clientName')?.invalid && productForm.get('clientName')?.touched">
+                      Client name is required
+                    </div>
                   </div>
                 </div>
               </div>
