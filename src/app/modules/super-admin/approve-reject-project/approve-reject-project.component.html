@@ -117,8 +117,7 @@
                     </div>
                     <!-- Comment and Date on the next line -->
                     <div class="d-flex justify-content-between mt-1">
-                      <div class="comment-text">
-                        {{ comment.comment }}
+                      <div class="comment-text" [innerHTML]="comment?.comment">
                       </div>
                       <div class="comment-date text-muted">
                         {{ comment.date | date : "dd/MM/yyyy, h:mm a" }}
