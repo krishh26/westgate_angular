@@ -522,6 +522,10 @@
 
             <!-- Status Buttons -->
             <div class="d-flex justify-content-between flex-wrap mb-4">
+              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'Awaiting'"
+                (click)="statusChange('Awaiting')">
+                Awaiting
+              </button>
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution

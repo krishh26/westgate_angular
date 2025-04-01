@@ -502,6 +502,10 @@
                   'Dropped after feasibility' &&
                 projectDetails?.bidManagerStatus != 'NotAwarded'
               ">
+              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'Awaiting'"
+                (click)="statusChange('Awaiting')">
+                Awaiting
+              </button>
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution
