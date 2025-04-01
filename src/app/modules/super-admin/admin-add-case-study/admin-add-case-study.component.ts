@@ -28,7 +28,7 @@ export class AdminAddCaseStudyComponent {
     resourcesUsed: new FormControl("", Validators.required),
     contractValue: new FormControl("", Validators.required),
     date: new FormControl("", Validators.required),
-    duration: new FormControl("", Validators.required),
+    contractDuration: new FormControl("", Validators.required),
     resultAchieved: new FormControl("", Validators.required),
     lessonsLearned: new FormControl("", Validators.required),
   }
