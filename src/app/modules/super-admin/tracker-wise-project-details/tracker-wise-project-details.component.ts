@@ -158,9 +158,8 @@ export class TrackerWiseProjectDetailsComponent {
   BiduserList: any = [];
   feasibilityStatusComment: FormControl = new FormControl('');
   // Editor related properties
-  editor!: Editor;
-  taskForm!: FormGroup;
-
+  feasibilityEditor: Editor = new Editor();
+  bidStatusEditor: Editor = new Editor();
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -219,8 +218,19 @@ export class TrackerWiseProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
-    this.editor = new Editor();
+    this.feasibilityEditor = new Editor();
+    this.bidStatusEditor = new Editor();
   }
+
+  ngOnDestroy() {
+    if (this.feasibilityEditor) {
+      this.feasibilityEditor.destroy();
+    }
+    if (this.bidStatusEditor) {
+      this.bidStatusEditor.destroy();
+    }
+  }
+
   goBack() {
     this.location.back();
   }
@@ -1679,16 +1689,11 @@ export class TrackerWiseProjectDetailsComponent {
         const hasExistingComment = this.feasibilityCommentData.some(
           (item) => item.status === this.feasibilityStatus
         );
-        if (!hasExistingComment && !this.feasibilityStatusComment.value) {
+
+        // Only show error if there's no existing comment and no new comment
+        if (!hasExistingComment && !this.feasibilityStatusComment.value && !this.feasibilityCommentData.length) {
           return this.notificationService.showError(
             'Please provide a feasibility comment for the selected status.'
-          );
-        }
-
-        // If a comment is filled but not added
-        if (this.feasibilityStatusComment.value) {
-          return this.notificationService.showError(
-            'Please click the "Add" button to save your comment.'
           );
         }
       } else {
@@ -1702,7 +1707,7 @@ export class TrackerWiseProjectDetailsComponent {
 
         if (errors.length > 0) {
           return this.notificationService.showError(
-            'Please provide a comments for the selected Reason.'
+            'Please provide comments for the selected Reason.'
           );
         }
       }
@@ -1771,17 +1776,14 @@ export class TrackerWiseProjectDetailsComponent {
         return this.notificationService.showError('Please select a status.');
       }
 
-      if (this.bidManagerStatusComment.value) {
-        return this.notificationService.showError(
-          'Please click the "Add" button to save your comment.'
-        );
-      }
-
       // Check if the status has at least one comment
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment && !this.droppedStatusReasons.length) {
+
+      // Only show error if there's no existing comment, no new comment, and no dropped reasons
+      if (!hasExistingComment && !this.bidManagerStatusComment.value &&
+          !this.commentData.length && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
           'Please provide a bid comment for the selected status.'
         );
