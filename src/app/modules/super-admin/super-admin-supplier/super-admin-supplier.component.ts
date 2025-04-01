@@ -160,7 +160,7 @@ export class SuperAdminSupplierComponent {
           // Get active and inactive suppliers count from response
           if (response?.data?.count) {
             this.activeSuppliers = response?.data?.count?.active || 0;
-            this.inactiveSuppliers = (response?.data?.count?.total || 0);
+            this.inactiveSuppliers = (response?.data?.count?.inActive || 0);
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
