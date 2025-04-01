@@ -19,6 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { Editor, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
@@ -156,6 +157,20 @@ export class TrackerWiseProjectDetailsComponent {
   FeasibilityuserList: any = [];
   BiduserList: any = [];
   feasibilityStatusComment: FormControl = new FormControl('');
+  // Editor related properties
+  editor!: Editor;
+  taskForm!: FormGroup;
+
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
 
   constructor(
     private projectService: ProjectService,
@@ -204,6 +219,7 @@ export class TrackerWiseProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+    this.editor = new Editor();
   }
   goBack() {
     this.location.back();
@@ -268,7 +284,7 @@ export class TrackerWiseProjectDetailsComponent {
             this.showLoader = false;
             if (response?.status === true) {
               this.notificationService.showSuccess(`${type} successfully deleted`);
-             window.location.reload();
+              window.location.reload();
             } else {
               this.notificationService.showError(response?.message);
             }
