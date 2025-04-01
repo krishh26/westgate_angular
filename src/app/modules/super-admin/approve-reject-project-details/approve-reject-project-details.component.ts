@@ -19,6 +19,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { Editor } from 'ngx-editor';
+import { Toolbar } from 'ngx-editor';
 @Component({
   selector: 'app-approve-reject-project-details',
   templateUrl: './approve-reject-project-details.component.html',
@@ -156,6 +158,19 @@ export class ApproveRejectProjectDetailsComponent {
   BiduserList: any = [];
   feasibilityStatusComment: FormControl = new FormControl('');
 
+  feasibilityEditor: Editor = new Editor();
+  bidStatusEditor: Editor = new Editor();
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -203,6 +218,17 @@ export class ApproveRejectProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+    this.feasibilityEditor = new Editor();
+    this.bidStatusEditor = new Editor();
+  }
+
+  ngOnDestroy() {
+    if (this.feasibilityEditor) {
+      this.feasibilityEditor.destroy();
+    }
+    if (this.bidStatusEditor) {
+      this.bidStatusEditor.destroy();
+    }
   }
 
   editProjectDetails(projectId: any) {
@@ -1634,17 +1660,27 @@ export class ApproveRejectProjectDetailsComponent {
         const hasExistingComment = this.feasibilityCommentData.some(
           (item) => item.status === this.feasibilityStatus
         );
+
+        // If there's no existing comment and no new comment in the editor
         if (!hasExistingComment && !this.feasibilityStatusComment.value) {
           return this.notificationService.showError(
             'Please provide a feasibility comment for the selected status.'
           );
         }
 
-        // If a comment is filled but not added
+        // If there's a comment in the editor, add it before saving
         if (this.feasibilityStatusComment.value) {
-          return this.notificationService.showError(
-            'Please click the "Add" button to save your comment.'
-          );
+          const currentDate = new Date();
+          this.feasibilityCommentData = [
+            ...this.feasibilityCommentData,
+            {
+              comment: this.feasibilityStatusComment.value.trim(),
+              date: currentDate.toISOString(),
+              status: this.feasibilityStatus,
+              userId: this.loginUser?._id,
+            },
+          ];
+          this.feasibilityStatusComment.reset();
         }
       } else {
         const errors = this.failStatusReasons
@@ -1657,7 +1693,7 @@ export class ApproveRejectProjectDetailsComponent {
 
         if (errors.length > 0) {
           return this.notificationService.showError(
-            'Please provide a comments for the selected Reason.'
+            'Please provide comments for the selected Reason.'
           );
         }
       }
