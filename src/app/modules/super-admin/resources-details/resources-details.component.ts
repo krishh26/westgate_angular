@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-resources-details',
@@ -37,6 +38,43 @@ export class ResourcesDetailsComponent implements OnInit {
       }
     });
   }
+
+  editCandidate(candidate: any) {
+    // Store the candidate data in localStorage for the edit form
+    localStorage.setItem('editCandidateData', JSON.stringify(candidate));
+    this.router.navigate(['/super-admin/resources-add'], {
+      queryParams: {
+        candidateId: candidate._id
+      }
+    });
+  }
+
+  deleteCandidates(id: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteCandidate(id).subscribe((response: any) => {
+          if (response?.status == true) {
+            this.notificationService.showSuccess('User successfully deleted');
+            this.router.navigate(['/super-admin/resources-list']);
+            //this.getCandidatesList();
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+        }, (error) => {
+          this.notificationService.showError(error?.message);
+        });
+      }
+    });
+  }
+
 
   getCandidateDetails(candidateId: string) {
     this.showLoader = true;

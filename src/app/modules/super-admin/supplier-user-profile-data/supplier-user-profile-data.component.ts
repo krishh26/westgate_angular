@@ -155,4 +155,8 @@ export class SupplierUserProfileDataComponent {
     });
   }
 
+  goBack() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
 }
