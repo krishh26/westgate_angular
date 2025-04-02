@@ -4,7 +4,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 
 interface Expertise {
   name: string;
-  subExpertise: null;
+  subExpertise: string[];
 }
 
 @Component({
@@ -16,6 +16,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   companyForm: any = {};
   showLoader: boolean = false;
   currentExpertise: string = '';
+  currentSubExpertise: string = '';
   randomString: string = '';
 
   constructor(
@@ -28,33 +29,26 @@ export class RegisterNewSupplierComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyForm = {
-      name: '',
-      website: '',
-      yearOfEstablishment: '',
-      registerNumber: '',
-      typeOfCompany: '',
-      industry_Sector: '',
-      companyAddress: '',
-      developerOrEngineerTeams: '',
-      dataPrivacyPolicies: '',
-      securityCertifications: '',
+      phone: '',
       email: '',
-      number: '',
-      customerSupportContact: '',
-      VATOrGSTNumber: '',
-      companyDirectors_Owners: '',
-      complianceCertifications: '',
-      products_ServicesOffered: '',
-      technologyStack: '',
-      licensingDetails: '',
-      IP_Patents: '',
-      password: '',
+      companyName: '',
+      logo: '',
+      website: '',
+      companyAddress: '',
+      country: '',
+      contactEmail: '',
+      companyContactNumber: '',
+      yearOfEstablishment: '',
+      pocDetails: '',
+      businessType: [],
+      industryFocus: [],
       employeeCount: '',
-      cybersecurityPractices: '',
-      otheremployeeCount: '',
+      certifications: [],
       expertise: [],
-      certifications: '',
-      poc_details: ''
+      category: [],
+      technologies: [],
+      keyClients: [],
+      password: ''
     };
   }
 
@@ -62,14 +56,39 @@ export class RegisterNewSupplierComponent implements OnInit {
     if (this.currentExpertise) {
       this.companyForm.expertise.push({
         name: this.currentExpertise.trim(),
-        subExpertise: null
+        subExpertise: []
       });
       this.currentExpertise = '';
     }
   }
 
+  addSubExpertise(expertiseIndex: number) {
+    if (this.currentSubExpertise) {
+      this.companyForm.expertise[expertiseIndex].subExpertise.push(this.currentSubExpertise.trim());
+      this.currentSubExpertise = '';
+    }
+  }
+
   removeExpertise(index: number) {
     this.companyForm.expertise.splice(index, 1);
+  }
+
+  removeSubExpertise(expertiseIndex: number, subExpertiseIndex: number) {
+    this.companyForm.expertise[expertiseIndex].subExpertise.splice(subExpertiseIndex, 1);
+  }
+
+  addArrayItem(arrayName: string, value: string) {
+    if (value.trim()) {
+      if (!this.companyForm[arrayName]) {
+        this.companyForm[arrayName] = [];
+      }
+      this.companyForm[arrayName].push(value.trim());
+      value = '';
+    }
+  }
+
+  removeArrayItem(arrayName: string, index: number) {
+    this.companyForm[arrayName].splice(index, 1);
   }
 
   submitForm() {
@@ -97,5 +116,14 @@ export class RegisterNewSupplierComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  handleEnterKey(event: Event, arrayName: string) {
+    event.preventDefault();
+    const input = event.target as HTMLInputElement;
+    if (input.value.trim()) {
+      this.addArrayItem(arrayName, input.value);
+      input.value = '';
+    }
   }
 }
