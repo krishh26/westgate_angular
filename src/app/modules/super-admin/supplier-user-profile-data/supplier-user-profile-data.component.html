@@ -25,147 +25,186 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row align-items-end justify-content-between">
-        <div class="col-12 d-flex justify-content-between mb-2">
-          <h4 class="text-theme"><strong>Supplier Information</strong></h4>
-          <div class="d-flex gap-2">
-            <a class="btn btn-primary btn-sm" style="cursor: pointer" routerLink="/super-admin/supplier-user-profile-edit"
-              [state]="supplierDetails"><i class="bi bi-pencil-fill"></i></a>
-            <button class="btn btn-danger btn-sm" style="cursor: pointer" (click)="deleteSupplier(supplierDetails?._id)">
-              <i class="bi bi-trash3-fill"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
       <div class="row">
         <div class="col-12">
-          <table class="table table-striped table-bordered">
-            <tbody>
-              <tr>
-                <th>Company Name</th>
-                <td>{{ supplierDetails?.name }}</td>
-              </tr>
-              <tr>
-                <th>Company Website</th>
-                <td>{{ supplierDetails?.website }}</td>
-              </tr>
-              <tr>
-                <th>Year of Establishment</th>
-                <td>{{ supplierDetails?.yearOfEstablishment }}</td>
-              </tr>
-              <tr>
-                <th>Type of Company</th>
-                <td>{{ supplierDetails?.typeOfCompany }}</td>
-              </tr>
-              <tr>
-                <th>Industry/Sector</th>
-                <td>{{ supplierDetails?.industry_Sector }}</td>
-              </tr>
-              <tr>
-                <th>VAT or GST Number</th>
-                <td>{{ supplierDetails?.VATOrGSTNumber }}</td>
-              </tr>
-              <tr>
-                <th>Company Address</th>
-                <td>{{ supplierDetails?.companyAddress }}</td>
-              </tr>
-              <tr>
-                <th>Employee Count</th>
-                <td>{{ supplierDetails?.employeeCount }}</td>
-              </tr>
-              <tr>
-                <th>Developer/Engineer Teams</th>
-                <td>{{ supplierDetails?.developerOrEngineerTeams }}</td>
-              </tr>
-              <tr>
-                <th>Other Team Members count</th>
-                <td>{{ supplierDetails?.otheremployeeCount }}</td>
-              </tr>
-              <tr>
-                <th>Email Address</th>
-                <td>{{ supplierDetails?.email }}</td>
-              </tr>
-              <tr>
-                <th>Phone Number</th>
-                <td>{{ supplierDetails?.registerNumber }}</td>
-              </tr>
-              <tr>
-                <th>Company Directors/Owners</th>
-                <td>{{ supplierDetails?.companyDirectors_Owners }}</td>
-              </tr>
-              <tr>
-                <th>Data Privacy Policies</th>
-                <td>{{ supplierDetails?.dataPrivacyPolicies }}</td>
-              </tr>
-              <tr>
-                <th>Security Certifications</th>
-                <td>{{ supplierDetails?.securityCertifications }}</td>
-              </tr>
-              <tr>
-                <th>Customer Support Contact</th>
-                <td>{{ supplierDetails?.customerSupportContact }}</td>
-              </tr>
-              <tr>
-                <th>Compliance Certifications</th>
-                <td>{{ supplierDetails?.complianceCertifications }}</td>
-              </tr>
-              <tr>
-                <th>Products/Services Offered</th>
-                <td>{{ supplierDetails?.products_ServicesOffered }}</td>
-              </tr>
-              <tr>
-                <th>Technology Stack</th>
-                <td>{{ supplierDetails?.technologyStack }}</td>
-              </tr>
-              <tr>
-                <th>Licensing Details</th>
-                <td>{{ supplierDetails?.licensingDetails }}</td>
-              </tr>
-              <tr>
-                <th>IP/Patents</th>
-                <td>{{ supplierDetails?.IP_Patents }}</td>
-              </tr>
-              <tr>
-                <th>Cybersecurity Practices</th>
-                <td>{{ supplierDetails?.cybersecurityPractices }}</td>
-              </tr>
-              <tr>
-                <th>Certifications</th>
-                <td>{{ supplierDetails?.certifications }}</td>
-              </tr>
-              <tr>
-                <th>POC Details</th>
-                <td>{{ supplierDetails?.poc_details }}</td>
-              </tr>
-              <tr>
-                <th>Expertise</th>
-                <td>
-                  <ul class="list-unstyled mb-0">
-                    <li *ngFor="let expertise of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
-                      {{ expertise.name }}
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <th>Active Status</th>
-                <td>
-                  <span [class]="supplierDetails?.active ? 'badge bg-success' : 'badge bg-danger'">
-                    {{ supplierDetails?.active ? 'Active' : 'Inactive' }}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Status Comment</th>
-                <td>{{ supplierDetails?.activeStatus || 'N/A' }}</td>
-              </tr>
-              <tr>
-                <th>Active Since</th>
-                <td>{{ supplierDetails?.activeSince ? (supplierDetails?.activeSince | date:'medium') : 'N/A' }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="text-theme mb-0"><strong>Supplier Information</strong></h4>
+            <div class="d-flex gap-2">
+              <a class="btn btn-primary btn-sm" style="cursor: pointer" routerLink="/super-admin/supplier-user-profile-edit"
+                [state]="supplierDetails">
+                <i class="bi bi-pencil-fill"></i> Edit
+              </a>
+              <button class="btn btn-danger btn-sm" style="cursor: pointer" (click)="deleteSupplier(supplierDetails?._id)">
+                <i class="bi bi-trash3-fill"></i> Delete
+              </button>
+            </div>
+          </div>
+
+          <!-- Company Details -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Company Details</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Company Name</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.name" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Website</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.website" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Year of Establishment</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Company Address</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.companyAddress" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Email Address</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.email" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.registerNumber" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">VAT/GST Number</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.VATOrGSTNumber" readonly>
+                </div>
+              </div>
+
+              <!-- Business Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Business Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Type of Company</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.typeOfCompany" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Industry/Sector</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.industry_Sector" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Employee Count</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.employeeCount" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Developer/Engineer Teams</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.developerOrEngineerTeams" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Other Team Members</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.otheremployeeCount" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Company Directors/Owners</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.companyDirectors_Owners" readonly>
+                </div>
+              </div>
+
+              <!-- Certifications & Compliance -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Certifications & Compliance</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Security Certifications</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.securityCertifications" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Compliance Certifications</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.complianceCertifications" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Data Privacy Policies</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.dataPrivacyPolicies" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Cybersecurity Practices</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.cybersecurityPractices" readonly>
+                </div>
+              </div>
+
+              <!-- Technical Details -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Technical Details</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Technology Stack</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.technologyStack" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Products/Services Offered</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.products_ServicesOffered" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Licensing Details</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.licensingDetails" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">IP/Patents</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.IP_Patents" readonly>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Expertise</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let expertise of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
+                        {{ expertise.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- POC & Support -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">POC & Support Details</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">POC Details</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_details" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Customer Support Contact</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.customerSupportContact" readonly>
+                </div>
+              </div>
+
+              <!-- Status Information -->
+              <div class="row">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Status Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Active Status</label>
+                  <div class="d-flex align-items-center">
+                    <span [class]="supplierDetails?.active ? 'badge bg-success' : 'badge bg-danger'">
+                      {{ supplierDetails?.active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Active Since</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.activeSince | date:'medium'" readonly>
+                </div>
+                <div class="col-md-12 mb-3" *ngIf="supplierDetails?.activeStatus">
+                  <label class="form-label">Status Comment</label>
+                  <div class="p-3 border rounded">
+                    {{ supplierDetails?.activeStatus }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
