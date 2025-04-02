@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { default as Annotation } from 'chartjs-plugin-annotation';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -18,6 +18,8 @@ export class TeamProductivityViewComponent implements OnInit, OnDestroy {
   selectedUserIds: number[] = [];
   userList: any = [];
   showAll = false;
+  startDate: string = '';
+  endDate: string = '';
 
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [
@@ -168,6 +170,15 @@ export class TeamProductivityViewComponent implements OnInit, OnDestroy {
     const existingChart2 = Chart.getChart(canvas2);
     if (existingChart2) {
       existingChart2.destroy();
+    }
+  }
+
+  onDateRangeChange() {
+    if (this.startDate && this.endDate) {
+      // Here you can add logic to fetch data based on the selected date range
+      // For example, you could call your API service to get data for this period
+      // and then update the chart data accordingly
+      console.log('Date range changed:', { startDate: this.startDate, endDate: this.endDate });
     }
   }
 
