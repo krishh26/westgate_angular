@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
@@ -8,38 +8,33 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
   templateUrl: './supplier-user-profile-edit.component.html',
   styleUrls: ['./supplier-user-profile-edit.component.scss']
 })
-export class SupplierUserProfileEditComponent {
+export class SupplierUserProfileEditComponent implements OnInit {
   supplierDetails: any = {
     companyName: '',
+    // logo: '',
     website: '',
-    yearOfEstablishment: '',
-    registerNumber: '',
-    typeOfCompany: '',
-    industry_Sector: '',
     companyAddress: '',
-    developerOrEngineerTeams: '',
-    dataPrivacyPolicies: '',
-    securityCertifications: '',
+    country: '',
     email: '',
-    number: '',
-    customerSupportContact: '',
-    VATOrGSTNumber: '',
-    companyDirectors_Owners: '',
-    complianceCertifications: '',
-    products_ServicesOffered: '',
-    technologyStack: '',
-    licensingDetails: '',
-    IP_Patents: '',
+    phone: '',
+    yearOfEstablishment: '',
+    poc_name: '',
+    poc_phone: '',
+    poc_email: '',
+    poc_role: '',
+    businessType: [],
+    industryFocus: [],
     employeeCount: '',
-    cybersecurityPractices: '',
-    otheremployeeCount: '',
+    certifications: [],
     expertise: [],
-    certifications: '',
-    poc_details: ''
+    category: [],
+    technologies: [],
+    keyClients: []
   };
 
   showLoader: boolean = false;
   currentExpertise: string = '';
+  currentSubExpertise: string = '';
   randomString: string = '';
 
   constructor(
@@ -47,13 +42,42 @@ export class SupplierUserProfileEditComponent {
     private router: Router,
     private supplierService: SupplierAdminService
   ) {
-    // Generate a random string to prevent form autofill
     this.randomString = Math.random().toString(36).substring(2, 15);
 
     const navigation = this.router.getCurrentNavigation();
     const data = navigation?.extras.state;
     if (data) {
+      // Initialize arrays if they don't exist in the incoming data
+      const arrayFields = ['businessType', 'industryFocus', 'certifications', 'expertise', 'category', 'technologies', 'keyClients'];
+      arrayFields.forEach(field => {
+        if (!data[field]) {
+          data[field] = [];
+        }
+      });
+
       this.supplierDetails = { ...this.supplierDetails, ...data };
+    }
+  }
+
+  ngOnInit(): void {
+    // Initialize if needed
+  }
+
+  removeArrayItem(arrayName: string, index: number) {
+    if (this.supplierDetails[arrayName]) {
+      this.supplierDetails[arrayName].splice(index, 1);
+    }
+  }
+
+  handleEnterKey(event: Event, arrayName: string) {
+    event.preventDefault();
+    const input = event.target as HTMLInputElement;
+    if (input.value.trim()) {
+      if (!this.supplierDetails[arrayName]) {
+        this.supplierDetails[arrayName] = [];
+      }
+      this.supplierDetails[arrayName].push(input.value.trim());
+      input.value = '';
     }
   }
 
@@ -64,19 +88,37 @@ export class SupplierUserProfileEditComponent {
       }
       this.supplierDetails.expertise.push({
         name: this.currentExpertise.trim(),
-        subExpertise: null
+        subExpertise: []
       });
       this.currentExpertise = '';
     }
   }
 
   removeExpertise(index: number) {
-    this.supplierDetails.expertise.splice(index, 1);
+    if (this.supplierDetails.expertise) {
+      this.supplierDetails.expertise.splice(index, 1);
+    }
+  }
+
+  addSubExpertise(expertiseIndex: number) {
+    if (this.currentSubExpertise && this.supplierDetails.expertise[expertiseIndex]) {
+      this.supplierDetails.expertise[expertiseIndex].subExpertise.push(this.currentSubExpertise.trim());
+      this.currentSubExpertise = '';
+    }
+  }
+
+  removeSubExpertise(expertiseIndex: number, subExpertiseIndex: number) {
+    if (this.supplierDetails.expertise[expertiseIndex]?.subExpertise) {
+      this.supplierDetails.expertise[expertiseIndex].subExpertise.splice(subExpertiseIndex, 1);
+    }
   }
 
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
-    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
   submitForm() {

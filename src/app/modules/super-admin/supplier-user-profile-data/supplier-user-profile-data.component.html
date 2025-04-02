@@ -59,157 +59,150 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Company Name</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.name" readonly>
+                  <input type="text" class="form-control" [value]="supplierDetails?.companyName" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Logo URL</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.logo" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Website</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.website" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Year of Establishment</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
                   <label class="form-label">Company Address</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.companyAddress" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Email Address</label>
+                  <label class="form-label">Country</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.country" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Contact Email</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.email" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.registerNumber" readonly>
+                  <label class="form-label">Contact Number</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.phone" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">VAT/GST Number</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.VATOrGSTNumber" readonly>
+                  <label class="form-label">Year of Establishment</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment" readonly>
                 </div>
               </div>
 
-              <!-- Business Information -->
+              <!-- POC Details -->
               <div class="row mb-4">
                 <div class="col-12">
-                  <h5 class="text-primary mb-3">Business Information</h5>
+                  <h5 class="text-primary mb-3">POC Details</h5>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Type of Company</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.typeOfCompany" readonly>
+                  <label class="form-label">POC Name</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_name" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Industry/Sector</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.industry_Sector" readonly>
+                  <label class="form-label">POC Phone</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_phone" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Employee Count</label>
+                  <label class="form-label">POC Email</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_email" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">POC Role</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_role" readonly>
+                </div>
+              </div>
+
+              <!-- Business Details -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Business Details</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Business Type</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let type of supplierDetails?.businessType" class="badge bg-primary me-2 mb-2">
+                        {{ type }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Industry Focus</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let industry of supplierDetails?.industryFocus" class="badge bg-primary me-2 mb-2">
+                        {{ industry }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Company Size</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.employeeCount" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Developer/Engineer Teams</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.developerOrEngineerTeams" readonly>
+                  <label class="form-label">Certifications</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let cert of supplierDetails?.certifications" class="badge bg-primary me-2 mb-2">
+                        {{ cert }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Other Team Members</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.otheremployeeCount" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Company Directors/Owners</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.companyDirectors_Owners" readonly>
-                </div>
-              </div>
-
-              <!-- Certifications & Compliance -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Certifications & Compliance</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Security Certifications</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.securityCertifications" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Compliance Certifications</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.complianceCertifications" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Data Privacy Policies</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.dataPrivacyPolicies" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Cybersecurity Practices</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.cybersecurityPractices" readonly>
-                </div>
-              </div>
-
-              <!-- Technical Details -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Technical Details</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Technology Stack</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.technologyStack" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Products/Services Offered</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.products_ServicesOffered" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Licensing Details</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.licensingDetails" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">IP/Patents</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.IP_Patents" readonly>
-                </div>
-                <div class="col-12 mb-3">
                   <label class="form-label">Expertise</label>
                   <div class="border rounded p-3">
                     <ul class="list-unstyled mb-0">
-                      <li *ngFor="let expertise of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
-                        {{ expertise.name }}
+                      <li *ngFor="let exp of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
+                        {{ exp.name }}
+                        <ul *ngIf="exp.subExpertise && exp.subExpertise.length" class="list-unstyled mt-2">
+                          <li *ngFor="let sub of exp.subExpertise" class="badge bg-secondary me-2 mb-2">
+                            {{ sub }}
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Category</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let cat of supplierDetails?.category" class="badge bg-primary me-2 mb-2">
+                        {{ cat }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Technologies</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let tech of supplierDetails?.technologies" class="badge bg-primary me-2 mb-2">
+                        {{ tech }}
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <!-- POC & Support -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">POC & Support Details</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">POC Details</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_details" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Customer Support Contact</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.customerSupportContact" readonly>
-                </div>
-              </div>
-
-              <!-- Status Information -->
+              <!-- Key Clients -->
               <div class="row">
                 <div class="col-12">
-                  <h5 class="text-primary mb-3">Status Information</h5>
+                  <h5 class="text-primary mb-3">Client Information</h5>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Active Status</label>
-                  <div class="d-flex align-items-center">
-                    <span [class]="supplierDetails?.active ? 'badge bg-success' : 'badge bg-danger'">
-                      {{ supplierDetails?.active ? 'Active' : 'Inactive' }}
-                    </span>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Active Since</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.activeSince | date:'medium'" readonly>
-                </div>
-                <div class="col-md-12 mb-3" *ngIf="supplierDetails?.activeStatus">
-                  <label class="form-label">Status Comment</label>
-                  <div class="p-3 border rounded">
-                    {{ supplierDetails?.activeStatus }}
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">Key Clients</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let client of supplierDetails?.keyClients" class="badge bg-primary me-2 mb-2">
+                        {{ client }}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
