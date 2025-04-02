@@ -387,7 +387,7 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
       document.documentElement.style.height = 'auto';
 
       // Now navigate to the details page
-      this.router.navigate(['/super-admin/tracker-wise-project-details'], { queryParams: { id: projectId } });
+      this.router.navigate(['/process-manager/process-manager-project-details'], { queryParams: { id: projectId } });
     }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 

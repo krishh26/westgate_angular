@@ -360,7 +360,7 @@
                     </small>
                   </div>
                   <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
+                  <p class="mt-2" [innerHTML]="item?.comment"></p>
                 </div>
               </div>
             </div>
@@ -409,7 +409,7 @@
                   </div>
                   <small class="text-muted d-block"><strong>Status :</strong>
                     {{ item?.bidManagerStatus }}</small>
-                  <p class="mt-2">{{ item?.comment }}</p>
+                  <p class="mt-2" [innerHTML]="item?.comment"></p>
                 </div>
               </div>
             </div>
