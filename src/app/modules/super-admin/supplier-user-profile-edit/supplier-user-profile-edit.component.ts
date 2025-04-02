@@ -22,7 +22,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
     poc_phone: '',
     poc_email: '',
     poc_role: '',
-    businessType: [],
+    typeOfCompany: [],
     industry_Sector: [],
     employeeCount: '',
     certifications: [],
@@ -48,7 +48,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
     const data = navigation?.extras.state;
     if (data) {
       // Initialize arrays if they don't exist in the incoming data
-      const arrayFields = ['businessType', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients'];
+      const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients'];
       arrayFields.forEach(field => {
         if (!data[field]) {
           data[field] = [];

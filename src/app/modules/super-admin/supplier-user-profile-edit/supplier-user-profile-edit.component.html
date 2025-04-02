@@ -153,18 +153,18 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="businessType" class="col-sm-4 col-form-label">Business Type</label>
+                  <label for="typeOfCompany" class="col-sm-4 col-form-label">Business Type</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <div *ngFor="let type of supplierDetails.businessType; let i = index" class="mb-2">
+                      <div *ngFor="let type of supplierDetails.typeOfCompany; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ type }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('businessType', i)"></button>
+                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('typeOfCompany', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
                         <input type="text" class="form-control" placeholder="Enter business type and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'businessType')">
+                          (keydown.enter)="handleEnterKey($event, 'typeOfCompany')">
                       </div>
                     </div>
                   </div>

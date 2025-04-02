@@ -11,275 +11,291 @@
       <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm" autocomplete="off" novalidate>
         <div class="row">
           <div class="col-12">
-            <div class="row">
-              <!-- Company Details -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.companyName" name="companyName" class="form-control" placeholder="Enter company name" id="companyName">
+            <div class="card mb-4">
+              <div class="card-body">
+                <!-- Company Details -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="text-primary mb-3">Company Details</h5>
                   </div>
-                </div>
-              </div>
-
-              <!-- <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="logo" class="col-sm-4 col-form-label">Company Logo URL</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.logo" name="logo" type="text" class="form-control" placeholder="Enter logo URL" id="logo">
-                  </div>
-                </div>
-              </div> -->
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="website" class="col-sm-4 col-form-label">Company Website</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.website" name="website" type="text" class="form-control" placeholder="Enter company website" id="website">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.companyAddress" name="companyAddress" type="text" class="form-control" placeholder="Enter company address" id="companyAddress">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="country" class="col-sm-4 col-form-label">Country</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.country" name="country" type="text" class="form-control" placeholder="Enter country" id="country">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="email" class="col-sm-4 col-form-label">Contact Email</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.email" name="email" type="text" class="form-control" placeholder="Enter contact email" id="email">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="phone" class="col-sm-4 col-form-label">Contact Number</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.companyContactNumber" name="phone" type="text" class="form-control" placeholder="Enter contact number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="phone">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="yearEstablishment" class="col-sm-4 col-form-label">Year Established</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.yearOfEstablishment" name="yearOfEstablishment" type="date" class="form-control" id="yearEstablishment">
-                  </div>
-                </div>
-              </div>
-
-              <!-- POC Details -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_name" class="col-sm-4 col-form-label">POC Name</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.poc_name" name="poc_name" type="text" class="form-control" placeholder="Enter POC name" id="poc_name">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.poc_phone" name="poc_phone" type="text" class="form-control" placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_email" class="col-sm-4 col-form-label">POC Email</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.poc_email" name="poc_email" type="text" class="form-control" placeholder="Enter POC email" id="poc_email">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_role" class="col-sm-4 col-form-label">POC Role</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.poc_role" name="poc_role" type="text" class="form-control" placeholder="Enter POC role" id="poc_role">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Business Type -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="businessType" class="col-sm-4 col-form-label">Business Type</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let type of companyForm.businessType; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ type }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('businessType', i)"></button>
-                        </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.companyName" name="companyName" class="form-control" placeholder="Enter company name" id="companyName">
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter business type and press Enter" (keydown.enter)="handleEnterKey($event, 'businessType')">
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="logo" class="col-sm-4 col-form-label">Company Logo URL</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.logo" name="logo" type="text" class="form-control" placeholder="Enter logo URL" id="logo">
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="website" class="col-sm-4 col-form-label">Company Website</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.website" name="website" type="text" class="form-control" placeholder="Enter company website" id="website">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.companyAddress" name="companyAddress" type="text" class="form-control" placeholder="Enter company address" id="companyAddress">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="country" class="col-sm-4 col-form-label">Country</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.country" name="country" type="text" class="form-control" placeholder="Enter country" id="country">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="email" class="col-sm-4 col-form-label">Contact Email</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.email" name="email" type="text" class="form-control" placeholder="Enter contact email" id="email">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="phone" class="col-sm-4 col-form-label">Contact Number</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.companyContactNumber" name="phone" type="text" class="form-control" placeholder="Enter contact number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="phone">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="yearEstablishment" class="col-sm-4 col-form-label">Year Established</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.yearOfEstablishment" name="yearOfEstablishment" type="date" class="form-control" [max]="today" id="yearEstablishment">
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Industry Focus -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="industryFocus" class="col-sm-4 col-form-label">Industry Focus</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let industry of companyForm.industryFocus; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ industry }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industryFocus', i)"></button>
-                        </div>
+                <!-- POC Details -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="text-primary mb-3">POC Details</h5>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="poc_name" class="col-sm-4 col-form-label">POC Name</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.poc_name" name="poc_name" type="text" class="form-control" placeholder="Enter POC name" id="poc_name">
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter industry focus and press Enter" (keydown.enter)="handleEnterKey($event, 'industryFocus')">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.poc_phone" name="poc_phone" type="text" class="form-control" placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="poc_email" class="col-sm-4 col-form-label">POC Email</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.poc_email" name="poc_email" type="text" class="form-control" placeholder="Enter POC email" id="poc_email">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="poc_role" class="col-sm-4 col-form-label">POC Role</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.poc_role" name="poc_role" type="text" class="form-control" placeholder="Enter POC role" id="poc_role">
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="employeeCount" class="col-sm-4 col-form-label">Company Size</label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)" id="employeeCount">
+                <!-- Business Details -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="text-primary mb-3">Business Details</h5>
                   </div>
-                </div>
-              </div>
-
-              <!-- Certifications -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="certifications" class="col-sm-4 col-form-label">Certifications</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let cert of companyForm.certifications; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ cert }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('certifications', i)"></button>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter certification and press Enter" (keydown.enter)="handleEnterKey($event, 'certifications')">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Expertise -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <span class="badge bg-primary me-2">{{ expertise.name }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                        </div>
-                        <div class="ms-3">
-                          <div *ngFor="let sub of expertise.subExpertise; let j = index" class="d-flex align-items-center mb-1">
-                            <span class="badge bg-secondary me-2">{{ sub }}</span>
-                            <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="typeOfCompany" class="col-sm-4 col-form-label">Business Type</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let type of companyForm.typeOfCompany; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ type }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('typeOfCompany', i)"></button>
+                            </div>
                           </div>
                           <div class="mt-2">
-                            <input type="text" class="form-control" [(ngModel)]="currentSubExpertise" name="subExpertise_{{i}}" placeholder="Enter sub-expertise and press Enter" (keydown.enter)="$event.preventDefault(); addSubExpertise(i); currentSubExpertise=''">
+                            <input type="text" class="form-control" placeholder="Enter business type and press Enter" (keydown.enter)="handleEnterKey($event, 'typeOfCompany')">
                           </div>
                         </div>
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" [(ngModel)]="currentExpertise" name="expertiseName" placeholder="Enter expertise name and press Enter" (keydown.enter)="$event.preventDefault(); addExpertise(); currentExpertise=''">
-                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <!-- Category -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="category" class="col-sm-4 col-form-label">Category</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let cat of companyForm.category; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ cat }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('category', i)"></button>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="industryFocus" class="col-sm-4 col-form-label">Industry Focus</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let industry of companyForm.industryFocus; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ industry }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industryFocus', i)"></button>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" placeholder="Enter industry focus and press Enter" (keydown.enter)="handleEnterKey($event, 'industryFocus')">
+                          </div>
                         </div>
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter category and press Enter" (keydown.enter)="handleEnterKey($event, 'category')">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="employeeCount" class="col-sm-4 col-form-label">Company Size</label>
+                      <div class="col-sm-8">
+                        <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)" id="employeeCount">
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <!-- Technologies -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="technologies" class="col-sm-4 col-form-label">Technologies</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let tech of companyForm.technologies; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ tech }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologies', i)"></button>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="certifications" class="col-sm-4 col-form-label">Certifications</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let cert of companyForm.certifications; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ cert }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('certifications', i)"></button>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" placeholder="Enter certification and press Enter" (keydown.enter)="handleEnterKey($event, 'certifications')">
+                          </div>
                         </div>
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter technology and press Enter" (keydown.enter)="handleEnterKey($event, 'technologies')">
-                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <!-- Key Clients -->
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="keyClients" class="col-sm-4 col-form-label">Key Clients</label>
-                  <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let client of companyForm.keyClients; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ client }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('keyClients', i)"></button>
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                              <span class="badge bg-primary me-2">{{ expertise.name }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                            </div>
+                            <div class="ms-3">
+                              <div *ngFor="let sub of expertise.subExpertise; let j = index" class="d-flex align-items-center mb-1">
+                                <span class="badge bg-secondary me-2">{{ sub }}</span>
+                                <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
+                              </div>
+                              <div class="mt-2">
+                                <input type="text" class="form-control" [(ngModel)]="currentSubExpertise" name="subExpertise_{{i}}" placeholder="Enter sub-expertise and press Enter" (keydown.enter)="$event.preventDefault(); addSubExpertise(i); currentSubExpertise=''">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" [(ngModel)]="currentExpertise" name="expertiseName" placeholder="Enter expertise name and press Enter" (keydown.enter)="$event.preventDefault(); addExpertise(); currentExpertise=''">
+                          </div>
                         </div>
                       </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter key client and press Enter" (keydown.enter)="handleEnterKey($event, 'keyClients')">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="category" class="col-sm-4 col-form-label">Category</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let cat of companyForm.category; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ cat }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('category', i)"></button>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" placeholder="Enter category and press Enter" (keydown.enter)="handleEnterKey($event, 'category')">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="row">
+                      <label for="technologies" class="col-sm-4 col-form-label">Technologies</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let tech of companyForm.technologies; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ tech }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologies', i)"></button>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" placeholder="Enter technology and press Enter" (keydown.enter)="handleEnterKey($event, 'technologies')">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Client Information -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="text-primary mb-3">Client Information</h5>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <div class="row">
+                      <label for="keyClients" class="col-sm-4 col-form-label">Key Clients</label>
+                      <div class="col-sm-8">
+                        <div class="form-control p-2">
+                          <div *ngFor="let client of companyForm.keyClients; let i = index" class="mb-2">
+                            <div class="d-flex align-items-center">
+                              <span class="badge bg-primary me-2">{{ client }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeArrayItem('keyClients', i)"></button>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <input type="text" class="form-control" placeholder="Enter key client and press Enter" (keydown.enter)="handleEnterKey($event, 'keyClients')">
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

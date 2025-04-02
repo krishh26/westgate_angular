@@ -18,6 +18,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   currentExpertise: string = '';
   currentSubExpertise: string = '';
   randomString: string = '';
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private superadminService: SuperadminService,
@@ -41,7 +42,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       poc_phone: '',
       poc_email: '',
       poc_role: '',
-      businessType: [],
+      typeOfCompany: [],
       industryFocus: [],
       employeeCount: '',
       certifications: [],
@@ -92,6 +93,10 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.companyForm.yearOfEstablishment) {
+      const date = new Date(this.companyForm.yearOfEstablishment);
+      this.companyForm.yearOfEstablishment = date.toISOString().split('T')[0];
+    }
     console.log('Submitting Data:', this.companyForm);
     this.superadminService.supplierregister(this.companyForm).subscribe((response) => {
       if (response?.status === true) {
