@@ -61,10 +61,10 @@
                   <label class="form-label">Company Name</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.companyName" readonly>
                 </div>
-                <div class="col-md-6 mb-3">
+                <!-- <div class="col-md-6 mb-3">
                   <label class="form-label">Logo URL</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.logo" readonly>
-                </div>
+                </div> -->
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Website</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.website" readonly>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.phone" readonly>
+                  <input type="text" class="form-control" [value]="supplierDetails?.poc_phone" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Year of Establishment</label>
@@ -133,7 +133,7 @@
                   <label class="form-label">Industry Focus</label>
                   <div class="border rounded p-3">
                     <ul class="list-unstyled mb-0">
-                      <li *ngFor="let industry of supplierDetails?.industryFocus" class="badge bg-primary me-2 mb-2">
+                      <li *ngFor="let industry of supplierDetails?.industry_Sector" class="badge bg-primary me-2 mb-2">
                         {{ industry }}
                       </li>
                     </ul>
@@ -172,7 +172,7 @@
                   <label class="form-label">Category</label>
                   <div class="border rounded p-3">
                     <ul class="list-unstyled mb-0">
-                      <li *ngFor="let cat of supplierDetails?.category" class="badge bg-primary me-2 mb-2">
+                      <li *ngFor="let cat of supplierDetails?.categoryList" class="badge bg-primary me-2 mb-2">
                         {{ cat }}
                       </li>
                     </ul>
@@ -182,7 +182,7 @@
                   <label class="form-label">Technologies</label>
                   <div class="border rounded p-3">
                     <ul class="list-unstyled mb-0">
-                      <li *ngFor="let tech of supplierDetails?.technologies" class="badge bg-primary me-2 mb-2">
+                      <li *ngFor="let tech of supplierDetails?.technologyStack" class="badge bg-primary me-2 mb-2">
                         {{ tech }}
                       </li>
                     </ul>

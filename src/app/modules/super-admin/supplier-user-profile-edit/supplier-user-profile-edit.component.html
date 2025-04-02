@@ -173,18 +173,18 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="industryFocus" class="col-sm-4 col-form-label">Industry Focus</label>
+                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Focus</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <div *ngFor="let industry of supplierDetails.industryFocus; let i = index" class="mb-2">
+                      <div *ngFor="let industry of supplierDetails.industry_Sector; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ industry }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industryFocus', i)"></button>
+                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industry_Sector', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
                         <input type="text" class="form-control" placeholder="Enter industry focus and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'industryFocus')">
+                          (keydown.enter)="handleEnterKey($event, 'industry_Sector')">
                       </div>
                     </div>
                   </div>
@@ -255,18 +255,18 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="category" class="col-sm-4 col-form-label">Category</label>
+                  <label for="categoryList" class="col-sm-4 col-form-label">Category</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <div *ngFor="let cat of supplierDetails.category; let i = index" class="mb-2">
+                      <div *ngFor="let cat of supplierDetails.categoryList; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ cat }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('category', i)"></button>
+                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('categoryList', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter category and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'category')">
+                        <input type="text" class="form-control" placeholder="Enter categoryList and press Enter"
+                          (keydown.enter)="handleEnterKey($event, 'categoryList')">
                       </div>
                     </div>
                   </div>
@@ -275,18 +275,18 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="technologies" class="col-sm-4 col-form-label">Technologies</label>
+                  <label for="technologyStack" class="col-sm-4 col-form-label">Technologies</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <div *ngFor="let tech of supplierDetails.technologies; let i = index" class="mb-2">
+                      <div *ngFor="let tech of supplierDetails.technologyStack; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ tech }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologies', i)"></button>
+                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologyStack', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
                         <input type="text" class="form-control" placeholder="Enter technology and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'technologies')">
+                          (keydown.enter)="handleEnterKey($event, 'technologyStack')">
                       </div>
                     </div>
                   </div>
