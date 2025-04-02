@@ -58,7 +58,7 @@
           <thead>
             <tr>
               <th>Full Name</th>
-              <th>Releted Roles</th>
+              <th>Roles</th>
               <th>Experience</th>
               <th>Technical Skills</th>
               <th>Supplier Name</th>
@@ -70,12 +70,10 @@
               <td>{{candidate?.fullName}}</td>
               <td>
                 <div class="d-flex flex-wrap gap-1">
-                  <span *ngIf="candidate?.otherRole && candidate.otherRole.length > 0">
-                    <span *ngFor="let subRole of candidate.otherRole">
-                      <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
-                    </span>
+                  <span *ngFor="let role of candidate?.roleId">
+                    <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{role.name}}</span>
                   </span>
-                  <span *ngIf="!candidate?.otherRole || candidate.otherRole.length === 0">-</span>
+                  <span *ngIf="!candidate?.roleId || candidate.roleId.length === 0">-</span>
                 </div>
               </td>
               <td>{{candidate?.totalExperience}} years</td>
