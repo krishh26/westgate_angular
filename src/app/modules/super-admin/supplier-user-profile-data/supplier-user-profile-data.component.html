@@ -206,6 +206,34 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Status Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Status Information</h5>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Current Status</label>
+                  <div class="d-flex align-items-center">
+                    <span class="badge" [ngClass]="supplierDetails?.active ? 'bg-success' : 'bg-danger'">
+                      {{supplierDetails?.active ? 'Active' : 'Inactive'}}
+                    </span>
+                  </div>
+                </div>
+                <!-- <div class="col-md-4 mb-3">
+                  <label class="form-label">Active Since</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.activeSince || 'N/A'" readonly>
+                </div> -->
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Status Details</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.activeStatus || 'N/A'" readonly>
+                </div>
+                <div class="col-md-4 mb-3" *ngIf="!supplierDetails?.active">
+                  <label class="form-label">Inactive Date</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.inactiveDate | date:'dd/MM/yyyy HH:mm'" readonly>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
