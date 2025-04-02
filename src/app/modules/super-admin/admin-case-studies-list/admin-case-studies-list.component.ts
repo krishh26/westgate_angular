@@ -9,6 +9,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-admin-case-studies-list',
@@ -28,6 +29,7 @@ export class AdminCaseStudiesListComponent {
   imageSrc: any;
   selectedDocument: any;
   selectedCasestudy: any;
+  selectedCaseStudy: any = null;
   categoryList: any = [];
   supplierData: any = [];
   supplierID: string = '';
@@ -242,5 +244,14 @@ export class AdminCaseStudiesListComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  viewCaseStudyDetails(caseStudy: any) {
+    this.selectedCaseStudy = caseStudy;
+    // Open the modal using Bootstrap's modal
+    const modalElement = document.getElementById('caseStudyDetailsModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
 
 }
