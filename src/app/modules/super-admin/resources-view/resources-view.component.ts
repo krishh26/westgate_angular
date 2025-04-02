@@ -29,6 +29,9 @@ export class ResourcesViewComponent implements OnInit {
   totalRecords: number = pagination.totalRecords;
   loading: boolean = false;
   roleId: string = '';
+  activeFilter: boolean = false;
+  inactiveFilter: boolean = false;
+  metaData: any = {};
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -142,15 +145,17 @@ export class ResourcesViewComponent implements OnInit {
     this.spinner.show();
 
     // Create query string with parameters
-    const queryString = `?page=${this.page}&limit=${this.pagesize}${this.searchText ? `&search=${this.searchText}` : ''}`;
+    let queryString = `?page=${this.page}&limit=${this.pagesize}`;
+    if (this.searchText) queryString += `&search=${this.searchText}`;
+    if (this.activeFilter && !this.inactiveFilter) queryString += '&active=true';
+    if (!this.activeFilter && this.inactiveFilter) queryString += '&active=false';
 
     this.superService.getCandidatesByRole(this.roleId + queryString).subscribe({
-      next: (response) => {
-        if (response?.status) {
-          this.candidatesList = response.data || [];
-          this.totalRecords = response.totalRecords || 0;
-        } else {
-          this.notificationService.showError('Failed to fetch candidates data');
+      next: (res: any) => {
+        if (res.status) {
+          this.candidatesList = res.data;
+          this.metaData = res.meta_data;
+          this.totalRecords = res.meta_data.totalCandidates;
         }
         this.loading = false;
         this.spinner.hide();
@@ -221,6 +226,12 @@ export class ResourcesViewComponent implements OnInit {
       },
       queryParamsHandling: 'merge'
     });
+  }
+
+  onFilterChange() {
+    this.page = 1;
+    this.updateUrlWithParams();
+    this.getRoleWiseCandidates();
   }
 
   // Update ngOnDestroy to clean up if needed
