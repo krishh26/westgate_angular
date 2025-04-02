@@ -49,7 +49,7 @@
               </td>
             </tr>
             <tr
-              *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+              *ngFor="let item of expertiseList">
               <td>{{ item }}</td>
               <!-- <td>
                 <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />
