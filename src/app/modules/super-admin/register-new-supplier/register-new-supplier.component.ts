@@ -35,7 +35,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       companyAddress: '',
       country: '',
       email: '',
-      phone: '',
+      companyContactNumber: '',
       yearOfEstablishment: '',
       poc_name: '',
       poc_phone: '',

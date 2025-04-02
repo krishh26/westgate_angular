@@ -16,7 +16,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
     companyAddress: '',
     country: '',
     email: '',
-    phone: '',
+    companyContactNumber: '',
     yearOfEstablishment: '',
     poc_name: '',
     poc_phone: '',

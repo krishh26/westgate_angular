@@ -83,11 +83,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_phone" readonly>
+                  <input type="text" class="form-control" [value]="supplierDetails?.companyContactNumber" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Year of Establishment</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment" readonly>
+                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" readonly>
                 </div>
               </div>
 
@@ -159,11 +159,11 @@
                     <ul class="list-unstyled mb-0">
                       <li *ngFor="let exp of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
                         {{ exp.name }}
-                        <ul *ngIf="exp.subExpertise && exp.subExpertise.length" class="list-unstyled mt-2">
+                        <!-- <ul *ngIf="exp.subExpertise && exp.subExpertise.length" class="list-unstyled mt-2">
                           <li *ngFor="let sub of exp.subExpertise" class="badge bg-secondary me-2 mb-2">
                             {{ sub }}
                           </li>
-                        </ul>
+                        </ul> -->
                       </li>
                     </ul>
                   </div>
