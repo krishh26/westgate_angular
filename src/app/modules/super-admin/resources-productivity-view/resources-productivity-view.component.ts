@@ -1,14 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { default as Annotation } from 'chartjs-plugin-annotation';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-resources-productivity-view',
   templateUrl: './resources-productivity-view.component.html',
   styleUrls: ['./resources-productivity-view.component.scss']
 })
-export class ResourcesProductivityViewComponent implements OnInit {
+export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
+  showLoader: boolean = false;
+  displayedUsers: any[] = [];
+  loginUser: any;
+  selectedUserIds: number[] = [];
+  userList: any = [];
+  showAll = false;
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [
       'January',
@@ -110,11 +120,18 @@ export class ResourcesProductivityViewComponent implements OnInit {
   public lineChartType: ChartType = 'bar' as const;
   private chart2!: Chart;
 
-  constructor() {
+  constructor(
+    private projectManagerService: ProjectManagerService,
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
     Chart.register(Annotation);
   }
 
   ngOnInit(): void {
+    this.getUserAllList();
     // First chart
     const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
     const existingChart1 = Chart.getChart(canvas1);
@@ -138,6 +155,49 @@ export class ResourcesProductivityViewComponent implements OnInit {
       data: this.interactiveChartData,
       options: this.interactiveChartOptions
     });
+  }
+
+  toggleView() {
+    this.showAll = !this.showAll;
+    this.displayedUsers = this.showAll
+      ? this.userList
+      : this.userList.slice(0, 7);
+  }
+
+
+  toggleUserSelection(userId: number): void {
+    const index = this.selectedUserIds.indexOf(userId);
+    if (index > -1) {
+      this.selectedUserIds.splice(index, 1);
+    } else {
+      this.selectedUserIds.push(userId);
+    }
+    // this.getTask();
+  }
+
+
+  getUserAllList(priorityType: string = '', type: string = '') {
+    this.showLoader = true;
+    const taskcount = true;
+    const taskPage = 1;
+
+    this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError('Something went wrong!');
+      }
+    );
   }
 
   private generateRandomData(): number[] {
@@ -187,6 +247,21 @@ export class ResourcesProductivityViewComponent implements OnInit {
         dataset.data.pop();
       });
       this.chart2.update();
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up chart instances on component destruction
+    const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
+    const existingChart1 = Chart.getChart(canvas1);
+    if (existingChart1) {
+      existingChart1.destroy();
+    }
+
+    const canvas2 = document.getElementById('productivityChart2') as HTMLCanvasElement;
+    const existingChart2 = Chart.getChart(canvas2);
+    if (existingChart2) {
+      existingChart2.destroy();
     }
   }
 }

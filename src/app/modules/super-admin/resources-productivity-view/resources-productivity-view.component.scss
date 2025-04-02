@@ -1,3 +1,76 @@
+ul.taskuserList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #F5F5F5;
+    border: 1px solid #D9D9D9;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 10px;
+    margin-bottom: 15px;
+
+    span {
+      cursor: pointer;
+      &.selected-user {
+        color: #1890ff;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: #1890ff;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+ul.Listgroup {
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0 22px;
+  list-style-type: none;
+}
+
+ul.Listgroup li {
+  display: block;
+  padding: 10px 0;
+}
+
+ul.Listgroup li .action-mark {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+}
+
+ul.todo-actionList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.todo-actionList li {
+  display: block;
+}
+
+ul.todo-actionList li a {
+  padding: 10px 15px;
+  background-color: #FFF;
+  color: #303030;
+  margin-bottom: 5px;
+  display: block;
+}
+
+ul.todo-actionList li a:hover {
+  color: #0d6efd;
+}
+
 @media (min-width: 320px) and (max-width: 767px) {
   ul.projects-nav-tab {
     display: block;

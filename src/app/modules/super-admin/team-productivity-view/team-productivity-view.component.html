@@ -16,20 +16,33 @@
       </nav>
     </div>
   </div>
-    <div class="container-fluid">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h4 class="text-theme mb-4"><strong>Resource Productivity Overview</strong></h4>
+        <h4 class="text-theme mb-4"><strong>Team Productivity View</strong></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-12" style="cursor: pointer;">
+        <!-- User List -->
+        <ul class="taskuserList">
+          <li *ngFor="let user of displayedUsers">
+            <span [ngClass]="{
+                'selected-user': selectedUserIds.includes(user._id)
+              }" (click)="toggleUserSelection(user._id)">
+              {{ user.userName }} - {{ user?.taskcount }}
+            </span>
+          </li>
+          <!-- View More / View Less Link -->
+          <li *ngIf="userList.length > 7">
+            <a href="javascript:;" (click)="toggleView()">
+              {{ showAll ? "- View Less" : "+ View More" }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="row mb-4">
-      <!-- <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <canvas id="teamProductivityChart"></canvas>
-          </div>
-        </div>
-      </div> -->
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
@@ -40,7 +53,7 @@
               <button class="btn btn-sm btn-warning me-2" (click)="removeDataset()">Remove Dataset</button>
               <button class="btn btn-sm btn-danger" (click)="removeData()">Remove Data</button>
             </div>
-            <canvas id="teamProductivityChart2"></canvas>
+            <canvas id="teamProductivityChart"></canvas>
           </div>
         </div>
       </div>

@@ -20,7 +20,27 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h4 class="text-theme mb-4"><strong>Resource Productivity Overview</strong></h4>
+        <h4 class="text-theme mb-4"><strong>Resource Productivity View</strong></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xl-12 col-12" style="cursor: pointer;">
+        <!-- User List -->
+        <ul class="taskuserList">
+          <li *ngFor="let user of displayedUsers">
+            <span [ngClass]="{
+                'selected-user': selectedUserIds.includes(user._id)
+              }" (click)="toggleUserSelection(user._id)">
+              {{ user.userName }} - {{ user?.taskcount }}
+            </span>
+          </li>
+          <!-- View More / View Less Link -->
+          <li *ngIf="userList.length > 7">
+            <a href="javascript:;" (click)="toggleView()">
+              {{ showAll ? "- View Less" : "+ View More" }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="row mb-4">

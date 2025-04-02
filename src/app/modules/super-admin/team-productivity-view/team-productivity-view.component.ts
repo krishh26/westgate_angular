@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { default as Annotation } from 'chartjs-plugin-annotation';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-team-productivity-view',
@@ -8,6 +12,12 @@ import { default as Annotation } from 'chartjs-plugin-annotation';
   styleUrls: ['./team-productivity-view.component.scss']
 })
 export class TeamProductivityViewComponent implements OnInit, OnDestroy {
+  showLoader: boolean = false;
+  displayedUsers: any[] = [];
+  loginUser: any;
+  selectedUserIds: number[] = [];
+  userList: any = [];
+  showAll = false;
 
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [
@@ -110,11 +120,18 @@ export class TeamProductivityViewComponent implements OnInit, OnDestroy {
   public lineChartType: ChartType = 'bar' as const;
   private chart2!: Chart;
 
-  constructor() {
+  constructor(
+    private projectManagerService: ProjectManagerService,
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder
+  ) {
+    this.loginUser = this.localStorageService.getLogger();
     Chart.register(Annotation);
   }
 
   ngOnInit(): void {
+    this.getUserAllList();
     // First chart
     const canvas1 = document.getElementById('teamProductivityChart') as HTMLCanvasElement;
     const existingChart1 = Chart.getChart(canvas1);
@@ -202,5 +219,43 @@ export class TeamProductivityViewComponent implements OnInit, OnDestroy {
       });
       this.chart2.update();
     }
+  }
+
+  toggleView() {
+    this.showAll = !this.showAll;
+    this.displayedUsers = this.showAll ? this.userList : this.userList.slice(0, 7);
+  }
+
+  toggleUserSelection(userId: number): void {
+    const index = this.selectedUserIds.indexOf(userId);
+    if (index > -1) {
+      this.selectedUserIds.splice(index, 1);
+    } else {
+      this.selectedUserIds.push(userId);
+    }
+  }
+
+  getUserAllList(priorityType: string = '', type: string = '') {
+    this.showLoader = true;
+    const taskcount = true;
+    const taskPage = 1;
+
+    this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.displayedUsers = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError('Something went wrong!');
+      }
+    );
   }
 }
