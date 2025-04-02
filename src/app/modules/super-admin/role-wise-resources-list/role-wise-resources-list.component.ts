@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-role-wise-resources-list',
@@ -22,7 +24,8 @@ export class RoleWiseResourcesListComponent implements OnInit {
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -79,5 +82,44 @@ export class RoleWiseResourcesListComponent implements OnInit {
   applyDateFilter() {
     this.page = 1;
     this.getRolesList();
+  }
+
+  deleteRole(roleId: string) {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superadminService.deleteRole(roleId).subscribe({
+          next: (response: any) => {
+            if (response && response.status) {
+              this.notificationService.showSuccess('Role deleted successfully');
+              this.getRolesList(); // Refresh the list
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete role');
+            }
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting the role');
+          }
+        });
+      }
+    });
+  }
+
+  editRole(roleId: string) {
+    const roleData = this.rolesList.find(role => role._id === roleId);
+    console.log('Complete role data:', roleData); // Log complete data
+
+    // Store the complete role data in state
+    this.router.navigate(['/super-admin/edit-roles', roleId], {
+      state: { roleData: roleData } // Pass the complete roleData object without modification
+    });
   }
 }

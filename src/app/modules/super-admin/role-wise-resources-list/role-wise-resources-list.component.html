@@ -33,7 +33,7 @@
           </div> -->
           <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4">
             <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
-              <i class="bi bi-person-badge"></i> Add Role
+              <i class="bi bi-person-badge"></i> Roles
             </button>
           </div>
         </div>
@@ -80,10 +80,6 @@
               <th>Role</th>
               <th>Releted Role</th>
               <th>Created Date</th>
-              <!-- <th>Total Supplier</th>
-              <th>Active Supplier</th>
-              <th>Total Candidate</th>
-              <th>Active Candidate</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -109,13 +105,17 @@
                 </div>
               </td>
               <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <!-- <td>{{role?.totalSuppliersCount}}</td>
-              <td>{{role?.activeSuppliersCount}}</td>
-              <td>{{role?.totalCandidatesCount}}</td>
-              <td>{{role?.activeCandidatesCount}}</td> -->
-              <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View</button>
+              <td class="text-end">
+                <div class="d-flex justify-content-end gap-2">
+                  <button class="btn btn-sm btn-primary" (click)="editRole(role?._id)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteRole(role?._id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
+
             </tr>
           </tbody>
         </table>

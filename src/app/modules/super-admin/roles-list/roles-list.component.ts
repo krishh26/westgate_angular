@@ -44,6 +44,13 @@ export class RolesListComponent implements OnInit {
     });
   }
 
+  viewRoleDetails(role: any) {
+    // Navigate to resources view with role ID
+    this.router.navigate(['/super-admin/resources-view'], {
+      queryParams: { roleId: role._id }
+    });
+  }
+
   deleteRole(roleId: string) {
 
     Swal.fire({
