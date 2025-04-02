@@ -60,14 +60,11 @@
           <thead>
             <tr>
               <th>Full Name</th>
+              <th>Roles</th>
               <th>Experience</th>
-              <th>Qualification</th>
-              <th>Gender</th>
-              <th>Nationality</th>
               <th>Technical Skills</th>
               <th>Languages</th>
               <th>Hourly Rate</th>
-              <th>Working Hours</th>
               <th>Available From</th>
               <th>Actions</th>
             </tr>
@@ -83,10 +80,12 @@
             <tr
               *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{candidate?.fullName}}</td>
+              <td>
+                <span *ngFor="let role of candidate?.roleId" class="badge bg-primary me-1">
+                  {{role.name}}
+                </span>
+              </td>
               <td>{{candidate?.totalExperience}} years</td>
-              <td>{{candidate?.highestQualification}} ({{candidate?.yearOfGraduation}})</td>
-              <td>{{candidate?.gender}}</td>
-              <td>{{candidate?.nationality}}</td>
               <td>
                 <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
                   {{skill}}{{!last ? ', ' : ''}}
@@ -98,10 +97,9 @@
                 </span>
               </td>
               <td>${{candidate?.hourlyRate}}</td>
-              <td>{{candidate?.workingHoursPerWeek}} hrs/week</td>
               <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td>
               <td>
-                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i class="bi bi-eye"></i> View</button>
                 <button class="btn btn-sm btn-primary ms-2" (click)="editCandidate(candidate)">
                   <i class="bi bi-pencil"></i>
                 </button>

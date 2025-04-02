@@ -78,7 +78,7 @@
             <tr
               *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{ item?.expertise }}</td>
-              <td>{{ item?.totalSubExpertise || 0 }}</td>
+              <td>{{ item?.subExpertiseCount || 0 }}</td>
               <td>{{ item?.totalSupplierCount || 0 }}</td>
               <td>{{ item?.activeSupplierCount || 0 }}</td>
               <td>
