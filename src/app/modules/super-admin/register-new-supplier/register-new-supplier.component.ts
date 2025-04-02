@@ -29,17 +29,18 @@ export class RegisterNewSupplierComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyForm = {
-      phone: '',
-      email: '',
       companyName: '',
-      logo: '',
+      // logo: '',
       website: '',
       companyAddress: '',
       country: '',
-      contactEmail: '',
-      companyContactNumber: '',
+      email: '',
+      phone: '',
       yearOfEstablishment: '',
-      pocDetails: '',
+      poc_name: '',
+      poc_phone: '',
+      poc_email: '',
+      poc_role: '',
       businessType: [],
       industryFocus: [],
       employeeCount: '',
@@ -47,8 +48,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       expertise: [],
       category: [],
       technologies: [],
-      keyClients: [],
-      password: ''
+      keyClients: []
     };
   }
 
