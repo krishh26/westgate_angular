@@ -145,8 +145,9 @@ export class SuperAdminSupplierComponent {
     if (this.endDate) {
       payload.endDate = this.endDate;
     }
-    if (this.search) {
-      payload.searchText = this.search;
+    // Update search parameter handling
+    if (this.search && this.search.trim()) {
+      payload.search = this.search.trim();
     }
 
     this.superService.getSUpplierList(payload).subscribe(
