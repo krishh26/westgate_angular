@@ -58,7 +58,7 @@
           <thead>
             <tr>
               <th>Full Name</th>
-              <th>Job Title</th>
+              <th>Releted Roles</th>
               <th>Experience</th>
               <th>Technical Skills</th>
               <th>Supplier Name</th>
@@ -68,7 +68,16 @@
           <tbody>
             <tr *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{candidate?.fullName}}</td>
-              <td>{{candidate?.jobTitle}}</td>
+              <td>
+                <div class="d-flex flex-wrap gap-1">
+                  <span *ngIf="candidate?.otherRole && candidate.otherRole.length > 0">
+                    <span *ngFor="let subRole of candidate.otherRole">
+                      <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
+                    </span>
+                  </span>
+                  <span *ngIf="!candidate?.otherRole || candidate.otherRole.length === 0">-</span>
+                </div>
+              </td>
               <td>{{candidate?.totalExperience}} years</td>
               <td>
                 <div class="d-flex flex-wrap gap-1">
