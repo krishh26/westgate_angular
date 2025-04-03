@@ -15,6 +15,8 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { Location } from '@angular/common';
+import { Editor } from 'ngx-editor';
+import { Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-project-manager-project-details',
@@ -116,6 +118,19 @@ export class ProjectManagerProjectDetailsComponent {
   selectedDroppedAfterFeasibilityReason: string = '';
   westGetDocument: any[] = [];
 
+  feasibilityEditor: Editor = new Editor();
+  bidStatusEditor: Editor = new Editor();
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -149,6 +164,17 @@ export class ProjectManagerProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+    this.feasibilityEditor = new Editor();
+    this.bidStatusEditor = new Editor();
+  }
+
+  ngOnDestroy() {
+    if (this.feasibilityEditor) {
+      this.feasibilityEditor.destroy();
+    }
+    if (this.bidStatusEditor) {
+      this.bidStatusEditor.destroy();
+    }
   }
 
   addField() {
@@ -550,18 +576,20 @@ export class ProjectManagerProjectDetailsComponent {
       this.notificationService.showError('Please enter a status comment');
       return;
     }
-
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
-
-    this.commentData.push({
-      comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
-      bidManagerStatus: this.status,
-      userId: this.loginUser?._id,
-    });
-
-    // Reset the comment input field
+    const isDuplicate = this.commentData.some(
+      (comment) =>
+        comment.comment === this.bidManagerStatusComment.value &&
+        comment.bidManagerStatus === this.status
+    );
+    if (!isDuplicate) {
+      this.commentData.push({
+        comment: this.bidManagerStatusComment.value,
+        date: currentDate.toISOString(),
+        bidManagerStatus: this.status,
+        userId: this.loginUser?._id,
+      });
+    }
     this.bidManagerStatusComment.reset();
   }
 
@@ -606,6 +634,7 @@ export class ProjectManagerProjectDetailsComponent {
 
     this.feasibilityStatusComment.reset();
   }
+
 
   // Function for subcontract
   subContactChange(value: string) {
@@ -1042,26 +1071,25 @@ export class ProjectManagerProjectDetailsComponent {
 
   saveBidStatus(type?: string, contractEdit?: boolean) {
     let payload: any = {};
+
     if (!contractEdit) {
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
-      }
-
-      if (this.bidManagerStatusComment.value) {
-        return this.notificationService.showError(
-          'Please click the "Add" button to save your comment.'
-        );
       }
 
       // Check if the status has at least one comment
       const hasExistingComment = this.commentData.some(
         (item) => item.bidManagerStatus === this.status
       );
-      if (!hasExistingComment && !this.droppedStatusReasons.length) {
+
+      // Only show error if there's no existing comment, no new comment, and no dropped reasons
+      if (!hasExistingComment && !this.bidManagerStatusComment.value &&
+        !this.commentData.length && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
           'Please provide a bid comment for the selected status.'
         );
       }
+
       // Merge existing and new comments, removing duplicates
       const existingComments =
         this.projectDetails?.bidManagerStatusComment || [];
@@ -1125,7 +1153,7 @@ export class ProjectManagerProjectDetailsComponent {
               'Project updated successfully'
             );
             this.isEditing = false;
-            this.getProjectDetails();
+            this.getProjectDetails(); // Refresh project details after save
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to update project'
@@ -1178,16 +1206,11 @@ export class ProjectManagerProjectDetailsComponent {
         const hasExistingComment = this.feasibilityCommentData.some(
           (item) => item.status === this.feasibilityStatus
         );
-        if (!hasExistingComment && !this.feasibilityStatusComment.value) {
+
+        // Only show error if there's no existing comment and no new comment
+        if (!hasExistingComment && !this.feasibilityStatusComment.value && !this.feasibilityCommentData.length) {
           return this.notificationService.showError(
             'Please provide a feasibility comment for the selected status.'
-          );
-        }
-
-        // If a comment is filled but not added
-        if (this.feasibilityStatusComment.value) {
-          return this.notificationService.showError(
-            'Please click the "Add" button to save your comment.'
           );
         }
       } else {
@@ -1201,7 +1224,7 @@ export class ProjectManagerProjectDetailsComponent {
 
         if (errors.length > 0) {
           return this.notificationService.showError(
-            'Please provide a comments for the selected Reason.'
+            'Please provide comments for the selected Reason.'
           );
         }
       }

@@ -387,7 +387,7 @@
                       </small>
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
-                    <p class="mt-2">{{ item?.comment }}</p>
+                    <p class="mt-2" [innerHTML]="item?.comment"></p>
                   </div>
                 </div>
               </div>
@@ -416,8 +416,16 @@
               <!-- Add New Comment -->
               <ng-container>
                 <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="feasibilityStatus !== 'Fail'">
-                  <input type="text" class="form-control w-80" [formControl]="feasibilityStatusComment"
-                    placeholder="Add your comment" />
+                  <div class="NgxEditor__Wrapper flex-grow-1">
+                    <ngx-editor-menu [editor]="feasibilityEditor" [toolbar]="toolbar">
+                    </ngx-editor-menu>
+                    <ngx-editor
+                      [editor]="feasibilityEditor"
+                      [formControl]="feasibilityStatusComment"
+                      [placeholder]="'Type here...'"
+                      class="ngx-editor-textarea">
+                    </ngx-editor>
+                  </div>
                   <button class="btn btn-primary" type="button" (click)="pushFeasibilityStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
@@ -563,7 +571,7 @@
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong>
                       {{ item?.bidManagerStatus }}</small>
-                    <p class="mt-2">{{ item?.comment }}</p>
+                      <p class="mt-2" [innerHTML]="item?.comment"></p>
                   </div>
                 </div>
               </div>
@@ -591,15 +599,23 @@
 
               <!-- Add New Comment -->
               <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
-                  *ngIf="status !== 'Dropped after feasibility'">
-                  <input type="text" class="form-control w-80" [formControl]="bidManagerStatusComment"
-                    placeholder="Add your comment" />
+                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="status !== 'Dropped after feasibility'">
+                  <div class="NgxEditor__Wrapper flex-grow-1">
+                    <ngx-editor-menu [editor]="bidStatusEditor" [toolbar]="toolbar">
+                    </ngx-editor-menu>
+                    <ngx-editor
+                      [editor]="bidStatusEditor"
+                      [formControl]="bidManagerStatusComment"
+                      [placeholder]="'Type here...'"
+                      class="ngx-editor-textarea">
+                    </ngx-editor>
+                  </div>
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
               </ng-container>
+
               <!-- Dropper After Feasibility Specific Fields -->
               <ng-container>
                 <div *ngIf="status === 'Dropped after feasibility'" class="mt-4">

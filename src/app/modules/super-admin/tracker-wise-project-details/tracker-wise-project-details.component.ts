@@ -1783,7 +1783,7 @@ export class TrackerWiseProjectDetailsComponent {
 
       // Only show error if there's no existing comment, no new comment, and no dropped reasons
       if (!hasExistingComment && !this.bidManagerStatusComment.value &&
-          !this.commentData.length && !this.droppedStatusReasons.length) {
+        !this.commentData.length && !this.droppedStatusReasons.length) {
         return this.notificationService.showError(
           'Please provide a bid comment for the selected status.'
         );
