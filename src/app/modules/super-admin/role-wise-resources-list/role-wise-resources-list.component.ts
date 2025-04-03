@@ -20,6 +20,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   isToggled: boolean = false;
+  isLoading = false;
 
   constructor(
     private superadminService: SuperadminService,

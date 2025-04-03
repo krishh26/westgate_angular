@@ -72,15 +72,17 @@
         </div>
       </div>
 
-      <!-- Roles table -->
-      <div *ngIf="!loading && rolesList && rolesList.length > 0" class="table-responsive">
+       <!-- Roles table -->
+       <div *ngIf="!isLoading" class="table-responsive">
         <table class="table table-striped align-middle">
           <thead>
             <tr>
-              <th>Role</th>
-              <th>Releted Role</th>
-              <th>Created Date</th>
-              <th class="text-end">Actions</th>
+              <th>Role Name</th>
+              <th>Total Supplier</th>
+              <th>Active Supplier</th>
+              <th>Total Candidate</th>
+              <th>Active Candidate</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -91,38 +93,21 @@
               </td>
             </tr>
 
-            <tr
-              *ngFor="let role of rolesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+            <tr *ngFor="let role of rolesList">
               <td>{{role?.name}}</td>
+              <td>{{role?.totalSuppliersCount}}</td>
+              <td>{{role?.activeSuppliersCount}}</td>
+              <td>{{role?.activeSuppliersCount}}</td>
+              <td>{{role?.activeCandidatesCount}}</td>
               <td>
-                <div class="d-flex flex-wrap gap-1">
-                  <span *ngIf="role?.otherRole && role.otherRole.length > 0">
-                    <span *ngFor="let subRole of role.otherRole">
-                      <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
-                    </span>
-                  </span>
-                  <span *ngIf="!role?.otherRole || role.otherRole.length === 0">-</span>
-                </div>
+                <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View Resources</button>
               </td>
-              <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
-              <td class="text-end">
-                <div class="d-flex justify-content-end gap-2">
-                  <button class="btn btn-sm btn-primary" (click)="editRole(role?._id)">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" (click)="deleteRole(role?._id)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-
             </tr>
           </tbody>
         </table>
-        <div class="d-flex justify-content-center mt-3">
-          <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
-        </div>
       </div>
+
+
 
       <div *ngIf="!loading && (!rolesList || rolesList.length === 0)" class="text-center">
         <p>No roles found.</p>

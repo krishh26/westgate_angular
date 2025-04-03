@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 export class RolesListComponent implements OnInit {
   rolesList: any[] = [];
   isLoading = false;
+  page: number = 1;
+  pagesize: number = 10;
+  totalRecords: number = 0;
 
   constructor(
     private superService: SuperadminService,
@@ -23,6 +26,12 @@ export class RolesListComponent implements OnInit {
   ngOnInit(): void {
     this.getRolesList();
   }
+
+  pageChanged(event: any) {
+    this.page = event;
+    this.getRolesList();
+  }
+
 
   getRolesList() {
     this.isLoading = true;
