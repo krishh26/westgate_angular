@@ -13,10 +13,28 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
 import { Editor, Toolbar } from 'ngx-editor';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 @Component({
   selector: 'app-todo-task-view-page',
   templateUrl: './todo-task-view-page.component.html',
-  styleUrls: ['./todo-task-view-page.component.scss']
+  styleUrls: ['./todo-task-view-page.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        height: '*',
+        opacity: 1
+      })),
+      state('out', style({
+        height: '0',
+        opacity: 0,
+        overflow: 'hidden'
+      })),
+      transition('in => out', animate('300ms ease-out')),
+      transition('out => in', animate('300ms ease-in'))
+    ])
+  ]
 })
 export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
@@ -49,6 +67,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   isEditing = false;
   loginUser: any;
   type: any;
+  candidateList: any[] = [];
+  showSubtasks: boolean = false;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -91,6 +111,17 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   commentForm!: FormGroup;
   newComment: string = '';
 
+  subtasks: any[] = [];
+  newSubtask: any = {
+    name: '',
+    description: '',
+    dueDate: '',
+    assignedTo: null
+  };
+
+  // Add this property to store subtasks
+  subtasksList: any[] = []; // Initialize as empty array
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -101,7 +132,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -140,6 +172,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     this.commentForm = this.fb.group({
       description: ['', Validators.required]
     });
+
+    this.getCandidateList();
   }
 
   ngOnDestroy(): void {
@@ -159,6 +193,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
             if (task) {
               this.setupTaskDetails(task);
+              // Load subtasks after task details are loaded
+              this.getSubtasks(taskId);
               this.showLoader = false;
             } else {
               this.notificationService.showError('Task not found');
@@ -204,7 +240,6 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     };
   }
 
-  // Function to transform the data
   transformData = (data: any) => {
     let commentsData: any[] = [];
     if (!data) {
@@ -967,6 +1002,131 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   // Navigate back to the previous page
   goBack() {
     this.router.navigate([this.previousPage]);
+  }
+
+  isSubtaskValid(): boolean {
+    return this.newSubtask.name && this.newSubtask.dueDate && this.newSubtask.assignedTo;
+  }
+
+  addSubtask() {
+    if (this.isSubtaskValid()) {
+      // Format the date properly
+      const formattedDate = this.formatDate(this.newSubtask.dueDate);
+
+      const subtaskPayload = {
+        title: this.newSubtask.name,
+        description: this.newSubtask.description || '',
+        dueDate: formattedDate,
+        resources: [
+          {
+            candidateId: this.newSubtask.assignedTo
+          }
+        ]
+      };
+
+      console.log('Task ID:', this.modalTask._id);
+      console.log('Sending subtask payload:', subtaskPayload);
+
+      this.showLoader = true;
+      this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
+        (response: any) => {
+          console.log('Full server response:', response);
+          if (response?.status == true) {
+            this.notificationService.showSuccess('Subtask added successfully');
+            // Refresh the subtasks list
+            this.getSubtasks(this.modalTask._id);
+
+            // Reset form
+            this.newSubtask = {
+              name: '',
+              description: '',
+              dueDate: '',
+              assignedTo: null
+            };
+          } else {
+            console.error('Server error message:', response?.message);
+            this.notificationService.showError(response?.message || 'Failed to add subtask');
+          }
+          this.showLoader = false;
+        },
+        (error) => {
+          console.error('Full error object:', error);
+          console.error('Error status:', error?.status);
+          console.error('Error message:', error?.message);
+          console.error('Error details:', error?.error);
+          this.notificationService.showError(error?.error?.message || error?.message || 'Error adding subtask');
+          this.showLoader = false;
+        }
+      );
+    } else {
+      this.notificationService.showError('Please fill in all required fields');
+    }
+  }
+
+  editSubtask(subtask: any) {
+    // TODO: Implement edit functionality
+    // This could open a modal or inline edit form
+  }
+
+  deleteSubtask(subtask: any) {
+    // TODO: Call API to delete subtask
+    // this.todoService.deleteSubtask(subtask.id).subscribe(...)
+    this.subtasks = this.subtasks.filter(s => s.id !== subtask.id);
+  }
+
+  getCandidateList() {
+    this.showLoader = true;
+    this.superService.getCandidateList().subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.candidateList = response.data || [];
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch candidates');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Error fetching candidates');
+        this.showLoader = false;
+      }
+    );
+  }
+
+  toggleSubtasks() {
+    this.showSubtasks = !this.showSubtasks;
+  }
+
+  // Add this method to get subtasks
+  getSubtasks(taskId: string) {
+    this.showLoader = true;
+    this.superService.getSubtasks(taskId).subscribe(
+      (response: any) => {
+        console.log('Subtasks response:', response);
+        if (response?.status === true) {
+          this.subtasksList = response.data || [];
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching subtasks:', error);
+        this.notificationService.showError(error?.message || 'Error fetching subtasks');
+        this.showLoader = false;
+      }
+    );
+  }
+
+  // Add method to format date for display
+  formatDateForDisplay(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  }
+
+  // Add method to get candidate name by ID
+  getCandidateName(candidateId: string): string {
+    const candidate = this.candidateList.find(c => c._id === candidateId);
+    return candidate ? candidate.name : 'Unassigned';
   }
 
 }

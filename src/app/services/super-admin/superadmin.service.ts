@@ -45,7 +45,8 @@ export enum SuperAdminEndPoint {
   ROLES_DELETE = '/roles/delete',
   ROLES_CANDIDATES = '/roles/candidates',
   DELETE_CANDIDATE = '/candidate/delete',
-  CANDIDATE_UPDATE = '/candidate/update'
+  CANDIDATE_UPDATE = '/candidate/update',
+  GET_SUBTASKS = '/task/subtasks'
 }
 
 @Injectable({
@@ -481,6 +482,18 @@ export class SuperadminService {
   // Delete a comment
   deleteComment(commentId: string): Observable<any> {
     return this.httpClient.delete(`${this.baseUrl}/tasks/comments/${commentId}`);
+  }
+
+  addSubtask(taskId: string, subtaskData: any) {
+    return this.httpClient.post(`${this.baseUrl}/task/${taskId}/subtasks/add`, subtaskData);
+  }
+
+  getCandidateList() {
+    return this.httpClient.get(`${this.baseUrl}/candidate/get-list`);
+  }
+
+  getSubtasks(taskId: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}${SuperAdminEndPoint.GET_SUBTASKS}/${taskId}`);
   }
 
 }
