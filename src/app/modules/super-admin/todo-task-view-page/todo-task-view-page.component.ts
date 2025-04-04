@@ -1068,10 +1068,32 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     // This could open a modal or inline edit form
   }
 
-  deleteSubtask(subtask: any) {
-    // TODO: Call API to delete subtask
-    // this.todoService.deleteSubtask(subtask.id).subscribe(...)
-    this.subtasks = this.subtasks.filter(s => s.id !== subtask.id);
+  deleteSubtask(subtaskId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this subtask?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteSubtask(this.modalTask._id, subtaskId).subscribe(
+          (response: any) => {
+            if (response?.success == true) {
+              this.notificationService.showSuccess('Subtask deleted successfully');
+              this.getSubtasks(this.modalTask._id);
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete subtask');
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'Error deleting subtask');
+          }
+        );
+      }
+    });
   }
 
   getCandidateList() {

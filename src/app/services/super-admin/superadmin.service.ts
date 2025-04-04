@@ -496,4 +496,8 @@ export class SuperadminService {
     return this.httpClient.get<any>(`${this.baseUrl}${SuperAdminEndPoint.GET_SUBTASKS}/${taskId}`);
   }
 
+  deleteSubtask(taskId: string, subtaskId: string) {
+    return this.httpClient.delete(`${this.baseUrl}/task/${taskId}/subtasks/${subtaskId}`);
+  }
+
 }
