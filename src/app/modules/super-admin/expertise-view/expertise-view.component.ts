@@ -67,7 +67,7 @@ export class ExpertiseViewComponent {
     this.router.navigate(['/super-admin/sub-expertise-view'], {
       queryParams: {
         expertiseName: item.expertise,
-        subExpertiseList: JSON.stringify(item.subExpertise)
+        subExpertiseList: JSON.stringify(item.subExpertiseList)
       }
     });
   }

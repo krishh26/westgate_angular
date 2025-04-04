@@ -22,7 +22,6 @@ export class SubExpertiseViewComponent implements OnInit {
   pagesize = pagination.itemsPerPage;
   viewDocs: any;
   showLoader: boolean = false;
-  files: any = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -46,18 +45,10 @@ export class SubExpertiseViewComponent implements OnInit {
   }
 
   viewUploadedDocuments(subExpertise: any) {
-    console.log('Viewing documents for:', subExpertise.name);
-
-    this.viewDocs = this.files?.filter((file: any) => file?.subExpertise === subExpertise.name);
+    this.viewDocs = subExpertise.files || [];
 
     if (!this.viewDocs || this.viewDocs.length === 0) {
       this.notificationService.showInfo(`No files available for ${subExpertise.name}`);
-      this.viewDocs = [];
-
-      const modalElement = document.getElementById('viewAllDocuments');
-      if (modalElement) {
-        this.modalService.open(modalElement, { centered: true });
-      }
       return;
     }
 
