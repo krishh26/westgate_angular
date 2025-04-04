@@ -103,13 +103,16 @@
                   <div class="subtasks-list mt-4" *ngIf="subtasksList.length > 0">
                     <h5 class="mb-3">Subtasks List</h5>
                     <div class="row g-3">
-                      <div class="col-md-6" *ngFor="let subtask of subtasksList; let i = index">
+                      <div class="col-12" *ngFor="let subtask of subtasksList; let i = index">
                         <div class="subtask-card">
                           <div class="subtask-header" (click)="subtask.isExpanded = !subtask.isExpanded">
                             <div class="d-flex justify-content-between align-items-center">
                               <span class="subtask-title">{{subtask.title || 'Untitled Task'}}</span>
-                              <div class="d-flex align-items-center">
-                                <span class="due-date me-2">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
+                              <div class="d-flex align-items-center gap-3">
+                                <span class="assigned-to">
+                                  Assigned To: {{subtask.resources?.[0]?.candidateId?.fullName || 'Unassigned'}}
+                                </span>
+                                <span class="due-date">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
                                 <i class="bi" [ngClass]="subtask.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                               </div>
                             </div>
@@ -117,16 +120,12 @@
                           <div class="subtask-content" [class.expanded]="subtask.isExpanded">
                             <div class="subtask-details">
                               <p class="mb-2 text-muted" *ngIf="subtask.description">{{subtask.description}}</p>
-                              <div class="info-row">
+                              <!-- <div class="info-row">
                                 <p class="mb-1">
                                   <i class="bi bi-calendar me-2"></i>
                                   Due Date: {{formatDateForDisplay(subtask.dueDate)}}
                                 </p>
-                                <p class="mb-1">
-                                  <i class="bi bi-person me-2"></i>
-                                  Assigned to: {{subtask.resources?.[0]?.candidateId?.fullName || 'Unassigned'}}
-                                </p>
-                              </div>
+                              </div> -->
                               <div class="actions text-end mt-2">
                                 <button class="btn btn-sm btn-outline-danger" (click)="deleteSubtask(subtask._id)">
                                   <i class="bi bi-trash"></i>
