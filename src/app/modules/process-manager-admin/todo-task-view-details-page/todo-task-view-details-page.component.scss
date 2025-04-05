@@ -166,3 +166,227 @@
     padding-top: 15px;
   }
 }
+
+.detail-item {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.subtasks-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding: 1px;  // Prevent margin collapse
+}
+
+.subtask-item {
+  background-color: #DBF2D0;
+  border: 1px solid #c5e0b4;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  height: 100%;  // Ensure equal height in the row
+
+  &:hover {
+    background-color: lighten(#DBF2D0, 5%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  small {
+    font-size: 12px;
+    color: #4d4d4d;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-link {
+    padding: 0.25rem 0.5rem;
+    &:hover {
+      background-color: rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+  }
+}
+
+.subtasks-content {
+  .add-subtask-form {
+    background-color: #DBF2D0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #c5e0b4;
+
+    .custom-ng-select-option {
+      z-index: 1000;
+
+      ::ng-deep .ng-dropdown-panel {
+        z-index: 1001;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+    }
+
+    .form-control {
+      height: 38px;
+      background-color: white;
+      border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+      height: 38px;
+    }
+  }
+
+  .subtasks-list {
+    .subtask-card {
+      background-color: #DBF2D0;
+      border: 1px solid #c5e0b4;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 100%;
+
+      .subtask-header {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: darken(#DBF2D0, 5%);
+        }
+
+        .subtask-title {
+          font-weight: 500;
+          color: #0d6efd;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 200px;
+        }
+
+        .assigned-to {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+          margin-right: 1rem;
+        }
+
+        .due-date {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+        }
+
+        i {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          transition: transform 0.2s;
+        }
+      }
+
+      .subtask-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background-color: white;
+
+        &.expanded {
+          max-height: 500px;
+          transition: max-height 0.3s ease-in;
+        }
+
+        .subtask-details {
+          padding: 1rem;
+
+          p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #4d4d4d;
+          }
+
+          .info-row {
+            margin-bottom: 0.5rem;
+
+            i {
+              color: #6c757d;
+            }
+          }
+
+          .actions {
+            .btn-outline-danger {
+              padding: 0.25rem 0.5rem;
+
+              i {
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .subtasks-list {
+    .subtask-card {
+      .subtask-header {
+        .subtask-title {
+          max-width: 120px;
+        }
+
+        .assigned-to {
+          max-width: none;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Custom scrollbar for subtasks container
+.subtasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.subtasks-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.toggle-btn {
+  color: #4d4d4d;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #000;
+    transform: scale(1.1);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}

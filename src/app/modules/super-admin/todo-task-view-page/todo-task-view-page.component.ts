@@ -1031,7 +1031,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
         (response: any) => {
           console.log('Full server response:', response);
-          if (response?.status == true) {
+          if (response?.success == true) {
             this.notificationService.showSuccess('Subtask added successfully');
             // Refresh the subtasks list
             this.getSubtasks(this.modalTask._id);
@@ -1125,7 +1125,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       (response: any) => {
         console.log('Subtasks response:', response);
         if (response?.status === true) {
-          this.subtasksList = response.data || [];
+          this.subtasksList = response?.data || [];
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
         }

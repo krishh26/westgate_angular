@@ -21,8 +21,118 @@
             <div class="col-lg-8 col-xl-8 col-12 mob-mb1">
               <div class="mb-3">
                 <h6><strong>Description</strong></h6>
-                <p  [innerHTML]="modalTask?.discription"></p>
+                <p [innerHTML]="modalTask?.discription"></p>
                 <p *ngIf="!modalTask?.discription">No Record Found.</p>
+              </div>
+
+              <!-- Subtasks Section -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <h6 class="mb-0"><strong>Subtasks</strong></h6>
+                    <button class="btn btn-link p-0 toggle-btn" (click)="toggleSubtasks()">
+                      <i class="bi" [ngClass]="showSubtasks ? 'bi-dash-circle' : 'bi-plus-circle'"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div [@slideInOut]="showSubtasks ? 'in' : 'out'" class="subtasks-content">
+                  <!-- Existing Subtasks List -->
+                  <div class="subtasks-container mb-4">
+                    <div class="row g-2">
+                      <div class="col-md-6" *ngFor="let subtask of subtasks">
+                        <div class="subtask-item p-2 border rounded">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <p class="mb-1">{{ subtask.name }}</p>
+                              <small class="text-muted d-block">Due: {{ subtask.dueDate | date:'dd/MM/yyyy' }}</small>
+                              <small class="text-muted d-block">{{ subtask.assignedTo?.userName || 'Unassigned'
+                                }}</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                              <button class="btn btn-sm btn-link text-danger p-0" (click)="deleteSubtask(subtask)">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Add New Subtask Form -->
+                  <div class="add-subtask-form p-3">
+                    <div class="row g-2">
+                      <!-- First Row -->
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.name"
+                          placeholder="Subtask title">
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.description"
+                          placeholder="Subtask description">
+                      </div>
+                      <!-- Second Row -->
+                      <div class="col-md-6">
+                        <input type="date" class="form-control" [(ngModel)]="newSubtask.dueDate">
+                      </div>
+                      <div class="col-md-6">
+                        <ng-select class="form-select custom-ng-select-option" placeholder="Assign to"
+                          [items]="candidateList" bindLabel="fullName" bindValue="_id"
+                          [(ngModel)]="newSubtask.assignedTo">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <!-- Add Button -->
+                    <div class="mt-2">
+                      <button class="btn btn-primary w-100" (click)="addSubtask()" [disabled]="!isSubtaskValid()">
+                        Add Subtask
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- After the add subtask form -->
+                  <div class="subtasks-list mt-4" *ngIf="subtasksList.length > 0">
+                    <h5 class="mb-3">Subtasks List</h5>
+                    <div class="row g-3">
+                      <div class="col-12" *ngFor="let subtask of subtasksList; let i = index">
+                        <div class="subtask-card">
+                          <div class="subtask-header" (click)="subtask.isExpanded = !subtask.isExpanded">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <span class="subtask-title">{{subtask.title || 'Untitled Task'}}</span>
+                              <div class="d-flex align-items-center gap-3">
+                                <span class="assigned-to">
+                                  Assigned To: {{subtask.resources?.[0]?.candidateId?.fullName || 'Unassigned'}}
+                                </span>
+                                <span class="due-date">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
+                                <i class="bi" [ngClass]="subtask.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="subtask-content" [class.expanded]="subtask.isExpanded">
+                            <div class="subtask-details">
+                              <p class="mb-2 text-muted" *ngIf="subtask.description">{{subtask.description}}</p>
+                              <!-- <div class="info-row">
+                                              <p class="mb-1">
+                                                <i class="bi bi-calendar me-2"></i>
+                                                Due Date: {{formatDateForDisplay(subtask.dueDate)}}
+                                              </p>
+                                            </div> -->
+                              <div class="actions text-end mt-2">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteSubtask(subtask._id)">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center mt-4" *ngIf="subtasksList.length === 0">
+                    <p class="text-muted">No subtasks added yet</p>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3" *ngIf="modalTask?.project?.projectName">
@@ -67,8 +177,8 @@
                   <h6 class="mt-3"><i class="bi bi-pin-fill text-primary"></i> <strong>Pinned Comments</strong></h6>
                   <ul class="SecondarytaskList">
                     <li *ngFor="let comment of modalTask.datewiseComments.pinnedComments"
-                        class="comment-item p-3 pinned-comment"
-                        [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                      class="comment-item p-3 pinned-comment"
+                      [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
                       <div class="row align-items-center mb-2">
                         <div class="col">
                           <div class="d-flex justify-content-between">
@@ -84,7 +194,8 @@
                       </div>
                       <p class="comment-text" [innerHTML]="comment?.comment"></p>
                       <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                        <button class="btn btn-sm pin-btn"
+                          (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
                           <i class="bi bi-pin-fill text-primary"></i> Unpin
                         </button>
                       </div>
@@ -163,9 +274,9 @@
                   <!-- Assignee Section -->
                   <div class="col-12 col-md-6">
                     <label for="assignTo" class="form-label"><strong>Assignee:</strong></label>
-                    <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Assign User"
-                      [multiple]="true" bindLabel="userName" bindValue="_id" [items]="userList" [(ngModel)]="assignTo"
-                      (ngModelChange)="onChange('assignTo', $event)">
+                    <ng-select id="assignTo" class="form-select custom-ng-select-option"
+                      placeholder="Select Assign User" [multiple]="true" bindLabel="userName" bindValue="_id"
+                      [items]="userList" [(ngModel)]="assignTo" (ngModelChange)="onChange('assignTo', $event)">
                     </ng-select>
                   </div>
 
@@ -203,7 +314,8 @@
                 <div class="detail-item mb-3">
                   <div class="row g-2">
                     <div class="col-12 mb-2">
-                      <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
+                      <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus"
+                        (click)="onChangeMyday('MyDay')">
                         Add to My Day
                       </button>
                     </div>
