@@ -41,7 +41,8 @@
                             <div>
                               <p class="mb-1">{{ subtask.name }}</p>
                               <small class="text-muted d-block">Due: {{ subtask.dueDate | date:'dd/MM/yyyy' }}</small>
-                              <small class="text-muted d-block">{{ subtask.assignedTo?.userName || 'Unassigned' }}</small>
+                              <small class="text-muted d-block">{{ subtask.assignedTo?.userName || 'Unassigned'
+                                }}</small>
                             </div>
                             <div class="d-flex gap-2">
                               <button class="btn btn-sm btn-link text-danger p-0" (click)="deleteSubtask(subtask)">
@@ -59,38 +60,27 @@
                     <div class="row g-2">
                       <!-- First Row -->
                       <div class="col-md-6">
-                        <input type="text"
-                               class="form-control"
-                               [(ngModel)]="newSubtask.name"
-                               placeholder="Subtask title">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.name"
+                          placeholder="Subtask title">
                       </div>
                       <div class="col-md-6">
-                        <input type="text"
-                               class="form-control"
-                               [(ngModel)]="newSubtask.description"
-                               placeholder="Subtask description">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.description"
+                          placeholder="Subtask description">
                       </div>
                       <!-- Second Row -->
                       <div class="col-md-6">
-                        <input type="date"
-                               class="form-control"
-                               [(ngModel)]="newSubtask.dueDate">
+                        <input type="date" class="form-control" [(ngModel)]="newSubtask.dueDate">
                       </div>
                       <div class="col-md-6">
-                        <ng-select class="form-select custom-ng-select-option"
-                                 placeholder="Assign to"
-                                 [items]="candidateList"
-                                 bindLabel="fullName"
-                                 bindValue="_id"
-                                 [(ngModel)]="newSubtask.assignedTo">
+                        <ng-select class="form-select custom-ng-select-option" placeholder="Assign to"
+                          [items]="userList" bindLabel="userName" bindValue="_id"
+                          [(ngModel)]="newSubtask.assignedTo">
                         </ng-select>
                       </div>
                     </div>
                     <!-- Add Button -->
                     <div class="mt-2">
-                      <button class="btn btn-primary w-100"
-                              (click)="addSubtask()"
-                              [disabled]="!isSubtaskValid()">
+                      <button class="btn btn-primary w-100" (click)="addSubtask()" [disabled]="!isSubtaskValid()">
                         Add Subtask
                       </button>
                     </div>
