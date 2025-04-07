@@ -13,11 +13,27 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-ongoing-todo-task',
   templateUrl: './ongoing-todo-task.component.html',
-  styleUrls: ['./ongoing-todo-task.component.scss']
+  styleUrls: ['./ongoing-todo-task.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        height: '*',
+        opacity: 1
+      })),
+      state('out', style({
+        height: '0',
+        opacity: 0,
+        overflow: 'hidden'
+      })),
+      transition('in => out', animate('300ms ease-out')),
+      transition('out => in', animate('300ms ease-in'))
+    ])
+  ]
 })
 export class OngoingTodoTaskComponent {
   taskDetails: string = '';
@@ -267,6 +283,7 @@ export class OngoingTodoTaskComponent {
   openTaskModal(task: any) {
     console.log(task);
     this.modalTask = { ...task };
+    this.getSubtasks(task._id);
   }
 
   addComment(comment: string, id: string) {
