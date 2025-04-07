@@ -12,6 +12,7 @@ import { ProjectManagerService } from 'src/app/services/project-manager/project-
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ongoing-todo-task',
@@ -77,6 +78,19 @@ export class OngoingTodoTaskComponent {
   editor!: Editor;
   commentForm!: FormGroup;
 
+  subtasks: any[] = [];
+  newSubtask: any = {
+    name: '',
+    description: '',
+    dueDate: '',
+    assignedTo: null
+  };
+  candidateList: any[] = [];
+  showSubtasks: boolean = false;
+
+  // Add this property to store subtasks
+  subtasksList: any[] = []; // Initialize as empty array
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -96,6 +110,7 @@ export class OngoingTodoTaskComponent {
     // this.getUserAllList();
     this.getProjectList();
     this.editor = new Editor();
+    this.getUserAllList();
   }
 
   ngOnDestroy(): void {
@@ -625,4 +640,177 @@ export class OngoingTodoTaskComponent {
   }
 
 
+
+  isSubtaskValid(): boolean {
+    return this.newSubtask.name && this.newSubtask.dueDate && this.newSubtask.assignedTo;
+  }
+
+  formatDate(date: any): string {
+    if (!date) return ''; // Handle null case
+
+    if (typeof date === 'string') {
+      return date; // If already in YYYY-MM-DD format, return as is
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      // If using NgbDate object
+      return `${date.year}-${this.padZero(date.month)}-${this.padZero(date.day)}`;
+    }
+
+    // Convert Date object to YYYY-MM-DD
+    const d = new Date(date);
+    return `${d.getFullYear()}-${this.padZero(d.getMonth() + 1)}-${this.padZero(d.getDate())}`;
+  }
+
+  // Helper function to add leading zero to single-digit months/days
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  addSubtask() {
+    if (this.isSubtaskValid()) {
+      // Format the date properly
+      const formattedDate = this.formatDate(this.newSubtask.dueDate);
+
+      const subtaskPayload = {
+        title: this.newSubtask.name,
+        description: this.newSubtask.description || '',
+        dueDate: formattedDate,
+        resources: [
+          {
+            candidateId: this.newSubtask.assignedTo
+          }
+        ]
+      };
+
+      console.log('Task ID:', this.modalTask._id);
+      console.log('Sending subtask payload:', subtaskPayload);
+
+      this.showLoader = true;
+      this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
+        (response: any) => {
+          console.log('Full server response:', response);
+          if (response?.success == true) {
+            this.notificationService.showSuccess('Subtask added successfully');
+            // Refresh the subtasks list
+            this.getSubtasks(this.modalTask._id);
+
+            // Reset form
+            this.newSubtask = {
+              name: '',
+              description: '',
+              dueDate: '',
+              assignedTo: null
+            };
+          } else {
+            console.error('Server error message:', response?.message);
+            this.notificationService.showError(response?.message || 'Failed to add subtask');
+          }
+          this.showLoader = false;
+        },
+        (error) => {
+          console.error('Full error object:', error);
+          console.error('Error status:', error?.status);
+          console.error('Error message:', error?.message);
+          console.error('Error details:', error?.error);
+          this.notificationService.showError(error?.error?.message || error?.message || 'Error adding subtask');
+          this.showLoader = false;
+        }
+      );
+    } else {
+      this.notificationService.showError('Please fill in all required fields');
+    }
+  }
+
+  editSubtask(subtask: any) {
+    // TODO: Implement edit functionality
+    // This could open a modal or inline edit form
+  }
+
+  deleteSubtask(subtaskId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this subtask?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteSubtask(this.modalTask._id, subtaskId).subscribe(
+          (response: any) => {
+            if (response?.success == true) {
+              this.notificationService.showSuccess('Subtask deleted successfully');
+              this.getSubtasks(this.modalTask._id);
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete subtask');
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'Error deleting subtask');
+          }
+        );
+      }
+    });
+  }
+
+  getUserAllList(priorityType: string = '', type: string = '') {
+    this.showLoader = true;
+    const taskcount = true;
+    const taskPage = 'Ongoing'
+    this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.candidateList = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  toggleSubtasks() {
+    this.showSubtasks = !this.showSubtasks;
+  }
+
+  // Add this method to get subtasks
+  getSubtasks(taskId: string) {
+    this.showLoader = true;
+    this.superService.getSubtasks(taskId).subscribe(
+      (response: any) => {
+        console.log('Subtasks response:', response);
+        if (response?.status === true) {
+          this.subtasksList = response?.data || [];
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching subtasks:', error);
+        this.notificationService.showError(error?.message || 'Error fetching subtasks');
+        this.showLoader = false;
+      }
+    );
+  }
+
+  // Add method to format date for display
+  formatDateForDisplay(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  }
+
+  // Add method to get candidate name by ID
+  getCandidateName(candidateId: string): string {
+    const candidate = this.candidateList.find(c => c._id === candidateId);
+    return candidate ? candidate.name : 'Unassigned';
+  }
 }
