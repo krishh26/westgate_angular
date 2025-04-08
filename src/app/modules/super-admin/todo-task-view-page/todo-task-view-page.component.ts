@@ -111,6 +111,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   editor!: Editor;
   commentForm!: FormGroup;
   newComment: string = '';
+  todayDate: string = new Date().toISOString().split('T')[0];
 
   subtasks: any[] = [];
   newSubtask: any = {
@@ -172,10 +173,12 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
     // Initialize the comment form
     this.commentForm = this.fb.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      timeStart: ['', Validators.required],
+      timeEnd: ['', Validators.required]
     });
 
-   // this.getCandidateList();
+    // this.getCandidateList();
   }
 
   ngOnDestroy(): void {
@@ -822,9 +825,17 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   addComment(id: string) {
     if (this.commentForm.valid) {
       const comment = this.commentForm.get('description')?.value;
-      if (comment?.trim().length > 0) {
+      const timeStart = this.commentForm.get('timeStart')?.value;
+      const timeEnd = this.commentForm.get('timeEnd')?.value;
 
-        const payload = { comment: comment.trim() };
+      if (comment?.trim().length > 0) {
+        const payload = {
+          comment: comment.trim(),
+          timeStart: timeStart,
+          timeEnd: timeEnd,
+          date: this.todayDate
+        };
+
         this.spinner.show();
         this.superService.addComments(payload, id).subscribe(
           (response) => {
@@ -834,6 +845,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
               this.commentForm.reset();
               // Reload the task details
               this.loadTaskDetails(id);
+              this.spinner.hide();
             } else {
               this.spinner.hide();
               this.notificationService.showError(
@@ -842,17 +854,19 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             }
           },
           (error) => {
-
             this.notificationService.showError(
-              error?.message || 'An error occurred'
+              error?.error?.message || 'An error occurred'
             );
+            this.spinner.hide();
           }
         );
       } else {
+        this.spinner.hide();
         this.notificationService.showError('Comment cannot be empty');
       }
     } else {
-      this.notificationService.showError('Please enter a comment');
+      this.spinner.hide();
+      this.notificationService.showError('Please fill in all required fields');
     }
   }
 
