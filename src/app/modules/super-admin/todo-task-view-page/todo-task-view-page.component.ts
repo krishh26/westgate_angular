@@ -184,8 +184,6 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   loadTaskDetails(taskId: string) {
     this.spinner.show();
-
-
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
     this.superService.getsuperadmintasks('', '', '', '', '', false, '')
       .subscribe(
