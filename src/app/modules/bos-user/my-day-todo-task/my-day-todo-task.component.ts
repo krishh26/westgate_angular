@@ -14,6 +14,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-my-day-todo-task',
@@ -112,7 +113,8 @@ export class MyDayTodoTaskComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -125,6 +127,26 @@ export class MyDayTodoTaskComponent {
     this.getUserAllList();
     this.editor = new Editor();
   }
+
+
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
+  }
+
 
   getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
