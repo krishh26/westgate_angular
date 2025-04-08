@@ -97,7 +97,13 @@ export class AddEditProjectComponent {
   patchProjectValue() {
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
       (response) => {
-        this.productForm.patchValue(response?.data);
+        // Force a delay to ensure the browser's autofill doesn't override our values
+        setTimeout(() => {
+          this.productForm.patchValue(response?.data);
+          // Explicitly set these values to ensure they're not overridden
+          this.productForm.get('loginID')?.setValue(response?.data?.loginID);
+          this.productForm.get('password')?.setValue(response?.data?.password);
+        }, 100);
       },
       (error) => {
         this.notificationService.showError(error?.message);
