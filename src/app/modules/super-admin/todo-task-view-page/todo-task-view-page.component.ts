@@ -1174,4 +1174,23 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     return candidate ? candidate.name : 'Unassigned';
   }
 
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+          this.router.navigate([this.previousPage]);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
+  }
+
 }

@@ -165,9 +165,14 @@
                       <ngx-editor [editor]="editor" rows="5" formControlName="description" [disabled]="false"
                         [placeholder]="'Type here...'"></ngx-editor>
                     </div>
-                    <button class="btn btn-sm btn-primary mt-2" type="submit" [disabled]="commentForm.invalid">
-                      Comment
-                    </button>
+                    <div class="d-flex gap-2 mt-2">
+                      <button class="btn btn-sm btn-primary" type="submit" [disabled]="commentForm.invalid">
+                        Comment
+                      </button>
+                      <button class="btn btn-sm btn-secondary" (click)="logoutTask()">
+                        Logout
+                      </button>
+                    </div>
                   </form>
                 </div>
                 <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
@@ -213,7 +218,7 @@
                 <div class="comments-scroll-container">
                   <ul class="SecondarytaskList mt-3">
                     <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
-                      class="comment-item p-3 no-bg">
+                      class="comment-item p-3 no-bg"  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
 
                       <h6 *ngIf="comment?.comment == 'No comments available for this date'">
                         {{ comment?.commentDate | date : "dd/MM/yyyy" }}
