@@ -190,7 +190,9 @@ export class AddProjectComponent {
         (response) => {
           if (response.status) {
             this.notificationService.showSuccess('', 'Project updated successfully.');
-            this.router.navigate(['/process-manager/process-manager-tracker']);
+            this.router.navigate(['/process-manager/process-manager-project-details'], {
+              queryParams: { id: this.projectId }
+            });
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
