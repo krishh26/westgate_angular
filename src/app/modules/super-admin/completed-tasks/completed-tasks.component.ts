@@ -12,6 +12,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var bootstrap: any;
 @Component({
   selector: 'app-completed-tasks',
@@ -83,6 +84,7 @@ export class CompletedTasksComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -166,7 +168,7 @@ export class CompletedTasksComponent {
     const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is passed correctly
 
     console.log('Searching for:', keyword); // Debugging log
-
+    this.spinner.show();
     this.superService.getsuperadmintasks(
       this.selectedUserIds.join(','),  // assignId
       'Completed',                     // status
@@ -200,10 +202,12 @@ export class CompletedTasksComponent {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
+          this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
+          this.spinner.hide();
         }
       );
   }
@@ -456,6 +460,7 @@ export class CompletedTasksComponent {
   }
   getTask() {
     this.showLoader = true;
+    this.spinner.show();
     this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
@@ -475,10 +480,12 @@ export class CompletedTasksComponent {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -715,6 +722,7 @@ export class CompletedTasksComponent {
 
           // Refresh the task list
           this.showLoader = true;
+          this.spinner.show();
           this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize)
             .subscribe(
               (response) => {
@@ -734,10 +742,12 @@ export class CompletedTasksComponent {
                   this.notificationService.showError(response?.message);
                 }
                 this.showLoader = false;
+                this.spinner.hide();
               },
               (error) => {
                 this.notificationService.showError(error?.message);
                 this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {

@@ -478,7 +478,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is not undefined
 
     console.log('Searching for:', keyword); // Debugging log
-
+    this.spinner.show();
     this.superService.getsuperadmintasks(
       this.selectedUserIds.join(','),  // assignId
       'Ongoing',                       // status
@@ -499,10 +499,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
             this.notificationService.showError(response?.message);
           }
           this.showLoader = false;
+          this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
+          this.spinner.hide();
         }
       );
 
@@ -535,6 +537,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
 
   getTask() {
     this.showLoader = true;
+    this.spinner.show();
     return this.superService
       .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
       .subscribe(
@@ -559,10 +562,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
+          this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
+          this.spinner.hide();
         }
       );
   }
@@ -892,7 +897,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           const currentScrollPosition = window.pageYOffset;
 
           // Refresh the task list
-          this.showLoader = true;
+          this.spinner.show();
           this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
             .subscribe(
               (response) => {
@@ -913,11 +918,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
                 } else {
                   this.notificationService.showError(response?.message);
                 }
-                this.showLoader = false;
+                this.spinner.hide();
               },
               (error) => {
                 this.notificationService.showError(error?.message);
                 this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {

@@ -420,6 +420,7 @@ export class MyDayTasksComponent {
 
   getTask() {
     this.showLoader = true;
+    this.spinner.show();
     this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
@@ -443,10 +444,12 @@ export class MyDayTasksComponent {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
         this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -763,6 +766,7 @@ export class MyDayTasksComponent {
 
           // Refresh the task list
           this.showLoader = true;
+          this.spinner.show();
           this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize)
             .subscribe(
               (response) => {
@@ -784,10 +788,12 @@ export class MyDayTasksComponent {
                   this.notificationService.showError(response?.message);
                 }
                 this.showLoader = false;
+                this.spinner.hide();
               },
               (error) => {
                 this.notificationService.showError(error?.message);
                 this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {
