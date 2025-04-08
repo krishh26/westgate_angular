@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -79,6 +80,7 @@ export class MyDayTasksComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -97,14 +99,32 @@ export class MyDayTasksComponent {
     }
   }
 
-     // Navigate to task detail page instead of opening modal
-     navigateToTaskDetail(task: any) {
-      if (task && task._id) {
-        this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
-      } else {
-        this.notificationService.showError('Task ID not found');
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
       }
+    );
+  }
+
+  // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
     }
+  }
 
   transformData = (data: any) => {
     let commentsData: any[] = [];
