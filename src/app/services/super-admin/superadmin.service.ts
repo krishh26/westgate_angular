@@ -511,4 +511,8 @@ export class SuperadminService {
     return this.httpClient.delete(`${this.baseUrl}/task/${taskId}/subtasks/${subtaskId}`);
   }
 
+  logoutTask() {
+    return this.httpClient.post(`${this.baseUrl}/task/logout`, {});
+  }
+
 }

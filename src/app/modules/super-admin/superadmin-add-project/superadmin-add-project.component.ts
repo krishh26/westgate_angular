@@ -241,7 +241,9 @@ export class SuperadminAddProjectComponent implements OnInit {
         (response) => {
           if (response.status) {
             this.notificationService.showSuccess('', 'Project updated successfully.');
-            this.router.navigate(['/super-admin/status-wise-tracker']);
+            this.router.navigate(['/super-admin/tracker-wise-project-details'], {
+              queryParams: { id: this.projectId }
+            });
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
@@ -258,7 +260,7 @@ export class SuperadminAddProjectComponent implements OnInit {
           if (response?.status == true) {
             this.showLoader = false;
             this.notificationService.showSuccess('', 'Project added successfully.');
-            this.router.navigate(['/super-admin/status-wise-tracker']);
+
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;

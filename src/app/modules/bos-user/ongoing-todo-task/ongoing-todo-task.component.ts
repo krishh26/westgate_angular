@@ -13,11 +13,28 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-ongoing-todo-task',
   templateUrl: './ongoing-todo-task.component.html',
-  styleUrls: ['./ongoing-todo-task.component.scss']
+  styleUrls: ['./ongoing-todo-task.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        height: '*',
+        opacity: 1
+      })),
+      state('out', style({
+        height: '0',
+        opacity: 0,
+        overflow: 'hidden'
+      })),
+      transition('in => out', animate('300ms ease-out')),
+      transition('out => in', animate('300ms ease-in'))
+    ])
+  ]
 })
 export class OngoingTodoTaskComponent {
   taskDetails: string = '';
@@ -63,6 +80,9 @@ export class OngoingTodoTaskComponent {
   selectedpriority: any[] = [];
   selectedtype: any[] = [];
   selectedUserIds: number[] = [];
+  timeStart: string = '';
+  timeEnd: string = '';
+  todayDate: string = new Date().toISOString().split('T')[0];
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -100,6 +120,7 @@ export class OngoingTodoTaskComponent {
     private feasibilityService: FeasibilityService,
     private projectManagerService: ProjectManagerService,
     private projectService: ProjectService,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -116,6 +137,25 @@ export class OngoingTodoTaskComponent {
   ngOnDestroy(): void {
     this.editor.destroy();
   }
+
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
+  }
+
 
   // Function to transform the data
   transformData = (data: any) => {
@@ -267,32 +307,36 @@ export class OngoingTodoTaskComponent {
   openTaskModal(task: any) {
     console.log(task);
     this.modalTask = { ...task };
+    this.getSubtasks(task._id);
   }
 
-  addComment(comment: string, id: string) {
+  addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
-      this.showLoader = true;
-      const payload = { comment: comment.trim() };
+      const payload = {
+        comment: comment.trim(),
+        timeStart: this.timeStart,
+        timeEnd: this.timeEnd,
+        date: this.todayDate
+      };
 
-      this.superService.addComments(payload, id).subscribe(
+      this.spinner.show();
+      this.superService.addComments(payload, taskId).subscribe(
         (response) => {
-          this.showLoader = false;
+          this.spinner.hide();
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
-            window.location.reload();
-            const newComment = {
-              text: comment.trim(),
-            };
-            this.modalTask.comments = [...(this.modalTask.comments || []), newComment];
-
             this.newComment = '';
+            this.timeStart = '';
+            this.timeEnd = '';
+            // Reload the task details
+            this.getTask();
           } else {
             this.notificationService.showError(response?.message || 'Failed to add comment');
           }
         },
         (error) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.message || 'An error occurred');
+          this.notificationService.showError(error?.error?.message || 'An error occurred');
+          this.spinner.hide();
         }
       );
     } else {

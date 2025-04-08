@@ -20,6 +20,24 @@
 .comments-section {
   margin-top: 20px;
 
+  form {
+    .row {
+      margin-bottom: 1rem;
+    }
+
+    .form-control {
+      height: 38px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 0.375rem 0.75rem;
+
+      &:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+    }
+  }
+
   /* When a comment is both pinned and from admin */
   .pinned-comment.admin-comment {
     background-color: #f1f5ff !important;

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Editor, Toolbar } from 'ngx-editor';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -103,7 +104,8 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -116,6 +118,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     this.taskForm = this.fb.group({
       description: ['', Validators.required]
     });
+
 
     this.myControl.valueChanges.subscribe((res: any) => {
       let storeTest = res;
@@ -130,6 +133,24 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     this.page = page;
     this.getTask();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
   }
 
   ngOnDestroy(): void {

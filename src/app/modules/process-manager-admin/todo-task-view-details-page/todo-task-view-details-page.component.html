@@ -102,7 +102,7 @@
                               <span class="subtask-title">{{subtask.title || 'Untitled Task'}}</span>
                               <div class="d-flex align-items-center gap-3">
                                 <span class="assigned-to">
-                                  Assigned To: {{subtask.resources?.[0]?.candidateId?.fullName || 'Unassigned'}}
+                                  Assigned To: {{subtask.resources?.[0]?.candidateId?.name || 'Unassigned'}}
                                 </span>
                                 <span class="due-date">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
                                 <i class="bi" [ngClass]="subtask.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>

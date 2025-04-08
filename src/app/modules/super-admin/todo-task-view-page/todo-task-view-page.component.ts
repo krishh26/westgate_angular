@@ -15,6 +15,7 @@ declare var bootstrap: any;
 import { Editor, Toolbar } from 'ngx-editor';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-todo-task-view-page',
@@ -110,6 +111,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   editor!: Editor;
   commentForm!: FormGroup;
   newComment: string = '';
+  todayDate: string = new Date().toISOString().split('T')[0];
 
   subtasks: any[] = [];
   newSubtask: any = {
@@ -133,7 +135,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -170,10 +173,12 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
     // Initialize the comment form
     this.commentForm = this.fb.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      timeStart: ['', Validators.required],
+      timeEnd: ['', Validators.required]
     });
 
-    this.getCandidateList();
+    // this.getCandidateList();
   }
 
   ngOnDestroy(): void {
@@ -181,8 +186,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   loadTaskDetails(taskId: string) {
-    this.showLoader = true;
-
+    this.spinner.show();
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
     this.superService.getsuperadmintasks('', '', '', '', '', false, '')
       .subscribe(
@@ -195,20 +199,22 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
               this.setupTaskDetails(task);
               // Load subtasks after task details are loaded
               this.getSubtasks(taskId);
-              this.showLoader = false;
+
+              this.spinner.hide();
             } else {
               this.notificationService.showError('Task not found');
               this.router.navigate([this.previousPage]);
-              this.showLoader = false;
+
             }
           } else {
             this.notificationService.showError(response?.message || 'Error loading task details');
-            this.showLoader = false;
+
+            this.spinner.hide();
           }
         },
         (error: any) => {
           this.notificationService.showError(error?.message || 'Error loading task details');
-          this.showLoader = false;
+
         }
       );
   }
@@ -279,21 +285,21 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   getProjectList() {
-    this.showLoader = true;
+
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectList = response?.data?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
@@ -564,7 +570,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   searchtext() {
-    this.showLoader = true;
+
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
@@ -588,11 +594,11 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           } else {
             this.notificationService.showError(response?.message);
           }
-          this.showLoader = false;
+
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
         }
       );
 
@@ -600,9 +606,10 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   getUserAllList(priorityType: string = '', type: string = '') {
-    this.showLoader = true;
+
     const taskcount = true;
     const taskPage = 'Ongoing'
+    this.spinner.show();
     this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
       (response) => {
         if (response?.status === true) {
@@ -610,21 +617,22 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             (user: any) => user?.role !== 'SupplierAdmin'
           );
           this.displayedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
+          this.spinner.hide();
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+          this.spinner.hide();
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
 
   getTask() {
-    this.showLoader = true;
+
+    this.spinner.show();
     return this.superService
       .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
       .subscribe(
@@ -643,15 +651,15 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
               };
             });
 
-            this.showLoader = false;
+            this.spinner.hide();
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+            this.spinner.hide();
           }
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
         }
       );
   }
@@ -667,20 +675,20 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteTask(id).subscribe(
           (response: any) => {
             if (response?.status == true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess('Task successfully deleted');
               this.router.navigate([this.previousPage]);
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -702,20 +710,20 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteComment(param, this.modalTask._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess('Comment successfully deleted');
               this.loadTaskDetails(this.modalTask._id);
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -737,22 +745,22 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteComment(param, task._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
               window.location.reload();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -776,6 +784,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         comment: comment.updatedComment,
       };
 
+      this.spinner.show();
       this.superService
         .updateComment(payload, comment._id, this.modalTask._id)
         .subscribe(
@@ -787,10 +796,12 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
               this.getTask();
               comment.comment = comment.updatedComment; // Update UI
               comment.isEditing = false; // Exit edit mode
+              this.spinner.hide();
             } else {
               this.notificationService.showError(
                 response?.message || 'Comment cannot be updated after 24 hours'
               );
+              this.spinner.hide();
             }
           },
           (error) => {
@@ -814,36 +825,48 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   addComment(id: string) {
     if (this.commentForm.valid) {
       const comment = this.commentForm.get('description')?.value;
-      if (comment?.trim().length > 0) {
-        this.showLoader = true;
-        const payload = { comment: comment.trim() };
+      const timeStart = this.commentForm.get('timeStart')?.value;
+      const timeEnd = this.commentForm.get('timeEnd')?.value;
 
+      if (comment?.trim().length > 0) {
+        const payload = {
+          comment: comment.trim(),
+          timeStart: timeStart,
+          timeEnd: timeEnd,
+          date: this.todayDate
+        };
+
+        this.spinner.show();
         this.superService.addComments(payload, id).subscribe(
           (response) => {
-            this.showLoader = false;
+            this.spinner.hide();
             if (response?.status === true) {
               this.notificationService.showSuccess('Comment added successfully');
               this.commentForm.reset();
               // Reload the task details
               this.loadTaskDetails(id);
+              this.spinner.hide();
             } else {
+              this.spinner.hide();
               this.notificationService.showError(
                 response?.message || 'Failed to add comment'
               );
             }
           },
           (error) => {
-            this.showLoader = false;
             this.notificationService.showError(
-              error?.message || 'An error occurred'
+              error?.error?.message || 'An error occurred'
             );
+            this.spinner.hide();
           }
         );
       } else {
+        this.spinner.hide();
         this.notificationService.showError('Comment cannot be empty');
       }
     } else {
-      this.notificationService.showError('Please enter a comment');
+      this.spinner.hide();
+      this.notificationService.showError('Please fill in all required fields');
     }
   }
 
@@ -949,7 +972,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     const payload = {
       pin: !comment.pinnedAt
     };
-
+    this.spinner.show();
     this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
       (response: any) => {
         if (response?.status) {
@@ -961,7 +984,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           const currentScrollPosition = window.pageYOffset;
 
           // Refresh the task list
-          this.showLoader = true;
+
           this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
             .subscribe(
               (response) => {
@@ -980,13 +1003,14 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
                   window.scrollTo(0, currentScrollPosition);
                 } else {
                   this.notificationService.showError(response?.message);
+                  this.spinner.hide();
                 }
                 window.location.reload();
-                this.showLoader = false;
+
               },
               (error) => {
                 this.notificationService.showError(error?.message);
-                this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {
@@ -1024,12 +1048,11 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         ]
       };
 
-      console.log('Task ID:', this.modalTask._id);
-      console.log('Sending subtask payload:', subtaskPayload);
 
-      this.showLoader = true;
+      this.spinner.show();
       this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
         (response: any) => {
+          this.spinner.hide();
           console.log('Full server response:', response);
           if (response?.success == true) {
             this.notificationService.showSuccess('Subtask added successfully');
@@ -1047,7 +1070,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             console.error('Server error message:', response?.message);
             this.notificationService.showError(response?.message || 'Failed to add subtask');
           }
-          this.showLoader = false;
+
         },
         (error) => {
           console.error('Full error object:', error);
@@ -1055,7 +1078,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           console.error('Error message:', error?.message);
           console.error('Error details:', error?.error);
           this.notificationService.showError(error?.error?.message || error?.message || 'Error adding subtask');
-          this.showLoader = false;
+
         }
       );
     } else {
@@ -1097,7 +1120,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   getCandidateList() {
-    this.showLoader = true;
+
     this.superService.getCandidateList().subscribe(
       (response: any) => {
         if (response?.status) {
@@ -1105,11 +1128,11 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch candidates');
         }
-        this.showLoader = false;
+
       },
       (error) => {
         this.notificationService.showError(error?.message || 'Error fetching candidates');
-        this.showLoader = false;
+
       }
     );
   }
@@ -1120,7 +1143,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   // Add this method to get subtasks
   getSubtasks(taskId: string) {
-    this.showLoader = true;
+
     this.superService.getSubtasks(taskId).subscribe(
       (response: any) => {
         console.log('Subtasks response:', response);
@@ -1129,12 +1152,12 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
         }
-        this.showLoader = false;
+
       },
       (error) => {
         console.error('Error fetching subtasks:', error);
         this.notificationService.showError(error?.message || 'Error fetching subtasks');
-        this.showLoader = false;
+
       }
     );
   }
@@ -1149,6 +1172,25 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   getCandidateName(candidateId: string): string {
     const candidate = this.candidateList.find(c => c._id === candidateId);
     return candidate ? candidate.name : 'Unassigned';
+  }
+
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+          this.router.navigate([this.previousPage]);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
   }
 
 }

@@ -13,11 +13,28 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-my-day-todo-task',
   templateUrl: './my-day-todo-task.component.html',
   styleUrls: ['./my-day-todo-task.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        height: '*',
+        opacity: 1
+      })),
+      state('out', style({
+        height: '0',
+        opacity: 0,
+        overflow: 'hidden'
+      })),
+      transition('in => out', animate('300ms ease-out')),
+      transition('out => in', animate('300ms ease-in'))
+    ])
+  ]
 })
 export class MyDayTodoTaskComponent {
   taskDetails: string = '';
@@ -77,6 +94,17 @@ export class MyDayTodoTaskComponent {
   editor!: Editor;
   commentForm!: FormGroup;
 
+  subtasks: any[] = [];
+  newSubtask: any = {
+    name: '',
+    description: '',
+    dueDate: '',
+    assignedTo: null
+  };
+  candidateList: any[] = [];
+  showSubtasks: boolean = false;
+  subtasksList: any[] = [];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -85,7 +113,8 @@ export class MyDayTodoTaskComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private projectManagerService: ProjectManagerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private spinner: NgxSpinnerService,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -95,8 +124,54 @@ export class MyDayTodoTaskComponent {
     // this.getUserAllList();
     this.getProjectList();
     this.getProjectList();
+    this.getUserAllList();
     this.editor = new Editor();
   }
+
+
+  logoutTask() {
+    this.spinner.show();
+    this.superService.logoutTask().subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Successfully logged out from task');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to logout from task');
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
+      }
+    );
+  }
+
+
+  getUserAllList(priorityType: string = '', type: string = '') {
+    this.showLoader = true;
+    const taskcount = true;
+    const taskPage = 'Ongoing'
+    this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.userList = response?.data?.filter(
+            (user: any) => user?.role !== 'SupplierAdmin'
+          );
+          this.candidateList = this.userList.slice(0, 7);
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   ngOnDestroy(): void {
     this.editor.destroy();
@@ -372,6 +447,7 @@ export class MyDayTodoTaskComponent {
   openTaskModal(task: any) {
     console.log(task);
     this.modalTask = { ...task };
+    this.getSubtasks(task._id);
   }
 
   addComment(comment: string, id: string) {
@@ -667,7 +743,126 @@ export class MyDayTodoTaskComponent {
     );
   }
 
+  toggleSubtasks() {
+    this.showSubtasks = !this.showSubtasks;
+  }
 
+  getSubtasks(taskId: string) {
+    this.showLoader = true;
+    this.superService.getSubtasks(taskId).subscribe(
+      (response: any) => {
+        console.log('Subtasks response:', response);
+        if (response?.status === true) {
+          this.subtasksList = response?.data || [];
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching subtasks:', error);
+        this.notificationService.showError(error?.message || 'Error fetching subtasks');
+        this.showLoader = false;
+      }
+    );
+  }
 
+  isSubtaskValid(): boolean {
+    return this.newSubtask.name && this.newSubtask.dueDate && this.newSubtask.assignedTo;
+  }
 
+  formatDate(date: any): string {
+    if (!date) return '';
+    if (typeof date === 'string') {
+      return date;
+    } else if (typeof date === 'object' && date.year && date.month && date.day) {
+      return `${date.year}-${this.padZero(date.month)}-${this.padZero(date.day)}`;
+    }
+    const d = new Date(date);
+    return `${d.getFullYear()}-${this.padZero(d.getMonth() + 1)}-${this.padZero(d.getDate())}`;
+  }
+
+  padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  addSubtask() {
+    if (this.isSubtaskValid()) {
+      const formattedDate = this.formatDate(this.newSubtask.dueDate);
+
+      const subtaskPayload = {
+        title: this.newSubtask.name,
+        description: this.newSubtask.description || '',
+        dueDate: formattedDate,
+        resources: [
+          {
+            candidateId: this.newSubtask.assignedTo
+          }
+        ]
+      };
+
+      this.showLoader = true;
+      this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
+        (response: any) => {
+          if (response?.success == true) {
+            this.notificationService.showSuccess('Subtask added successfully');
+            this.getSubtasks(this.modalTask._id);
+            this.newSubtask = {
+              name: '',
+              description: '',
+              dueDate: '',
+              assignedTo: null
+            };
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add subtask');
+          }
+          this.showLoader = false;
+        },
+        (error) => {
+          this.notificationService.showError(error?.message || 'Error adding subtask');
+          this.showLoader = false;
+        }
+      );
+    } else {
+      this.notificationService.showError('Please fill in all required fields');
+    }
+  }
+
+  deleteSubtask(subtaskId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this subtask?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteSubtask(this.modalTask._id, subtaskId).subscribe(
+          (response: any) => {
+            if (response?.success == true) {
+              this.notificationService.showSuccess('Subtask deleted successfully');
+              this.getSubtasks(this.modalTask._id);
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete subtask');
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'Error deleting subtask');
+          }
+        );
+      }
+    });
+  }
+
+  formatDateForDisplay(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  }
+
+  getCandidateName(candidateId: string): string {
+    const candidate = this.candidateList.find(c => c._id === candidateId);
+    return candidate ? candidate.name : 'Unassigned';
+  }
 }
