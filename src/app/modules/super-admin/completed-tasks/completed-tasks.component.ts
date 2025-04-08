@@ -11,6 +11,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 declare var bootstrap: any;
 @Component({
   selector: 'app-completed-tasks',
@@ -65,6 +66,10 @@ export class CompletedTasksComponent {
     { taskType: 'Other', taskValue: 'Other' }
   ];
 
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
+
   private modalElement!: HTMLElement;
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
@@ -96,14 +101,20 @@ export class CompletedTasksComponent {
     }
   }
 
-    // Navigate to task detail page instead of opening modal
-    navigateToTaskDetail(task: any) {
-      if (task && task._id) {
-        this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
-      } else {
-        this.notificationService.showError('Task ID not found');
-      }
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
     }
+  }
 
   // Function to transform the data
   transformData = (data: any) => {
@@ -157,41 +168,44 @@ export class CompletedTasksComponent {
     console.log('Searching for:', keyword); // Debugging log
 
     this.superService.getsuperadmintasks(
-        this.selectedUserIds.join(','),  // assignId
-        'Completed',                     // status
-        sortType,                         // sort
-        priorityType,                      // pickACategory
-        keyword,                          // ✅ Pass search keyword correctly
-        undefined,                        // myDay
-        type                              // type
+      this.selectedUserIds.join(','),  // assignId
+      'Completed',                     // status
+      sortType,                         // sort
+      priorityType,                      // pickACategory
+      keyword,                          // ✅ Pass search keyword correctly
+      undefined,                        // myDay
+      type,
+      this.page,
+      this.pagesize                            // type
     )
-    .subscribe(
-      (response) => {
-        if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0];
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
+            const today = new Date().toISOString().split("T")[0];
 
-          this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments?.filter((comment: any) =>
-              comment.date.split("T")[0] === today
-            );
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
 
-            return {
-              ...task,
-              todayComments: todayComments?.length ? todayComments : null,
-            };
-          });
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null,
+              };
+            });
 
-          this.showLoader = false;
-        } else {
-          this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          } else {
+            this.notificationService.showError(response?.message);
+            this.showLoader = false;
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
           this.showLoader = false;
         }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+      );
   }
 
 
@@ -442,9 +456,11 @@ export class CompletedTasksComponent {
   }
   getTask() {
     this.showLoader = true;
-    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed').subscribe(
+    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
@@ -699,10 +715,11 @@ export class CompletedTasksComponent {
 
           // Refresh the task list
           this.showLoader = true;
-          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed')
+          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize)
             .subscribe(
               (response) => {
                 if (response?.status === true) {
+                  this.totalRecords = response?.data?.meta_data?.items || 0;
                   const today = new Date().toISOString().split("T")[0];
                   this.taskList = response?.data?.data.map((task: any) => {
                     const todayComments = task?.comments;

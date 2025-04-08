@@ -11,6 +11,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 declare var bootstrap: any;
 
 @Component({
@@ -51,6 +52,9 @@ export class MyDayTasksComponent {
   searchText: any;
   myControl = new FormControl();
   type: any;
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -97,14 +101,20 @@ export class MyDayTasksComponent {
     }
   }
 
-     // Navigate to task detail page instead of opening modal
-     navigateToTaskDetail(task: any) {
-      if (task && task._id) {
-        this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
-      } else {
-        this.notificationService.showError('Task ID not found');
-      }
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
     }
+  }
 
   transformData = (data: any) => {
     let commentsData: any[] = [];
@@ -390,9 +400,11 @@ export class MyDayTasksComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getMyTask(this.selectedUserIds.join(','), true).subscribe(
+    this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
@@ -731,10 +743,11 @@ export class MyDayTasksComponent {
 
           // Refresh the task list
           this.showLoader = true;
-          this.superService.getMyTask(this.selectedUserIds.join(','), true)
+          this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize)
             .subscribe(
               (response) => {
                 if (response?.status === true) {
+                  this.totalRecords = response?.data?.meta_data?.items || 0;
                   const today = new Date().toISOString().split("T")[0];
                   this.taskList = response?.data?.data.map((task: any) => {
                     const todayComments = task?.comments?.filter((comment: any) =>

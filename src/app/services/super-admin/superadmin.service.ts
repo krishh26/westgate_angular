@@ -245,8 +245,13 @@ export class SuperadminService {
     );
   }
 
-  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean, type?: string): Observable<any> {
+  getsuperadmintasks(assignId: string, status?: string, sort?: string, pickACategory?: string, keyword?: string, myDay?: boolean, type?: string, page?: number, pageSize?: number): Observable<any> {
     let params = new HttpParams();
+
+    if (page && pageSize) {
+      params = params.set('page', Number(page));
+      params = params.set('limit', Number(pageSize));
+    }
 
     if (assignId) {
       params = params.set('assignTo', assignId);
@@ -276,8 +281,14 @@ export class SuperadminService {
   }
 
 
-  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string, keyword?: string): Observable<any> {
+  getMyTask(assignId: string, myDay: boolean, sort?: string, pickACategory?: string, keyword?: string, page?: number, limit?: number): Observable<any> {
     let params = new HttpParams();
+
+    if (page && limit) {
+      params = params.set('page', Number(page));
+      params = params.set('limit', Number(limit));
+    }
+
     if (assignId) {
       params = params.set('assignTo', assignId);
     }

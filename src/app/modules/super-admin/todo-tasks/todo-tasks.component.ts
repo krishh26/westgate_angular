@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
@@ -51,6 +52,9 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
   isEditing = false;
   loginUser: any;
   type: any;
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
 
   // Editor related properties
   editor!: Editor;
@@ -120,6 +124,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
+  }
+
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   ngOnDestroy(): void {
@@ -452,14 +462,17 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
       this.selectedUserIds.join(','),  // assignId
       'Ongoing',                       // status
       sortType,                         // sort
-      priorityType,                      // pickACategory
+      priorityType,                     // pickACategory
       keyword,                          // keyword (Make sure this is passed correctly)
       undefined,                        // myDay
-      type                              // type
+      type,
+      this.page,
+      this.pagesize                            // type
     )
       .subscribe(
         (response) => {
           if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             this.taskList = response?.data?.data;
           } else {
             this.notificationService.showError(response?.message);
@@ -502,10 +515,11 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
   getTask() {
     this.showLoader = true;
     return this.superService
-      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
+      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
       .subscribe(
         (response) => {
           if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
             this.taskList = response?.data?.data.map((task: any) => {
@@ -858,10 +872,11 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
 
           // Refresh the task list
           this.showLoader = true;
-          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
+          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
             .subscribe(
               (response) => {
                 if (response?.status === true) {
+                  this.totalRecords = response?.data?.meta_data?.items || 0;
                   const today = new Date().toISOString().split("T")[0];
                   this.taskList = response?.data?.data.map((task: any) => {
                     const todayComments = task?.comments?.filter((comment: any) =>
