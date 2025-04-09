@@ -82,6 +82,8 @@ export class MyDayTodoTaskComponent {
   page: number = 1;
   pagesize: number = 50;
   totalRecords: number = 0;
+  timeStart: string = '';
+  timeEnd: string = '';
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -521,12 +523,22 @@ export class MyDayTodoTaskComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({
+    const params: any = {
       assignTo: this.loginUser?.id,
       myDay: true,
       page: this.page,
       limit: this.pagesize
-    }).subscribe(
+    };
+
+    // Only add time parameters if they have values
+    if (this.timeStart) {
+      params.timeStart = this.timeStart;
+    }
+    if (this.timeEnd) {
+      params.timeEnd = this.timeEnd;
+    }
+
+    this.superService.getTaskUserwise(params).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0];

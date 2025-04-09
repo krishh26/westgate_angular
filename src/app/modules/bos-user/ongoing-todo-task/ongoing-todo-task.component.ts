@@ -322,12 +322,18 @@ export class OngoingTodoTaskComponent {
 
   addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
-      const payload = {
+      const payload: any = {
         comment: comment.trim(),
-        timeStart: this.timeStart,
-        timeEnd: this.timeEnd,
         date: this.todayDate
       };
+
+      // Only add time parameters if they have values
+      if (this.timeStart) {
+        payload.timeStart = this.timeStart;
+      }
+      if (this.timeEnd) {
+        payload.timeEnd = this.timeEnd;
+      }
 
       this.spinner.show();
       this.superService.addComments(payload, taskId).subscribe(
@@ -383,16 +389,26 @@ export class OngoingTodoTaskComponent {
   }
 
   getTask() {
-    const queryParams = {
+    const queryParams: any = {
       assignTo: this.loginUser?.id,
-      status: 'Ongoing'
+      status: 'Ongoing',
+      page: this.page,
+      limit: this.pagesize
     };
 
-    this.superService.getTaskUserwise(queryParams, this.page, this.pagesize).subscribe(
+    // Only add time parameters if they have values
+    if (this.timeStart) {
+      queryParams.timeStart = this.timeStart;
+    }
+    if (this.timeEnd) {
+      queryParams.timeEnd = this.timeEnd;
+    }
+
+    this.superService.getTaskUserwise(queryParams).subscribe(
       (response) => {
         if (response?.status === true) {
           this.totalRecords = response?.data?.meta_data?.items || 0;
-          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+          const today = new Date().toISOString().split("T")[0];
 
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
@@ -401,7 +417,7 @@ export class OngoingTodoTaskComponent {
 
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments?.length ? todayComments : null,
             };
           });
         } else {
