@@ -51,9 +51,9 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   isEditing = false;
   loginUser: any;
   type: any;
-   page: number = 1;
-   pagesize: number = 50;
-   totalRecords: number = 0;
+  page: number = 1;
+  pagesize: number = 50;
+  totalRecords: number = 0;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -530,23 +530,22 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
     );
   }
 
-   getTask() {
-     const queryParams: any = {
-       status: 'Ongoing',
-       page: this.page,
-       limit: this.pagesize
-     };
-     this.spinner.show();
-     this.superService.getTaskUserwise(queryParams).subscribe(
-       (response) => {
-         if (response?.status === true) {
-           this.totalRecords = response?.data?.meta_data?.items || 0;
-           const today = new Date().toISOString().split("T")[0];
+  getTask() {
 
-           this.taskList = response?.data?.data.map((task: any) => {
-             const todayComments = task?.comments?.filter((comment: any) =>
-               comment.date.split("T")[0] === today
-             );
+    this.spinner.show();
+    return this.superService
+      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
+            console.log("this.totalRecords", this.totalRecords)
+            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
 
               return {
                 ...task,
@@ -554,21 +553,20 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
               };
             });
 
-            this.showLoader = false;
+
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+
           }
           this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
           this.spinner.hide();
         }
       );
   }
-
   deleteTask(id: any) {
     Swal.fire({
       title: 'Are you sure?',
