@@ -16,6 +16,7 @@ import { Editor, Toolbar } from 'ngx-editor';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
   selector: 'app-todo-task-view-page',
@@ -70,6 +71,10 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   type: any;
   candidateList: any[] = [];
   showSubtasks: boolean = false;
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
+  sourcePage: string = '/super-admin/todo-tasks'; // Default source page
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -95,7 +100,6 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   modalTask: any = {};
   selectedUsers: any = [];
-  previousPage: string = '/super-admin/todo-tasks'; // Default back navigation
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -147,21 +151,39 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       this.searchText = res.toLowerCase();
     });
 
-    // Check if we have a return URL in query params
-    this.route.queryParams.subscribe(params => {
-      if (params['returnUrl']) {
-        this.previousPage = params['returnUrl'];
-      }
-    });
-
-    // Get task ID from route params
+    // Get task ID and data from route params and state
     this.route.params.subscribe(params => {
       const taskId = params['id'];
       if (taskId) {
-        this.loadTaskDetails(taskId);
+        // Get the task data and source page from navigation state
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras.state;
+
+        if (state) {
+          this.sourcePage = state['sourcePage'] || '/super-admin/todo-tasks';
+          if (state['taskData']) {
+            // Use the passed task data
+            this.setupTaskDetails(state['taskData']);
+            this.getSubtasks(taskId);
+          } else {
+            // Fallback to API call if no data was passed
+            this.loadTaskDetails(taskId);
+          }
+        } else {
+          // If no state, try to get from history state
+          const historyState = window.history.state;
+          if (historyState && historyState.taskData) {
+            this.sourcePage = historyState.sourcePage || '/super-admin/todo-tasks';
+            this.setupTaskDetails(historyState.taskData);
+            this.getSubtasks(taskId);
+          } else {
+            // Fallback to API call
+            this.loadTaskDetails(taskId);
+          }
+        }
       } else {
         // Redirect to task list page if no ID specified
-        this.router.navigate([this.previousPage]);
+        this.router.navigate([this.sourcePage]);
       }
     });
 
@@ -187,34 +209,35 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   loadTaskDetails(taskId: string) {
     this.spinner.show();
-    // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '')
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, this.pagesize)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
             // Find the task with matching ID
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             const task = response?.data?.data.find((t: any) => t._id === taskId);
+            console.log(task);
 
             if (task) {
               this.setupTaskDetails(task);
               // Load subtasks after task details are loaded
               this.getSubtasks(taskId);
-
               this.spinner.hide();
             } else {
               this.notificationService.showError('Task not found');
-              this.router.navigate([this.previousPage]);
-
+              this.router.navigate([this.sourcePage]);
+              this.spinner.hide();
             }
           } else {
             this.notificationService.showError(response?.message || 'Error loading task details');
-
+            this.router.navigate([this.sourcePage]);
             this.spinner.hide();
           }
         },
         (error: any) => {
           this.notificationService.showError(error?.message || 'Error loading task details');
-
+          this.router.navigate([this.sourcePage]);
+          this.spinner.hide();
         }
       );
   }
@@ -681,7 +704,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             if (response?.status == true) {
 
               this.notificationService.showSuccess('Task successfully deleted');
-              this.router.navigate([this.previousPage]);
+              this.router.navigate([this.sourcePage]);
             } else {
 
               this.notificationService.showError(response?.message);
@@ -1025,7 +1048,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   // Navigate back to the previous page
   goBack() {
-    this.router.navigate([this.previousPage]);
+    this.router.navigate([this.sourcePage]);
   }
 
   isSubtaskValid(): boolean {
@@ -1181,7 +1204,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         this.spinner.hide();
         if (response?.status === true) {
           this.notificationService.showSuccess('Successfully logged out from task');
-          this.router.navigate([this.previousPage]);
+          this.router.navigate([this.sourcePage]);
         } else {
           this.notificationService.showError(response?.message || 'Failed to logout from task');
         }

@@ -112,7 +112,12 @@ export class CompletedTasksComponent {
   // Navigate to task detail page instead of opening modal
   navigateToTaskDetail(task: any) {
     if (task && task._id) {
-      this.router.navigate(['/super-admin/todo-task-view-page', task._id]);
+      this.router.navigate(['/super-admin/todo-task-view-page', task._id], {
+        state: {
+          taskData: task,
+          sourcePage: '/super-admin/completed-tasks'
+        }
+      });
     } else {
       this.notificationService.showError('Task ID not found');
     }
