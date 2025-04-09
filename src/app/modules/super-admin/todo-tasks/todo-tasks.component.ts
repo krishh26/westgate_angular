@@ -197,21 +197,21 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
   }
 
   getProjectList() {
-    this.showLoader = true;
+
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectList = response?.data?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
@@ -471,7 +471,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
   }
 
   searchtext() {
-    this.showLoader = true;
+
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
@@ -498,12 +498,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           } else {
             this.notificationService.showError(response?.message);
           }
-          this.showLoader = false;
+
           this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
           this.spinner.hide();
         }
       );
@@ -512,7 +512,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
   }
 
   getUserAllList(priorityType: string = '', type: string = '') {
-    this.showLoader = true;
+
     const taskcount = true;
     const taskPage = 'Ongoing'
     this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
@@ -522,21 +522,21 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
             (user: any) => user?.role !== 'SupplierAdmin'
           );
           this.displayedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
+
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
 
   getTask() {
-    this.showLoader = true;
+
     this.spinner.show();
     return this.superService
       .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
@@ -557,16 +557,16 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
               };
             });
 
-            this.showLoader = false;
+
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+
           }
           this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
           this.spinner.hide();
         }
       );
@@ -583,21 +583,21 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteTask(id).subscribe(
           (response: any) => {
             if (response?.status == true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess('Task successfully deleted');
               window.location.reload();
               this.getTask();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -620,22 +620,22 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteComment(param, this.modalTask._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
               window.location.reload();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -657,22 +657,22 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+
         this.projectService.deleteComment(param, task._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
               window.location.reload();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -735,12 +735,12 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
 
   addComment(comment: string, id: string) {
     if (comment?.trim().length > 0) {
-      this.showLoader = true;
+
       const payload = { comment: comment.trim() };
 
       this.superService.addComments(payload, id).subscribe(
         (response) => {
-          this.showLoader = false;
+
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
             window.location.reload();
@@ -760,7 +760,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.showLoader = false;
+
           this.notificationService.showError(
             error?.message || 'An error occurred'
           );
@@ -922,7 +922,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
               },
               (error) => {
                 this.notificationService.showError(error?.message);
-                this.showLoader = false;
+
                 this.spinner.hide();
               }
             );

@@ -79,6 +79,9 @@ export class MyDayTodoTaskComponent {
   selectedtype: any[] = [];
   selectedpriority: any[] = [];
   selectedUserIds: number[] = [];
+  page: number = 1;
+  pagesize: number = 50;
+  totalRecords: number = 0;
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -518,22 +521,25 @@ export class MyDayTodoTaskComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, myDay: true }).subscribe(
+    this.superService.getTaskUserwise({
+      assignTo: this.loginUser?.id,
+      myDay: true,
+      page: this.page,
+      limit: this.pagesize
+    }).subscribe(
       (response) => {
         if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-
+          const today = new Date().toISOString().split("T")[0];
+          this.totalRecords = response?.data?.meta_data?.items || 0;
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
               comment.date.split("T")[0] === today
             );
-
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments?.length ? todayComments : null,
             };
           });
-
           this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
@@ -545,6 +551,12 @@ export class MyDayTodoTaskComponent {
         this.showLoader = false;
       }
     );
+  }
+
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // getUserAllList() {
