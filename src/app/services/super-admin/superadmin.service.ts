@@ -310,8 +310,13 @@ export class SuperadminService {
     );
   }
 
-  getTaskUserwise(queryParams: { [key: string]: any }): Observable<any> {
+  getTaskUserwise(queryParams: { [key: string]: any }, page?: number, pageSize?: number): Observable<any> {
     let params = new HttpParams();
+
+    if (page && pageSize) {
+      params = params.set('page', Number(page));
+      params = params.set('limit', Number(pageSize));
+    }
 
     Object.entries(queryParams).forEach(([key, value]) => {
       params = params.set(key, value.toString());

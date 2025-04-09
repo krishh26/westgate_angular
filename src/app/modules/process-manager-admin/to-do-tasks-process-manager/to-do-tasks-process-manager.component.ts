@@ -51,6 +51,9 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   isEditing = false;
   loginUser: any;
   type: any;
+   page: number = 1;
+   pagesize: number = 50;
+   totalRecords: number = 0;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -530,20 +533,24 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
     );
   }
 
-  getTask() {
-    this.showLoader = true;
-    this.spinner.show();
-    this.superService
-      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing', '', '', '', false, '', this.page, this.pagesize)
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-            this.totalRecords = response?.data?.meta_data?.items || 0;
-            this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
+   getTask() {
+     const queryParams: any = {
+
+       status: 'Ongoing',
+       page: this.page,
+       limit: this.pagesize
+     };
+
+     this.superService.getTaskUserwise(queryParams).subscribe(
+       (response) => {
+         if (response?.status === true) {
+           this.totalRecords = response?.data?.meta_data?.items || 0;
+           const today = new Date().toISOString().split("T")[0];
+
+           this.taskList = response?.data?.data.map((task: any) => {
+             const todayComments = task?.comments?.filter((comment: any) =>
+               comment.date.split("T")[0] === today
+             );
 
               return {
                 ...task,

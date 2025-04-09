@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 declare var bootstrap: any;
 import { Editor, Toolbar } from 'ngx-editor';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
   selector: 'app-todo-task-view-details-page',
@@ -51,6 +52,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
   isEditing = false;
   loginUser: any;
   type: any;
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -168,10 +172,11 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
     this.spinner.show();
 
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '')
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '',  this.page, this.pagesize)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             // Find the task with matching ID
             const task = response?.data?.data.find((t: any) => t._id === taskId);
 

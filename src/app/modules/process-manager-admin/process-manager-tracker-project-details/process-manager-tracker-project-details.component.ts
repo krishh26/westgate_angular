@@ -530,6 +530,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         formData.append('files', field.file);
       }
     }
+    this.spinner.show();
     this.feasibilityService.uploadDocument(formData).subscribe(
       (response) => {
         this.spinner.hide();

@@ -1601,8 +1601,11 @@ export class TrackerWiseProjectDetailsComponent {
 
   // Save fields and close modal
   saveFields(modalId: number) {
+    this.spinner.show();
     const allFilesUploaded = this.imageFields.every((field) => !!field.file);
     if (!allFilesUploaded) {
+      this.spinner.hide();
+      this.notificationService.showError('Please upload all files');
       return;
     }
     // this.imageFields = [{ text: '', file: null }];
@@ -1613,12 +1616,13 @@ export class TrackerWiseProjectDetailsComponent {
         formData.append('files', field.file);
       }
     }
+
     this.feasibilityService.uploadDocument(formData).subscribe(
       (response) => {
-        this.spinner.hide();
         if (response?.status) {
           this.saveImageDetails(response.data, modalId.toString());
         } else {
+          this.spinner.hide();
           this.notificationService.showError(response?.message);
         }
       },

@@ -15,6 +15,7 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
   selector: 'app-ongoing-todo-task',
@@ -62,6 +63,9 @@ export class OngoingTodoTaskComponent {
     failStatusImage: 'failStatusImage',
     westgatedocument: 'westgatedocument',
   };
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
   statusDate: FormControl = new FormControl('');
   FeasibilityOtherDocuments: any = [];
   logs: any = [];
@@ -184,7 +188,7 @@ export class OngoingTodoTaskComponent {
 
 
   searchtext() {
-    this.showLoader = true;
+
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const assignTo = this.loginUser?.id;
@@ -214,15 +218,15 @@ export class OngoingTodoTaskComponent {
               };
             });
 
-            this.showLoader = false;
+
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+
           }
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
         }
       );
   }
@@ -250,21 +254,21 @@ export class OngoingTodoTaskComponent {
   }
 
   getProjectList() {
-    this.showLoader = true;
+
     this.projectService.getProjectList(Payload.projectList).subscribe(
       (response) => {
         this.projectList = [];
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectList = response?.data?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
@@ -310,14 +314,26 @@ export class OngoingTodoTaskComponent {
     this.getSubtasks(task._id);
   }
 
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
-      const payload = {
+      const payload: any = {
         comment: comment.trim(),
-        timeStart: this.timeStart,
-        timeEnd: this.timeEnd,
         date: this.todayDate
       };
+
+      // Only add time parameters if they have values
+      if (this.timeStart) {
+        payload.timeStart = this.timeStart;
+      }
+      if (this.timeEnd) {
+        payload.timeEnd = this.timeEnd;
+      }
 
       this.spinner.show();
       this.superService.addComments(payload, taskId).subscribe(
@@ -373,11 +389,26 @@ export class OngoingTodoTaskComponent {
   }
 
   getTask() {
-    this.showLoader = true;
-    this.superService.getTaskUserwise({ assignTo: this.loginUser?.id, status: 'Ongoing' }).subscribe(
+    const queryParams: any = {
+      assignTo: this.loginUser?.id,
+      status: 'Ongoing',
+      page: this.page,
+      limit: this.pagesize
+    };
+
+    // Only add time parameters if they have values
+    if (this.timeStart) {
+      queryParams.timeStart = this.timeStart;
+    }
+    if (this.timeEnd) {
+      queryParams.timeEnd = this.timeEnd;
+    }
+
+    this.superService.getTaskUserwise(queryParams).subscribe(
       (response) => {
         if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+          const today = new Date().toISOString().split("T")[0];
 
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
@@ -386,26 +417,22 @@ export class OngoingTodoTaskComponent {
 
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments?.length ? todayComments : null,
             };
           });
-
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
       }
     );
   }
 
 
   // getUserAllList() {
-  //   this.showLoader = true;
+  //
   //   this.projectManagerService.getUserAllList().subscribe(
   //     (response) => {
   //       if (response?.status === true) {
@@ -413,15 +440,15 @@ export class OngoingTodoTaskComponent {
   //         this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
   //         console.log(this.userList);
 
-  //         this.showLoader = false;
+  //
   //       } else {
   //         this.notificationService.showError(response?.message);
-  //         this.showLoader = false;
+  //
   //       }
   //     },
   //     (error) => {
   //       this.notificationService.showError(error?.message);
-  //       this.showLoader = false;
+  //
   //     }
   //   );
   // }
@@ -512,11 +539,11 @@ export class OngoingTodoTaskComponent {
   }
 
   getProjectDetails() {
-    this.showLoader = true;
+
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectDetail = response?.data;
 
           // Assign only the first 3 logs to the logs property
@@ -525,12 +552,12 @@ export class OngoingTodoTaskComponent {
           this.commentData = this.projectDetail?.statusComment;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
@@ -645,7 +672,7 @@ export class OngoingTodoTaskComponent {
           const currentScrollPosition = window.pageYOffset;
 
           // Refresh the task list
-          this.showLoader = true;
+
           this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
             .subscribe(
               (response) => {
@@ -666,11 +693,11 @@ export class OngoingTodoTaskComponent {
                   this.notificationService.showError(response?.message);
                 }
                 window.location.reload();
-                this.showLoader = false;
+
               },
               (error) => {
                 this.notificationService.showError(error?.message);
-                this.showLoader = false;
+
               }
             );
         } else {
@@ -728,7 +755,7 @@ export class OngoingTodoTaskComponent {
       console.log('Task ID:', this.modalTask._id);
       console.log('Sending subtask payload:', subtaskPayload);
 
-      this.showLoader = true;
+
       this.superService.addSubtask(this.modalTask._id, subtaskPayload).subscribe(
         (response: any) => {
           console.log('Full server response:', response);
@@ -748,7 +775,7 @@ export class OngoingTodoTaskComponent {
             console.error('Server error message:', response?.message);
             this.notificationService.showError(response?.message || 'Failed to add subtask');
           }
-          this.showLoader = false;
+
         },
         (error) => {
           console.error('Full error object:', error);
@@ -756,7 +783,7 @@ export class OngoingTodoTaskComponent {
           console.error('Error message:', error?.message);
           console.error('Error details:', error?.error);
           this.notificationService.showError(error?.error?.message || error?.message || 'Error adding subtask');
-          this.showLoader = false;
+
         }
       );
     } else {
@@ -798,7 +825,7 @@ export class OngoingTodoTaskComponent {
   }
 
   getUserAllList(priorityType: string = '', type: string = '') {
-    this.showLoader = true;
+
     const taskcount = true;
     const taskPage = 'Ongoing'
     this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
@@ -808,15 +835,15 @@ export class OngoingTodoTaskComponent {
             (user: any) => user?.role !== 'SupplierAdmin'
           );
           this.candidateList = this.userList.slice(0, 7);
-          this.showLoader = false;
+
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+
       }
     );
   }
@@ -827,7 +854,7 @@ export class OngoingTodoTaskComponent {
 
   // Add this method to get subtasks
   getSubtasks(taskId: string) {
-    this.showLoader = true;
+
     this.superService.getSubtasks(taskId).subscribe(
       (response: any) => {
         console.log('Subtasks response:', response);
@@ -836,12 +863,12 @@ export class OngoingTodoTaskComponent {
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch subtasks');
         }
-        this.showLoader = false;
+
       },
       (error) => {
         console.error('Error fetching subtasks:', error);
         this.notificationService.showError(error?.message || 'Error fetching subtasks');
-        this.showLoader = false;
+
       }
     );
   }

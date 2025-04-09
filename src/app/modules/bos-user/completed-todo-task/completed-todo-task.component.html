@@ -15,7 +15,12 @@
     </div>
   </div>
 
-  <div *ngFor="let task of taskList; let i = index">
+  <div *ngFor="let task of taskList | paginate
+        : {
+            itemsPerPage: pagesize,
+            currentPage: page,
+            totalItems: totalRecords
+          }; let i = index">
     <div class="accordion-item">
       <h2 class="accordion-header" [id]="'flush-TodoList' + i">
         <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
@@ -64,8 +69,11 @@
                     <p class="mb-0 user-name">
                       {{ comment?.userDetail?.name }}
                     </p>
-                    <small class="comment-date">
-                      {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                    <small class="comment-date" *ngIf="comment?.date">
+                      {{ comment?.date | date : "dd/MM/yyyy" }}
+                      <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                        ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                      </span>
                     </small>
                   </div>
                   <small class="user-role d-block">
@@ -88,6 +96,13 @@
   </div>
   <div *ngIf="!taskList?.length">
     <app-no-record-found></app-no-record-found>
+  </div>
+  <div class="row mt-3 align-items-center" *ngIf="taskList?.length > 0">
+    <div class="row">
+      <div class="pagination">
+        <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="50"></pagination-controls>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -155,7 +170,10 @@
                       <div class="d-flex justify-content-between">
                         <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
                         <small class="comment-date" *ngIf="comment?.date">
-                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                          {{ comment?.date | date : "dd/MM/yyyy" }}
+                          <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                            ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                          </span>
                         </small>
                       </div>
                       <small class="user-role d-block">
@@ -188,7 +206,10 @@
                       <div class="d-flex justify-content-between">
                         <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
                         <small class="comment-date" *ngIf="comment?.date">
-                          {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                          {{ comment?.date | date : "dd/MM/yyyy" }}
+                          <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                            ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                          </span>
                         </small>
                       </div>
                       <small class="user-role d-block">
