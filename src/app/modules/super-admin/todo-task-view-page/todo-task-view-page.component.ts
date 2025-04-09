@@ -209,7 +209,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   loadTaskDetails(taskId: string) {
     this.spinner.show();
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, this.pagesize)
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, 5000)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
