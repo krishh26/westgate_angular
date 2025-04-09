@@ -30,6 +30,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ProcessManagerAdminModule } from './modules/process-manager-admin/process-manager-admin.module';
 import { FeasibilityManagerModule } from './modules/feasibility-manager/feasibility-manager.module';
 import { NgxEditorModule } from 'ngx-editor';
+import { TimeFormatPipe } from './pipes/time-format.pipe';
 @NgModule({
   declarations: [
     AppComponent,

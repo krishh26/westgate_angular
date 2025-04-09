@@ -60,6 +60,7 @@ import { ResourcesProductivityViewComponent } from './resources-productivity-vie
 import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { ResourcesCommentModalComponent } from './resources-comment-modal/resources-comment-modal.component';
+import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -111,7 +112,8 @@ import { ResourcesCommentModalComponent } from './resources-comment-modal/resour
     TodoTaskViewPageComponent,
     AddRolesComponent,
     EditRolesComponent,
-    ResourcesCommentModalComponent
+    ResourcesCommentModalComponent,
+    TimeFormatPipe,
   ],
 
   imports: [
