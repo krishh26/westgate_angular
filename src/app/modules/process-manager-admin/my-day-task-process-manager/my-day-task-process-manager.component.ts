@@ -50,6 +50,9 @@ export class MyDayTaskProcessManagerComponent {
   searchText: any;
   myControl = new FormControl();
   type: any;
+  page: number = 1;
+  pagesize: number = 50;
+  totalRecords: number = 0;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -388,11 +391,18 @@ export class MyDayTaskProcessManagerComponent {
   }
 
   getTask() {
-    this.showLoader = true;
-    this.superService.getMyTask(this.selectedUserIds.join(','), true).subscribe(
+    const queryParams: any = {
+      assignTo: this.loginUser?.id,
+      status: 'MyDay',
+      page: this.page,
+      limit: this.pagesize
+    };
+
+    this.superService.getTaskUserwise(queryParams).subscribe(
       (response) => {
         if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+          const today = new Date().toISOString().split("T")[0];
 
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
@@ -401,19 +411,15 @@ export class MyDayTaskProcessManagerComponent {
 
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments?.length ? todayComments : null,
             };
           });
-
-          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
       }
     );
   }
@@ -764,5 +770,11 @@ export class MyDayTaskProcessManagerComponent {
         this.notificationService.showError(error?.message || 'Failed to update comment pin status');
       }
     );
+  }
+
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
