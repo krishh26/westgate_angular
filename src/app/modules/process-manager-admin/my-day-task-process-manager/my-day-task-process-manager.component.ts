@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -9,6 +10,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
@@ -66,6 +68,10 @@ export class MyDayTaskProcessManagerComponent {
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
   ];
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
+
   private modalElement!: HTMLElement;
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
@@ -78,6 +84,7 @@ export class MyDayTaskProcessManagerComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
+    private spinner : NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -96,14 +103,20 @@ export class MyDayTaskProcessManagerComponent {
     }
   }
 
-     // Navigate to task detail page instead of opening modal
-     navigateToTaskDetail(task: any) {
-      if (task && task._id) {
-        this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
-      } else {
-        this.notificationService.showError('Task ID not found');
-      }
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
     }
+  }
 
   transformData = (data: any) => {
     let commentsData: any[] = [];
@@ -389,11 +402,12 @@ export class MyDayTaskProcessManagerComponent {
 
   getTask() {
     this.showLoader = true;
-    this.superService.getMyTask(this.selectedUserIds.join(','), true).subscribe(
+    this.spinner.show();
+    this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-
+          this.totalRecords = response?.data?.meta_data?.items || 0;
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
               comment.date.split("T")[0] === today
@@ -410,10 +424,11 @@ export class MyDayTaskProcessManagerComponent {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
+        this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -730,11 +745,13 @@ export class MyDayTaskProcessManagerComponent {
 
           // Refresh the task list
           this.showLoader = true;
-          this.superService.getMyTask(this.selectedUserIds.join(','), true)
+          this.spinner.show();
+          this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize)
             .subscribe(
               (response) => {
                 if (response?.status === true) {
                   const today = new Date().toISOString().split("T")[0];
+                  this.totalRecords = response?.data?.meta_data?.items || 0;
                   this.taskList = response?.data?.data.map((task: any) => {
                     const todayComments = task?.comments?.filter((comment: any) =>
                       comment.date.split("T")[0] === today
@@ -750,10 +767,12 @@ export class MyDayTaskProcessManagerComponent {
                   this.notificationService.showError(response?.message);
                 }
                 this.showLoader = false;
+                this.spinner.hide();
               },
               (error) => {
                 this.notificationService.showError(error?.message);
                 this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {

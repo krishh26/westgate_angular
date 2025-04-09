@@ -13,6 +13,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 declare var bootstrap: any;
 
 @Component({
@@ -68,6 +69,10 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
     { taskType: 'Other', taskValue: 'Other' }
   ];
 
+  page: number = pagination.page;
+  pagesize = 50;
+  totalRecords: number = pagination.totalRecords;
+
   private modalElement!: HTMLElement;
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
@@ -100,14 +105,20 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-    // Navigate to task detail page instead of opening modal
-    navigateToTaskDetail(task: any) {
-      if (task && task._id) {
-        this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
-      } else {
-        this.notificationService.showError('Task ID not found');
-      }
+  paginate(page: number) {
+    this.page = page;
+    this.getTask();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Navigate to task detail page instead of opening modal
+  navigateToTaskDetail(task: any) {
+    if (task && task._id) {
+      this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
+    } else {
+      this.notificationService.showError('Task ID not found');
     }
+  }
 
   // Function to transform the data
   transformData = (data: any) => {
@@ -162,41 +173,43 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
     console.log('Searching for:', keyword); // Debugging log
 
     this.superService.getsuperadmintasks(
-        this.selectedUserIds.join(','),  // assignId
-        'Completed',                     // status
-        sortType,                         // sort
-        priorityType,                      // pickACategory
-        keyword,                          // ✅ Pass search keyword correctly
-        undefined,                        // myDay
-        type                              // type
+      this.selectedUserIds.join(','),  // assignId
+      'Completed',                     // status
+      sortType,                         // sort
+      priorityType,                      // pickACategory
+      keyword,                          // ✅ Pass search keyword correctly
+      undefined,                        // myDay
+      type,
+      this.page,
+      this.pagesize                              // type
     )
-    .subscribe(
-      (response) => {
-        if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0];
+      .subscribe(
+        (response) => {
+          if (response?.status === true) {
+            const today = new Date().toISOString().split("T")[0];
 
-          this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments?.filter((comment: any) =>
-              comment.date.split("T")[0] === today
-            );
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
 
-            return {
-              ...task,
-              todayComments: todayComments?.length ? todayComments : null,
-            };
-          });
-        } else {
-          this.notificationService.showError(response?.message);
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null,
+              };
+            });
+          } else {
+            this.notificationService.showError(response?.message);
+          }
+          this.showLoader = false;
+          this.spinner.hide();
+        },
+        (error) => {
+          this.notificationService.showError(error?.message);
+          this.showLoader = false;
+          this.spinner.hide();
         }
-        this.showLoader = false;
-        this.spinner.hide();
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-        this.spinner.hide();
-      }
-    );
+      );
   }
 
 
@@ -454,11 +467,11 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
   getTask() {
     this.showLoader = true;
     this.spinner.show();
-    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed').subscribe(
+    this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-
+          this.totalRecords = response?.data?.meta_data?.items || 0;
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments;
             return {
@@ -714,11 +727,13 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
 
           // Refresh the task list
           this.showLoader = true;
-          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed')
+          this.spinner.show();
+          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize)
             .subscribe(
               (response) => {
                 if (response?.status === true) {
                   const today = new Date().toISOString().split("T")[0];
+                  this.totalRecords = response?.data?.meta_data?.items || 0;
                   this.taskList = response?.data?.data.map((task: any) => {
                     const todayComments = task?.comments;
                     return {
@@ -732,10 +747,12 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
                   this.notificationService.showError(response?.message);
                 }
                 this.showLoader = false;
+                this.spinner.hide();
               },
               (error) => {
                 this.notificationService.showError(error?.message);
                 this.showLoader = false;
+                this.spinner.hide();
               }
             );
         } else {

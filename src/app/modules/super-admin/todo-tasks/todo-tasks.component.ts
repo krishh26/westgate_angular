@@ -544,6 +544,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
         (response) => {
           if (response?.status === true) {
             this.totalRecords = response?.data?.meta_data?.items || 0;
+            console.log("this.totalRecords", this.totalRecords)
             const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
             this.taskList = response?.data?.data.map((task: any) => {
