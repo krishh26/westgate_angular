@@ -160,7 +160,6 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
     this.commentForm = this.fb.group({
       description: ['', Validators.required]
     });
-    this.getCandidateList();
   }
 
   ngOnDestroy(): void {
@@ -170,9 +169,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
   loadTaskDetails(taskId: string) {
     this.showLoader = true;
     this.spinner.show();
-
+    debugger
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '',  this.page, this.pagesize)
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '',  this.page, 5000)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
@@ -181,9 +180,13 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
             const task = response?.data?.data.find((t: any) => t._id === taskId);
 
             if (task) {
+              console.log(task);
+
               this.setupTaskDetails(task);
               this.getSubtasks(taskId);
             } else {
+              console.log(task);
+
               this.notificationService.showError('Task not found');
               this.router.navigate([this.previousPage]);
             }
