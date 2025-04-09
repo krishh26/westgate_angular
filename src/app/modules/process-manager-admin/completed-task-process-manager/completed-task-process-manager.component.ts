@@ -470,8 +470,10 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
     this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Completed', '', '', '', false, '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
-          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
           this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments;
             return {
@@ -479,10 +481,11 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
               todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
             };
           });
+          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
+          this.showLoader = false;
         }
-        this.showLoader = false;
         this.spinner.hide();
       },
       (error) => {

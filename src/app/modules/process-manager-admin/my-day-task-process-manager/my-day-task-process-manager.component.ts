@@ -395,19 +395,15 @@ export class MyDayTaskProcessManagerComponent {
   }
 
   getTask() {
-    const queryParams: any = {
-      assignTo: this.loginUser?.id,
-      status: 'MyDay',
-      page: this.page,
-      limit: this.pagesize
-    };
-
+    this.showLoader = true;
     this.spinner.show();
-    this.superService.getTaskUserwise(queryParams).subscribe(
+    this.superService.getMyTask(this.selectedUserIds.join(','), true, '', '', '', this.page, this.pagesize).subscribe(
       (response) => {
         if (response?.status === true) {
           this.totalRecords = response?.data?.meta_data?.items || 0;
-          const today = new Date().toISOString().split("T")[0];
+
+          const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
           this.taskList = response?.data?.data.map((task: any) => {
             const todayComments = task?.comments?.filter((comment: any) =>
               comment.date.split("T")[0] === today
@@ -415,16 +411,20 @@ export class MyDayTaskProcessManagerComponent {
 
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null,
+              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
             };
           });
+
+          this.showLoader = false;
         } else {
           this.notificationService.showError(response?.message);
+          this.showLoader = false;
         }
         this.spinner.hide();
       },
       (error) => {
         this.notificationService.showError(error?.message);
+        this.showLoader = false;
         this.spinner.hide();
       }
     );
