@@ -76,9 +76,6 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   selectedtasktypes: any[] = [];
   searchText: any;
   myControl = new FormControl();
-  page: number = pagination.page;
-  pagesize = 50;
-  totalRecords: number = pagination.totalRecords;
 
   private modalElement!: HTMLElement;
   private modalInstance: any;
@@ -535,12 +532,11 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
 
    getTask() {
      const queryParams: any = {
-
        status: 'Ongoing',
        page: this.page,
        limit: this.pagesize
      };
-
+     this.spinner.show();
      this.superService.getTaskUserwise(queryParams).subscribe(
        (response) => {
          if (response?.status === true) {

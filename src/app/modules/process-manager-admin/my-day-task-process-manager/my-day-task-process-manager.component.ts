@@ -71,9 +71,6 @@ export class MyDayTaskProcessManagerComponent {
     { priorityValue: 'Medium', priorityvalue: 'Medium' },
     { priorityValue: 'Low', priorityvalue: 'Low' }
   ];
-  page: number = pagination.page;
-  pagesize = 50;
-  totalRecords: number = pagination.totalRecords;
 
   private modalElement!: HTMLElement;
   private modalInstance: any;
@@ -104,12 +101,6 @@ export class MyDayTaskProcessManagerComponent {
       // Listen for modal close event
       this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
-  }
-
-  paginate(page: number) {
-    this.page = page;
-    this.getTask();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Navigate to task detail page instead of opening modal
@@ -412,7 +403,7 @@ export class MyDayTaskProcessManagerComponent {
     };
 
     this.spinner.show();
-    this.superService.getTaskUserwise(queryParams,this.page, this.pagesize).subscribe(
+    this.superService.getTaskUserwise(queryParams).subscribe(
       (response) => {
         if (response?.status === true) {
           this.totalRecords = response?.data?.meta_data?.items || 0;
@@ -445,7 +436,7 @@ export class MyDayTaskProcessManagerComponent {
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
     const keyword = this.searchText;  // The search text to filter by
-
+    this.spinner.show();
     this.superService
       .getsuperadmintasks(
         this.selectedUserIds.join(','),
@@ -460,7 +451,7 @@ export class MyDayTaskProcessManagerComponent {
         (response) => {
           if (response?.status === true) {
             const today = new Date().toISOString().split("T")[0];
-
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
@@ -477,10 +468,12 @@ export class MyDayTaskProcessManagerComponent {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
+          this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
+          this.spinner.hide();
         }
       );
   }
