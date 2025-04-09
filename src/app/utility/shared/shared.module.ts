@@ -5,10 +5,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NoRecordFoundComponent } from './common/no-record-found/no-record-found.component';
 import { CustomValidation } from './constant/custome-validation';
 import { FeasibilityManagerHeaderComponent } from './components/feasibility-manager-header/feasibility-manager-header.component';
+import { TimeFormatPipe } from './constant/time-format.pipe';
 
 @NgModule({
   declarations: [
     NoRecordFoundComponent,
+    TimeFormatPipe
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,7 @@ import { FeasibilityManagerHeaderComponent } from './components/feasibility-mana
     FormsModule,
     ReactiveFormsModule,
     NoRecordFoundComponent,
+    TimeFormatPipe
   ],
   providers: [
     CustomValidation
