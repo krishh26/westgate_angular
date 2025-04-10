@@ -174,7 +174,7 @@ const routes: Routes = [
         component: BosUserAddRolesComponent
       },
       {
-        path: "bos-user-edit-roles",
+        path: "bos-user-edit-roles/:id",
         component: BosUserEditRolesComponent
       },
     ]
