@@ -19,18 +19,18 @@ import { TodoTaskSalesManageComponent } from './todo-task-sales-manage/todo-task
 @NgModule({
   declarations: [
     SalesManagerComponent,
+    TodoTaskSalesManageComponent,
     OngoingTodoTaskSalesManagerComponent,
     MydayTodoTaskSalesManagerComponent,
     CompletedTodoTaskSalesManagerComponent,
     SalesManagerHeaderComponent,
-    TodoTaskSalesManageComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     SalesManagerRoutingModule,
-    SharedModule,
     NgxPaginationModule,
     NgbModule,
     NgSelectModule,

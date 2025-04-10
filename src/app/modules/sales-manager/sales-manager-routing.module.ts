@@ -4,6 +4,7 @@ import { SalesManagerComponent } from './sales-manager.component';
 import { OngoingTodoTaskSalesManagerComponent } from './ongoing-todo-task/ongoing-todo-task.component';
 import { MydayTodoTaskSalesManagerComponent } from './myday-todo-task/myday-todo-task.component';
 import { CompletedTodoTaskSalesManagerComponent } from './completed-todo-task/completed-todo-task.component';
+import { TodoTaskSalesManageComponent } from './todo-task-sales-manage/todo-task-sales-manage.component';
 
 const routes: Routes = [
   {
@@ -12,16 +13,17 @@ const routes: Routes = [
     children: [
       {
         path: 'ongoing-todo-task-sales-manager',
-        component: OngoingTodoTaskSalesManagerComponent
+        // component: OngoingTodoTaskSalesManagerComponent
+        component: TodoTaskSalesManageComponent
       },
-      {
-        path: 'myday-todo-task-sales-manager',
-        component: MydayTodoTaskSalesManagerComponent
-      },
-      {
-        path: 'completed-todo-task-sales-manager',
-        component: CompletedTodoTaskSalesManagerComponent
-      }
+      // {
+      //   path: 'myday-todo-task-sales-manager',
+      //   component: MydayTodoTaskSalesManagerComponent
+      // },
+      // {
+      //   path: 'completed-todo-task-sales-manager',
+      //   component: CompletedTodoTaskSalesManagerComponent
+      // }
     ]
   },
   {
@@ -30,7 +32,6 @@ const routes: Routes = [
     redirectTo: ""
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
