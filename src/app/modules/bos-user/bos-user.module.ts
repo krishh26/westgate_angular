@@ -50,6 +50,10 @@ import { BosUserRoleWiseResourcesListComponent } from './resources/bos-user-role
 import { BosUserRolesListComponent } from './resources/bos-user-roles-list/bos-user-roles-list.component';
 import { BosUserAddRolesComponent } from './resources/bos-user-add-roles/bos-user-add-roles.component';
 import { BosUserEditRolesComponent } from './resources/bos-user-edit-roles/bos-user-edit-roles.component';
+import { BosUserResourcesViewComponent } from './resources/bos-user-resources-view/bos-user-resources-view.component';
+import { BosUserResourcesViewDetailsComponent } from './resources/bos-user-resources-view-details/bos-user-resources-view-details.component';
+import { BosUserResourcesAddBulkComponent } from './resources/bos-user-resources-add-bulk/bos-user-resources-add-bulk.component';
+import { BosUserResourcesCommentModalComponent } from './resources/bos-user-resources-comment-modal/bos-user-resources-comment-modal.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -91,7 +95,11 @@ import { BosUserEditRolesComponent } from './resources/bos-user-edit-roles/bos-u
     BosUserRoleWiseResourcesListComponent,
     BosUserRolesListComponent,
     BosUserAddRolesComponent,
-    BosUserEditRolesComponent
+    BosUserEditRolesComponent,
+    BosUserResourcesViewComponent,
+    BosUserResourcesViewDetailsComponent,
+    BosUserResourcesAddBulkComponent,
+    BosUserResourcesCommentModalComponent
   ],
   imports: [
     CommonModule,
