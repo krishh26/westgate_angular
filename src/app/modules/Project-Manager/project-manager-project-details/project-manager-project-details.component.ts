@@ -68,6 +68,7 @@ export class ProjectManagerProjectDetailsComponent {
   };
   userList: any = [];
   selectedSupplier: any = [];
+  selectedSupplierIds: string[] = [];
   imageFields = [{ text: '', file: null }];
   // For check bov
   subContracting: boolean = true;
@@ -526,13 +527,11 @@ export class ProjectManagerProjectDetailsComponent {
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.feasibilityStatus = this.projectDetails?.status;
-          this.getDroppedAfterReasonList =
-            this.projectDetails?.droppedAfterFeasibilityStatusReason;
+          this.getDroppedAfterReasonList = this.projectDetails?.droppedAfterFeasibilityStatusReason;
           this.status = this.projectDetails?.bidManagerStatus;
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.getReasonList = this.projectDetails?.failStatusReason;
-          this.feasibilityCommentData =
-            this.projectDetails?.statusComment || [];
+          this.feasibilityCommentData = this.projectDetails?.statusComment || [];
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
           console.log(this.viewReasonList); // Logs the dropUser list for debugging
         } else {
@@ -1017,29 +1016,35 @@ export class ProjectManagerProjectDetailsComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  selectSupplier(supplier: any) {
-    this.selectedSupplier = supplier;
-    // const data = {
-    //   select: {
-    //     supplierId: this.selectedSupplier?._id,
-    //   },
-    // };
-    let param = {
-      userId: this.selectedSupplier?._id,
-      projectId: this.projectId,
+  selectSupplier(suppliers: any) {
+    // Extract just the IDs from the selected suppliers
+    this.selectedSupplierIds = suppliers.map((supplier: any) => supplier._id);
+  }
+
+  submitSelectedSuppliers() {
+    if (!this.selectedSupplierIds || this.selectedSupplierIds.length === 0) {
+      this.notificationService.showError('Please select at least one supplier.');
+      return;
+    }
+
+    const payload = {
+      userIds: this.selectedSupplierIds,
+      projectId: this.projectId
     };
-    this.projectService.projectSortList(param).subscribe(
+
+    this.projectService.projectSortList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
           this.notificationService.showSuccess(
-            response?.message || 'supplier select successfully'
+            response?.message || 'Suppliers selected successfully'
           );
+          this.getProjectDetails();
         } else {
-          return this.notificationService.showError('Try after some time.');
+          this.notificationService.showError('Try after some time.');
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message || 'Error.');
+        this.notificationService.showError(error?.message || 'Error occurred.');
       }
     );
   }

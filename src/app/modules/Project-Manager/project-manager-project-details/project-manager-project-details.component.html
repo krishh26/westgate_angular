@@ -284,16 +284,21 @@
             <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
               <h5 class="mb-0">
                 Shortlisted Supplier :
-                {{ projectDetails?.select[0]?.supplierDetails?.name }}
+                <span *ngFor="let user of projectDetails?.sortlistedUsers; let last = last">
+                  {{ user?.name }}{{ !last ? ', ' : '' }}
+                </span>
               </h5>
               <div class="d-flex gap-3 align-items-center">
                 <ng-container>
                   <ng-select style="padding: 0px !important" placeholder="Select Supplier"
                     class="form-select custom-ng-select-option" [items]="selectedSupplier" bindLabel="name"
-                    bindValue="_id" (change)="selectSupplier($event)" [addTag]="true" [clearable]="false">
-                    <!-- Disable Clear Button -->
+                    bindValue="_id" (change)="selectSupplier($event)" [addTag]="true" [clearable]="false"
+                    [multiple]="true">
                   </ng-select>
                 </ng-container>
+                <button class="btn btn-primary btn-sm" type="button" (click)="submitSelectedSuppliers()">
+                  Submit
+                </button>
                 <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
                   View All
                 </button>
@@ -419,11 +424,8 @@
                   <div class="NgxEditor__Wrapper flex-grow-1">
                     <ngx-editor-menu [editor]="feasibilityEditor" [toolbar]="toolbar">
                     </ngx-editor-menu>
-                    <ngx-editor
-                      [editor]="feasibilityEditor"
-                      [formControl]="feasibilityStatusComment"
-                      [placeholder]="'Type here...'"
-                      class="ngx-editor-textarea">
+                    <ngx-editor [editor]="feasibilityEditor" [formControl]="feasibilityStatusComment"
+                      [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
                   <button class="btn btn-primary" type="button" (click)="pushFeasibilityStatus()">
@@ -571,7 +573,7 @@
                     </div>
                     <small class="text-muted d-block"><strong>Status :</strong>
                       {{ item?.bidManagerStatus }}</small>
-                      <p class="mt-2" [innerHTML]="item?.comment"></p>
+                    <p class="mt-2" [innerHTML]="item?.comment"></p>
                   </div>
                 </div>
               </div>
@@ -599,15 +601,13 @@
 
               <!-- Add New Comment -->
               <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2" *ngIf="status !== 'Dropped after feasibility'">
+                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
+                  *ngIf="status !== 'Dropped after feasibility'">
                   <div class="NgxEditor__Wrapper flex-grow-1">
                     <ngx-editor-menu [editor]="bidStatusEditor" [toolbar]="toolbar">
                     </ngx-editor-menu>
-                    <ngx-editor
-                      [editor]="bidStatusEditor"
-                      [formControl]="bidManagerStatusComment"
-                      [placeholder]="'Type here...'"
-                      class="ngx-editor-textarea">
+                    <ngx-editor [editor]="bidStatusEditor" [formControl]="bidManagerStatusComment"
+                      [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
                   <button class="btn btn-primary" type="button" (click)="pushStatus()">
