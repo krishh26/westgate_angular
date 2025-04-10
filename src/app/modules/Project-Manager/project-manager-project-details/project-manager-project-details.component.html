@@ -772,11 +772,11 @@
           <div *ngFor="let reason of filteredComments" class="mb-3">
             <div class="d-flex justify-content-between">
               <p class="mb-0">
-                <span class="fw-bold">Comment:</span> {{ reason.comment }}
+                <span class="fw-bold">Comment:</span> {{ reason?.comment }}
               </p>
               <p class="mb-0 text-end">
                 <span class="fw-bold">Date:</span>
-                {{ reason.date | date : "dd/MM/yyyy, h:mm a" }}
+                {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
               </p>
             </div>
             <hr />
