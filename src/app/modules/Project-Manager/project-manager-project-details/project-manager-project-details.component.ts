@@ -121,6 +121,9 @@ export class ProjectManagerProjectDetailsComponent {
 
   feasibilityEditor: Editor = new Editor();
   bidStatusEditor: Editor = new Editor();
+  selectedSuppliersList: any[] = [];
+  allSuppliers: any[] = [];
+
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -131,7 +134,9 @@ export class ProjectManagerProjectDetailsComponent {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
-
+  selectedSuppliers: { [key: string]: { company: string; startDate: any } } =
+  {};
+  userDetail: any;
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -155,6 +160,7 @@ export class ProjectManagerProjectDetailsComponent {
   ngOnInit(): void {
     this.getProjectDetails();
     this.getTask();
+    this.getUserDetails();
     this.getUserAllList();
     this.getProjectStrips();
     // this.getForTitleUserAllList();
@@ -168,6 +174,33 @@ export class ProjectManagerProjectDetailsComponent {
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
   }
+
+  getUserDetails() {
+    this.projectManagerService.getUserList('SupplierAdmin').subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.userDetail = response?.data;
+          this.allSuppliers = response?.data;
+          this.selectedSuppliers = this.userDetail.reduce(
+            (acc: any, supplier: any) => {
+              acc[supplier._id] = { company: '', startDate: null };
+              return acc;
+            },
+            {}
+          );
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   ngOnDestroy() {
     if (this.feasibilityEditor) {
@@ -308,37 +341,36 @@ export class ProjectManagerProjectDetailsComponent {
     }
   }
 
-  dropUser(supplier: any) {
-    if (!supplier.inputValue) {
-      this.notificationService.showError('Please provide a reason.');
-      return;
+  dropUser(details: any) {
+    console.log('this is testing data', details);
+    if (!details?.inputValue) {
+      return this.notificationService.showError('Please enter reason');
     }
+
     const data = {
       dropUser: {
-        userId: supplier._id,
-        reason: supplier.inputValue,
+        userId: details?._id,
+        reason: details?.inputValue,
       },
     };
+
     this.projectManagerService.dropUser(data, this.projectId).subscribe(
       (response) => {
-        if (response?.status) {
+        if (response?.status == true) {
           this.notificationService.showSuccess(
-            response?.message || 'User dropped successfully.'
+            response?.message || 'Drop user successfully'
           );
-          supplier.inputValue = '';
+          this.getUserDetails();
         } else {
-          this.notificationService.showError(
-            'Error: Unable to drop user. Try again later.'
-          );
+          return this.notificationService.showError('Try after some time.');
         }
       },
       (error) => {
-        this.notificationService.showError(
-          error?.message || 'Error occurred while dropping user.'
-        );
+        this.notificationService.showError(error?.message || 'Error.');
       }
     );
   }
+
 
   toggleSupplierList(): void {
     this.showSupplierList = !this.showSupplierList;
@@ -524,6 +556,7 @@ export class ProjectManagerProjectDetailsComponent {
         if (response?.status === true) {
           this.showLoader = false;
           this.projectDetails = response?.data;
+          this.selectedSuppliersList = response?.data?.sortlistedUsers || [];
           // this.selectedSupplier = response?.data?.sortlistedUsers;
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.feasibilityStatus = this.projectDetails?.status;
@@ -1016,9 +1049,26 @@ export class ProjectManagerProjectDetailsComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  selectSupplier(suppliers: any) {
-    // Extract just the IDs from the selected suppliers
-    this.selectedSupplierIds = suppliers.map((supplier: any) => supplier._id);
+  selectSupplier(supplier: any) {
+    const data = {
+      userId: supplier._id,
+      projectId: this.projectId,
+      isSelected: true
+    };
+
+    this.superadminService.selectFromSortlist(data).subscribe({
+      next: (response: any) => {
+        // Handle success response
+        this.notificationService.showSuccess('Supplier selected successfully');
+        // Refresh the project details to get updated data
+        this.getProjectDetails();
+      },
+      error: (error: any) => {
+        // Handle error
+        this.notificationService.showError('Failed to select supplier');
+        console.error('Error selecting supplier:', error);
+      }
+    });
   }
 
   submitSelectedSuppliers() {

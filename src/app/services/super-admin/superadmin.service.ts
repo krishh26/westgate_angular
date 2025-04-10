@@ -46,7 +46,8 @@ export enum SuperAdminEndPoint {
   ROLES_CANDIDATES = '/roles/candidates',
   DELETE_CANDIDATE = '/candidate/delete',
   CANDIDATE_UPDATE = '/candidate/update',
-  GET_SUBTASKS = '/task/subtasks'
+  GET_SUBTASKS = '/task/subtasks',
+  SELECT_FROM_SORTLIST = '/project/select-from-sortlist'
 }
 
 @Injectable({
@@ -520,4 +521,10 @@ export class SuperadminService {
     return this.httpClient.post(`${this.baseUrl}/task/logout`, {});
   }
 
+  selectFromSortlist(data: { userId: string; projectId: string; isSelected: boolean }): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.SELECT_FROM_SORTLIST,
+      data
+    );
+  }
 }
