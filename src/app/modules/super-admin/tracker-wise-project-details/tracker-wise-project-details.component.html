@@ -826,6 +826,43 @@
   </section>
 </main>
 
+<!-- Modal to view all comments -->
+<div class="modal fade" id="viewReasonList" tabindex="-1" aria-labelledby="viewReasonListLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewReasonListLabel">View All Comments</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="filteredComments && filteredComments.length; else noComments">
+          <div *ngFor="let reason of filteredComments" class="mb-3">
+            <div class="d-flex justify-content-between">
+              <p class="mb-0">
+                <span class="fw-bold">Comment:</span> {{ reason?.comment }}
+              </p>
+              <p class="mb-0 text-end">
+                <span class="fw-bold">Date:</span>
+                {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
+              </p>
+            </div>
+            <hr />
+          </div>
+        </div>
+
+        <ng-template #noComments>
+          <p class="text-center text-muted">No comments available.</p>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="ViewProjectLogs" tabindex="-1" aria-labelledby="ViewProjectLogsLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
@@ -1084,39 +1121,3 @@
       </div>
     </div>
   </div>
-<!-- Modal to view all comments -->
-<div class="modal fade" id="viewReasonList" tabindex="-1" aria-labelledby="viewReasonListLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewReasonListLabel">View All Comments</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div *ngIf="filteredComments && filteredComments.length; else noComments">
-          <div *ngFor="let reason of filteredComments" class="mb-3">
-            <div class="d-flex justify-content-between">
-              <p class="mb-0">
-                <span class="fw-bold">Comment:</span> {{ reason?.comment }}
-              </p>
-              <p class="mb-0 text-end">
-                <span class="fw-bold">Date:</span>
-                {{ reason?.date | date : "dd/MM/yyyy, h:mm a" }}
-              </p>
-            </div>
-            <hr />
-          </div>
-        </div>
-
-        <ng-template #noComments>
-          <p class="text-center text-muted">No comments available.</p>
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
