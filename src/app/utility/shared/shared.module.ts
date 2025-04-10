@@ -6,11 +6,12 @@ import { NoRecordFoundComponent } from './common/no-record-found/no-record-found
 import { CustomValidation } from './constant/custome-validation';
 import { FeasibilityManagerHeaderComponent } from './components/feasibility-manager-header/feasibility-manager-header.component';
 import { TimeFormatPipe } from './constant/time-format.pipe';
+import { SalesManagerHeaderComponent } from './components/sales-manager-header/sales-manager-header.component';
 
 @NgModule({
   declarations: [
     NoRecordFoundComponent,
-    TimeFormatPipe
+    TimeFormatPipe,
   ],
   imports: [
     CommonModule,

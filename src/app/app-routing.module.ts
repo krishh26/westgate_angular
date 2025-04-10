@@ -50,6 +50,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/process-manager-admin/process-manager-admin.module').then(m => m.ProcessManagerAdminModule)
   },
   {
+    path: 'sales-manager',
+    loadChildren: () => import('./modules/sales-manager/sales-manager.module').then(m => m.SalesManagerModule)
+  },
+  {
     path: 'login',
     component: LoginComponent
   },

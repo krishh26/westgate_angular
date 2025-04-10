@@ -1,0 +1,696 @@
+#accordianTodoList .accordion-button::after,
+#accordianCompletedTodoList .accordion-button::after {
+  margin-right: 0px;
+}
+
+#accordianTodoList .accordion-button:first-child.accordion-button::after {
+  display: none;
+}
+
+#accordianTodoList .accordion-item,
+#accordianCompletedTodoList .accordion-item {
+  border: 1px solid #D9D9D9 !important;
+  margin-bottom: 15px;
+}
+
+.task-icon {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+ul.SecondarytaskList {
+  margin: 0;
+  padding: 0;
+}
+
+ul.SecondarytaskList li {
+  display: block;
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #D9D9D9;
+}
+
+.sidebar-widget {
+  background-color: #F5F5F5;
+  border: 1px solid #F0F0F0;
+  padding: 15px 0;
+  position: relative;
+  height: 100%;
+}
+
+ul.sidebar-nav {
+  margin: 0;
+  padding: 0;
+}
+
+ul.sidebar-nav li {
+  display: block;
+}
+
+ul.sidebar-nav li a {
+  display: block;
+  padding: 10px 15px;
+  color: #303030;
+}
+
+ul.sidebar-nav li a:hover,
+ul.sidebar-nav li a.active {
+  color: #FFF;
+  background-color: #0d6efd;
+}
+
+.bluetext {
+  color: #0d6efd;
+}
+
+ul.taskuserList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.taskuserList li {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #F5F5F5;
+  border: 1px solid #D9D9D9;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
+
+ul.Listgroup {
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0 22px;
+  list-style-type: none;
+}
+
+ul.Listgroup li {
+  display: block;
+  padding: 10px 0;
+}
+
+ul.Listgroup li .action-mark {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+}
+
+ul.todo-actionList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.todo-actionList li {
+  display: block;
+}
+
+ul.todo-actionList li a {
+  padding: 10px 15px;
+  background-color: #FFF;
+  color: #303030;
+  margin-bottom: 5px;
+  display: block;
+}
+
+ul.todo-actionList li a:hover {
+  color: #0d6efd;
+}
+
+.sidebar-footer-nav {
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #D9D9D9;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  width: 90%;
+}
+
+.action-button {
+  color: #303030;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  color: #0d6efd;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #D9D9D9;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Ensures the image fits within the circular area */
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.modal-header input {
+  border: none;
+  outline: none;
+  font-weight: bold;
+}
+
+.comments-section {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.border-start {
+  border-left: 1px solid #ddd;
+}
+
+textarea {
+  resize: none;
+}
+
+.comment-item+ul {
+  margin-top: 15px;
+  /* Adds custom space */
+}
+
+.comment-list {
+  margin-top: 15px;
+}
+
+.details-container {
+  padding-left: 1.5rem;
+}
+
+.details-header {
+  font-weight: bold;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ng-select .custom-ng-select-option {
+  padding: 0 !important;
+}
+
+.selected-user {
+  // background-color: #e0f7fa; /* Light blue */
+  color: red;
+  /* Darker teal */
+  cursor: pointer;
+}
+
+.bg-light-yellow {
+  background-color: #90EE90;
+  /* Light Yellow */
+}
+
+.bg-light-green {
+  background-color: #FFE5B4;
+  /* Light Blue */
+}
+
+.bg-light-orange {
+  background-color: #F9D5D7;
+  /* Light Orange */
+}
+
+
+/* Make the entire comment block red for Admin */
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
+/* Style for pinned comments */
+.pinned-comment {
+  background-color: #f1f5ff !important;
+  border-radius: 5px;
+}
+
+/* When a comment is both pinned and from admin */
+.pinned-comment.admin-comment {
+  background-color: #f1f5ff !important;
+  border: 1px solid red !important;
+  color: red !important;
+}
+
+/* Apply red color to comment text, delete button, and date when Admin */
+.admin-comment .comment-text,
+.admin-comment .comment-date {
+  color: red !important;
+}
+
+/* Ensure ALL delete buttons have a red border */
+.delete-btn {
+  border: 1px solid red !important;
+  color: red !important;
+}
+
+/* EXCLUDE Name and Role from being red */
+.admin-comment .user-name,
+.admin-comment .user-role {
+  color: black !important;
+}
+
+.comment-item textarea {
+  resize: none;
+  /* Disable resizing if unnecessary */
+  min-height: 80px;
+  /* Optional: Set a minimum height */
+}
+
+.border-left-right {
+  border-left: 1px solid #D9D9D9;
+  border-right: 1px solid #D9D9D9;
+}
+
+
+.pin-btn, .delete-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #212529;
+  }
+}
+
+.pin-btn:hover {
+  color: #0d6efd;
+}
+
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .border-left-right {
+    border-left: none;
+    border-right: none;
+  }
+}
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+
+  .card-header {
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
+.comments-section {
+  margin-top: 20px;
+
+  /* When a comment is both pinned and from admin */
+  .pinned-comment.admin-comment {
+    background-color: #f1f5ff !important;
+    border: 1px solid red !important;
+    color: red !important;
+  }
+
+  .comment-item {
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &.admin-comment {
+      background-color: #f0f7ff;
+
+      &:hover {
+        background-color: #e5f1ff;
+      }
+    }
+
+    // Pinned comments with background and border
+    &.pinned-comment {
+      background-color: #f1f5ff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #e8f0ff;
+      }
+    }
+
+    // Comment items with no background, only border
+    &.no-bg {
+      background-color: transparent;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .user-role {
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    .comment-text {
+      margin-top: 5px;
+      word-break: break-word;
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+}
+
+.comments-scroll-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+.pin-btn,
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #212529;
+  }
+}
+
+.pin-btn:hover {
+  color: #0d6efd;
+}
+
+.delete-btn:hover {
+  color: #dc3545;
+}
+
+.details-container {
+  padding: 15px;
+  border-left: 1px solid #eee;
+
+  .details-header {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .detail-item {
+    margin-bottom: 15px;
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .mob-mb1 {
+    margin-bottom: 1rem;
+  }
+
+  .details-container {
+    border-left: none;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+}
+
+.detail-item {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.subtasks-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding: 1px;  // Prevent margin collapse
+}
+
+.subtask-item {
+  background-color: #DBF2D0;
+  border: 1px solid #c5e0b4;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  height: 100%;  // Ensure equal height in the row
+
+  &:hover {
+    background-color: lighten(#DBF2D0, 5%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  small {
+    font-size: 12px;
+    color: #4d4d4d;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-link {
+    padding: 0.25rem 0.5rem;
+    &:hover {
+      background-color: rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+  }
+}
+
+.subtasks-content {
+  .add-subtask-form {
+    background-color: #DBF2D0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #c5e0b4;
+
+    .custom-ng-select-option {
+      z-index: 1000;
+
+      ::ng-deep .ng-dropdown-panel {
+        z-index: 1001;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+    }
+
+    .form-control {
+      height: 38px;
+      background-color: white;
+      border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+      height: 38px;
+    }
+  }
+
+  .subtasks-list {
+    .subtask-card {
+      background-color: #DBF2D0;
+      border: 1px solid #c5e0b4;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 100%;
+
+      .subtask-header {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: darken(#DBF2D0, 5%);
+        }
+
+        .subtask-title {
+          font-weight: 500;
+          color: #0d6efd;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 200px;
+        }
+
+        .assigned-to {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+          margin-right: 1rem;
+        }
+
+        .due-date {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+        }
+
+        i {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          transition: transform 0.2s;
+        }
+      }
+
+      .subtask-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background-color: white;
+
+        &.expanded {
+          max-height: 500px;
+          transition: max-height 0.3s ease-in;
+        }
+
+        .subtask-details {
+          padding: 1rem;
+
+          p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #4d4d4d;
+          }
+
+          .info-row {
+            margin-bottom: 0.5rem;
+
+            i {
+              color: #6c757d;
+            }
+          }
+
+          .actions {
+            .btn-outline-danger {
+              padding: 0.25rem 0.5rem;
+
+              i {
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .subtasks-list {
+    .subtask-card {
+      .subtask-header {
+        .subtask-title {
+          max-width: 120px;
+        }
+
+        .assigned-to {
+          max-width: none;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Custom scrollbar for subtasks container
+.subtasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.subtasks-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.toggle-btn {
+  color: #4d4d4d;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #000;
+    transform: scale(1.1);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
