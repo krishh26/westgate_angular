@@ -106,6 +106,10 @@ export class TrackerWiseProjectDetailsComponent {
   eligibilityForm: FormGroup;
   commentName: string = '';
   filteredTasks: any = [];
+  showSupplierList = false;
+  selectedSupplierIds: string[] = [];
+  filteredComments: any[] = [];
+  viewReasonList: any = [];
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -240,6 +244,35 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+
+  submitSelectedSuppliers() {
+    if (!this.selectedSupplierIds || this.selectedSupplierIds.length === 0) {
+      this.notificationService.showError('Please select at least one supplier.');
+      return;
+    }
+
+    const payload = {
+      userIds: this.selectedSupplierIds,
+      projectId: this.projectId
+    };
+
+    this.projectService.projectSortList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.notificationService.showSuccess(
+            response?.message || 'Suppliers selected successfully'
+          );
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError('Try after some time.');
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Error occurred.');
+      }
+    );
+  }
+
   deleteProject(id: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -365,6 +398,9 @@ export class TrackerWiseProjectDetailsComponent {
           );
           this.BiduserList = response?.data?.filter(
             (user: any) => user?.role === 'ProjectManager'
+          );
+          this.selectedSupplier = response?.data?.filter(
+            (user: any) => user?.role === 'SupplierAdmin'
           );
           this.showLoader = false;
         } else {
@@ -594,14 +630,14 @@ export class TrackerWiseProjectDetailsComponent {
 
   dropUser(details: any) {
     console.log('this is testing data', details);
-    if (!details?.reason) {
+    if (!details?.inputValue) {
       return this.notificationService.showError('Please enter reason');
     }
 
     const data = {
       dropUser: {
         userId: details?._id,
-        reason: details?.reason,
+        reason: details?.inputValue,
       },
     };
 
@@ -640,31 +676,8 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-  selectSupplier(supplier: any) {
-    this.selectedSupplier = supplier;
-
-    if (!this.selectedSupplier) {
-      return this.notificationService.showError('please select supplier');
-    }
-    console.log('sadsdd', supplier);
-
-    const data = {
-      select: {
-        supplierId: this.selectedSupplier?._id,
-        companySelect: supplier.company,
-        handoverCall: supplier.startDate,
-      },
-    };
-    this.projectManagerService.dropUser(data, this.projectId).subscribe(
-      (response) => {
-        this.notificationService.showSuccess('Successfully select user');
-      },
-      (error) => {
-        this.notificationService.showError(
-          error?.message || 'Something went wrong'
-        );
-      }
-    );
+  selectSupplier(suppliers: any) {
+    this.selectedSupplierIds = suppliers.map((supplier: any) => supplier._id);
   }
 
   submitForm() {
@@ -1072,6 +1085,8 @@ export class TrackerWiseProjectDetailsComponent {
             this.projectDetails?.bidManagerStatusComment || [];
           this.FeasibilityOtherDocuments =
             this.projectDetails?.FeasibilityOtherDocuments || null;
+          this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
+          console.log(this.viewReasonList); // Logs the dropUser list for debugging
           this.failStatusImage = this.projectDetails?.failStatusImage || null;
         } else {
           this.notificationService.showError(response?.message);
@@ -1898,5 +1913,28 @@ export class TrackerWiseProjectDetailsComponent {
 
   removeReadonly(event: Event) {
     (event.target as HTMLInputElement).removeAttribute('readonly');
+  }
+
+  toggleSupplierList() {
+    this.showSupplierList = !this.showSupplierList;
+  }
+
+  viewAllComments(userId: string) {
+    // Check if the userId is passed correctly
+    console.log('Selected User ID:', userId);
+
+    // Find the user in the dropUser list based on userId
+    const supplier = this.viewReasonList.find(
+      (item: any) => item.userId === userId
+    );
+
+    if (supplier) {
+      // Assign the reasons for this supplier to filteredComments
+      this.filteredComments = supplier.reason;
+      console.log('Filtered Comments:', this.filteredComments); // Log the filtered comments to verify
+    } else {
+      console.log('Supplier not found');
+      this.filteredComments = []; // In case no supplier is found
+    }
   }
 }
