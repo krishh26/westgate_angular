@@ -71,7 +71,9 @@
           <span class="input-icon"><i class="bi bi-search"></i></span>
           <input class="form-control control-search"
             placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-            type="text" [(ngModel)]="searchText" (input)="searchtext()" />
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="onSearchInput($event)" />
         </div>
         <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
           title="Search using BOS ID, Project name, Client name, Website, Notice reference">

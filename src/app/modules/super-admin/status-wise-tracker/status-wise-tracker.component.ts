@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -9,13 +9,16 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Options } from '@angular-slider/ngx-slider';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-status-wise-tracker',
   templateUrl: './status-wise-tracker.component.html',
   styleUrls: ['./status-wise-tracker.component.css'],
 })
-export class StatusWiseTrackerComponent implements OnInit {
+export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   showLoader: boolean = false;
   selectedStatus: string | null = null;
   selectedBidStatus: string | null = null;
@@ -77,13 +80,24 @@ export class StatusWiseTrackerComponent implements OnInit {
   viewComments: any;
   myControl = new FormControl();
 
+  private searchSubject = new Subject<string>();
+  private searchSubscription: Subscription;
+
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
     private router: Router,
     private projectService: ProjectService,
     private modalService: NgbModal
-  ) {}
+  ) {
+    // Initialize search subscription with debounce
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(300), // Wait for 300ms pause in events
+      distinctUntilChanged() // Only emit if value is different from previous
+    ).subscribe(searchValue => {
+      this.performSearch(searchValue);
+    });
+  }
 
   ngOnInit() {
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -92,6 +106,68 @@ export class StatusWiseTrackerComponent implements OnInit {
     });
     this.getDataByStatus();
     this.getProjectList();
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
+  onSearchInput(event: any) {
+    const searchValue = event.target.value;
+    this.searchSubject.next(searchValue);
+  }
+
+  private performSearch(searchValue: string) {
+    this.showLoader = true;
+    this.searchText = searchValue;
+
+    // Update payload with filters
+    Payload.projectListStatusWiseTracker.keyword = searchValue;
+    Payload.projectListStatusWiseTracker.page = String(this.page);
+    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
+    Payload.projectListStatusWiseTracker.category = this.selectedCategories.join(',');
+    Payload.projectListStatusWiseTracker.industry = this.selectedIndustries.join(',');
+    Payload.projectListStatusWiseTracker.projectType = this.selectedProjectTypes.join(',');
+    Payload.projectListStatusWiseTracker.clientType = this.selectedClientTypes.join(',');
+    Payload.projectListStatusWiseTracker.status = this.status;
+    Payload.projectListStatusWiseTracker.publishDateRange = this.publishStartDate.value && this.publishEndDate.value
+      ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
+      : '';
+    Payload.projectListStatusWiseTracker.SubmissionDueDateRange = this.submissionStartDate.value && this.submissionEndDate.value
+      ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
+      : '';
+    Payload.projectListStatusWiseTracker.valueRange = this.minValue + '-' + this.maxValue;
+    Payload.projectListStatusWiseTracker.expired = this.isExpired;
+    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+
+    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   updateCategorisation(value: string, event: Event) {
