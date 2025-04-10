@@ -46,6 +46,9 @@ import { ResourcesAddBulkComponent } from './supplier/resources-add-bulk/resourc
 import { BossUserResourcesAddComponent } from './supplier/boss-user-resources-add/boss-user-resources-add.component';
 import { BossUserResourcesDetailsComponent } from './supplier/boss-user-resources-details/boss-user-resources-details.component';
 import { BossUserSupplierUserProfileEditComponent } from './supplier/boss-user-supplier-user-profile-edit/boss-user-supplier-user-profile-edit.component';
+import { BosUserRoleWiseResourcesListComponent } from './resources/bos-user-role-wise-resources-list/bos-user-role-wise-resources-list.component';
+import { BosUserRolesListComponent } from './resources/bos-user-roles-list/bos-user-roles-list.component';
+import { BosUserAddRolesComponent } from './resources/bos-user-add-roles/bos-user-add-roles.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -83,7 +86,10 @@ import { BossUserSupplierUserProfileEditComponent } from './supplier/boss-user-s
     ResourcesAddBulkComponent,
     BossUserResourcesAddComponent,
     BossUserResourcesDetailsComponent,
-    BossUserSupplierUserProfileEditComponent
+    BossUserSupplierUserProfileEditComponent,
+    BosUserRoleWiseResourcesListComponent,
+    BosUserRolesListComponent,
+    BosUserAddRolesComponent
   ],
   imports: [
     CommonModule,
