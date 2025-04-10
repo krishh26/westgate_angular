@@ -155,10 +155,16 @@
                   <form [formGroup]="commentForm" (ngSubmit)="addComment(modalTask?._id)">
                     <div class="row mb-2">
                       <div class="col-md-6">
-                        <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time" [formControlName]="'timeStart'">
+                        <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time" [formControlName]="'timeStart'" required>
+                        <small class="text-danger" *ngIf="commentForm.get('timeStart')?.touched && commentForm.get('timeStart')?.errors?.['required']">
+                          Start time is required
+                        </small>
                       </div>
                       <div class="col-md-6">
-                        <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()" [formControlName]="'timeEnd'">
+                        <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()" [formControlName]="'timeEnd'" required>
+                        <small class="text-danger" *ngIf="commentForm.get('timeEnd')?.touched && commentForm.get('timeEnd')?.errors?.['required']">
+                          End time is required
+                        </small>
                         <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                       </div>
                     </div>

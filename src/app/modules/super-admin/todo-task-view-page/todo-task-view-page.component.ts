@@ -128,6 +128,10 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   // Add this property to store subtasks
   subtasksList: any[] = []; // Initialize as empty array
 
+  timeStart: string = '';
+  timeEnd: string = '';
+  timeError: string = '';
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -851,6 +855,11 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       const timeStart = this.commentForm.get('timeStart')?.value;
       const timeEnd = this.commentForm.get('timeEnd')?.value;
 
+      if (!this.validateTimeRange()) {
+        this.notificationService.showError('Please correct the time range');
+        return;
+      }
+
       if (comment?.trim().length > 0) {
         const payload = {
           comment: comment.trim(),
@@ -866,6 +875,9 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             if (response?.status === true) {
               this.notificationService.showSuccess('Comment added successfully');
               this.commentForm.reset();
+              this.timeStart = '';
+              this.timeEnd = '';
+              this.timeError = '';
               // Reload the task details
               this.loadTaskDetails(id);
               this.spinner.hide();
@@ -891,6 +903,26 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       this.spinner.hide();
       this.notificationService.showError('Please fill in all required fields');
     }
+  }
+
+  validateTimeRange() {
+    if (this.timeStart && this.timeEnd) {
+      const startTime = new Date(`2000-01-01T${this.timeStart}`);
+      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+      if (endTime <= startTime) {
+        this.timeError = 'End time must be greater than start time';
+        this.timeEnd = '';
+        return false;
+      }
+      this.timeError = '';
+      return true;
+    }
+    return true;
+  }
+
+  onTimeEndChange() {
+    this.validateTimeRange();
   }
 
   toggleUserSelection(userId: number): void {

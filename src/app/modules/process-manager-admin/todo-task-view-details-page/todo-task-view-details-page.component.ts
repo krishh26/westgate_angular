@@ -162,8 +162,8 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
     // Initialize the comment form
     this.commentForm = this.fb.group({
       description: ['', Validators.required],
-      timeStart: [''],
-      timeEnd: ['']
+      timeStart: ['', Validators.required],
+      timeEnd: ['', Validators.required]
     });
   }
 
@@ -819,6 +819,11 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
     if (!commentContent || !id) {
       this.notificationService.showError('Please add a comment');
+      return;
+    }
+
+    if (!this.timeStart || !this.timeEnd) {
+      this.notificationService.showError('Please fill in both time fields');
       return;
     }
 
