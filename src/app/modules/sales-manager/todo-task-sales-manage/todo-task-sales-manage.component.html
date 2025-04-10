@@ -1,0 +1,29 @@
+<div class="container pt-5">
+  <div class="row">
+    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-3 col-12">
+      <div class="sidebar-widget">
+        <p class="ps-3"><strong>Task Status</strong></p>
+        <ul class="sidebar-nav">
+          <li>
+            <a href="javascript:void(0)" (click)="setActiveComponent('MyDay')"
+              [ngClass]="{ active: activeComponent === 'MyDay' }">My Day</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="active" (click)="setActiveComponent('Ongoing')"
+              [ngClass]="{ 'active': activeComponent === 'Ongoing' }">Ongoing</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" (click)="setActiveComponent('Completed')"
+              [ngClass]="{ 'active': activeComponent === 'Completed' }">Completed</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
+      <app-myday-todo-task-sales-manager *ngIf="activeComponent === 'MyDay'"></app-myday-todo-task-sales-manager>
+      <app-todo-task-sales-manage *ngIf="activeComponent === 'Ongoing'"></app-todo-task-sales-manage>
+      <app-app-completed-todo-task-sales-manager
+        *ngIf="activeComponent === 'Completed'"></app-app-completed-todo-task-sales-manager>
+    </div>
+  </div>
+</div>

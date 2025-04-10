@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider/options';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -11,6 +11,8 @@ import {
   createPayloadCopy,
   Payload,
 } from 'src/app/utility/shared/constant/payload.const';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 interface Project {
   _id: string;
@@ -31,7 +33,10 @@ interface Project {
   templateUrl: './project-manager-to-action.component.html',
   styleUrls: ['./project-manager-to-action.component.scss'],
 })
-export class ProjectManagerToActionComponent {
+export class ProjectManagerToActionComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  private searchSubject = new Subject<string>();
+
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
@@ -107,6 +112,16 @@ export class ProjectManagerToActionComponent {
     private localStorageService: LocalStorageService
   ) {
     this.loginUser = this.localStorageService.getLogger();
+
+    // Setup search debouncing
+    this.searchSubject.pipe(
+      takeUntil(this.destroy$),
+      debounceTime(500), // Wait for 500ms of no typing
+      distinctUntilChanged() // Only emit if value changed
+    ).subscribe(searchValue => {
+      this.searchText = searchValue;
+      this.performSearch();
+    });
   }
 
   ngOnInit(): void {
@@ -124,7 +139,7 @@ export class ProjectManagerToActionComponent {
         this.notificationService.showError('Please select a Publish start date');
         return;
       } else {
-        this.searchtext();
+        this.performSearch();
       }
     });
 
@@ -133,7 +148,7 @@ export class ProjectManagerToActionComponent {
         this.notificationService.showError('Please select a Submission start date');
         return;
       } else {
-        this.searchtext();
+        this.performSearch();
       }
     });
 
@@ -146,6 +161,93 @@ export class ProjectManagerToActionComponent {
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // New method to handle search input changes
+  onSearchInput(event: any) {
+    const value = event.target.value?.toLowerCase() || '';
+    this.searchSubject.next(value);
+  }
+
+  // Renamed searchtext to performSearch for clarity
+  performSearch() {
+    if (this.showLoader) {
+      return; // Don't make a new request if one is already in progress
+    }
+
+    this.showLoader = true;
+    this.projectList = []; // Clear the list immediately
+
+    // Update payload with filters
+    this.tempPayload.projectList.keyword = this.searchText?.trim() || '';
+    this.tempPayload.projectList.page = String(this.page);
+    this.tempPayload.projectList.limit = String(this.pagesize);
+    this.tempPayload.projectList.status = this.selectedStatuses.join(',');
+    this.tempPayload.projectList.bidManagerStatus =
+      this.selectedBidStatuses?.length > 0
+        ? this.selectedBidStatuses.join(',')
+        : 'Awaiting';
+    this.tempPayload.projectList.publishDateRange =
+      this.publishStartDate.value && this.publishEndDate.value
+        ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
+        : '';
+    this.tempPayload.projectList.SubmissionDueDateRange =
+      this.submissionStartDate.value && this.submissionEndDate.value
+        ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
+        : '';
+    this.tempPayload.projectList.valueRange =
+      this.minValue + '-' + this.maxValue;
+    this.tempPayload.projectList.expired = true;
+    this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
+
+    this.projectService.getProjectList(this.tempPayload.projectList)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (response) => {
+          this.showLoader = false;
+
+          if (response?.status === true) {
+            // Set totalRecords first
+            this.totalRecords = response?.data?.meta_data?.items || 0;
+
+            // Only set projectList if there is data
+            if (response?.data?.data && response.data.data.length > 0) {
+              this.projectList = response.data.data;
+
+              this.projectList.forEach((project: any) => {
+                const dueDate = new Date(project.dueDate);
+                const currentDate = new Date();
+                const dateDifference = Math.abs(
+                  dueDate.getTime() - currentDate.getTime()
+                );
+                const formattedDateDifference: string =
+                  this.formatMilliseconds(dateDifference);
+                this.dateDifference = formattedDateDifference;
+              });
+            } else {
+              // Ensure projectList is empty if no data
+              this.projectList = [];
+            }
+          } else {
+            this.projectList = [];
+            this.totalRecords = 0;
+            if (response?.message) {
+              this.notificationService.showError(response.message);
+            }
+          }
+        },
+        (error) => {
+          this.showLoader = false;
+          this.projectList = [];
+          this.totalRecords = 0;
+          this.notificationService.showError(error?.message || 'An error occurred while searching');
+        }
+      );
+  }
 
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
@@ -335,67 +437,6 @@ export class ProjectManagerToActionComponent {
     );
   }
 
-  searchtext() {
-    this.showLoader = true;
-
-    // Update payload with filters
-    this.tempPayload.projectList.keyword = this.searchText;
-    this.tempPayload.projectList.page = String(this.page);
-    this.tempPayload.projectList.limit = String(this.pagesize);
-    // this.tempPayload.projectList.category = this.selectedCategories.join(',');
-    // this.tempPayload.projectList.industry = this.selectedIndustries.join(',');
-    // this.tempPayload.projectList.projectType =
-    //   this.selectedProjectTypes.join(',');
-    // this.tempPayload.projectList.clientType =
-    //   this.selectedClientTypes.join(',');
-    this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus =
-      this.selectedBidStatuses?.length > 0
-        ? this.selectedBidStatuses.join(',')
-        : 'Awaiting';
-    this.tempPayload.projectList.publishDateRange =
-      this.publishStartDate.value && this.publishEndDate.value
-        ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
-        : '';
-    this.tempPayload.projectList.SubmissionDueDateRange =
-      this.submissionStartDate.value && this.submissionEndDate.value
-        ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
-        : '';
-    this.tempPayload.projectList.valueRange =
-      this.minValue + '-' + this.maxValue;
-    console.log(this.tempPayload.projectList);
-    this.tempPayload.projectList.expired = true;
-    this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
-      (response) => {
-        this.projectList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.projectList = response?.data?.data;
-
-          this.projectList.forEach((project: any) => {
-            const dueDate = new Date(project.dueDate);
-            const currentDate = new Date();
-            const dateDifference = Math.abs(
-              dueDate.getTime() - currentDate.getTime()
-            );
-
-            const formattedDateDifference: string =
-              this.formatMilliseconds(dateDifference);
-            this.dateDifference = formattedDateDifference;
-          });
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
-  }
-
   projectDetails(projectId: any) {
     this.router.navigate(
       ['/project-manager/project/bid-manager-project-details'],
@@ -409,13 +450,7 @@ export class ProjectManagerToActionComponent {
 
   paginate(page: number) {
     this.page = page;
-
-    if (this.searchText && this.searchText.trim() !== '') {
-      this.searchtext();
-    } else {
-      this.getProjectList();
-    }
-
+    this.performSearch();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -483,7 +518,7 @@ export class ProjectManagerToActionComponent {
 
   changeRange() {
     if (this.maxValue >= this.minValue) {
-      this.searchtext();
+      this.performSearch();
     }
   }
   getStatusColor(data: any): string {

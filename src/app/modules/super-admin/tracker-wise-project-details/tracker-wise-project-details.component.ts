@@ -20,6 +20,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { Editor, Toolbar } from 'ngx-editor';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
@@ -110,6 +111,8 @@ export class TrackerWiseProjectDetailsComponent {
   selectedSupplierIds: string[] = [];
   filteredComments: any[] = [];
   viewReasonList: any = [];
+  allSuppliers: any[] = [];
+  selectedSuppliersList: any[] = [];
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -189,8 +192,8 @@ export class TrackerWiseProjectDetailsComponent {
     private projectCoordinatorService: ProjectCoordinatorService,
     private spinner: NgxSpinnerService,
     private superadminService: SuperadminService,
-    private superService: SuperadminService,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -364,7 +367,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.showLoader = true;
     const projectIdToMatch = this.projectId; // Replace with the actual project ID to match
 
-    this.superService.getTask(this.selectedUserIds.join(',')).subscribe(
+    this.superadminService.getTask(this.selectedUserIds.join(',')).subscribe(
       (response) => {
         if (response?.status === true) {
           // Filter tasks based on project ID
@@ -433,7 +436,7 @@ export class TrackerWiseProjectDetailsComponent {
 
     console.log('this is data', payload);
 
-    this.superService.createTask(payload).subscribe(
+    this.superadminService.createTask(payload).subscribe(
       (response) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('User assigned successfully');
@@ -609,6 +612,7 @@ export class TrackerWiseProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.userDetail = response?.data;
+          this.allSuppliers = response?.data;
           this.selectedSuppliers = this.userDetail.reduce(
             (acc: any, supplier: any) => {
               acc[supplier._id] = { company: '', startDate: null };
@@ -676,8 +680,26 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-  selectSupplier(suppliers: any) {
-    this.selectedSupplierIds = suppliers.map((supplier: any) => supplier._id);
+  selectSupplier(supplier: any) {
+    const data = {
+      userId: supplier._id,
+      projectId: this.projectId,
+      isSelected: true
+    };
+
+    this.superadminService.selectFromSortlist(data).subscribe({
+      next: (response: any) => {
+        // Handle success response
+        this.toastr.success('Supplier selected successfully');
+        // Refresh the project details to get updated data
+        this.getProjectDetails();
+      },
+      error: (error: any) => {
+        // Handle error
+        this.toastr.error('Failed to select supplier');
+        console.error('Error selecting supplier:', error);
+      }
+    });
   }
 
   submitForm() {
@@ -1072,6 +1094,7 @@ export class TrackerWiseProjectDetailsComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectDetails = response?.data;
+          this.selectedSuppliersList = response?.data?.sortlistedUsers || [];
           this.casestudylist = response?.data?.casestudy;
           this.feasibilityStatus = this.projectDetails?.status;
           this.status = this.projectDetails?.bidManagerStatus;

@@ -31,6 +31,7 @@ import { ProcessManagerAdminModule } from './modules/process-manager-admin/proce
 import { FeasibilityManagerModule } from './modules/feasibility-manager/feasibility-manager.module';
 import { NgxEditorModule } from 'ngx-editor';
 import { TimeFormatPipe } from './pipes/time-format.pipe';
+import { SalesManagerModule } from './modules/sales-manager/sales-manager.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +68,8 @@ import { TimeFormatPipe } from './pipes/time-format.pipe';
       preventDuplicates: false,
     }),
     NgxSpinnerModule,
-    NgxSliderModule
+    NgxSliderModule,
+    SalesManagerModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
