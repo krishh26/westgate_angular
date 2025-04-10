@@ -56,7 +56,7 @@ export class BosUserRolesListComponent implements OnInit {
 
   viewRoleDetails(role: any) {
     // Navigate to resources view with role ID
-    this.router.navigate(['/super-admin/resources-view'], {
+    this.router.navigate(['/boss-user/bos-user-resources-view'], {
       queryParams: { roleId: role._id }
     });
   }
@@ -95,7 +95,7 @@ export class BosUserRolesListComponent implements OnInit {
     console.log('Complete role data:', roleData); // Log complete data
 
     // Store the complete role data in state
-    this.router.navigate(['/super-admin/edit-roles', roleId], {
+    this.router.navigate(['/boss-user/bos-user-edit-roles', roleId], {
       state: { roleData: roleData } // Pass the complete roleData object without modification
     });
   }

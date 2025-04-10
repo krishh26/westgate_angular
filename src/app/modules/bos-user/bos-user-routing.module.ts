@@ -34,6 +34,7 @@ import { BosUserRolesListComponent } from './resources/bos-user-roles-list/bos-u
 import { BosUserResourcesViewDetailsComponent } from './resources/bos-user-resources-view-details/bos-user-resources-view-details.component';
 import { BosUserRoleWiseResourcesListComponent } from './resources/bos-user-role-wise-resources-list/bos-user-role-wise-resources-list.component';
 import { BosUserAddRolesComponent } from './resources/bos-user-add-roles/bos-user-add-roles.component';
+import { BosUserEditRolesComponent } from './resources/bos-user-edit-roles/bos-user-edit-roles.component';
 
 const routes: Routes = [
   {
@@ -171,6 +172,10 @@ const routes: Routes = [
       {
         path: "bos-user-add-roles",
         component: BosUserAddRolesComponent
+      },
+      {
+        path: "bos-user-edit-roles",
+        component: BosUserEditRolesComponent
       },
     ]
   },
