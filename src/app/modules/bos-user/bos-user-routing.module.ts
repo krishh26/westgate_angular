@@ -13,6 +13,19 @@ import { BossUserProfileComponent } from './boss-user-profile/boss-user-profile.
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TodoTaskViewDetailsComponent } from './todo-task-view-details/todo-task-view-details.component';
+import { BossUserSupplierComponent } from './supplier/boss-user-supplier/boss-user-supplier.component';
+import { BossUserAddNewSupplierComponent } from './supplier/add-new-supplier/add-new-supplier.component';
+import { BossUserExpertiseViewComponent } from './supplier/boss-user-expertise-view/boss-user-expertise-view.component';
+import { BossUserSubExpertiseViewComponent } from './supplier/boss-user-sub-expertise-view/boss-user-sub-expertise-view.component';
+import { BossUserSupplierUserProfileComponent } from './supplier/boss-user-supplier-user-profile/boss-user-supplier-user-profile.component';
+import { BossUserAdminCaseStudyListComponent } from './supplier/boss-user-admin-case-study-list/boss-user-admin-case-study-list.component';
+import { BossUserAddNewCaseStudyComponent } from './supplier/boss-user-add-new-case-study/boss-user-add-new-case-study.component';
+import { BossUserExpertiseListComponent } from './supplier/boss-user-expertise-list/boss-user-expertise-list.component';
+import { SubExpertiseListComponent } from './supplier/sub-expertise-list/sub-expertise-list.component';
+import { BossUserResourcesListComponent } from './supplier/boss-user-resources-list/boss-user-resources-list.component';
+import { BossUserResourcesAddComponent } from './supplier/boss-user-resources-add/boss-user-resources-add.component';
+import { BossUserResourcesDetailsComponent } from './supplier/boss-user-resources-details/boss-user-resources-details.component';
+import { BossUserSupplierUserProfileEditComponent } from './supplier/boss-user-supplier-user-profile-edit/boss-user-supplier-user-profile-edit.component';
 
 const routes: Routes = [
   {
@@ -66,6 +79,58 @@ const routes: Routes = [
       {
         path: "boss-user-profile",
         component: BossUserProfileComponent
+      },
+      {
+        path: "supplier",
+        component: BossUserSupplierComponent
+      },
+      {
+        path: "add-new-supplier",
+        component: BossUserAddNewSupplierComponent
+      },
+      {
+        path: "expertise-view",
+        component: BossUserExpertiseViewComponent
+      },
+      {
+        path: "sub-expertise-view",
+        component: BossUserSubExpertiseViewComponent
+      },
+      {
+        path: "supplier-user-profile",
+        component: BossUserSupplierUserProfileComponent
+      },
+      {
+        path: "admin-case-study-list",
+        component: BossUserAdminCaseStudyListComponent
+      },
+      {
+        path: "add-new-case-study",
+        component: BossUserAddNewCaseStudyComponent
+      },
+      {
+        path: "expertise-list",
+        component: BossUserExpertiseListComponent
+      },
+      {
+        path: "sub-expertise-list",
+        component: SubExpertiseListComponent
+      },
+      {
+        path: "resources-list",
+        component: BossUserResourcesListComponent
+      },
+      {
+        path: "resources-add",
+        component: BossUserResourcesAddComponent
+      },
+      {
+        path: "resources-details",
+        component: BossUserResourcesDetailsComponent
+      },
+      {
+        path: "supplier-user-profile-edit",
+        component: BossUserSupplierUserProfileEditComponent
       },
     ]
   },

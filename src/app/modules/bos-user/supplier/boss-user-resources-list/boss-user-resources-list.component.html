@@ -1,0 +1,118 @@
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluids mb-3">
+      <div class="row align-items-center">
+        <nav>
+          <ul class="projects-nav-tab">
+            <li routerLink="/boss-user/supplier-user-profile">
+              <a>Profile</a>
+            </li>
+            <li routerLink="/boss-user/admin-case-study-list">
+              <a>Historical Data</a>
+            </li>
+            <li routerLink="/boss-user/expertise-list">
+              <a>Case Studies</a>
+            </li>
+            <li routerLink="/boss-user/resources-list">
+              <a class="active">Resources</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+            <h4 class="text-theme mb-4">Candidates List</h4>
+          </div>
+          <div class="col-lg-2 col-xl-2 col-12">
+            <div class="col-lg-2 col-xl-2 col-12">
+              <nav id="navbar" class="navbar">
+                <ul>
+                  <li class="dropdown">
+                    <span class="btn btn-outline-white w-100">+ Add Candidate</span>
+                    <ul>
+                      <li><a routerLink="/boss-user/resources-add">Single Entry</a></li>
+                      <li><a (click)="openAddResourceModal()">Bulk Entry</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading spinner -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Candidate table -->
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Roles</th>
+              <th>Experience</th>
+              <th>Technical Skills</th>
+              <th>Languages</th>
+              <th>Hourly Rate</th>
+              <th>Available From</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td *ngIf="!candidatesList?.length" colspan="13">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+              <td>{{candidate?.fullName}}</td>
+              <td>
+                <span *ngFor="let role of candidate?.roleId" class="badge bg-primary me-1">
+                  {{role.name}}
+                </span>
+              </td>
+              <td>{{candidate?.totalExperience}} years</td>
+              <td>
+                <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
+                  {{skill}}{{!last ? ', ' : ''}}
+                </span>
+              </td>
+              <td>
+                <span *ngFor="let language of candidate?.languagesKnown; let last = last">
+                  {{language}}{{!last ? ', ' : ''}}
+                </span>
+              </td>
+              <td>${{candidate?.hourlyRate}}</td>
+              <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td>
+              <td>
+                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i class="bi bi-eye"></i> View</button>
+              </td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="candidate.active" (ngModelChange)="onToggleSwitch(candidate)">
+                  <span class="slider round"></span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div *ngIf="candidatesList?.length > 0" class="d-flex justify-content-start mt-4">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+      </div>
+
+    </div>
+  </section>
+</main>

@@ -1,0 +1,150 @@
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="text-theme mb-0"><strong>Candidate Details</strong></h4>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm" (click)="goBack()">
+                <i class="bi bi-arrow-left"></i> Back to List
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="editCandidate(candidateDetails)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteCandidates(candidateDetails._id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Loading spinner -->
+          <div *ngIf="showLoader" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Candidate Details -->
+          <div *ngIf="!showLoader && candidateDetails" class="card">
+            <div class="card-body">
+              <!-- Personal Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Personal Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.fullName" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Gender</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.gender" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nationality</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.nationality" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Highest Qualification</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.highestQualification + ' (' + candidateDetails?.yearOfGraduation + ')'" readonly>
+                </div>
+              </div>
+
+              <!-- Professional Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Professional Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Role</label>
+                  <div class="form-control d-flex flex-wrap gap-2" style="min-height: 38px; height: auto;">
+                    <ng-container *ngIf="candidateDetails?.roleId && !isRoleArray()">
+                      <span class="badge bg-primary">{{candidateDetails?.roleId?.name}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="candidateDetails?.roleId && isRoleArray()">
+                      <span *ngFor="let role of candidateDetails.roleId" class="badge bg-primary">{{role?.name}}</span>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Total Experience</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.totalExperience + ' years'" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Hourly Rate</label>
+                  <input type="text" class="form-control" [value]="'$' + candidateDetails?.hourlyRate" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Available From</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.availableFrom | date: 'dd/MM/yyyy'" readonly>
+                </div>
+              </div>
+
+              <!-- Skills and Languages -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Skills & Languages</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Technical Skills</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.technicalSkills?.join(', ')" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Soft Skills</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.softSkills?.join(', ')" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Languages Known</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.languagesKnown?.join(', ')" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Previous Employers</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.previousEmployers?.join(', ')" readonly>
+                </div>
+              </div>
+
+              <!-- Projects -->
+              <div class="row" *ngIf="candidateDetails?.projectsWorkedOn?.length">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Projects</h5>
+                </div>
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Project Name</th>
+                          <th>Client</th>
+                          <th>Duration</th>
+                          <th>Industry</th>
+                          <th>Tech Stack</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let project of candidateDetails?.projectsWorkedOn">
+                          <td><input type="text" class="form-control" [value]="project?.projectName" readonly></td>
+                          <td><input type="text" class="form-control" [value]="project?.clientName" readonly></td>
+                          <td><input type="text" class="form-control" [value]="project?.projectDuration" readonly></td>
+                          <td><input type="text" class="form-control" [value]="project?.industryDomain" readonly></td>
+                          <td>
+                            <input type="text" class="form-control" [value]="project?.techStackUsed?.join(', ')" readonly>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Data Message -->
+          <div *ngIf="!showLoader && !candidateDetails" class="text-center py-5">
+            <p class="text-muted">No candidate details found</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

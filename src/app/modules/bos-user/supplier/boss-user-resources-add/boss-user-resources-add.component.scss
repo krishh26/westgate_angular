@@ -1,0 +1,37 @@
+// Existing styles if any...
+
+// Styles for ng-select
+::ng-deep .ng-select.ng-select-multiple .ng-select-container {
+  min-height: 38px;
+  border-radius: 0.25rem;
+}
+
+::ng-deep .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+::ng-deep .ng-select .ng-select-container {
+  border-color: #ced4da;
+}
+
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: #007bff;
+  color: white;
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value {
+  background-color: #e7f4ff;
+  border-radius: 2px;
+  margin-right: 5px;
+  padding: 0 5px;
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-right: 1px solid #d1e8ff;
+}

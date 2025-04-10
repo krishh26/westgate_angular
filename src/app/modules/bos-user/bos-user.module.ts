@@ -30,6 +30,22 @@ import { MyDayTodoTaskComponent } from './my-day-todo-task/my-day-todo-task.comp
 import { CompletedTodoTaskComponent } from './completed-todo-task/completed-todo-task.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { BossUserSupplierComponent } from './supplier/boss-user-supplier/boss-user-supplier.component';
+import { CaseStudyBulkAddComponent } from './supplier/case-study-bulk-add/case-study-bulk-add.component';
+import { SuperadminCommentModalComponent } from './supplier/superadmin-comment-modal/superadmin-comment-modal.component';
+import { BossUserAddNewSupplierComponent } from './supplier/add-new-supplier/add-new-supplier.component';
+import { BossUserExpertiseViewComponent } from './supplier/boss-user-expertise-view/boss-user-expertise-view.component';
+import { BossUserSubExpertiseViewComponent } from './supplier/boss-user-sub-expertise-view/boss-user-sub-expertise-view.component';
+import { BossUserSupplierUserProfileComponent } from './supplier/boss-user-supplier-user-profile/boss-user-supplier-user-profile.component';
+import { BossUserAdminCaseStudyListComponent } from './supplier/boss-user-admin-case-study-list/boss-user-admin-case-study-list.component';
+import { BossUserAddNewCaseStudyComponent } from './supplier/boss-user-add-new-case-study/boss-user-add-new-case-study.component';
+import { BossUserExpertiseListComponent } from './supplier/boss-user-expertise-list/boss-user-expertise-list.component';
+import { SubExpertiseListComponent } from './supplier/sub-expertise-list/sub-expertise-list.component';
+import { BossUserResourcesListComponent } from './supplier/boss-user-resources-list/boss-user-resources-list.component';
+import { ResourcesAddBulkComponent } from './supplier/resources-add-bulk/resources-add-bulk.component';
+import { BossUserResourcesAddComponent } from './supplier/boss-user-resources-add/boss-user-resources-add.component';
+import { BossUserResourcesDetailsComponent } from './supplier/boss-user-resources-details/boss-user-resources-details.component';
+import { BossUserSupplierUserProfileEditComponent } from './supplier/boss-user-supplier-user-profile-edit/boss-user-supplier-user-profile-edit.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -51,7 +67,23 @@ import { NgxEditorModule } from 'ngx-editor';
     MyDayTodoTaskComponent,
     CompletedTodoTaskComponent,
     ChangePasswordComponent,
-    TodoTaskViewDetailsComponent
+    TodoTaskViewDetailsComponent,
+    BossUserSupplierComponent,
+    CaseStudyBulkAddComponent,
+    SuperadminCommentModalComponent,
+    BossUserAddNewSupplierComponent,
+    BossUserExpertiseViewComponent,
+    BossUserSubExpertiseViewComponent,
+    BossUserSupplierUserProfileComponent,
+    BossUserAdminCaseStudyListComponent,
+    BossUserAddNewCaseStudyComponent,
+    BossUserExpertiseListComponent,
+    SubExpertiseListComponent,
+    BossUserResourcesListComponent,
+    ResourcesAddBulkComponent,
+    BossUserResourcesAddComponent,
+    BossUserResourcesDetailsComponent,
+    BossUserSupplierUserProfileEditComponent
   ],
   imports: [
     CommonModule,
@@ -70,4 +102,4 @@ import { NgxEditorModule } from 'ngx-editor';
   exports: [TodoTasksComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class BOSUserModule {}
+export class BOSUserModule { }

@@ -26,7 +26,8 @@ export class HeaderComponent {
   }
 
   navUrlArr = [
-    { title: 'TO DO TASKS', route: '/boss-user/todo-task' },
+    { title: 'To Do Tasks', route: '/boss-user/todo-task' },
+    { title: 'Supplier', route: '/boss-user/supplier' },
   ];
 
 
