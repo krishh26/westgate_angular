@@ -109,6 +109,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
   editor!: Editor;
   commentForm!: FormGroup;
   newComment: string = '';
+  timeStart: string = '';
+  timeEnd: string = '';
+  timeError: string = '';
 
   constructor(
     private superService: SuperadminService,
@@ -158,7 +161,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
 
     // Initialize the comment form
     this.commentForm = this.fb.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      timeStart: [''],
+      timeEnd: ['']
     });
   }
 
@@ -817,12 +822,19 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.validateTimeRange()) {
+      this.notificationService.showError('Please correct the time range');
+      return;
+    }
+
     this.showLoader = true;
     this.spinner.show();
     const payload = {
       comment: commentContent,
       taskId: id,
-      userId: this.loginUser?.id
+      userId: this.loginUser?.id,
+      timeStart: this.timeStart,
+      timeEnd: this.timeEnd
     };
 
     this.superService.addComments(payload, id).subscribe(
@@ -830,6 +842,9 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
         if (response?.status === true) {
           this.notificationService.showSuccess('Comment added successfully');
           this.commentForm.reset();
+          this.timeStart = '';
+          this.timeEnd = '';
+          this.timeError = '';
           // Reload task details
           this.loadTaskDetails(id);
         } else {
@@ -844,6 +859,26 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
         this.spinner.hide();
       }
     );
+  }
+
+  validateTimeRange() {
+    if (this.timeStart && this.timeEnd) {
+      const startTime = new Date(`2000-01-01T${this.timeStart}`);
+      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+      if (endTime <= startTime) {
+        this.timeError = 'End time must be greater than start time';
+        this.timeEnd = '';
+        return false;
+      }
+      this.timeError = '';
+      return true;
+    }
+    return true;
+  }
+
+  onTimeEndChange() {
+    this.validateTimeRange();
   }
 
   toggleUserSelection(userId: number): void {

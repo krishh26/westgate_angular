@@ -64,8 +64,11 @@ export class TodoTaskViewDetailsComponent implements OnInit, OnDestroy {
   selectedUserIds: number[] = [];
   previousPage: string = '/bos-user/todo-task';
 
-  editor: Editor;
-  commentForm: FormGroup;
+  editor!: Editor;
+  commentForm!: FormGroup;
+  timeStart: string = '';
+  timeEnd: string = '';
+  timeError: string = '';
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -309,35 +312,60 @@ export class TodoTaskViewDetailsComponent implements OnInit, OnDestroy {
     this.modalTask = { ...task };
   }
 
-  addComment(comment: string, id: string) {
-    if (comment?.trim().length > 0) {
-      this.showLoader = true;
-      const payload = { comment: comment.trim() };
+  addComment(id: string) {
+    const commentContent = this.commentForm.get('description')?.value;
 
-      this.superService.addComments(payload, id).subscribe(
-        (response: any) => {
-          this.showLoader = false;
-          if (response?.status === true) {
-            this.notificationService.showSuccess('Comment added successfully');
-            window.location.reload();
-            const newComment = {
-              text: comment.trim(),
-            };
-            this.modalTask.comments = [...(this.modalTask.comments || []), newComment];
-
-            this.newComment = '';
-          } else {
-            this.notificationService.showError(response?.message || 'Failed to add comment');
-          }
-        },
-        (error: any) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.message || 'An error occurred');
-        }
-      );
-    } else {
-      this.notificationService.showError('Comment cannot be empty');
+    if (!commentContent || !id) {
+      this.notificationService.showError('Please add a comment');
+      return;
     }
+
+    if (!this.validateTimeRange()) {
+      this.notificationService.showError('Please correct the time range');
+      return;
+    }
+
+    this.showLoader = true;
+    const payload: {
+      comment: string;
+      taskId: string;
+      userId: string;
+      timeStart?: string;
+      timeEnd?: string;
+    } = {
+      comment: commentContent,
+      taskId: id,
+      userId: this.loginUser?.id
+    };
+
+    // Only add time parameters if they have values
+    if (this.timeStart) {
+      payload.timeStart = this.timeStart;
+    }
+    if (this.timeEnd) {
+      payload.timeEnd = this.timeEnd;
+    }
+
+    this.superService.addComments(payload, id).subscribe(
+      (response: any) => {
+        if (response?.status === true) {
+          this.notificationService.showSuccess('Comment added successfully');
+          this.commentForm.reset();
+          this.timeStart = '';
+          this.timeEnd = '';
+          this.timeError = '';
+          // Reload task details
+          this.loadTaskDetails(id);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add comment');
+          this.showLoader = false;
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred');
+        this.showLoader = false;
+      }
+    );
   }
 
   projectDetails(projectId: any) {
@@ -662,5 +690,25 @@ export class TodoTaskViewDetailsComponent implements OnInit, OnDestroy {
         this.showLoader = false;
       }
     );
+  }
+
+  validateTimeRange() {
+    if (this.timeStart && this.timeEnd) {
+      const startTime = new Date(`2000-01-01T${this.timeStart}`);
+      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+      if (endTime <= startTime) {
+        this.timeError = 'End time must be greater than start time';
+        this.timeEnd = '';
+        return false;
+      }
+      this.timeError = '';
+      return true;
+    }
+    return true;
+  }
+
+  onTimeEndChange() {
+    this.validateTimeRange();
   }
 }

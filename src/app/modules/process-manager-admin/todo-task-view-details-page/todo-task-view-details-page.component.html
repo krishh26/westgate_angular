@@ -153,6 +153,15 @@
                 <h6><strong>Comment</strong></h6>
                 <div class="mb-2">
                   <form [formGroup]="commentForm" (ngSubmit)="addComment(modalTask?._id)">
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time" [formControlName]="'timeStart'">
+                      </div>
+                      <div class="col-md-6">
+                        <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()" [formControlName]="'timeEnd'">
+                        <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
+                      </div>
+                    </div>
                     <div class="NgxEditor__Wrapper">
                       <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
                       </ngx-editor-menu>
