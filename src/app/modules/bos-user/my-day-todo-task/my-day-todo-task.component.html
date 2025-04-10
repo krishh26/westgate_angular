@@ -224,7 +224,8 @@
                   <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time">
                 </div>
                 <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time">
+                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()">
+                  <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>
 

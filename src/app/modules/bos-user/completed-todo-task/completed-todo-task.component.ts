@@ -64,6 +64,9 @@ export class CompletedTodoTaskComponent {
   bidCommentData: any[] = [];
   bidManagerStatusComment: FormControl = new FormControl('');
   projectList: any = [];
+  timeStart: string = '';
+  timeEnd: string = '';
+  timeError: string = '';
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -348,10 +351,51 @@ export class CompletedTodoTaskComponent {
     this.modalTask = { ...task };
   }
 
+  validateTimeRange() {
+    if (this.timeStart && this.timeEnd) {
+      const startTime = new Date(`2000-01-01T${this.timeStart}`);
+      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+      if (endTime <= startTime) {
+        this.timeError = 'End time must be greater than start time';
+        this.timeEnd = '';
+        return false;
+      }
+      this.timeError = '';
+      return true;
+    }
+    return true;
+  }
+
+  onTimeEndChange() {
+    this.validateTimeRange();
+  }
+
   addComment(comment: string, id: string) {
     if (comment?.trim().length > 0) {
+      if (!this.validateTimeRange()) {
+        this.notificationService.showError('Please correct the time range');
+        return;
+      }
+
       this.showLoader = true;
-      const payload = { comment: comment.trim() };
+      const payload: {
+        comment: string;
+        date: string;
+        timeStart?: string;
+        timeEnd?: string;
+      } = {
+        comment: comment.trim(),
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      // Only add time parameters if they have values
+      if (this.timeStart) {
+        payload.timeStart = this.timeStart;
+      }
+      if (this.timeEnd) {
+        payload.timeEnd = this.timeEnd;
+      }
 
       this.superService.addComments(payload, id).subscribe(
         (response) => {

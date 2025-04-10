@@ -87,6 +87,7 @@ export class OngoingTodoTaskComponent {
   timeStart: string = '';
   timeEnd: string = '';
   todayDate: string = new Date().toISOString().split('T')[0];
+  timeError: string = '';
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -320,8 +321,33 @@ export class OngoingTodoTaskComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  validateTimeRange() {
+    if (this.timeStart && this.timeEnd) {
+      const startTime = new Date(`2000-01-01T${this.timeStart}`);
+      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+      if (endTime <= startTime) {
+        this.timeError = 'End time must be greater than start time';
+        this.timeEnd = '';
+        return false;
+      }
+      this.timeError = '';
+      return true;
+    }
+    return true;
+  }
+
+  onTimeEndChange() {
+    this.validateTimeRange();
+  }
+
   addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
+      if (!this.validateTimeRange()) {
+        this.notificationService.showError('Please correct the time range');
+        return;
+      }
+
       const payload: any = {
         comment: comment.trim(),
         date: this.todayDate
