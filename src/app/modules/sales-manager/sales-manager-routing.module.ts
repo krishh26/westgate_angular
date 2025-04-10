@@ -13,17 +13,17 @@ const routes: Routes = [
     children: [
       {
         path: 'ongoing-todo-task-sales-manager',
-        // component: OngoingTodoTaskSalesManagerComponent
-        component: TodoTaskSalesManageComponent
+         component: OngoingTodoTaskSalesManagerComponent
+       // component: TodoTaskSalesManageComponent
       },
-      // {
-      //   path: 'myday-todo-task-sales-manager',
-      //   component: MydayTodoTaskSalesManagerComponent
-      // },
-      // {
-      //   path: 'completed-todo-task-sales-manager',
-      //   component: CompletedTodoTaskSalesManagerComponent
-      // }
+      {
+        path: 'myday-todo-task-sales-manager',
+        component: MydayTodoTaskSalesManagerComponent
+      },
+      {
+        path: 'completed-todo-task-sales-manager',
+        component: CompletedTodoTaskSalesManagerComponent
+      }
     ]
   },
   {

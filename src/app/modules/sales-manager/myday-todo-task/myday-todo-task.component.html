@@ -1,113 +1,136 @@
 <div class="accordion accordion-flush" id="accordianTodoList">
-  <p><strong>My Day Task</strong></p>
+  <div class="container pt-5">
+    <p><strong>My Day Task</strong></p>
 
-  <div class="select-container mb-3">
     <div class="row">
-      <div class="col-md-12 mb-2">
-        <div class="flex-grow-1">
-          <div class="form-group mb-0 position-relative">
-            <span class="input-icon"><i class="bi bi-search"></i></span>
-            <input class="form-control control-search" placeholder="Search by Title" type="text"
-              [(ngModel)]="searchText" (input)="searchtext()" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 mb-2">
-      <button class="btn btn-secondary w-100" (click)="logoutTask()">
-        Logout Task
-      </button>
-    </div>
-  </div>
-
-  <div *ngFor="let task of taskList | paginate
-        : {
-            itemsPerPage: pagesize,
-            currentPage: page,
-            totalItems: totalRecords
-          };let i = index">
-    <div class="accordion-item">
-      <h2 class="accordion-header" [id]="'flush-TodoList' + i">
-        <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
-          data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)" [ngClass]="{
-           'bg-light-yellow': task?.pickACategory === 'low',
-                      'bg-light-green': task?.pickACategory === 'Medium',
-                      'bg-light-orange': task?.pickACategory === 'High'
-          }">
-          <div>
-
-            {{ task?.task }}
-            <span *ngIf="task?.pickACategory">
-              ({{ task?.pickACategory }})</span>
-            <span *ngIf="task?.project">
-              (Status :
-              {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
-              task?.project?.status: task?.project?.bidManagerStatus }} )
-            </span>&nbsp;
-            <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
-                Completed
-              </button></span>
-          </div>
-          <div class="text-end">
-            <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
-              <span *ngFor="let user of task.assignTo; let last = last">
-                {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
-              </span>
-            </span>
-            <span *ngIf="task?.createdAt" class="text-muted me-2">
-              Created: {{ task.createdAt | date : "MMM d, y" }}
-            </span>
-            <span *ngIf="task?.dueDate" class="text-muted">
-              Due: {{ task.dueDate | date : "MMM d, y" }}
-            </span>
-          </div>
-        </button>
-      </h2>
-      <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
-        <div class="accordion-body">
-          <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-            <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
-              [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
-              <div class="row align-items-center mb-3">
-                <div class="col">
-                  <div class="d-flex justify-content-between">
-                    <p class="mb-0 user-name">
-                      {{ comment?.userDetail?.name }}
-                    </p>
-                    <small class="comment-date" *ngIf="comment?.date">
-                      {{ comment?.date | date : "dd/MM/yyyy" }}
-                      <span *ngIf="comment?.timeStart && comment?.timeEnd">
-                        ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
-                      </span>
-                    </small>
-                  </div>
-                  <small class="user-role d-block">
-                    {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
-                  </small>
-
-                </div>
-              </div>
-              <div class="d-flex justify-content-between">
-                <p [innerHTML]="comment?.comment"></p>
-              </div>
+      <div class="col-lg-2 col-xl-2 col-md-2 col-sm-3 col-12">
+        <div class="sidebar-widget">
+          <p class="ps-3"><strong>Task Status</strong></p>
+          <ul class="sidebar-nav">
+            <li routerLink="/sales-manager/myday-todo-task-sales-manager">
+              <a class="active">My Day</a>
+            </li>
+            <li routerLink="/sales-manager/ongoing-todo-task-sales-manager">
+              <a>Ongoing</a>
+            </li>
+            <li routerLink="/sales-manager/completed-todo-task-sales-manager">
+              <a>Completed</a>
             </li>
           </ul>
-          <p *ngIf="!task?.todayComments" class="text-muted">
-            No comments available.
-          </p>
+        </div>
+      </div>
+      <div class="col-lg-10 col-xl-10 col-md-8 col-sm-8 col-12">
+        <div class="select-container mb-3">
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <div class="flex-grow-1">
+                <div class="form-group mb-0 position-relative">
+                  <span class="input-icon"><i class="bi bi-search"></i></span>
+                  <input class="form-control control-search" placeholder="Search by Title" type="text"
+                    [(ngModel)]="searchText" (input)="searchtext()" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-2">
+            <button class="btn btn-secondary w-100" (click)="logoutTask()">
+              Logout Task
+            </button>
+          </div>
+        </div>
+
+        <div *ngFor="let task of taskList | paginate
+              : {
+                  itemsPerPage: pagesize,
+                  currentPage: page,
+                  totalItems: totalRecords
+                };let i = index">
+          <div class="accordion-item">
+            <h2 class="accordion-header" [id]="'flush-TodoList' + i">
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                data-bs-toggle="modal" data-bs-target="#taskDetailsModal" (click)="openTaskModal(task)" [ngClass]="{
+                 'bg-light-yellow': task?.pickACategory === 'low',
+                            'bg-light-green': task?.pickACategory === 'Medium',
+                            'bg-light-orange': task?.pickACategory === 'High'
+                }">
+                <div>
+
+                  {{ task?.task }}
+                  <span *ngIf="task?.pickACategory">
+                    ({{ task?.pickACategory }})</span>
+                  <span *ngIf="task?.project">
+                    (Status :
+                    {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+                    task?.project?.status: task?.project?.bidManagerStatus }} )
+                  </span>&nbsp;
+                  <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                      Completed
+                    </button></span>
+                </div>
+                <div class="text-end">
+                  <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
+                    <span *ngFor="let user of task.assignTo; let last = last">
+                      {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
+                    </span>
+                  </span>
+                  <span *ngIf="task?.createdAt" class="text-muted me-2">
+                    Created: {{ task.createdAt | date : "MMM d, y" }}
+                  </span>
+                  <span *ngIf="task?.dueDate" class="text-muted">
+                    Due: {{ task.dueDate | date : "MMM d, y" }}
+                  </span>
+                </div>
+              </button>
+            </h2>
+            <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
+              <div class="accordion-body">
+                <ul class="SecondarytaskList" *ngIf="task?.todayComments">
+                  <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+                    [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                    <div class="row align-items-center mb-3">
+                      <div class="col">
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0 user-name">
+                            {{ comment?.userDetail?.name }}
+                          </p>
+                          <small class="comment-date" *ngIf="comment?.date">
+                            {{ comment?.date | date : "dd/MM/yyyy" }}
+                            <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                              ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                            </span>
+                          </small>
+                        </div>
+                        <small class="user-role d-block">
+                          {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
+                        </small>
+
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <p [innerHTML]="comment?.comment"></p>
+                    </div>
+                  </li>
+                </ul>
+                <p *ngIf="!task?.todayComments" class="text-muted">
+                  No comments available.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!taskList?.length">
+          <app-no-record-found></app-no-record-found>
+        </div>
+        <div class="row mt-3 align-items-center" *ngIf="taskList?.length > 0">
+          <div class="row">
+            <div class="pagination">
+              <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="50"></pagination-controls>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="!taskList?.length">
-    <app-no-record-found></app-no-record-found>
-  </div>
-  <div class="row mt-3 align-items-center" *ngIf="taskList?.length > 0">
-    <div class="row">
-      <div class="pagination">
-        <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="50"></pagination-controls>
-      </div>
-    </div>
+
   </div>
 </div>
 
