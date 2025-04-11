@@ -54,6 +54,7 @@ import { BosUserResourcesViewComponent } from './resources/bos-user-resources-vi
 import { BosUserResourcesViewDetailsComponent } from './resources/bos-user-resources-view-details/bos-user-resources-view-details.component';
 import { BosUserResourcesAddBulkComponent } from './resources/bos-user-resources-add-bulk/bos-user-resources-add-bulk.component';
 import { BosUserResourcesCommentModalComponent } from './resources/bos-user-resources-comment-modal/bos-user-resources-comment-modal.component';
+import { BosUserProjectDetailsComponent } from './bos-user-project-details/bos-user-project-details.component';
 @NgModule({
   declarations: [
     BOSUserComponent,
@@ -99,7 +100,8 @@ import { BosUserResourcesCommentModalComponent } from './resources/bos-user-reso
     BosUserResourcesViewComponent,
     BosUserResourcesViewDetailsComponent,
     BosUserResourcesAddBulkComponent,
-    BosUserResourcesCommentModalComponent
+    BosUserResourcesCommentModalComponent,
+    BosUserProjectDetailsComponent
   ],
   imports: [
     CommonModule,

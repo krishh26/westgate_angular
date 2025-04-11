@@ -410,7 +410,7 @@ export class OngoingTodoTaskComponent {
       document.documentElement.style.height = 'auto';
 
       // Now navigate to the details page
-      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+      this.router.navigate(['/boss-user/bos-user-project-details'], { queryParams: { id: projectId } });
     }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 
