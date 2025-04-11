@@ -83,7 +83,7 @@
     <div class="container-fluid">
       <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
         <div class="table-responsive mt-5 mb-3">
-          <table class="table table-striped align-middle">
+          <table class="table">
             <thead>
               <tr>
                 <th>Project Title</th>
@@ -95,17 +95,15 @@
                   Due Date & Time <i class="bi bi-sort-up"></i>
                 </th>
                 <th>Feasibility Status</th>
-                <!-- <th>Feasibility Assign User</th> -->
                 <th>Bid Status</th>
                 <th>Bid Assign User</th>
                 <th>Log Time</th>
-                <!-- <th>Documents</th> -->
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td *ngIf="!projectList?.length" colspan="15">
+                <td *ngIf="!projectList?.length" colspan="9" class="text-center">
                   <app-no-record-found></app-no-record-found>
                 </td>
               </tr>
@@ -125,14 +123,13 @@
                     item?.projectName
                     }}</a>
                 </td>
-                <td v-align="middle">{{ item?.BOSID }}</td>
+                <td>{{ item?.BOSID }}</td>
                 <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
                 <td>
                   {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
                   {{ item.bidsubmissiontime }}
                 </td>
                 <td>{{ item?.status }}</td>
-                <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
                 <td>{{ item?.bidManagerStatus }}</td>
                 <td>{{ item?.assignBidmanager[0]?.name }}</td>
                 <td>
@@ -142,11 +139,6 @@
                   <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
                     data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
                   </a>
-                </td>
-                <td>
-                  <span *ngIf="!item?.westGetDocument?.length" class="text-danger">
-                    <i class="bi bi-circle-fill"></i>
-                  </span>
                 </td>
               </tr>
             </tbody>

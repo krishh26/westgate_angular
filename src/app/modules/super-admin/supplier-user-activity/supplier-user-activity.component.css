@@ -1,15 +1,49 @@
-table {
-  border-collapse: collapse;
+.table {
+  width: 100%;
+  background: #fff;
 }
 
-th,
-td {
-  border: 1px solid black;
-  padding: 8px;
+.table thead th {
+  background: #F8F8F8;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 15px;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #E5E7EB;
 }
 
-th {
-  background-color: #f2f2f2;
+.table tbody td {
+  padding: 15px;
+  font-size: 14px;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #E5E7EB;
+  background: #fff;
+}
+
+.table tbody tr:hover td {
+  background: #F8F8F8;
+}
+
+.table a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+
+.btn-primary.btn-sm {
+  padding: 5px 15px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.pagination {
+  margin-top: 20px;
+  justify-content: center;
 }
 
 @media (min-width: 320px) and (max-width: 767px) {
@@ -29,12 +63,14 @@ th {
     margin-bottom: 15px;
   }
 }
-ul.taskuserList{
+
+ul.taskuserList {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-ul.taskuserList li{
+
+ul.taskuserList li {
   display: inline-block;
   padding: 5px 10px;
   background-color: #F5F5F5;
