@@ -539,4 +539,9 @@ export class SuperadminService {
       payload
     );
   }
+
+  // Get task details by ID
+  getTaskDetails(taskId: string) {
+    return this.httpClient.get(`${this.baseUrl}/task/detail/${taskId}`);
+  }
 }
