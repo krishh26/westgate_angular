@@ -96,6 +96,10 @@ h6 {
   font-family: "Inter", sans-serif;
 }
 
+.form-control[readonly] {
+  background-color: #F5F5F5 !important;
+}
+
 .limegreen {
   color: #DBFF00;
 }
@@ -267,7 +271,7 @@ h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
-* Desktop Navigation 
+* Desktop Navigation
 */
 .navbar {
   padding: 0;
@@ -427,7 +431,7 @@ h6 {
 }
 
 /**
-* Mobile Navigation 
+* Mobile Navigation
 */
 .mobile-nav-toggle {
   color: #000;
@@ -1747,8 +1751,8 @@ Media Query CSS
     color: #000;
   }
 
-  /* This for loop creates the 	necessary css animation names 
-  Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+  /* This for loop creates the 	necessary css animation names
+  Due to the split circle of progress-left and progress right, we must use the animations on each side.
   */
   .progress[data-percentage="10"] .progress-right .progress-bar {
     animation: loading-1 1.5s linear forwards;
