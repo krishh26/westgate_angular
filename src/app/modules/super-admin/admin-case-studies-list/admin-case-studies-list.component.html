@@ -31,17 +31,20 @@
             <h4 class="text-theme"><strong>Historical Data</strong></h4>
           </div>
           <div class="col-lg-2 col-xl-2 col-12">
-            <nav id="navbar" class="navbar">
-              <ul>
-                <li class="dropdown">
-                  <span class="btn btn-outline-white w-100">+ Add Case Study</span>
-                  <ul>
-                    <li><a routerLink="/super-admin/add-new-case-study">Single Entry</a></li>
-                    <li><a (click)="openAddTeamModal()">Bulk Entry</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </nav>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-primary" routerLink="/boss-user/supplier">
+                Back
+              </button>
+              <div ngbDropdown class="d-inline-block">
+                <button type="button" class="btn btn-outline-primary" id="addCaseStudyDropdown" ngbDropdownToggle>
+                  + Add Case Study
+                </button>
+                <div ngbDropdownMenu aria-labelledby="addCaseStudyDropdown">
+                  <button ngbDropdownItem routerLink="/boss-user/add-new-case-study">Single Entry</button>
+                  <button ngbDropdownItem (click)="openAddTeamModal()">Bulk Entry</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
