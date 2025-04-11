@@ -79,6 +79,7 @@
               <th>Join Date</th>
               <th>Last Login</th>
               <th>Total Employees</th>
+              <th>Assigned Projects</th>
               <th>Action</th>
               <th>Status</th>
             </tr>
@@ -86,7 +87,7 @@
           <tbody>
 
             <tr>
-              <td *ngIf="!supplierUserList?.length" colspan="5">
+              <td *ngIf="!supplierUserList?.length" colspan="7">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
@@ -97,6 +98,16 @@
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>{{item?.employeeCount}}</td>
+              <td>
+                <ng-container *ngIf="item?.assignedProjects?.length > 0; else noProjects">
+                  <span *ngFor="let project of item.assignedProjects; let last = last">
+                    {{project.projectName}}{{!last ? ', ' : ''}}
+                  </span>
+                </ng-container>
+                <ng-template #noProjects>
+                 -
+                </ng-template>
+              </td>
               <td>
                 <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
                   title="View Details">
