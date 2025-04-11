@@ -77,6 +77,7 @@
             <tr>
               <th width="200px">Supplier Name</th>
               <th>Join Date</th>
+              <th>Last Login</th>
               <th>Action</th>
               <!-- <th>Status</th> -->
             </tr>
@@ -93,6 +94,7 @@
               *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
               <td>{{item?.companyName || item?.name}}</td>
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+              <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>
                 <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
                   title="View Details">

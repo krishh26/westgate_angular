@@ -193,7 +193,7 @@ export class BossUserSupplierComponent {
   projectDetails(projectId: any, item: any) {
     let data = item;
     localStorage.setItem('supplierData', JSON.stringify(data))
-    this.router.navigate(['/boss-user/supplier-user-profile'], { queryParams: { id: projectId } });
+    this.router.navigate(['/boss-user/admin-case-study-list']);
   }
 
   paginate(page: number) {

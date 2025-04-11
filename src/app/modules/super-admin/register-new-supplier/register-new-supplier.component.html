@@ -6,7 +6,11 @@
           <div class="form-group mb-0">
             <h4 class="text-theme"><strong>Register New Supplier</strong></h4>
           </div><br>
+          <button class="btn btn-primary" routerLink="/boss-user/supplier">
+            Back
+          </button>
         </div>
+
       </div>
       <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm" autocomplete="off" novalidate>
         <div class="row">

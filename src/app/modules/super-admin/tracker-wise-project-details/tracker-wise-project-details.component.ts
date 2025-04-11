@@ -681,8 +681,10 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   selectSupplier(supplier: any) {
+    console.log(supplier[0]._id);
+
     const data = {
-      userId: supplier._id,
+      userId: supplier[0]._id,
       projectId: this.projectId,
       isSelected: true
     };
