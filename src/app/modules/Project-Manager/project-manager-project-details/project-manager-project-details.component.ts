@@ -17,6 +17,7 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 import { Location } from '@angular/common';
 import { Editor } from 'ngx-editor';
 import { Toolbar } from 'ngx-editor';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-project-manager-project-details',
@@ -360,7 +361,8 @@ export class ProjectManagerProjectDetailsComponent {
           this.notificationService.showSuccess(
             response?.message || 'Drop user successfully'
           );
-          this.getUserDetails();
+          // this.getUserDetails();
+          window.location.reload();
         } else {
           return this.notificationService.showError('Try after some time.');
         }
@@ -1356,5 +1358,64 @@ export class ProjectManagerProjectDetailsComponent {
     }
 
     return hasComment;
+  }
+
+  deSelectSupplier(supplier: any) {
+    console.log(supplier);
+
+    const data = {
+      userId: supplier._id,
+      projectId: this.projectId,
+      isSelected: false
+    };
+
+    this.superadminService.selectFromSortlist(data).subscribe({
+      next: (response: any) => {
+        // Handle success response
+        this.notificationService.showSuccess('Supplier selected successfully');
+        // Refresh the project details to get updated data
+        this.getProjectDetails();
+      },
+      error: (error: any) => {
+        // Handle error
+        this.notificationService.showError('Failed to select supplier');
+        console.error('Error selecting supplier:', error);
+      }
+    });
+  }
+
+  removeShortlistSupplier(supplier:any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to remove ${supplier.name} from shortlist?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Remove!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.removeFromShortlist(supplier._id, this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess(`${supplier.name} successfully removed from shortlist`);
+              window.location.reload();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
+  isSupplierSelected(supplierId: string): boolean {
+    return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
   }
 }

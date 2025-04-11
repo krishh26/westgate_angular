@@ -344,6 +344,37 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+  removeShortlistSupplier(supplier:any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to remove ${supplier.name} from shortlist?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Remove!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.removeFromShortlist(supplier._id, this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess(`${supplier.name} successfully removed from shortlist`);
+              window.location.reload();
+            } else {
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
   getProjectLogs() {
     this.showLoader = true;
     this.projectService.getProjectLogs(this.projectId).subscribe(
@@ -651,7 +682,8 @@ export class TrackerWiseProjectDetailsComponent {
           this.notificationService.showSuccess(
             response?.message || 'Drop user successfully'
           );
-          this.getUserDetails();
+          // this.getUserDetails();
+          window.location.reload();
         } else {
           return this.notificationService.showError('Try after some time.');
         }
@@ -681,10 +713,10 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   selectSupplier(supplier: any) {
-    console.log(supplier[0]._id);
+    console.log(supplier);
 
     const data = {
-      userId: supplier[0]._id,
+      userId: supplier._id,
       projectId: this.projectId,
       isSelected: true
     };
@@ -703,6 +735,31 @@ export class TrackerWiseProjectDetailsComponent {
       }
     });
   }
+
+  deSelectSupplier(supplier: any) {
+    console.log(supplier);
+
+    const data = {
+      userId: supplier._id,
+      projectId: this.projectId,
+      isSelected: false
+    };
+
+    this.superadminService.selectFromSortlist(data).subscribe({
+      next: (response: any) => {
+        // Handle success response
+        this.toastr.success('Supplier selected successfully');
+        // Refresh the project details to get updated data
+        this.getProjectDetails();
+      },
+      error: (error: any) => {
+        // Handle error
+        this.toastr.error('Failed to select supplier');
+        console.error('Error selecting supplier:', error);
+      }
+    });
+  }
+
 
   submitForm() {
     this.summaryForm.markAllAsTouched();
@@ -1961,5 +2018,9 @@ export class TrackerWiseProjectDetailsComponent {
       console.log('Supplier not found');
       this.filteredComments = []; // In case no supplier is found
     }
+  }
+
+  isSupplierSelected(supplierId: string): boolean {
+    return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
   }
 }

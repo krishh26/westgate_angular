@@ -47,7 +47,8 @@ export enum SuperAdminEndPoint {
   DELETE_CANDIDATE = '/candidate/delete',
   CANDIDATE_UPDATE = '/candidate/update',
   GET_SUBTASKS = '/task/subtasks',
-  SELECT_FROM_SORTLIST = '/project/select-from-sortlist'
+  SELECT_FROM_SORTLIST = '/project/select-from-sortlist',
+  REMOVE_FROM_SHORTLIST = '/project/remove-from-sortlist'
 }
 
 @Injectable({
@@ -525,6 +526,17 @@ export class SuperadminService {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.SELECT_FROM_SORTLIST,
       data
+    );
+  }
+
+  removeFromShortlist(userId: string, projectId: string): Observable<any> {
+    const payload = {
+      userId,
+      projectId
+    };
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.REMOVE_FROM_SHORTLIST,
+      payload
     );
   }
 }
