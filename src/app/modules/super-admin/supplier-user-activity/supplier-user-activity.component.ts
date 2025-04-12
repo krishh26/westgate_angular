@@ -26,16 +26,16 @@ export class SupplierUserActivityComponent {
   selectedStatus: string = '';
   status: string = '';
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  public pagesize = 50;
   totalRecords: number = pagination.totalRecords;
   viewComments: any;
 
   statusList = [
-    { name: 'Shortlisted' },
-    { name: 'InSolution' },
-    { name: 'WaitingForResult' },
-    { name: 'Awarded' },
-    { name: 'NotAwarded' }
+    { name: 'Shortlisted', count: 0 },
+    { name: 'InSolution', count: 0 },
+    { name: 'WaitingForResult', count: 0 },
+    { name: 'Awarded', count: 0 },
+    { name: 'NotAwarded', count: 0 }
   ];
   isExpired: boolean = true;
   projectList: any = [];
@@ -55,12 +55,13 @@ export class SupplierUserActivityComponent {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
-
       this.supplierID = this.supplierData?._id;
     } else {
       console.log("No supplier data found in localStorage");
     }
-    // this.getSupplierdata();
+    // Set InSolution as default selected status
+    this.status = 'InSolution';
+    this.selectedStatus = 'InSolution';
     this.getSupplierActivity();
     this.getProjectList();
   }
@@ -145,43 +146,60 @@ export class SupplierUserActivityComponent {
   getProjectList(type?: string) {
     this.showLoader = true;
 
-    Payload.projectListStatusWiseTracker.adminReview = '';
-    Payload.projectListStatusWiseTracker.page = String(this.page);
-    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
-    Payload.projectListStatusWiseTracker.expired = this.isExpired;
-    Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
-    Payload.projectListStatusWiseTracker.supplierId = this.supplierID;
+    const params: {
+      page: string;
+      limit: string;
+      supplierId: string;
+      sortlist?: boolean;
+      status?: string;
+    } = {
+      page: String(this.page),
+      limit: String(this.pagesize),
+      supplierId: this.supplierID
+    };
 
-    this.projectService
-      .getProjectList(Payload.projectListStatusWiseTracker)
-      .subscribe(
-        (response) => {
-          this.projectList = [];
-          this.totalRecords = response?.data?.meta_data?.items;
+    if (this.status === 'Shortlisted') {
+      params.sortlist = true;
+    } else {
+      params.status = this.status;
+    }
 
-          if (response?.status === true) {
-            this.showLoader = false;
-            this.projectList = response?.data?.data;
-            this.projectList.forEach((project: any) => {
-              const dueDate = new Date(project.dueDate);
-              const currentDate = new Date();
-              const dateDifference = Math.abs(
-                dueDate.getTime() - currentDate.getTime()
-              );
-              const formattedDateDifference: string =
-                this.formatMilliseconds(dateDifference);
-              this.dateDifference = formattedDateDifference;
+    this.supplierService.getSupplierProjectList(params).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.assignedProjects;
+          // Update counts for each status
+          if (response?.data?.projectStatusCounts) {
+            this.statusList.forEach(status => {
+              const count = response.data.projectStatusCounts[status.name] || 0;
+              status.count = count;
             });
-          } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
           }
-        },
-        (error) => {
-          this.notificationService.showError(error?.message);
+
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(
+              dueDate.getTime() - currentDate.getTime()
+            );
+            const formattedDateDifference: string =
+              this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+        } else {
+          this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
-      );
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   formatMilliseconds(milliseconds: number): string {
@@ -213,7 +231,7 @@ export class SupplierUserActivityComponent {
     this.supplierService.getSupplierActivity(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.supplierDetails = response.data;
+          this.supplierDetails = response?.data;
 
           // Extract dates (keys)
           this.dates = Object.keys(this.supplierDetails);

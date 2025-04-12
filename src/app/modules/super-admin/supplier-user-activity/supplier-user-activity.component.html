@@ -24,10 +24,85 @@
       </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-12">
+    <div>
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-12">
+            <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
+              <ul class="taskuserList d-flex flex-wrap list-unstyled">
+                <li *ngFor="let status of statusList" class="me-3">
+                  <div (click)="filterByStatus(status)" [ngClass]="{ 'text-danger': selectedStatus === status.name }">
+                    {{ status.name }} ({{ status.count }})
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+          <div class="table-responsive mt-5 mb-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Project Title</th>
+                  <th>BOS ID</th>
+                  <th style="cursor: pointer" (click)="sort('publishDate')">
+                    Publish Date <i class="bi bi-sort-up"></i>
+                  </th>
+                  <th style="cursor: pointer" (click)="duedatesort('dueDate')">
+                    Due Date & Time <i class="bi bi-sort-up"></i>
+                  </th>
+                  <th>Feasibility Status</th>
+                  <th>Bid Status</th>
+                  <th>Bid Assign User</th>
+                  <th>Log Time</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td *ngIf="!projectList?.length" colspan="9" class="text-center">
+                    <app-no-record-found></app-no-record-found>
+                  </td>
+                </tr>
 
+                <tr *ngFor="
+                    let item of projectList | paginate : { itemsPerPage: pagesize,currentPage: page,totalItems: totalRecords }; let i = index">
+                  <td>
+                    <a href="javascript:;" (click)="projectDetails(item?._id)">{{
+                      item?.projectName
+                      }}</a>
+                  </td>
+                  <td>{{ item?.BOSID }}</td>
+                  <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
+                  <td>
+                    {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                    {{ item.bidsubmissiontime }}
+                  </td>
+                  <td>{{ item?.status }}</td>
+                  <td>{{ item?.bidManagerStatus }}</td>
+                  <td>{{ item?.assignBidmanager[0]?.name }}</td>
+                  <td>
+                    {{ item?.statusHistory[0]?.date | date : "dd/MM/yyyy, h:mm a'" }}
+                  </td>
+                  <!-- <td>
+                    <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                      data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
+                    </a>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-3 align-items-center">
+            <div class="row">
+              <div class="pagination">
+                <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -60,95 +135,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-12">
-          <div class="col-lg-12 col-xl-12 col-md-6 col-sm-6 col-12 mb-4" style="cursor: pointer">
-            <ul class="taskuserList d-flex flex-wrap list-unstyled">
-              <li *ngFor="let status of statusList" class="me-3">
-                <div (click)="filterByStatus(status)" [ngClass]="{ 'text-danger': selectedStatus === status.name }">
-                  {{ status.name }}
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid">
-      <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
-        <div class="table-responsive mt-5 mb-3">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Project Title</th>
-                <th>BOS ID</th>
-                <th style="cursor: pointer" (click)="sort('publishDate')">
-                  Publish Date <i class="bi bi-sort-up"></i>
-                </th>
-                <th style="cursor: pointer" (click)="duedatesort('dueDate')">
-                  Due Date & Time <i class="bi bi-sort-up"></i>
-                </th>
-                <th>Feasibility Status</th>
-                <th>Bid Status</th>
-                <th>Bid Assign User</th>
-                <th>Log Time</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td *ngIf="!projectList?.length" colspan="9" class="text-center">
-                  <app-no-record-found></app-no-record-found>
-                </td>
-              </tr>
-
-              <tr *ngFor="
-                  let item of projectList
-                    | paginate
-                      : {
-                          itemsPerPage: pagesize,
-                          currentPage: page,
-                          totalItems: totalRecords
-                        };
-                  let i = index
-                ">
-                <td>
-                  <a href="javascript:;" (click)="projectDetails(item?._id)">{{
-                    item?.projectName
-                    }}</a>
-                </td>
-                <td>{{ item?.BOSID }}</td>
-                <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
-                <td>
-                  {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
-                  {{ item.bidsubmissiontime }}
-                </td>
-                <td>{{ item?.status }}</td>
-                <td>{{ item?.bidManagerStatus }}</td>
-                <td>{{ item?.assignBidmanager[0]?.name }}</td>
-                <td>
-                  {{ item?.statusHistory[0]?.date | date : "dd/MM/yyyy, h:mm a'" }}
-                </td>
-                <td>
-                  <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
-                    data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="row mt-3 align-items-center">
-          <div class="row">
-            <div class="pagination">
-              <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
-            </div>
           </div>
         </div>
       </div>
