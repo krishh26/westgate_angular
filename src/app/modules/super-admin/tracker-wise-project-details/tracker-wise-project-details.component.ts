@@ -291,18 +291,18 @@ export class TrackerWiseProjectDetailsComponent {
         this.projectService.deleteProject(id).subscribe(
           (response: any) => {
             if (response?.status == true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Project successfully deleted'
               );
               this.router.navigate(['/super-admin/status-wise-tracker']);
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -327,7 +327,7 @@ export class TrackerWiseProjectDetailsComponent {
 
         this.projectService.deleteDocument(this.projectId, payload).subscribe(
           (response: any) => {
-            this.showLoader = false;
+
             if (response?.status === true) {
               this.notificationService.showSuccess(`${type} successfully deleted`);
               window.location.reload();
@@ -336,7 +336,7 @@ export class TrackerWiseProjectDetailsComponent {
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -358,7 +358,7 @@ export class TrackerWiseProjectDetailsComponent {
         this.showLoader = true;
         this.superadminService.removeFromShortlist(supplier._id, this.projectId).subscribe(
           (response: any) => {
-            this.showLoader = false;
+
             if (response?.status === true) {
               this.notificationService.showSuccess(`${supplier.name} successfully removed from shortlist`);
               window.location.reload();
@@ -367,7 +367,7 @@ export class TrackerWiseProjectDetailsComponent {
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -380,11 +380,11 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectService.getProjectLogs(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.logs = response?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -405,11 +405,11 @@ export class TrackerWiseProjectDetailsComponent {
           this.filteredTasks = response.data.data.filter(
             (task: any) => task.project && task.project._id === projectIdToMatch
           );
-          this.showLoader = false;
+
         } else {
           this.filteredTasks = []; // No records found
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -436,10 +436,10 @@ export class TrackerWiseProjectDetailsComponent {
           this.selectedSupplier = response?.data?.filter(
             (user: any) => user?.role === 'SupplierAdmin'
           );
-          this.showLoader = false;
+
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -624,10 +624,10 @@ export class TrackerWiseProjectDetailsComponent {
               user?.role === 'SupplierAdmin' || user?.role === 'FeasibilityUser'
           );
           this.displayForTitleedUsers = this.userList.slice(0, 7);
-          this.showLoader = false;
+
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -641,7 +641,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectManagerService.getUserList('SupplierAdmin').subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.userDetail = response?.data;
           this.allSuppliers = response?.data;
           this.selectedSuppliers = this.userDetail.reduce(
@@ -653,7 +653,7 @@ export class TrackerWiseProjectDetailsComponent {
           );
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -698,11 +698,11 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectService.getSummaryQuestionList(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.summaryquestionList = response?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -721,19 +721,20 @@ export class TrackerWiseProjectDetailsComponent {
       isSelected: true
     };
 
-    this.superadminService.selectFromSortlist(data).subscribe({
-      next: (response: any) => {
-        // Handle success response
-        this.toastr.success('Supplier selected successfully');
-        // Refresh the project details to get updated data
-        this.getProjectDetails();
+    this.superadminService.selectFromSortlist(data).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.notificationService.showSuccess(response?.message);
+          this.getProjectDetails();
+        } else {
+          console.error('Error selecting supplier:');
+        }
       },
-      error: (error: any) => {
-        // Handle error
-        this.toastr.error('Failed to select supplier');
-        console.error('Error selecting supplier:', error);
+      (error) => {
+        this.notificationService.showError(error?.error?.message);
+        this.showLoader = false;
       }
-    });
+    );
   }
 
   deSelectSupplier(supplier: any) {
@@ -780,17 +781,17 @@ export class TrackerWiseProjectDetailsComponent {
         .subscribe({
           next: (response) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.getSummaryList();
               this.resetForm();
             } else {
               this.notificationService.showError(response?.message);
-              this.showLoader = false;
+
             }
           },
           error: (error) => {
             this.notificationService.showError(error?.message);
-            this.showLoader = false;
+
           },
         });
     } else {
@@ -798,17 +799,17 @@ export class TrackerWiseProjectDetailsComponent {
       this.summaryService.addSummary(this.summaryForm.value).subscribe({
         next: (response) => {
           if (response?.status === true) {
-            this.showLoader = false;
+
             this.getSummaryList();
             this.resetForm();
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+
           }
         },
         error: (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
         },
       });
     }
@@ -826,11 +827,11 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectService.getSummaryQuestionList(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.summaryQuestionList = response?.data;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -932,18 +933,18 @@ export class TrackerWiseProjectDetailsComponent {
           .subscribe(
             (response: any) => {
               if (response?.status === true) {
-                this.showLoader = false;
+
                 this.notificationService.showSuccess(
                   'Comment successfully deleted'
                 );
                 window.location.reload();
               } else {
-                this.showLoader = false;
+
                 this.notificationService.showError(response?.message);
               }
             },
             (error) => {
-              this.showLoader = false;
+
               this.notificationService.showError(error?.message);
             }
           );
@@ -983,18 +984,18 @@ export class TrackerWiseProjectDetailsComponent {
         this.projectService.deleteBidComment(param, this.projectId).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
               window.location.reload();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -1034,7 +1035,7 @@ export class TrackerWiseProjectDetailsComponent {
 
         this.projectService.deleteFailedReason(param, this.projectId).subscribe(
           (response: any) => {
-            this.showLoader = false;
+
             if (response?.status === true) {
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
@@ -1045,7 +1046,7 @@ export class TrackerWiseProjectDetailsComponent {
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -1087,7 +1088,7 @@ export class TrackerWiseProjectDetailsComponent {
           .deletedroppedReason(param, this.projectId)
           .subscribe(
             (response: any) => {
-              this.showLoader = false;
+
               if (response?.status === true) {
                 this.notificationService.showSuccess(
                   'Reason successfully deleted'
@@ -1098,7 +1099,7 @@ export class TrackerWiseProjectDetailsComponent {
               }
             },
             (error) => {
-              this.showLoader = false;
+
               this.notificationService.showError(error?.message);
             }
           );
@@ -1121,18 +1122,18 @@ export class TrackerWiseProjectDetailsComponent {
         this.projectService.deleteStrip(id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
+
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
               window.location.reload();
             } else {
-              this.showLoader = false;
+
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
@@ -1151,7 +1152,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectService.getProjectDetailsById(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectDetails = response?.data;
           this.selectedSuppliersList = response?.data?.sortlistedUsers || [];
           this.casestudylist = response?.data?.casestudy;
@@ -1172,7 +1173,7 @@ export class TrackerWiseProjectDetailsComponent {
           this.failStatusImage = this.projectDetails?.failStatusImage || null;
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
@@ -1580,12 +1581,12 @@ export class TrackerWiseProjectDetailsComponent {
             );
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+
           }
         },
         (error) => {
           this.notificationService.showError(error?.message);
-          this.showLoader = false;
+
         }
       );
   }
@@ -1651,7 +1652,7 @@ export class TrackerWiseProjectDetailsComponent {
           window.location.reload();
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error: any) => {
@@ -1664,12 +1665,12 @@ export class TrackerWiseProjectDetailsComponent {
     this.projectService.getprojectStrips(this.projectId).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
+
           this.projectStrips = response?.data?.data;
 
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
+
         }
       },
       (error) => {
