@@ -289,7 +289,10 @@
           <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
               Shortlisted Supplier :
-              {{ projectDetails?.selectedUserIds[0]?.name }}
+              <span *ngIf="projectDetails?.selectedUserIds[0]?.isSelected !== false">
+                {{ projectDetails?.selectedUserIds[0]?.name }}
+              </span>
+
             </h5>
             <div class="d-flex gap-3 align-items-center">
               <ng-container>
