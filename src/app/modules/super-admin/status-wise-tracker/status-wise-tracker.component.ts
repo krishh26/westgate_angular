@@ -308,11 +308,13 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
           );
 
           // Combine Bid data
-          this.bidData = Object.keys(BidStatusCount).map((status) => ({
-            status,
-            count: BidStatusCount[status] || 0,
-            value: BidStatusValue[status] || 0,
-          }));
+          this.bidData = Object.keys(BidStatusCount)
+            .filter(status => status !== 'Shortlisted')
+            .map((status) => ({
+              status,
+              count: BidStatusCount[status] || 0,
+              value: BidStatusValue[status] || 0,
+            }));
         } else {
           this.notificationService.showError(response?.message);
         }

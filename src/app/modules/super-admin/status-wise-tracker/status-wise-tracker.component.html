@@ -71,9 +71,7 @@
           <span class="input-icon"><i class="bi bi-search"></i></span>
           <input class="form-control control-search"
             placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
-            type="text"
-            [(ngModel)]="searchText"
-            (input)="onSearchInput($event)" />
+            type="text" [(ngModel)]="searchText" (input)="onSearchInput($event)" />
         </div>
         <i class="bi bi-info-circle-fill ms-2" data-bs-toggle="tooltip"
           title="Search using BOS ID, Project name, Client name, Website, Notice reference">
@@ -210,7 +208,8 @@
             <div class="comments-section">
               <!-- Pinned Comments Section -->
               <div *ngIf="viewComments && viewComments.length > 0">
-                <h6 class="mt-2 mb-3" *ngIf="hasPinnedComments()"><i class="bi bi-pin-fill" style="color: #6c757d;"></i> <strong>Pinned Comments</strong></h6>
+                <h6 class="mt-2 mb-3" *ngIf="hasPinnedComments()"><i class="bi bi-pin-fill" style="color: #6c757d;"></i>
+                  <strong>Pinned Comments</strong></h6>
                 <ul class="SecondarytaskList" *ngIf="hasPinnedComments()">
                   <li *ngFor="let comment of viewComments" class="mb-3" [hidden]="!comment?.pinnedAt">
                     <div class="comment-item p-3 pinned-comment">
