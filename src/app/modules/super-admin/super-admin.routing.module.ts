@@ -46,6 +46,7 @@ import { EditRolesComponent } from './edit-roles/edit-roles.component';
 import { ResourcesProductivityViewComponent } from './resources-productivity-view/resources-productivity-view.component';
 import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
 import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
+import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/supplier-wise-project-list.component';
 
 const routes: Routes = [
   {
@@ -231,6 +232,10 @@ const routes: Routes = [
       {
         path: "team-productivity-view",
         component: TeamProductivityViewComponent
+      },
+      {
+        path: "supplier-wise-project-list",
+        component: SupplierWiseProjectListComponent
       },
     ]
   },
