@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 import { Editor } from 'ngx-editor';
 import { Toolbar } from 'ngx-editor';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-project-manager-project-details',
@@ -136,7 +137,7 @@ export class ProjectManagerProjectDetailsComponent {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   selectedSuppliers: { [key: string]: { company: string; startDate: any } } =
-  {};
+    {};
   userDetail: any;
   constructor(
     private projectService: ProjectService,
@@ -151,7 +152,8 @@ export class ProjectManagerProjectDetailsComponent {
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
     private superadminService: SuperadminService,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.projectId = params['id'];
@@ -374,7 +376,7 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
 
-  toggleSupplierList(): void {
+  toggleSupplierList() {
     this.showSupplierList = !this.showSupplierList;
   }
 
@@ -1052,25 +1054,28 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   selectSupplier(supplier: any) {
+    console.log(supplier);
+
     const data = {
       userId: supplier._id,
       projectId: this.projectId,
       isSelected: true
     };
 
-    this.superadminService.selectFromSortlist(data).subscribe({
-      next: (response: any) => {
-        // Handle success response
-        this.notificationService.showSuccess('Supplier selected successfully');
-        // Refresh the project details to get updated data
-        this.getProjectDetails();
+    this.superadminService.selectFromSortlist(data).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.notificationService.showSuccess(response?.message);
+          this.getProjectDetails();
+        } else {
+          console.error('Error selecting supplier:');
+        }
       },
-      error: (error: any) => {
-        // Handle error
-        this.notificationService.showError('Failed to select supplier');
-        console.error('Error selecting supplier:', error);
+      (error) => {
+        this.notificationService.showError(error?.error?.message);
+        this.showLoader = false;
       }
-    });
+    );
   }
 
   submitSelectedSuppliers() {
@@ -1372,19 +1377,19 @@ export class ProjectManagerProjectDetailsComponent {
     this.superadminService.selectFromSortlist(data).subscribe({
       next: (response: any) => {
         // Handle success response
-        this.notificationService.showSuccess('Supplier selected successfully');
+        this.toastr.success('Supplier selected successfully');
         // Refresh the project details to get updated data
         this.getProjectDetails();
       },
       error: (error: any) => {
         // Handle error
-        this.notificationService.showError('Failed to select supplier');
+        this.toastr.error('Failed to select supplier');
         console.error('Error selecting supplier:', error);
       }
     });
   }
 
-  removeShortlistSupplier(supplier:any) {
+  removeShortlistSupplier(supplier: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to remove ${supplier.name} from shortlist?`,
@@ -1398,7 +1403,7 @@ export class ProjectManagerProjectDetailsComponent {
         this.showLoader = true;
         this.superadminService.removeFromShortlist(supplier._id, this.projectId).subscribe(
           (response: any) => {
-            this.showLoader = false;
+
             if (response?.status === true) {
               this.notificationService.showSuccess(`${supplier.name} successfully removed from shortlist`);
               window.location.reload();
@@ -1407,14 +1412,13 @@ export class ProjectManagerProjectDetailsComponent {
             }
           },
           (error) => {
-            this.showLoader = false;
+
             this.notificationService.showError(error?.message);
           }
         );
       }
     });
   }
-
   isSupplierSelected(supplierId: string): boolean {
     return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
   }
