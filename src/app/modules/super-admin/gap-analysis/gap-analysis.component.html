@@ -207,7 +207,7 @@
                           item?.projects[0]?.projectName }}</a>
                       </td>
                       <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
-                      <td>{{ item?.comment }}</td>
+                      <td [innerHTML]="item?.comment"></td>
                     </tr>
                   </tbody>
                 </table>
