@@ -292,7 +292,6 @@
               <span *ngIf="projectDetails?.selectedUserIds?.[0]?.isSelected !== false">
                 {{ projectDetails?.selectedUserIds?.[0]?.name }}
               </span>
-
             </h5>
             <div class="d-flex gap-3 align-items-center">
               <ng-container>
@@ -301,12 +300,36 @@
                   [addTag]="true" [clearable]="false" [multiple]="true" [(ngModel)]="selectedSupplierIds">
                 </ng-select>
               </ng-container>
-              <button class="btn btn-primary btn-sm" type="button" (click)="submitSelectedSuppliers()">
+              <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#supplierModal"
+                *ngIf="selectedSupplierIds && selectedSupplierIds.length > 0">
                 Submit
               </button>
               <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
                 View All
               </button>
+            </div>
+          </div>
+
+          <!-- Supplier Selection Modal -->
+          <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="supplierModalLabel">Add Supplier Reason</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="supplierReason" class="form-label">Reason for Selection</label>
+                    <textarea class="form-control" id="supplierReason" rows="3" [(ngModel)]="supplierSelectionReason"
+                      placeholder="Enter reason for selecting these suppliers"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" (click)="saveSupplierSelection()">Save</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -320,7 +343,7 @@
                     <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
                       placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
                     <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
-                      (click)="dropUser(supplier)">
+                      (click)="dropUser(supplier)" *ngIf="supplier.inputValue?.trim()">
                       Save
                     </button>
                   </ng-container>
@@ -328,11 +351,11 @@
                     (click)="viewAllComments(supplier._id)" data-bs-toggle="modal" data-bs-target="#viewReasonList">
                     View all
                   </button>
-                  <button class="btn btn-sm btn-success" style="flex-grow: 0; min-width: 80px"
+                  <button class="btn btn-sm btn-success" *ngIf="!supplier?.isSelected" style="flex-grow: 0; min-width: 80px"
                     (click)="selectSupplier(supplier)" >
                     Select
                   </button>
-                  <button class="btn btn-sm btn-danger" style="flex-grow: 0; min-width: 80px"
+                  <button class="btn btn-sm btn-danger" *ngIf="supplier?.isSelected" style="flex-grow: 0; min-width: 80px"
                     (click)="deSelectSupplier(supplier)" >
                     De-Select
                   </button>
@@ -1129,3 +1152,27 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Supplier Modal -->
+  <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSupplierModalLabel">Add Supplier Reason</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="supplierReason" class="form-label">Reason for Selection</label>
+            <textarea class="form-control" id="supplierReason" rows="3" [(ngModel)]="supplierSelectionReason"
+              placeholder="Enter reason for selecting these suppliers"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="saveSupplierSelection()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

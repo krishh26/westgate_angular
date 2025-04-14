@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { Editor, Toolbar } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-tracker-wise-project-details',
@@ -113,6 +114,8 @@ export class TrackerWiseProjectDetailsComponent {
   viewReasonList: any = [];
   allSuppliers: any[] = [];
   selectedSuppliersList: any[] = [];
+  supplierSelectionReason: string = '';
+  private modalRef: any;
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -253,19 +256,69 @@ export class TrackerWiseProjectDetailsComponent {
       this.notificationService.showError('Please select at least one supplier.');
       return;
     }
+    // The modal will be shown automatically by Bootstrap's data-bs-toggle
+  }
+
+  saveSupplierSelection() {
+    if (!this.supplierSelectionReason?.trim()) {
+      this.notificationService.showError('Please enter a reason for selecting these suppliers.');
+      return;
+    }
 
     const payload = {
       userIds: this.selectedSupplierIds,
-      projectId: this.projectId
+      projectId: this.projectId,
     };
 
+    // First call projectSortList API
     this.projectService.projectSortList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.notificationService.showSuccess(
-            response?.message || 'Suppliers selected successfully'
-          );
-          this.getProjectDetails();
+          // Then call dropUser API for each selected supplier
+          let completedCalls = 0;
+          const totalCalls = this.selectedSupplierIds.length;
+
+          this.selectedSupplierIds.forEach(supplierId => {
+            const dropUserPayload = {
+              dropUser: {
+                userId: supplierId,
+                reason: this.supplierSelectionReason,
+              },
+            };
+
+            this.projectManagerService.dropUser(dropUserPayload, this.projectId).subscribe(
+              (dropResponse) => {
+                completedCalls++;
+                if (dropResponse?.status == true) {
+                  if (completedCalls === totalCalls) {
+                    this.notificationService.showSuccess('Supplier selection and reason saved successfully');
+                    // Close the modal using Bootstrap
+                    const modalElement = document.getElementById('supplierModal');
+                    if (modalElement) {
+                      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                      if (modalInstance) {
+                        modalInstance.hide();
+                      } else {
+                        // If instance not found, create one and hide it
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.hide();
+                      }
+                    }
+                    // Reset the form
+                    this.supplierSelectionReason = '';
+                    this.selectedSupplierIds = [];
+                    // Reload the page instead of just refreshing data
+                    window.location.reload();
+                  }
+                } else {
+                  this.notificationService.showError('Error saving supplier reason');
+                }
+              },
+              (error) => {
+                this.notificationService.showError(error?.message || 'Error occurred while saving reason');
+              }
+            );
+          });
         } else {
           this.notificationService.showError('Try after some time.');
         }
