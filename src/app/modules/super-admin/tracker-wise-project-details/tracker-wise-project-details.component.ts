@@ -519,7 +519,57 @@ export class TrackerWiseProjectDetailsComponent {
     }
 
     const currentDate = new Date();
-    const newComment = this.feasibilityStatusComment.value.trim(); // Remove extra spaces
+    let newComment = '';
+
+    // Handle different types of editor output
+    if (typeof this.feasibilityStatusComment.value === 'string') {
+      newComment = this.feasibilityStatusComment.value.trim();
+    } else if (this.feasibilityStatusComment.value && typeof this.feasibilityStatusComment.value === 'object') {
+      // Handle ProseMirror document structure
+      if (this.feasibilityStatusComment.value.type === 'doc') {
+        // Convert the ProseMirror document to HTML
+        const content = this.feasibilityStatusComment.value.content || [];
+        newComment = content
+          .map((block: any) => {
+            if (block.type === 'paragraph' && block.content) {
+              return block.content
+                .map((node: any) => {
+                  if (node.type === 'text') {
+                    let text = node.text;
+                    // Handle marks (formatting)
+                    if (node.marks) {
+                      node.marks.forEach((mark: any) => {
+                        switch (mark.type) {
+                          case 'bold':
+                            text = `<strong>${text}</strong>`;
+                            break;
+                          case 'italic':
+                            text = `<em>${text}</em>`;
+                            break;
+                          case 'underline':
+                            text = `<u>${text}</u>`;
+                            break;
+                          case 'strike':
+                            text = `<s>${text}</s>`;
+                            break;
+                        }
+                      });
+                    }
+                    return text;
+                  }
+                  return '';
+                })
+                .join('');
+            }
+            return '';
+          })
+          .join('<br>');
+      } else if (this.feasibilityStatusComment.value.html) {
+        newComment = this.feasibilityStatusComment.value.html;
+      } else if (this.feasibilityStatusComment.value.text) {
+        newComment = this.feasibilityStatusComment.value.text;
+      }
+    }
 
     // Ensure feasibilityCommentData is initialized
     if (!this.feasibilityCommentData) {
@@ -528,11 +578,12 @@ export class TrackerWiseProjectDetailsComponent {
 
     // Debugging: Log current data
     console.log('Existing Comments:', this.feasibilityCommentData);
+    console.log('New Comment:', newComment);
 
     // Check if the same comment with the same status already exists
     const isDuplicate = this.feasibilityCommentData.some(
       (comment) =>
-        comment.comment.trim() === newComment &&
+        comment.comment === newComment &&
         comment.status === this.feasibilityStatus
     );
 

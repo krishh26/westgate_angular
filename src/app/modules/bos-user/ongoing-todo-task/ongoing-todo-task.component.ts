@@ -409,8 +409,19 @@ export class OngoingTodoTaskComponent {
       document.documentElement.style.overflow = 'auto';
       document.documentElement.style.height = 'auto';
 
+      // Determine the route based on user role
+      let route: string;
+      if (this.loginUser?.role === 'BOS') {
+        route = '/boss-user/bos-user-project-details';
+      } else if (this.loginUser?.role === 'ProjectManager') {
+        route = '/project-manager/project/bid-manager-project-details';
+      } else {
+        // Default route if role is not recognized
+        route = '/boss-user/bos-user-project-details';
+      }
+
       // Now navigate to the details page
-      this.router.navigate(['/boss-user/bos-user-project-details'], { queryParams: { id: projectId } });
+      this.router.navigate([route], { queryParams: { id: projectId } });
     }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 
