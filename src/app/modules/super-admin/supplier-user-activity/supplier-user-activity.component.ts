@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -14,9 +14,9 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
   templateUrl: './supplier-user-activity.component.html',
   styleUrls: ['./supplier-user-activity.component.css']
 })
-export class SupplierUserActivityComponent {
+export class SupplierUserActivityComponent implements OnInit {
 
-  supplierActivityList: any = [];
+  supplierActivityList: any[] = [];
   supplierID: string = '';
   supplierData: any = [];
   showLoader: boolean = false;
@@ -54,15 +54,15 @@ export class SupplierUserActivityComponent {
   ngOnInit() {
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
-      this.supplierData = JSON.parse(storedData);
-      this.supplierID = this.supplierData?._id;
+      const supplierData = JSON.parse(storedData);
+      this.supplierID = supplierData?._id;
+      this.getSupplierActivity();
     } else {
       console.log("No supplier data found in localStorage");
     }
     // Set InSolution as default selected status
     this.status = 'InSolution';
     this.selectedStatus = 'InSolution';
-    this.getSupplierActivity();
     this.getProjectList();
   }
 
@@ -231,29 +231,15 @@ export class SupplierUserActivityComponent {
     this.supplierService.getSupplierActivity(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.supplierDetails = response?.data;
-
-          // Extract dates (keys)
-          this.dates = Object.keys(this.supplierDetails);
-
-          // Find the maximum number of login times
-          const maxEntries = Math.max(
-            ...Object.values(this.supplierDetails).map((times) => (times as any[]).length)
-          );
-
-          // Prepare rows
-          this.rows = Array.from({ length: maxEntries }, (_, rowIndex) =>
-            this.dates.map((date) => this.supplierDetails[date][rowIndex]?.loginTime || "")
-          );
-
+          this.supplierActivityList = response.data;
           this.showLoader = false;
         } else {
-          console.error('Failed to fetch supplier activity:', response?.message);
+          this.notificationService.showError(response?.message || 'Failed to fetch supplier activity');
           this.showLoader = false;
         }
       },
       (error) => {
-        console.error('Error fetching supplier activity:', error);
+        this.notificationService.showError(error?.message || 'Error fetching supplier activity');
         this.showLoader = false;
       }
     );
