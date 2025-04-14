@@ -53,7 +53,7 @@
                 <tr *ngFor="let activity of supplierActivityList; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ activity.loginTime }}</td>
-                  <td>{{ activity.createdAt | date:'medium' }}</td>
+                  <td>{{ activity.createdAt | date:'dd/MM/yyyy'}}</td>
                 </tr>
               </tbody>
             </table>
