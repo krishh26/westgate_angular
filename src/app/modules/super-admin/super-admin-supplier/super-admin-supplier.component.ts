@@ -29,6 +29,7 @@ export class SuperAdminSupplierComponent {
   search: string = '';
   activeSuppliers: number = 0;
   inactiveSuppliers: number = 0;
+  totalEmployees: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -157,6 +158,11 @@ export class SuperAdminSupplierComponent {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
           this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          // Calculate total employees from all suppliers
+          this.totalEmployees = this.supplierUserList.reduce((sum: number, supplier: any) => {
+            return sum + (supplier.employeeCount || 0);
+          }, 0);
 
           // Get active and inactive suppliers count from response
           if (response?.data?.count) {
