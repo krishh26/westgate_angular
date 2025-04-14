@@ -185,9 +185,9 @@ export class ProjectManagerProjectDetailsComponent {
           this.showLoader = false;
           this.userDetail = response?.data;
           this.allSuppliers = response?.data;
-          this.selectedSuppliers = this.userDetail.reduce(
+          this.selectedSuppliers = this.userDetail?.reduce(
             (acc: any, supplier: any) => {
-              acc[supplier._id] = { company: '', startDate: null };
+              acc[supplier?._id] = { company: '', startDate: null };
               return acc;
             },
             {}
