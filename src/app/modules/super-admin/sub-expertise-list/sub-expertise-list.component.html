@@ -97,11 +97,10 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <!-- ng-select with add tag button to the right -->
           <div class="d-flex mb-2">
-            <div class="flex-grow-1 me-2">
+            <div class="flex-grow-1">
               <ng-select [items]="subExpertiseDropdownList" placeholder="Select or enter sub-expertise"
-                [(ngModel)]="newSubExpertise" [clearable]="true" [multiple]="true">
+                [(ngModel)]="subExpertiseTags" [clearable]="true" [multiple]="true">
               </ng-select>
             </div>
           </div>
@@ -110,8 +109,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="saveSubExpertise()"
-          [disabled]="subExpertiseTags.length === 0">
-          Save All
+          [disabled]="!subExpertiseTags || subExpertiseTags.length === 0">
+          Save
         </button>
       </div>
     </div>

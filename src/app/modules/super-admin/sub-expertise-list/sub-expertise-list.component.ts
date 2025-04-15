@@ -290,50 +290,30 @@ export class SubExpertiseListComponent implements OnInit {
     }
   }
 
-  addTag() {
-    if (this.newSubExpertise?.trim()) {
-      // Check if the tag already exists
-      if (!this.subExpertiseTags.includes(this.newSubExpertise.trim())) {
-        this.subExpertiseTags.push(this.newSubExpertise.trim());
-        this.notificationService.showSuccess('Tag added successfully');
-      } else {
-        this.notificationService.showInfo('This tag already exists');
-      }
-      this.newSubExpertise = ''; // Clear the input after adding
-    } else {
-      this.notificationService.showInfo('Please enter a sub-expertise tag');
-    }
-  }
-
-  removeTag(index: number) {
-    this.subExpertiseTags.splice(index, 1);
-  }
-
   saveSubExpertise() {
-    if (this.subExpertiseTags.length === 0) {
-      this.notificationService.showError('Please add at least one sub expertise tag');
+    if (!this.subExpertiseTags || this.subExpertiseTags.length === 0) {
+      this.notificationService.showError('Please select at least one sub expertise');
       return;
     }
 
     // Check if we have a supplier ID
     if (!this.supplierId && !this.supplierID) {
-      this.notificationService.showError('Supplier ID is missing, cannot save sub-expertise tags.');
+      this.notificationService.showError('Supplier ID is missing, cannot save sub-expertise.');
       return;
     }
 
-    // Prepare data with only the expertise being updated
-    const expertiseData = {
+    // Prepare data for sub-expertise based on requested format
+    const subExpertiseData = {
+      supplierId: this.supplierId || this.supplierID,
       expertise: this.expertiseName,
-      subExpertise: this.subExpertiseTags,
-      supplierId: this.supplierId || this.supplierID
+      subExpertise: this.subExpertiseTags
     };
 
-    this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
+    this.superService.addSubExpertise(subExpertiseData).subscribe(
       (response: any) => {
         if (response?.status) {
-          this.notificationService.showSuccess('Sub expertise tags added successfully!');
-          this.subExpertiseTags = []; // Reset the tags array
-          this.getSubExpertise(); // Refresh the list
+          this.notificationService.showSuccess('Sub expertise added successfully!');
+          this.subExpertiseTags = []; // Reset the selected sub-expertises
 
           // Close the modal
           const modalElement = document.getElementById('addSubExpertiseModal');
@@ -341,12 +321,15 @@ export class SubExpertiseListComponent implements OnInit {
             const modalInstance = new bootstrap.Modal(modalElement);
             modalInstance.hide();
           }
+
+          // Reload the page
+          window.location.reload();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to add sub expertise tags');
+          this.notificationService.showError(response?.message || 'Failed to add sub expertise');
         }
       },
       (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to add sub expertise tags');
+        this.notificationService.showError(error?.message || 'Failed to add sub expertise');
       }
     );
   }
