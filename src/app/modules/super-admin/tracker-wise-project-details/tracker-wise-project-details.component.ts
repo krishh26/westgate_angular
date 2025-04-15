@@ -115,7 +115,9 @@ export class TrackerWiseProjectDetailsComponent {
   allSuppliers: any[] = [];
   selectedSuppliersList: any[] = [];
   supplierSelectionReason: string = '';
+  newModalReason: string = '';
   private modalRef: any;
+  currentViewingSupplierId: string = '';
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -2110,6 +2112,9 @@ export class TrackerWiseProjectDetailsComponent {
     // Check if the userId is passed correctly
     console.log('Selected User ID:', userId);
 
+    // Store the current user ID for use in addReasonFromModal
+    this.currentViewingSupplierId = userId;
+
     // Find the user in the dropUser list based on userId
     const supplier = this.viewReasonList.find(
       (item: any) => item.userId === userId
@@ -2125,7 +2130,50 @@ export class TrackerWiseProjectDetailsComponent {
     }
   }
 
+  addReasonFromModal() {
+    if (!this.newModalReason?.trim()) return;
+
+    // Get the selected supplier (we need to save the ID from viewAllComments)
+    const supplier = this.selectedSuppliersList.find(
+      (item) => item._id === this.currentViewingSupplierId
+    );
+
+    if (supplier) {
+      // Create a new reason object
+      const newReason = {
+        comment: this.newModalReason,
+        date: new Date(),
+      };
+
+      // Call the existing method for saving reasons
+      supplier.inputValue = this.newModalReason;
+      this.dropUser(supplier);
+
+      // Update the filtered comments list to show the new comment immediately
+      this.filteredComments.push(newReason);
+
+      // Clear the input field
+      this.newModalReason = '';
+    }
+  }
+
   isSupplierSelected(supplierId: string): boolean {
     return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
+  }
+
+  getLatestReason(supplierId: string): any {
+    // Find the supplier in the viewReasonList
+    const supplier = this.viewReasonList.find(
+      (item: any) => item.userId === supplierId
+    );
+
+    if (supplier?.reason?.length) {
+      // Sort reasons by date (newest first) and return the first one
+      return [...supplier.reason].sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })[0];
+    }
+
+    return null;
   }
 }
