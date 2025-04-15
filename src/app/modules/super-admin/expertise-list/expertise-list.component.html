@@ -134,7 +134,27 @@
             [multiple]="true"
             placeholder="Select an expertise"
             [(ngModel)]="selectedExpertise"
-            [clearable]="false">
+            [clearable]="false"
+            [addTag]="onAddTag">
+            <ng-template ng-tag-tmp let-search="searchTerm">
+              <div *ngIf="search">
+                <div class="mb-2">Add "{{search}}" to expertise</div>
+                <div class="radio-group">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="expertiseType" id="typeTech" [(ngModel)]="newExpertiseType" value="technologies">
+                    <label class="form-check-label" for="typeTech">Technologies</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct" [(ngModel)]="newExpertiseType" value="product">
+                    <label class="form-check-label" for="typeProduct">Product</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain" [(ngModel)]="newExpertiseType" value="domain">
+                    <label class="form-check-label" for="typeDomain">Domain</label>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
           </ng-select>
         </div>
       </div>

@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 
 interface ExpertiseItem {
-  itemId: string;
+  itemId: string | null;
   name: string;
   type: string;
 }
@@ -36,6 +36,7 @@ export class ExpertiseListComponent {
   newExpertise: string = '';
   expertiseDropdownOptions: ExpertiseItem[] = [];
   selectedExpertise: ExpertiseItem[] = [];
+  newExpertiseType: string = 'technologies';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -229,5 +230,44 @@ export class ExpertiseListComponent {
     // }
   }
 
+  onAddTag = (name: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
 
+    const newExpertise: ExpertiseItem = {
+      name: name,
+      type: this.newExpertiseType,
+      itemId: null
+    };
+
+    // Make API call to create custom expertise
+    this.showLoader = true;
+    this.superService.createCustomExpertise({
+      name: name,
+      type: this.newExpertiseType
+    }).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status) {
+          // Update the itemId with the returned ID
+          newExpertise.itemId = response.data._id || response.data.itemId;
+          this.notificationService.showSuccess('New expertise added successfully');
+          return newExpertise;
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to create expertise');
+          return null;
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Failed to create expertise');
+        return null;
+      }
+    );
+
+    // Return the new expertise object so it can be added to the list while API call is in progress
+    return newExpertise;
+  }
 }

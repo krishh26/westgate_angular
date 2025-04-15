@@ -51,7 +51,8 @@ export enum SuperAdminEndPoint {
   REMOVE_FROM_SHORTLIST = '/project/remove-from-sortlist',
   GET_EXPERTISE_DROPDOWN = '/web-user/drop-down',
   SUB_EXPERTISE_DROPDOWN = '/web-user/sub-expertise/list',
-  ADD_SUB_EXPERTISE = '/web-user/add-sub-expertise'
+  ADD_SUB_EXPERTISE = '/web-user/add-sub-expertise',
+  CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom'
 }
 
 @Injectable({
@@ -575,8 +576,15 @@ export class SuperadminService {
 
   addSubExpertise(subExpertiseData: any): Observable<any> {
     return this.httpClient.post<any>(
-      `${this.baseUrl}${SuperAdminEndPoint.ADD_SUB_EXPERTISE}`,
+      this.baseUrl + SuperAdminEndPoint.ADD_SUB_EXPERTISE,
       subExpertiseData
+    );
+  }
+
+  createCustomExpertise(expertiseData: { name: string; type: string }): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.CREATE_CUSTOM_EXPERTISE,
+      expertiseData
     );
   }
 }
