@@ -129,7 +129,7 @@
         <div class="form-group mb-3">
           <label for="expertiseSelect">Expertise</label>
           <ng-select id="expertiseSelect" [items]="expertiseDropdownOptions" bindLabel="name" bindValue="name"
-            placeholder="Select an expertise" [(ngModel)]="selectedExpertise" [clearable]="false">
+            placeholder="Select an expertise" [(ngModel)]="selectedExpertise" [clearable]="false" [addTag]="true"  (add)="onItemAddCategory($event)" [multiple]="true">
           </ng-select>
         </div>
       </div>
