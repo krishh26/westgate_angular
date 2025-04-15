@@ -20,6 +20,8 @@ export class SubExpertiseListComponent implements OnInit {
   expertiseName: string = '';
   supplierId: string = '';
   subExpertiseList: any[] = [];
+  subExpertiseDropdownList: any[] = [];
+  searchResults: any[] = [];
   totalRecords: number = pagination.totalRecords;
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
@@ -85,6 +87,7 @@ export class SubExpertiseListComponent implements OnInit {
 
       // Fetch sub-expertise data
       this.getSubExpertise();
+      this.getSubExpertiseList();
     });
   }
 
@@ -292,10 +295,13 @@ export class SubExpertiseListComponent implements OnInit {
       // Check if the tag already exists
       if (!this.subExpertiseTags.includes(this.newSubExpertise.trim())) {
         this.subExpertiseTags.push(this.newSubExpertise.trim());
+        this.notificationService.showSuccess('Tag added successfully');
       } else {
         this.notificationService.showInfo('This tag already exists');
       }
-      this.newSubExpertise = ''; // Clear the input
+      this.newSubExpertise = ''; // Clear the input after adding
+    } else {
+      this.notificationService.showInfo('Please enter a sub-expertise tag');
     }
   }
 
@@ -341,6 +347,28 @@ export class SubExpertiseListComponent implements OnInit {
       },
       (error: any) => {
         this.notificationService.showError(error?.message || 'Failed to add sub expertise tags');
+      }
+    );
+  }
+
+  // Updated function to store search results
+  getSubExpertiseList(searchText?: string) {
+    this.spinner.show();
+    this.superService.getSubExpertiseDropdownList(searchText).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response?.status) {
+          this.subExpertiseDropdownList = response?.data || [];
+          console.log('Sub-expertise dropdown list loaded:', this.subExpertiseDropdownList);
+        } else {
+          console.error('Error fetching sub-expertise dropdown list:', response?.message);
+          this.subExpertiseDropdownList = [];
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        console.error('Error fetching sub-expertise dropdown list:', error);
+        this.subExpertiseDropdownList = [];
       }
     );
   }

@@ -49,7 +49,8 @@ export enum SuperAdminEndPoint {
   GET_SUBTASKS = '/task/subtasks',
   SELECT_FROM_SORTLIST = '/project/select-from-sortlist',
   REMOVE_FROM_SHORTLIST = '/project/remove-from-sortlist',
-  GET_EXPERTISE_DROPDOWN = '/web-user/drop-down'
+  GET_EXPERTISE_DROPDOWN = '/web-user/drop-down',
+  SUB_EXPERTISE_DROPDOWN = '/web-user/sub-expertise/list'
 }
 
 @Injectable({
@@ -555,6 +556,18 @@ export class SuperadminService {
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
+      { params }
+    );
+  }
+
+  getSubExpertiseDropdownList(searchText?: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (searchText) {
+      params = params.set('searchText', searchText);
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.SUB_EXPERTISE_DROPDOWN,
       { params }
     );
   }
