@@ -235,9 +235,11 @@
               <div class="row mb-2">
                 <div class="col-md-6">
                   <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time">
+                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
                 </div>
                 <div class="col-md-6">
                   <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()">
+                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>

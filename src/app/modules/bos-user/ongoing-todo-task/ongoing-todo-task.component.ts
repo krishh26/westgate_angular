@@ -322,18 +322,27 @@ export class OngoingTodoTaskComponent {
   }
 
   validateTimeRange() {
-    if (this.timeStart && this.timeEnd) {
-      const startTime = new Date(`2000-01-01T${this.timeStart}`);
-      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
-
-      if (endTime <= startTime) {
-        this.timeError = 'End time must be greater than start time';
-        this.timeEnd = '';
+    // If time fields are empty
+    if (!this.timeStart || !this.timeEnd) {
+      // For ProjectManager role, time is mandatory
+      if (this.loginUser?.role === 'ProjectManager') {
+        this.timeError = 'Start time and end time are required for Project Managers';
         return false;
       }
-      this.timeError = '';
+      // For BOS users, time is optional
       return true;
     }
+
+    // If both times are provided, validate the range regardless of role
+    const startTime = new Date(`2000-01-01T${this.timeStart}`);
+    const endTime = new Date(`2000-01-01T${this.timeEnd}`);
+
+    if (endTime <= startTime) {
+      this.timeError = 'End time must be greater than start time';
+      this.timeEnd = '';
+      return false;
+    }
+    this.timeError = '';
     return true;
   }
 
@@ -343,8 +352,15 @@ export class OngoingTodoTaskComponent {
 
   addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
+      // Check if time validation passes
       if (!this.validateTimeRange()) {
         this.notificationService.showError('Please correct the time range');
+        return;
+      }
+
+      // For ProjectManager, both time fields are required
+      if (this.loginUser?.role === 'ProjectManager' && (!this.timeStart || !this.timeEnd)) {
+        this.notificationService.showError('Start time and end time are required for Project Managers');
         return;
       }
 
