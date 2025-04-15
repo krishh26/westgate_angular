@@ -28,6 +28,8 @@ export class ExpertiseListComponent {
   viewDocs: any;
   supplierFiles: any = [];
   newExpertise: string = '';
+  expertiseDropdownOptions: any[] = [];
+  selectedExpertise: string = '';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -48,6 +50,27 @@ export class ExpertiseListComponent {
     }
     this.getSupplierdata();
     this.getSupplierdetail();
+    this.getExpertiseDropdownData();
+  }
+
+  getExpertiseDropdownData() {
+    this.showLoader = true;
+    this.superService.getExpertiseDropdown().subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseDropdownOptions = response.data || [];
+        } else {
+          console.error('Failed to fetch expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise dropdown data');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching expertise dropdown data');
+        this.showLoader = false;
+      }
+    );
   }
 
   getSupplierdata() {
@@ -130,8 +153,8 @@ export class ExpertiseListComponent {
   }
 
   saveExpertise() {
-    if (!this.newExpertise?.trim()) {
-      this.notificationService.showError('Please enter an expertise name');
+    if (!this.selectedExpertise) {
+      this.notificationService.showError('Please select an expertise');
       return;
     }
 
@@ -142,7 +165,7 @@ export class ExpertiseListComponent {
 
     const expertiseData = {
       supplierId: this.supplierID,
-      expertise: this.newExpertise.trim(),
+      expertise: this.selectedExpertise,
       subExpertise: []
     };
 
@@ -150,7 +173,7 @@ export class ExpertiseListComponent {
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Expertise added successfully!');
-          this.newExpertise = '';
+          this.selectedExpertise = '';
           this.getSupplierdata();
           window.location.reload();
           const modalElement = document.getElementById('addExpertiseModal');

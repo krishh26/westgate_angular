@@ -128,15 +128,23 @@
       <div class="modal-body">
         <!-- Expertise Field -->
         <div class="form-group mb-3">
-          <label for="expertiseName">Expertise</label>
-          <input type="text" class="form-control" id="expertiseName" [(ngModel)]="newExpertise"
-            placeholder="Enter expertise name">
+          <label for="expertiseSelect">Expertise</label>
+          <ng-select
+            id="expertiseSelect"
+            [items]="expertiseDropdownOptions"
+            bindLabel="name"
+            bindValue="name"
+            placeholder="Select an expertise"
+            [(ngModel)]="selectedExpertise"
+            [clearable]="false"
+          >
+          </ng-select>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary btn-sm" (click)="saveExpertise()"
-          [disabled]="!newExpertise">
+          [disabled]="!selectedExpertise">
           Save
         </button>
       </div>
