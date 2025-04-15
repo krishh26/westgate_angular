@@ -9,6 +9,12 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
 
+interface ExpertiseItem {
+  itemId: string;
+  name: string;
+  type: string;
+}
+
 @Component({
   selector: 'app-expertise-list',
   templateUrl: './expertise-list.component.html',
@@ -28,8 +34,8 @@ export class ExpertiseListComponent {
   viewDocs: any;
   supplierFiles: any = [];
   newExpertise: string = '';
-  expertiseDropdownOptions: any[] = [];
-  selectedExpertise: string = '';
+  expertiseDropdownOptions: ExpertiseItem[] = [];
+  selectedExpertise: ExpertiseItem[] = [];
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -59,6 +65,11 @@ export class ExpertiseListComponent {
       (response) => {
         if (response?.status) {
           this.expertiseDropdownOptions = response.data || [];
+          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => ({
+            itemId: item.itemId || (item as any)._id,
+            name: item.name,
+            type: item.type || 'technologies'
+          }));
         } else {
           console.error('Failed to fetch expertise dropdown data:', response?.message);
           this.notificationService.showError('Failed to fetch expertise dropdown data');
@@ -153,8 +164,8 @@ export class ExpertiseListComponent {
   }
 
   saveExpertise() {
-    if (!this.selectedExpertise) {
-      this.notificationService.showError('Please select an expertise');
+    if (!this.selectedExpertise || this.selectedExpertise.length === 0) {
+      this.notificationService.showError('Please select at least one expertise');
       return;
     }
 
@@ -165,22 +176,28 @@ export class ExpertiseListComponent {
 
     const expertiseData = {
       supplierId: this.supplierID,
-      expertise: this.selectedExpertise,
-      subExpertise: []
+      expertise: this.selectedExpertise
     };
 
     this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Expertise added successfully!');
-          this.selectedExpertise = '';
-          this.getSupplierdata();
-          window.location.reload();
+          this.selectedExpertise = [];
+
+          // Try to close the modal
           const modalElement = document.getElementById('addExpertiseModal');
           if (modalElement) {
-            const modalInstance = new bootstrap.Modal(modalElement);
-            modalInstance.hide();
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+              modal.hide();
+            }
           }
+
+          // Reload page after a short delay to ensure notification is shown
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         } else {
           this.notificationService.showError(response?.message || 'Failed to add expertise');
         }
