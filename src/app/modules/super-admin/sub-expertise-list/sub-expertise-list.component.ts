@@ -34,6 +34,7 @@ export class SubExpertiseListComponent implements OnInit {
   subExpertiseTags: string[] = [];
   showAddButton: boolean = true;
   isFromExpertiseView: boolean = false;
+  collapsedItems: { [key: number]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -136,12 +137,18 @@ export class SubExpertiseListComponent implements OnInit {
           this.notificationService.showSuccess('Files uploaded successfully!');
           // Refresh the file list after upload
           this.getSubExpertise();
+          // Refresh the document list for this specific sub-expertise
+          this.viewUploadedDocuments(expertise);
+          // Clear selected files
+          this.selectedFiles = [];
+          window.location.reload();
         } else {
           this.spinner.hide();
           this.notificationService.showError(response?.message);
         }
       },
       (error) => {
+        this.spinner.hide();
         this.notificationService.showError(error?.message);
       }
     );
@@ -159,19 +166,32 @@ export class SubExpertiseListComponent implements OnInit {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
+        this.spinner.show();
 
         this.superService.deleteDocumentExpertise(fileId).subscribe(
           (response: any) => {
+            this.spinner.hide();
+            this.showLoader = false;
             if (response?.status === true) {
-              this.showLoader = false;
               this.notificationService.showSuccess('Document successfully deleted');
-              window.location.reload(); // Optional: Refresh data
+
+              // Find the deleted document to get its sub-expertise
+              const deletedDoc = this.files.find((file: any) => file._id === fileId);
+              const subExpertiseName = deletedDoc?.subExpertise;
+
+              // Refresh the file list
+              this.getSubExpertise();
+              window.location.reload();
+              // If we have the sub-expertise name, refresh that specific document list
+              if (subExpertiseName) {
+                this.viewUploadedDocuments(subExpertiseName);
+              }
             } else {
-              this.showLoader = false;
               this.notificationService.showError(response?.message);
             }
           },
           (error) => {
+            this.spinner.hide();
             this.showLoader = false;
             this.notificationService.showError(error?.message);
           }
@@ -189,19 +209,6 @@ export class SubExpertiseListComponent implements OnInit {
     if (!this.viewDocs || this.viewDocs.length === 0) {
       this.notificationService.showInfo(`No files available for ${subExpertise}`);
       this.viewDocs = [];
-
-      // Still open the modal but it will show "No Files Available"
-      const modalElement = document.getElementById('viewAllDocuments');
-      if (modalElement) {
-        this.modalService.open(modalElement, { centered: true });
-      }
-      return;
-    }
-
-    // Open the modal
-    const modalElement = document.getElementById('viewAllDocuments');
-    if (modalElement) {
-      this.modalService.open(modalElement, { centered: true });
     }
   }
 
@@ -354,5 +361,20 @@ export class SubExpertiseListComponent implements OnInit {
         this.subExpertiseDropdownList = [];
       }
     );
+  }
+
+  openFileSelector(index: number): void {
+    const fileInput = document.getElementById('fileInput' + index) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  isCollapsed(index: number): boolean {
+    return this.collapsedItems[index] === true;
+  }
+
+  toggleCollapse(index: number): void {
+    this.collapsedItems[index] = !this.collapsedItems[index];
   }
 }
