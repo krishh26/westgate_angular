@@ -49,6 +49,10 @@
           <input class="form-control control-search" placeholder="Search by Expertise" type="text"
             [(ngModel)]="searchText" (input)="searchtext()" />
         </div>
+        <!-- Clear search button -->
+        <button *ngIf="searchText" class="btn btn-outline-secondary ms-2" (click)="searchText=''; searchtext()">
+          Clear Search
+        </button>
         <!-- Only show clear button if there are filters applied -->
         <button *ngIf="startDate || endDate" class="btn btn-outline-danger ms-2" (click)="clearFilters()">
           Clear Filters

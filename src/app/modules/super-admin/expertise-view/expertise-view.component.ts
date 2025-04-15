@@ -115,23 +115,8 @@ export class ExpertiseViewComponent {
     // If we are viewing a specific type, search within that type
     if (this.selectedType) {
       const type = this.getTypeValue(this.selectedType);
-      const url = `${environment.baseUrl}/web-user/drop-down?type=${type}&search=${this.searchText?.trim() || ''}`;
-
-      this.http.get<any>(url).subscribe(
-        (response) => {
-          if (response?.status) {
-            this.dropdownData = response.data || [];
-            this.currentList = this.dropdownData;
-          } else {
-            console.error('Failed to fetch dropdown data:', response?.message);
-          }
-          this.showLoader = false;
-        },
-        (error) => {
-          console.error('Error fetching dropdown data:', error);
-          this.showLoader = false;
-        }
-      );
+      // Use fetchDropdownData method to ensure consistent implementation
+      this.fetchDropdownData(type);
     } else {
       // Otherwise search in expertise list (should not happen with current implementation)
       const params = {
@@ -295,8 +280,8 @@ export class ExpertiseViewComponent {
 
   fetchDropdownData(type: string) {
     this.showLoader = true;
-    // Remove pagination parameters to fetch all data
-    const url = `${environment.baseUrl}/web-user/drop-down?type=${type}`;
+    // Include search parameter if available
+    const url = `${environment.baseUrl}/web-user/drop-down?type=${type}${this.searchText ? '&search=' + this.searchText.trim() : ''}`;
 
     this.http.get<any>(url).subscribe(
       (response) => {
