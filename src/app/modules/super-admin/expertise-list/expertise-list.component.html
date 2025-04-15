@@ -28,10 +28,10 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+        <div class="col-lg-8 col-xl-8 col-md-8 col-sm-7 col-7">
           <h4 class="text-theme mb-4"><strong>Case Studies</strong></h4>
         </div>
-        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4 text-end">
+        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-5 col-5 text-end">
           <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addExpertiseModal">
             Add Expertise
           </button>
@@ -51,8 +51,7 @@
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
-            <tr
-              *ngFor="let item of expertiseList">
+            <tr *ngFor="let item of expertiseList">
               <td>{{ item }}</td>
               <!-- <td>
                 <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />
@@ -129,22 +128,14 @@
         <!-- Expertise Field -->
         <div class="form-group mb-3">
           <label for="expertiseSelect">Expertise</label>
-          <ng-select
-            id="expertiseSelect"
-            [items]="expertiseDropdownOptions"
-            bindLabel="name"
-            bindValue="name"
-            placeholder="Select an expertise"
-            [(ngModel)]="selectedExpertise"
-            [clearable]="false"
-          >
+          <ng-select id="expertiseSelect" [items]="expertiseDropdownOptions" bindLabel="name" bindValue="name"
+            placeholder="Select an expertise" [(ngModel)]="selectedExpertise" [clearable]="false">
           </ng-select>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary btn-sm" (click)="saveExpertise()"
-          [disabled]="!selectedExpertise">
+        <button type="button" class="btn btn-primary btn-sm" (click)="saveExpertise()" [disabled]="!selectedExpertise">
           Save
         </button>
       </div>

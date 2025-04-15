@@ -546,9 +546,16 @@ export class SuperadminService {
     return this.httpClient.get(`${this.baseUrl}/task/detail/${taskId}`);
   }
 
-  getExpertiseDropdown(): Observable<any> {
+  getExpertiseDropdown(type?: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
     return this.httpClient.get<any>(
-      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN
+      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
+      { params }
     );
   }
 }
