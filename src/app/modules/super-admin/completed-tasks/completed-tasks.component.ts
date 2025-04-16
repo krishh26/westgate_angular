@@ -787,9 +787,9 @@ export class CompletedTasksComponent {
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
-              window.location.reload();
+              this.getTask();
+            //  window.location.reload();
             } else {
-
               this.notificationService.showError(response?.message);
             }
           },
