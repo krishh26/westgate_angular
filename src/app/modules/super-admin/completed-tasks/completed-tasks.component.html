@@ -86,7 +86,8 @@
           </h2>
         </div> -->
 
-        <div *ngFor="let task of taskList | paginate : {  itemsPerPage: pagesize,  currentPage: page,  totalItems: totalRecords}; let i = index">
+        <div
+          *ngFor="let task of taskList | paginate : {  itemsPerPage: pagesize,  currentPage: page,  totalItems: totalRecords}; let i = index">
           <div class="accordion-item">
             <h2 class="accordion-header" [id]="'flush-TodoList-' + i">
               <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
@@ -151,9 +152,12 @@
                   <div class="d-flex justify-content-between">
                     <!-- <p class="comment-text">{{ task.todayComments[0]?.comment }}</p> -->
 
-                    <p class="comment-text" [innerHTML]="task.todayComments[0]?.comment">
-
-                    </p>
+                    <p class="comment-text" [innerHTML]="task.todayComments[0]?.comment"></p>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-sm delete-btn" (click)="deleteComments(task.todayComments[0]?.commentId, task)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </div>
                   </div>
                 </ul>
 
