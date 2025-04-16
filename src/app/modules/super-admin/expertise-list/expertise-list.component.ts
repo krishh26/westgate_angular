@@ -66,11 +66,19 @@ export class ExpertiseListComponent {
       (response) => {
         if (response?.status) {
           this.expertiseDropdownOptions = response.data || [];
-          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => ({
-            itemId: item.itemId || (item as any)._id,
-            name: item.name,
-            type: item.type || 'technologies'
-          }));
+          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
+            // Get the type and remove "-other" suffix if it exists
+            let type = item.type || 'technologies';
+            if (type.endsWith('-other')) {
+              type = type.replace('-other', '');
+            }
+
+            return {
+              itemId: item.itemId || (item as any)._id,
+              name: item.name,
+              type: type
+            };
+          });
         } else {
           console.error('Failed to fetch expertise dropdown data:', response?.message);
           this.notificationService.showError('Failed to fetch expertise dropdown data');
@@ -90,7 +98,10 @@ export class ExpertiseListComponent {
     this.supplierService.getSupplierDetails(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.expertiseCount.map((item: any) => item.name);
+          this.expertiseList = response?.expertiseCount.map((item: any) => ({
+            id: item._id,
+            name: item.name
+          }));
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
         }
@@ -175,9 +186,18 @@ export class ExpertiseListComponent {
       return;
     }
 
+    // Process expertise items to remove "-other" suffix from types
+    const processedExpertise = this.selectedExpertise.map(item => {
+      const expertise = {...item};
+      if (expertise.type && expertise.type.endsWith('-other')) {
+        expertise.type = expertise.type.replace('-other', '');
+      }
+      return expertise;
+    });
+
     const expertiseData = {
       supplierId: this.supplierID,
-      expertise: this.selectedExpertise
+      expertise: processedExpertise
     };
 
     this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
@@ -236,9 +256,15 @@ export class ExpertiseListComponent {
       return null;
     }
 
+    // Remove "-other" suffix if it exists
+    let expertiseType = this.newExpertiseType;
+    if (expertiseType.endsWith('-other')) {
+      expertiseType = expertiseType.replace('-other', '');
+    }
+
     const newExpertise: ExpertiseItem = {
       name: name,
-      type: this.newExpertiseType,
+      type: expertiseType,
       itemId: null
     };
 
@@ -246,7 +272,7 @@ export class ExpertiseListComponent {
     this.showLoader = true;
     this.superService.createCustomExpertise({
       name: name,
-      type: this.newExpertiseType
+      type: expertiseType
     }).subscribe(
       (response: any) => {
         this.showLoader = false;
@@ -269,5 +295,39 @@ export class ExpertiseListComponent {
 
     // Return the new expertise object so it can be added to the list while API call is in progress
     return newExpertise;
+  }
+
+  deleteExpertise(expertise: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this expertise?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        const expertiseId = expertise.id;
+
+        this.superService.deleteExpertise(expertiseId).subscribe(
+          (response: any) => {
+            if (response?.status === true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Expertise successfully deleted');
+              this.getSupplierdata(); // refresh list
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message || 'Failed to delete expertise');
+            }
+          },
+          (error: any) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message || 'An error occurred while deleting expertise');
+          }
+        );
+      }
+    });
   }
 }

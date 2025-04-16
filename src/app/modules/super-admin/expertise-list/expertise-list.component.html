@@ -52,16 +52,12 @@
               </td>
             </tr>
             <tr *ngFor="let item of expertiseList">
-              <td>{{ item }}</td>
-              <!-- <td>
-                <input type="file" multiple (change)="onFilesSelected($event, item)" accept=".pdf, .doc, .docx" />
-              </td> -->
+              <td>{{ item.name }}</td>
               <td>
               <td>
-                <a class="btn btn-primary btn-sm" style="cursor: pointer" (click)="navigateToSubExpertise(item)">View
-                  Sub Expertise</a>
+                <a class="btn btn-primary btn-sm" style="cursor: pointer" (click)="navigateToSubExpertise(item.name)">View Sub Expertise</a>
+                <a class="btn btn-danger btn-sm ms-2" style="cursor: pointer" (click)="deleteExpertise(item)">Delete</a>
               </td>
-
             </tr>
           </tbody>
 
