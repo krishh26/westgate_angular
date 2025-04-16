@@ -98,10 +98,12 @@ export class ExpertiseListComponent {
     this.supplierService.getSupplierDetails(this.supplierID).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.expertiseCount.map((item: any) => ({
-            id: item._id,
-            name: item.name
+          this.expertiseList = response?.data?.expertise.map((item: any) => ({
+            id: item?.itemId,
+            name: item?.name
           }));
+          console.log(this.expertiseList);
+
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
         }
@@ -310,6 +312,7 @@ export class ExpertiseListComponent {
       if (result?.value) {
         this.showLoader = true;
         const expertiseId = expertise.id;
+        console.log(expertise);
 
         this.superService.deleteExpertise(expertiseId).subscribe(
           (response: any) => {
