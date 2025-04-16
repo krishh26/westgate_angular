@@ -377,4 +377,72 @@ export class SubExpertiseListComponent implements OnInit {
   toggleCollapse(index: number): void {
     this.collapsedItems[index] = !this.collapsedItems[index];
   }
+
+  deleteSubExpertise(subExpertiseName: string, event: MouseEvent): void {
+    // Prevent accordion from toggling when clicking the delete button
+    event.stopPropagation();
+    event.preventDefault();
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete the sub-expertise "${subExpertiseName}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        // Show spinner
+        this.spinner.show();
+
+        // First, we need to get the expertise ID from the expertiseName
+        this.supplierService.getSupplierDetails(this.supplierId).subscribe(
+          (response) => {
+            if (response?.status) {
+              // Find the expertise with matching name
+              const expertise = response.data?.expertise?.find((item: any) =>
+                item.name === this.expertiseName
+              );
+
+              if (!expertise || !expertise.itemId) {
+                this.spinner.hide();
+                this.notificationService.showError('Could not find expertise ID. Delete operation failed.');
+                return;
+              }
+
+              // Now that we have the expertise ID, we can call the delete API
+              this.superService.deleteSubExpertise(
+                expertise.itemId,
+                subExpertiseName,
+                this.supplierId
+              ).subscribe(
+                (deleteResponse: any) => {
+                  this.spinner.hide();
+                  if (deleteResponse?.status) {
+                    this.notificationService.showSuccess('Sub-expertise deleted successfully');
+                    // Refresh the sub-expertise list
+                    this.getSubExpertise();
+                  } else {
+                    this.notificationService.showError(deleteResponse?.message || 'Failed to delete sub-expertise');
+                  }
+                },
+                (error: any) => {
+                  this.spinner.hide();
+                  this.notificationService.showError(error?.message || 'An error occurred while deleting the sub-expertise');
+                }
+              );
+            } else {
+              this.spinner.hide();
+              this.notificationService.showError(response?.message || 'Failed to retrieve expertise data');
+            }
+          },
+          (error: any) => {
+            this.spinner.hide();
+            this.notificationService.showError(error?.message || 'Failed to retrieve expertise data');
+          }
+        );
+      }
+    });
+  }
 }

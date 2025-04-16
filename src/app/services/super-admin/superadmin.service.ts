@@ -53,7 +53,8 @@ export enum SuperAdminEndPoint {
   SUB_EXPERTISE_DROPDOWN = '/web-user/sub-expertise/list',
   ADD_SUB_EXPERTISE = '/web-user/add-sub-expertise',
   CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom',
-  DELETE_EXPERTISE = '/web-user/expertise'
+  DELETE_EXPERTISE = '/web-user/expertise',
+  DELETE_SUB_EXPERTISE = '/web-user/expertise/:id/subexpertise'
 }
 
 @Injectable({
@@ -589,8 +590,21 @@ export class SuperadminService {
     );
   }
 
-  deleteExpertise(expertiseId: string): Observable<any> {
+  deleteExpertise(expertiseId: string, supplierId: string): Observable<any> {
     const url = `${this.baseUrl}${SuperAdminEndPoint.DELETE_EXPERTISE}/${expertiseId}`;
-    return this.httpClient.delete<any>(url);
+    return this.httpClient.request<any>('DELETE', url, {
+      body: { supplierId }
+    });
+  }
+
+  deleteSubExpertise(expertiseId: string, subExpertise: string, supplierId: string): Observable<any> {
+    // Replace :id placeholder with actual expertiseId
+    const url = `${this.baseUrl}${SuperAdminEndPoint.DELETE_SUB_EXPERTISE.replace(':id', expertiseId)}`;
+    return this.httpClient.request<any>('DELETE', url, {
+      body: {
+        supplierId,
+        subExpertise
+      }
+    });
   }
 }

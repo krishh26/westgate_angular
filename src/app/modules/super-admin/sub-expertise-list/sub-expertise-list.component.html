@@ -29,6 +29,10 @@
               <i class="bi" [ngClass]="{'bi-chevron-down': !isCollapsed(i), 'bi-chevron-up': isCollapsed(i)}"
                  style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);"></i>
             </button>
+            <button class="btn btn-danger btn-sm" style="position: absolute; right: 50px; top: 50%; transform: translateY(-50%); z-index: 10;"
+                   (click)="deleteSubExpertise(item, $event)" title="Delete Sub-Expertise">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
           </div>
           <div [id]="'collapse' + i" class="accordion-collapse collapse border rounded" [attr.aria-labelledby]="'heading' + i"
             data-bs-parent="#subExpertiseAccordion">

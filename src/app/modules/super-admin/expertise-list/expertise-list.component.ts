@@ -314,7 +314,7 @@ export class ExpertiseListComponent {
         const expertiseId = expertise.id;
         console.log(expertise);
 
-        this.superService.deleteExpertise(expertiseId).subscribe(
+        this.superService.deleteExpertise(expertiseId, this.supplierID).subscribe(
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
