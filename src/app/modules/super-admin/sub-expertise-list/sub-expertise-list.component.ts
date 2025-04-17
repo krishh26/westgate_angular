@@ -207,7 +207,7 @@ export class SubExpertiseListComponent implements OnInit {
     this.viewDocs = this.files?.filter((file: any) => file?.subExpertise === subExpertise);
 
     if (!this.viewDocs || this.viewDocs.length === 0) {
-      this.notificationService.showInfo(`No files available for ${subExpertise}`);
+     // this.notificationService.showInfo(`No files available for ${subExpertise}`);
       this.viewDocs = [];
     }
   }
