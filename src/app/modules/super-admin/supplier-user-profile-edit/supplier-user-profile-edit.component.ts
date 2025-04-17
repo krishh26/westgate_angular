@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
+interface ExpertiseItem {
+  itemId: string | null;
+  name: string;
+  type: string;
+}
 
 @Component({
   selector: 'app-supplier-user-profile-edit',
@@ -36,11 +42,13 @@ export class SupplierUserProfileEditComponent implements OnInit {
   currentExpertise: string = '';
   currentSubExpertise: string = '';
   randomString: string = '';
+  expertiseDropdownOptions: ExpertiseItem[] = [];
 
   constructor(
     private notificationService: NotificationService,
     private router: Router,
-    private supplierService: SupplierAdminService
+    private supplierService: SupplierAdminService,
+    private superadminService: SuperadminService
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
 
@@ -61,7 +69,42 @@ export class SupplierUserProfileEditComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialize if needed
+    this.getExpertiseDropdownData();
   }
+
+  getExpertiseDropdownData() {
+    this.showLoader = true;
+    this.superadminService.getExpertiseDropdown().subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseDropdownOptions = response.data || [];
+          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
+            // Get the type and remove "-other" suffix if it exists
+            let type = item.type || 'technologies';
+            if (type.endsWith('-other')) {
+              type = type.replace('-other', '');
+            }
+
+            return {
+              itemId: item.itemId || (item as any)._id,
+              name: item.name,
+              type: type
+            };
+          });
+        } else {
+          console.error('Failed to fetch expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise dropdown data');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching expertise dropdown data');
+        this.showLoader = false;
+      }
+    );
+  }
+
 
   removeArrayItem(arrayName: string, index: number) {
     if (this.supplierDetails[arrayName]) {

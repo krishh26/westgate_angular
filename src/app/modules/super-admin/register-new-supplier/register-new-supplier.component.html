@@ -237,16 +237,9 @@
                       <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                       <div class="col-sm-8">
                         <div class="form-control p-2">
-                          <ng-select
-                              [items]="expertiseDropdownOptions"
-                              bindLabel="name"
-                              placeholder="Select expertise"
-                              [(ngModel)]="companyForm.expertise"
-                              name="expertise"
-                              [clearable]="true"
-                              [multiple]="true"
-                            >
-                            </ng-select>
+                          <ng-select [items]="expertiseDropdownOptions" bindLabel="name" placeholder="Select expertise"
+                            [(ngModel)]="companyForm.expertise" name="expertise" [clearable]="true" [multiple]="true">
+                          </ng-select>
                         </div>
                       </div>
                     </div>

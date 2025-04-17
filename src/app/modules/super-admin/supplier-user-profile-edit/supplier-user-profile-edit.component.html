@@ -226,28 +226,9 @@
                   <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <span class="badge bg-primary me-2">{{ expertise.name }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                        </div>
-                        <div class="ms-3">
-                          <div *ngFor="let sub of expertise.subExpertise; let j = index" class="d-flex align-items-center mb-1">
-                            <span class="badge bg-secondary me-2">{{ sub }}</span>
-                            <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" [(ngModel)]="currentSubExpertise"
-                              name="subExpertise_{{i}}" placeholder="Enter sub-expertise and press Enter"
-                              (keydown.enter)="$event.preventDefault(); addSubExpertise(i); currentSubExpertise=''">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" [(ngModel)]="currentExpertise"
-                          name="expertiseName" placeholder="Enter expertise name and press Enter"
-                          (keydown.enter)="$event.preventDefault(); addExpertise(); currentExpertise=''">
-                      </div>
+                      <ng-select [items]="expertiseDropdownOptions" bindLabel="name" placeholder="Select expertise"
+                        [(ngModel)]="supplierDetails.expertise" name="expertise" [clearable]="true" [multiple]="true">
+                      </ng-select>
                     </div>
                   </div>
                 </div>
