@@ -1,14 +1,20 @@
 <main id="main">
   <section>
     <div class="container-fluid">
+
       <div class="row align-items-center justify-content-between">
-        <div class="col-lg-4 col-xl-4 col-12 mob-mb1">
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6">
           <div class="form-group mb-0">
             <h4 class="text-theme"><strong>Register New Supplier</strong></h4>
           </div><br>
         </div>
-
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6 text-end">
+          <button class="btn btn-primary" routerLink="/boss-user/supplier">
+            Back
+          </button>
+        </div>
       </div>
+
       <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm" autocomplete="off" novalidate>
         <div class="row">
           <div class="col-12">
@@ -231,30 +237,16 @@
                       <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                       <div class="col-sm-8">
                         <div class="form-control p-2">
-                          <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                              <span class="badge bg-primary me-2">{{ expertise.name }}</span>
-                              <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                            </div>
-                            <div class="ms-3">
-                              <div *ngFor="let sub of expertise.subExpertise; let j = index"
-                                class="d-flex align-items-center mb-1">
-                                <span class="badge bg-secondary me-2">{{ sub }}</span>
-                                <button type="button" class="btn-close ms-2"
-                                  (click)="removeSubExpertise(i, j)"></button>
-                              </div>
-                              <div class="mt-2">
-                                <input type="text" class="form-control" [(ngModel)]="currentSubExpertise"
-                                  name="subExpertise_{{i}}" placeholder="Enter sub-expertise and press Enter"
-                                  (keydown.enter)="$event.preventDefault(); addSubExpertise(i); currentSubExpertise=''">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" [(ngModel)]="currentExpertise" name="expertiseName"
-                              placeholder="Enter expertise name and press Enter"
-                              (keydown.enter)="$event.preventDefault(); addExpertise(); currentExpertise=''">
-                          </div>
+                          <ng-select
+                              [items]="expertiseDropdownOptions"
+                              bindLabel="name"
+                              placeholder="Select expertise"
+                              [(ngModel)]="companyForm.expertise"
+                              name="expertise"
+                              [clearable]="true"
+                              [multiple]="true"
+                            >
+                            </ng-select>
                         </div>
                       </div>
                     </div>
@@ -336,9 +328,6 @@
         <div class="row mt-4">
           <div class="col-12 text-end">
             <button type="submit" class="btn btn-primary mob-w-100 me-2">Submit</button>
-            <button class="btn btn-primary" routerLink="/boss-user/supplier">
-              Back
-            </button>
           </div>
         </div>
       </form>

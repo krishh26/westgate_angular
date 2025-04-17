@@ -4,7 +4,15 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 
 interface Expertise {
   name: string;
+  type?: string;
+  itemId?: string | null;
   subExpertise: string[];
+}
+
+interface ExpertiseItem {
+  itemId: string | null;
+  name: string;
+  type: string;
 }
 
 @Component({
@@ -19,6 +27,9 @@ export class RegisterNewSupplierComponent implements OnInit {
   currentSubExpertise: string = '';
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
+  expertiseDropdownOptions: ExpertiseItem[] = [];
+  selectedExpertiseItem: ExpertiseItem | null = null;
+
 
   constructor(
     private superadminService: SuperadminService,
@@ -51,6 +62,40 @@ export class RegisterNewSupplierComponent implements OnInit {
       technologies: [],
       keyClients: []
     };
+    this.getExpertiseDropdownData();
+  }
+
+  getExpertiseDropdownData() {
+    this.showLoader = true;
+    this.superadminService.getExpertiseDropdown().subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseDropdownOptions = response.data || [];
+          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
+            // Get the type and remove "-other" suffix if it exists
+            let type = item.type || 'technologies';
+            if (type.endsWith('-other')) {
+              type = type.replace('-other', '');
+            }
+
+            return {
+              itemId: item.itemId || (item as any)._id,
+              name: item.name,
+              type: type
+            };
+          });
+        } else {
+          console.error('Failed to fetch expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise dropdown data');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching expertise dropdown data');
+        this.showLoader = false;
+      }
+    );
   }
 
   addExpertise() {
@@ -93,10 +138,37 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   submitForm() {
+    // Prepare year of establishment
     if (this.companyForm.yearOfEstablishment) {
       const date = new Date(this.companyForm.yearOfEstablishment);
       this.companyForm.yearOfEstablishment = date.toISOString().split('T')[0];
     }
+
+    // If expertise is empty, initialize it
+    if (!this.companyForm.expertise) {
+      this.companyForm.expertise = [];
+    }
+
+    // Ensure all expertise items have the required structure
+    // If the expertise items are already in the correct format, this step is not needed
+    const formattedExpertise = this.companyForm.expertise.map((item: any) => {
+      // If item is already in correct format
+      if (item.name && (item.subExpertise || Array.isArray(item.subExpertise))) {
+        return item;
+      }
+
+      // If item is the direct ExpertiseItem from the dropdown
+      return {
+        name: item.name,
+        type: item.type || 'technologies',
+        itemId: item.itemId,
+        subExpertise: []
+      };
+    });
+
+    // Update companyForm with the formatted expertise
+    this.companyForm.expertise = formattedExpertise;
+
     console.log('Submitting Data:', this.companyForm);
     this.superadminService.supplierregister(this.companyForm).subscribe((response) => {
       if (response?.status === true) {
