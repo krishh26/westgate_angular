@@ -30,6 +30,8 @@ export class SuperAdminSupplierComponent {
   activeSuppliers: number = 0;
   inactiveSuppliers: number = 0;
   totalEmployees: number = 0;
+  resourceSharingCount: number = 0;
+  subcontractingCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -168,6 +170,9 @@ export class SuperAdminSupplierComponent {
           if (response?.data?.count) {
             this.activeSuppliers = response?.data?.count?.active || 0;
             this.inactiveSuppliers = (response?.data?.count?.inActive || 0);
+
+            // Calculate resource sharing and subcontracting counts
+            this.calculateSupplierCounts();
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
@@ -189,6 +194,10 @@ export class SuperAdminSupplierComponent {
     if (this.supplierUserList && this.supplierUserList.length > 0) {
       this.activeSuppliers = this.supplierUserList.filter((supplier: any) => supplier.active).length;
       this.inactiveSuppliers = this.supplierUserList.length - this.activeSuppliers;
+
+      // Calculate resource sharing and subcontracting counts
+      this.resourceSharingCount = this.supplierUserList.filter((supplier: any) => supplier.resourceSharingSupplier).length;
+      this.subcontractingCount = this.supplierUserList.filter((supplier: any) => supplier.subcontractingSupplier).length;
     }
   }
 
