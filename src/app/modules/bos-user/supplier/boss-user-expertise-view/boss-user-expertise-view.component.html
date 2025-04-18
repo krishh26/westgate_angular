@@ -20,6 +20,23 @@
     <div class="container-fluid">
       <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8 d-flex justify-content-between">
         <h4 class="text-theme mb-4"><strong>Expertise View</strong></h4>
+        <div class="col-lg-8 col-xl-8 col-md-8 col-6 d-flex justify-content-end gap-2 mb-2">
+          <button class="btn btn-sm"
+                 [ngClass]="{'btn-primary': selectedType !== 'Products' && selectedType !== 'Domain', 'btn-outline-primary': selectedType === 'Products' || selectedType === 'Domain'}"
+                 (click)="fetchDropdownData('technologies')">
+            Technology
+          </button>
+          <button class="btn btn-sm"
+                 [ngClass]="{'btn-info': selectedType === 'Products', 'btn-outline-info': selectedType !== 'Products'}"
+                 (click)="fetchDropdownData('product')">
+            Products
+          </button>
+          <button class="btn btn-sm"
+                 [ngClass]="{'btn-warning': selectedType === 'Domain', 'btn-outline-warning': selectedType !== 'Domain'}"
+                 (click)="fetchDropdownData('domain')">
+            Domain
+          </button>
+        </div>
       </div>
 
       <div class="d-flex align-items-center flex-grow-1">
@@ -28,6 +45,14 @@
           <input class="form-control control-search" placeholder="Search by Expertise" type="text"
             [(ngModel)]="searchText" (input)="searchtext()" />
         </div>
+        <!-- Clear search button -->
+        <button *ngIf="searchText" class="btn btn-outline-secondary ms-2" (click)="searchText=''; searchtext()">
+          Clear Search
+        </button>
+        <!-- Only show clear button if there are filters applied -->
+        <button *ngIf="startDate || endDate" class="btn btn-outline-danger ms-2" (click)="clearFilters()">
+          Clear Filters
+        </button>
       </div>
 
       <!-- Date Filters -->
@@ -55,35 +80,29 @@
         <table class="table table-striped align-middle">
           <thead>
             <tr>
-              <th>Expertise</th>
-              <!-- <th>Total Sub Expertise</th> -->
+              <th>{{ selectedType ? selectedType : 'Expertise' }}</th>
+              <th>Total Sub Expertise</th>
               <th>Total Supplier</th>
               <th>Active Supplier</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="!expertiseList?.length">
-              <td colspan="3">
+            <tr *ngIf="!currentList?.length">
+              <td colspan="5">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
             <tr
-              *ngFor="let item of expertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
-              <td>{{ item?.expertise }}</td>
-              <!-- <td>{{ item?.subExpertiseCount || 0 }}</td> -->
+              *ngFor="let item of currentList">
+              <td>{{ item?.name || item?.expertise }}</td>
+              <td>{{ item?.subExpertiseCount || item?.count || 0 }}</td>
               <td>{{ item?.totalSupplierCount || 0 }}</td>
               <td>{{ item?.activeSupplierCount || 0 }}</td>
-              <!-- <td>
+              <td>
                 <a class="btn btn-primary btn-sm" style="cursor: pointer"
                   (click)="navigateToSubExpertise(item)">View</a>
-              </td> -->
-              <!-- <td>
-                <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
-                  data-bs-target="#viewAllDocuments" (click)="showDocuments(item)">
-                  View
-                </a>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>

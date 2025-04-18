@@ -289,7 +289,7 @@ export class ExpertiseViewComponent {
           this.dropdownData = response.data || [];
           this.currentList = this.dropdownData;
           this.selectedType = this.formatTypeName(type);
-          this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
+          //this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch dropdown data');
           console.error('Failed to fetch dropdown data:', response?.message);

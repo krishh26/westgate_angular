@@ -8,6 +8,8 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environment/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-boss-user-expertise-view',
@@ -32,6 +34,9 @@ export class BossUserExpertiseViewComponent {
   myControl = new FormControl();
   startDate: string = '';
   endDate: string = '';
+  dropdownData: any[] = [];
+  selectedType: string = '';
+  currentList: any[] = [];
 
 
   constructor(
@@ -40,7 +45,8 @@ export class BossUserExpertiseViewComponent {
     private router: Router,
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
-    public modalService: NgbModal, // Changed from private to public
+    public modalService: NgbModal,
+    private http: HttpClient // Changed from private to public
   ) { }
 
   ngOnInit() {
@@ -72,18 +78,23 @@ export class BossUserExpertiseViewComponent {
     });
   }
 
+
   applyDateFilter() {
     this.showLoader = true;
     const params = {
       startDate: this.startDate,
       endDate: this.endDate,
-      search: this.searchText?.trim() || ''
+      search: this.searchText?.trim() || '',
+      page: this.page,
+      limit: this.pagesize
     };
 
     this.superService.getExpertiseList(params).subscribe(
       (response) => {
         if (response?.status) {
           this.expertiseList = response?.data;
+          this.currentList = this.expertiseList;
+          this.selectedType = '';
           this.totalRecords = response?.totalRecords;
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
@@ -100,27 +111,35 @@ export class BossUserExpertiseViewComponent {
   searchtext() {
     this.showLoader = true;
 
-    const params = {
-      search: this.searchText?.trim() || '',
-      startDate: this.startDate,
-      endDate: this.endDate
-    };
+    // If we are viewing a specific type, search within that type
+    if (this.selectedType) {
+      const type = this.getTypeValue(this.selectedType);
+      // Use fetchDropdownData method to ensure consistent implementation
+      this.fetchDropdownData(type);
+    } else {
+      // Otherwise search in expertise list (should not happen with current implementation)
+      const params = {
+        search: this.searchText?.trim() || '',
+        startDate: this.startDate,
+        endDate: this.endDate
+      };
 
-    this.superService.getExpertiseList(params).subscribe(
-      (response) => {
-        if (response?.status) {
-          this.expertiseList = response?.data;
-          this.totalRecords = response?.totalRecords;
-        } else {
-          console.error('Failed to fetch supplier data:', response?.message);
+      this.superService.getExpertiseList(params).subscribe(
+        (response) => {
+          if (response?.status) {
+            this.expertiseList = response?.data;
+            this.currentList = this.expertiseList;
+          } else {
+            console.error('Failed to fetch supplier data:', response?.message);
+          }
+          this.showLoader = false;
+        },
+        (error) => {
+          console.error('Error fetching supplier data:', error);
+          this.showLoader = false;
         }
-        this.showLoader = false;
-      },
-      (error) => {
-        console.error('Error fetching supplier data:', error);
-        this.showLoader = false;
-      }
-    );
+      );
+    }
   }
 
   getExpertise() {
@@ -135,6 +154,8 @@ export class BossUserExpertiseViewComponent {
       (response) => {
         if (response?.status) {
           this.expertiseList = response?.data;
+          this.currentList = this.expertiseList;
+          this.selectedType = '';
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
         }
@@ -242,8 +263,74 @@ export class BossUserExpertiseViewComponent {
     this.startDate = '';
     this.endDate = '';
     this.searchText = '';
-    this.getExpertise();
+
+    // Refresh the current view based on selected type
+    if (this.selectedType === 'Technology') {
+      this.fetchDropdownData('technologies');
+    } else if (this.selectedType === 'Products') {
+      this.fetchDropdownData('product');
+    } else if (this.selectedType === 'Domain') {
+      this.fetchDropdownData('domain');
+    } else {
+      // Default to technologies if nothing is selected
+      this.fetchDropdownData('technologies');
+    }
+  }
+
+  fetchDropdownData(type: string) {
+    this.showLoader = true;
+    // Include search parameter if available
+    const url = `${environment.baseUrl}/web-user/drop-down?type=${type}${this.searchText ? '&search=' + this.searchText.trim() : ''}`;
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.dropdownData = response.data || [];
+          this.currentList = this.dropdownData;
+          this.selectedType = this.formatTypeName(type);
+         // this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch dropdown data');
+          console.error('Failed to fetch dropdown data:', response?.message);
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError('Error fetching dropdown data');
+        console.error('Error fetching dropdown data:', error);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  formatTypeName(type: string): string {
+    switch(type) {
+      case 'technologies':
+        return 'Technology';
+      case 'product':
+        return 'Products';
+      case 'domain':
+        return 'Domain';
+      case 'other':
+        return 'Other';
+      default:
+        return type.charAt(0).toUpperCase() + type.slice(1);
+    }
+  }
+
+  getTypeValue(displayName: string): string {
+    switch(displayName) {
+      case 'Technology':
+        return 'technologies';
+      case 'Products':
+        return 'product';
+      case 'Domain':
+        return 'domain';
+      case 'Other':
+        return 'other';
+      default:
+        return displayName.toLowerCase();
+    }
   }
 
 }
-
