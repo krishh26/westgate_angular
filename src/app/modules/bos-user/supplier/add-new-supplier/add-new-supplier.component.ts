@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 
+interface ExpertiseItem {
+  itemId: string | null;
+  name: string;
+  type: string;
+}
 @Component({
   selector: 'app-add-new-supplier',
   templateUrl: './add-new-supplier.component.html',
@@ -14,6 +19,7 @@ export class BossUserAddNewSupplierComponent {
   currentSubExpertise: string = '';
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
+  expertiseDropdownOptions: ExpertiseItem[] = [];
 
   constructor(
     private superadminService: SuperadminService,
@@ -46,6 +52,40 @@ export class BossUserAddNewSupplierComponent {
       technologies: [],
       keyClients: []
     };
+    this.getExpertiseDropdownData();
+  }
+
+  getExpertiseDropdownData() {
+    this.showLoader = true;
+    this.superadminService.getExpertiseDropdown().subscribe(
+      (response) => {
+        if (response?.status) {
+          this.expertiseDropdownOptions = response.data || [];
+          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
+            // Get the type and remove "-other" suffix if it exists
+            let type = item.type || 'technologies';
+            if (type.endsWith('-other')) {
+              type = type.replace('-other', '');
+            }
+
+            return {
+              itemId: item.itemId || (item as any)._id,
+              name: item.name,
+              type: type
+            };
+          });
+        } else {
+          console.error('Failed to fetch expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise dropdown data');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching expertise dropdown data');
+        this.showLoader = false;
+      }
+    );
   }
 
   addExpertise() {
@@ -92,6 +132,12 @@ export class BossUserAddNewSupplierComponent {
       const date = new Date(this.companyForm.yearOfEstablishment);
       this.companyForm.yearOfEstablishment = date.toISOString().split('T')[0];
     }
+
+        // If expertise is empty, initialize it
+        if (!this.companyForm.expertise) {
+          this.companyForm.expertise = [];
+        }
+
     this.superadminService.supplierregister(this.companyForm).subscribe((response) => {
       if (response?.status === true) {
         this.showLoader = false;

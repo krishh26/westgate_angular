@@ -28,7 +28,6 @@ export class RegisterNewSupplierComponent implements OnInit {
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
   expertiseDropdownOptions: ExpertiseItem[] = [];
-  selectedExpertiseItem: ExpertiseItem | null = null;
 
 
   constructor(
