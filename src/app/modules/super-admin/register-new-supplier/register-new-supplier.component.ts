@@ -23,6 +23,7 @@ interface ExpertiseItem {
 export class RegisterNewSupplierComponent implements OnInit {
   companyForm: any = {};
   showLoader: boolean = false;
+  showSupplierTypeError: boolean = false;
   currentExpertise: string = '';
   currentSubExpertise: string = '';
   randomString: string = '';
@@ -145,6 +146,15 @@ export class RegisterNewSupplierComponent implements OnInit {
       return;
     }
 
+    // Check at least one supplier type is selected
+    if (!this.companyForm.resourceSharingSupplier && !this.companyForm.subcontractingSupplier) {
+      this.showSupplierTypeError = true;
+      this.notificationService.showError('Please select at least one supplier type');
+      return;
+    } else {
+      this.showSupplierTypeError = false;
+    }
+
     // Prepare year of establishment
     if (this.companyForm.yearOfEstablishment) {
       const date = new Date(this.companyForm.yearOfEstablishment);
@@ -209,5 +219,10 @@ export class RegisterNewSupplierComponent implements OnInit {
       this.addArrayItem(arrayName, input.value);
       input.value = '';
     }
+  }
+
+  checkSupplierTypeSelection() {
+    // Hide error message if at least one supplier type is selected
+    this.showSupplierTypeError = !this.companyForm.resourceSharingSupplier && !this.companyForm.subcontractingSupplier;
   }
 }
