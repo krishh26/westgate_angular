@@ -32,6 +32,10 @@ export class SuperAdminSupplierComponent {
   totalEmployees: number = 0;
   resourceSharingCount: number = 0;
   subcontractingCount: number = 0;
+  totalActiveSuppliers: number = 0;
+  totalInactiveSuppliers: number = 0;
+  totalResourceSharingCount: number = 0;
+  totalSubcontractingCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -168,14 +172,142 @@ export class SuperAdminSupplierComponent {
 
           // Get active and inactive suppliers count from response
           if (response?.data?.count) {
+            // Store both current and total counts
             this.activeSuppliers = response?.data?.count?.active || 0;
-            this.inactiveSuppliers = (response?.data?.count?.inActive || 0);
+            this.inactiveSuppliers = response?.data?.count?.inActive || 0;
 
-            // Calculate resource sharing and subcontracting counts
-            this.calculateSupplierCounts();
+            // Store the total counts for reference
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+
+            // Get resource sharing and subcontracting counts if available in the API response
+            if (response?.data?.count?.resourceSharing !== undefined) {
+              this.resourceSharingCount = response?.data?.count?.resourceSharing || 0;
+              this.totalResourceSharingCount = response?.data?.count?.resourceSharing || 0;
+            } else {
+              // Fallback to calculating from the data
+              this.calculateResourceSharingCount();
+              this.totalResourceSharingCount = this.resourceSharingCount;
+            }
+
+            if (response?.data?.count?.subContracting !== undefined) {
+              this.subcontractingCount = response?.data?.count?.subContracting || 0;
+              this.totalSubcontractingCount = response?.data?.count?.subContracting || 0;
+            } else {
+              // Fallback to calculating from the data
+              this.calculateSubcontractingCount();
+              this.totalSubcontractingCount = this.subcontractingCount;
+            }
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
+            this.calculateResourceSharingCount();
+            this.calculateSubcontractingCount();
+
+            // Store total counts
+            this.totalActiveSuppliers = this.activeSuppliers;
+            this.totalInactiveSuppliers = this.inactiveSuppliers;
+            this.totalResourceSharingCount = this.resourceSharingCount;
+            this.totalSubcontractingCount = this.subcontractingCount;
+          }
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  // Single smart function to handle all filter types
+  applyFilter(filterType: string) {
+    // Create payload for filtering
+    const payload: any = {
+      page: "1", // Reset to first page when filtering
+      limit: String(this.pagesize)
+    };
+
+    // Add filter parameter based on the type
+    switch(filterType) {
+      case 'resourceSharing':
+        payload.resourceSharingSupplier = true;
+        break;
+      case 'subcontracting':
+        payload.subcontractingSupplier = true;
+        break;
+      case 'active':
+        payload.active = true;
+        break;
+      case 'inactive':
+        payload.active = false;
+        break;
+      case 'clear':
+        // Just reset filters without additional params
+        this.search = '';
+        this.startDate = '';
+        this.endDate = '';
+        break;
+    }
+
+    this.page = 1; // Reset page
+    this.showLoader = true;
+
+    this.superService.getSUpplierList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.supplierUserList = response?.data?.data;
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          // Calculate total employees for the filtered view
+          this.calculateTotalEmployees();
+
+          // Update only the relevant count for the filtered view, but display all total counts
+          if (filterType === 'resourceSharing') {
+            this.resourceSharingCount = this.supplierUserList.length;
+          } else if (filterType === 'subcontracting') {
+            this.subcontractingCount = this.supplierUserList.length;
+          } else if (filterType === 'active') {
+            this.activeSuppliers = this.supplierUserList.length;
+          } else if (filterType === 'inactive') {
+            this.inactiveSuppliers = this.supplierUserList.length;
+          } else if (filterType === 'clear') {
+            // Reset all counts to total counts
+            if (response?.data?.count) {
+              this.activeSuppliers = response?.data?.count?.active || 0;
+              this.inactiveSuppliers = response?.data?.count?.inActive || 0;
+              this.totalActiveSuppliers = this.activeSuppliers;
+              this.totalInactiveSuppliers = this.inactiveSuppliers;
+
+              // Update resource sharing and subcontracting counts if available
+              if (response?.data?.count?.resourceSharing !== undefined) {
+                this.resourceSharingCount = response?.data?.count?.resourceSharing || 0;
+                this.totalResourceSharingCount = this.resourceSharingCount;
+              } else {
+                this.calculateResourceSharingCount();
+                this.totalResourceSharingCount = this.resourceSharingCount;
+              }
+
+              if (response?.data?.count?.subContracting !== undefined) {
+                this.subcontractingCount = response?.data?.count?.subContracting || 0;
+                this.totalSubcontractingCount = this.subcontractingCount;
+              } else {
+                this.calculateSubcontractingCount();
+                this.totalSubcontractingCount = this.subcontractingCount;
+              }
+            } else {
+              this.calculateSupplierCounts();
+              this.calculateResourceSharingCount();
+              this.calculateSubcontractingCount();
+
+              this.totalActiveSuppliers = this.activeSuppliers;
+              this.totalInactiveSuppliers = this.inactiveSuppliers;
+              this.totalResourceSharingCount = this.resourceSharingCount;
+              this.totalSubcontractingCount = this.subcontractingCount;
+            }
           }
         } else {
           this.notificationService.showError(response?.message);
@@ -194,10 +326,20 @@ export class SuperAdminSupplierComponent {
     if (this.supplierUserList && this.supplierUserList.length > 0) {
       this.activeSuppliers = this.supplierUserList.filter((supplier: any) => supplier.active).length;
       this.inactiveSuppliers = this.supplierUserList.length - this.activeSuppliers;
+    }
+  }
 
-      // Calculate resource sharing and subcontracting counts
-      this.resourceSharingCount = this.supplierUserList.filter((supplier: any) => supplier.resourceSharingSupplier).length;
-      this.subcontractingCount = this.supplierUserList.filter((supplier: any) => supplier.subcontractingSupplier).length;
+  // Helper method to calculate resource sharing count
+  calculateResourceSharingCount() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      this.resourceSharingCount = this.supplierUserList.filter((supplier: any) => supplier.resourceSharingSupplier === true).length;
+    }
+  }
+
+  // Helper method to calculate subcontracting count
+  calculateSubcontractingCount() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      this.subcontractingCount = this.supplierUserList.filter((supplier: any) => supplier.subcontractingSupplier === true).length;
     }
   }
 
@@ -237,6 +379,17 @@ export class SuperAdminSupplierComponent {
         item.active = true; // Revert the toggle if modal was dismissed
       }
     );
+  }
+
+  // Calculate total employees from supplier list
+  calculateTotalEmployees() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      this.totalEmployees = this.supplierUserList.reduce((sum: number, supplier: any) => {
+        return sum + (supplier.employeeCount || 0);
+      }, 0);
+    } else {
+      this.totalEmployees = 0;
+    }
   }
 
 }

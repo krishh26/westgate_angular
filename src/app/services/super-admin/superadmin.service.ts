@@ -174,6 +174,21 @@ export class SuperadminService {
       queryParams = queryParams.set('search', params.search);
     }
 
+    // Add status parameter for active/inactive filter
+    if (params?.active !== undefined) {
+      queryParams = queryParams.set('status', String(params.active));
+    }
+
+    // Add resource sharing filter
+    if (params?.resourceSharingSupplier !== undefined) {
+      queryParams = queryParams.set('resourceSharing', String(params.resourceSharingSupplier));
+    }
+
+    // Add subcontracting filter
+    if (params?.subcontractingSupplier !== undefined) {
+      queryParams = queryParams.set('subContracting', String(params.subcontractingSupplier));
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
