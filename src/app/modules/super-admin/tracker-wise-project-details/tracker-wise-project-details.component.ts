@@ -172,6 +172,12 @@ export class TrackerWiseProjectDetailsComponent {
   // Editor related properties
   feasibilityEditor: Editor = new Editor();
   bidStatusEditor: Editor = new Editor();
+
+  // Editor related properties
+  editor: Editor = new Editor();
+  taskForm!: FormGroup;
+  @ViewChild('taskModal') taskModal!: ElementRef;
+
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -230,6 +236,9 @@ export class TrackerWiseProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+
+    // Make sure all editors are properly initialized
+    this.editor = new Editor();
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
   }
@@ -240,6 +249,9 @@ export class TrackerWiseProjectDetailsComponent {
     }
     if (this.bidStatusEditor) {
       this.bidStatusEditor.destroy();
+    }
+    if (this.editor) {
+      this.editor.destroy();
     }
   }
 
@@ -399,7 +411,7 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
-  removeShortlistSupplier(supplier:any) {
+  removeShortlistSupplier(supplier: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to remove ${supplier.name} from shortlist?`,
