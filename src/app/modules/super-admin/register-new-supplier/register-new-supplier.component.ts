@@ -59,7 +59,9 @@ export class RegisterNewSupplierComponent implements OnInit {
       expertise: [],
       category: [],
       technologies: [],
-      keyClients: []
+      keyClients: [],
+      resourceSharingSupplier: false,
+      subcontractingSupplier: false
     };
     this.getExpertiseDropdownData();
   }
@@ -137,6 +139,12 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   submitForm() {
+    // Check required fields
+    if (!this.companyForm.companyName || !this.companyForm.poc_name || !this.companyForm.poc_phone) {
+      this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
+      return;
+    }
+
     // Prepare year of establishment
     if (this.companyForm.yearOfEstablishment) {
       const date = new Date(this.companyForm.yearOfEstablishment);
