@@ -20,7 +20,6 @@
     <div class="container-fluid">
       <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8 d-flex justify-content-between">
         <h4 class="text-theme mb-4"><strong>Expertise View</strong></h4>
-        <!-- Back to Supplier Button and Category Buttons -->
         <div class="col-lg-8 col-xl-8 col-md-8 col-6 d-flex justify-content-end gap-2 mb-2">
           <button class="btn btn-sm"
                  [ngClass]="{'btn-primary': selectedType !== 'Products' && selectedType !== 'Domain', 'btn-outline-primary': selectedType === 'Products' || selectedType === 'Domain'}"
@@ -36,9 +35,6 @@
                  [ngClass]="{'btn-warning': selectedType === 'Domain', 'btn-outline-warning': selectedType !== 'Domain'}"
                  (click)="fetchDropdownData('domain')">
             Domain
-          </button>
-          <button class="btn btn-secondary btn-sm" (click)="navigateToSupplier()">
-            Back to Supplier
           </button>
         </div>
       </div>
