@@ -23,10 +23,13 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
+                  <label for="companyName" class="col-sm-4 col-form-label">Company Name <span class="text-danger">*</span></label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.companyName" name="companyName" class="form-control"
-                      placeholder="Enter company name" id="companyName">
+                      placeholder="Enter company name" id="companyName" required #companyNameInput="ngModel">
+                    <div *ngIf="companyNameInput.invalid && (companyNameInput.dirty || companyNameInput.touched)" class="text-danger small">
+                      Company Name is required
+                    </div>
                   </div>
                 </div>
               </div>
@@ -108,20 +111,27 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="poc_name" class="col-sm-4 col-form-label">POC Name</label>
+                  <label for="poc_name" class="col-sm-4 col-form-label">POC Name <span class="text-danger">*</span></label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_name" name="poc_name" type="text" class="form-control"
-                      placeholder="Enter POC name" id="poc_name">
+                      placeholder="Enter POC name" id="poc_name" required #pocNameInput="ngModel">
+                    <div *ngIf="pocNameInput.invalid && (pocNameInput.dirty || pocNameInput.touched)" class="text-danger small">
+                      POC Name is required
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone</label>
+                  <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone <span class="text-danger">*</span></label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_phone" name="poc_phone" type="text" class="form-control"
-                      placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone">
+                      placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)"
+                      id="poc_phone" required #pocPhoneInput="ngModel">
+                    <div *ngIf="pocPhoneInput.invalid && (pocPhoneInput.dirty || pocPhoneInput.touched)" class="text-danger small">
+                      POC Phone is required
+                    </div>
                   </div>
                 </div>
               </div>
@@ -330,7 +340,7 @@
                     [(ngModel)]="supplierDetails.subcontractingSupplier" name="subcontractingSupplier"
                     id="subcontractingSupplier" (change)="checkSupplierTypeSelection()">
                   <label class="form-check-label" for="subcontractingSupplier">
-                    Subcontracting Supplier
+                    Sub Contracting Supplier
                   </label>
                 </div>
               </div>
@@ -363,7 +373,11 @@
         <div class="row mt-4">
           <div class="col-12 text-end">
             <button type="button" routerLink="/super-admin/supplier-user-profile" class="btn btn-primary">Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary">Update Supplier</button>
+            <button type="submit" class="btn btn-primary"
+              [disabled]="!supplierDetails.companyName || !supplierDetails.poc_name || !supplierDetails.poc_phone ||
+                        (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier)">
+              Update Supplier
+            </button>
           </div>
         </div>
       </form>

@@ -179,8 +179,8 @@ export class SupplierUserProfileEditComponent implements OnInit {
   }
 
   submitForm() {
-    if (!this.supplierDetails.companyName || !this.supplierDetails.email) {
-      this.notificationService.showError('Company Name and Email are required.');
+    if (!this.supplierDetails.companyName || !this.supplierDetails.poc_name || !this.supplierDetails.poc_phone) {
+      this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
       return;
     }
 
