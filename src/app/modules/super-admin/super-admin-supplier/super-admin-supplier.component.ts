@@ -489,4 +489,24 @@ export class SuperAdminSupplierComponent {
     );
   }
 
+  // Add a helper method to get inHold comment
+  getFirstInHoldComment(commentArray: any[]): string {
+    if (!commentArray || commentArray.length === 0) {
+      return '-';
+    }
+
+    const firstComment = commentArray[0];
+
+    // Handle different possible structures of the comment
+    if (typeof firstComment === 'string') {
+      return firstComment;
+    } else if (typeof firstComment === 'object') {
+      // Check various possible properties that might contain the comment text
+      return firstComment.comment || firstComment.text || firstComment.message ||
+             firstComment.content || JSON.stringify(firstComment);
+    }
+
+    return '-';
+  }
+
 }

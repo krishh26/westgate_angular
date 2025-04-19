@@ -90,6 +90,7 @@
               <th>Last Login</th>
               <th>Total Employees</th>
               <th>Assigned Projects</th>
+              <th>InHold Comment</th>
               <th>Action</th>
               <th>Status</th>
             </tr>
@@ -97,7 +98,7 @@
           <tbody>
 
             <tr>
-              <td *ngIf="!supplierUserList?.length" colspan="7">
+              <td *ngIf="!supplierUserList?.length" colspan="8">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
@@ -117,6 +118,9 @@
                 <ng-template #noProjects>
                  -
                 </ng-template>
+              </td>
+              <td>
+                {{ getFirstInHoldComment(item?.inHoldComment) }}
               </td>
               <td>
                 <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
