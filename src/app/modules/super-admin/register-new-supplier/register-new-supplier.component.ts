@@ -29,6 +29,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
   expertiseDropdownOptions: ExpertiseItem[] = [];
+  inHoldComment: string = '';
 
 
   constructor(
@@ -185,6 +186,17 @@ export class RegisterNewSupplierComponent implements OnInit {
 
     // Update companyForm with the formatted expertise
     this.companyForm.expertise = formattedExpertise;
+
+    // Add inHoldComment in the required format
+    if (this.inHoldComment.trim()) {
+      this.companyForm.inHoldComment = [
+        {
+          comment: this.inHoldComment.trim()
+        }
+      ];
+    } else {
+      this.companyForm.inHoldComment = [];
+    }
 
     console.log('Submitting Data:', this.companyForm);
     this.superadminService.supplierregister(this.companyForm).subscribe((response) => {

@@ -35,14 +35,18 @@ export class SupplierUserProfileEditComponent implements OnInit {
     expertise: [],
     categoryList: [],
     technologyStack: [],
-    keyClients: []
+    keyClients: [],
+    resourceSharingSupplier: false,
+    subcontractingSupplier: false
   };
 
   showLoader: boolean = false;
+  showSupplierTypeError: boolean = false;
   currentExpertise: string = '';
   currentSubExpertise: string = '';
   randomString: string = '';
   expertiseDropdownOptions: ExpertiseItem[] = [];
+  inHoldComment: string = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -64,6 +68,11 @@ export class SupplierUserProfileEditComponent implements OnInit {
       });
 
       this.supplierDetails = { ...this.supplierDetails, ...data };
+
+      // Extract inHoldComment if it exists
+      if (this.supplierDetails.inHoldComment && this.supplierDetails.inHoldComment.length > 0) {
+        this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
+      }
     }
   }
 
@@ -164,10 +173,35 @@ export class SupplierUserProfileEditComponent implements OnInit {
     return true;
   }
 
+  checkSupplierTypeSelection() {
+    // Hide error message if at least one supplier type is selected
+    this.showSupplierTypeError = !this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier;
+  }
+
   submitForm() {
     if (!this.supplierDetails.companyName || !this.supplierDetails.email) {
       this.notificationService.showError('Company Name and Email are required.');
       return;
+    }
+
+    // Check at least one supplier type is selected
+    if (!this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier) {
+      this.showSupplierTypeError = true;
+      this.notificationService.showError('Please select at least one supplier type');
+      return;
+    } else {
+      this.showSupplierTypeError = false;
+    }
+
+    // Add inHoldComment in the required format
+    if (this.inHoldComment.trim()) {
+      this.supplierDetails.inHoldComment = [
+        {
+          comment: this.inHoldComment.trim()
+        }
+      ];
+    } else {
+      this.supplierDetails.inHoldComment = [];
     }
 
     this.showLoader = true;
