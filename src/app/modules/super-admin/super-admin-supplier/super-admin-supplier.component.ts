@@ -36,6 +36,8 @@ export class SuperAdminSupplierComponent {
   totalInactiveSuppliers: number = 0;
   totalResourceSharingCount: number = 0;
   totalSubcontractingCount: number = 0;
+  isDeletedFilter: boolean = false;
+  totalDeletedCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -170,33 +172,34 @@ export class SuperAdminSupplierComponent {
             return sum + (supplier.employeeCount || 0);
           }, 0);
 
-          // Get active and inactive suppliers count from response
+          // Get counts from response.data.count object
           if (response?.data?.count) {
-            // Store both current and total counts
+            // Store active and inactive counts
             this.activeSuppliers = response?.data?.count?.active || 0;
             this.inactiveSuppliers = response?.data?.count?.inActive || 0;
 
-            // Store the total counts for reference
-            this.totalActiveSuppliers = response?.data?.count?.active || 0;
-            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            // Store total counts
+            this.totalActiveSuppliers = this.activeSuppliers;
+            this.totalInactiveSuppliers = this.inactiveSuppliers;
 
-            // Get resource sharing and subcontracting counts if available in the API response
-            if (response?.data?.count?.resourceSharing !== undefined) {
-              this.resourceSharingCount = response?.data?.count?.resourceSharing || 0;
-              this.totalResourceSharingCount = response?.data?.count?.resourceSharing || 0;
+            // Use resourceSharingCount and subcontractingCount directly from response
+            this.resourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalResourceSharingCount = this.resourceSharingCount;
+
+            this.subcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalSubcontractingCount = this.subcontractingCount;
+
+            // Calculate deleted count if available in response
+            if (response?.data?.count?.deleted !== undefined) {
+              this.totalDeletedCount = response?.data?.count?.deleted || 0;
             } else {
-              // Fallback to calculating from the data
-              this.calculateResourceSharingCount();
-              this.totalResourceSharingCount = this.resourceSharingCount;
+              // If not available in the response, calculate from the suppliers list
+              this.calculateDeletedCount();
             }
 
-            if (response?.data?.count?.subContracting !== undefined) {
-              this.subcontractingCount = response?.data?.count?.subContracting || 0;
-              this.totalSubcontractingCount = response?.data?.count?.subContracting || 0;
-            } else {
-              // Fallback to calculating from the data
-              this.calculateSubcontractingCount();
-              this.totalSubcontractingCount = this.subcontractingCount;
+            // If there's a total in the response
+            if (response?.data?.count?.total !== undefined) {
+              this.totalRecords = response?.data?.count?.total || 0;
             }
           } else {
             // Fallback to calculating from the current page data
@@ -230,6 +233,18 @@ export class SuperAdminSupplierComponent {
       limit: String(this.pagesize)
     };
 
+    // Add date filters if they exist
+    if (this.startDate) {
+      payload.startDate = this.startDate;
+    }
+    if (this.endDate) {
+      payload.endDate = this.endDate;
+    }
+    // Update search parameter handling
+    if (this.search && this.search.trim()) {
+      payload.search = this.search.trim();
+    }
+
     // Add filter parameter based on the type
     switch(filterType) {
       case 'resourceSharing':
@@ -244,12 +259,21 @@ export class SuperAdminSupplierComponent {
       case 'inactive':
         payload.active = false;
         break;
+      case 'isDeleted':
+        this.isDeletedFilter = !this.isDeletedFilter;
+        break;
       case 'clear':
-        // Just reset filters without additional params
+        // Reset filters
+        this.isDeletedFilter = false;
         this.search = '';
         this.startDate = '';
         this.endDate = '';
         break;
+    }
+
+    // Add isDeleted parameter if checkbox is checked
+    if (this.isDeletedFilter) {
+      payload.isDeleted = true;
     }
 
     this.page = 1; // Reset page
@@ -274,6 +298,9 @@ export class SuperAdminSupplierComponent {
             this.activeSuppliers = this.supplierUserList.length;
           } else if (filterType === 'inactive') {
             this.inactiveSuppliers = this.supplierUserList.length;
+          } else if (filterType === 'isDeleted') {
+            // Update deleted count when filtering
+            this.totalDeletedCount = this.supplierUserList.length;
           } else if (filterType === 'clear') {
             // Reset all counts to total counts
             if (response?.data?.count) {
@@ -389,6 +416,15 @@ export class SuperAdminSupplierComponent {
       }, 0);
     } else {
       this.totalEmployees = 0;
+    }
+  }
+
+  // Helper method to calculate deleted count
+  calculateDeletedCount() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      this.totalDeletedCount = this.supplierUserList.filter((supplier: any) => supplier.isDeleted === true).length;
+    } else {
+      this.totalDeletedCount = 0;
     }
   }
 
