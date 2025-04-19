@@ -28,6 +28,7 @@
                 <span class="badge bg-warning text-dark me-2" style="cursor: pointer;" (click)="applyFilter('subcontracting')">Subcontracting: {{totalSubcontractingCount}}</span>
                 <span class="badge bg-success me-2" style="cursor: pointer;" (click)="applyFilter('active')">Active Supplier: {{totalActiveSuppliers}}</span>
                 <span class="badge bg-danger me-2" style="cursor: pointer;" (click)="applyFilter('inactive')">Inactive Supplier: {{totalInactiveSuppliers}}</span>
+                <!-- <span class="badge bg-dark me-2" style="cursor: pointer;" (click)="applyFilter('isDeleted')">Deleted Supplier: {{totalDeletedCount}}</span> -->
                 <span class="badge bg-secondary" style="cursor: pointer;" (click)="applyFilter('clear')">Clear Filters</span>
               </div>
             </div>
@@ -67,6 +68,12 @@
             <a routerLink="/super-admin/add-new-supplier" class="btn btn-primary">
               <i class="bi bi-plus-square"></i> Register Supplier
             </a>
+            <div class="form-check ms-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="isDeletedFilter" (change)="toggleDeletedFilter()" id="deletedFilter">
+              <label class="form-check-label" for="deletedFilter">
+                Show Deleted Suppliers
+              </label>
+            </div>
             <!-- <button class="btn btn-secondary" (click)="toggleExpertiseView()">
               {{ showExpertiseView ? 'Hide Expertise View' : 'Show Expertise View' }}
             </button> -->

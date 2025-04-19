@@ -189,6 +189,11 @@ export class SuperadminService {
       queryParams = queryParams.set('subContracting', String(params.subcontractingSupplier));
     }
 
+    // Add isDeleted filter
+    if (params?.isDeleted !== undefined) {
+      queryParams = queryParams.set('isDeleted', String(params.isDeleted));
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 

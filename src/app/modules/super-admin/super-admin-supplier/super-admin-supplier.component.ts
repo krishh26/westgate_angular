@@ -159,6 +159,11 @@ export class SuperAdminSupplierComponent {
       payload.search = this.search.trim();
     }
 
+    // Add isDeleted parameter if checkbox is checked
+    if (this.isDeletedFilter) {
+      payload.isDeleted = true;
+    }
+
     this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         this.supplierUserList = [];
@@ -260,7 +265,9 @@ export class SuperAdminSupplierComponent {
         payload.active = false;
         break;
       case 'isDeleted':
-        this.isDeletedFilter = !this.isDeletedFilter;
+        // Set isDeletedFilter without toggling for direct click on badge
+        this.isDeletedFilter = true;
+        payload.isDeleted = true;
         break;
       case 'clear':
         // Reset filters
@@ -271,10 +278,10 @@ export class SuperAdminSupplierComponent {
         break;
     }
 
-    // Add isDeleted parameter if checkbox is checked
-    if (this.isDeletedFilter) {
-      payload.isDeleted = true;
-    }
+    // Add isDeleted parameter if checkbox is checked - this is redundant now with the switch statement
+    // if (this.isDeletedFilter) {
+    //   payload.isDeleted = true;
+    // }
 
     this.page = 1; // Reset page
     this.showLoader = true;
@@ -426,6 +433,60 @@ export class SuperAdminSupplierComponent {
     } else {
       this.totalDeletedCount = 0;
     }
+  }
+
+  // Handler for the isDeleted checkbox
+  toggleDeletedFilter() {
+    // Create a payload for the API call
+    const payload: any = {
+      page: "1",
+      limit: String(this.pagesize)
+    };
+
+    // Add date filters if they exist
+    if (this.startDate) {
+      payload.startDate = this.startDate;
+    }
+    if (this.endDate) {
+      payload.endDate = this.endDate;
+    }
+    // Update search parameter handling
+    if (this.search && this.search.trim()) {
+      payload.search = this.search.trim();
+    }
+
+    // Add isDeleted parameter based on checkbox state
+    if (this.isDeletedFilter) {
+      payload.isDeleted = true;
+    }
+
+    this.page = 1;
+    this.showLoader = true;
+
+    this.superService.getSUpplierList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.supplierUserList = response?.data?.data;
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+          this.calculateTotalEmployees();
+
+          // Update deleted count for filtered view
+          if (this.isDeletedFilter) {
+            this.totalDeletedCount = this.supplierUserList.length;
+          } else if (response?.data?.count?.deleted !== undefined) {
+            this.totalDeletedCount = response?.data?.count?.deleted || 0;
+          }
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
 }
