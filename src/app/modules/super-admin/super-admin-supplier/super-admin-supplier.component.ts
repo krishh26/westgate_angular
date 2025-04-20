@@ -40,6 +40,16 @@ export class SuperAdminSupplierComponent {
   totalDeletedCount: number = 0;
   isInHoldFilter: boolean = false;
   totalInHoldCount: number = 0;
+  // Store original counts for restoring after filtering
+  originalCounts: any = {
+    active: 0,
+    inactive: 0,
+    resourceSharing: 0,
+    subcontracting: 0,
+    deleted: 0,
+    inHold: 0
+  };
+  currentFilter: string = '';
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -216,6 +226,16 @@ export class SuperAdminSupplierComponent {
             if (response?.data?.count?.total !== undefined) {
               this.totalRecords = response?.data?.count?.total || 0;
             }
+
+            // Store original counts for reference when filtering
+            this.originalCounts = {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              deleted: this.totalDeletedCount,
+              inHold: this.totalInHoldCount
+            };
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
@@ -227,6 +247,16 @@ export class SuperAdminSupplierComponent {
             this.totalInactiveSuppliers = this.inactiveSuppliers;
             this.totalResourceSharingCount = this.resourceSharingCount;
             this.totalSubcontractingCount = this.subcontractingCount;
+
+            // Store original counts
+            this.originalCounts = {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              deleted: this.totalDeletedCount,
+              inHold: this.totalInHoldCount
+            };
           }
         } else {
           this.notificationService.showError(response?.message);
@@ -256,23 +286,30 @@ export class SuperAdminSupplierComponent {
       payload.endDate = this.endDate;
     }
 
-    // Reset filter flags
+    // Reset filter flags - when applying a new filter, reset all flags first
     this.isDeletedFilter = false;
     this.isInHoldFilter = false;
+
+    // Set the current filter for reference
+    this.currentFilter = filterType;
 
     // Apply specific filter based on type
     switch (filterType) {
       case 'active':
+        // 'status' is the parameter name expected by the API for active status
         payload.active = true;
         break;
       case 'inactive':
+        // 'status' is the parameter name expected by the API for inactive status
         payload.active = false;
         break;
       case 'resourceSharing':
-        payload.resourceSharing = true;
+        // Match the property name expected by the service (resourceSharing)
+        payload.resourceSharingSupplier = true;
         break;
       case 'subcontracting':
-        payload.subcontracting = true;
+        // Match the property name expected by the service (subContracting)
+        payload.subcontractingSupplier = true;
         break;
       case 'isDeleted':
         payload.isDeleted = true;
@@ -284,6 +321,7 @@ export class SuperAdminSupplierComponent {
         break;
       case 'clear':
         // No additional filters - reset to default view
+        this.currentFilter = '';
         break;
     }
 
@@ -294,29 +332,47 @@ export class SuperAdminSupplierComponent {
       payload.search = this.search.trim();
     }
 
+    this.showLoader = true;
+    console.log('Applying filter:', filterType, 'with payload:', payload);
+
     this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
+          this.showLoader = false;
           this.supplierUserList = response?.data?.data;
           this.totalRecords = response?.data?.meta_data?.items || 0;
 
-          // Get counts from response.data.count if available
-          if (response?.data?.count) {
-            this.totalActiveSuppliers = response?.data?.count?.active || 0;
-            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
-            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
-            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
-            this.totalDeletedCount = response?.data?.count?.deleted || 0;
-            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+          // Don't update the badge counts, use original values
+          // Only update the current view counts for display calculations
+          if (filterType !== 'clear') {
+            // For current view data only, update counts based on filtered data
+            this.calculateFilteredCounts();
+          } else {
+            // If clearing filters, restore original counts from the last full load
+            this.getManageUserList();
           }
         } else {
+          this.showLoader = false;
           this.notificationService.showError(response?.message);
         }
       },
       (error) => {
+        this.showLoader = false;
         this.notificationService.showError(error?.message);
       }
     );
+  }
+
+  // Calculate counts for the filtered data
+  calculateFilteredCounts() {
+    if (this.supplierUserList && this.supplierUserList.length > 0) {
+      // Only calculate for the current filtered view, don't update total badge counts
+      this.activeSuppliers = this.supplierUserList.filter((supplier: any) => supplier.active).length;
+      this.inactiveSuppliers = this.supplierUserList.filter((supplier: any) => !supplier.active).length;
+      this.resourceSharingCount = this.supplierUserList.filter((supplier: any) => supplier.resourceSharingSupplier === true).length;
+      this.subcontractingCount = this.supplierUserList.filter((supplier: any) => supplier.subcontractingSupplier === true).length;
+      this.calculateTotalEmployees();
+    }
   }
 
   // Helper method to calculate supplier counts
@@ -358,7 +414,6 @@ export class SuperAdminSupplierComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-
   openCommentModal(item: any) {
     console.log('Opening comment modal for supplier:', item);
 
@@ -399,126 +454,9 @@ export class SuperAdminSupplierComponent {
     }
   }
 
-  // Handler for the isDeleted checkbox
-  toggleDeletedFilter() {
-    // Create a payload for the API call
-    const payload: any = {
-      page: "1",
-      limit: String(this.pagesize)
-    };
-
-    // Add date filters if they exist
-    if (this.startDate) {
-      payload.startDate = this.startDate;
-    }
-    if (this.endDate) {
-      payload.endDate = this.endDate;
-    }
-    // Update search parameter handling
-    if (this.search && this.search.trim()) {
-      payload.search = this.search.trim();
-    }
-
-    // Add isDeleted parameter based on checkbox state
-    if (this.isDeletedFilter) {
-      payload.isDeleted = true;
-    }
-
-    // Keep inHold filter if it's active
-    if (this.isInHoldFilter) {
-      payload.inHold = true;
-    }
-
-    this.page = 1;
-    this.showLoader = true;
-
-    this.superService.getSUpplierList(payload).subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.supplierUserList = response?.data?.data;
-          this.totalRecords = response?.data?.meta_data?.items || 0;
-          this.calculateTotalEmployees();
-
-          // Update deleted count for filtered view
-          if (this.isDeletedFilter) {
-            this.totalDeletedCount = this.supplierUserList.length;
-          } else if (response?.data?.count?.deleted !== undefined) {
-            this.totalDeletedCount = response?.data?.count?.deleted || 0;
-          }
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
-  }
-
-  // Handler for the isInHold checkbox
+  // Handler for the inHold checkbox (deprecated but kept for reference)
   toggleInHoldFilter() {
-    // Create a payload for the API call
-    const payload: any = {
-      page: "1",
-      limit: String(this.pagesize)
-    };
-
-    // Add date filters if they exist
-    if (this.startDate) {
-      payload.startDate = this.startDate;
-    }
-    if (this.endDate) {
-      payload.endDate = this.endDate;
-    }
-    // Update search parameter handling
-    if (this.search && this.search.trim()) {
-      payload.search = this.search.trim();
-    }
-
-    // Add isDeleted parameter if it's active
-    if (this.isDeletedFilter) {
-      payload.isDeleted = true;
-    }
-
-    // Add inHold parameter based on checkbox state
-    if (this.isInHoldFilter) {
-      payload.inHold = true;
-    }
-
-    this.page = 1;
-    this.showLoader = true;
-
-    this.superService.getSUpplierList(payload).subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.showLoader = false;
-          this.supplierUserList = response?.data?.data;
-          this.totalRecords = response?.data?.meta_data?.items || 0;
-
-          // Get counts from response.data.count if available
-          if (response?.data?.count) {
-            this.totalActiveSuppliers = response?.data?.count?.active || 0;
-            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
-            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
-            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
-            this.totalDeletedCount = response?.data?.count?.deleted || 0;
-            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
-          }
-
-          this.calculateTotalEmployees();
-        } else {
-          this.notificationService.showError(response?.message);
-          this.showLoader = false;
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message);
-        this.showLoader = false;
-      }
-    );
+    this.applyFilter('inHold');
   }
 
   // Add a helper method to get inHold comment
