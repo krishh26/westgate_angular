@@ -32,8 +32,8 @@
                   Supplier: {{totalActiveSuppliers}}</span>
                 <span class="badge bg-danger me-2" style="cursor: pointer;" (click)="applyFilter('inactive')">Inactive
                   Supplier: {{totalInactiveSuppliers}}</span>
-                <!-- <span class="badge bg-secondary me-2" style="cursor: pointer;" (click)="applyFilter('inHold')">InHold
-                  Supplier: {{totalInHoldCount}}</span> -->
+                <span class="badge bg-secondary me-2" style="cursor: pointer;" (click)="applyFilter('inHold')">InHold
+                  Supplier: {{totalInHoldCount}}</span>
                 <!-- <span class="badge bg-dark me-2" style="cursor: pointer;" (click)="applyFilter('isDeleted')">Deleted Supplier: {{totalDeletedCount}}</span> -->
                 <!-- <span class="badge bg-secondary" style="cursor: pointer;" (click)="applyFilter('clear')">Clear Filters</span> -->
                 <div class="form-check d-inline-block ms-2">
@@ -41,13 +41,6 @@
                     (change)="toggleDeletedFilter()" id="deletedFilter">
                   <label class="form-check-label" for="deletedFilter">
                     Show Deleted Suppliers
-                  </label>
-                </div>
-                <div class="form-check d-inline-block ms-2">
-                  <input class="form-check-input" type="checkbox" [(ngModel)]="isInHoldFilter"
-                    (change)="toggleInHoldFilter()" id="inHoldFilter">
-                  <label class="form-check-label" for="inHoldFilter">
-                    Show InHold Suppliers ({{totalInHoldCount}})
                   </label>
                 </div>
               </div>
