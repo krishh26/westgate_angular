@@ -294,3 +294,65 @@
     </div>
   </div>
 </section>
+
+<!-- InHold Comments Form -->
+<section class="casestudy-section mt-4">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="text-theme mb-4"><strong>Add InHold Comment</strong></h4>
+            <form [formGroup]="inHoldCommentForm" (ngSubmit)="submitInHoldComment()">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="comment" class="form-label">Comment</label>
+                  <textarea
+                    id="comment"
+                    rows="4"
+                    class="form-control"
+                    formControlName="comment"
+                    placeholder="Enter your comment here"></textarea>
+                  <div *ngIf="inHoldCommentForm.get('comment')?.invalid && inHoldCommentForm.get('comment')?.touched" class="text-danger">
+                    Comment is required
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-primary" [disabled]="inHoldCommentForm.invalid">
+                    <i class="bi bi-save me-1"></i> Submit Comment
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Existing InHold Comments -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="text-theme mb-4"><strong>InHold Comments History</strong></h4>
+
+            <div *ngIf="!supplierDetails?.inHoldComment?.length" class="alert alert-info">
+              No comments available
+            </div>
+
+            <div *ngIf="supplierDetails?.inHoldComment?.length" class="comment-list">
+              <div *ngFor="let comment of supplierDetails.inHoldComment" class="comment-item mb-3 p-3 border rounded">
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1  fw-bold">{{ comment.comment }}</p>
+                  <small class="text-muted">{{ comment.date | date: 'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

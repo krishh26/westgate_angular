@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,8 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environment/environment';
 import Swal from 'sweetalert2';
 
 
@@ -26,6 +28,7 @@ export class SupplierUserProfileDataComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
+  inHoldCommentForm: FormGroup;
 
 
   constructor(
@@ -35,7 +38,12 @@ export class SupplierUserProfileDataComponent {
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
     private modalService: NgbModal,
-  ) { }
+    private httpClient: HttpClient
+  ) {
+    this.inHoldCommentForm = new FormGroup({
+      comment: new FormControl('', [Validators.required])
+    });
+  }
 
   ngOnInit() {
     const storedData = localStorage.getItem("supplierData");
@@ -159,4 +167,39 @@ export class SupplierUserProfileDataComponent {
     this.router.navigate(['/super-admin/super-admin-supplier']);
   }
 
+  submitInHoldComment() {
+    if (this.inHoldCommentForm.invalid) {
+      this.notificationService.showError('Please enter a comment');
+      return;
+    }
+
+    this.showLoader = true;
+    const comment = this.inHoldCommentForm.get('comment')?.value;
+
+    const payload = {
+      inHoldComment: [
+        {
+          comment: comment
+        }
+      ]
+    };
+
+    this.httpClient.patch(`${environment.baseUrl}/user/update/6803de6058bebed1012544ad`, payload)
+      .subscribe(
+        (response: any) => {
+          this.showLoader = false;
+          if (response?.status) {
+            this.notificationService.showSuccess('Comment added successfully');
+            this.inHoldCommentForm.reset();
+            this.getSupplierdata();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add comment');
+          }
+        },
+        (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message || 'Error adding comment');
+        }
+      );
+  }
 }
