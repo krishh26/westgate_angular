@@ -177,11 +177,7 @@ export class SupplierUserProfileDataComponent {
     const comment = this.inHoldCommentForm.get('comment')?.value;
 
     const payload = {
-      inHoldComment: [
-        {
-          comment: comment
-        }
-      ]
+      inHoldComment: comment
     };
 
     this.httpClient.patch(`${environment.baseUrl}/user/update/6803de6058bebed1012544ad`, payload)
