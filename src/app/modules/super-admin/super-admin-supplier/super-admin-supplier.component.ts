@@ -459,6 +459,14 @@ export class SuperAdminSupplierComponent {
     this.applyFilter('inHold');
   }
 
+  // Add a helper method to check if any supplier has inHold=true
+  hasAnyInHoldSupplier(): boolean {
+    if (!this.supplierUserList || this.supplierUserList.length === 0) {
+      return false;
+    }
+    return this.supplierUserList.some((supplier: any) => supplier.isInHold=== true);
+  }
+
   // Add a helper method to get inHold comment
   getFirstInHoldComment(commentArray: any[]): string {
     if (!commentArray || commentArray.length === 0) {

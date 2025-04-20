@@ -107,7 +107,7 @@
               <th>Last Login</th>
               <th>Total Employees</th>
               <th>Assigned Projects</th>
-              <th>InHold Comment</th>
+              <th *ngIf="hasAnyInHoldSupplier()">InHold Comment</th>
               <th>Action</th>
               <th>Status</th>
             </tr>
@@ -136,7 +136,7 @@
                   -
                 </ng-template>
               </td>
-              <td>
+              <td *ngIf="hasAnyInHoldSupplier() && item?.isInHold">
                 {{ getFirstInHoldComment(item?.inHoldComment) }}
               </td>
               <td>
