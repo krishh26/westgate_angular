@@ -38,6 +38,8 @@ export class SuperAdminSupplierComponent {
   totalSubcontractingCount: number = 0;
   isDeletedFilter: boolean = false;
   totalDeletedCount: number = 0;
+  isInHoldFilter: boolean = false;
+  totalInHoldCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -164,6 +166,11 @@ export class SuperAdminSupplierComponent {
       payload.isDeleted = true;
     }
 
+    // Add inHold parameter if checkbox is checked
+    if (this.isInHoldFilter) {
+      payload.inHold = true;
+    }
+
     this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         this.supplierUserList = [];
@@ -193,6 +200,9 @@ export class SuperAdminSupplierComponent {
 
             this.subcontractingCount = response?.data?.count?.subcontractingCount || 0;
             this.totalSubcontractingCount = this.subcontractingCount;
+
+            // Get inHold count from response
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
 
             // Calculate deleted count if available in response
             if (response?.data?.count?.deleted !== undefined) {
@@ -245,112 +255,66 @@ export class SuperAdminSupplierComponent {
     if (this.endDate) {
       payload.endDate = this.endDate;
     }
-    // Update search parameter handling
-    if (this.search && this.search.trim()) {
-      payload.search = this.search.trim();
-    }
 
-    // Add filter parameter based on the type
-    switch(filterType) {
-      case 'resourceSharing':
-        payload.resourceSharingSupplier = true;
-        break;
-      case 'subcontracting':
-        payload.subcontractingSupplier = true;
-        break;
+    // Reset filter flags
+    this.isDeletedFilter = false;
+    this.isInHoldFilter = false;
+
+    // Apply specific filter based on type
+    switch (filterType) {
       case 'active':
         payload.active = true;
         break;
       case 'inactive':
         payload.active = false;
         break;
+      case 'resourceSharing':
+        payload.resourceSharing = true;
+        break;
+      case 'subcontracting':
+        payload.subcontracting = true;
+        break;
       case 'isDeleted':
-        // Set isDeletedFilter without toggling for direct click on badge
-        this.isDeletedFilter = true;
         payload.isDeleted = true;
+        this.isDeletedFilter = true;
+        break;
+      case 'inHold':
+        payload.inHold = true;
+        this.isInHoldFilter = true;
         break;
       case 'clear':
-        // Reset filters
-        this.isDeletedFilter = false;
-        this.search = '';
-        this.startDate = '';
-        this.endDate = '';
+        // No additional filters - reset to default view
         break;
     }
 
-    // Add isDeleted parameter if checkbox is checked - this is redundant now with the switch statement
-    // if (this.isDeletedFilter) {
-    //   payload.isDeleted = true;
-    // }
-
-    this.page = 1; // Reset page
-    this.showLoader = true;
+    // Reset page and get filtered list
+    this.page = 1;
+    // Update search query if present
+    if (this.search && this.search.trim()) {
+      payload.search = this.search.trim();
+    }
 
     this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         if (response?.status == true) {
-          this.showLoader = false;
           this.supplierUserList = response?.data?.data;
           this.totalRecords = response?.data?.meta_data?.items || 0;
 
-          // Calculate total employees for the filtered view
-          this.calculateTotalEmployees();
-
-          // Update only the relevant count for the filtered view, but display all total counts
-          if (filterType === 'resourceSharing') {
-            this.resourceSharingCount = this.supplierUserList.length;
-          } else if (filterType === 'subcontracting') {
-            this.subcontractingCount = this.supplierUserList.length;
-          } else if (filterType === 'active') {
-            this.activeSuppliers = this.supplierUserList.length;
-          } else if (filterType === 'inactive') {
-            this.inactiveSuppliers = this.supplierUserList.length;
-          } else if (filterType === 'isDeleted') {
-            // Update deleted count when filtering
-            this.totalDeletedCount = this.supplierUserList.length;
-          } else if (filterType === 'clear') {
-            // Reset all counts to total counts
-            if (response?.data?.count) {
-              this.activeSuppliers = response?.data?.count?.active || 0;
-              this.inactiveSuppliers = response?.data?.count?.inActive || 0;
-              this.totalActiveSuppliers = this.activeSuppliers;
-              this.totalInactiveSuppliers = this.inactiveSuppliers;
-
-              // Update resource sharing and subcontracting counts if available
-              if (response?.data?.count?.resourceSharing !== undefined) {
-                this.resourceSharingCount = response?.data?.count?.resourceSharing || 0;
-                this.totalResourceSharingCount = this.resourceSharingCount;
-              } else {
-                this.calculateResourceSharingCount();
-                this.totalResourceSharingCount = this.resourceSharingCount;
-              }
-
-              if (response?.data?.count?.subContracting !== undefined) {
-                this.subcontractingCount = response?.data?.count?.subContracting || 0;
-                this.totalSubcontractingCount = this.subcontractingCount;
-              } else {
-                this.calculateSubcontractingCount();
-                this.totalSubcontractingCount = this.subcontractingCount;
-              }
-            } else {
-              this.calculateSupplierCounts();
-              this.calculateResourceSharingCount();
-              this.calculateSubcontractingCount();
-
-              this.totalActiveSuppliers = this.activeSuppliers;
-              this.totalInactiveSuppliers = this.inactiveSuppliers;
-              this.totalResourceSharingCount = this.resourceSharingCount;
-              this.totalSubcontractingCount = this.subcontractingCount;
-            }
+          // Get counts from response.data.count if available
+          if (response?.data?.count) {
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalDeletedCount = response?.data?.count?.deleted || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
           }
         } else {
           this.notificationService.showError(response?.message);
-          this.showLoader = false;
         }
       },
       (error) => {
         this.notificationService.showError(error?.message);
-        this.showLoader = false;
       }
     );
   }
@@ -460,6 +424,11 @@ export class SuperAdminSupplierComponent {
       payload.isDeleted = true;
     }
 
+    // Keep inHold filter if it's active
+    if (this.isInHoldFilter) {
+      payload.inHold = true;
+    }
+
     this.page = 1;
     this.showLoader = true;
 
@@ -477,6 +446,69 @@ export class SuperAdminSupplierComponent {
           } else if (response?.data?.count?.deleted !== undefined) {
             this.totalDeletedCount = response?.data?.count?.deleted || 0;
           }
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  // Handler for the isInHold checkbox
+  toggleInHoldFilter() {
+    // Create a payload for the API call
+    const payload: any = {
+      page: "1",
+      limit: String(this.pagesize)
+    };
+
+    // Add date filters if they exist
+    if (this.startDate) {
+      payload.startDate = this.startDate;
+    }
+    if (this.endDate) {
+      payload.endDate = this.endDate;
+    }
+    // Update search parameter handling
+    if (this.search && this.search.trim()) {
+      payload.search = this.search.trim();
+    }
+
+    // Add isDeleted parameter if it's active
+    if (this.isDeletedFilter) {
+      payload.isDeleted = true;
+    }
+
+    // Add inHold parameter based on checkbox state
+    if (this.isInHoldFilter) {
+      payload.inHold = true;
+    }
+
+    this.page = 1;
+    this.showLoader = true;
+
+    this.superService.getSUpplierList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          this.supplierUserList = response?.data?.data;
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          // Get counts from response.data.count if available
+          if (response?.data?.count) {
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalDeletedCount = response?.data?.count?.deleted || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+          }
+
+          this.calculateTotalEmployees();
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;

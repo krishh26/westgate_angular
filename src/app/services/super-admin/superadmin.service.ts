@@ -194,6 +194,11 @@ export class SuperadminService {
       queryParams = queryParams.set('isDeleted', String(params.isDeleted));
     }
 
+    // Add inHold filter
+    if (params?.inHold !== undefined) {
+      queryParams = queryParams.set('inHold', String(params.inHold));
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
