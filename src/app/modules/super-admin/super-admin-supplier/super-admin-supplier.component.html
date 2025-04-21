@@ -43,7 +43,7 @@
                 <span class="badge bg-dark me-2" style="cursor: pointer;"
                   [ngClass]="{'border border-dark': currentFilter === 'isDeleted'}"
                   (click)="applyFilter('isDeleted')">Deleted Supplier: {{totalDeletedCount}}</span>
-                <span class="badge bg-primary me-2">Total Employees: {{totalEmployees}}</span>
+                <span class="badge bg-primary me-2">Total Employees: {{totalSupplierEmployeeCount}}</span>
                 <span class="badge bg-light text-dark border me-2" style="cursor: pointer;" (click)="applyFilter('clear')">Clear
                   Filters</span>
               </div>

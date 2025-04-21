@@ -40,6 +40,7 @@ export class SuperAdminSupplierComponent {
   totalDeletedCount: number = 0;
   isInHoldFilter: boolean = false;
   totalInHoldCount: number = 0;
+  totalSupplierEmployeeCount: number = 0;
   // Store original counts for restoring after filtering
   originalCounts: any = {
     active: 0,
@@ -236,6 +237,9 @@ export class SuperAdminSupplierComponent {
               deleted: this.totalDeletedCount,
               inHold: this.totalInHoldCount
             };
+
+            // Store total supplier employee count
+            this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
@@ -257,6 +261,9 @@ export class SuperAdminSupplierComponent {
               deleted: this.totalDeletedCount,
               inHold: this.totalInHoldCount
             };
+
+            // Store total supplier employee count
+            this.totalSupplierEmployeeCount = this.totalEmployees;
           }
         } else {
           this.notificationService.showError(response?.message);
