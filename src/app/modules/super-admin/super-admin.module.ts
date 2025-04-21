@@ -62,6 +62,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { ResourcesCommentModalComponent } from './resources-comment-modal/resources-comment-modal.component';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/supplier-wise-project-list.component';
+import { FilterNonZeroCountsPipe } from '../../pipes/filter-non-zero-counts.pipe';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -115,7 +116,8 @@ import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/s
     EditRolesComponent,
     ResourcesCommentModalComponent,
     TimeFormatPipe,
-    SupplierWiseProjectListComponent
+    SupplierWiseProjectListComponent,
+    FilterNonZeroCountsPipe
   ],
 
   imports: [

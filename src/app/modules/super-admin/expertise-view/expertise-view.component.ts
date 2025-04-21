@@ -93,16 +93,20 @@ export class ExpertiseViewComponent {
     this.superService.getExpertiseList(params).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.data;
-          this.currentList = this.expertiseList;
+          this.expertiseList = response?.data || [];
+          this.currentList = this.expertiseList || [];
           this.selectedType = '';
           this.totalRecords = response?.totalRecords;
         } else {
+          this.expertiseList = [];
+          this.currentList = [];
           console.error('Failed to fetch supplier data:', response?.message);
         }
         this.showLoader = false;
       },
       (error) => {
+        this.expertiseList = [];
+        this.currentList = [];
         console.error('Error fetching supplier data:', error);
         this.showLoader = false;
       }
@@ -128,14 +132,18 @@ export class ExpertiseViewComponent {
       this.superService.getExpertiseList(params).subscribe(
         (response) => {
           if (response?.status) {
-            this.expertiseList = response?.data;
-            this.currentList = this.expertiseList;
+            this.expertiseList = response?.data || [];
+            this.currentList = this.expertiseList || [];
           } else {
+            this.expertiseList = [];
+            this.currentList = [];
             console.error('Failed to fetch supplier data:', response?.message);
           }
           this.showLoader = false;
         },
         (error) => {
+          this.expertiseList = [];
+          this.currentList = [];
           console.error('Error fetching supplier data:', error);
           this.showLoader = false;
         }
@@ -154,15 +162,19 @@ export class ExpertiseViewComponent {
     this.superService.getExpertiseList(params).subscribe(
       (response) => {
         if (response?.status) {
-          this.expertiseList = response?.data;
-          this.currentList = this.expertiseList;
+          this.expertiseList = response?.data || [];
+          this.currentList = this.expertiseList || [];
           this.selectedType = '';
         } else {
+          this.expertiseList = [];
+          this.currentList = [];
           console.error('Failed to fetch supplier data:', response?.message);
         }
         this.showLoader = false;
       },
       (error) => {
+        this.expertiseList = [];
+        this.currentList = [];
         console.error('Error fetching supplier data:', error);
         this.showLoader = false;
       }
@@ -287,16 +299,20 @@ export class ExpertiseViewComponent {
       (response) => {
         if (response?.status) {
           this.dropdownData = response.data || [];
-          this.currentList = this.dropdownData;
+          this.currentList = this.dropdownData || [];
           this.selectedType = this.formatTypeName(type);
           //this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
         } else {
+          this.dropdownData = [];
+          this.currentList = [];
           this.notificationService.showError(response?.message || 'Failed to fetch dropdown data');
           console.error('Failed to fetch dropdown data:', response?.message);
         }
         this.showLoader = false;
       },
       (error) => {
+        this.dropdownData = [];
+        this.currentList = [];
         this.notificationService.showError('Error fetching dropdown data');
         console.error('Error fetching dropdown data:', error);
         this.showLoader = false;

@@ -88,13 +88,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="!currentList?.length">
+            <tr *ngIf="!(currentList | filterNonZeroCounts)?.length">
               <td colspan="5">
                 <app-no-record-found></app-no-record-found>
               </td>
             </tr>
             <tr
-              *ngFor="let item of currentList">
+              *ngFor="let item of currentList | filterNonZeroCounts">
               <td>{{ item?.name || item?.expertise }}</td>
               <td>{{ item?.subExpertiseCount || item?.count || 0 }}</td>
               <td>{{ item?.totalSupplierCount || 0 }}</td>
