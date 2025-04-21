@@ -107,7 +107,7 @@
               <th>Last Login</th>
               <th>Total Employees</th>
               <th>Assigned Projects</th>
-              <th *ngIf="hasAnyInHoldSupplier()">InHold Comment</th>
+              <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
               <th>Action</th>
               <th>Status</th>
             </tr>
@@ -127,16 +127,9 @@
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>{{item?.employeeCount}}</td>
               <td>
-                <ng-container *ngIf="item?.assignedProjects?.length > 0; else noProjects">
-                  <span *ngFor="let project of item.assignedProjects; let last = last">
-                    {{project.projectName}}{{!last ? ', ' : ''}}
-                  </span>
-                </ng-container>
-                <ng-template #noProjects>
-                  -
-                </ng-template>
+               {{item?.assignedProjectCount}}
               </td>
-              <td *ngIf="hasAnyInHoldSupplier() && item?.isInHold">
+              <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
                 {{ getFirstInHoldComment(item?.inHoldComment) }}
               </td>
               <td>
