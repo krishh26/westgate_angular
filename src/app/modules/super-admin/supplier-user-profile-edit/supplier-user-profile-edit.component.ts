@@ -193,19 +193,14 @@ export class SupplierUserProfileEditComponent implements OnInit {
       this.showSupplierTypeError = false;
     }
 
-    // Add inHoldComment in the required format
-    if (this.inHoldComment.trim()) {
-      this.supplierDetails.inHoldComment = [
-        {
-          comment: this.inHoldComment.trim()
-        }
-      ];
-    } else {
-      this.supplierDetails.inHoldComment = [];
+    // Create a new object without the inHoldComment field
+    const supplierDataToSend = { ...this.supplierDetails };
+    if (supplierDataToSend.hasOwnProperty('inHoldComment')) {
+      delete supplierDataToSend.inHoldComment;
     }
 
     this.showLoader = true;
-    this.supplierService.updateSuppilerDetails(this.supplierDetails, this.supplierDetails._id).subscribe(
+    this.supplierService.updateSuppilerDetails(supplierDataToSend, supplierDataToSend._id).subscribe(
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
