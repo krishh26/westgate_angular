@@ -156,20 +156,33 @@ export class RegisterNewSupplierComponent implements OnInit {
       this.showSupplierTypeError = false;
     }
 
+    // Create a copy of the form data
+    const formData = { ...this.companyForm };
+
+    // Remove empty email field
+    if (!formData.email) {
+      delete formData.email;
+    }
+
+    // Remove empty POC email field
+    if (!formData.poc_email) {
+      delete formData.poc_email;
+    }
+
     // Prepare year of establishment
-    if (this.companyForm.yearOfEstablishment) {
-      const date = new Date(this.companyForm.yearOfEstablishment);
-      this.companyForm.yearOfEstablishment = date.toISOString().split('T')[0];
+    if (formData.yearOfEstablishment) {
+      const date = new Date(formData.yearOfEstablishment);
+      formData.yearOfEstablishment = date.toISOString().split('T')[0];
     }
 
     // If expertise is empty, initialize it
-    if (!this.companyForm.expertise) {
-      this.companyForm.expertise = [];
+    if (!formData.expertise) {
+      formData.expertise = [];
     }
 
     // Ensure all expertise items have the required structure
     // If the expertise items are already in the correct format, this step is not needed
-    const formattedExpertise = this.companyForm.expertise.map((item: any) => {
+    const formattedExpertise = formData.expertise.map((item: any) => {
       // If item is already in correct format
       if (item.name && (item.subExpertise || Array.isArray(item.subExpertise))) {
         return item;
@@ -184,22 +197,22 @@ export class RegisterNewSupplierComponent implements OnInit {
       };
     });
 
-    // Update companyForm with the formatted expertise
-    this.companyForm.expertise = formattedExpertise;
+    // Update formData with the formatted expertise
+    formData.expertise = formattedExpertise;
 
     // Add inHoldComment in the required format
     if (this.inHoldComment.trim()) {
-      this.companyForm.inHoldComment = [
+      formData.inHoldComment = [
         {
           comment: this.inHoldComment.trim()
         }
       ];
     } else {
-      this.companyForm.inHoldComment = [];
+      formData.inHoldComment = [];
     }
 
-    console.log('Submitting Data:', this.companyForm);
-    this.superadminService.supplierregister(this.companyForm).subscribe((response) => {
+    console.log('Submitting Data:', formData);
+    this.superadminService.supplierregister(formData).subscribe((response) => {
       if (response?.status === true) {
         this.showLoader = false;
         this.notificationService.showSuccess('Supplier admin added successfully.');
