@@ -22,6 +22,8 @@ export class SubExpertiseViewComponent implements OnInit {
   pagesize = pagination.itemsPerPage;
   viewDocs: any;
   showLoader: boolean = false;
+  // Track which accordion items are collapsed
+  collapsedState: { [key: number]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -49,13 +51,18 @@ export class SubExpertiseViewComponent implements OnInit {
 
     if (!this.viewDocs || this.viewDocs.length === 0) {
       this.notificationService.showInfo(`No files available for ${subExpertise.name}`);
-      return;
+      // Don't return early, as we still want to toggle the accordion
     }
+  }
 
-    const modalElement = document.getElementById('viewAllDocuments');
-    if (modalElement) {
-      this.modalService.open(modalElement, { centered: true });
-    }
+  // Toggle the collapse state of an accordion item
+  toggleCollapse(index: number): void {
+    this.collapsedState[index] = !this.collapsedState[index];
+  }
+
+  // Check if an accordion item is collapsed
+  isCollapsed(index: number): boolean {
+    return this.collapsedState[index] || false;
   }
 
   deleteDoc(fileId: any) {
