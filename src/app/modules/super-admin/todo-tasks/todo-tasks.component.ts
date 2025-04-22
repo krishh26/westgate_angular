@@ -334,7 +334,6 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
         (response) => {
           if (response?.status === true) {
             this.notificationService.showSuccess('Task Created Successfully');
-            this.getTask();
             // Reset form
             this.taskForm.reset();
             this.taskTitle = '';
@@ -344,6 +343,8 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
               const modal = bootstrap.Modal.getInstance(modalElement);
               if (modal) modal.hide();
             }
+            // Reload the page after modal is closed
+            window.location.reload();
           } else {
             this.notificationService.showError(response?.message);
           }
