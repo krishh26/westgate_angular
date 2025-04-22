@@ -48,6 +48,11 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
     this.getCandidatesList();
   }
 
+  goBack() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
+
   ngAfterViewInit() {
     // Check if we need to refresh the list (set by edit component)
     const refreshNeeded = localStorage.getItem('refreshCandidatesList');

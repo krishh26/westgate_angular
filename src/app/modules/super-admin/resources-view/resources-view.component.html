@@ -7,6 +7,9 @@
             <li routerLink="/super-admin/super-admin-supplier">
               <a>Supplier</a>
             </li>
+            <li routerLink="/super-admin/expertise-view">
+              <a>Expertise-view</a>
+            </li>
             <li routerLink="/super-admin/role-wise-resources-list">
               <a class="active">Resources-view</a>
             </li>
@@ -75,6 +78,7 @@
               <th>Roles</th>
               <th>Experience</th>
               <th>Technical Skills</th>
+              <th>Hourly Rate</th>
               <th>Supplier Name</th>
               <th>Actions</th>
             </tr>
@@ -97,6 +101,7 @@
                   <span *ngFor="let skill of candidate?.technicalSkills" class="badge bg-secondary">{{skill}}</span>
                 </div>
               </td>
+              <td>$ {{candidate?.hourlyRate}}</td>
               <td>{{candidate?.supplierId?.name}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>

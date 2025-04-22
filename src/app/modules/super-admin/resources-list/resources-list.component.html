@@ -33,8 +33,11 @@
             <h4 class="text-theme mb-4">Candidates List</h4>
           </div>
           <div class="col-lg-2 col-xl-2 col-12">
-            <div class="col-lg-2 col-xl-2 col-12">
-              <nav id="navbar" class="navbar">
+            <div class="d-flex align-items-center">
+              <button class="btn btn-primary btn-sm me-2" (click)="goBack()">
+                Back to List
+              </button>
+              <nav id="navbar" class="navbar mb-0 p-0">
                 <ul>
                   <li class="dropdown">
                     <span class="btn btn-outline-white w-100">+ Add Candidate</span>
@@ -102,7 +105,8 @@
               <td>${{candidate?.hourlyRate}}</td>
               <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td>
               <td>
-                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i class="bi bi-eye"></i> View</button>
+                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i
+                    class="bi bi-eye"></i> View</button>
               </td>
               <td>
                 <label class="switch">

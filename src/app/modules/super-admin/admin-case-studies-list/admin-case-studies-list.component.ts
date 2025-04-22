@@ -67,6 +67,11 @@ export class AdminCaseStudiesListComponent {
 
   }
 
+  goBack() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
+
   openAddTeamModal() {
     this.modalService.open(CaseStudyBulkAddComponent, { size: 'xl' });
   }

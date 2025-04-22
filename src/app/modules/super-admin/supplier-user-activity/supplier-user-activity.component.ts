@@ -66,6 +66,11 @@ export class SupplierUserActivityComponent implements OnInit {
     this.getProjectList();
   }
 
+  goBack() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
+
   paginate(page: number) {
     this.page = page;
     this.getProjectList();

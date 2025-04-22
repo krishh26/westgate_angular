@@ -60,6 +60,10 @@ export class ExpertiseListComponent {
     this.getExpertiseDropdownData();
   }
 
+  goBack() {
+    this.router.navigate(['/super-admin/super-admin-supplier']);
+  }
+
   getExpertiseDropdownData() {
     this.showLoader = true;
     this.superService.getExpertiseDropdown().subscribe(
