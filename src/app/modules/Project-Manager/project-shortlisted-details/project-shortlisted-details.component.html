@@ -77,11 +77,11 @@
             <div class="row">
               <div class="col-md-2"><strong>Due Date & Time:</strong></div>
               <div class="col-md-10">
-                {{
-                projectDetails?.dueDate
-                ? (projectDetails?.dueDate | date : "dd/MM/yyyy, h:mm a")
-                : "-"
-                }}
+                <ng-container *ngIf="projectDetails?.dueDate && projectDetails?.bidsubmissiontime; else noDueDateTime">
+                  {{ projectDetails?.dueDate | date : "dd/MM/yyyy" }} ,
+                  {{ projectDetails?.bidsubmissiontime }}
+                </ng-container>
+                <ng-template #noDueDateTime>-</ng-template>
               </div>
             </div>
             <div class="row">
@@ -126,7 +126,7 @@
         </div>
       </div>
 
-      
+
   <section class="pageheader bg-dark">
     <div class="container ">
       <p><strong>Project Description</strong></p>
