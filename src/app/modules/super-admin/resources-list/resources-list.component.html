@@ -69,7 +69,7 @@
               <th>Roles</th>
               <th>Experience</th>
               <th>Technical Skills</th>
-              <th>Languages</th>
+              <!-- <th>Languages</th> -->
               <th>Hourly Rate</th>
               <!-- <th>Available From</th> -->
               <th>Actions</th>
@@ -97,11 +97,11 @@
                   {{skill}}{{!last ? ', ' : ''}}
                 </span>
               </td>
-              <td>
+              <!-- <td>
                 <span *ngFor="let language of candidate?.languagesKnown; let last = last">
                   {{language}}{{!last ? ', ' : ''}}
                 </span>
-              </td>
+              </td> -->
               <td>${{candidate?.hourlyRate}}</td>
               <!-- <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td> -->
               <td>

@@ -260,7 +260,7 @@ export class SuperadminAddProjectComponent implements OnInit {
           if (response?.status == true) {
             this.showLoader = false;
             this.notificationService.showSuccess('', 'Project added successfully.');
-
+            this.router.navigate(['/super-admin/status-wise-tracker']);
           } else {
             this.notificationService.showError(response?.message);
             this.showLoader = false;
