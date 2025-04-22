@@ -215,13 +215,8 @@ export class SuperAdminSupplierComponent {
             // Get inHold count from response
             this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
 
-            // Calculate deleted count if available in response
-            if (response?.data?.count?.deleted !== undefined) {
-              this.totalDeletedCount = response?.data?.count?.deleted || 0;
-            } else {
-              // If not available in the response, calculate from the suppliers list
-              this.calculateDeletedCount();
-            }
+            // Get deleted count from response
+            this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
 
             // If there's a total in the response
             if (response?.data?.count?.total !== undefined) {
@@ -525,15 +520,6 @@ export class SuperAdminSupplierComponent {
       }, 0);
     } else {
       this.totalEmployees = 0;
-    }
-  }
-
-  // Helper method to calculate deleted count
-  calculateDeletedCount() {
-    if (this.supplierUserList && this.supplierUserList.length > 0) {
-      this.totalDeletedCount = this.supplierUserList.filter((supplier: any) => supplier.isDeleted === true).length;
-    } else {
-      this.totalDeletedCount = 0;
     }
   }
 
