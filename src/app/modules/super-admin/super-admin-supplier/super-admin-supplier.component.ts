@@ -417,7 +417,83 @@ export class SuperAdminSupplierComponent {
 
   paginate(page: number) {
     this.page = page;
-    this.getManageUserList();
+
+    // Check if there's an active filter and use that instead of regular getManageUserList
+    if (this.currentFilter && this.currentFilter !== 'clear') {
+      // Create a payload object similar to applyFilter method
+      const payload: any = {
+        page: String(this.page),
+        limit: String(this.pagesize)
+      };
+
+      // Add date filters if they exist
+      if (this.startDate) {
+        payload.startDate = this.startDate;
+      }
+      if (this.endDate) {
+        payload.endDate = this.endDate;
+      }
+
+      // Add search query if present
+      if (this.search && this.search.trim()) {
+        payload.search = this.search.trim();
+      }
+
+      // Reset filter flags before setting the appropriate one
+      this.isDeletedFilter = false;
+      this.isInHoldFilter = false;
+
+      // Apply specific filter based on current filter type
+      switch (this.currentFilter) {
+        case 'active':
+          payload.active = true;
+          break;
+        case 'inactive':
+          payload.active = false;
+          break;
+        case 'resourceSharing':
+          payload.resourceSharingSupplier = true;
+          break;
+        case 'subcontracting':
+          payload.subcontractingSupplier = true;
+          break;
+        case 'isDeleted':
+          payload.isDeleted = true;
+          this.isDeletedFilter = true;
+          break;
+        case 'inHold':
+          payload.inHold = true;
+          this.isInHoldFilter = true;
+          break;
+      }
+
+      this.showLoader = true;
+      console.log('Paginating with filter:', this.currentFilter, 'with payload:', payload);
+
+      this.superService.getSUpplierList(payload).subscribe(
+        (response) => {
+          if (response?.status == true) {
+            this.showLoader = false;
+            this.supplierUserList = response?.data?.data;
+            this.totalRecords = response?.data?.meta_data?.items || 0;
+
+            // Update counts for the current filtered view
+            this.calculateFilteredCounts();
+          } else {
+            this.showLoader = false;
+            this.notificationService.showError(response?.message);
+          }
+        },
+        (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message);
+        }
+      );
+    } else {
+      // If no filter, use regular getManageUserList
+      this.getManageUserList();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
