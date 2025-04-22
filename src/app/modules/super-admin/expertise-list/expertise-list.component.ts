@@ -71,16 +71,10 @@ export class ExpertiseListComponent {
         if (response?.status) {
           this.expertiseDropdownOptions = response.data || [];
           this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
-            // Get the type and remove "-other" suffix if it exists
-            let type = item.type || 'technologies';
-            if (type.endsWith('-other')) {
-              type = type.replace('-other', '');
-            }
-
             return {
               itemId: item.itemId || (item as any)._id,
               name: item.name,
-              type: type
+              type: item.type || 'technologies'
             };
           });
         } else {
@@ -192,18 +186,9 @@ export class ExpertiseListComponent {
       return;
     }
 
-    // Process expertise items to remove "-other" suffix from types
-    const processedExpertise = this.selectedExpertise.map(item => {
-      const expertise = {...item};
-      if (expertise.type && expertise.type.endsWith('-other')) {
-        expertise.type = expertise.type.replace('-other', '');
-      }
-      return expertise;
-    });
-
     const expertiseData = {
       supplierId: this.supplierID,
-      expertise: processedExpertise
+      expertise: this.selectedExpertise
     };
 
     this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
@@ -262,11 +247,7 @@ export class ExpertiseListComponent {
       return null;
     }
 
-    // Remove "-other" suffix if it exists
-    let expertiseType = this.newExpertiseType;
-    if (expertiseType.endsWith('-other')) {
-      expertiseType = expertiseType.replace('-other', '');
-    }
+    const expertiseType = this.newExpertiseType;
 
     const newExpertise: ExpertiseItem = {
       name: name,
