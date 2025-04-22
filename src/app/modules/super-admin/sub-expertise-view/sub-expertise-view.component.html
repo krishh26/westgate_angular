@@ -20,8 +20,10 @@
             <button class="accordion-button collapsed w-100 px-4 py-3 text-start border-0 bg-light" type="button"
               data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
               aria-expanded="false" [attr.aria-controls]="'collapse' + i"
-              (click)="viewUploadedDocuments(item); toggleCollapse(i)">
+              (click)="toggleCollapse(i)">
               <span class="fw-bold">{{ item.name || 'Unnamed Sub-expertise' }}</span>
+              <span class="ms-3 badge bg-secondary">Files: {{ item.files?.length || 0 }}</span>
+              <span class="ms-2 badge bg-primary">Suppliers: {{ groupFilesBySupplier(item.files).length }}</span>
               <i class="bi" [ngClass]="{'bi-chevron-down': !isCollapsed(i), 'bi-chevron-up': isCollapsed(i)}"
                  style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);"></i>
             </button>
@@ -29,36 +31,47 @@
           <div [id]="'collapse' + i" class="accordion-collapse collapse border rounded" [attr.aria-labelledby]="'heading' + i"
             data-bs-parent="#subExpertiseAccordion">
             <div class="p-0">
-              <!-- Files Table -->
-              <div class="p-3">
+              <!-- Files Table - Grouped by supplier -->
+              <div class="p-3" *ngIf="item.files && item.files.length > 0">
                 <div class="table-responsive">
-                  <table class="table mb-0">
+                  <table class="table table-bordered mb-0">
                     <thead>
                       <tr>
-                        <th>File Name</th>
-                        <th>Uploaded At</th>
-                        <th style="text-align: right;">Actions</th>
+                        <th style="width: 20%;">Supplier</th>
+                        <th style="width: 35%;">File Name</th>
+                        <th style="width: 25%;">Uploaded At</th>
+                        <th style="width: 20%; text-align: center;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="!viewDocs?.length">
-                        <td colspan="3" class="text-center py-3">No Files Available</td>
-                      </tr>
-                      <tr *ngFor="let file of viewDocs">
-                        <td>{{ file.fileName }}</td>
-                        <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
-                        <td style="text-align: right;">
-                          <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank" title="Download">
-                            <i class="bi bi-download"></i>
-                          </a>
-                          <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
-                            <i class="bi bi-trash3-fill"></i>
-                          </button>
-                        </td>
-                      </tr>
+                      <ng-container *ngFor="let supplierGroup of groupFilesBySupplier(item.files); let first = first">
+                        <ng-container *ngFor="let file of supplierGroup.files; let j = index">
+                          <tr>
+                            <!-- Show supplier name only for the first row in the group -->
+                            <td *ngIf="j === 0" [attr.rowspan]="supplierGroup.files.length" class="align-middle bg-light">
+                              <span class="fw-bold">{{ supplierGroup.supplierName }}</span>
+                            </td>
+                            <td>{{ file.fileName }}</td>
+                            <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
+                            <td class="text-center">
+                              <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank" title="Download">
+                                <i class="bi bi-download"></i>
+                              </a>
+                              <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
+                                <i class="bi bi-trash3-fill"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              <!-- Show when no files available -->
+              <div *ngIf="!item.files || item.files.length === 0" class="p-3 text-center">
+                <p>No files available for this sub-expertise</p>
               </div>
             </div>
           </div>
@@ -79,10 +92,10 @@
 </ngx-spinner>
 
 <style>
-  .rotate-180 {
-    transform: rotate(180deg);
-  }
   .accordion-button::after {
     display: none;
+  }
+  .badge {
+    font-size: 0.75rem;
   }
 </style>

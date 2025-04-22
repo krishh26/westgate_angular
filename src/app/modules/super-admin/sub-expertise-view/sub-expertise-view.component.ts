@@ -16,11 +16,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class SubExpertiseViewComponent implements OnInit {
   expertiseName: string = '';
+  expertiseId: string = '';
   subExpertiseList: any[] = [];
   totalRecords: number = pagination.totalRecords;
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
-  viewDocs: any;
   showLoader: boolean = false;
   // Track which accordion items are collapsed
   collapsedState: { [key: number]: boolean } = {};
@@ -38,21 +38,104 @@ export class SubExpertiseViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.expertiseName = params['expertiseName'];
-      const subExpertiseListStr = params['subExpertiseList'];
-      if (subExpertiseListStr) {
-        this.subExpertiseList = JSON.parse(subExpertiseListStr);
-        this.totalRecords = this.subExpertiseList.length;
+      this.expertiseId = params['expertiseId'];
+
+      if (this.expertiseId) {
+        this.loadExpertiseDetails();
+      } else {
+        const subExpertiseListStr = params['subExpertiseList'];
+        if (subExpertiseListStr) {
+          this.subExpertiseList = JSON.parse(subExpertiseListStr);
+          this.totalRecords = this.subExpertiseList.length;
+        }
       }
     });
   }
 
-  viewUploadedDocuments(subExpertise: any) {
-    this.viewDocs = subExpertise.files || [];
+  loadExpertiseDetails() {
+    this.spinner.show();
 
-    if (!this.viewDocs || this.viewDocs.length === 0) {
-      this.notificationService.showInfo(`No files available for ${subExpertise.name}`);
-      // Don't return early, as we still want to toggle the accordion
+    // Use the existing service method with the appropriate ID parameter
+    this.superService.getExpertiseList({ expertiseId: this.expertiseId }).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+
+        if (response?.status === true && response?.data) {
+          // Find the expertise by ID in the response data array
+          const expertise = response.data.find((item: any) => item._id === this.expertiseId);
+          if (expertise) {
+            this.subExpertiseList = expertise.subExpertiseList || [];
+            this.totalRecords = this.subExpertiseList.length;
+          } else {
+            this.notificationService.showError('Expertise not found');
+          }
+        } else {
+          this.notificationService.showError('Failed to load expertise details');
+        }
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.notificationService.showError('An error occurred while loading expertise details');
+        console.error('Error loading expertise details:', error);
+      }
+    );
+  }
+
+  /**
+   * Group files by supplier and generate a display-ready array
+   * Returns an array of objects, each containing supplier information and associated files
+   */
+  groupFilesBySupplier(files: any[]): any[] {
+    if (!files || !files.length) {
+      return [];
     }
+
+    // Sort files by supplier name first
+    const sortedFiles = [...files].sort((a, b) => {
+      const supplierA = a.supplierId?.name || 'Unknown';
+      const supplierB = b.supplierId?.name || 'Unknown';
+      return supplierA.localeCompare(supplierB);
+    });
+
+    // Group files by supplier ID
+    const groupedFiles: any[] = [];
+    let currentSupplierId: string | null = null;
+    let currentSupplierName: string | null = null;
+    let currentFiles: any[] = [];
+
+    sortedFiles.forEach(file => {
+      const supplierId = file.supplierId?._id || 'unknown';
+
+      if (supplierId !== currentSupplierId) {
+        // Save previous group if exists
+        if (currentSupplierId && currentFiles.length) {
+          groupedFiles.push({
+            supplierId: currentSupplierId,
+            supplierName: currentSupplierName || 'Unknown Supplier',
+            files: currentFiles
+          });
+        }
+
+        // Start new group
+        currentSupplierId = supplierId;
+        currentSupplierName = file.supplierId?.name || 'Unknown Supplier';
+        currentFiles = [file];
+      } else {
+        // Add to existing group
+        currentFiles.push(file);
+      }
+    });
+
+    // Add the last group
+    if (currentSupplierId && currentFiles.length) {
+      groupedFiles.push({
+        supplierId: currentSupplierId,
+        supplierName: currentSupplierName || 'Unknown Supplier',
+        files: currentFiles
+      });
+    }
+
+    return groupedFiles;
   }
 
   // Toggle the collapse state of an accordion item
@@ -76,22 +159,30 @@ export class SubExpertiseViewComponent implements OnInit {
       confirmButtonText: 'Yes, Delete!'
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+        this.spinner.show();
 
         this.superService.deleteDocumentExpertise(fileId).subscribe(
           (response: any) => {
+            this.spinner.hide();
+
             if (response?.status === true) {
-              this.showLoader = false;
               this.notificationService.showSuccess('Document successfully deleted');
-              window.location.reload();
+
+              // Reload the expertise details
+              if (this.expertiseId) {
+                this.loadExpertiseDetails();
+              } else {
+                // If we don't have an expertiseId, reload the page
+                window.location.reload();
+              }
             } else {
-              this.showLoader = false;
-              this.notificationService.showError(response?.message);
+              this.notificationService.showError(response?.message || 'Failed to delete document');
             }
           },
-          (error) => {
-            this.showLoader = false;
-            this.notificationService.showError(error?.message);
+          (error: any) => {
+            this.spinner.hide();
+            this.notificationService.showError(error?.message || 'An error occurred while deleting the document');
+            console.error('Error deleting document:', error);
           }
         );
       }
