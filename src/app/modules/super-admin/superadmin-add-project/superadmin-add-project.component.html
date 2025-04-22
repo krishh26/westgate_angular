@@ -8,7 +8,8 @@
               <label for="inputEmail3" class="col-sm-4 col-form-label">Project Name *</label>
               <div class="col-sm-8">
                 <textarea formControlName="projectName" class="form-control" rows="3" cols="100"></textarea>
-                <div class="error-message" *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched">
                   Project name is required
                 </div>
               </div>
@@ -17,7 +18,8 @@
               <label for="inputEmail3" class="col-sm-4 col-form-label">BOS ID *</label>
               <div class="col-sm-8">
                 <input formControlName="BOSID" type="text" class="form-control">
-                <div class="error-message" *ngIf="productForm.get('BOSID')?.invalid && productForm.get('BOSID')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('BOSID')?.invalid && productForm.get('BOSID')?.touched">
                   BOS ID is required
                 </div>
               </div>
@@ -27,7 +29,8 @@
               <div class="col-sm-8">
                 <input formControlName="publishDate" type="text" class="form-control"
                   placeholder="Auto Detect System Calendar">
-                <div class="error-message" *ngIf="productForm.get('publishDate')?.invalid && productForm.get('publishDate')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('publishDate')?.invalid && productForm.get('publishDate')?.touched">
                   Publish date is required
                 </div>
               </div>
@@ -36,7 +39,8 @@
               <label for="inputEmail3" class="col-sm-4 col-form-label">Submission Due Date *</label>
               <div class="col-sm-8">
                 <input formControlName="dueDate" type="date" class="form-control" placeholder="Start Date">
-                <div class="error-message" *ngIf="productForm.get('dueDate')?.invalid && productForm.get('dueDate')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('dueDate')?.invalid && productForm.get('dueDate')?.touched">
                   Due date is required
                 </div>
                 <div class="row mt-2">
@@ -57,7 +61,8 @@
                   <option value="ContractFinder">Contract Finder</option>
                   <option value="Other">Other</option>
                 </select>
-                <div class="error-message" *ngIf="productForm.get('website')?.invalid && productForm.get('website')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('website')?.invalid && productForm.get('website')?.touched">
                   Website is required
                 </div>
               </div>
@@ -66,7 +71,8 @@
               <label for="inputEmail3" class="col-sm-4 col-form-label">Notice Reference *</label>
               <div class="col-sm-8">
                 <input formControlName="noticeReference" type="text" class="form-control">
-                <div class="error-message" *ngIf="productForm.get('noticeReference')?.invalid && productForm.get('noticeReference')?.touched">
+                <div class="error-message"
+                  *ngIf="productForm.get('noticeReference')?.invalid && productForm.get('noticeReference')?.touched">
                   Notice reference is required
                 </div>
               </div>
@@ -82,25 +88,23 @@
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">Login ID</label>
               <div class="col-sm-8">
-                <input formControlName="loginID" type="text" class="form-control"  autocomplete="off"
-                readonly
-                (focus)="removeReadonly($event)">
+                <input formControlName="loginID" type="text" class="form-control" autocomplete="off" readonly
+                  (focus)="removeReadonly($event)">
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="password" class="col-sm-4 col-form-label">Password</label>
               <div class="col-sm-8">
-                <input formControlName="password" type="password" class="form-control"  autocomplete="off"
-                readonly
-                (focus)="removeReadonly($event)">
+                <input formControlName="password" type="password" class="form-control" autocomplete="off" readonly
+                  (focus)="removeReadonly($event)">
               </div>
             </div>
 
           </div>
 
           <div class="col-lg-7 col-xl-7 col-12">
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-lg-6 col-xl-6 col-12">
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Category</label>
@@ -125,7 +129,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-2 col-form-label">Description</label>
               <div class="col-sm-10">
@@ -138,7 +142,8 @@
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Link to notice *</label>
                   <div class="col-sm-8">
                     <input formControlName="link" type="text" class="form-control">
-                    <div class="error-message" *ngIf="productForm.get('link')?.invalid && productForm.get('link')?.touched">
+                    <div class="error-message"
+                      *ngIf="productForm.get('link')?.invalid && productForm.get('link')?.touched">
                       Link to notice is required
                     </div>
                   </div>
@@ -206,7 +211,8 @@
                       <option value="PublicSector">Public Sector</option>
                       <option value="PrivateSector">Private Sector</option>
                     </select>
-                    <div class="error-message" *ngIf="productForm.get('clientType')?.invalid && productForm.get('clientType')?.touched">
+                    <div class="error-message"
+                      *ngIf="productForm.get('clientType')?.invalid && productForm.get('clientType')?.touched">
                       Client type is required
                     </div>
                   </div>
@@ -217,7 +223,8 @@
                   <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name *</label>
                   <div class="col-sm-8">
                     <input formControlName="clientName" type="text" class="form-control">
-                    <div class="error-message" *ngIf="productForm.get('clientName')?.invalid && productForm.get('clientName')?.touched">
+                    <div class="error-message"
+                      *ngIf="productForm.get('clientName')?.invalid && productForm.get('clientName')?.touched">
                       Client name is required
                     </div>
                   </div>
