@@ -107,7 +107,7 @@
               <th>Join Date</th>
               <th>Last Login</th>
               <th>Total Employees</th>
-              <th>Assigned Projects</th>
+              <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">Assigned Projects</th>
               <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
               <th>Action</th>
               <th>Status</th>
@@ -127,7 +127,7 @@
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>{{item?.employeeCount}}</td>
-              <td>
+              <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
                {{item?.assignedProjectCount}}
               </td>
               <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
