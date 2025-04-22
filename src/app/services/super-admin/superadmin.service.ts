@@ -50,6 +50,7 @@ export enum SuperAdminEndPoint {
   SELECT_FROM_SORTLIST = '/project/select-from-sortlist',
   REMOVE_FROM_SHORTLIST = '/project/remove-from-sortlist',
   GET_EXPERTISE_DROPDOWN = '/web-user/drop-down',
+  GET_EXPERTISE_DROPDOWN_LIST = '/web-user/drop-down-list',
   SUB_EXPERTISE_DROPDOWN = '/web-user/sub-expertise/list',
   ADD_SUB_EXPERTISE = '/web-user/add-sub-expertise',
   CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom',
@@ -585,6 +586,19 @@ export class SuperadminService {
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
+      { params }
+    );
+  }
+
+  getExpertiseDropdownList(type?: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN_LIST,
       { params }
     );
   }

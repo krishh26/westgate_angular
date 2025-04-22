@@ -66,7 +66,7 @@ export class ExpertiseListComponent {
 
   getExpertiseDropdownData() {
     this.showLoader = true;
-    this.superService.getExpertiseDropdown().subscribe(
+    this.superService.getExpertiseDropdownList().subscribe(
       (response) => {
         if (response?.status) {
           this.expertiseDropdownOptions = response.data || [];
