@@ -99,9 +99,9 @@ export class ProjectManagerProjectDetailsComponent {
   selectedImage!: string;
 
   ForTitleuserList: any = [
-    'SupplierAdmin',
-    'FeasibilityAdmin',
-    'FeasibilityUser',
+    { display: 'SupplierAdmin', value: 'SupplierAdmin' },
+    { display: 'User', value: 'BOS' },
+    { display: 'SalesManager', value: 'SalesManager' },
   ];
   displayForTitleedUsers: any = [];
   selectViewImage: any;
