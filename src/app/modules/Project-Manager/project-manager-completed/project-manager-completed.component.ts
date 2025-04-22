@@ -79,7 +79,7 @@ export class ProjectManagerCompletedComponent {
     { value: 'Passed', status: 'Pass' },
     { value: 'Fail', status: 'Fail' },
     { value: 'DocumentsNotFound', status: 'Documents Not Found' },
-    { value: 'Not Releted', status: 'Not Releted' },
+    { value: 'Not Releted', status: 'Not Related' },
   ];
 
   bidstatusList = [
