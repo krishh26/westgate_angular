@@ -40,7 +40,7 @@ export enum SuperAdminEndPoint {
   CANDIDATE_SUPPLIER_WISE = '/candidate/get/',
   CANDIDATE_LIST = '/candidate/list',
   ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise',
-  ROLES_LIST = '/roles/get-all',
+  ROLES_LIST = '/roles/get-list',
   ROLES_ADD = '/roles/add',
   ROLES_DELETE = '/roles/delete',
   ROLES_CANDIDATES = '/roles/candidates',
