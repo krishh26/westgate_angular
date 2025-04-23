@@ -22,13 +22,11 @@ export class ResourcesAddComponent implements OnInit {
 
   // Temporary inputs for tag-like fields
   newEmployer: string = '';
-  newTechnicalSkill: string = '';
   newSoftSkill: string = '';
   newLanguage: string = '';
 
   // Arrays to store project tech stacks
   projectTechStacks: string[][] = [[]];
-  newTechStack: string = '';
 
   // Dropdown options
   genderOptions = ['Male', 'Female', 'Other'];
@@ -36,6 +34,7 @@ export class ResourcesAddComponent implements OnInit {
     'Spoken', 'Written languages'
   ];
   projectComplexityOptions = ['Simple', 'Medium', 'Complex'];
+  technologiesList: any[] = [];
 
   showLoader: boolean = false;
   supplierID: string = '';
@@ -54,6 +53,7 @@ export class ResourcesAddComponent implements OnInit {
   ) {
     this.initializeForm();
     this.getRolesList();
+    this.getTechnologies();
   }
 
   ngOnInit(): void {
@@ -90,7 +90,7 @@ export class ResourcesAddComponent implements OnInit {
       // jobTitle: ['', Validators.required],
       startDate: ['', Validators.required],
       keyResponsibilities: ['', Validators.required],
-      availableFrom: ['', Validators.required],
+      availableFrom: [''],
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
       // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       // overtimeCharges: [''],
@@ -144,17 +144,6 @@ export class ResourcesAddComponent implements OnInit {
     this.previousEmployers.splice(index, 1);
   }
 
-  addTechnicalSkill(): void {
-    if (this.newTechnicalSkill?.trim() && !this.technicalSkills.includes(this.newTechnicalSkill.trim())) {
-      this.technicalSkills.push(this.newTechnicalSkill.trim());
-      this.newTechnicalSkill = '';
-    }
-  }
-
-  removeTechnicalSkill(index: number): void {
-    this.technicalSkills.splice(index, 1);
-  }
-
   addSoftSkill(): void {
     if (this.newSoftSkill?.trim() && !this.softSkills.includes(this.newSoftSkill.trim())) {
       this.softSkills.push(this.newSoftSkill.trim());
@@ -177,19 +166,25 @@ export class ResourcesAddComponent implements OnInit {
     this.languagesKnown.splice(index, 1);
   }
 
-  addTechStack(projectIndex: number): void {
-    if (this.newTechStack?.trim() && !this.projectTechStacks[projectIndex].includes(this.newTechStack.trim())) {
-      this.projectTechStacks[projectIndex].push(this.newTechStack.trim());
-      this.newTechStack = '';
-    }
+  // Handle technical skills selection changes
+  onTechnicalSkillsChange(event: any): void {
+    console.log('Technical skills changed:', this.technicalSkills);
   }
 
-  removeTechStack(projectIndex: number, techIndex: number): void {
-    this.projectTechStacks[projectIndex].splice(techIndex, 1);
+  // Handle tech stack selection changes
+  onTechStackChange(event: any, index: number): void {
+    console.log(`Tech stack changed for project ${index}:`, this.projectTechStacks[index]);
   }
 
   // Form submission
   submitForm(): void {
+    // console.log('Form submitted');
+    // console.log('Form valid:', this.userProfileForm.valid);
+    // console.log('Form values:', this.userProfileForm.value);
+    // console.log('Form errors:', this.getFormValidationErrors());
+    // console.log('Technical skills:', this.technicalSkills);
+    // console.log('Roles selected:', this.userProfileForm.get('roleId')?.value);
+
     if (this.userProfileForm.invalid || this.technicalSkills.length === 0) {
       // Mark all fields as touched to trigger validation messages
       this.markFormGroupTouched(this.userProfileForm);
@@ -301,6 +296,25 @@ export class ResourcesAddComponent implements OnInit {
     }
   }
 
+  // Debug function for submit button click
+  handleSubmitClick(event: MouseEvent): void {
+    console.log('Submit button clicked');
+    // Don't prevent the default action, as we want the form submission to proceed
+    // This is just for debugging purposes
+  }
+
+  // Helper method to get all validation errors from the form
+  getFormValidationErrors(): any {
+    const result: any = {};
+    Object.keys(this.userProfileForm.controls).forEach(key => {
+      const control = this.userProfileForm.get(key);
+      if (control && control.errors) {
+        result[key] = control.errors;
+      }
+    });
+    return result;
+  }
+
   // Helper function to mark all form controls as touched
   markFormGroupTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
@@ -330,15 +344,29 @@ export class ResourcesAddComponent implements OnInit {
 
   getRolesList() {
     this.superService.getRolesList().subscribe({
-      next: (response: any) => {
-        if (response && response.status) {
-          this.rolesList = response?.data?.roles || [];
+      next: (data) => {
+        if (data && data.status && data.data && data.data.roles) {
+          this.rolesList = data.data.roles;
         } else {
-          this.notificationService.showError(response?.message || 'Failed to fetch roles');
+          console.error('Unexpected roles data structure:', data);
+          this.notificationService.showError('Failed to load roles data');
         }
       },
-      error: (error: any) => {
-        this.notificationService.showError(error?.message || 'An error occurred while fetching roles');
+      error: (error) => {
+        console.error('Error fetching roles:', error);
+        this.notificationService.showError('Failed to fetch roles');
+      }
+    });
+  }
+
+  getTechnologies() {
+    this.superService.getTechnologies().subscribe({
+      next: (data) => {
+        this.technologiesList = data.data || [];
+      },
+      error: (error) => {
+        console.error('Error fetching technologies:', error);
+        this.notificationService.showError('Failed to fetch technologies');
       }
     });
   }
@@ -441,3 +469,4 @@ export class ResourcesAddComponent implements OnInit {
     }
   }
 }
+

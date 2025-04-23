@@ -183,23 +183,18 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Technical Skills</label>
               <div class="col-sm-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="newTechnicalSkill"
-                    [ngModelOptions]="{standalone: true}" placeholder="Add technical skill">
-                  <button class="btn btn-outline-primary" type="button" (click)="addTechnicalSkill()">Add</button>
-                </div>
+                <ng-select
+                  [items]="technologiesList"
+                  bindLabel="name"
+                  bindValue="name"
+                  [multiple]="true"
+                  placeholder="Select Technical Skills"
+                  [(ngModel)]="technicalSkills"
+                  [ngModelOptions]="{standalone: true}"
+                  (change)="onTechnicalSkillsChange($event)">
+                </ng-select>
                 <div *ngIf="technicalSkills.length === 0" class="text-danger">
                   Technical skills are required.
-                </div>
-                <div *ngIf="technicalSkills.length > 0" class="mt-2">
-                  <div class="d-flex flex-wrap gap-2">
-                    <div *ngFor="let skill of technicalSkills; let i = index"
-                      class="badge bg-primary p-2 d-flex align-items-center">
-                      {{skill}}
-                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
-                        (click)="removeTechnicalSkill(i)"></button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -382,22 +377,16 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Tech Stack</label>
                     <div class="col-sm-8">
-                      <div class="input-group">
-                        <input type="text" class="form-control" [(ngModel)]="newTechStack"
-                          [ngModelOptions]="{standalone: true}" placeholder="Add tech stack">
-                        <button class="btn btn-outline-primary" type="button" (click)="addTechStack(i)">Add</button>
-                      </div>
-                      <div *ngIf="projectTechStacks && projectTechStacks[i] && projectTechStacks[i].length > 0"
-                        class="mt-2">
-                        <div class="d-flex flex-wrap gap-2">
-                          <div *ngFor="let tech of projectTechStacks[i]; let j = index"
-                            class="badge bg-primary p-2 d-flex align-items-center">
-                            {{tech}}
-                            <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
-                              (click)="removeTechStack(i, j)"></button>
-                          </div>
-                        </div>
-                      </div>
+                      <ng-select
+                        [items]="technologiesList"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="true"
+                        placeholder="Select Tech Stack"
+                        [(ngModel)]="projectTechStacks[i]"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="onTechStackChange($event, i)">
+                      </ng-select>
                     </div>
                   </div>
                 </div>
@@ -451,7 +440,7 @@
             <button type="button" routerLink="/super-admin/resources-list" class="btn btn-secondary">
               Back
             </button>&nbsp;
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" (click)="handleSubmitClick($event)">
               {{ candidateId ? 'Update Profile' : 'Save Profile' }}
             </button>
           </div>
