@@ -40,7 +40,7 @@ export enum SuperAdminEndPoint {
   CANDIDATE_SUPPLIER_WISE = '/candidate/get/',
   CANDIDATE_LIST = '/candidate/list',
   ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise',
-  ROLES_LIST = '/roles/get-list',
+  ROLES_LIST = '/roles/get-all',
   ROLES_ADD = '/roles/add',
   ROLES_DELETE = '/roles/delete',
   ROLES_CANDIDATES = '/roles/candidates',
@@ -647,6 +647,25 @@ export class SuperadminService {
   getTechnologies(): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TECHNOLOGIES
+    );
+  }
+
+  getAllRoles(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params.startDate) {
+      queryParams = queryParams.set('startDate', params.startDate);
+    }
+    if (params.endDate) {
+      queryParams = queryParams.set('endDate', params.endDate);
+    }
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+
+    return this.httpClient.get<any>(
+      this.baseUrl + '/roles/get-all',
+      { params: queryParams }
     );
   }
 }

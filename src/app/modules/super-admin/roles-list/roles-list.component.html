@@ -32,7 +32,7 @@
                   <thead>
                     <tr>
                       <th>Role</th>
-                      <th>Releted Role</th>
+                      <th>Related Roles</th>
                       <th>Created Date</th>
                       <th class="text-end">Actions</th>
                     </tr>
@@ -50,12 +50,12 @@
                       <td>{{role?.name}}</td>
                       <td>
                         <div class="d-flex flex-wrap gap-1">
-                          <span *ngIf="role?.otherRole && role.otherRole.length > 0">
-                            <span *ngFor="let subRole of role.otherRole">
+                          <span *ngIf="role?.otherRoles && role.otherRoles.length > 0">
+                            <span *ngFor="let subRole of role.otherRoles">
                               <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
                             </span>
                           </span>
-                          <span *ngIf="!role?.otherRole || role.otherRole.length === 0">-</span>
+                          <span *ngIf="!role?.otherRoles || role.otherRoles.length === 0">-</span>
                         </div>
                       </td>
                       <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>

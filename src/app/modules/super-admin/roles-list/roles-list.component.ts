@@ -35,12 +35,13 @@ export class RolesListComponent implements OnInit {
 
   getRolesList() {
     this.isLoading = true;
-    this.superService.getRolesList().subscribe({
+    this.superService.getAllRoles().subscribe({
       next: (response: any) => {
         this.isLoading = false;
         if (response && response.status) {
           console.log('API Response:', response.data); // Log the API response
           this.rolesList = response?.data?.roles || [];
+          this.totalRecords = response?.data?.totalCount || 0;
           console.log('Roles List:', this.rolesList); // Log the processed roles list
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch roles');
