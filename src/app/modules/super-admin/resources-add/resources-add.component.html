@@ -341,8 +341,13 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Industry Domain</label>
                     <div class="col-sm-8">
-                      <input formControlName="industryDomain" type="text" class="form-control"
-                        placeholder="Enter industry domain">
+                      <ng-select
+                        [items]="industryDomainList"
+                        bindLabel="name"
+                        bindValue="name"
+                        placeholder="Select Industry Domain"
+                        formControlName="industryDomain">
+                      </ng-select>
                     </div>
                   </div>
                 </div>

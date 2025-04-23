@@ -35,6 +35,7 @@ export class ResourcesAddComponent implements OnInit {
   ];
   projectComplexityOptions = ['Simple', 'Medium', 'Complex'];
   technologiesList: any[] = [];
+  industryDomainList: any[] = [];
 
   showLoader: boolean = false;
   supplierID: string = '';
@@ -54,6 +55,7 @@ export class ResourcesAddComponent implements OnInit {
     this.initializeForm();
     this.getRolesList();
     this.getTechnologies();
+    this.getIndustryDomains();
   }
 
   ngOnInit(): void {
@@ -466,6 +468,50 @@ export class ResourcesAddComponent implements OnInit {
     } else {
       this.notificationService.showError('Failed to load candidate data');
       this.router.navigate(['/super-admin/resources-list']);
+    }
+  }
+
+  // Add new method to fetch industry domains
+  getIndustryDomains(): void {
+    this.superService.getSubExpertiseDropdownList().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          // Handle array of strings format
+          if (Array.isArray(response.data)) {
+            this.industryDomainList = response.data.map((item: string) => ({ name: item }));
+          } else {
+            this.industryDomainList = response.data || [];
+          }
+        } else {
+          console.error('Error fetching industry domains:', response.message);
+        }
+      },
+      error: (error: any) => {
+        console.error('API error fetching industry domains:', error);
+      }
+    });
+  }
+
+  // Search industry domains
+  searchIndustryDomains(searchText: string): void {
+    if (searchText) {
+      this.superService.getSubExpertiseDropdownList(searchText).subscribe({
+        next: (response: any) => {
+          if (response.status) {
+            // Handle array of strings format
+            if (Array.isArray(response.data)) {
+              this.industryDomainList = response.data.map((item: string) => ({ name: item }));
+            } else {
+              this.industryDomainList = response.data || [];
+            }
+          }
+        },
+        error: (error: any) => {
+          console.error('API error searching industry domains:', error);
+        }
+      });
+    } else {
+      this.getIndustryDomains();
     }
   }
 }
