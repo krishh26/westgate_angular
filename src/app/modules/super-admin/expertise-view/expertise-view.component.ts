@@ -63,8 +63,23 @@ export class ExpertiseViewComponent {
       console.log("No supplier data found in localStorage");
     }
 
-    // Load technologies data by default instead of expertise list
-    this.fetchDropdownData('technologies');
+    // Check if data was modified in sub-expertise-view
+    const dataModified = localStorage.getItem('expertiseDataModified');
+    if (dataModified === 'true') {
+      // Clear the flag
+      localStorage.removeItem('expertiseDataModified');
+
+      // Refresh data based on current view
+      if (this.selectedType) {
+        this.fetchDropdownData(this.getTypeValue(this.selectedType));
+      } else {
+        // Load technologies data by default
+        this.fetchDropdownData('technologies');
+      }
+    } else {
+      // Load technologies data by default if no modification flag
+      this.fetchDropdownData('technologies');
+    }
   }
 
   navigateToSupplier() {
@@ -72,11 +87,26 @@ export class ExpertiseViewComponent {
   }
 
   navigateToSubExpertise(item: any) {
+    // Always ensure we have the complete data to pass
+    const queryParams: any = {
+      expertiseName: item.expertise || item.name
+    };
+
+    // Make sure we have the subExpertiseList data
+    if (item.subExpertiseList && Array.isArray(item.subExpertiseList)) {
+      queryParams.subExpertiseList = JSON.stringify(item.subExpertiseList);
+    } else {
+      // If we don't have subExpertiseList, send an empty array to avoid API call
+      queryParams.subExpertiseList = JSON.stringify([]);
+    }
+
+    // Add expertiseId for reference only
+    if (item._id) {
+      queryParams.expertiseId = item._id;
+    }
+
     this.router.navigate(['/super-admin/sub-expertise-view'], {
-      queryParams: {
-        expertiseName: item.expertise || item.name,
-        subExpertiseList: JSON.stringify(item.subExpertiseList || [])
-      }
+      queryParams: queryParams
     });
   }
 

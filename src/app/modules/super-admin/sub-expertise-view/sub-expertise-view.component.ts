@@ -40,14 +40,26 @@ export class SubExpertiseViewComponent implements OnInit {
       this.expertiseName = params['expertiseName'];
       this.expertiseId = params['expertiseId'];
 
-      if (this.expertiseId) {
-        this.loadExpertiseDetails();
-      } else {
-        const subExpertiseListStr = params['subExpertiseList'];
-        if (subExpertiseListStr) {
+      // Always check for subExpertiseList first
+      const subExpertiseListStr = params['subExpertiseList'];
+
+      if (subExpertiseListStr) {
+        try {
+          // Use the data directly from query params
           this.subExpertiseList = JSON.parse(subExpertiseListStr);
           this.totalRecords = this.subExpertiseList.length;
+          // Log success message
+          console.log('Using data from query params. API call avoided.');
+        } catch (error) {
+          console.error('Error parsing subExpertiseList:', error);
+          this.subExpertiseList = [];
+          this.totalRecords = 0;
         }
+      }
+      // Only call API as a last resort when there's no subExpertiseList but we have an expertiseId
+      else if (this.expertiseId) {
+        console.log('No subExpertiseList data in params. Making API call with expertiseId:', this.expertiseId);
+        this.loadExpertiseDetails();
       }
     });
   }
@@ -168,13 +180,11 @@ export class SubExpertiseViewComponent implements OnInit {
             if (response?.status === true) {
               this.notificationService.showSuccess('Document successfully deleted');
 
-              // Reload the expertise details
-              if (this.expertiseId) {
-                this.loadExpertiseDetails();
-              } else {
-                // If we don't have an expertiseId, reload the page
-                window.location.reload();
-              }
+              // Set a flag in localStorage to indicate data was modified
+              localStorage.setItem('expertiseDataModified', 'true');
+
+              // Always update in memory to avoid additional API calls
+              this.updateSubExpertiseListAfterDelete(fileId);
             } else {
               this.notificationService.showError(response?.message || 'Failed to delete document');
             }
@@ -189,7 +199,31 @@ export class SubExpertiseViewComponent implements OnInit {
     });
   }
 
+  // Helper method to update subExpertiseList after a file is deleted
+  updateSubExpertiseListAfterDelete(fileId: string) {
+    // Update subExpertiseList by removing the deleted file from all entries
+    this.subExpertiseList = this.subExpertiseList.map(item => {
+      if (item.files && Array.isArray(item.files)) {
+        item.files = item.files.filter((file: any) => file._id !== fileId);
+      }
+      return item;
+    });
+
+    // Update total records
+    this.totalRecords = this.subExpertiseList.length;
+  }
+
   goBack() {
-    this.router.navigate(['/super-admin/expertise-view']);
+    const expertiseDataModified = localStorage.getItem('expertiseDataModified');
+
+    // If data was modified, pass state information when navigating back
+    if (expertiseDataModified === 'true') {
+      localStorage.removeItem('expertiseDataModified');
+      this.router.navigate(['/super-admin/expertise-view'], {
+        state: { refreshData: true }
+      });
+    } else {
+      this.router.navigate(['/super-admin/expertise-view']);
+    }
   }
 }
