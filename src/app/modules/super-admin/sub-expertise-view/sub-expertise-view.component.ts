@@ -98,6 +98,16 @@ export class SubExpertiseViewComponent implements OnInit {
    * Returns an array of objects, each containing supplier information and associated files
    */
   groupFilesBySupplier(files: any[]): any[] {
+    // If using the new data format with suppliers directly
+    if (!files && this.getCurrentItem()?.suppliers) {
+      return this.getCurrentItem().suppliers.map((supplier: any) => ({
+        supplierId: supplier.supplierId || 'unknown',
+        supplierName: supplier.supplierName || 'Unknown Supplier',
+        files: supplier.files || []
+      }));
+    }
+
+    // Handle empty or undefined files
     if (!files || !files.length) {
       return [];
     }
@@ -148,6 +158,48 @@ export class SubExpertiseViewComponent implements OnInit {
     }
 
     return groupedFiles;
+  }
+
+  // Helper method to get the current item from the subExpertiseList
+  getCurrentItem(): any {
+    if (!this.subExpertiseList || this.subExpertiseList.length === 0) {
+      return null;
+    }
+
+    // Find the current item based on the open accordion
+    for (const [index, isOpen] of Object.entries(this.collapsedState)) {
+      if (isOpen && this.subExpertiseList[parseInt(index)]) {
+        return this.subExpertiseList[parseInt(index)];
+      }
+    }
+
+    return null;
+  }
+
+  // Get all suppliers for a sub-expertise item, even those with empty files arrays
+  getSuppliers(item: any): any[] {
+    if (!item) return [];
+
+    // If using the new data format with suppliers array
+    if (item.suppliers && Array.isArray(item.suppliers)) {
+      return item.suppliers.map((supplier: any) => ({
+        supplierId: supplier.supplierId || 'unknown',
+        supplierName: supplier.supplierName || 'Unknown Supplier',
+        files: supplier.files || []
+      }));
+    }
+
+    // Fall back to the old format where suppliers are extracted from files
+    return this.groupFilesBySupplier(item.files || []);
+  }
+
+  // Count the total number of suppliers for a sub-expertise item
+  countSuppliers(item: any): number {
+    if (item.suppliers && Array.isArray(item.suppliers)) {
+      return item.suppliers.length;
+    }
+
+    return this.groupFilesBySupplier(item.files || []).length;
   }
 
   // Toggle the collapse state of an accordion item
@@ -201,11 +253,22 @@ export class SubExpertiseViewComponent implements OnInit {
 
   // Helper method to update subExpertiseList after a file is deleted
   updateSubExpertiseListAfterDelete(fileId: string) {
-    // Update subExpertiseList by removing the deleted file from all entries
+    // Update subExpertiseList based on the structure
     this.subExpertiseList = this.subExpertiseList.map(item => {
-      if (item.files && Array.isArray(item.files)) {
+      // If the item uses the new structure with suppliers
+      if (item.suppliers && Array.isArray(item.suppliers)) {
+        item.suppliers = item.suppliers.map((supplier: any) => {
+          if (supplier.files && Array.isArray(supplier.files)) {
+            supplier.files = supplier.files.filter((file: any) => file._id !== fileId);
+          }
+          return supplier;
+        });
+      }
+      // If the item uses the old structure with files directly
+      else if (item.files && Array.isArray(item.files)) {
         item.files = item.files.filter((file: any) => file._id !== fileId);
       }
+
       return item;
     });
 
@@ -225,5 +288,16 @@ export class SubExpertiseViewComponent implements OnInit {
     } else {
       this.router.navigate(['/super-admin/expertise-view']);
     }
+  }
+
+  // Count the total number of files for a sub-expertise item
+  getFileCount(item: any): number {
+    if (item.suppliers && Array.isArray(item.suppliers)) {
+      return item.suppliers.reduce((count: number, supplier: any) => {
+        return count + (supplier.files?.length || 0);
+      }, 0);
+    }
+
+    return item.files?.length || 0;
   }
 }

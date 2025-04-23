@@ -22,8 +22,17 @@
               aria-expanded="false" [attr.aria-controls]="'collapse' + i"
               (click)="toggleCollapse(i)">
               <span class="fw-bold">{{ item.name || 'Unnamed Sub-expertise' }}</span>
-              <span class="ms-3 badge bg-secondary">Files: {{ item.files?.length || 0 }}</span>
-              <span class="ms-2 badge bg-primary">Suppliers: {{ groupFilesBySupplier(item.files).length }}</span>
+
+              <!-- Show file count -->
+              <span class="ms-3 badge bg-secondary">
+                Files: {{ getFileCount(item) }}
+              </span>
+
+              <!-- Show supplier count -->
+              <span class="ms-2 badge bg-primary">
+                Suppliers: {{ item.suppliers?.length || countSuppliers(item) }}
+              </span>
+
               <i class="bi" [ngClass]="{'bi-chevron-down': !isCollapsed(i), 'bi-chevron-up': isCollapsed(i)}"
                  style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);"></i>
             </button>
@@ -31,47 +40,65 @@
           <div [id]="'collapse' + i" class="accordion-collapse collapse border rounded" [attr.aria-labelledby]="'heading' + i"
             data-bs-parent="#subExpertiseAccordion">
             <div class="p-0">
-              <!-- Files Table - Grouped by supplier -->
-              <div class="p-3" *ngIf="item.files && item.files.length > 0">
+              <!-- Files Table with suppliers -->
+              <div class="p-3">
                 <div class="table-responsive">
                   <table class="table table-bordered mb-0">
                     <thead>
                       <tr>
-                        <th style="width: 20%;">Supplier</th>
-                        <th style="width: 35%;">File Name</th>
+                        <th style="width: 25%;">Supplier</th>
+                        <th style="width: 30%;">File Name</th>
                         <th style="width: 25%;">Uploaded At</th>
                         <th style="width: 20%; text-align: center;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <ng-container *ngFor="let supplierGroup of groupFilesBySupplier(item.files); let first = first">
-                        <ng-container *ngFor="let file of supplierGroup.files; let j = index">
+                      <!-- Loop through suppliers even if they have no files -->
+                      <ng-container *ngFor="let supplier of getSuppliers(item)">
+                        <!-- If supplier has files, show each file -->
+                        <ng-container *ngIf="supplier.files && supplier.files.length > 0; else noFiles">
+                          <ng-container *ngFor="let file of supplier.files; let j = index">
+                            <tr>
+                              <!-- Show supplier name only for the first row -->
+                              <td *ngIf="j === 0" [attr.rowspan]="supplier.files.length" class="align-middle bg-light">
+                                <span class="fw-bold">{{ supplier.supplierName }}</span>
+                              </td>
+                              <td>{{ file.fileName }}</td>
+                              <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
+                              <td class="text-center">
+                                <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank" title="Download">
+                                  <i class="bi bi-download"></i>
+                                </a>
+                                <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
+                                  <i class="bi bi-trash3-fill"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+
+                        <!-- If supplier has no files, show a single row -->
+                        <ng-template #noFiles>
                           <tr>
-                            <!-- Show supplier name only for the first row in the group -->
-                            <td *ngIf="j === 0" [attr.rowspan]="supplierGroup.files.length" class="align-middle bg-light">
-                              <span class="fw-bold">{{ supplierGroup.supplierName }}</span>
+                            <td class="bg-light">
+                              <span class="fw-bold">{{ supplier.supplierName }}</span>
                             </td>
-                            <td>{{ file.fileName }}</td>
-                            <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
-                            <td class="text-center">
-                              <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank" title="Download">
-                                <i class="bi bi-download"></i>
-                              </a>
-                              <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
-                                <i class="bi bi-trash3-fill"></i>
-                              </button>
+                            <td colspan="3" class="text-center text-muted">
+                              No files available for this supplier
                             </td>
                           </tr>
-                        </ng-container>
+                        </ng-template>
                       </ng-container>
+
+                      <!-- Show message if no suppliers available -->
+                      <tr *ngIf="getSuppliers(item).length === 0">
+                        <td colspan="4" class="text-center">
+                          No suppliers available for this sub-expertise
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              <!-- Show when no files available -->
-              <div *ngIf="!item.files || item.files.length === 0" class="p-3 text-center">
-                <p>No files available for this sub-expertise</p>
               </div>
             </div>
           </div>
