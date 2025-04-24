@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-resources-add',
@@ -13,6 +14,12 @@ export class ResourcesAddComponent implements OnInit {
 
   // Form controls for the user profile
   userProfileForm: FormGroup = this.fb.group({});
+
+  // Exchange rate (INR to GBP)
+  exchangeRate: number = 114.32; // Default value with decimal precision, will be updated from API
+  workingDaysPerYear: number = 240;
+  hoursPerDay: number = 8;
+  ukMultiplier: number = 3; // UK Day Rate = Pound equivalent * 3
 
   // Arrays to store tag-like inputs
   previousEmployers: string[] = [];
@@ -51,11 +58,13 @@ export class ResourcesAddComponent implements OnInit {
     private superService: SuperadminService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private http: HttpClient
   ) {
     this.initializeForm();
     this.getRolesList();
     this.getTechnologies();
     this.getIndustryDomains();
+    this.fetchExchangeRate();
   }
 
   ngOnInit(): void {
@@ -78,6 +87,9 @@ export class ResourcesAddComponent implements OnInit {
         this.loadCandidateDataFromStorage();
       }
     });
+
+    // Add value change listeners for rate calculations
+    this.setupRateCalculations();
   }
 
   initializeForm() {
@@ -93,7 +105,11 @@ export class ResourcesAddComponent implements OnInit {
       startDate: ['', Validators.required],
       keyResponsibilities: ['', Validators.required],
       availableFrom: [''],
-      hourlyRate: ['', [Validators.required, Validators.min(0)]],
+      // hourlyRate: ['', [Validators.required, Validators.min(0)]],
+      ctc: [''],
+      ukHourlyRate: [''],
+      ukDayRate: [''],
+      indianDayRate: [''],
       // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       // overtimeCharges: [''],
       roleId: [[], Validators.required],
@@ -180,13 +196,6 @@ export class ResourcesAddComponent implements OnInit {
 
   // Form submission
   submitForm(): void {
-    // console.log('Form submitted');
-    // console.log('Form valid:', this.userProfileForm.valid);
-    // console.log('Form values:', this.userProfileForm.value);
-    // console.log('Form errors:', this.getFormValidationErrors());
-    // console.log('Technical skills:', this.technicalSkills);
-    // console.log('Roles selected:', this.userProfileForm.get('roleId')?.value);
-
     if (this.userProfileForm.invalid || this.technicalSkills.length === 0) {
       // Mark all fields as touched to trigger validation messages
       this.markFormGroupTouched(this.userProfileForm);
@@ -205,6 +214,12 @@ export class ResourcesAddComponent implements OnInit {
 
     // Prepare the data in the required format
     const formData = this.userProfileForm.value;
+
+    // Parse numeric values for submission
+    if (formData.ctc) formData.ctc = this.parseNumericValue(formData.ctc);
+    if (formData.ukHourlyRate) formData.ukHourlyRate = this.parseNumericValue(formData.ukHourlyRate);
+    if (formData.ukDayRate) formData.ukDayRate = this.parseNumericValue(formData.ukDayRate);
+    if (formData.indianDayRate) formData.indianDayRate = this.parseNumericValue(formData.indianDayRate);
 
     // Make sure we're using the current supplierId
     formData.supplierId = this.supplierID;
@@ -335,12 +350,25 @@ export class ResourcesAddComponent implements OnInit {
     });
   }
 
-  // Number validation for input fields
+  // Number validation for input fields - allow numbers and decimal point
   NumberOnly(event: any): boolean {
     const charCode = event.which ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    // Allow numbers (48-57) and decimal point (46)
+    if (
+      (charCode > 31 && (charCode < 48 || charCode > 57)) &&
+      charCode !== 46 // Allow decimal point (.)
+    ) {
       return false;
     }
+
+    // Prevent multiple decimal points
+    if (charCode === 46) {
+      const value = event.target.value;
+      if (value.indexOf('.') > -1) {
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -415,7 +443,11 @@ export class ResourcesAddComponent implements OnInit {
         startDate: candidateData.startDate,
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
-        hourlyRate: candidateData.hourlyRate,
+        // hourlyRate: candidateData.hourlyRate,
+        ctc: candidateData.ctc,
+        ukHourlyRate: candidateData.ukHourlyRate,
+        ukDayRate: candidateData.ukDayRate,
+        indianDayRate: candidateData.indianDayRate,
         roleId: roleIds
       });
 
@@ -514,5 +546,173 @@ export class ResourcesAddComponent implements OnInit {
       this.getIndustryDomains();
     }
   }
+
+  // Setup rate calculation event listeners
+  setupRateCalculations() {
+    // Listen for changes in the CTC field
+    this.userProfileForm.get('ctc')?.valueChanges.subscribe(ctcValue => {
+      if (ctcValue) {
+        this.calculateRatesFromCTC(this.parseNumericValue(ctcValue));
+      }
+    });
+
+    // Listen for changes in the UK Hourly Rate field
+    this.userProfileForm.get('ukHourlyRate')?.valueChanges.subscribe(rate => {
+      if (rate && !this.userProfileForm.get('ctc')?.dirty) {
+        this.calculateFromUKHourlyRate(this.parseNumericValue(rate));
+      }
+    });
+
+    // Listen for changes in the UK Day Rate field
+    this.userProfileForm.get('ukDayRate')?.valueChanges.subscribe(rate => {
+      if (rate && !this.userProfileForm.get('ctc')?.dirty) {
+        this.calculateFromUKDayRate(this.parseNumericValue(rate));
+      }
+    });
+
+    // Listen for changes in the Indian Day Rate field
+    this.userProfileForm.get('indianDayRate')?.valueChanges.subscribe(rate => {
+      if (rate && !this.userProfileForm.get('ctc')?.dirty) {
+        this.calculateFromIndianDayRate(this.parseNumericValue(rate));
+      }
+    });
+  }
+
+  // Fetch live exchange rate from API
+  fetchExchangeRate() {
+    // Using ExchangeRate-API for live rates
+    // Free tier allows limited requests per month
+    const apiUrl = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_n1aAXw7HKXT0Epyvzptrkg4cO2Q23FmFwgiewENj';
+
+    this.http.get(apiUrl).subscribe(
+      (response: any) => {
+        if (response && response.rates && response.rates.INR) {
+          this.exchangeRate = parseFloat(response.rates.INR.toFixed(2)); // Keep 2 decimal places for precision
+          console.log(`Live exchange rate loaded: 1 GBP = ${this.exchangeRate} INR (exact)`);
+          this.notificationService.showSuccess(`Using current exchange rate: 1 GBP = ${this.exchangeRate} INR`);
+
+          // Recalculate rates if CTC is already entered
+          const ctcValue = this.userProfileForm.get('ctc')?.value;
+          if (ctcValue) {
+            this.calculateRatesFromCTC(this.parseNumericValue(ctcValue));
+          }
+        }
+      },
+      (error) => {
+        console.error('Error fetching exchange rate:', error);
+        this.notificationService.showError(`Could not fetch live exchange rate. Using default rate: 1 GBP = ${this.exchangeRate} INR`);
+      }
+    );
+  }
+
+  // Update calculation methods to handle text inputs with commas
+  parseNumericValue(value: string | number): number {
+    if (typeof value === 'string') {
+      // Remove all non-numeric characters except decimal point
+      return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+    }
+    return value || 0;
+  }
+
+  // Format number with commas for Indian currency format
+  formatIndianCurrency(amount: number): string {
+    if (!amount) return '';
+
+    // Convert to string and split by decimal point
+    const [integerPart, decimalPart] = amount.toFixed(2).toString().split('.');
+
+    // Format integer part with commas (Indian format: 1,23,45,678)
+    let formattedInteger = '';
+    let i = integerPart.length;
+
+    while (i > 0) {
+      if (i > 3) {
+        // For digits other than the last 3
+        const chunkSize = (i - 3) > 0 && (i - 3) % 2 === 0 ? 2 : 1;
+        formattedInteger = ',' + integerPart.substring(i - chunkSize, i) + formattedInteger;
+        i -= chunkSize;
+      } else {
+        // For the last 3 digits
+        formattedInteger = integerPart.substring(0, i) + formattedInteger;
+        break;
+      }
+    }
+
+    return formattedInteger + (decimalPart ? '.' + decimalPart : '');
+  }
+
+  // Format number with commas for UK currency format
+  formatUKCurrency(amount: number): string {
+    if (!amount) return '';
+    return amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // Update the calculation methods to handle formatting
+  calculateRatesFromCTC(ctc: number) {
+    // Convert to GBP (pounds)
+    const poundsEquivalent = ctc / this.exchangeRate;
+
+    // Calculate UK Day Rate and UK Hourly Rate
+    const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
+    const ukDayRate = poundsPerDay * this.ukMultiplier;
+    const ukHourlyRate = ukDayRate / this.hoursPerDay;
+
+    // Calculate Indian Day Rate
+    const indianDayRate = ctc / this.workingDaysPerYear;
+
+    // Update the form values without triggering additional valueChanges events
+    this.userProfileForm.patchValue({
+      ukHourlyRate: this.formatUKCurrency(ukHourlyRate),
+      ukDayRate: this.formatUKCurrency(ukDayRate),
+      indianDayRate: this.formatIndianCurrency(indianDayRate)
+    }, { emitEvent: false });
+  }
+
+  // Calculate rates from UK Hourly Rate
+  calculateFromUKHourlyRate(ukHourlyRate: number) {
+    const ukDayRate = ukHourlyRate * this.hoursPerDay;
+    const poundsPerDay = ukDayRate / this.ukMultiplier;
+    const poundsEquivalent = poundsPerDay * this.workingDaysPerYear;
+    const ctc = poundsEquivalent * this.exchangeRate;
+    const indianDayRate = ctc / this.workingDaysPerYear;
+
+    this.userProfileForm.patchValue({
+      ctc: this.formatIndianCurrency(ctc),
+      ukDayRate: this.formatUKCurrency(ukDayRate),
+      indianDayRate: this.formatIndianCurrency(indianDayRate)
+    }, { emitEvent: false });
+  }
+
+  // Calculate rates from UK Day Rate
+  calculateFromUKDayRate(ukDayRate: number) {
+    const ukHourlyRate = ukDayRate / this.hoursPerDay;
+    const poundsPerDay = ukDayRate / this.ukMultiplier;
+    const poundsEquivalent = poundsPerDay * this.workingDaysPerYear;
+    const ctc = poundsEquivalent * this.exchangeRate;
+    const indianDayRate = ctc / this.workingDaysPerYear;
+
+    this.userProfileForm.patchValue({
+      ctc: this.formatIndianCurrency(ctc),
+      ukHourlyRate: this.formatUKCurrency(ukHourlyRate),
+      indianDayRate: this.formatIndianCurrency(indianDayRate)
+    }, { emitEvent: false });
+  }
+
+  // Calculate rates from Indian Day Rate
+  calculateFromIndianDayRate(indianDayRate: number) {
+    const ctc = indianDayRate * this.workingDaysPerYear;
+    const poundsEquivalent = ctc / this.exchangeRate;
+    const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
+    const ukDayRate = poundsPerDay * this.ukMultiplier;
+    const ukHourlyRate = ukDayRate / this.hoursPerDay;
+
+    this.userProfileForm.patchValue({
+      ctc: this.formatIndianCurrency(ctc),
+      ukHourlyRate: this.formatUKCurrency(ukHourlyRate),
+      ukDayRate: this.formatUKCurrency(ukDayRate)
+    }, { emitEvent: false });
+  }
 }
+
+
 
