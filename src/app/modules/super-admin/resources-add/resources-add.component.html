@@ -110,13 +110,16 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Role</label>
               <div class="col-sm-8">
-                <ng-select
-                  [items]="rolesList"
-                  bindLabel="name"
-                  bindValue="_id"
-                  [multiple]="true"
-                  placeholder="Select Roles"
-                  formControlName="roleId">
+                <ng-select [items]="rolesList" bindLabel="name" bindValue="_id" [multiple]="true"
+                  placeholder="Select Roles" formControlName="roleId">
+                  <ng-template ng-label-tmp let-item="item">
+                    {{item.name}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item">
+                    <div [title]="item.otherRoles && item.otherRoles.length > 0 ? 'Also known as: ' + item.otherRoles.join(', ') : ''">
+                      {{item.name}} <span *ngIf="item.otherRoles && item.otherRoles.length > 0">({{item.otherRoles.join(', ')}})</span>
+                    </div>
+                  </ng-template>
                 </ng-select>
                 <div *ngIf="userProfileForm.get('roleId')?.invalid && userProfileForm.get('roleId')?.touched"
                   class="text-danger">
@@ -183,15 +186,9 @@
             <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Technical Skills</label>
               <div class="col-sm-8">
-                <ng-select
-                  [items]="technologiesList"
-                  bindLabel="name"
-                  bindValue="name"
-                  [multiple]="true"
-                  placeholder="Select Technical Skills"
-                  [(ngModel)]="technicalSkills"
-                  [ngModelOptions]="{standalone: true}"
-                  (change)="onTechnicalSkillsChange($event)">
+                <ng-select [items]="technologiesList" bindLabel="name" bindValue="name" [multiple]="true"
+                  placeholder="Select Technical Skills" [(ngModel)]="technicalSkills"
+                  [ngModelOptions]="{standalone: true}" (change)="onTechnicalSkillsChange($event)">
                 </ng-select>
                 <div *ngIf="technicalSkills.length === 0" class="text-danger">
                   Technical skills are required.
@@ -341,12 +338,8 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Industry Domain</label>
                     <div class="col-sm-8">
-                      <ng-select
-                        [items]="industryDomainList"
-                        bindLabel="name"
-                        bindValue="name"
-                        placeholder="Select Industry Domain"
-                        formControlName="industryDomain">
+                      <ng-select [items]="industryDomainList" bindLabel="name" bindValue="name"
+                        placeholder="Select Industry Domain" formControlName="industryDomain">
                       </ng-select>
                     </div>
                   </div>
@@ -382,15 +375,9 @@
                   <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Tech Stack</label>
                     <div class="col-sm-8">
-                      <ng-select
-                        [items]="technologiesList"
-                        bindLabel="name"
-                        bindValue="name"
-                        [multiple]="true"
-                        placeholder="Select Tech Stack"
-                        [(ngModel)]="projectTechStacks[i]"
-                        [ngModelOptions]="{standalone: true}"
-                        (change)="onTechStackChange($event, i)">
+                      <ng-select [items]="technologiesList" bindLabel="name" bindValue="name" [multiple]="true"
+                        placeholder="Select Tech Stack" [(ngModel)]="projectTechStacks[i]"
+                        [ngModelOptions]="{standalone: true}" (change)="onTechStackChange($event, i)">
                       </ng-select>
                     </div>
                   </div>

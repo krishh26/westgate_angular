@@ -345,7 +345,7 @@ export class ResourcesAddComponent implements OnInit {
   }
 
   getRolesList() {
-    this.superService.getRolesList().subscribe({
+    this.superService.getAllRoles().subscribe({
       next: (data) => {
         if (data && data.status && data.data && data.data.roles) {
           this.rolesList = data.data.roles;
