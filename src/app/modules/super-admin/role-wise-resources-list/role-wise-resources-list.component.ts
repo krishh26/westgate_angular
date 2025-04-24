@@ -21,6 +21,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
   endDate: string = '';
   isToggled: boolean = false;
   isLoading = false;
+  totalActiveCandidates: number = 0;
 
   constructor(
     private superadminService: SuperadminService,
@@ -52,6 +53,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
       next: (response) => {
         this.rolesList = response.data?.roles || [];
         this.totalRecords = this.rolesList.length;
+        this.calculateTotalActiveCandidates();
         this.loading = false;
         this.spinner.hide();
       },
@@ -61,6 +63,12 @@ export class RoleWiseResourcesListComponent implements OnInit {
         this.spinner.hide();
       }
     });
+  }
+
+  calculateTotalActiveCandidates() {
+    this.totalActiveCandidates = this.rolesList.reduce((total, role) => {
+      return total + (role.activeCandidatesCount || 0);
+    }, 0);
   }
 
   searchtext() {

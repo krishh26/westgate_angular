@@ -20,7 +20,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-8">
+          <div class="col-lg-7 col-xl-7 col-md-7 col-sm-7 col-6">
             <h4 class="text-theme mb-4">Roles List</h4>
           </div>
           <!-- <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4 d-flex align-items-center">
@@ -31,10 +31,14 @@
               </label>
             </div>
           </div> -->
-          <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4">
+          <div class="col-lg-5 col-xl-5 col-md-5 col-sm-5 col-6 d-flex align-items-center gap-2">
             <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
               <i class="bi bi-person-badge"></i> Roles
             </button>
+            <span class="badge py-2"
+              style="background-color: #20B2AA; color: white; font-size: 14px; border-radius: 4px;">
+              Total Active Candidates: {{totalActiveCandidates}}
+            </span>
           </div>
         </div>
       </div>
@@ -72,8 +76,8 @@
         </div>
       </div>
 
-       <!-- Roles table -->
-       <div *ngIf="!isLoading" class="table-responsive">
+      <!-- Roles table -->
+      <div *ngIf="!isLoading" class="table-responsive">
         <table class="table table-striped align-middle">
           <thead>
             <tr>
@@ -102,8 +106,6 @@
           </tbody>
         </table>
       </div>
-
-
 
       <div *ngIf="!loading && (!rolesList || rolesList.length === 0)" class="text-center">
         <p>No roles found.</p>
