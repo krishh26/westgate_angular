@@ -13,9 +13,6 @@
             <li routerLink="/super-admin/role-wise-resources-list">
               <a class="active">Resources-view</a>
             </li>
-            <!-- <li routerLink="/super-admin/roles-list">
-              <a>Roles</a>
-            </li> -->
           </ul>
         </nav>
       </div>
@@ -39,9 +36,6 @@
                   <label class="form-check-label" for="inactiveFilter">Inactive Candidates ({{(metaData?.inActiveCandidates
                     || 0) }})</label>
                 </div>
-                <!-- <div class="form-check">
-                  <label class="form-check-label">Total: {{metaData?.totalCandidates || 0}}</label>
-                </div> -->
               </div>
             </div>
           </div>
@@ -101,17 +95,12 @@
                   <span *ngFor="let skill of candidate?.technicalSkills" class="badge bg-secondary">{{skill}}</span>
                 </div>
               </td>
-              <td>$ {{candidate?.hourlyRate}}</td>
+              <td>£ {{candidate?.ukHourlyRate}}</td>
               <td>{{candidate?.supplierId?.name}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
               </td>
-              <!-- <td>
-                <label class="switch">
-                  <input type="checkbox" [(ngModel)]="candidate.active" (ngModelChange)="onToggleSwitch(candidate)">
-                  <span class="slider round"></span>
-                </label>
-              </td> -->
+
             </tr>
           </tbody>
         </table>

@@ -97,13 +97,7 @@
                   {{skill}}{{!last ? ', ' : ''}}
                 </span>
               </td>
-              <!-- <td>
-                <span *ngFor="let language of candidate?.languagesKnown; let last = last">
-                  {{language}}{{!last ? ', ' : ''}}
-                </span>
-              </td> -->
-              <td>${{candidate?.hourlyRate}}</td>
-              <!-- <td>{{candidate?.availableFrom | date: 'dd/MM/yyyy'}}</td> -->
+              <td>£ {{candidate?.ukHourlyRate}}</td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i
                     class="bi bi-eye"></i> View</button>

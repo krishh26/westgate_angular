@@ -47,7 +47,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Highest Qualification</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.highestQualification + ' (' + candidateDetails?.yearOfGraduation + ')'" readonly>
+                  <input type="text" class="form-control"
+                    [value]="candidateDetails?.highestQualification + ' (' + candidateDetails?.yearOfGraduation + ')'"
+                    readonly>
                 </div>
               </div>
 
@@ -69,15 +71,28 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Total Experience</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.totalExperience + ' years'" readonly>
+                  <input type="text" class="form-control" [value]="candidateDetails?.totalExperience + ' years'"
+                    readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Hourly Rate</label>
-                  <input type="text" class="form-control" [value]="'$' + candidateDetails?.hourlyRate" readonly>
+                  <label class="form-label">UK Day Rate</label>
+                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukDayRate || '5467.11')"
+                    readonly>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Available From</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.availableFrom | date: 'dd/MM/yyyy'" readonly>
+                  <label class="form-label">UK Hourly Rate</label>
+                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukHourlyRate || '683.39')"
+                    readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Indian Day Rate</label>
+                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.indianDayRate || '3500')"
+                    readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">CTC</label>
+                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.ctc || '50000000')"
+                    readonly>
                 </div>
               </div>
 
@@ -88,7 +103,8 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Technical Skills</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.technicalSkills?.join(', ')" readonly>
+                  <input type="text" class="form-control" [value]="candidateDetails?.technicalSkills?.join(', ')"
+                    readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Soft Skills</label>
@@ -96,11 +112,13 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Languages Known</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.languagesKnown?.join(', ')" readonly>
+                  <input type="text" class="form-control" [value]="candidateDetails?.languagesKnown?.join(', ')"
+                    readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Previous Employers</label>
-                  <input type="text" class="form-control" [value]="candidateDetails?.previousEmployers?.join(', ')" readonly>
+                  <input type="text" class="form-control" [value]="candidateDetails?.previousEmployers?.join(', ')"
+                    readonly>
                 </div>
               </div>
 
@@ -128,7 +146,8 @@
                           <td><input type="text" class="form-control" [value]="project?.projectDuration" readonly></td>
                           <td><input type="text" class="form-control" [value]="project?.industryDomain" readonly></td>
                           <td>
-                            <input type="text" class="form-control" [value]="project?.techStackUsed?.join(', ')" readonly>
+                            <input type="text" class="form-control" [value]="project?.techStackUsed?.join(', ')"
+                              readonly>
                           </td>
                         </tr>
                       </tbody>
