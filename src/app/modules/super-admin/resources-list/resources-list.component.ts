@@ -27,6 +27,7 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   supplierID: string = '';
   supplierData: any = [];
+  isExecutive: boolean = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -44,6 +45,11 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
     } else {
       console.log("No supplier data found in localStorage");
     }
+
+    // Check if executive filter is in URL
+    const queryParams = new URLSearchParams(window.location.search);
+    this.isExecutive = queryParams.get('executive') === 'true';
+
     // Using a fixed list ID now: '67b60d775c16e4e640eee7dc'
     this.getCandidatesList();
   }
@@ -131,7 +137,7 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
 
   getCandidatesList() {
     this.loading = true;
-    this.superService.getCandidatesByListId(this.supplierID, this.page, this.pagesize).subscribe(
+    this.superService.getCandidatesByListId(this.supplierID, this.page, this.pagesize, this.isExecutive).subscribe(
       (response: any) => {
         this.loading = false;
         if (response && response.status) {
@@ -153,6 +159,15 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
   pageChanged(event: any) {
     this.page = event;
     this.getCandidatesList();
+
+    // Update URL with the new page parameter while preserving executive
+    this.router.navigate([], {
+      queryParams: {
+        page: this.page,
+        executive: this.isExecutive
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   openAddResourceModal() {
@@ -200,6 +215,17 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
         });
       }
     });
+  }
+
+  onExecutiveToggle() {
+    // Update URL with the executive parameter
+    this.router.navigate([], {
+      queryParams: { executive: this.isExecutive },
+      queryParamsHandling: 'merge'
+    });
+
+    // Refresh candidate list with new filter
+    this.getCandidatesList();
   }
 
 }

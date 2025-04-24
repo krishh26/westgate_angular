@@ -450,10 +450,14 @@ export class SuperadminService {
     );
   }
 
-  getCandidatesByListId(listId: string, page: number, limit: number): Observable<any> {
+  getCandidatesByListId(listId: string, page: number, limit: number, isExecutive?: boolean): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+
+    if (isExecutive !== undefined) {
+      params = params.set('executive', isExecutive.toString());
+    }
 
     return this.httpClient.get<any>(
       `${this.baseUrl}${SuperAdminEndPoint.CANDIDATE_LIST}/${listId}`,
@@ -497,9 +501,11 @@ export class SuperadminService {
     return this.httpClient.delete(`${this.baseUrl}/delete-document-resource/${fileId}`);
   }
 
-  getCandidatesByRole(roleId: string): Observable<any> {
+  getCandidatesByRole(roleIdWithParams: string): Observable<any> {
+    // The method already receives the full URL with query parameters appended
+    // We're simply passing it through
     return this.httpClient.get<any>(
-      `${this.baseUrl}${SuperAdminEndPoint.ROLES_CANDIDATES}/${roleId}`
+      `${this.baseUrl}${SuperAdminEndPoint.ROLES_CANDIDATES}/${roleIdWithParams}`
     );
   }
 

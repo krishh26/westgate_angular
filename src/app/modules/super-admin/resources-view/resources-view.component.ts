@@ -32,6 +32,7 @@ export class ResourcesViewComponent implements OnInit {
   activeFilter: boolean = false;
   inactiveFilter: boolean = false;
   metaData: any = {};
+  isExecutive: boolean = false;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -49,6 +50,9 @@ export class ResourcesViewComponent implements OnInit {
     const savedRoleId = localStorage.getItem('selectedRoleId');
 
     this.route.queryParams.subscribe(params => {
+      // Check for executive parameter in URL
+      this.isExecutive = params['executive'] === 'true';
+
       if (params['roleId']) {
         // If roleId is in URL, save it and use it
         this.roleId = params['roleId'];
@@ -60,7 +64,10 @@ export class ResourcesViewComponent implements OnInit {
         // Update URL with the saved roleId
         this.router.navigate([], {
           relativeTo: this.route,
-          queryParams: { roleId: this.roleId },
+          queryParams: {
+            roleId: this.roleId,
+            executive: this.isExecutive
+          },
           queryParamsHandling: 'merge'
         });
         this.getRoleWiseCandidates();
@@ -149,6 +156,8 @@ export class ResourcesViewComponent implements OnInit {
     if (this.searchText) queryString += `&search=${this.searchText}`;
     if (this.activeFilter && !this.inactiveFilter) queryString += '&active=true';
     if (!this.activeFilter && this.inactiveFilter) queryString += '&active=false';
+    // Always include executive parameter (true or false)
+    queryString += `&executive=${this.isExecutive}`;
 
     this.superService.getCandidatesByRole(this.roleId + queryString).subscribe({
       next: (res: any) => {
@@ -222,13 +231,20 @@ export class ResourcesViewComponent implements OnInit {
       queryParams: {
         roleId: this.roleId,
         page: this.page,
-        search: this.searchText || null
+        search: this.searchText || null,
+        executive: this.isExecutive
       },
       queryParamsHandling: 'merge'
     });
   }
 
   onFilterChange() {
+    this.page = 1;
+    this.updateUrlWithParams();
+    this.getRoleWiseCandidates();
+  }
+
+  onExecutiveToggle() {
     this.page = 1;
     this.updateUrlWithParams();
     this.getRoleWiseCandidates();
