@@ -1,1 +1,128 @@
-<p>sub-expertise-view-bid-manager works!</p>
+<main id="main">
+  <section class="casestudy-section">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h4 class="text-theme mb-0"><strong>{{expertiseName}} - Sub Expertise View</strong></h4>
+        <div>
+          <button class="btn btn-primary btn-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i> Back
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!subExpertiseList?.length" class="text-center py-4">
+        <app-no-record-found></app-no-record-found>
+      </div>
+
+      <div class="accordion" id="subExpertiseAccordion">
+        <div class="accordion-item mb-3" *ngFor="let item of subExpertiseList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: subExpertiseList.length }; let i = index">
+          <div class="accordion-header position-relative border rounded" [id]="'heading' + i">
+            <button class="accordion-button collapsed w-100 px-4 py-3 text-start border-0 bg-light" type="button"
+              data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
+              aria-expanded="false" [attr.aria-controls]="'collapse' + i"
+              (click)="toggleCollapse(i)">
+              <span class="fw-bold">{{ item.name || 'Unnamed Sub-expertise' }}</span>
+
+              <!-- Show file count -->
+              <span class="ms-3 badge bg-secondary">
+                Files: {{ getFileCount(item) }}
+              </span>
+
+              <!-- Show supplier count -->
+              <span class="ms-2 badge bg-primary">
+                Suppliers: {{ item.suppliers?.length || countSuppliers(item) }}
+              </span>
+
+              <i class="bi" [ngClass]="{'bi-chevron-down': !isCollapsed(i), 'bi-chevron-up': isCollapsed(i)}"
+                 style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);"></i>
+            </button>
+          </div>
+          <div [id]="'collapse' + i" class="accordion-collapse collapse border rounded" [attr.aria-labelledby]="'heading' + i"
+            data-bs-parent="#subExpertiseAccordion">
+            <div class="p-0">
+              <!-- Files Table with suppliers -->
+              <div class="p-3">
+                <div class="table-responsive">
+                  <table class="table table-bordered mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width: 25%;">Supplier</th>
+                        <th style="width: 30%;">File Name</th>
+                        <th style="width: 25%;">Uploaded At</th>
+                        <th style="width: 20%; text-align: center;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Loop through suppliers even if they have no files -->
+                      <ng-container *ngFor="let supplier of getSuppliers(item)">
+                        <!-- If supplier has files, show each file -->
+                        <ng-container *ngIf="supplier.files && supplier.files.length > 0; else noFiles">
+                          <ng-container *ngFor="let file of supplier.files; let j = index">
+                            <tr>
+                              <!-- Show supplier name only for the first row -->
+                              <td *ngIf="j === 0" [attr.rowspan]="supplier.files.length" class="align-middle bg-light">
+                                <span class="fw-bold">{{ supplier.supplierName }}</span>
+                              </td>
+                              <td>{{ file.fileName }}</td>
+                              <td>{{ file.createdAt | date : 'dd/MM/yyyy, h:mm a' }}</td>
+                              <td class="text-center">
+                                <a class="btn btn-primary btn-sm me-2" [href]="file.fileUrl" target="_blank" title="Download">
+                                  <i class="bi bi-download"></i>
+                                </a>
+                                <button (click)="deleteDoc(file?._id)" class="btn btn-danger btn-sm" title="Delete">
+                                  <i class="bi bi-trash3-fill"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+
+                        <!-- If supplier has no files, show a single row -->
+                        <ng-template #noFiles>
+                          <tr>
+                            <td class="bg-light">
+                              <span class="fw-bold">{{ supplier.supplierName }}</span>
+                            </td>
+                            <td colspan="3" class="text-center text-muted">
+                              No files available for this supplier
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </ng-container>
+
+                      <!-- Show message if no suppliers available -->
+                      <tr *ngIf="getSuppliers(item).length === 0">
+                        <td colspan="4" class="text-center">
+                          No suppliers available for this sub-expertise
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <pagination-controls
+          (pageChange)="page = $event">
+        </pagination-controls>
+      </div>
+    </div>
+  </section>
+</main>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<style>
+  .accordion-button::after {
+    display: none;
+  }
+  .badge {
+    font-size: 0.75rem;
+  }
+</style>

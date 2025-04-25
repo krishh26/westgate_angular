@@ -97,7 +97,7 @@ export class ExpertiseViewBidManagerComponent {
       queryParams.expertiseId = item._id;
     }
 
-    this.router.navigate(['/super-admin/sub-expertise-view'], {
+    this.router.navigate(['/project-manager/project/sub-expertise-view-bid-manager'], {
       queryParams: queryParams
     });
   }
