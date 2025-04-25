@@ -431,7 +431,7 @@ export class CompletedTodoTaskComponent {
   }
 
   projectDetails(projectId: any) {
-    const modalElement = document.getElementById('viewAllProjects');
+    const modalElement = document.getElementById('taskDetailsModal');
 
     if (modalElement) {
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -453,8 +453,14 @@ export class CompletedTodoTaskComponent {
       document.documentElement.style.overflow = 'auto';
       document.documentElement.style.height = 'auto';
 
-      // Now navigate to the details page
-      this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+      // Check if the project status is 'Fail' to determine the redirect path
+      if (this.modalTask?.project?.status === 'Fail') {
+        // Redirect to completed-project-details route
+        this.router.navigate(['/project-manager/project/completed-project-details'], { queryParams: { id: projectId } });
+      } else {
+        // Use the original bid-manager-project-details route
+        this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
+      }
     }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
   }
 
