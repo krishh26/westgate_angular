@@ -180,7 +180,7 @@ export class SupplierUserProfileDataComponent {
       inHoldComment: comment
     };
 
-    this.httpClient.patch(`${environment.baseUrl}/user/update/6803de6058bebed1012544ad`, payload)
+    this.httpClient.patch(`${environment.baseUrl}/user/update/${this.supplierID}`, payload)
       .subscribe(
         (response: any) => {
           this.showLoader = false;
