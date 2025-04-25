@@ -22,6 +22,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
   isToggled: boolean = false;
   isLoading = false;
   totalActiveCandidates: number = 0;
+  totalresourcescount: number = 0;
 
   constructor(
     private superadminService: SuperadminService,
@@ -54,6 +55,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
         this.rolesList = response.data?.roles || [];
         this.totalRecords = this.rolesList.length;
         this.totalActiveCandidates = response.data?.totalActiveCandidates || 0;
+        this.totalresourcescount = response.data?.total || 0;
        // this.calculateTotalActiveCandidates();
         this.loading = false;
         this.spinner.hide();
