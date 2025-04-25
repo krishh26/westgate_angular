@@ -64,6 +64,7 @@
           <thead>
             <tr>
               <th>Expertise</th>
+              <th>Total Sub Expertise</th>
               <th>Total Supplier</th>
               <th>Active Supplier</th>
               <th></th>
@@ -80,6 +81,7 @@
 
             <tr *ngFor="let item of currentList">
               <td>{{ item?.name || item?.expertise }}</td>
+              <td>{{ item?.subExpertiseCount || item?.count || 0 }}</td>
               <td>{{ item?.totalSupplierCount || 0 }}</td>
               <td>{{ item?.activeSupplierCount || 0 }}</td>
               <td>
