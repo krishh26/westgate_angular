@@ -13,9 +13,6 @@ import Swal from 'sweetalert2';
 export class RolesListComponent implements OnInit {
   rolesList: any[] = [];
   isLoading = false;
-  page: number = 1;
-  pagesize: number = 10;
-  totalRecords: number = 0;
 
   constructor(
     private superService: SuperadminService,
@@ -27,12 +24,6 @@ export class RolesListComponent implements OnInit {
     this.getRolesList();
   }
 
-  pageChanged(event: any) {
-    this.page = event;
-    this.getRolesList();
-  }
-
-
   getRolesList() {
     this.isLoading = true;
     this.superService.getAllRoles().subscribe({
@@ -41,7 +32,6 @@ export class RolesListComponent implements OnInit {
         if (response && response.status) {
           console.log('API Response:', response.data); // Log the API response
           this.rolesList = response?.data?.roles || [];
-          this.totalRecords = response?.data?.totalCount || 0;
           console.log('Roles List:', this.rolesList); // Log the processed roles list
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch roles');

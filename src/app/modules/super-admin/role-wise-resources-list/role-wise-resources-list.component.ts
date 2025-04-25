@@ -53,7 +53,8 @@ export class RoleWiseResourcesListComponent implements OnInit {
       next: (response) => {
         this.rolesList = response.data?.roles || [];
         this.totalRecords = this.rolesList.length;
-        this.calculateTotalActiveCandidates();
+        this.totalActiveCandidates = response.data?.totalActiveCandidates || 0;
+       // this.calculateTotalActiveCandidates();
         this.loading = false;
         this.spinner.hide();
       },
@@ -65,11 +66,11 @@ export class RoleWiseResourcesListComponent implements OnInit {
     });
   }
 
-  calculateTotalActiveCandidates() {
-    this.totalActiveCandidates = this.rolesList.reduce((total, role) => {
-      return total + (role.activeCandidatesCount || 0);
-    }, 0);
-  }
+  // calculateTotalActiveCandidates() {
+  //   this.totalActiveCandidates = this.rolesList.reduce((total, role) => {
+  //     return total + (role.activeCandidatesCount || 0);
+  //   }, 0);
+  // }
 
   searchtext() {
     this.page = 1;
