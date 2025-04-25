@@ -46,13 +46,13 @@
                     style="cursor: pointer; background-color: #6c757d; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px;"
                     [ngClass]="{'border border-dark': currentFilter === 'inHold'}"
                     (click)="applyFilter('inHold')">InHold Supplier: {{totalInHoldCount}}</span>
-                  <span class="badge py-2 px-3"
+                  <!-- <span class="badge py-2 px-3"
                     style="cursor: pointer; background-color: #343a40; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px;"
                     [ngClass]="{'border border-dark': currentFilter === 'isDeleted'}"
                     (click)="applyFilter('isDeleted')">Deleted Supplier: {{totalDeletedCount}}</span>
                   <span class="badge py-2 px-3"
                     style="background-color: #007bff; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px;">
-                    Total Employees: {{totalSupplierEmployeeCount}}</span>
+                    Total Employees: {{totalSupplierEmployeeCount}}</span> -->
                   <span class="badge py-2 px-3"
                     style="cursor: pointer; background-color: white; color: #212529; border: 1px solid #dee2e6; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px;"
                     (click)="applyFilter('clear')">Clear Filters</span>
