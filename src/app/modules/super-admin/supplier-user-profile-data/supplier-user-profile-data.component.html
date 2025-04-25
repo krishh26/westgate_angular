@@ -90,7 +90,8 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Year of Establishment</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" readonly>
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" readonly>
                 </div>
               </div>
 
@@ -233,7 +234,8 @@
                 </div>
                 <div class="col-md-4 mb-3" *ngIf="!supplierDetails?.active">
                   <label class="form-label">Inactive Date</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.inactiveDate | date:'dd/MM/yyyy HH:mm'" readonly>
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.inactiveDate | date:'dd/MM/yyyy HH:mm'" readonly>
                 </div>
               </div>
 
@@ -307,13 +309,10 @@
               <div class="row">
                 <div class="col-md-12 mb-3">
                   <label for="comment" class="form-label">Comment</label>
-                  <textarea
-                    id="comment"
-                    rows="4"
-                    class="form-control"
-                    formControlName="comment"
+                  <textarea id="comment" rows="4" class="form-control" formControlName="comment"
                     placeholder="Enter your comment here"></textarea>
-                  <div *ngIf="inHoldCommentForm.get('comment')?.invalid && inHoldCommentForm.get('comment')?.touched" class="text-danger">
+                  <div *ngIf="inHoldCommentForm.get('comment')?.invalid && inHoldCommentForm.get('comment')?.touched"
+                    class="text-danger">
                     Comment is required
                   </div>
                 </div>
@@ -332,7 +331,7 @@
     </div>
 
     <!-- Existing InHold Comments -->
-    <div class="row mt-4" *ngIf="supplierDetails?.isInHold === true">
+    <div class="row mt-4">
       <div class="col-12">
         <div class="card">
           <div class="card-body">
