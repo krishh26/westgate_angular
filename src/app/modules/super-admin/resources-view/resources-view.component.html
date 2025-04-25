@@ -88,10 +88,7 @@
               <td>{{candidate?.fullName}}</td>
               <td>
                 <div class="d-flex flex-wrap gap-1">
-                  <span *ngFor="let role of candidate?.roleId">
-                    <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{role.name}}</span>
-                  </span>
-                  <span *ngIf="!candidate?.roleId || candidate.roleId.length === 0">-</span>
+                  {{getRoleNames(candidate?.roleId)}}
                 </div>
               </td>
               <td>{{candidate?.totalExperience}} years</td>

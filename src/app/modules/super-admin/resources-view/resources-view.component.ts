@@ -256,4 +256,9 @@ export class ResourcesViewComponent implements OnInit {
     // Uncomment if you want to clear it when leaving the page
     // localStorage.removeItem('selectedRoleId');
   }
+
+  getRoleNames(roles: any[]): string {
+    if (!roles || roles.length === 0) return '-';
+    return roles.map(role => role.name).join(', ');
+  }
 }
