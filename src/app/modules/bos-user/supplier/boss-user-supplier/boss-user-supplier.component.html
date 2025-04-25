@@ -109,11 +109,11 @@
               <th>Last Login</th>
               <th>Total Employees</th>
               <th>Total Candidates</th>
-              <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
+              <th>
                 Assigned Projects</th>
-              <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
+              <th>InHold Comment</th>
               <th>Action</th>
-              <th *ngIf="currentFilter !== 'isDeleted'">Status</th>
+              <th *ngIf="currentFilter === 'inHold'">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -131,10 +131,10 @@
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>{{item?.employeeCount}}</td>
               <td>{{item?.totalCandidates}}</td>
-              <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
+              <td >
                 {{item?.assignedProjectCount}}
               </td>
-              <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
+              <td >
                 {{ getFirstInHoldComment(item?.inHoldComment) }}
               </td>
               <td>
@@ -143,7 +143,7 @@
                   View
                 </a>
               </td>
-              <td *ngIf="currentFilter !== 'isDeleted'">
+              <td *ngIf="currentFilter === 'inHold'">
                 <label class="switch">
                   <input type="checkbox" [(ngModel)]="item.active" (ngModelChange)="onToggleSwitch(item)">
                   <span class="slider round"></span>
