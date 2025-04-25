@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
 interface ExpertiseItem {
   itemId: string | null;
   name: string;
@@ -44,9 +47,17 @@ export class SupplierUserProfileEditComponent implements OnInit {
   showSupplierTypeError: boolean = false;
   currentExpertise: string = '';
   currentSubExpertise: string = '';
+  selectedExpertise: ExpertiseItem | null = null;
+  selectedExpertiseName: string = '';
+  subExpertiseOptions: string[] = [];
+  subExpertiseInput$ = new Subject<string>();
   randomString: string = '';
   expertiseDropdownOptions: ExpertiseItem[] = [];
   inHoldComment: string = '';
+
+  // Individual selection for the active sub-expertise dropdown
+  activeSubExpertiseSelection: string[] = [];
+  activeExpertiseIndex: number = -1;
 
   constructor(
     private notificationService: NotificationService,
@@ -74,11 +85,34 @@ export class SupplierUserProfileEditComponent implements OnInit {
         this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
       }
     }
+
+    // Setup typeahead for sub-expertise search
+    this.subExpertiseInput$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.showLoader = true;
+        return this.superadminService.getSubExpertiseDropdownList(term);
+      })
+    ).subscribe(response => {
+      this.showLoader = false;
+      if (response?.status) {
+        this.subExpertiseOptions = response.data || [];
+      }
+    });
   }
 
   ngOnInit(): void {
     // Initialize if needed
     this.getExpertiseDropdownData();
+    this.getSubExpertiseDropdownData();
+  }
+
+  // Method to set the active expertise being edited
+  setActiveExpertise(index: number) {
+    this.activeExpertiseIndex = index;
+    this.activeSubExpertiseSelection = [];
+    console.log('Set active expertise to index:', index);
   }
 
   getExpertiseDropdownData() {
@@ -114,6 +148,50 @@ export class SupplierUserProfileEditComponent implements OnInit {
     );
   }
 
+  getSubExpertiseDropdownData(searchText: string = '') {
+    this.showLoader = true;
+    console.log('Fetching sub-expertise data...');
+
+    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
+      (response) => {
+        console.log('Sub-expertise API response:', response);
+
+        if (response?.status) {
+          // Handle the array of strings directly
+          this.subExpertiseOptions = response.data || [];
+          console.log('Loaded sub-expertise options:', this.subExpertiseOptions);
+
+          // Add dummy data if API returns empty
+          if (this.subExpertiseOptions.length === 0) {
+            this.addFallbackSubExpertiseOptions();
+          }
+        } else {
+          console.error('Failed to fetch sub-expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch sub-expertise dropdown data');
+          this.addFallbackSubExpertiseOptions();
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching sub-expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching sub-expertise dropdown data');
+        this.addFallbackSubExpertiseOptions();
+        this.showLoader = false;
+      }
+    );
+  }
+
+  addFallbackSubExpertiseOptions() {
+    // This is just for testing if the dropdown works with data
+    this.subExpertiseOptions = [
+      'Banking',
+      'Information Technology (IT)',
+      'Education',
+      'Healthcare',
+      'Insurance'
+    ];
+    console.log('Added fallback sub-expertise options:', this.subExpertiseOptions);
+  }
 
   removeArrayItem(arrayName: string, index: number) {
     if (this.supplierDetails[arrayName]) {
@@ -138,11 +216,80 @@ export class SupplierUserProfileEditComponent implements OnInit {
       if (!this.supplierDetails.expertise) {
         this.supplierDetails.expertise = [];
       }
+
       this.supplierDetails.expertise.push({
         name: this.currentExpertise.trim(),
         subExpertise: []
       });
+
       this.currentExpertise = '';
+    }
+  }
+
+  addExpertiseFromSelection() {
+    console.log('Method called with selectedExpertiseName:', this.selectedExpertiseName);
+    console.log('Available expertiseDropdownOptions:', this.expertiseDropdownOptions);
+
+    if (this.selectedExpertiseName) {
+      // Find the selected expertise from the dropdown options
+      const selectedExp = this.expertiseDropdownOptions.find(exp => exp.name === this.selectedExpertiseName);
+
+      console.log('Found expertise object:', selectedExp);
+
+      if (selectedExp) {
+        // Check if this expertise already exists in the list
+        const exists = this.supplierDetails.expertise.some((item: any) =>
+          item.name === this.selectedExpertiseName
+        );
+
+        console.log('Expertise already exists:', exists);
+
+        if (!exists) {
+          // Initialize expertise array if it doesn't exist
+          if (!this.supplierDetails.expertise) {
+            this.supplierDetails.expertise = [];
+          }
+
+          // Add the new expertise
+          this.supplierDetails.expertise.push({
+            name: selectedExp.name,
+            type: selectedExp.type || 'technologies',
+            itemId: selectedExp.itemId,
+            subExpertise: []
+          });
+
+          console.log('Added expertise:', selectedExp.name);
+          console.log('Updated expertise list:', this.supplierDetails.expertise);
+
+          // Notify user of successful addition
+          this.notificationService.showSuccess(`Added expertise: ${selectedExp.name}`);
+        } else {
+          console.log('Expertise already exists:', selectedExp.name);
+          this.notificationService.showInfo(`Expertise "${selectedExp.name}" already exists`);
+        }
+      } else {
+        console.log('Selected expertise not found in dropdown options');
+
+        // Try adding by name directly as a fallback
+        if (!this.supplierDetails.expertise) {
+          this.supplierDetails.expertise = [];
+        }
+
+        this.supplierDetails.expertise.push({
+          name: this.selectedExpertiseName,
+          type: 'technologies',
+          subExpertise: []
+        });
+
+        console.log('Added expertise by name directly:', this.selectedExpertiseName);
+        this.notificationService.showSuccess(`Added expertise: ${this.selectedExpertiseName}`);
+      }
+
+      // Clear the selection
+      this.selectedExpertiseName = '';
+    } else {
+      console.log('No expertise selected');
+      this.notificationService.showWarning('Please select an expertise first');
     }
   }
 
@@ -156,6 +303,30 @@ export class SupplierUserProfileEditComponent implements OnInit {
     if (this.currentSubExpertise && this.supplierDetails.expertise[expertiseIndex]) {
       this.supplierDetails.expertise[expertiseIndex].subExpertise.push(this.currentSubExpertise.trim());
       this.currentSubExpertise = '';
+    }
+  }
+
+  // Add multiple sub-expertise method updated to use the active selection
+  addMultipleSubExpertise(expertiseIndex: number) {
+    console.log('Adding multiple sub-expertise:', this.activeSubExpertiseSelection, 'to expertise index:', expertiseIndex);
+
+    if (this.activeSubExpertiseSelection && this.activeSubExpertiseSelection.length > 0) {
+      // Get existing sub-expertise as a Set for faster lookup
+      const existingSubExpertise = new Set(this.supplierDetails.expertise[expertiseIndex].subExpertise);
+
+      // Add each selected sub-expertise that doesn't already exist
+      for (const subExp of this.activeSubExpertiseSelection) {
+        if (!existingSubExpertise.has(subExp)) {
+          this.supplierDetails.expertise[expertiseIndex].subExpertise.push(subExp);
+        }
+      }
+
+      console.log('Updated sub-expertise list:', this.supplierDetails.expertise[expertiseIndex].subExpertise);
+
+      // Clear the selection
+      this.activeSubExpertiseSelection = [];
+    } else {
+      console.log('No sub-expertise selected');
     }
   }
 
@@ -178,6 +349,16 @@ export class SupplierUserProfileEditComponent implements OnInit {
     this.showSupplierTypeError = !this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier;
   }
 
+  hasInvalidExpertise(): boolean {
+    if (!this.supplierDetails.expertise || this.supplierDetails.expertise.length === 0) {
+      return false; // No expertise selected yet, so not invalid
+    }
+
+    return this.supplierDetails.expertise.some((exp: any) =>
+      !exp.subExpertise || exp.subExpertise.length === 0
+    );
+  }
+
   submitForm() {
     if (!this.supplierDetails.companyName || !this.supplierDetails.poc_name || !this.supplierDetails.poc_phone) {
       this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
@@ -191,6 +372,18 @@ export class SupplierUserProfileEditComponent implements OnInit {
       return;
     } else {
       this.showSupplierTypeError = false;
+    }
+
+    // Check if all expertise items have at least one sub-expertise
+    if (this.supplierDetails.expertise.length > 0) {
+      const missingSubExpertise = this.supplierDetails.expertise.some((expertise: any) =>
+        !expertise.subExpertise || expertise.subExpertise.length === 0
+      );
+
+      if (missingSubExpertise) {
+        this.notificationService.showError('Each expertise must have at least one sub-expertise');
+        return;
+      }
     }
 
     // Create a new object without the inHoldComment field

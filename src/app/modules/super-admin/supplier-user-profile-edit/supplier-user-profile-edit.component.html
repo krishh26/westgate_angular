@@ -236,9 +236,55 @@
                   <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
-                      <ng-select [items]="expertiseDropdownOptions" bindLabel="name" placeholder="Select expertise"
-                        [(ngModel)]="supplierDetails.expertise" name="expertise" [clearable]="true" [multiple]="true">
-                      </ng-select>
+                      <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                          <span class="badge bg-primary me-2">{{ expertise.name }}</span>
+                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                        </div>
+                        <div class="ms-3">
+                          <div *ngFor="let sub of expertise.subExpertise; let j = index"
+                            class="d-flex align-items-center mb-1">
+                            <span class="badge bg-secondary me-2">{{ sub }}</span>
+                            <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
+                          </div>
+                          <div class="mt-2">
+                            <ng-select
+                              [(ngModel)]="activeSubExpertiseSelection"
+                              name="subExpertise_{{i}}"
+                              [items]="subExpertiseOptions"
+                              [multiple]="true"
+                              placeholder="Select sub-expertise (required)"
+                              [closeOnSelect]="false"
+                              [searchable]="true"
+                              [clearable]="true"
+                              (focus)="setActiveExpertise(i)">
+                            </ng-select>
+                            <button type="button" class="btn btn-primary mt-2"
+                              (click)="addMultipleSubExpertise(i)"
+                              [disabled]="!activeSubExpertiseSelection || activeSubExpertiseSelection.length === 0">
+                              Add Sub-Expertise
+                            </button>
+                            <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
+                              Sub-expertise is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-2">
+                        <div class="dropdown">
+                          <select class="form-select" [(ngModel)]="selectedExpertiseName" name="selectedExpertiseName">
+                            <option value="" disabled selected>Select expertise</option>
+                            <option *ngFor="let exp of expertiseDropdownOptions" [value]="exp.name">
+                              {{ exp.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <button type="button" class="btn btn-primary mt-2"
+                          (click)="addExpertiseFromSelection()"
+                          [disabled]="!selectedExpertiseName">
+                          Add Expertise
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -375,7 +421,8 @@
             <button type="button" routerLink="/super-admin/supplier-user-profile" class="btn btn-primary">Back</button>&nbsp;
             <button type="submit" class="btn btn-primary"
               [disabled]="!supplierDetails.companyName || !supplierDetails.poc_name || !supplierDetails.poc_phone ||
-                        (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier)">
+                        (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier) ||
+                        hasInvalidExpertise()">
               Update Supplier
             </button>
           </div>

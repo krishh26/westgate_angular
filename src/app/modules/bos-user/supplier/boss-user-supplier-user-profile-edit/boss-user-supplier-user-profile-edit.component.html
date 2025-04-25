@@ -55,8 +55,8 @@
                 <div class="row">
                   <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
                   <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.companyAddress" name="companyAddress" type="text" class="form-control"
-                      placeholder="Enter company address" id="companyAddress">
+                    <input [(ngModel)]="supplierDetails.companyAddress" name="companyAddress" type="text"
+                      class="form-control" placeholder="Enter company address" id="companyAddress">
                   </div>
                 </div>
               </div>
@@ -85,8 +85,9 @@
                 <div class="row">
                   <label for="phone" class="col-sm-4 col-form-label">Contact Number</label>
                   <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.companyContactNumber" name="phone" type="text" class="form-control"
-                      placeholder="Enter contact number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="phone">
+                    <input [(ngModel)]="supplierDetails.companyContactNumber" name="phone" type="text"
+                      class="form-control" placeholder="Enter contact number" [maxlength]="10" [minlength]="10"
+                      (keypress)="NumberOnly($event)" id="phone">
                   </div>
                 </div>
               </div>
@@ -121,7 +122,8 @@
                   <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone</label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_phone" name="poc_phone" type="text" class="form-control"
-                      placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone">
+                      placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10"
+                      (keypress)="NumberOnly($event)" id="poc_phone">
                   </div>
                 </div>
               </div>
@@ -159,7 +161,8 @@
                       <div *ngFor="let type of supplierDetails.typeOfCompany; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ type }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('typeOfCompany', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('typeOfCompany', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -179,7 +182,8 @@
                       <div *ngFor="let industry of supplierDetails.industry_Sector; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ industry }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industry_Sector', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('industry_Sector', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -195,8 +199,9 @@
                 <div class="row">
                   <label for="employeeCount" class="col-sm-4 col-form-label">Company Size</label>
                   <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text" class="form-control"
-                      placeholder="Enter employee count" (keypress)="NumberOnly($event)" id="employeeCount">
+                    <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text"
+                      class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)"
+                      id="employeeCount">
                   </div>
                 </div>
               </div>
@@ -209,7 +214,8 @@
                       <div *ngFor="let cert of supplierDetails.certifications; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ cert }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('certifications', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('certifications', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -232,7 +238,8 @@
                           <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
                         </div>
                         <div class="ms-3">
-                          <div *ngFor="let sub of expertise.subExpertise; let j = index" class="d-flex align-items-center mb-1">
+                          <div *ngFor="let sub of expertise.subExpertise; let j = index"
+                            class="d-flex align-items-center mb-1">
                             <span class="badge bg-secondary me-2">{{ sub }}</span>
                             <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
                           </div>
@@ -244,8 +251,8 @@
                         </div>
                       </div>
                       <div class="mt-2">
-                        <input type="text" class="form-control" [(ngModel)]="currentExpertise"
-                          name="expertiseName" placeholder="Enter expertise name and press Enter"
+                        <input type="text" class="form-control" [(ngModel)]="currentExpertise" name="expertiseName"
+                          placeholder="Enter expertise name and press Enter"
                           (keydown.enter)="$event.preventDefault(); addExpertise(); currentExpertise=''">
                       </div>
                     </div>
@@ -261,7 +268,8 @@
                       <div *ngFor="let cat of supplierDetails.categoryList; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ cat }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('categoryList', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('categoryList', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -281,7 +289,8 @@
                       <div *ngFor="let tech of supplierDetails.technologyStack; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ tech }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologyStack', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('technologyStack', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -306,7 +315,8 @@
                       <div *ngFor="let client of supplierDetails.keyClients; let i = index" class="mb-2">
                         <div class="d-flex align-items-center">
                           <span class="badge bg-primary me-2">{{ client }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('keyClients', i)"></button>
+                          <button type="button" class="btn-close ms-2"
+                            (click)="removeArrayItem('keyClients', i)"></button>
                         </div>
                       </div>
                       <div class="mt-2">
@@ -324,7 +334,8 @@
         <!-- Submit Button -->
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button type="button" routerLink="/boss-user/supplier-user-profile" class="btn btn-primary">Back</button>&nbsp;
+            <button type="button" routerLink="/boss-user/supplier-user-profile"
+              class="btn btn-primary">Back</button>&nbsp;
             <button type="submit" class="btn btn-primary">Update Supplier</button>
           </div>
         </div>

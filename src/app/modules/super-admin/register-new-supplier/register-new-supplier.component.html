@@ -252,9 +252,56 @@
                       <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                       <div class="col-sm-8">
                         <div class="form-control p-2">
-                          <ng-select [items]="expertiseDropdownOptions" bindLabel="name" placeholder="Select expertise"
-                            [(ngModel)]="companyForm.expertise" name="expertise" [clearable]="true" [multiple]="true">
-                          </ng-select>
+                          <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                              <span class="badge bg-primary me-2">{{ expertise.name }}</span>
+                              <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                            </div>
+                            <div class="ms-3">
+                              <div *ngFor="let sub of expertise.subExpertise; let j = index"
+                                class="d-flex align-items-center mb-1">
+                                <span class="badge bg-secondary me-2">{{ sub }}</span>
+                                <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
+                              </div>
+                              <div class="mt-2">
+                                <div class="dropdown">
+                                  <ng-select
+                                    [(ngModel)]="selectedSubExpertise"
+                                    name="subExpertise_{{i}}"
+                                    [items]="subExpertiseOptions"
+                                    [multiple]="true"
+                                    placeholder="Select sub-expertise (required)"
+                                    [closeOnSelect]="false"
+                                    [searchable]="true"
+                                    [clearable]="true">
+                                  </ng-select>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-2"
+                                  (click)="addMultipleSubExpertise(i)"
+                                  [disabled]="!selectedSubExpertise || selectedSubExpertise.length === 0">
+                                  Add Sub-Expertise
+                                </button>
+                                <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
+                                  Sub-expertise is required
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <div class="dropdown">
+                              <select class="form-select" [(ngModel)]="selectedExpertiseName" name="selectedExpertiseName">
+                                <option value="" disabled selected>Select expertise</option>
+                                <option *ngFor="let exp of expertiseDropdownOptions" [value]="exp.name">
+                                  {{ exp.name }}
+                                </option>
+                              </select>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2"
+                              (click)="addExpertiseFromSelection()"
+                              [disabled]="!selectedExpertiseName">
+                              Add Expertise
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -393,7 +440,8 @@
         <div class="row mt-4">
           <div class="col-12 text-end">
             <button type="submit" class="btn btn-primary mob-w-100 me-2" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone ||
-                        (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier)">Submit</button>
+                        (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier) ||
+                        hasInvalidExpertise()">Submit</button>
           </div>
         </div>
       </form>
