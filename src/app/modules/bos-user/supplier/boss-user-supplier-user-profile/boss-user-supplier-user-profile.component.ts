@@ -36,6 +36,13 @@ export class BossUserSupplierUserProfileComponent {
   ) { }
 
   ngOnInit() {
+    // Check if the hideOtherTabs flag is set in localStorage
+    if (localStorage.getItem('hideOtherTabs') === 'true') {
+      // Redirect to the Historical Data tab if the flag is set
+      this.router.navigate(['/boss-user/admin-case-study-list']);
+      return;
+    }
+
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);

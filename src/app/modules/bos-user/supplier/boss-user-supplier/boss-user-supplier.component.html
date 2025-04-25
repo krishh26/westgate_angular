@@ -139,7 +139,7 @@
               </td>
               <td>
                 <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
-                  title="View Details">
+                  title="{{ ['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(currentFilter) ? 'View Historical Data' : 'View Profile' }}">
                   View
                 </a>
               </td>
@@ -172,6 +172,9 @@
           <button class="btn btn-sm btn-outline-dark float-end" (click)="applyFilter('clear')">
             <i class="bi bi-x-circle"></i> Clear Filter
           </button>
+          <div *ngIf="['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(currentFilter)" class="mt-2 small">
+            <i class="bi bi-info-circle"></i> When using the "View" button, you will only see the <strong>Historical Data</strong> tab. The Profile and Case Studies tabs will be hidden.
+          </div>
         </div>
       </div>
 

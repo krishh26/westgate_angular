@@ -33,6 +33,7 @@ export class BossUserAdminCaseStudyListComponent {
   categoryList: any = [];
   supplierData: any = [];
   supplierID: string = '';
+  hideOtherTabs: boolean = false;
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -60,6 +61,10 @@ export class BossUserAdminCaseStudyListComponent {
     } else {
       console.log("No supplier data found in localStorage");
     }
+
+    // Check if the hideOtherTabs flag is set in localStorage
+    this.hideOtherTabs = localStorage.getItem('hideOtherTabs') === 'true';
+
     this.getCaseStudiesList();
     this.getCategoryList();
     this.selectedCasestudy = 'https://f005.backblazeb2.com/file/west-get-it-hub-1/caseStudy/1727203790532_Historical Data.xlsx';

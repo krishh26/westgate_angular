@@ -443,8 +443,20 @@ export class BossUserSupplierComponent {
 
   projectDetails(projectId: any, item: any) {
     let data = item;
-    localStorage.setItem('supplierData', JSON.stringify(data))
-    this.router.navigate(['/boss-user/admin-case-study-list']);
+    localStorage.setItem('supplierData', JSON.stringify(data));
+
+    // Check if current filter is one of the filters that should navigate directly to historical data
+    if (['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(this.currentFilter)) {
+      // Add a flag to indicate to hide other tabs except the Historical Data tab
+      localStorage.setItem('hideOtherTabs', 'true');
+      // Navigate directly to the historical data tab
+      this.router.navigate(['/boss-user/admin-case-study-list']);
+    } else {
+      // For other cases, make sure we clear the flag
+      localStorage.removeItem('hideOtherTabs');
+      // Navigate to the default profile view
+      this.router.navigate(['/boss-user/supplier-user-profile']);
+    }
   }
 
   paginate(page: number) {

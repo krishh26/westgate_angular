@@ -27,6 +27,7 @@ export class BossUserExpertiseListComponent {
   viewDocs: any;
   supplierFiles: any = [];
   newExpertise: string = '';
+  hideOtherTabs: boolean = false;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -38,14 +39,23 @@ export class BossUserExpertiseListComponent {
   ) { }
 
   ngOnInit() {
+    // Check if the hideOtherTabs flag is set in localStorage
+    this.hideOtherTabs = localStorage.getItem('hideOtherTabs') === 'true';
+
+    if (this.hideOtherTabs) {
+      // Redirect to the Historical Data tab if the flag is set
+      this.router.navigate(['/boss-user/admin-case-study-list']);
+      return;
+    }
+
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
       this.supplierID = this.supplierData?._id;
+      this.getSupplierdata();
     } else {
       console.log("No supplier data found in localStorage");
     }
-    this.getSupplierdata();
     this.getSupplierdetail();
   }
 

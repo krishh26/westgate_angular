@@ -5,13 +5,13 @@
       <div class="row align-items-center">
         <nav>
           <ul class="projects-nav-tab">
-            <li routerLink="/boss-user/supplier-user-profile">
+            <li *ngIf="!hideOtherTabs" routerLink="/boss-user/supplier-user-profile">
               <a>Profile</a>
             </li>
             <li routerLink="/boss-user/admin-case-study-list">
               <a class="active">Historical Data</a>
             </li>
-            <li routerLink="/boss-user/expertise-list">
+            <li *ngIf="!hideOtherTabs" routerLink="/boss-user/expertise-list">
               <a>Case Studies</a>
             </li>
             <!-- <li routerLink="/boss-user/resources-list">
