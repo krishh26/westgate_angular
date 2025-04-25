@@ -25,6 +25,7 @@ export class ProjectMangerHeaderTwoComponent {
     // { route: '/project-manager/project/all', title: 'Live Projects' },
     { route: '/project-manager/project/todo-task', title: 'To Do Task' },
     { route: '/project-manager/project/bid-manager-to-action', title: 'My Projects' },
+    { route: '/project-manager/project/expertise-view-bid-manager', title: 'Expertise View' },
   ];
 
 

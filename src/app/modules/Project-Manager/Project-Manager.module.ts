@@ -39,7 +39,8 @@ import { PmChangePasswordComponent } from './pm-change-password/pm-change-passwo
 import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
 import { AddEditProjectComponent } from './add-edit-project/add-edit-project.component';
 import { NgxEditorModule } from 'ngx-editor';
-
+import { ExpertiseViewBidManagerComponent } from './expertise-view-bid-manager/expertise-view-bid-manager.component';
+import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-manager/sub-expertise-view-bid-manager.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -84,7 +85,9 @@ import { NgxEditorModule } from 'ngx-editor';
     ProjectManagerFailedProjectComponent,
     PmChangePasswordComponent,
     CompletedProjectDetailsComponent,
-    AddEditProjectComponent
+    AddEditProjectComponent,
+    ExpertiseViewBidManagerComponent,
+    SubExpertiseViewBidManagerComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],

@@ -28,6 +28,8 @@ import { ProjectManagerFailedProjectComponent } from './project-manager-failed-p
 import { PmChangePasswordComponent } from './pm-change-password/pm-change-password.component';
 import { CompletedProjectDetailsComponent } from './completed-project-details/completed-project-details.component';
 import { AddEditProjectComponent } from './add-edit-project/add-edit-project.component';
+import { ExpertiseViewBidManagerComponent } from './expertise-view-bid-manager/expertise-view-bid-manager.component';
+import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-manager/sub-expertise-view-bid-manager.component';
 
 const routes: Routes = [
   {
@@ -142,7 +144,17 @@ const routes: Routes = [
       {
         path: "add-edit-project",
         component: AddEditProjectComponent
-      }
+      },
+      {
+        path: "expertise-view-bid-manager",
+        component: ExpertiseViewBidManagerComponent
+      },
+      {
+        path: "sub-expertise-view-bid-manager",
+        component: SubExpertiseViewBidManagerComponent
+      },
+
+
 
     ],
   },
