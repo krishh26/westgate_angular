@@ -62,7 +62,8 @@ export class SuperAdminSupplierComponent {
   ) { }
 
   ngOnInit(): void {
-    this.getManageUserList();
+    // Apply active filter by default when page loads
+    this.applyFilter('active');
   }
 
   toggleExpertiseView() {
@@ -327,6 +328,11 @@ export class SuperAdminSupplierComponent {
         break;
     }
 
+    // First, get the count for pagination
+    if (filterType !== 'clear') {
+      this.getFilteredCount(filterType, { ...payload, countOnly: true });
+    }
+
     // Reset page and get filtered list
     this.page = 1;
     // Update search query if present
@@ -342,7 +348,6 @@ export class SuperAdminSupplierComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
-          this.totalRecords = response?.data?.meta_data?.items || 0;
 
           // Don't update the badge counts, use original values
           // Only update the current view counts for display calculations
@@ -361,6 +366,46 @@ export class SuperAdminSupplierComponent {
       (error) => {
         this.showLoader = false;
         this.notificationService.showError(error?.message);
+      }
+    );
+  }
+
+  // Get filter count for accurate pagination
+  getFilteredCount(filterType: string, payload: any) {
+    this.superService.getSUpplierList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          // Update totalRecords based on the filtered count
+          if (response?.data?.meta_data?.totalCount) {
+            this.totalRecords = response?.data?.meta_data?.totalCount;
+          } else if (response?.data?.meta_data?.filteredCount) {
+            this.totalRecords = response?.data?.meta_data?.filteredCount;
+          } else if (response?.data?.meta_data?.items) {
+            this.totalRecords = response?.data?.meta_data?.items;
+          } else if (response?.data?.count) {
+            // Use the specific count based on filter type
+            switch (filterType) {
+              case 'active':
+                this.totalRecords = response?.data?.count?.active || 0;
+                break;
+              case 'inactive':
+                this.totalRecords = response?.data?.count?.inActive || 0;
+                break;
+              case 'resourceSharing':
+                this.totalRecords = response?.data?.count?.resourceSharingCount || 0;
+                break;
+              case 'subcontracting':
+                this.totalRecords = response?.data?.count?.subcontractingCount || 0;
+                break;
+              case 'isDeleted':
+                this.totalRecords = response?.data?.count?.isDeletedCount || 0;
+                break;
+              case 'inHold':
+                this.totalRecords = response?.data?.count?.inHoldCount || 0;
+                break;
+            }
+          }
+        }
       }
     );
   }
@@ -470,7 +515,6 @@ export class SuperAdminSupplierComponent {
           if (response?.status == true) {
             this.showLoader = false;
             this.supplierUserList = response?.data?.data;
-            this.totalRecords = response?.data?.meta_data?.items || 0;
 
             // Update counts for the current filtered view
             this.calculateFilteredCounts();

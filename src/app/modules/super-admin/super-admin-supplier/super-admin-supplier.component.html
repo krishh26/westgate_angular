@@ -126,7 +126,7 @@
             </tr>
 
             <tr
-              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
               <td>{{item?.companyName || item?.name}}</td>
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
@@ -161,7 +161,7 @@
       <div class="row mt-3 align-items-center" *ngIf="!showLoader && supplierUserList?.length">
         <div class="row">
           <div class="pagination">
-            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)"></pagination-controls>
+            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)" [id]="currentFilter || 'default'"></pagination-controls>
           </div>
         </div>
       </div>

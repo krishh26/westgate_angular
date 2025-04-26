@@ -201,6 +201,11 @@ export class SuperadminService {
       queryParams = queryParams.set('inHold', String(params.inHold));
     }
 
+    // Add countOnly parameter to get just the count when we're paginating
+    if (params?.countOnly !== undefined) {
+      queryParams = queryParams.set('countOnly', String(params.countOnly));
+    }
+
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 
