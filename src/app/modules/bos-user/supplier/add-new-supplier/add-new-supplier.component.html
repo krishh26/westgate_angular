@@ -27,9 +27,12 @@
                     </div>
                     <div class="col-md-6 mb-3">
                       <div class="row">
-                        <label for="companyName" class="col-sm-4 col-form-label">Company Name</label>
+                        <label for="companyName" class="col-sm-4 col-form-label">Company Name <span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                          <input [(ngModel)]="companyForm.companyName" name="companyName" class="form-control" placeholder="Enter company name" id="companyName">
+                          <input [(ngModel)]="companyForm.companyName" name="companyName" class="form-control" placeholder="Enter company name" id="companyName" required #companyNameInput="ngModel">
+                          <div *ngIf="companyNameInput.invalid && (companyNameInput.dirty || companyNameInput.touched)" class="text-danger small">
+                            Company Name is required
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -105,18 +108,24 @@
                     </div>
                     <div class="col-md-6 mb-3">
                       <div class="row">
-                        <label for="poc_name" class="col-sm-4 col-form-label">POC Name</label>
+                        <label for="poc_name" class="col-sm-4 col-form-label">POC Name <span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                          <input [(ngModel)]="companyForm.poc_name" name="poc_name" type="text" class="form-control" placeholder="Enter POC name" id="poc_name">
+                          <input [(ngModel)]="companyForm.poc_name" name="poc_name" type="text" class="form-control" placeholder="Enter POC name" id="poc_name" required #pocNameInput="ngModel">
+                          <div *ngIf="pocNameInput.invalid && (pocNameInput.dirty || pocNameInput.touched)" class="text-danger small">
+                            POC Name is required
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                       <div class="row">
-                        <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone</label>
+                        <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone <span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                          <input [(ngModel)]="companyForm.poc_phone" name="poc_phone" type="text" class="form-control" placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone">
+                          <input [(ngModel)]="companyForm.poc_phone" name="poc_phone" type="text" class="form-control" placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10" (keypress)="NumberOnly($event)" id="poc_phone" required #pocPhoneInput="ngModel">
+                          <div *ngIf="pocPhoneInput.invalid && (pocPhoneInput.dirty || pocPhoneInput.touched)" class="text-danger small">
+                            POC Phone is required
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -168,17 +177,19 @@
                       <div class="row">
                         <label for="industryFocus" class="col-sm-4 col-form-label">Industry Focus</label>
                         <div class="col-sm-8">
-                          <div class="form-control p-2">
-                            <div *ngFor="let industry of companyForm.industryFocus; let i = index" class="mb-2">
-                              <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-2">{{ industry }}</span>
-                                <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industryFocus', i)"></button>
-                              </div>
-                            </div>
-                            <div class="mt-2">
-                              <input type="text" class="form-control" placeholder="Enter industry focus and press Enter" (keydown.enter)="handleEnterKey($event, 'industryFocus')">
-                            </div>
-                          </div>
+                          <ng-select
+                            placeholder="Select Industry Focus"
+                            class="custom-ng-select-option"
+                            [items]="industryList"
+                            bindLabel="name"
+                            [multiple]="true"
+                            bindValue="value"
+                            [(ngModel)]="selectedIndustries"
+                            name="selectedIndustries"
+                            (change)="onIndustryChange()"
+                            [addTag]="true"
+                            (add)="onItemAddIndustry($event)">
+                          </ng-select>
                         </div>
                       </div>
                     </div>
@@ -216,9 +227,56 @@
                         <label for="expertise" class="col-sm-4 col-form-label">Expertise</label>
                         <div class="col-sm-8">
                           <div class="form-control p-2">
-                            <ng-select [items]="expertiseDropdownOptions" bindLabel="name" placeholder="Select expertise"
-                              [(ngModel)]="companyForm.expertise" name="expertise" [clearable]="true" [multiple]="true">
-                            </ng-select>
+                            <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
+                              <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-primary me-2">{{ expertise.name }}</span>
+                                <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
+                              </div>
+                              <div class="ms-3">
+                                <div *ngFor="let sub of expertise.subExpertise; let j = index"
+                                  class="d-flex align-items-center mb-1">
+                                  <span class="badge bg-secondary me-2">{{ sub }}</span>
+                                  <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
+                                </div>
+                                <div class="mt-2">
+                                  <div class="dropdown">
+                                    <ng-select
+                                      [(ngModel)]="selectedSubExpertise"
+                                      name="subExpertise_{{i}}"
+                                      [items]="subExpertiseOptions"
+                                      [multiple]="true"
+                                      placeholder="Select sub-expertise (required)"
+                                      [closeOnSelect]="false"
+                                      [searchable]="true"
+                                      [clearable]="true">
+                                    </ng-select>
+                                  </div>
+                                  <button type="button" class="btn btn-primary mt-2"
+                                    (click)="addMultipleSubExpertise(i)"
+                                    [disabled]="!selectedSubExpertise || selectedSubExpertise.length === 0">
+                                    Add Sub-Expertise
+                                  </button>
+                                  <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
+                                    Sub-expertise is required
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mt-2">
+                              <div class="dropdown">
+                                <select class="form-select" [(ngModel)]="selectedExpertiseName" name="selectedExpertiseName">
+                                  <option value="" disabled selected>Select expertise</option>
+                                  <option *ngFor="let exp of expertiseDropdownOptions" [value]="exp.name">
+                                    {{ exp.name }}
+                                  </option>
+                                </select>
+                              </div>
+                              <button type="button" class="btn btn-primary mt-2"
+                                (click)="addExpertiseFromSelection()"
+                                [disabled]="!selectedExpertiseName">
+                                Add Expertise
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -228,17 +286,19 @@
                       <div class="row">
                         <label for="category" class="col-sm-4 col-form-label">Category</label>
                         <div class="col-sm-8">
-                          <div class="form-control p-2">
-                            <div *ngFor="let cat of companyForm.category; let i = index" class="mb-2">
-                              <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-2">{{ cat }}</span>
-                                <button type="button" class="btn-close ms-2" (click)="removeArrayItem('category', i)"></button>
-                              </div>
-                            </div>
-                            <div class="mt-2">
-                              <input type="text" class="form-control" placeholder="Enter category and press Enter" (keydown.enter)="handleEnterKey($event, 'category')">
-                            </div>
-                          </div>
+                          <ng-select
+                            placeholder="Select Category"
+                            class="custom-ng-select-option"
+                            [items]="categoryDomains"
+                            bindLabel="name"
+                            [multiple]="true"
+                            bindValue="value"
+                            [(ngModel)]="selectedCategories"
+                            name="selectedCategories"
+                            (change)="onCategoryChange()"
+                            [addTag]="true"
+                            (add)="onItemAddCategory($event)">
+                          </ng-select>
                         </div>
                       </div>
                     </div>
@@ -247,17 +307,19 @@
                       <div class="row">
                         <label for="technologies" class="col-sm-4 col-form-label">Technologies</label>
                         <div class="col-sm-8">
-                          <div class="form-control p-2">
-                            <div *ngFor="let tech of companyForm.technologies; let i = index" class="mb-2">
-                              <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-2">{{ tech }}</span>
-                                <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologies', i)"></button>
-                              </div>
-                            </div>
-                            <div class="mt-2">
-                              <input type="text" class="form-control" placeholder="Enter technology and press Enter" (keydown.enter)="handleEnterKey($event, 'technologies')">
-                            </div>
-                          </div>
+                          <ng-select
+                            placeholder="Select Technologies"
+                            class="custom-ng-select-option"
+                            [items]="technologiesList"
+                            bindLabel="name"
+                            [multiple]="true"
+                            bindValue="value"
+                            [(ngModel)]="selectedTechnologies"
+                            name="selectedTechnologies"
+                            (change)="onTechnologiesChange()"
+                            [addTag]="true"
+                            (add)="onItemAddTechnology($event)">
+                          </ng-select>
                         </div>
                       </div>
                     </div>
@@ -287,13 +349,56 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- Supplier Type -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="text-primary mb-3">Supplier Type <span class="text-danger">*</span></h5>
+                      <p class="text-muted small">At least one supplier type must be selected</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                              [(ngModel)]="companyForm.resourceSharingSupplier" name="resourceSharingSupplier"
+                              id="resourceSharingSupplier" (change)="checkSupplierTypeSelection()">
+                            <label class="form-check-label" for="resourceSharingSupplier">
+                              Resource Sharing Supplier
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                              [(ngModel)]="companyForm.subcontractingSupplier" name="subcontractingSupplier"
+                              id="subcontractingSupplier" (change)="checkSupplierTypeSelection()">
+                            <label class="form-check-label" for="subcontractingSupplier">
+                              Sub Contracting Supplier
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12" *ngIf="showSupplierTypeError">
+                      <div class="alert alert-danger py-1">
+                        Please select at least one supplier type
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-12 text-end">
-              <button type="submit" class="btn btn-primary mob-w-100">Submit</button>
+              <button type="submit" class="btn btn-primary mob-w-100" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone ||
+                        (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier) ||
+                        hasInvalidExpertise()">Submit</button>
             </div>
           </div>
         </form>
