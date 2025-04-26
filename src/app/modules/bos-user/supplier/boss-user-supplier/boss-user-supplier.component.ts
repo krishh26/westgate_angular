@@ -28,7 +28,7 @@ export class BossUserSupplierComponent {
   search: string = '';
   activeSuppliers: number = 0;
   inactiveSuppliers: number = 0;
-  currentFilter: string = '';
+  currentFilter: string = 'active';
   totalEmployees: number = 0;
   resourceSharingCount: number = 0;
   subcontractingCount: number = 0;
@@ -60,7 +60,56 @@ export class BossUserSupplierComponent {
   ) { }
 
   ngOnInit(): void {
-    this.getManageUserList();
+    // First get all counts to display in badges
+    const countPayload = {
+      countOnly: true
+    };
+
+    this.superService.getSUpplierList(countPayload).subscribe(
+      (response) => {
+        if (response?.status === true && response?.data?.count) {
+          // Update all counts from the response
+          this.totalActiveSuppliers = response?.data?.count?.active || 0;
+          this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+          this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+          this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+          this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+          this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
+          this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
+
+          console.log('Initial counts from API:', {
+            active: this.totalActiveSuppliers,
+            inactive: this.totalInactiveSuppliers,
+            resourceSharing: this.totalResourceSharingCount,
+            subcontracting: this.totalSubcontractingCount,
+            inHold: this.totalInHoldCount,
+            deleted: this.totalDeletedCount,
+            employees: this.totalSupplierEmployeeCount
+          });
+
+          // Store original counts
+          this.originalCounts = {
+            active: this.totalActiveSuppliers,
+            inactive: this.totalInactiveSuppliers,
+            resourceSharing: this.totalResourceSharingCount,
+            subcontracting: this.totalSubcontractingCount,
+            deleted: this.totalDeletedCount,
+            inHold: this.totalInHoldCount
+          };
+
+          // Then apply active filter to load data
+          this.applyFilter('active');
+        } else {
+          // If count request fails, just apply active filter
+          this.applyFilter('active');
+        }
+      },
+      (error) => {
+        console.error('Error getting counts:', error);
+        // If error, still try to apply active filter
+        this.applyFilter('active');
+      }
+    );
   }
 
   toggleExpertiseView() {
@@ -127,6 +176,11 @@ export class BossUserSupplierComponent {
         break;
     }
 
+    // First, get the count for pagination
+    if (filterType !== 'clear') {
+      this.getFilteredCount(filterType, { ...payload, countOnly: true });
+    }
+
     // Reset page and get filtered list
     this.page = 1;
     // Update search query if present
@@ -142,15 +196,47 @@ export class BossUserSupplierComponent {
         if (response?.status == true) {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
+
+          // Always update all badge counts from the API response, regardless of filter
+          if (response?.data?.count) {
+            // Update all counts from the response
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+            this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
+            this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
+
+            // Store the original counts
+            this.originalCounts = {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              deleted: this.totalDeletedCount,
+              inHold: this.totalInHoldCount
+            };
+
+            console.log('Updated counts in applyFilter:', {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              inHold: this.totalInHoldCount,
+              deleted: this.totalDeletedCount,
+              employees: this.totalSupplierEmployeeCount
+            });
+          }
+
+          // For totalRecords, use the meta_data from the current response
           this.totalRecords = response?.data?.meta_data?.items || 0;
 
-          // Don't update the badge counts, use original values
-          // Only update the current view counts for display calculations
+          // Only calculate filtered counts for the current view
           if (filterType !== 'clear') {
-            // For current view data only, update counts based on filtered data
             this.calculateFilteredCounts();
           } else {
-            // If clearing filters, restore original counts from the last full load
+            // If clearing filters, get the full list
             this.getManageUserList();
           }
         } else {
@@ -161,6 +247,67 @@ export class BossUserSupplierComponent {
       (error) => {
         this.showLoader = false;
         this.notificationService.showError(error?.message);
+      }
+    );
+  }
+
+  // Get filter count for accurate pagination
+  getFilteredCount(filterType: string, payload: any) {
+    this.superService.getSUpplierList(payload).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          // Update totalRecords based on the filtered count
+          if (response?.data?.meta_data?.totalCount) {
+            this.totalRecords = response?.data?.meta_data?.totalCount;
+          } else if (response?.data?.meta_data?.filteredCount) {
+            this.totalRecords = response?.data?.meta_data?.filteredCount;
+          } else if (response?.data?.meta_data?.items) {
+            this.totalRecords = response?.data?.meta_data?.items;
+          } else if (response?.data?.count) {
+            // Use the specific count based on filter type
+            switch (filterType) {
+              case 'active':
+                this.totalRecords = response?.data?.count?.active || 0;
+                break;
+              case 'inactive':
+                this.totalRecords = response?.data?.count?.inActive || 0;
+                break;
+              case 'resourceSharing':
+                this.totalRecords = response?.data?.count?.resourceSharingCount || 0;
+                break;
+              case 'subcontracting':
+                this.totalRecords = response?.data?.count?.subcontractingCount || 0;
+                break;
+              case 'isDeleted':
+                this.totalRecords = response?.data?.count?.isDeletedCount || 0;
+                break;
+              case 'inHold':
+                this.totalRecords = response?.data?.count?.inHoldCount || 0;
+                break;
+            }
+          }
+
+          // Always update all badge counts from the API response
+          if (response?.data?.count) {
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+            this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
+            this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
+
+            console.log('Updated counts in getFilteredCount:', {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              inHold: this.totalInHoldCount,
+              deleted: this.totalDeletedCount,
+              employees: this.totalSupplierEmployeeCount
+            });
+          }
+        }
       }
     );
   }
@@ -339,6 +486,13 @@ export class BossUserSupplierComponent {
       payload.inHold = true;
     }
 
+    // Apply active filter by default if no other filter is set
+    if (this.currentFilter === 'active' && !this.isDeletedFilter && !this.isInHoldFilter) {
+      payload.active = true;
+    }
+
+    console.log('Getting supplier list with payload:', payload);
+
     this.superService.getSUpplierList(payload).subscribe(
       (response) => {
         this.supplierUserList = [];
@@ -346,6 +500,9 @@ export class BossUserSupplierComponent {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
           this.totalRecords = response?.data?.meta_data?.items || 0;
+
+          console.log('API Response in getManageUserList:', response);
+          console.log('Count data in getManageUserList:', response?.data?.count);
 
           // Calculate total employees from all suppliers
           this.totalEmployees = this.supplierUserList.reduce((sum: number, supplier: any) => {
@@ -392,6 +549,16 @@ export class BossUserSupplierComponent {
 
             // Store total supplier employee count
             this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
+
+            console.log('Updated counts in getManageUserList:', {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              inHold: this.totalInHoldCount,
+              deleted: this.totalDeletedCount,
+              employees: this.totalSupplierEmployeeCount
+            });
           } else {
             // Fallback to calculating from the current page data
             this.calculateSupplierCounts();
@@ -461,6 +628,7 @@ export class BossUserSupplierComponent {
 
   paginate(page: number) {
     this.page = page;
+    console.log('Paginating to page:', page, 'with filter:', this.currentFilter);
 
     // Check if there's an active filter and use that instead of regular getManageUserList
     if (this.currentFilter && this.currentFilter !== 'clear') {

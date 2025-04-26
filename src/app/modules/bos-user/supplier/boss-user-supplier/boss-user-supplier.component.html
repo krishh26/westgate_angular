@@ -10,9 +10,9 @@
             <li routerLink="/boss-user/expertise-view">
               <a>Expertise-view</a>
             </li>
-            <li routerLink="/boss-user/bos-user-roles-wise-resources-list">
+            <!-- <li routerLink="/boss-user/bos-user-roles-wise-resources-list">
               <a>Resources-view</a>
-            </li>
+            </li> -->
           </ul>
         </nav>
       </div>
@@ -100,6 +100,14 @@
         </div>
       </div>
 
+      <!-- Loading Indicator -->
+      <div *ngIf="showLoader" class="text-center my-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading suppliers...</p>
+      </div>
+
       <div class="table-responsive mb-3" *ngIf="!showLoader">
         <table class="table table-striped align-middle">
           <thead>
@@ -109,9 +117,9 @@
               <th>Last Login</th>
               <th>Total Employees</th>
               <th>Total Candidates</th>
-              <th>
+              <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
                 Assigned Projects</th>
-              <th>InHold Comment</th>
+              <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
               <th>Action</th>
               <th *ngIf="currentFilter === 'inHold'">Status</th>
             </tr>
@@ -125,21 +133,21 @@
             </tr>
 
             <tr
-              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
               <td>{{item?.companyName || item?.name}}</td>
               <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
               <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
               <td>{{item?.employeeCount}}</td>
               <td>{{item?.totalCandidates}}</td>
-              <td >
+              <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
                 {{item?.assignedProjectCount}}
               </td>
-              <td >
+              <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
                 {{ getFirstInHoldComment(item?.inHoldComment) }}
               </td>
               <td>
                 <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
-                  title="{{ ['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(currentFilter) ? 'View Historical Data' : 'View Profile' }}">
+                  title="View Details">
                   View
                 </a>
               </td>
@@ -157,10 +165,10 @@
           </tbody>
         </table>
       </div>
-      <div class="row mt-3 align-items-center">
+      <div class="row mt-3 align-items-center" *ngIf="!showLoader && supplierUserList?.length">
         <div class="row">
           <div class="pagination">
-            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)"></pagination-controls>
+            <pagination-controls [idMaxSize]="100" (pageChange)="paginate($event)" [id]="currentFilter || 'default'"></pagination-controls>
           </div>
         </div>
       </div>
@@ -172,10 +180,24 @@
           <button class="btn btn-sm btn-outline-dark float-end" (click)="applyFilter('clear')">
             <i class="bi bi-x-circle"></i> Clear Filter
           </button>
-          <div *ngIf="['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(currentFilter)" class="mt-2 small">
+          <!-- <div *ngIf="['resourceSharing', 'subcontracting', 'active', 'inactive'].includes(currentFilter)" class="mt-2 small">
             <i class="bi bi-info-circle"></i> When using the "View" button, you will only see the <strong>Historical Data</strong> tab. The Profile and Case Studies tabs will be hidden.
-          </div>
+          </div> -->
         </div>
+      </div>
+
+      <!-- Debug info - temporary -->
+      <div class="mt-3 small" style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+        <strong>Debug Info:</strong>
+        <ul>
+          <li>Total Active Suppliers: {{ totalActiveSuppliers }}</li>
+          <li>Total Inactive Suppliers: {{ totalInactiveSuppliers }}</li>
+          <li>Total Resource Sharing: {{ totalResourceSharingCount }}</li>
+          <li>Total Subcontracting: {{ totalSubcontractingCount }}</li>
+          <li>Total InHold: {{ totalInHoldCount }}</li>
+          <li>Total Employees: {{ totalSupplierEmployeeCount }}</li>
+          <li>Current Filter: {{ currentFilter }}</li>
+        </ul>
       </div>
 
     </div>
