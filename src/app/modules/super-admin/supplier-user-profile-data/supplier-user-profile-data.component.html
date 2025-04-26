@@ -224,18 +224,30 @@
                     </span>
                   </div>
                 </div>
-                <!-- <div class="col-md-4 mb-3">
-                  <label class="form-label">Active Since</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.activeSince || 'N/A'" readonly>
-                </div> -->
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Status Details</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.activeStatus || 'N/A'" readonly>
                 </div>
-                <div class="col-md-4 mb-3" *ngIf="!supplierDetails?.active">
-                  <label class="form-label">Inactive Date</label>
-                  <input type="text" class="form-control"
-                    [value]="supplierDetails?.inactiveDate | date:'dd/MM/yyyy HH:mm'" readonly>
+              </div>
+
+              <!-- Inactive Information (shown only if supplier is inactive) -->
+              <div class="row mb-4" *ngIf="!supplierDetails?.active">
+                <div class="col-12">
+                  <h5 class="text-danger mb-3">Inactive Information</h5>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Reason for Inactivation</label>
+                  <div class="p-3 border rounded inactive-info-container">
+                    <p class="mb-1">{{ supplierDetails?.activeStatus || 'No comment provided' }}</p>
+                    <small class="text-muted" *ngIf="supplierDetails?.inactiveDate">
+                      <i class="bi bi-clock me-1"></i>
+                      {{ supplierDetails?.inactiveDate | date: 'dd/MM/yyyy, h:mm a' }}
+                    </small>
+                    <small class="text-muted" *ngIf="!supplierDetails?.inactiveDate">
+                      <i class="bi bi-clock me-1"></i>
+                      N/A
+                    </small>
+                  </div>
                 </div>
               </div>
 
