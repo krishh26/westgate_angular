@@ -3,6 +3,8 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environment/environment';
 
 interface Expertise {
   name: string;
@@ -43,11 +45,17 @@ export class RegisterNewSupplierComponent implements OnInit {
   today: string = new Date().toISOString().split('T')[0];
   expertiseDropdownOptions: ExpertiseItem[] = [];
   inHoldComment: string = '';
-
+  categoryDomains: any[] = [];
+  selectedCategories: string[] = [];
+  technologiesList: any[] = [];
+  selectedTechnologies: string[] = [];
+  industryList: any[] = [];
+  selectedIndustries: string[] = [];
 
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
+    private http: HttpClient
   ) {
     // Generate a random string to prevent form autofill
     this.randomString = Math.random().toString(36).substring(2, 15);
@@ -69,6 +77,20 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.getExpertiseDropdownData();
+    this.getSubExpertiseDropdownData();
+    this.getCategoryDomains();
+    this.getTechnologiesList();
+    this.getIndustryList();
+
+    // Add some fallback sub-expertise options in case the API fails
+    if (this.subExpertiseOptions.length === 0) {
+      this.addFallbackSubExpertiseOptions();
+    }
+  }
+
+  initializeForm() {
     this.companyForm = {
       companyName: '',
       // logo: '',
@@ -93,13 +115,6 @@ export class RegisterNewSupplierComponent implements OnInit {
       resourceSharingSupplier: false,
       subcontractingSupplier: false
     };
-    this.getExpertiseDropdownData();
-    this.getSubExpertiseDropdownData();
-
-    // Add some fallback sub-expertise options in case the API fails
-    if (this.subExpertiseOptions.length === 0) {
-      this.addFallbackSubExpertiseOptions();
-    }
   }
 
   addFallbackSubExpertiseOptions() {
@@ -240,6 +255,11 @@ export class RegisterNewSupplierComponent implements OnInit {
       }
     }
 
+    // Ensure selected categories, industries, and technologies are in the form data
+    this.onCategoryChange();
+    this.onIndustryChange();
+    this.onTechnologiesChange();
+
     // Create a copy of the form data
     const formData = { ...this.companyForm };
 
@@ -295,7 +315,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       formData.inHoldComment = [];
     }
 
-    console.log('Submitting Data:', formData);
+    console.log('Submitting Data (with selected values):', formData);
     this.superadminService.supplierregister(formData).subscribe((response) => {
       if (response?.status === true) {
         this.showLoader = false;
@@ -420,6 +440,279 @@ export class RegisterNewSupplierComponent implements OnInit {
       this.selectedExpertiseName = '';
     } else {
       console.log('No expertise selected');
+    }
+  }
+
+  getCategoryDomains() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down?type=domain`;
+    console.log('Fetching domain categories from URL:', url);
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw domain API response:', response);
+        if (response?.status) {
+          // Check if the data is an array of objects or simple strings
+          if (response.data && response.data.length > 0) {
+            console.log('First item in data:', response.data[0]);
+            if (typeof response.data[0] === 'object') {
+              // If data contains objects, transform to format compatible with ng-select
+              this.categoryDomains = response.data.map((item: any) => {
+                // For ng-select, we need objects with consistent properties
+                // If item already has name/value, use it
+                if (item.name && item.value) {
+                  return item;
+                }
+
+                // Try different property names that might exist
+                const value = item.name || item.value || item.domain || item.category || JSON.stringify(item);
+                return {
+                  name: value,
+                  value: value
+                };
+              });
+            } else {
+              // If data is already an array of strings, convert to objects for ng-select
+              this.categoryDomains = response.data.map((item: string) => {
+                return {
+                  name: item,
+                  value: item
+                };
+              });
+            }
+          } else {
+            this.categoryDomains = [];
+          }
+          console.log('Processed category domains for ng-select:', this.categoryDomains);
+        } else {
+          console.error('Failed to fetch category domains:', response?.message);
+          this.notificationService.showError('Failed to fetch category domains');
+          this.categoryDomains = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching category domains:', error);
+        this.notificationService.showError('Error fetching category domains');
+        this.showLoader = false;
+        this.categoryDomains = [];
+      }
+    );
+  }
+
+  // Updated method to handle changes in the category ng-select component
+  onCategoryChange() {
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      // Extract just the values/names directly to the form array
+      this.companyForm.category = [...this.selectedCategories];
+    } else {
+      this.companyForm.category = [];
+    }
+    console.log('Updated categories in form:', this.companyForm.category);
+  }
+
+  // Add method for adding custom items
+  onItemAddCategory(event: any) {
+    if (event) {
+      console.log('Adding custom category:', event);
+      // If it's a string from addTag
+      if (typeof event === 'string') {
+        // Check if the object with this value already exists
+        const exists = this.categoryDomains.some(item => item.value === event);
+        if (!exists) {
+          this.categoryDomains.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        // It's an object from the selection
+        const exists = this.categoryDomains.some(item => item.value === event.value);
+        if (!exists) {
+          this.categoryDomains.push(event);
+        }
+      }
+    }
+  }
+
+  getTechnologiesList() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/roles/get-technologies`;
+    console.log('Fetching technologies data from URL:', url);
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw technologies API response:', response);
+        if (response?.status || response?.data) {
+          // Extract data from response
+          const data = response.data || response;
+
+          // Process the data to make it compatible with ng-select
+          if (Array.isArray(data)) {
+            if (data.length > 0) {
+              if (typeof data[0] === 'object') {
+                // If data contains objects, transform to format compatible with ng-select
+                this.technologiesList = data.map((item: any) => {
+                  // For ng-select, we need objects with consistent properties
+                  const value = item.name || item.value || item.technology || JSON.stringify(item);
+                  return {
+                    name: value,
+                    value: value
+                  };
+                });
+              } else {
+                // If data is already an array of strings, convert to objects for ng-select
+                this.technologiesList = data.map((item: string) => {
+                  return {
+                    name: item,
+                    value: item
+                  };
+                });
+              }
+            }
+          } else {
+            // Handle case where data might be an object with arrays inside
+            this.technologiesList = [];
+            for (const key in data) {
+              if (Array.isArray(data[key])) {
+                data[key].forEach((item: any) => {
+                  const value = typeof item === 'object' ?
+                    (item.name || item.value || item.technology || JSON.stringify(item)) :
+                    item;
+                  this.technologiesList.push({
+                    name: value,
+                    value: value
+                  });
+                });
+              }
+            }
+          }
+
+          console.log('Processed technologies list for ng-select:', this.technologiesList);
+        } else {
+          console.error('Failed to fetch technologies data:', response?.message);
+          this.notificationService.showError('Failed to fetch technologies data');
+          this.technologiesList = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching technologies data:', error);
+        this.notificationService.showError('Error fetching technologies data');
+        this.showLoader = false;
+        this.technologiesList = [];
+      }
+    );
+  }
+
+  // Updated method to handle changes in the technologies ng-select component
+  onTechnologiesChange() {
+    if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
+      // Extract just the values/names directly to the form array
+      this.companyForm.technologies = [...this.selectedTechnologies];
+    } else {
+      this.companyForm.technologies = [];
+    }
+    console.log('Updated technologies in form:', this.companyForm.technologies);
+  }
+
+  // Renamed method for adding custom technology items
+  onItemAddTechnology(event: any) {
+    if (event) {
+      console.log('Adding custom technology:', event);
+      // If it's a string from addTag
+      if (typeof event === 'string') {
+        // Check if the object with this value already exists
+        const exists = this.technologiesList.some(item => item.value === event);
+        if (!exists) {
+          this.technologiesList.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        // It's an object from the selection
+        const exists = this.technologiesList.some(item => item.value === event.value);
+        if (!exists) {
+          this.technologiesList.push(event);
+        }
+      }
+    }
+  }
+
+  getIndustryList() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/sub-expertise/list`;
+    console.log('Fetching industry data from URL:', url);
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw industry API response:', response);
+        if (response?.status) {
+          // Process the data
+          if (response.data && Array.isArray(response.data)) {
+            if (response.data.length > 0) {
+              if (typeof response.data[0] === 'object') {
+                // If response.data contains objects, format them for ng-select
+                this.industryList = response.data.map((item: any) => {
+                  return {
+                    name: item.name || item.value || item.subExpertise || item.expertise || JSON.stringify(item),
+                    value: item.name || item.value || item.subExpertise || item.expertise || JSON.stringify(item)
+                  };
+                });
+              } else {
+                // If data is already an array of strings
+                this.industryList = response.data.map((item: string) => {
+                  return {
+                    name: item,
+                    value: item
+                  };
+                });
+              }
+            }
+          } else {
+            this.industryList = [];
+          }
+          console.log('Processed industry list for ng-select:', this.industryList);
+        } else {
+          console.error('Failed to fetch industry data:', response?.message);
+          this.notificationService.showError('Failed to fetch industry data');
+          this.industryList = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching industry data:', error);
+        this.notificationService.showError('Error fetching industry data');
+        this.showLoader = false;
+        this.industryList = [];
+      }
+    );
+  }
+
+  // Updated method to handle changes in the industry ng-select component
+  onIndustryChange() {
+    if (this.selectedIndustries && this.selectedIndustries.length > 0) {
+      // Extract just the values/names directly to the form array
+      this.companyForm.industryFocus = [...this.selectedIndustries];
+    } else {
+      this.companyForm.industryFocus = [];
+    }
+    console.log('Updated industry focus in form:', this.companyForm.industryFocus);
+  }
+
+  // Add method for adding custom industry items
+  onItemAddIndustry(event: any) {
+    if (event) {
+      console.log('Adding custom industry:', event);
+      // If it's a string from addTag
+      if (typeof event === 'string') {
+        // Check if the object with this value already exists
+        const exists = this.industryList.some(item => item.value === event);
+        if (!exists) {
+          this.industryList.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        // It's an object from the selection
+        const exists = this.industryList.some(item => item.value === event.value);
+        if (!exists) {
+          this.industryList.push(event);
+        }
+      }
     }
   }
 }

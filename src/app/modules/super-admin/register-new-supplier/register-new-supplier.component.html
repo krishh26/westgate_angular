@@ -198,19 +198,19 @@
                     <div class="row">
                       <label for="industryFocus" class="col-sm-4 col-form-label">Industry Focus</label>
                       <div class="col-sm-8">
-                        <div class="form-control p-2">
-                          <div *ngFor="let industry of companyForm.industryFocus; let i = index" class="mb-2">
-                            <div class="d-flex align-items-center">
-                              <span class="badge bg-primary me-2">{{ industry }}</span>
-                              <button type="button" class="btn-close ms-2"
-                                (click)="removeArrayItem('industryFocus', i)"></button>
-                            </div>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" placeholder="Enter industry focus and press Enter"
-                              (keydown.enter)="handleEnterKey($event, 'industryFocus')">
-                          </div>
-                        </div>
+                        <ng-select
+                          placeholder="Select Industry Focus"
+                          class="custom-ng-select-option"
+                          [items]="industryList"
+                          bindLabel="name"
+                          [multiple]="true"
+                          bindValue="value"
+                          [(ngModel)]="selectedIndustries"
+                          name="selectedIndustries"
+                          (change)="onIndustryChange()"
+                          [addTag]="true"
+                          (add)="onItemAddIndustry($event)">
+                        </ng-select>
                       </div>
                     </div>
                   </div>
@@ -311,19 +311,19 @@
                     <div class="row">
                       <label for="category" class="col-sm-4 col-form-label">Category</label>
                       <div class="col-sm-8">
-                        <div class="form-control p-2">
-                          <div *ngFor="let cat of companyForm.category; let i = index" class="mb-2">
-                            <div class="d-flex align-items-center">
-                              <span class="badge bg-primary me-2">{{ cat }}</span>
-                              <button type="button" class="btn-close ms-2"
-                                (click)="removeArrayItem('category', i)"></button>
-                            </div>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" placeholder="Enter category and press Enter"
-                              (keydown.enter)="handleEnterKey($event, 'category')">
-                          </div>
-                        </div>
+                        <ng-select
+                          placeholder="Select Category"
+                          class="custom-ng-select-option"
+                          [items]="categoryDomains"
+                          bindLabel="name"
+                          [multiple]="true"
+                          bindValue="value"
+                          [(ngModel)]="selectedCategories"
+                          name="selectedCategories"
+                          (change)="onCategoryChange()"
+                          [addTag]="true"
+                          (add)="onItemAddCategory($event)">
+                        </ng-select>
                       </div>
                     </div>
                   </div>
@@ -332,19 +332,19 @@
                     <div class="row">
                       <label for="technologies" class="col-sm-4 col-form-label">Technologies</label>
                       <div class="col-sm-8">
-                        <div class="form-control p-2">
-                          <div *ngFor="let tech of companyForm.technologies; let i = index" class="mb-2">
-                            <div class="d-flex align-items-center">
-                              <span class="badge bg-primary me-2">{{ tech }}</span>
-                              <button type="button" class="btn-close ms-2"
-                                (click)="removeArrayItem('technologies', i)"></button>
-                            </div>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" placeholder="Enter technology and press Enter"
-                              (keydown.enter)="handleEnterKey($event, 'technologies')">
-                          </div>
-                        </div>
+                        <ng-select
+                          placeholder="Select Technologies"
+                          class="custom-ng-select-option"
+                          [items]="technologiesList"
+                          bindLabel="name"
+                          [multiple]="true"
+                          bindValue="value"
+                          [(ngModel)]="selectedTechnologies"
+                          name="selectedTechnologies"
+                          (change)="onTechnologiesChange()"
+                          [addTag]="true"
+                          (add)="onItemAddTechnology($event)">
+                        </ng-select>
                       </div>
                     </div>
                   </div>
