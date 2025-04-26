@@ -50,7 +50,7 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
     const queryParams = new URLSearchParams(window.location.search);
     this.isExecutive = queryParams.get('executive') === 'true';
 
-    // Using a fixed list ID now: '67b60d775c16e4e640eee7dc'
+    // Get the list of candidates
     this.getCandidatesList();
   }
 
@@ -137,7 +137,11 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
 
   getCandidatesList() {
     this.loading = true;
-    this.superService.getCandidatesByListId(this.supplierID, this.page, this.pagesize, this.isExecutive).subscribe(
+
+    // Only pass isExecutive parameter if it's true
+    const executiveParam = this.isExecutive ? this.isExecutive : undefined;
+
+    this.superService.getCandidatesByListId(this.supplierID, this.page, this.pagesize, executiveParam).subscribe(
       (response: any) => {
         this.loading = false;
         if (response && response.status) {
@@ -160,12 +164,19 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
     this.page = event;
     this.getCandidatesList();
 
-    // Update URL with the new page parameter while preserving executive
+    // Create query params object with page
+    const queryParams: any = {
+      page: this.page
+    };
+
+    // Only add executive parameter when it's true
+    if (this.isExecutive) {
+      queryParams.executive = true;
+    }
+
+    // Update URL with the parameters
     this.router.navigate([], {
-      queryParams: {
-        page: this.page,
-        executive: this.isExecutive
-      },
+      queryParams: queryParams,
       queryParamsHandling: 'merge'
     });
   }
@@ -218,9 +229,17 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
   }
 
   onExecutiveToggle() {
-    // Update URL with the executive parameter
+    // Create query params object
+    const queryParams: any = {};
+
+    // Only add executive parameter to URL when it's true
+    if (this.isExecutive) {
+      queryParams.executive = true;
+    }
+
+    // Update URL with the appropriate parameters
     this.router.navigate([], {
-      queryParams: { executive: this.isExecutive },
+      queryParams: queryParams,
       queryParamsHandling: 'merge'
     });
 

@@ -62,12 +62,16 @@ export class ResourcesViewComponent implements OnInit {
         // If no roleId in URL but exists in localStorage, restore it
         this.roleId = savedRoleId;
         // Update URL with the saved roleId
+        const queryParams: any = { roleId: this.roleId };
+
+        // Only include executive parameter if it's true
+        if (this.isExecutive) {
+          queryParams.executive = true;
+        }
+
         this.router.navigate([], {
           relativeTo: this.route,
-          queryParams: {
-            roleId: this.roleId,
-            executive: this.isExecutive
-          },
+          queryParams: queryParams,
           queryParamsHandling: 'merge'
         });
         this.getRoleWiseCandidates();
@@ -156,8 +160,10 @@ export class ResourcesViewComponent implements OnInit {
     if (this.searchText) queryString += `&search=${this.searchText}`;
     if (this.activeFilter && !this.inactiveFilter) queryString += '&active=true';
     if (!this.activeFilter && this.inactiveFilter) queryString += '&active=false';
-    // Always include executive parameter (true or false)
-    queryString += `&executive=${this.isExecutive}`;
+    // Only include executive parameter when the switch is ON
+    if (this.isExecutive) {
+      queryString += `&executive=true`;
+    }
 
     this.superService.getCandidatesByRole(this.roleId + queryString).subscribe({
       next: (res: any) => {
@@ -226,14 +232,20 @@ export class ResourcesViewComponent implements OnInit {
 
   // Add new method to update URL params
   private updateUrlWithParams() {
+    const queryParams: any = {
+      roleId: this.roleId,
+      page: this.page,
+      search: this.searchText || null
+    };
+
+    // Only include executive parameter in URL when it's true
+    if (this.isExecutive) {
+      queryParams.executive = true;
+    }
+
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {
-        roleId: this.roleId,
-        page: this.page,
-        search: this.searchText || null,
-        executive: this.isExecutive
-      },
+      queryParams: queryParams,
       queryParamsHandling: 'merge'
     });
   }
