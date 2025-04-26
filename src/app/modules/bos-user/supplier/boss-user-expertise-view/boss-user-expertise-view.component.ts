@@ -37,6 +37,7 @@ export class BossUserExpertiseViewComponent {
   dropdownData: any[] = [];
   selectedType: string = '';
   currentList: any[] = [];
+  filteredList: any[] = [];
 
 
   constructor(
@@ -61,7 +62,9 @@ export class BossUserExpertiseViewComponent {
     } else {
       console.log("No supplier data found in localStorage");
     }
-    this.getExpertise();
+
+    // Load technology data by default instead of expertise
+    this.fetchDropdownData('technologies');
     // this.getSupplierList();
   }
 
@@ -78,6 +81,10 @@ export class BossUserExpertiseViewComponent {
     });
   }
 
+  filterActiveSuppliers() {
+    this.filteredList = this.currentList.filter(item => item?.activeSupplierCount > 0);
+    return this.filteredList;
+  }
 
   applyDateFilter() {
     this.showLoader = true;
@@ -94,6 +101,7 @@ export class BossUserExpertiseViewComponent {
         if (response?.status) {
           this.expertiseList = response?.data;
           this.currentList = this.expertiseList;
+          this.filteredList = this.filterActiveSuppliers();
           this.selectedType = '';
           this.totalRecords = response?.totalRecords;
         } else {
@@ -129,6 +137,7 @@ export class BossUserExpertiseViewComponent {
           if (response?.status) {
             this.expertiseList = response?.data;
             this.currentList = this.expertiseList;
+            this.filteredList = this.filterActiveSuppliers();
           } else {
             console.error('Failed to fetch supplier data:', response?.message);
           }
@@ -155,6 +164,7 @@ export class BossUserExpertiseViewComponent {
         if (response?.status) {
           this.expertiseList = response?.data;
           this.currentList = this.expertiseList;
+          this.filteredList = this.filterActiveSuppliers();
           this.selectedType = '';
         } else {
           console.error('Failed to fetch supplier data:', response?.message);
@@ -287,6 +297,7 @@ export class BossUserExpertiseViewComponent {
         if (response?.status) {
           this.dropdownData = response.data || [];
           this.currentList = this.dropdownData;
+          this.filteredList = this.filterActiveSuppliers();
           this.selectedType = this.formatTypeName(type);
          // this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
         } else {
