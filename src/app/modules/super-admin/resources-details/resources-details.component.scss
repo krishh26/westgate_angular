@@ -32,3 +32,22 @@
     margin-bottom: 0.5rem;
   }
 }
+
+/* Inactive Information Styles */
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.inactive-info-container {
+  border-left: 4px solid #dc3545;
+  background-color: rgba(220, 53, 69, 0.05);
+}
+
+.inactive-logs-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.fw-bold {
+  font-weight: 700;
+}

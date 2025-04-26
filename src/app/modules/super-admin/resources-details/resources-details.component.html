@@ -96,6 +96,49 @@
                 </div>
               </div>
 
+              <!-- Status Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Status Information</h5>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Current Status</label>
+                  <div class="d-flex align-items-center">
+                    <span class="badge" [ngClass]="candidateDetails?.active ? 'bg-success' : 'bg-danger'">
+                      {{candidateDetails?.active ? 'Active' : 'Inactive'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Status Details</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.activeStatus || 'N/A'" readonly>
+                </div>
+              </div>
+
+              <!-- Inactive Information (shown only if candidate is inactive) -->
+              <div class="row mb-4" *ngIf="!candidateDetails?.active">
+                <div class="col-12">
+                  <h5 class="text-danger mb-3">Inactive Information</h5>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Inactivation History</label>
+
+                  <div *ngIf="!candidateDetails?.inactiveLogs?.length" class="alert alert-info">
+                    No inactive logs available
+                  </div>
+
+                  <div *ngIf="candidateDetails?.inactiveLogs?.length" class="inactive-logs-list">
+                    <div *ngFor="let log of candidateDetails.inactiveLogs" class="p-3 border rounded inactive-info-container mb-2">
+                      <p class="mb-1 fw-bold">{{ log.inactiveComment || 'No comment provided' }}</p>
+                      <small class="text-muted">
+                        <i class="bi bi-clock me-1"></i>
+                        {{ log.inactiveDate | date: 'dd/MM/yyyy, h:mm a' }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Skills and Languages -->
               <div class="row mb-4">
                 <div class="col-12">
