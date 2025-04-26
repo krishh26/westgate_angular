@@ -183,7 +183,7 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Focus</label>
+                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
                       <div *ngFor="let industry of supplierDetails.industry_Sector; let i = index" class="mb-2">
@@ -193,7 +193,7 @@
                         </div>
                       </div>
                       <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter industry focus and press Enter"
+                        <input type="text" class="form-control" placeholder="Enter industry sector and press Enter"
                           (keydown.enter)="handleEnterKey($event, 'industry_Sector')">
                       </div>
                     </div>
@@ -302,7 +302,7 @@
                         </div>
                       </div>
                       <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter categoryList and press Enter"
+                        <input type="text" class="form-control" placeholder="Enter category and press Enter"
                           (keydown.enter)="handleEnterKey($event, 'categoryList')">
                       </div>
                     </div>
@@ -312,7 +312,7 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="technologyStack" class="col-sm-4 col-form-label">Technologies</label>
+                  <label for="technologyStack" class="col-sm-4 col-form-label">Technology Stack</label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
                       <div *ngFor="let tech of supplierDetails.technologyStack; let i = index" class="mb-2">

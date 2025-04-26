@@ -70,6 +70,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     const data = navigation?.extras.state;
     if (data) {
+      // Map old field names to new ones if they exist
+      this.mapLegacyFieldNames(data);
+
       // Initialize arrays if they don't exist in the incoming data
       const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients'];
       arrayFields.forEach(field => {
@@ -386,11 +389,40 @@ export class SupplierUserProfileEditComponent implements OnInit {
       }
     }
 
-    // Create a new object without the inHoldComment field
+    // Create a new object with the proper structure
     const supplierDataToSend = { ...this.supplierDetails };
-    if (supplierDataToSend.hasOwnProperty('inHoldComment')) {
-      delete supplierDataToSend.inHoldComment;
+
+    // Ensure we have arrays initialized for all required fields
+    if (!supplierDataToSend.industry_Sector) supplierDataToSend.industry_Sector = [];
+    if (!supplierDataToSend.categoryList) supplierDataToSend.categoryList = [];
+    if (!supplierDataToSend.technologyStack) supplierDataToSend.technologyStack = [];
+    if (!supplierDataToSend.expertise) supplierDataToSend.expertise = [];
+    if (!supplierDataToSend.typeOfCompany) supplierDataToSend.typeOfCompany = [];
+    if (!supplierDataToSend.certifications) supplierDataToSend.certifications = [];
+    if (!supplierDataToSend.keyClients) supplierDataToSend.keyClients = [];
+
+    // Format inHoldComment according to API requirements
+    if (this.inHoldComment && this.inHoldComment.trim()) {
+      supplierDataToSend.inHoldComment = [
+        {
+          comment: this.inHoldComment.trim()
+        }
+      ];
+    } else {
+      supplierDataToSend.inHoldComment = [];
     }
+
+    // Convert year of establishment to proper format if it exists
+    if (supplierDataToSend.yearOfEstablishment) {
+      const date = new Date(supplierDataToSend.yearOfEstablishment);
+      supplierDataToSend.yearOfEstablishment = date.toISOString().split('T')[0];
+    }
+
+    // Remove empty fields to avoid issues with the API
+    if (!supplierDataToSend.email) delete supplierDataToSend.email;
+    if (!supplierDataToSend.poc_email) delete supplierDataToSend.poc_email;
+
+    console.log('Submitting updated supplier details:', supplierDataToSend);
 
     this.showLoader = true;
     this.supplierService.updateSuppilerDetails(supplierDataToSend, supplierDataToSend._id).subscribe(
@@ -408,5 +440,28 @@ export class SupplierUserProfileEditComponent implements OnInit {
         this.showLoader = false;
       }
     );
+  }
+
+  // Method to map legacy field names to new format
+  mapLegacyFieldNames(data: any) {
+    // Map industryFocus to industry_Sector if needed
+    if (data.industryFocus && !data.industry_Sector) {
+      data.industry_Sector = data.industryFocus;
+      delete data.industryFocus;
+    }
+
+    // Map category to categoryList if needed
+    if (data.category && !data.categoryList) {
+      data.categoryList = data.category;
+      delete data.category;
+    }
+
+    // Map technologies to technologyStack if needed
+    if (data.technologies && !data.technologyStack) {
+      data.technologyStack = data.technologies;
+      delete data.technologies;
+    }
+
+    return data;
   }
 }

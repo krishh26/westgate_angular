@@ -88,12 +88,67 @@ export class RegisterNewSupplierComponent implements OnInit {
     if (this.subExpertiseOptions.length === 0) {
       this.addFallbackSubExpertiseOptions();
     }
+
+    // For testing - populate with sample data
+    this.populateSampleData();
+  }
+
+  populateSampleData() {
+    // This method can be used to populate the form with test data
+    // Uncomment if needed for testing
+    /*
+    this.companyForm = {
+      companyName: "testing data",
+      website: "",
+      companyAddress: "",
+      country: "",
+      companyContactNumber: "",
+      yearOfEstablishment: "",
+      poc_name: "fg",
+      poc_phone: "3453453453",
+      poc_role: "",
+      typeOfCompany: [],
+      industry_Sector: [
+        "Healthcare",
+        "Insurance"
+      ],
+      employeeCount: "",
+      certifications: [],
+      expertise: [
+        {
+          name: "Google Cloud Platform (GCP)",
+          type: "technologies",
+          itemId: "67fca5c289b158a4378bd26a",
+          subExpertise: [
+            "Banking",
+            "Information Technology (IT)"
+          ]
+        }
+      ],
+      categoryList: [
+        "DevOps",
+        "E-commerce Development"
+      ],
+      technologyStack: [
+        "Java",
+        "C"
+      ],
+      keyClients: [],
+      resourceSharingSupplier: true,
+      subcontractingSupplier: false,
+      inHoldComment: []
+    };
+
+    // Update the selection models to match the form data
+    this.selectedIndustries = [...this.companyForm.industry_Sector];
+    this.selectedCategories = [...this.companyForm.categoryList];
+    this.selectedTechnologies = [...this.companyForm.technologyStack];
+    */
   }
 
   initializeForm() {
     this.companyForm = {
       companyName: '',
-      // logo: '',
       website: '',
       companyAddress: '',
       country: '',
@@ -105,15 +160,16 @@ export class RegisterNewSupplierComponent implements OnInit {
       poc_email: '',
       poc_role: '',
       typeOfCompany: [],
-      industryFocus: [],
+      industry_Sector: [],
       employeeCount: '',
       certifications: [],
       expertise: [],
-      category: [],
-      technologies: [],
+      categoryList: [],
+      technologyStack: [],
       keyClients: [],
       resourceSharingSupplier: false,
-      subcontractingSupplier: false
+      subcontractingSupplier: false,
+      inHoldComment: []
     };
   }
 
@@ -284,26 +340,6 @@ export class RegisterNewSupplierComponent implements OnInit {
       formData.expertise = [];
     }
 
-    // Ensure all expertise items have the required structure
-    // If the expertise items are already in the correct format, this step is not needed
-    const formattedExpertise = formData.expertise.map((item: any) => {
-      // If item is already in correct format
-      if (item.name && (item.subExpertise || Array.isArray(item.subExpertise))) {
-        return item;
-      }
-
-      // If item is the direct ExpertiseItem from the dropdown
-      return {
-        name: item.name,
-        type: item.type || 'technologies',
-        itemId: item.itemId,
-        subExpertise: []
-      };
-    });
-
-    // Update formData with the formatted expertise
-    formData.expertise = formattedExpertise;
-
     // Add inHoldComment in the required format
     if (this.inHoldComment.trim()) {
       formData.inHoldComment = [
@@ -311,8 +347,6 @@ export class RegisterNewSupplierComponent implements OnInit {
           comment: this.inHoldComment.trim()
         }
       ];
-    } else {
-      formData.inHoldComment = [];
     }
 
     console.log('Submitting Data (with selected values):', formData);
@@ -504,11 +538,11 @@ export class RegisterNewSupplierComponent implements OnInit {
   onCategoryChange() {
     if (this.selectedCategories && this.selectedCategories.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.category = [...this.selectedCategories];
+      this.companyForm.categoryList = [...this.selectedCategories];
     } else {
-      this.companyForm.category = [];
+      this.companyForm.categoryList = [];
     }
-    console.log('Updated categories in form:', this.companyForm.category);
+    console.log('Updated categories in form:', this.companyForm.categoryList);
   }
 
   // Add method for adding custom items
@@ -606,11 +640,11 @@ export class RegisterNewSupplierComponent implements OnInit {
   onTechnologiesChange() {
     if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.technologies = [...this.selectedTechnologies];
+      this.companyForm.technologyStack = [...this.selectedTechnologies];
     } else {
-      this.companyForm.technologies = [];
+      this.companyForm.technologyStack = [];
     }
-    console.log('Updated technologies in form:', this.companyForm.technologies);
+    console.log('Updated technologies in form:', this.companyForm.technologyStack);
   }
 
   // Renamed method for adding custom technology items
@@ -688,11 +722,11 @@ export class RegisterNewSupplierComponent implements OnInit {
   onIndustryChange() {
     if (this.selectedIndustries && this.selectedIndustries.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.industryFocus = [...this.selectedIndustries];
+      this.companyForm.industry_Sector = [...this.selectedIndustries];
     } else {
-      this.companyForm.industryFocus = [];
+      this.companyForm.industry_Sector = [];
     }
-    console.log('Updated industry focus in form:', this.companyForm.industryFocus);
+    console.log('Updated industry focus in form:', this.companyForm.industry_Sector);
   }
 
   // Add method for adding custom industry items

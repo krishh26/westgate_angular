@@ -111,15 +111,16 @@ export class BossUserAddNewSupplierComponent implements OnInit {
       poc_email: '',
       poc_role: '',
       typeOfCompany: [],
-      industryFocus: [],
+      industry_Sector: [],
       employeeCount: '',
       certifications: [],
       expertise: [],
-      category: [],
-      technologies: [],
+      categoryList: [],
+      technologyStack: [],
       keyClients: [],
       resourceSharingSupplier: false,
-      subcontractingSupplier: false
+      subcontractingSupplier: false,
+      inHoldComment: []
     };
   }
 
@@ -233,6 +234,29 @@ export class BossUserAddNewSupplierComponent implements OnInit {
     this.companyForm[arrayName].splice(index, 1);
   }
 
+  // Method to map legacy field names to new format
+  mapLegacyFieldNames(data: any) {
+    // Map industryFocus to industry_Sector if needed
+    if (data.industryFocus && !data.industry_Sector) {
+      data.industry_Sector = data.industryFocus;
+      delete data.industryFocus;
+    }
+
+    // Map category to categoryList if needed
+    if (data.category && !data.categoryList) {
+      data.categoryList = data.category;
+      delete data.category;
+    }
+
+    // Map technologies to technologyStack if needed
+    if (data.technologies && !data.technologyStack) {
+      data.technologyStack = data.technologies;
+      delete data.technologies;
+    }
+
+    return data;
+  }
+
   submitForm() {
     // Check required fields
     if (!this.companyForm.companyName || !this.companyForm.poc_name || !this.companyForm.poc_phone) {
@@ -269,6 +293,18 @@ export class BossUserAddNewSupplierComponent implements OnInit {
     // Create a copy of the form data
     const formData = { ...this.companyForm };
 
+    // Map any legacy field names that might be present
+    this.mapLegacyFieldNames(formData);
+
+    // Ensure arrays are initialized
+    if (!formData.industry_Sector) formData.industry_Sector = [];
+    if (!formData.categoryList) formData.categoryList = [];
+    if (!formData.technologyStack) formData.technologyStack = [];
+    if (!formData.expertise) formData.expertise = [];
+    if (!formData.typeOfCompany) formData.typeOfCompany = [];
+    if (!formData.certifications) formData.certifications = [];
+    if (!formData.keyClients) formData.keyClients = [];
+
     // Remove empty email field
     if (!formData.email) {
       delete formData.email;
@@ -285,30 +321,23 @@ export class BossUserAddNewSupplierComponent implements OnInit {
       formData.yearOfEstablishment = date.toISOString().split('T')[0];
     }
 
-    // If expertise is empty, initialize it
-    if (!formData.expertise) {
-      formData.expertise = [];
-    }
-
     // Ensure all expertise items have the required structure
-    // If the expertise items are already in the correct format, this step is not needed
-    const formattedExpertise = formData.expertise.map((item: any) => {
-      // If item is already in correct format
-      if (item.name && (item.subExpertise || Array.isArray(item.subExpertise))) {
-        return item;
-      }
+    if (formData.expertise && formData.expertise.length > 0) {
+      formData.expertise = formData.expertise.map((item: any) => {
+        // If item is already in correct format
+        if (item.name && (item.subExpertise || Array.isArray(item.subExpertise))) {
+          return item;
+        }
 
-      // If item is the direct ExpertiseItem from the dropdown
-      return {
-        name: item.name,
-        type: item.type || 'technologies',
-        itemId: item.itemId,
-        subExpertise: []
-      };
-    });
-
-    // Update formData with the formatted expertise
-    formData.expertise = formattedExpertise;
+        // If item is the direct ExpertiseItem from the dropdown
+        return {
+          name: item.name,
+          type: item.type || 'technologies',
+          itemId: item.itemId,
+          subExpertise: []
+        };
+      });
+    }
 
     // Add inHoldComment in the required format
     if (this.inHoldComment?.trim()) {
@@ -512,11 +541,11 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   onCategoryChange() {
     if (this.selectedCategories && this.selectedCategories.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.category = [...this.selectedCategories];
+      this.companyForm.categoryList = [...this.selectedCategories];
     } else {
-      this.companyForm.category = [];
+      this.companyForm.categoryList = [];
     }
-    console.log('Updated categories in form:', this.companyForm.category);
+    console.log('Updated categories in form:', this.companyForm.categoryList);
   }
 
   // Add method for adding custom items
@@ -614,11 +643,11 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   onTechnologiesChange() {
     if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.technologies = [...this.selectedTechnologies];
+      this.companyForm.technologyStack = [...this.selectedTechnologies];
     } else {
-      this.companyForm.technologies = [];
+      this.companyForm.technologyStack = [];
     }
-    console.log('Updated technologies in form:', this.companyForm.technologies);
+    console.log('Updated technologies in form:', this.companyForm.technologyStack);
   }
 
   // Renamed method for adding custom technology items
@@ -696,11 +725,11 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   onIndustryChange() {
     if (this.selectedIndustries && this.selectedIndustries.length > 0) {
       // Extract just the values/names directly to the form array
-      this.companyForm.industryFocus = [...this.selectedIndustries];
+      this.companyForm.industry_Sector = [...this.selectedIndustries];
     } else {
-      this.companyForm.industryFocus = [];
+      this.companyForm.industry_Sector = [];
     }
-    console.log('Updated industry focus in form:', this.companyForm.industryFocus);
+    console.log('Updated industry focus in form:', this.companyForm.industry_Sector);
   }
 
   // Add method for adding custom industry items
