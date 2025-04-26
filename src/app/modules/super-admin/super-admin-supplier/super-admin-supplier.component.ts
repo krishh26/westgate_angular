@@ -349,13 +349,33 @@ export class SuperAdminSupplierComponent {
           this.showLoader = false;
           this.supplierUserList = response?.data?.data;
 
-          // Don't update the badge counts, use original values
-          // Only update the current view counts for display calculations
+          // Always update all badge counts from the API response, regardless of filter
+          if (response?.data?.count) {
+            // Update all counts from the response
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+            this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
+            this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
+
+            // Store the original counts
+            this.originalCounts = {
+              active: this.totalActiveSuppliers,
+              inactive: this.totalInactiveSuppliers,
+              resourceSharing: this.totalResourceSharingCount,
+              subcontracting: this.totalSubcontractingCount,
+              deleted: this.totalDeletedCount,
+              inHold: this.totalInHoldCount
+            };
+          }
+
+          // Only calculate filtered counts for the current view
           if (filterType !== 'clear') {
-            // For current view data only, update counts based on filtered data
             this.calculateFilteredCounts();
           } else {
-            // If clearing filters, restore original counts from the last full load
+            // If clearing filters, get the full list
             this.getManageUserList();
           }
         } else {
@@ -404,6 +424,17 @@ export class SuperAdminSupplierComponent {
                 this.totalRecords = response?.data?.count?.inHoldCount || 0;
                 break;
             }
+          }
+
+          // Always update all badge counts from the API response
+          if (response?.data?.count) {
+            this.totalActiveSuppliers = response?.data?.count?.active || 0;
+            this.totalInactiveSuppliers = response?.data?.count?.inActive || 0;
+            this.totalResourceSharingCount = response?.data?.count?.resourceSharingCount || 0;
+            this.totalSubcontractingCount = response?.data?.count?.subcontractingCount || 0;
+            this.totalInHoldCount = response?.data?.count?.inHoldCount || 0;
+            this.totalDeletedCount = response?.data?.count?.isDeletedCount || 0;
+            this.totalSupplierEmployeeCount = response?.data?.count?.totalSupplierEmployeeCount || 0;
           }
         }
       }
