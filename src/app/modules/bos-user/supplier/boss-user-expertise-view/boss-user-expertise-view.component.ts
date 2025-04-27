@@ -82,7 +82,8 @@ export class BossUserExpertiseViewComponent {
   }
 
   filterActiveSuppliers() {
-    this.filteredList = this.currentList.filter(item => item?.activeSupplierCount > 0);
+    this.filteredList = this.currentList;
+    // this.filteredList = this.currentList.filter(item => item?.activeSupplierCount > 0);
     return this.filteredList;
   }
 

@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +9,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import { environment } from 'src/environment/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,7 +27,7 @@ export class BossUserSupplierUserProfileComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
-
+  inHoldCommentForm!: FormGroup;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -33,7 +36,12 @@ export class BossUserSupplierUserProfileComponent {
     private sanitizer: DomSanitizer,
     private superService: SuperadminService,
     private modalService: NgbModal,
-  ) { }
+    private httpClient: HttpClient
+  ) {
+    this.inHoldCommentForm = new FormGroup({
+      comment: new FormControl('', [Validators.required])
+    });
+  }
 
   ngOnInit() {
     // Check if the hideOtherTabs flag is set in localStorage
@@ -164,4 +172,35 @@ export class BossUserSupplierUserProfileComponent {
     this.router.navigate(['/boss-user/supplier']);
   }
 
+  submitInHoldComment() {
+    if (this.inHoldCommentForm.invalid) {
+      this.notificationService.showError('Please enter a comment');
+      return;
+    }
+
+    this.showLoader = true;
+    const comment = this.inHoldCommentForm.get('comment')?.value;
+
+    const payload = {
+      inHoldComment: comment
+    };
+
+    this.httpClient.patch(`${environment.baseUrl}/user/update/${this.supplierID}`, payload)
+      .subscribe(
+        (response: any) => {
+          this.showLoader = false;
+          if (response?.status) {
+            this.notificationService.showSuccess('Comment added successfully');
+            this.inHoldCommentForm.reset();
+            this.getSupplierdata();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add comment');
+          }
+        },
+        (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message || 'Error adding comment');
+        }
+      );
+  }
 }
