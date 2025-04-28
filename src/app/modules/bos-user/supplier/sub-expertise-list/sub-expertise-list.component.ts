@@ -32,6 +32,7 @@ export class SubExpertiseListComponent {
   subExpertiseTags: string[] = [];
   showAddButton: boolean = true;
   isFromExpertiseView: boolean = false;
+  collapsedStates: { [key: number]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -343,5 +344,20 @@ export class SubExpertiseListComponent {
         this.notificationService.showError(error?.message || 'Failed to add sub expertise tags');
       }
     );
+  }
+
+  toggleCollapse(index: number) {
+    this.collapsedStates[index] = !this.collapsedStates[index];
+  }
+
+  isCollapsed(index: number): boolean {
+    return this.collapsedStates[index] || false;
+  }
+
+  openFileSelector(index: number) {
+    const fileInput = document.getElementById(`fileInput${index}`) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
   }
 }
