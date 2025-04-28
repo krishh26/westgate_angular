@@ -231,6 +231,31 @@
                 </div>
               </div>
 
+              <!-- Additional Supplier Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Additional Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Resource Sharing Supplier</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="supplierDetails?.resourceSharingSupplier" disabled>
+                    <label class="form-check-label">
+                      {{supplierDetails?.resourceSharingSupplier ? 'Yes' : 'No'}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Subcontracting Supplier</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="supplierDetails?.subcontractingSupplier" disabled>
+                    <label class="form-check-label">
+                      {{supplierDetails?.subcontractingSupplier ? 'Yes' : 'No'}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
