@@ -88,7 +88,8 @@
               <th>Role Name</th>
               <th>Active Supplier</th>
               <th>Active Candidate</th>
-              <th>Actions</th>
+              <th>Executive Candidate</th>
+              <th>Normal Candidate</th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +104,8 @@
               <td>{{role?.name}}</td>
               <td>{{role?.activeSuppliersCount}}</td>
               <td>{{role?.activeCandidatesCount}}</td>
+              <td>{{role?.executiveTrueCount}}</td>
+              <td>{{role?.executiveFalseCount}}</td>
               <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View Resources</button>
               </td>
