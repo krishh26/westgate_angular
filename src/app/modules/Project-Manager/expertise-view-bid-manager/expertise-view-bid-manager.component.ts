@@ -128,9 +128,9 @@ export class ExpertiseViewBidManagerComponent {
         if (response?.status) {
           this.expertiseList = response?.data || [];
 
-          // Filter out items with totalSupplierCount of 0
+          // Filter items with activeSupplierCount > 0
           this.currentList = this.expertiseList.filter((item: any) => {
-            return item.totalSupplierCount > 0;
+            return item.activeSupplierCount > 0;
           });
 
           this.selectedType = '';
@@ -280,13 +280,12 @@ export class ExpertiseViewBidManagerComponent {
           // Get all data
           this.dropdownData = response.data || [];
 
-          // Filter out items with totalSupplierCount of 0
+          // Filter items with activeSupplierCount > 0
           this.currentList = this.dropdownData.filter((item: any) => {
-            return item.totalSupplierCount > 0;
+            return item.activeSupplierCount > 0;
           });
 
-          this.selectedType = ''; // Clear selected type
-          //this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
+          this.selectedType = '';
         } else {
           this.dropdownData = [];
           this.currentList = [];
