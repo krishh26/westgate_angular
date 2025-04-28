@@ -32,12 +32,26 @@ export class SuperadminCommentModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.supplier) {
-      this.userForm.patchValue({
-        activeStatus: this.supplier.activeStatus || '',
-        active: false, // Always false when opening the comment modal
-      });
+    let commentString = '';
+    if (this.supplier && this.supplier.activeStatus) {
+      // If it's an object or array, extract the string
+      if (typeof this.supplier.activeStatus === 'string') {
+        commentString = this.supplier.activeStatus;
+      } else if (Array.isArray(this.supplier.activeStatus) && this.supplier.activeStatus.length > 0) {
+        // If it's an array, get the first string or extract from object
+        const first = this.supplier.activeStatus[0];
+        commentString = typeof first === 'string'
+          ? first
+          : (first.comment || first.text || first.message || '');
+      } else if (typeof this.supplier.activeStatus === 'object') {
+        // If it's an object, extract a likely string property
+        commentString = this.supplier.activeStatus.comment || this.supplier.activeStatus.text || this.supplier.activeStatus.message || '';
+      }
     }
+    this.userForm.patchValue({
+      activeStatus: commentString,
+      active: false,
+    });
     console.log('Modal initialized with:', {
       itemType: this.itemType,
       sourceComponent: this.sourceComponent,
