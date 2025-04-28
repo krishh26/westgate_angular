@@ -99,6 +99,16 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="col-md-12 mb-3">
+                      <div class="row">
+                        <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary</label>
+                        <div class="col-sm-10">
+                          <textarea [(ngModel)]="companyForm.executiveSummary" name="executiveSummary" class="form-control"
+                            placeholder="Enter company executive summary" id="executiveSummary" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- POC Details -->
@@ -199,6 +209,28 @@
                         <label for="employeeCount" class="col-sm-4 col-form-label">Company Size</label>
                         <div class="col-sm-8">
                           <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text" class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)" id="employeeCount">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="turnover" class="col-sm-4 col-form-label">Turnover</label>
+                        <div class="col-sm-8">
+                          <input [(ngModel)]="companyForm.turnover" name="turnover" type="text"
+                            class="form-control" placeholder="Enter turnover" (keypress)="NumberOnly($event)"
+                            id="turnover">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="totalProjectsExecuted" class="col-sm-4 col-form-label">Total Projects Executed</label>
+                        <div class="col-sm-8">
+                          <input [(ngModel)]="companyForm.totalProjectsExecuted" name="totalProjectsExecuted" type="text"
+                            class="form-control" placeholder="Enter total projects executed" (keypress)="NumberOnly($event)"
+                            id="totalProjectsExecuted">
                         </div>
                       </div>
                     </div>

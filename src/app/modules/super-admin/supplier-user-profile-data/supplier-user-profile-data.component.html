@@ -93,6 +93,10 @@
                   <input type="text" class="form-control"
                     [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" readonly>
                 </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">Executive Summary</label>
+                  <textarea class="form-control" [value]="supplierDetails?.executiveSummary" readonly rows="4"></textarea>
+                </div>
               </div>
 
               <!-- POC Details -->
@@ -146,6 +150,14 @@
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Company Size</label>
                   <input type="text" class="form-control" [value]="supplierDetails?.employeeCount" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Turnover</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.turnover" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Total Projects Executed</label>
+                  <input type="text" class="form-control" [value]="supplierDetails?.totalProjectsExecuted" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Certifications</label>

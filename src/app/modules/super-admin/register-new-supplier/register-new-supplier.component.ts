@@ -104,6 +104,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       country: "",
       companyContactNumber: "",
       yearOfEstablishment: "",
+      executiveSummary: "Brief overview of the company and its key services.",
       poc_name: "fg",
       poc_phone: "3453453453",
       poc_role: "",
@@ -113,6 +114,8 @@ export class RegisterNewSupplierComponent implements OnInit {
         "Insurance"
       ],
       employeeCount: "",
+      turnover: "2",
+      totalProjectsExecuted: "1",
       certifications: [],
       expertise: [
         {
@@ -155,6 +158,7 @@ export class RegisterNewSupplierComponent implements OnInit {
       email: '',
       companyContactNumber: '',
       yearOfEstablishment: '',
+      executiveSummary: '',
       poc_name: '',
       poc_phone: '',
       poc_email: '',
@@ -162,6 +166,8 @@ export class RegisterNewSupplierComponent implements OnInit {
       typeOfCompany: [],
       industry_Sector: [],
       employeeCount: '',
+      turnover: '',
+      totalProjectsExecuted: '',
       certifications: [],
       expertise: [],
       categoryList: [],

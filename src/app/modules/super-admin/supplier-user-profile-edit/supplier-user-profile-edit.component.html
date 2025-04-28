@@ -104,6 +104,16 @@
                 </div>
               </div>
 
+              <div class="col-md-12 mb-3">
+                <div class="row">
+                  <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary</label>
+                  <div class="col-sm-10">
+                    <textarea [(ngModel)]="supplierDetails.executiveSummary" name="executiveSummary" class="form-control"
+                      placeholder="Enter company executive summary" id="executiveSummary" rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
               <!-- POC Details -->
               <div class="col-12">
                 <h5 class="text-primary mb-3">POC Details</h5>
@@ -207,6 +217,26 @@
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text" class="form-control"
                       placeholder="Enter employee count" (keypress)="NumberOnly($event)" id="employeeCount">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="turnover" class="col-sm-4 col-form-label">Turnover</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.turnover" name="turnover" type="text" class="form-control"
+                      placeholder="Enter turnover" (keypress)="NumberOnly($event)" id="turnover">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="totalProjectsExecuted" class="col-sm-4 col-form-label">Total Projects Executed</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="supplierDetails.totalProjectsExecuted" name="totalProjectsExecuted" type="text" class="form-control"
+                      placeholder="Enter total projects executed" (keypress)="NumberOnly($event)" id="totalProjectsExecuted">
                   </div>
                 </div>
               </div>
