@@ -76,6 +76,34 @@ export class BossUserResourcesAddComponent {
         this.loadCandidateDataFromStorage();
       }
     });
+
+    // Keep track of previously selected currentRole
+    let previousRole: string | null = null;
+
+    // Subscribe to changes in the currentRole field
+    this.userProfileForm.get('currentRole')?.valueChanges.subscribe(selectedRole => {
+      if (selectedRole) {
+        const currentRoleIds = this.userProfileForm.get('roleId')?.value || [];
+
+        // Remove the previous currentRole from the roleId array if it exists
+        if (previousRole && currentRoleIds.includes(previousRole)) {
+          const filteredRoleIds = currentRoleIds.filter((roleId: string) => roleId !== previousRole);
+
+          // Add the newly selected role to the roleId array
+          this.userProfileForm.patchValue({
+            roleId: [...filteredRoleIds, selectedRole]
+          });
+        } else {
+          // Just add the selected role to the existing roleId array
+          this.userProfileForm.patchValue({
+            roleId: [...currentRoleIds, selectedRole]
+          });
+        }
+
+        // Update previousRole for next change
+        previousRole = selectedRole;
+      }
+    });
   }
 
   initializeForm() {
@@ -94,6 +122,7 @@ export class BossUserResourcesAddComponent {
       hourlyRate: ['', [Validators.required, Validators.min(0)]],
       // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       // overtimeCharges: [''],
+      currentRole: [null],
       roleId: [[], Validators.required],
       //  otherJobTitle: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
@@ -386,6 +415,7 @@ export class BossUserResourcesAddComponent {
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
         hourlyRate: candidateData.hourlyRate,
+        currentRole: candidateData.currentRole,
         roleId: roleIds
       });
 

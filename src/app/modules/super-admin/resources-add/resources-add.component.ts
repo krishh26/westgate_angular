@@ -92,6 +92,34 @@ export class ResourcesAddComponent implements OnInit {
 
     // Add value change listeners for rate calculations
     this.setupRateCalculations();
+
+    // Keep track of previously selected currentRole
+    let previousRole: string | null = null;
+
+    // Subscribe to changes in the currentRole field
+    this.userProfileForm.get('currentRole')?.valueChanges.subscribe(selectedRole => {
+      if (selectedRole) {
+        const currentRoleIds = this.userProfileForm.get('roleId')?.value || [];
+
+        // Remove the previous currentRole from the roleId array if it exists
+        if (previousRole && currentRoleIds.includes(previousRole)) {
+          const filteredRoleIds = currentRoleIds.filter((roleId: string) => roleId !== previousRole);
+
+          // Add the newly selected role to the roleId array
+          this.userProfileForm.patchValue({
+            roleId: [...filteredRoleIds, selectedRole]
+          });
+        } else {
+          // Just add the selected role to the existing roleId array
+          this.userProfileForm.patchValue({
+            roleId: [...currentRoleIds, selectedRole]
+          });
+        }
+
+        // Update previousRole for next change
+        previousRole = selectedRole;
+      }
+    });
   }
 
   initializeForm() {
