@@ -26,11 +26,13 @@ export class ResourcesAddComponent implements OnInit {
   technicalSkills: string[] = [];
   softSkills: string[] = [];
   languagesKnown: string[] = [];
+  certifications: string[] = [];
 
   // Temporary inputs for tag-like fields
   newEmployer: string = '';
   newSoftSkill: string = '';
   newLanguage: string = '';
+  newCertification: string = '';
 
   // Arrays to store project tech stacks
   projectTechStacks: string[][] = [[]];
@@ -110,8 +112,10 @@ export class ResourcesAddComponent implements OnInit {
       ukHourlyRate: [''],
       ukDayRate: [''],
       indianDayRate: [''],
+      projectsExecuted: [''],
       // workingHoursPerWeek: ['', [Validators.required, Validators.min(0), Validators.max(168)]],
       // overtimeCharges: [''],
+      currentRole: [null],
       roleId: [[], Validators.required],
       //  otherJobTitle: [''],
       projectsWorkedOn: this.fb.array([this.createProjectForm()])
@@ -184,6 +188,17 @@ export class ResourcesAddComponent implements OnInit {
     this.languagesKnown.splice(index, 1);
   }
 
+  addCertification(): void {
+    if (this.newCertification?.trim() && !this.certifications.includes(this.newCertification.trim())) {
+      this.certifications.push(this.newCertification.trim());
+      this.newCertification = '';
+    }
+  }
+
+  removeCertification(index: number): void {
+    this.certifications.splice(index, 1);
+  }
+
   // Handle technical skills selection changes
   onTechnicalSkillsChange(event: any): void {
     console.log('Technical skills changed:', this.technicalSkills);
@@ -230,7 +245,8 @@ export class ResourcesAddComponent implements OnInit {
       previousEmployers: this.previousEmployers,
       technicalSkills: this.technicalSkills,
       softSkills: this.softSkills,
-      languagesKnown: this.languagesKnown
+      languagesKnown: this.languagesKnown,
+      certifications: this.certifications
     };
 
     // Add tech stack to each project and handle null projectComplexity
@@ -448,6 +464,8 @@ export class ResourcesAddComponent implements OnInit {
         ukHourlyRate: candidateData.ukHourlyRate,
         ukDayRate: candidateData.ukDayRate,
         indianDayRate: candidateData.indianDayRate,
+        projectsExecuted: candidateData.projectsExecuted,
+        currentRole: candidateData.currentRole,
         roleId: roleIds
       });
 

@@ -90,6 +90,14 @@
               </div>
             </div>
 
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Projects Executed</label>
+              <div class="col-sm-8">
+                <input formControlName="projectsExecuted" type="number" class="form-control"
+                  placeholder="Number of projects executed" (keypress)="NumberOnly($event)">
+              </div>
+            </div>
+
             <!-- <div class="row mb-3">
               <label class="col-sm-4 col-form-label">Job Title</label>
               <div class="col-sm-8">
@@ -108,7 +116,26 @@
             </div> -->
 
             <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Role</label>
+              <label class="col-sm-4 col-form-label"> Role</label>
+              <div class="col-sm-8">
+                <ng-select [items]="rolesList" bindLabel="name" bindValue="_id" [multiple]="false"
+                  placeholder="Select Current Role" formControlName="currentRole">
+                  <ng-template ng-label-tmp let-item="item">
+                    {{item.name}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item">
+                    <div
+                      [title]="item.otherRoles && item.otherRoles.length > 0 ? 'Also known as: ' + item.otherRoles.join(', ') : ''">
+                      {{item.name}} <span
+                        *ngIf="item.otherRoles && item.otherRoles.length > 0">({{item.otherRoles.join(', ')}})</span>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">I Can Be</label>
               <div class="col-sm-8">
                 <ng-select [items]="rolesList" bindLabel="name" bindValue="_id" [multiple]="true"
                   placeholder="Select Roles" formControlName="roleId">
@@ -116,8 +143,10 @@
                     {{item.name}}
                   </ng-template>
                   <ng-template ng-option-tmp let-item="item">
-                    <div [title]="item.otherRoles && item.otherRoles.length > 0 ? 'Also known as: ' + item.otherRoles.join(', ') : ''">
-                      {{item.name}} <span *ngIf="item.otherRoles && item.otherRoles.length > 0">({{item.otherRoles.join(', ')}})</span>
+                    <div
+                      [title]="item.otherRoles && item.otherRoles.length > 0 ? 'Also known as: ' + item.otherRoles.join(', ') : ''">
+                      {{item.name}} <span
+                        *ngIf="item.otherRoles && item.otherRoles.length > 0">({{item.otherRoles.join(', ')}})</span>
                     </div>
                   </ng-template>
                 </ng-select>
@@ -239,6 +268,27 @@
                 </div>
               </div>
             </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-4 col-form-label">Certifications</label>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="newCertification"
+                    [ngModelOptions]="{standalone: true}" placeholder="Add certification">
+                  <button class="btn btn-outline-primary" type="button" (click)="addCertification()">Add</button>
+                </div>
+                <div *ngIf="certifications.length > 0" class="mt-2">
+                  <div class="d-flex flex-wrap gap-2">
+                    <div *ngFor="let certification of certifications; let i = index"
+                      class="badge bg-primary p-2 d-flex align-items-center">
+                      {{certification}}
+                      <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                        (click)="removeCertification(i)"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Availability and Rates Section -->
@@ -290,8 +340,8 @@
                 <div class="row">
                   <label class="col-sm-4 col-form-label">UK Hourly Rate (£)</label>
                   <div class="col-sm-8">
-                    <input formControlName="ukHourlyRate" type="text" class="form-control" placeholder="Enter UK hourly rate"
-                      (keypress)="NumberOnly($event)">
+                    <input formControlName="ukHourlyRate" type="text" class="form-control"
+                      placeholder="Enter UK hourly rate" (keypress)="NumberOnly($event)">
 
                   </div>
                 </div>
@@ -316,8 +366,8 @@
                 <div class="row">
                   <label class="col-sm-4 col-form-label">Indian Day Rate (₹)</label>
                   <div class="col-sm-8">
-                    <input formControlName="indianDayRate" type="text" class="form-control" placeholder="Enter Indian day rate"
-                      (keypress)="NumberOnly($event)">
+                    <input formControlName="indianDayRate" type="text" class="form-control"
+                      placeholder="Enter Indian day rate" (keypress)="NumberOnly($event)">
 
                   </div>
                 </div>

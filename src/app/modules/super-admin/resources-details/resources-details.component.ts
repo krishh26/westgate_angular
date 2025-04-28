@@ -105,4 +105,36 @@ export class ResourcesDetailsComponent implements OnInit {
   isRoleArray(): boolean {
     return this.candidateDetails?.roleId && Array.isArray(this.candidateDetails.roleId);
   }
+
+  // Get current role name from role ID
+  getCurrentRoleName(): string {
+    if (!this.candidateDetails?.currentRole) {
+      return '';
+    }
+
+    // If currentRole is already an object with name property
+    if (typeof this.candidateDetails.currentRole === 'object' && this.candidateDetails.currentRole?.name) {
+      return this.candidateDetails.currentRole.name;
+    }
+
+    // If currentRole is an ID, find the matching role from roleId array
+    if (this.candidateDetails.roleId && Array.isArray(this.candidateDetails.roleId)) {
+      const matchingRole = this.candidateDetails.roleId.find((role: any) => {
+        return role._id === this.candidateDetails.currentRole;
+      });
+
+      if (matchingRole) {
+        return matchingRole.name;
+      }
+    }
+
+    // If single role object
+    if (this.candidateDetails.roleId && !Array.isArray(this.candidateDetails.roleId) &&
+        this.candidateDetails.roleId._id === this.candidateDetails.currentRole) {
+      return this.candidateDetails.roleId.name;
+    }
+
+    // Fall back to the ID if we can't find the name
+    return this.candidateDetails.currentRole;
+  }
 }

@@ -59,6 +59,14 @@
                   <h5 class="text-primary mb-3">Professional Information</h5>
                 </div>
                 <div class="col-md-6 mb-3">
+                  <label class="form-label">Current Role</label>
+                  <div class="form-control" style="min-height: 38px; height: auto;">
+                    <span *ngIf="getCurrentRoleName()" class="badge bg-primary">
+                      {{getCurrentRoleName()}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
                   <label class="form-label">Role</label>
                   <div class="form-control d-flex flex-wrap gap-2" style="min-height: 38px; height: auto;">
                     <ng-container *ngIf="candidateDetails?.roleId && !isRoleArray()">
@@ -72,6 +80,11 @@
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Total Experience</label>
                   <input type="text" class="form-control" [value]="candidateDetails?.totalExperience + ' years'"
+                    readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Projects Executed</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.projectsExecuted || '0'"
                     readonly>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -159,6 +172,11 @@
                     readonly>
                 </div>
                 <div class="col-md-6 mb-3">
+                  <label class="form-label">Certifications</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.certifications?.join(', ')"
+                    readonly>
+                </div>
+                <div class="col-md-12 mb-3">
                   <label class="form-label">Previous Employers</label>
                   <input type="text" class="form-control" [value]="candidateDetails?.previousEmployers?.join(', ')"
                     readonly>
