@@ -642,4 +642,50 @@ export class CompletedTodoTaskComponent {
       }
     );
   }
+
+  // Get the assigned user name from resources array
+  getAssignedUserName(resources: any[]): string {
+    if (!resources || resources.length === 0) {
+      return 'Unassigned';
+    }
+
+    const candidateId = resources[0].candidateId;
+    if (!candidateId) {
+      return 'Unassigned';
+    }
+
+    // If candidateId is an object with name property (full user object)
+    if (typeof candidateId === 'object' && 'name' in candidateId) {
+      return candidateId.name;
+    }
+
+    // If candidateId is an object with userDetail property
+    if (typeof candidateId === 'object' && 'userDetail' in candidateId && candidateId.userDetail) {
+      return candidateId.userDetail.name || 'Unknown User';
+    }
+
+    // Otherwise find from userList by ID
+    const user = this.userList.find((u: any) => u._id === candidateId);
+    return user ? (user.userName || user.name) : 'Unknown User';
+  }
+
+  // Check if current user is assigned to this subtask
+  isCurrentUserAssigned(resources: any[]): boolean {
+    if (!resources || resources.length === 0 || !this.loginUser) {
+      return false;
+    }
+
+    const candidateId = resources[0].candidateId;
+    if (!candidateId) {
+      return false;
+    }
+
+    // Check if candidateId is an object with _id property
+    if (typeof candidateId === 'object' && '_id' in candidateId) {
+      return candidateId._id === this.loginUser.id;
+    }
+
+    // Handle string ID comparison
+    return candidateId === this.loginUser.id;
+  }
 }
