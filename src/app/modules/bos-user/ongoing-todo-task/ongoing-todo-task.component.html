@@ -81,6 +81,10 @@
                       </button>
                     </span> -->
                     <!-- <span *ngIf="subTaskData?.status">{{subTaskData?.status}}</span> -->
+                    <span *ngIf="subTaskData?.resources && subTaskData?.resources.length > 0" class="ms-2 badge bg-info">
+                      Assigned: {{getAssignedUserName(subTaskData?.resources)}}
+                      <span *ngIf="isCurrentUserAssigned(subTaskData?.resources)" class="ms-1">(You)</span>
+                    </span>
                   </div>
                   <div class="text-end">
                     <!-- <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
