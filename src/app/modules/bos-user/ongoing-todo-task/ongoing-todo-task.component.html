@@ -60,6 +60,84 @@
       </h2>
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
         <div class="accordion-body">
+
+          <!-- Sub Task Section Start  -->
+          <div *ngFor="let subTaskData of task?.subtasks; let j = index">
+            <div class="accordion-item">
+              <h2 class="accordion-header" [id]="'flush-TodoList' + j">
+                <button class="accordion-button d-flex justify-content-between align-items-center sub-task-list-bg"
+                  type="button">
+                  <div>
+                    {{ subTaskData?.title }}
+                    <!-- <span *ngIf="task?.pickACategory">
+                      ({{ task?.pickACategory }})</span>
+                    <span *ngIf="task?.project">
+                      (Status :
+                      {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+                      task?.project?.status: task?.project?.bidManagerStatus }} )
+                    </span>&nbsp;
+                    <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                        Completed
+                      </button>
+                    </span> -->
+                    <!-- <span *ngIf="subTaskData?.status">{{subTaskData?.status}}</span> -->
+                  </div>
+                  <div class="text-end">
+                    <!-- <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
+                      <span *ngFor="let user of task.assignTo; let last = last">
+                        {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
+                      </span>
+                    </span> -->
+                    <span *ngIf="subTaskData?.createdAt" class="text-muted me-2">
+                      Created: {{ subTaskData.createdAt | date : "MMM d, y" }}
+                    </span>
+                    <!-- <span *ngIf="subTaskData?.dueDate" class="text-muted">
+                      Due: {{ subTaskData.dueDate | date : "MMM d, y" }}
+                    </span> -->
+                  </div>
+                </button>
+              </h2>
+              <div [id]="'flush-collapse-' + j" class="accordion-collapse show">
+                <div class="accordion-body">
+                  <!-- <ul class="SecondarytaskList" *ngIf="task?.todayComments">
+                    <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+                      [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                      <div class="row align-items-center mb-3">
+                        <div class="col">
+                          <div class="d-flex justify-content-between">
+                            <p class="mb-0 user-name">
+                              {{ comment?.userDetail?.name }}
+                            </p>
+                            <small class="comment-date">
+                              {{ comment?.date | date : "dd/MM/yyyy" }}
+                              <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                                ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                              </span>
+                            </small>
+                          </div>
+                          <small class="user-role d-block">
+                            {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
+                          </small>
+
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <p [innerHTML]="comment?.comment"></p>
+                      </div>
+                    </li>
+                  </ul> -->
+                  <p *ngIf="subTaskData?.description">
+                    <b>Description : </b> {{subTaskData?.description}}
+                  </p>
+                  <p *ngIf="!subTaskData?.description" class="text-muted">
+                    No comments available.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Sub Task Section Start  -->
+
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
             <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
               [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
@@ -69,7 +147,7 @@
                     <p class="mb-0 user-name">
                       {{ comment?.userDetail?.name }}
                     </p>
-                    <small class="comment-date" >
+                    <small class="comment-date">
                       {{ comment?.date | date : "dd/MM/yyyy" }}
                       <span *ngIf="comment?.timeStart && comment?.timeEnd">
                         ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
@@ -118,7 +196,7 @@
         <div class="flex-grow-1 pe-3">
           <div class="mb-3" *ngIf="modalTask?.discription">
             <h6><strong>Description</strong></h6>
-            <p>{{ modalTask?.discription }}</p>
+            <p [innerHTML]="modalTask?.discription"></p>
             <p *ngIf="!modalTask?.discription">No Record Found.</p>
           </div>
 
@@ -238,7 +316,8 @@
                   <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
                 </div>
                 <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()">
+                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time"
+                    (change)="onTimeEndChange()">
                   <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>

@@ -60,6 +60,84 @@
       </h2>
       <div [id]="'flush-collapse-' + i" class="accordion-collapse show">
         <div class="accordion-body">
+
+          <!-- Sub Task Section Start  -->
+          <div *ngFor="let subTaskData of task?.subtasks; let j = index">
+            <div class="accordion-item">
+              <h2 class="accordion-header" [id]="'flush-TodoList' + j">
+                <button class="accordion-button d-flex justify-content-between align-items-center sub-task-list-bg"
+                  type="button">
+                  <div>
+                    {{ subTaskData?.title }}
+                    <!-- <span *ngIf="task?.pickACategory">
+                                ({{ task?.pickACategory }})</span>
+                              <span *ngIf="task?.project">
+                                (Status :
+                                {{['Fail', 'DocumentsNotFound', 'Awaiting', 'Inhold'].includes(task?.project?.status) ?
+                                task?.project?.status: task?.project?.bidManagerStatus }} )
+                              </span>&nbsp;
+                              <span *ngIf="task?.completedTask == true"><button class="btn btn-sm btn-success mt-2">
+                                  Completed
+                                </button>
+                              </span> -->
+                    <!-- <span *ngIf="subTaskData?.status">{{subTaskData?.status}}</span> -->
+                  </div>
+                  <div class="text-end">
+                    <!-- <span *ngIf="task.assignTo?.length > 0" class="text-muted me-3">
+                                <span *ngFor="let user of task.assignTo; let last = last">
+                                  {{ user?.userDetail?.name }}{{ last ? "" : ", " }}
+                                </span>
+                              </span> -->
+                    <span *ngIf="subTaskData?.createdAt" class="text-muted me-2">
+                      Created: {{ subTaskData.createdAt | date : "MMM d, y" }}
+                    </span>
+                    <!-- <span *ngIf="subTaskData?.dueDate" class="text-muted">
+                                Due: {{ subTaskData.dueDate | date : "MMM d, y" }}
+                              </span> -->
+                  </div>
+                </button>
+              </h2>
+              <div [id]="'flush-collapse-' + j" class="accordion-collapse show">
+                <div class="accordion-body">
+                  <!-- <ul class="SecondarytaskList" *ngIf="task?.todayComments">
+                              <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+                                [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                                <div class="row align-items-center mb-3">
+                                  <div class="col">
+                                    <div class="d-flex justify-content-between">
+                                      <p class="mb-0 user-name">
+                                        {{ comment?.userDetail?.name }}
+                                      </p>
+                                      <small class="comment-date">
+                                        {{ comment?.date | date : "dd/MM/yyyy" }}
+                                        <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                                          ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
+                                        </span>
+                                      </small>
+                                    </div>
+                                    <small class="user-role d-block">
+                                      {{ comment?.userDetail?.role === 'BOS' ? 'USER' : comment?.userDetail?.role }}
+                                    </small>
+
+                                  </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p [innerHTML]="comment?.comment"></p>
+                                </div>
+                              </li>
+                            </ul> -->
+                  <p *ngIf="subTaskData?.description">
+                    <b>Description : </b> {{subTaskData?.description}}
+                  </p>
+                  <p *ngIf="!subTaskData?.description" class="text-muted">
+                    No comments available.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Sub Task Section Start  -->
+
           <ul class="SecondarytaskList" *ngIf="task?.todayComments">
             <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
               [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
@@ -144,7 +222,8 @@
                   <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time">
                 </div>
                 <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time" (change)="onTimeEndChange()">
+                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time"
+                    (change)="onTimeEndChange()">
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>
@@ -152,7 +231,7 @@
               <div class="NgxEditor__Wrapper">
                 <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
                 </ngx-editor-menu>
-                <ngx-editor [editor]="editor" rows="5"  [(ngModel)]="newComment" [disabled]="false"
+                <ngx-editor [editor]="editor" rows="5" [(ngModel)]="newComment" [disabled]="false"
                   [placeholder]="'Type here...'"></ngx-editor>
               </div>
 
@@ -170,8 +249,8 @@
               <h6 class="mt-3"><i class="bi bi-pin-fill text-primary"></i> <strong>Pinned Comments</strong></h6>
               <ul class="SecondarytaskList">
                 <li *ngFor="let comment of modalTask.datewiseComments.pinnedComments"
-                    class="comment-item p-3 pinned-comment"
-                    [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                  class="comment-item p-3 pinned-comment"
+                  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
                   <div class="row align-items-center mb-2">
                     <div class="col">
                       <div class="d-flex justify-content-between">
@@ -190,7 +269,8 @@
                   </div>
                   <p class="comment-text" [innerHTML]="comment?.comment"></p>
                   <div class="d-flex justify-content-end">
-                    <button class="btn btn-sm pin-btn" (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                    <button class="btn btn-sm pin-btn"
+                      (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
                       <i class="bi bi-pin-fill text-primary"></i> Unpin
                     </button>
                   </div>
