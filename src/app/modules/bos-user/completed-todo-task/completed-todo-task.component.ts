@@ -64,8 +64,8 @@ export class CompletedTodoTaskComponent {
   bidCommentData: any[] = [];
   bidManagerStatusComment: FormControl = new FormControl('');
   projectList: any = [];
-  timeStart: string = '';
-  timeEnd: string = '';
+  timeMinutes: number | null = null;
+  minutesOptions: { value: number; label: string }[] = [];
   timeError: string = '';
 
   toolbar: Toolbar = [
@@ -97,13 +97,43 @@ export class CompletedTodoTaskComponent {
 
   ngOnInit(): void {
     this.getTask();
-    // this.getUserAllList();
     this.getProjectList();
     this.editor = new Editor();
+    this.initializeMinutesOptions();
   }
 
   ngOnDestroy(): void {
     this.editor.destroy();
+  }
+
+  initializeMinutesOptions() {
+    for (let i = 10; i <= 180; i += 10) {
+      if (i < 60) {
+        this.minutesOptions.push({ value: i, label: `${i} min` });
+      } else {
+        const hours = Math.floor(i / 60);
+        const mins = i % 60;
+        const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+        this.minutesOptions.push({ value: i, label });
+      }
+    }
+
+    for (let i = 210; i <= 1440; i += 30) {
+      const hours = Math.floor(i / 60);
+      const mins = i % 60;
+      const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+      this.minutesOptions.push({ value: i, label });
+    }
+  }
+
+  validateTimeInput(): boolean {
+    if (this.loginUser?.role === 'ProjectManager' && this.timeMinutes === null) {
+      this.timeError = 'Time spent is required for Project Managers';
+      return false;
+    }
+
+    this.timeError = '';
+    return true;
   }
 
   togglePinComment(comment: any, task: any) {
@@ -351,72 +381,36 @@ export class CompletedTodoTaskComponent {
     this.modalTask = { ...task };
   }
 
-  validateTimeRange() {
-    if (this.timeStart && this.timeEnd) {
-      const startTime = new Date(`2000-01-01T${this.timeStart}`);
-      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
-
-      if (endTime <= startTime) {
-        this.timeError = 'End time must be greater than start time';
-        this.timeEnd = '';
-        return false;
-      }
-      this.timeError = '';
-      return true;
-    }
-    return true;
-  }
-
-  onTimeEndChange() {
-    this.validateTimeRange();
-  }
-
   addComment(comment: string, id: string) {
     if (comment?.trim().length > 0) {
-      if (!this.validateTimeRange()) {
-        this.notificationService.showError('Please correct the time range');
+      if (!this.validateTimeInput()) {
+        this.notificationService.showError('Please select the time spent');
         return;
       }
 
       this.showLoader = true;
-      const payload: {
-        comment: string;
-        date: string;
-        timeStart?: string;
-        timeEnd?: string;
-      } = {
+      const payload: any = {
         comment: comment.trim(),
         date: new Date().toISOString().split('T')[0]
       };
 
-      // Only add time parameters if they have values
-      if (this.timeStart) {
-        payload.timeStart = this.timeStart;
-      }
-      if (this.timeEnd) {
-        payload.timeEnd = this.timeEnd;
+      if (this.timeMinutes !== null) {
+        payload.minutes = Number(this.timeMinutes).toFixed(2);
       }
 
       this.superService.addComments(payload, id).subscribe(
         (response) => {
-          this.showLoader = false;
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
-            window.location.reload();
-            const newComment = {
-              text: comment.trim(),
-            };
-            this.modalTask.comments = [
-              ...(this.modalTask.comments || []),
-              newComment,
-            ];
-
             this.newComment = '';
+            this.timeMinutes = null;
+            window.location.reload();
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to add comment'
             );
           }
+          this.showLoader = false;
         },
         (error) => {
           this.showLoader = false;
@@ -592,7 +586,7 @@ export class CompletedTodoTaskComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = this.failStatusReason?.value ? [this.failStatusReason.value] : [];
       }
     }
 

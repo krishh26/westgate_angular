@@ -266,13 +266,21 @@
             <div class="mb-2">
               <div class="row mb-2">
                 <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time">
-                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
-                </div>
-                <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time"
-                    (change)="onTimeEndChange()">
-                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger"></small>
+                  <label class="form-label">Time Spent</label>
+                  <select class="form-select" [(ngModel)]="timeMinutes" [ngModelOptions]="{standalone: true}">
+                    <option [ngValue]="null">Select duration</option>
+                    <optgroup label="Minutes">
+                      <option *ngFor="let min of minutesOptions.slice(0, 18)" [ngValue]="min.value">
+                        {{min.label}}
+                      </option>
+                    </optgroup>
+                    <optgroup label="Hours">
+                      <option *ngFor="let min of minutesOptions.slice(18)" [ngValue]="min.value">
+                        {{min.label}}
+                      </option>
+                    </optgroup>
+                  </select>
+                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger">Time is required for Project Managers</small>
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>
@@ -288,8 +296,7 @@
                 <button class="btn btn-sm btn-primary mt-2" (click)="addComment(newComment, modalTask?._id)">
                   Comment
                 </button>
-                <button class="btn btn-sm btn-primary mt-2" [(ngModel)]="selectedStatus"
-                  (click)="onChangeMyday('MyDay')">
+                <button class="btn btn-sm btn-primary mt-2" (click)="onChangeMyday('MyDay')">
                   Add to My Day
                 </button>
                 <button class="btn btn-sm btn-success mt-2" (click)="onChange('completedTask', true)">

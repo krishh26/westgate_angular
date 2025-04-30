@@ -84,8 +84,8 @@ export class OngoingTodoTaskComponent {
   selectedpriority: any[] = [];
   selectedtype: any[] = [];
   selectedUserIds: number[] = [];
-  timeStart: string = '';
-  timeEnd: string = '';
+  timeMinutes: number | null = null;
+  minutesOptions: { value: number; label: string }[] = [];
   todayDate: string = new Date().toISOString().split('T')[0];
   timeError: string = '';
 
@@ -131,12 +131,11 @@ export class OngoingTodoTaskComponent {
   }
 
   ngOnInit(): void {
-
     this.getTask();
-    // this.getUserAllList();
     this.getProjectList();
     this.editor = new Editor();
     this.getUserAllList();
+    this.initializeMinutesOptions();
   }
 
   ngOnDestroy(): void {
@@ -321,46 +320,22 @@ export class OngoingTodoTaskComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  validateTimeRange() {
-    // If time fields are empty
-    if (!this.timeStart || !this.timeEnd) {
-      // For ProjectManager role, time is mandatory
-      if (this.loginUser?.role === 'ProjectManager') {
-        this.timeError = 'Start time and end time are required for Project Managers';
-        return false;
-      }
-      // For BOS users, time is optional
-      return true;
-    }
-
-    // If both times are provided, validate the range regardless of role
-    const startTime = new Date(`2000-01-01T${this.timeStart}`);
-    const endTime = new Date(`2000-01-01T${this.timeEnd}`);
-
-    if (endTime <= startTime) {
-      this.timeError = 'End time must be greater than start time';
-      this.timeEnd = '';
+  validateTimeInput(): boolean {
+    // For ProjectManager role, time is mandatory
+    if (this.loginUser?.role === 'ProjectManager' && this.timeMinutes === null) {
+      this.timeError = 'Time spent is required for Project Managers';
       return false;
     }
+
     this.timeError = '';
     return true;
-  }
-
-  onTimeEndChange() {
-    this.validateTimeRange();
   }
 
   addComment(comment: string, taskId: string) {
     if (comment?.trim().length > 0) {
       // Check if time validation passes
-      if (!this.validateTimeRange()) {
-        this.notificationService.showError('Please correct the time range');
-        return;
-      }
-
-      // For ProjectManager, both time fields are required
-      if (this.loginUser?.role === 'ProjectManager' && (!this.timeStart || !this.timeEnd)) {
-        this.notificationService.showError('Start time and end time are required for Project Managers');
+      if (!this.validateTimeInput()) {
+        this.notificationService.showError('Please select the time spent');
         return;
       }
 
@@ -369,28 +344,24 @@ export class OngoingTodoTaskComponent {
         date: this.todayDate
       };
 
-      // Only add time parameters if they have values
-      if (this.timeStart) {
-        payload.timeStart = this.timeStart;
-      }
-      if (this.timeEnd) {
-        payload.timeEnd = this.timeEnd;
+      // Add minutes parameter if it has a value
+      if (this.timeMinutes !== null) {
+        payload.minutes = Number(this.timeMinutes).toFixed(2);
       }
 
       this.spinner.show();
       this.superService.addComments(payload, taskId).subscribe(
         (response) => {
-          this.spinner.hide();
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
             this.newComment = '';
-            this.timeStart = '';
-            this.timeEnd = '';
-            // Reload the task details
-            this.getTask();
+            this.timeMinutes = null;
+            // Reload the page after successful comment
+            window.location.reload();
           } else {
             this.notificationService.showError(response?.message || 'Failed to add comment');
           }
+          this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.error?.message || 'An error occurred');
@@ -449,12 +420,9 @@ export class OngoingTodoTaskComponent {
       limit: this.pagesize
     };
 
-    // Only add time parameters if they have values
-    if (this.timeStart) {
-      queryParams.timeStart = this.timeStart;
-    }
-    if (this.timeEnd) {
-      queryParams.timeEnd = this.timeEnd;
+    // Add minutes parameter if it has a value
+    if (this.timeMinutes !== null) {
+      queryParams.minutes = Number(this.timeMinutes).toFixed(2);
     }
 
     this.superService.getTaskUserwise(queryParams).subscribe(
@@ -570,7 +538,7 @@ export class OngoingTodoTaskComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = this.failStatusReason?.value ? [this.failStatusReason.value] : [];
       }
     }
 
@@ -982,5 +950,28 @@ export class OngoingTodoTaskComponent {
 
     // Handle string ID comparison
     return candidateId === this.loginUser.id;
+  }
+
+  // Initialize minutes options with 10min increments up to 3 hours, then 30min up to 24 hours
+  initializeMinutesOptions() {
+    // 10 minute increments up to 3 hours (180 minutes)
+    for (let i = 10; i <= 180; i += 10) {
+      if (i < 60) {
+        this.minutesOptions.push({ value: i, label: `${i} min` });
+      } else {
+        const hours = Math.floor(i / 60);
+        const mins = i % 60;
+        const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+        this.minutesOptions.push({ value: i, label });
+      }
+    }
+
+    // 30 minute increments from 3 hours to 24 hours
+    for (let i = 210; i <= 1440; i += 30) {
+      const hours = Math.floor(i / 60);
+      const mins = i % 60;
+      const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+      this.minutesOptions.push({ value: i, label });
+    }
   }
 }

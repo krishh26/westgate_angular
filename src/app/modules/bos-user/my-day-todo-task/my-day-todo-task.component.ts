@@ -82,8 +82,8 @@ export class MyDayTodoTaskComponent {
   page: number = 1;
   pagesize: number = 50;
   totalRecords: number = 0;
-  timeStart: string = '';
-  timeEnd: string = '';
+  timeMinutes: number | null = null;
+  minutesOptions: { value: number; label: string }[] = [];
   timeError: string = '';
 
   toolbar: Toolbar = [
@@ -127,13 +127,11 @@ export class MyDayTodoTaskComponent {
 
   ngOnInit(): void {
     this.getTask();
-    // this.getUserAllList();
-    this.getProjectList();
     this.getProjectList();
     this.getUserAllList();
     this.editor = new Editor();
+    this.initializeMinutesOptions();
   }
-
 
   logoutTask() {
     this.spinner.show();
@@ -152,7 +150,6 @@ export class MyDayTodoTaskComponent {
       }
     );
   }
-
 
   getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
@@ -177,7 +174,6 @@ export class MyDayTodoTaskComponent {
       }
     );
   }
-
 
   ngOnDestroy(): void {
     this.editor.destroy();
@@ -242,8 +238,6 @@ export class MyDayTodoTaskComponent {
     );
   }
 
-
-  // Function to transform the data
   transformData = (data: any) => {
     let commentsData: any[] = [];
     if (!data) {
@@ -253,14 +247,14 @@ export class MyDayTodoTaskComponent {
       if (Array.isArray(comments)) {
         comments.forEach(comment => {
           commentsData.push({
-            commentDate, // Keep the commentDate format
+            commentDate,
             ...comment
           });
         });
       } else {
         commentsData.push({
           commentDate,
-          comment: comments // No comments available case
+          comment: comments
         });
       }
     });
@@ -273,12 +267,11 @@ export class MyDayTodoTaskComponent {
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const assignTo = this.loginUser?.id;
-    // Pass the searchText (keyword) in the API call
-    const keyword = this.searchText;  // The search text to filter by
+    const keyword = this.searchText;
 
     this.superService
       .getsuperadmintasks(
-        assignTo, // Pass only assignTo ID
+        assignTo,
         "",
         sortType,
         priorityType,
@@ -373,17 +366,15 @@ export class MyDayTodoTaskComponent {
       return;
     }
 
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
 
     this.bidCommentData.push({
       comment: this.bidManagerStatusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      date: currentDate.toISOString(),
       bidManagerStatus: this.bidStatus,
       userId: this.loginUser?._id,
     });
 
-    // Reset the comment input field
     this.bidManagerStatusComment.reset();
   }
 
@@ -400,7 +391,6 @@ export class MyDayTodoTaskComponent {
         );
       }
 
-      // Check if the status has at least one comment
       const hasExistingComment = this.bidCommentData.some(
         (item) => item.bidManagerStatus === this.bidStatus
       );
@@ -413,12 +403,10 @@ export class MyDayTodoTaskComponent {
         bidManagerStatus: this.bidStatus || '',
         bidManagerStatusComment: [
           ...this.bidCommentData,
-          // ...this.projectDetails?.bidManagerStatusComment,
         ],
       };
     }
 
-    // API call to update project details
     this.feasibilityService
       .updateProjectDetailsBid(payload, this.modalTask?.project?._id)
       .subscribe(
@@ -428,7 +416,6 @@ export class MyDayTodoTaskComponent {
               'Project updated successfully'
             );
             this.isEditing = false;
-            // this.getProjectDetails();
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to update project'
@@ -442,7 +429,6 @@ export class MyDayTodoTaskComponent {
   }
 
   isBidCommentValid(): boolean {
-    // Validate if a comment exists for the selected status or is added
     const hasComment = this.bidCommentData.some(
       (item) => item.bidManagerStatus === this.bidStatus
     );
@@ -456,72 +442,46 @@ export class MyDayTodoTaskComponent {
     this.getSubtasks(task._id);
   }
 
-  validateTimeRange() {
-    if (this.timeStart && this.timeEnd) {
-      const startTime = new Date(`2000-01-01T${this.timeStart}`);
-      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
-
-      if (endTime <= startTime) {
-        this.timeError = 'End time must be greater than start time';
-        this.timeEnd = '';
-        return false;
-      }
-      this.timeError = '';
-      return true;
+  validateTimeInput(): boolean {
+    if (this.loginUser?.role === 'ProjectManager' && this.timeMinutes === null) {
+      this.timeError = 'Time spent is required for Project Managers';
+      return false;
     }
-    return true;
-  }
 
-  onTimeEndChange() {
-    this.validateTimeRange();
+    this.timeError = '';
+    return true;
   }
 
   addComment(comment: string, id: string) {
     if (comment?.trim().length > 0) {
-      if (!this.validateTimeRange()) {
-        this.notificationService.showError('Please correct the time range');
+      if (!this.validateTimeInput()) {
+        this.notificationService.showError('Please select the time spent');
         return;
       }
 
       this.showLoader = true;
-      const payload: {
-        comment: string;
-        date: string;
-        timeStart?: string;
-        timeEnd?: string;
-      } = {
+      const payload: any = {
         comment: comment.trim(),
         date: new Date().toISOString().split('T')[0]
       };
 
-      // Only add time parameters if they have values
-      if (this.timeStart) {
-        payload.timeStart = this.timeStart;
-      }
-      if (this.timeEnd) {
-        payload.timeEnd = this.timeEnd;
+      if (this.timeMinutes !== null) {
+        payload.minutes = Number(this.timeMinutes).toFixed(2);
       }
 
       this.superService.addComments(payload, id).subscribe(
         (response) => {
-          this.showLoader = false;
           if (response?.status === true) {
             this.notificationService.showSuccess('Comment added successfully');
-            window.location.reload();
-            const newComment = {
-              text: comment.trim(),
-            };
-            this.modalTask.comments = [
-              ...(this.modalTask.comments || []),
-              newComment,
-            ];
-
             this.newComment = '';
+            this.timeMinutes = null;
+            window.location.reload();
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to add comment'
             );
           }
+          this.showLoader = false;
         },
         (error) => {
           this.showLoader = false;
@@ -541,26 +501,22 @@ export class MyDayTodoTaskComponent {
     if (modalElement) {
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
       if (modalInstance) {
-        modalInstance.hide(); // Close the modal properly
+        modalInstance.hide();
       }
     }
 
-    // Wait a bit to ensure Bootstrap removes modal styles before restoring scrolling
     setTimeout(() => {
       document.body.classList.remove('modal-open');
-      document.body.style.overflow = ''; // Reset to default behavior
+      document.body.style.overflow = '';
       document.body.style.paddingRight = '';
 
-      // Remove any leftover modal backdrop
       document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
 
-      // Force scroll to be enabled
       document.documentElement.style.overflow = 'auto';
       document.documentElement.style.height = 'auto';
 
-      // Now navigate to the details page
       this.router.navigate(['/project-manager/project/bid-manager-project-details'], { queryParams: { id: projectId } });
-    }, 300); // Delay slightly to ensure Bootstrap cleanup is complete
+    }, 300);
   }
 
   getTask() {
@@ -572,12 +528,8 @@ export class MyDayTodoTaskComponent {
       limit: this.pagesize
     };
 
-    // Only add time parameters if they have values
-    if (this.timeStart) {
-      params.timeStart = this.timeStart;
-    }
-    if (this.timeEnd) {
-      params.timeEnd = this.timeEnd;
+    if (this.timeMinutes !== null) {
+      params.minutes = Number(this.timeMinutes).toFixed(2);
     }
 
     this.superService.getTaskUserwise(params).subscribe(
@@ -613,28 +565,6 @@ export class MyDayTodoTaskComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // getUserAllList() {
-  //   this.showLoader = true;
-  //   this.projectManagerService.getUserAllList().subscribe(
-  //     (response) => {
-  //       if (response?.status === true) {
-  //         // Filter out users with role 'supplierAdmin'
-  //         this.userList = response?.data?.filter((user: any) => user?.role !== 'SupplierAdmin');
-  //         console.log(this.userList);
-
-  //         this.showLoader = false;
-  //       } else {
-  //         this.notificationService.showError(response?.message);
-  //         this.showLoader = false;
-  //       }
-  //     },
-  //     (error) => {
-  //       this.notificationService.showError(error?.message);
-  //       this.showLoader = false;
-  //     }
-  //   );
-  // }
-
   summaryDetail(type: string) {
     this.saveChanges(type);
   }
@@ -651,17 +581,15 @@ export class MyDayTodoTaskComponent {
       return;
     }
 
-    // Create a new date instance for the current date and time
     const currentDate = new Date();
 
     this.commentData.push({
       comment: this.statusComment.value,
-      date: currentDate.toISOString(), // ISO format for standardization (optional)
+      date: currentDate.toISOString(),
       status: this.status,
       userId: this.loginUser?._id
     });
 
-    // Reset the comment input field
     this.statusComment.reset();
   }
 
@@ -669,12 +597,10 @@ export class MyDayTodoTaskComponent {
     let payload: any = {};
 
     if (!contractEdit) {
-      // Validation for status
       if (!this.status) {
         return this.notificationService.showError('Please select a status.');
       }
 
-      // Validation for comment
       if (
         !this.statusComment.value &&
         !this.commentData.some((item) => item.status === this.status)
@@ -684,7 +610,6 @@ export class MyDayTodoTaskComponent {
         );
       }
 
-      // Add the comment to commentData only if it's provided
       if (this.statusComment.value && this.statusDate.value) {
         this.commentData.push({
           comment: this.statusComment.value,
@@ -692,22 +617,19 @@ export class MyDayTodoTaskComponent {
           status: this.status,
           userId: this.loginUser?._id
         });
-        this.statusComment.reset(); // Clear the comment field after adding
+        this.statusComment.reset();
       }
 
-      // Prepare payload
       payload = {
         status: this.status || '',
         statusComment: this.commentData,
       };
 
-      // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = this.failStatusReason?.value ? [this.failStatusReason.value] : [];
       }
     }
 
-    // API call to update project details
     this.feasibilityService
       .updateProjectDetails(payload, this.modalTask?.project?._id)
       .subscribe(
@@ -717,7 +639,6 @@ export class MyDayTodoTaskComponent {
               'Project updated successfully'
             );
             this.isEditing = false;
-            //  this.getProjectDetails();
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to update project'
@@ -738,7 +659,6 @@ export class MyDayTodoTaskComponent {
           this.showLoader = false;
           this.projectDetail = response?.data;
 
-          // Assign only the first 3 logs to the logs property
           this.logs = response?.data?.logs?.slice(0, 3) || [];
           this.status = this.projectDetail?.status;
           this.commentData = this.projectDetail?.statusComment;
@@ -766,20 +686,16 @@ export class MyDayTodoTaskComponent {
     if (paramKey === 'dueDate' && paramValue) {
       params.dueDate = `${paramValue.year}-${paramValue.month}-${paramValue.day}`;
     } else if (paramKey === 'assignTo' && paramValue) {
-      // Find the deselected users
       const deselectedUsers = this.assignTo.filter(
         (id: string) => !paramValue.includes(id)
       );
 
-      // Find the newly selected users
       const newSelectedUsers = paramValue.filter(
         (id: string) => !this.assignTo.includes(id)
       );
 
-      // Update the assignTo list
       this.assignTo = paramValue;
 
-      // Add updated assignTo list to params
       params.assignTo = this.assignTo;
     } else if (paramKey === 'pickACategory' && paramValue) {
       params.pickACategory = paramValue;
@@ -788,14 +704,12 @@ export class MyDayTodoTaskComponent {
     } else if (paramKey === 'assignProjectId' && paramValue) {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
-      params.completedTask = true; // Ensure it always sends true
+      params.completedTask = true;
     }
 
-    // Call the updateTask method with updated params
     this.updateTask(params);
   }
 
-  // API call to update the task
   updateTask(params: any) {
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
@@ -932,7 +846,6 @@ export class MyDayTodoTaskComponent {
     return candidate ? candidate.name : 'Unassigned';
   }
 
-  // Get the assigned user name from resources array
   getAssignedUserName(resources: any[]): string {
     if (!resources || resources.length === 0) {
       return 'Unassigned';
@@ -943,22 +856,18 @@ export class MyDayTodoTaskComponent {
       return 'Unassigned';
     }
 
-    // If candidateId is an object with name property (full user object)
     if (typeof candidateId === 'object' && 'name' in candidateId) {
       return candidateId.name;
     }
 
-    // If candidateId is an object with userDetail property
     if (typeof candidateId === 'object' && 'userDetail' in candidateId && candidateId.userDetail) {
       return candidateId.userDetail.name || 'Unknown User';
     }
 
-    // Otherwise find from userList by ID
     const user = this.userList.find((u: any) => u._id === candidateId);
     return user ? (user.userName || user.name) : 'Unknown User';
   }
 
-  // Check if current user is assigned to this subtask
   isCurrentUserAssigned(resources: any[]): boolean {
     if (!resources || resources.length === 0 || !this.loginUser) {
       return false;
@@ -969,12 +878,30 @@ export class MyDayTodoTaskComponent {
       return false;
     }
 
-    // Check if candidateId is an object with _id property
     if (typeof candidateId === 'object' && '_id' in candidateId) {
       return candidateId._id === this.loginUser.id;
     }
 
-    // Handle string ID comparison
     return candidateId === this.loginUser.id;
+  }
+
+  initializeMinutesOptions() {
+    for (let i = 10; i <= 180; i += 10) {
+      if (i < 60) {
+        this.minutesOptions.push({ value: i, label: `${i} min` });
+      } else {
+        const hours = Math.floor(i / 60);
+        const mins = i % 60;
+        const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+        this.minutesOptions.push({ value: i, label });
+      }
+    }
+
+    for (let i = 210; i <= 1440; i += 30) {
+      const hours = Math.floor(i / 60);
+      const mins = i % 60;
+      const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
+      this.minutesOptions.push({ value: i, label });
+    }
   }
 }

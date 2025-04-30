@@ -250,11 +250,21 @@
             <div class="mb-2">
               <div class="row mb-2">
                 <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeStart" placeholder="Start Time">
-                </div>
-                <div class="col-md-6">
-                  <input type="time" class="form-control" [(ngModel)]="timeEnd" placeholder="End Time"
-                    (change)="onTimeEndChange()">
+                  <label class="form-label">Time Spent</label>
+                  <select class="form-select" [(ngModel)]="timeMinutes" [ngModelOptions]="{standalone: true}">
+                    <option [ngValue]="null">Select duration</option>
+                    <optgroup label="Minutes">
+                      <option *ngFor="let min of minutesOptions.slice(0, 18)" [ngValue]="min.value">
+                        {{min.label}}
+                      </option>
+                    </optgroup>
+                    <optgroup label="Hours">
+                      <option *ngFor="let min of minutesOptions.slice(18)" [ngValue]="min.value">
+                        {{min.label}}
+                      </option>
+                    </optgroup>
+                  </select>
+                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger">Time is required for Project Managers</small>
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>
