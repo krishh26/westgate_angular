@@ -213,6 +213,21 @@
               </div>
             </div>
           </div> -->
+
+          <div class="col-lg-6 col-xl-6 col-12">
+            <div class="row mb-3">
+              <label for="inputEmail3" class="col-sm-4 col-form-label">Cost</label>
+              <div class="col-sm-8">
+                <input formControlName="cost" type="text" class="form-control" placeholder="Enter Cost" />
+                <div *ngIf="
+                    productForm.get('cost')?.invalid &&
+                    productForm.get('cost')?.touched
+                  " class="text-danger">
+                  Cost is required.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row mt-4">
