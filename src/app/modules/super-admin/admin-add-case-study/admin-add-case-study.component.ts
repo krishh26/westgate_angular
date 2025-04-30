@@ -30,7 +30,7 @@ export class AdminAddCaseStudyComponent {
     date: new FormControl("", Validators.required),
     contractDuration: new FormControl("", Validators.required),
     resultAchieved: new FormControl("", Validators.required),
-    lessonsLearned: new FormControl("", Validators.required),
+   // lessonsLearned: new FormControl("", Validators.required),
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);

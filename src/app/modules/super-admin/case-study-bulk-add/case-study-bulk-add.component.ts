@@ -82,18 +82,24 @@ export class CaseStudyBulkAddComponent {
       const jsonData = data.map(row => {
         return {
           userId: this.supplierID,
-          date: typeof row[0] === 'number' ? convertExcelDate(row[0]) : replaceNullWithEmptyString(row[0]),
-          name: replaceNullWithEmptyString(row[1]),
-          category: replaceNullWithEmptyString(row[2]),
-          industry: replaceNullWithEmptyString(row[3]),
-          type: replaceNullWithEmptyString(row[4]),
-          description: replaceNullWithEmptyString(row[5]),
-          contractDuration: typeof row[6] === 'number' ? convertExcelDate(row[6]) : replaceNullWithEmptyString(row[6]),
-          technologies: replaceNullWithEmptyString(row[7]),
-          maintenance: replaceNullWithEmptyString(row[8]),
-          contractValue: replaceNullWithEmptyString(row[9]),
-          resourcesUsed: replaceNullWithEmptyString(row[10]),
-          clientName: replaceNullWithEmptyString(row[11]),
+          name: replaceNullWithEmptyString(row[0]),              // row[0]
+          clientName: replaceNullWithEmptyString(row[1]),        // row[1]
+          description: replaceNullWithEmptyString(row[2]),       // row[2]
+          problem: replaceNullWithEmptyString(row[3]),           // row[3]
+          solutionProvided: replaceNullWithEmptyString(row[4]),  // row[4]
+          resultAchieved: replaceNullWithEmptyString(row[5]),    // row[5]
+          technologies: replaceNullWithEmptyString(row[6]),      // row[6]
+          cost: replaceNullWithEmptyString(row[7]),              // row[7]
+          resourcesUsed: replaceNullWithEmptyString(row[8]),     // row[8]
+          industry: replaceNullWithEmptyString(row[9]),          // row[9]
+          type: replaceNullWithEmptyString(row[10]),             // row[10]
+          date: typeof row[11] === 'number'
+            ? convertExcelDate(row[11])
+            : replaceNullWithEmptyString(row[11]),               // row[11]
+          contractDuration: typeof row[12] === 'number'
+            ? convertExcelDate(row[12])
+            : replaceNullWithEmptyString(row[12]),               // row[12]
+
         };
       });
 

@@ -498,9 +498,14 @@ export class ProjectService {
       .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_DETAILS + projectId);
   }
 
-  getProjectLogs(projectId: string): Observable<any> {
-    return this.httpClient
-      .get<any>(this.baseUrl + ProjectEndPoint.PROJECT_LOGS + projectId);
+  getProjectLogs(projectId: string, logType?: string): Observable<any> {
+    let url = this.baseUrl + ProjectEndPoint.PROJECT_LOGS + projectId;
+
+    if (logType) {
+      url += `?type=${logType}`;
+    }
+
+    return this.httpClient.get<any>(url);
   }
 
   getprojectStrips(projectId: string): Observable<any> {

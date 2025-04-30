@@ -909,13 +909,21 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ViewProjectLogsLabel">Project Logs</h5>
+        <div class="ms-auto me-3">
+          <button type="button" class="btn btn-outline-primary me-2" [class.active]="activeLogType === 'timeBased'" (click)="loadLogs('timeBased')">
+            Time Based
+          </button>
+          <button type="button" class="btn btn-outline-primary" [class.active]="activeLogType === 'projectBased'" (click)="loadLogs('projectBased')">
+            Project Based
+          </button>
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex">
         <div class="flex-grow-1 pe-3">
           <div class="comments-section">
             <ul class="SecondarytaskList mt-3">
-              <li *ngFor="let log of projectDetails?.logs" class="mb-3">
+              <li *ngFor="let log of logsList" class="mb-3">
                 <div class="comment-item">
                   <div class="d-flex justify-content-between">
                     <p class="mb-0" [innerHTML]="log?.log"></p>
@@ -928,7 +936,7 @@
             </ul>
 
             <!-- No records found -->
-            <p *ngIf="logs?.length === 0" class="text-center">
+            <p *ngIf="logsList?.length === 0" class="text-center">
               No records found
             </p>
           </div>

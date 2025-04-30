@@ -118,6 +118,8 @@ export class TrackerWiseProjectDetailsComponent {
   newModalReason: string = '';
   private modalRef: any;
   currentViewingSupplierId: string = '';
+  logsList: any = [];
+  activeLogType: string = ''; // To track which button is active
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -446,13 +448,13 @@ export class TrackerWiseProjectDetailsComponent {
     this.showLoader = true;
     this.projectService.getProjectLogs(this.projectId).subscribe(
       (response) => {
-        if (response?.status == true) {
-
+        if (response?.status === true) {
           this.logs = response?.data;
+          this.logsList = response?.data; // Initialize logsList with the default logs
         } else {
           this.notificationService.showError(response?.message);
-
         }
+        this.showLoader = false;
       },
       (error) => {
         this.notificationService.showError(error?.message);
@@ -2187,5 +2189,26 @@ export class TrackerWiseProjectDetailsComponent {
     }
 
     return null;
+  }
+
+  loadLogs(logType: string) {
+    this.activeLogType = logType;
+    this.showLoader = true;
+    this.projectService.getProjectLogs(this.projectId, logType).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.logsList = response?.data;
+        } else {
+          this.logsList = [];
+          this.notificationService.showError(response?.message);
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.logsList = [];
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 }
