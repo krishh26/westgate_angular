@@ -37,6 +37,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   currentSubExpertise: string = '';
   selectedExpertise: ExpertiseItem | null = null;
   selectedSubExpertise: string[] = [];
+  selectedSubExpertiseMap: { [key: number]: string[] } = {};
   selectedExpertiseName: string = '';
   currentExpertiseIndex: number = -1;
   subExpertiseOptions: string[] = [];
@@ -44,6 +45,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
   expertiseDropdownOptions: ExpertiseItem[] = [];
+  selectedExpertiseItems: ExpertiseItem[] = [];
   inHoldComment: string = '';
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
@@ -193,33 +195,45 @@ export class RegisterNewSupplierComponent implements OnInit {
 
   getExpertiseDropdownData() {
     this.showLoader = true;
-    this.superadminService.getExpertiseDropdown().subscribe(
-      (response) => {
-        if (response?.status) {
-          this.expertiseDropdownOptions = response.data || [];
-          this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => {
-            // Get the type and remove "-other" suffix if it exists
-            let type = item.type || 'technologies';
-            if (type.endsWith('-other')) {
-              type = type.replace('-other', '');
-            }
+    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    console.log('Fetching expertise data from URL:', url);
 
-            return {
-              itemId: item.itemId || (item as any)._id,
-              name: item.name,
-              type: type
-            };
-          });
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw expertise API response:', response);
+        if (response?.status || response?.data) {
+          const data = response.data || response;
+
+          // Process the data to make it compatible with ng-select
+          if (Array.isArray(data)) {
+            this.expertiseDropdownOptions = data.map((item: any) => {
+              // For ng-select, we need objects with consistent properties
+              // Get the type and remove "-other" suffix if it exists
+              let type = item.type || 'technologies';
+              if (type.endsWith('-other')) {
+                type = type.replace('-other', '');
+              }
+
+              return {
+                itemId: item.itemId || item._id,
+                name: item.name,
+                type: type
+              };
+            });
+          }
+          console.log('Processed expertise list for ng-select:', this.expertiseDropdownOptions);
         } else {
-          console.error('Failed to fetch expertise dropdown data:', response?.message);
-          this.notificationService.showError('Failed to fetch expertise dropdown data');
+          console.error('Failed to fetch expertise data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise data');
+          this.expertiseDropdownOptions = [];
         }
         this.showLoader = false;
       },
       (error) => {
-        console.error('Error fetching expertise dropdown data:', error);
-        this.notificationService.showError('Error fetching expertise dropdown data');
+        console.error('Error fetching expertise data:', error);
+        this.notificationService.showError('Error fetching expertise data');
         this.showLoader = false;
+        this.expertiseDropdownOptions = [];
       }
     );
   }
@@ -406,14 +420,18 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   addMultipleSubExpertise(expertiseIndex: number) {
-    console.log('Adding multiple sub-expertise:', this.selectedSubExpertise, 'to expertise index:', expertiseIndex);
+    console.log('Adding multiple sub-expertise for index:', expertiseIndex);
 
-    if (this.selectedSubExpertise && this.selectedSubExpertise.length > 0) {
+    // Get the selected sub-expertise for this expertise index
+    const selectedItems = this.selectedSubExpertiseMap[expertiseIndex] || [];
+    console.log('Selected sub-expertise:', selectedItems);
+
+    if (selectedItems && selectedItems.length > 0) {
       // Get existing sub-expertise as a Set for faster lookup
       const existingSubExpertise = new Set(this.companyForm.expertise[expertiseIndex].subExpertise);
 
       // Add each selected sub-expertise that doesn't already exist
-      for (const subExp of this.selectedSubExpertise) {
+      for (const subExp of selectedItems) {
         if (!existingSubExpertise.has(subExp)) {
           this.companyForm.expertise[expertiseIndex].subExpertise.push(subExp);
         }
@@ -422,10 +440,17 @@ export class RegisterNewSupplierComponent implements OnInit {
       console.log('Updated sub-expertise list:', this.companyForm.expertise[expertiseIndex].subExpertise);
 
       // Clear the selection
-      this.selectedSubExpertise = [];
+      this.selectedSubExpertiseMap[expertiseIndex] = [];
     } else {
       console.log('No sub-expertise selected');
     }
+  }
+
+  // Method to handle selection changes for sub-expertise
+  onSubExpertiseChange(expertiseIndex: number, selected: string[]) {
+    console.log(`Sub-expertise selection changed for expertise ${expertiseIndex}:`, selected);
+    // Update the map with the new selection
+    this.selectedSubExpertiseMap[expertiseIndex] = [...selected];
   }
 
   addExpertiseFromDropdown() {
@@ -751,6 +776,66 @@ export class RegisterNewSupplierComponent implements OnInit {
         const exists = this.industryList.some(item => item.value === event.value);
         if (!exists) {
           this.industryList.push(event);
+        }
+      }
+    }
+  }
+
+  // Update to use ng-select for expertise
+  onExpertiseChange() {
+    // This will be triggered when the expertise selection changes in ng-select
+    console.log('Expertise selection changed:', this.selectedExpertiseItems);
+  }
+
+  // Add expertise from ng-select dropdown
+  addSelectedExpertise() {
+    if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
+      // Process each selected expertise
+      for (const item of this.selectedExpertiseItems) {
+        // Check if this expertise already exists in the list
+        const exists = this.companyForm.expertise.some((exp: any) =>
+          exp.name === item.name
+        );
+
+        if (!exists) {
+          this.companyForm.expertise.push({
+            name: item.name,
+            type: item.type || 'technologies',
+            itemId: item.itemId,
+            subExpertise: []
+          });
+        }
+      }
+
+      // Clear the selection
+      this.selectedExpertiseItems = [];
+      console.log('Updated expertise list:', this.companyForm.expertise);
+    } else {
+      console.log('No expertise selected');
+    }
+  }
+
+  // Method to handle adding custom expertise items if needed
+  onItemAddExpertise(event: any) {
+    if (event) {
+      console.log('Adding custom expertise:', event);
+      // If it's a string from addTag
+      if (typeof event === 'string') {
+        // Check if the object with this value already exists
+        const exists = this.expertiseDropdownOptions.some(item => item.name === event);
+        if (!exists) {
+          const newItem: ExpertiseItem = {
+            itemId: null,
+            name: event,
+            type: 'technologies'
+          };
+          this.expertiseDropdownOptions.push(newItem);
+        }
+      } else if (event && event.name) {
+        // It's an object from the selection
+        const exists = this.expertiseDropdownOptions.some(item => item.name === event.name);
+        if (!exists) {
+          this.expertiseDropdownOptions.push(event);
         }
       }
     }
