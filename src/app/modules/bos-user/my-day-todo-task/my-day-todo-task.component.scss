@@ -695,5 +695,28 @@ textarea {
   }
 }
 .sub-task-list-bg {
-  background-color: #DBF2D0;
+  background-color: #DBF2D0 !important;
+}
+
+/* Add padding to text elements inside the accordion */
+#accordianTodoList .accordion-item .accordion-body > p {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  margin-top: 10px;
+}
+
+/* Style for subtask items */
+#accordianTodoList .accordion-item .accordion-item {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-radius: 0 !important;
+  margin-bottom: 5px !important;
+  width: 100% !important;
+  border-left: 2px solid #FF0000 !important;
+  border-right: 2px solid #FF0000 !important;
+}
+
+/* Last subtask bottom spacing */
+#accordianTodoList .accordion-item .accordion-item:last-child {
+  margin-bottom: 10px !important;
 }
