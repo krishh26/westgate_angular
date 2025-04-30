@@ -64,8 +64,17 @@ export class CaseStudyBulkAddComponent {
       const headers = data[0];
       data = data.slice(1);
 
-      // Filter out empty arrays
-      data = data.filter(row => row.length > 0);
+      // Improved filter to remove empty or nearly empty rows
+      data = data.filter(row => {
+        // Check if row has actual content (not just empty cells)
+        return row.length > 0 && row.some(cell =>
+          cell !== null &&
+          cell !== undefined &&
+          String(cell).trim() !== ''
+        );
+      });
+
+      console.log('Filtered rows count:', data.length);
 
       // Function to replace null or undefined values with empty strings
       const replaceNullWithEmptyString = (value: any) => value == null ? "" : value;
@@ -103,7 +112,9 @@ export class CaseStudyBulkAddComponent {
         };
       });
 
-      console.log(jsonData);
+      console.log('Processed data entries:', jsonData.length);
+      console.log('Data to be sent:', jsonData);
+
       const payload = {
         data: jsonData
       };
