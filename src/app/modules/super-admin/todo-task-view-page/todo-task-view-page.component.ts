@@ -132,6 +132,9 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   timeEnd: string = '';
   timeError: string = '';
 
+  timeMinutes: number | null = null;
+  minutesOptions: { label: string, value: number }[] = [];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -150,11 +153,6 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.myControl.valueChanges.subscribe((res: any) => {
-      let storeTest = res;
-      this.searchText = res.toLowerCase();
-    });
-
     // Get task ID and data from route params and state
     this.route.params.subscribe(params => {
       const taskId = params['id'];
@@ -197,12 +195,13 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     // Initialize the editor
     this.editor = new Editor();
 
-    // Initialize the comment form
+    // Initialize the comment form - updated to remove timeStart and timeEnd
     this.commentForm = this.fb.group({
-      description: ['', Validators.required],
-      timeStart: ['', Validators.required],
-      timeEnd: ['', Validators.required]
+      description: ['', Validators.required]
     });
+
+    // Initialize minutes options
+    this.initializeMinutesOptions();
 
     // this.getCandidateList();
   }
@@ -851,78 +850,49 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   addComment(id: string) {
     if (this.commentForm.valid) {
-      const comment = this.commentForm.get('description')?.value;
-      const timeStart = this.commentForm.get('timeStart')?.value;
-      const timeEnd = this.commentForm.get('timeEnd')?.value;
+      const description = this.commentForm.get('description')?.value;
 
-      if (!this.validateTimeRange()) {
-        this.notificationService.showError('Please correct the time range');
+      if (!description || description.trim() === '<p></p>' || description.trim() === '') {
+        this.notificationService.showError('Please enter a comment');
         return;
       }
 
-      if (comment?.trim().length > 0) {
-        const payload = {
-          comment: comment.trim(),
-          timeStart: timeStart,
-          timeEnd: timeEnd,
-          date: this.todayDate
-        };
-
-        this.spinner.show();
-        this.superService.addComments(payload, id).subscribe(
-          (response) => {
-            this.spinner.hide();
-            if (response?.status === true) {
-              this.notificationService.showSuccess('Comment added successfully');
-              this.commentForm.reset();
-              this.timeStart = '';
-              this.timeEnd = '';
-              this.timeError = '';
-              // Reload the task details
-              this.loadTaskDetails(id);
-              this.spinner.hide();
-            } else {
-              this.spinner.hide();
-              this.notificationService.showError(
-                response?.message || 'Failed to add comment'
-              );
-            }
-          },
-          (error) => {
-            this.notificationService.showError(
-              error?.error?.message || 'An error occurred'
-            );
-            this.spinner.hide();
-          }
-        );
-      } else {
-        this.spinner.hide();
-        this.notificationService.showError('Comment cannot be empty');
+      if (!this.timeMinutes) {
+        this.notificationService.showError('Please select time spent');
+        return;
       }
+
+      const payload: any = {
+        comment: description
+      };
+
+      // Add minutes parameter if it has a value
+      if (this.timeMinutes !== null) {
+        payload.minutes = Number(this.timeMinutes).toFixed(2);
+      }
+
+      this.spinner.show();
+      this.superService.addComments(payload, id).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Comment added successfully');
+            this.commentForm.reset();
+            this.timeMinutes = null;
+            // Reload the page after successful comment
+            window.location.reload();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add comment');
+          }
+          this.spinner.hide();
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError('An error occurred while adding comment');
+        }
+      );
     } else {
-      this.spinner.hide();
       this.notificationService.showError('Please fill in all required fields');
     }
-  }
-
-  validateTimeRange() {
-    if (this.timeStart && this.timeEnd) {
-      const startTime = new Date(`2000-01-01T${this.timeStart}`);
-      const endTime = new Date(`2000-01-01T${this.timeEnd}`);
-
-      if (endTime <= startTime) {
-        this.timeError = 'End time must be greater than start time';
-        this.timeEnd = '';
-        return false;
-      }
-      this.timeError = '';
-      return true;
-    }
-    return true;
-  }
-
-  onTimeEndChange() {
-    this.validateTimeRange();
   }
 
   toggleUserSelection(userId: number): void {
@@ -1246,6 +1216,24 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         this.notificationService.showError(error?.error?.message || 'An error occurred while logging out');
       }
     );
+  }
+
+  initializeMinutesOptions() {
+    // Create options for 10 minute intervals up to 3 hours
+    for (let i = 10; i <= 180; i += 10) {
+      this.minutesOptions.push({
+        label: i < 60 ? `${i} min` : `${Math.floor(i / 60)} hour${i % 60 === 0 ? '' : ` ${i % 60} min`}`,
+        value: i
+      });
+    }
+
+    // Create options for 30 minute intervals from 3.5 hours to 24 hours
+    for (let i = 210; i <= 1440; i += 30) {
+      this.minutesOptions.push({
+        label: `${Math.floor(i / 60)} hour${i % 60 === 0 ? '' : ` ${i % 60} min`}`,
+        value: i
+      });
+    }
   }
 
 }
