@@ -49,7 +49,7 @@ export class DashboardProcessManagerComponent {
     const valueToPass = category && category !== "Unknown Category" ? category : '';
     console.log("Navigating with Categorisation:", valueToPass);
 
-    this.router.navigate(['/super-admin/type-wise-project-list'], {
+    this.router.navigate(['/process-manager/type-wise-project-list'], {
       queryParams: { categorisation: category },
       queryParamsHandling: 'merge' // Keeps existing projectType
     });
@@ -60,7 +60,7 @@ export class DashboardProcessManagerComponent {
     console.log("Navigating with Project Type:", valueToPassProduct);
 
     // Navigate and pass queryParams
-    this.router.navigate(['/super-admin/type-wise-project-list'], {
+    this.router.navigate(['/process-manager/type-wise-project-list'], {
       queryParams: { projectType: projectType },
       queryParamsHandling: 'merge'
     });

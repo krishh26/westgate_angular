@@ -12,6 +12,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-type-wise-project-details',
   templateUrl: './type-wise-project-details.component.html',
@@ -74,7 +75,7 @@ export class TypeWiseProjectDetailsComponent {
     private localStorageService: LocalStorageService,
     private superService: SuperadminService,
     private modalService: NgbModal,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private location: Location
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -120,6 +121,11 @@ export class TypeWiseProjectDetailsComponent {
       }, 1000);
     }
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 
   onItemAddCategory(item: { category: string }): void {
     // Add type annotation for 'categoryItem'
