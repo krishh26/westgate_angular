@@ -163,29 +163,34 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
   }
 
   searchtext() {
+    // Reset page to 1 when searching
+    this.page = 1;
+
     this.showLoader = true;
     this.spinner.show();
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
-    const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is passed correctly
+    const keyword = this.searchText ? this.searchText.trim().toLowerCase() : '';  // Ensure keyword is properly formatted
 
-    console.log('Searching for:', keyword); // Debugging log
+    console.log('Searching for:', keyword);
 
+    // Use the same parameters for consistency between initial load and search
     this.superService.getsuperadmintasks(
       this.selectedUserIds.join(','),  // assignId
       'Completed',                     // status
-      sortType,                         // sort
-      priorityType,                      // pickACategory
-      keyword,                          // ✅ Pass search keyword correctly
-      undefined,                        // myDay
-      type,
-      this.page,
-      this.pagesize                              // type
+      sortType,                        // sort
+      priorityType,                    // pickACategory
+      keyword,                         // keyword
+      undefined,                       // myDay
+      type,                            // type
+      this.page,                       // page - reset to 1 on search
+      this.pagesize                    // pagesize
     )
       .subscribe(
         (response) => {
           if (response?.status === true) {
+            this.totalRecords = response?.data?.meta_data?.items || 0;
             const today = new Date().toISOString().split("T")[0];
 
             this.taskList = response?.data?.data.map((task: any) => {
@@ -200,6 +205,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
             });
           } else {
             this.notificationService.showError(response?.message);
+            this.taskList = [];  // Clear the list on error
           }
           this.showLoader = false;
           this.spinner.hide();
@@ -208,10 +214,12 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
           this.spinner.hide();
+          this.taskList = [];  // Clear the list on error
         }
       );
-  }
 
+    this.getUserAllList();
+  }
 
   onChangeMyday(value: any) {
     console.log(value);

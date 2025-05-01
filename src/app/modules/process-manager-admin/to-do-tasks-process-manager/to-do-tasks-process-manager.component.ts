@@ -96,10 +96,6 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.myControl.valueChanges.subscribe((res: any) => {
-      let storeTest = res;
-      this.searchText = res.toLowerCase();
-    });
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
@@ -466,32 +462,49 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   }
 
   searchtext() {
+    // Reset page to 1 when searching
+    this.page = 1;
+
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
-    const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is not undefined
+    const keyword = this.searchText ? this.searchText.trim().toLowerCase() : '';
 
-    console.log('Searching for:', keyword); // Debugging log
+    console.log('Searching for:', keyword);
     this.spinner.show();
+
+    // Use the same parameters for consistency between initial load and search
     this.superService.getsuperadmintasks(
       this.selectedUserIds.join(','),  // assignId
       'Ongoing',                       // status
-      sortType,                         // sort
-      priorityType,                      // pickACategory
-      keyword,                          // keyword (Make sure this is passed correctly)
-      undefined,                        // myDay
-      type,
-      this.page,
-      this.pagesize                                // type
+      sortType,                        // sort
+      priorityType,                    // pickACategory
+      keyword,                         // keyword
+      undefined,                       // myDay
+      type,                            // type
+      this.page,                       // page - reset to 1 on search
+      this.pagesize                    // pagesize
     )
       .subscribe(
         (response) => {
           if (response?.status === true) {
             this.totalRecords = response?.data?.meta_data?.items || 0;
-            this.taskList = response?.data?.data;
+            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
+
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              };
+            });
           } else {
             this.notificationService.showError(response?.message);
+            this.taskList = [];  // Clear the list on error
           }
           this.showLoader = false;
           this.spinner.hide();
@@ -500,6 +513,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
           this.spinner.hide();
+          this.taskList = [];  // Clear the list on error
         }
       );
 

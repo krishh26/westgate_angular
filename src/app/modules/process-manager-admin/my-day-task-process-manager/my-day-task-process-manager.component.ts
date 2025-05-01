@@ -431,27 +431,37 @@ export class MyDayTaskProcessManagerComponent {
   }
 
   searchtext() {
+    // Reset page to 1 when searching
+    this.page = 1;
+
     this.showLoader = true;
     const sortType = Array.isArray(this.selectedtype) ? this.selectedtype[0] : this.selectedtype;
     const priorityType = Array.isArray(this.selectedpriority) ? this.selectedpriority[0] : this.selectedpriority;
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
-    const keyword = this.searchText;  // The search text to filter by
+    const keyword = this.searchText ? this.searchText.trim().toLowerCase() : '';  // Ensure keyword is properly formatted
+
+    console.log('Searching for:', keyword);
     this.spinner.show();
+
+    // Use the same parameters for consistency between initial load and search
     this.superService
       .getsuperadmintasks(
-        this.selectedUserIds.join(','),
-        "",                              // status (keep empty as before)
+        this.selectedUserIds.join(','),  // assignId
+        "",                              // status
         sortType,                        // sort
-        priorityType,                     // pickACategory
-        keyword,                         // ✅ Pass the keyword correctly here
-        true,                             // myDay
-        type
+        priorityType,                    // pickACategory
+        keyword,                         // keyword
+        true,                            // myDay
+        type,                            // type
+        this.page,                       // page - reset to 1 on search
+        this.pagesize                    // pagesize
       )
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            const today = new Date().toISOString().split("T")[0];
             this.totalRecords = response?.data?.meta_data?.items || 0;
+            const today = new Date().toISOString().split("T")[0];
+
             this.taskList = response?.data?.data.map((task: any) => {
               const todayComments = task?.comments?.filter((comment: any) =>
                 comment.date.split("T")[0] === today
@@ -462,20 +472,22 @@ export class MyDayTaskProcessManagerComponent {
                 todayComments: todayComments?.length ? todayComments : null,
               };
             });
-
-            this.showLoader = false;
           } else {
             this.notificationService.showError(response?.message);
-            this.showLoader = false;
+            this.taskList = [];  // Clear the list on error
           }
+          this.showLoader = false;
           this.spinner.hide();
         },
         (error) => {
           this.notificationService.showError(error?.message);
           this.showLoader = false;
           this.spinner.hide();
+          this.taskList = [];  // Clear the list on error
         }
       );
+
+    this.getUserAllList();
   }
 
   getUserAllList() {
