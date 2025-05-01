@@ -1323,8 +1323,80 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   openViewImage(image: any) {
+    console.log('Image data full structure:', JSON.stringify(image, null, 2));
     this.selectViewImage = image;
-    console.log(this.selectViewImage?.url);
+
+    // Check all possible locations where the URL might be stored
+    if (this.selectViewImage) {
+      // First check direct URL
+      if (!this.selectViewImage.url) {
+        // Check if URL is in file.url
+        if (this.selectViewImage.file?.url) {
+          this.selectViewImage.url = this.selectViewImage.file.url;
+          console.log('URL found in file.url:', this.selectViewImage.url);
+        }
+        // Check if URL is in key
+        else if (this.selectViewImage.key) {
+          this.selectViewImage.url = this.selectViewImage.key;
+          console.log('URL set from key:', this.selectViewImage.url);
+        }
+      } else {
+        console.log('URL found directly:', this.selectViewImage.url);
+      }
+    }
+    console.log('Final selectViewImage:', this.selectViewImage);
+  }
+
+  // Add a method to get a raw string URL for PDFs
+  getPdfUrl(url: string): string {
+    return url ? url : '';
+  }
+
+  isImage(url: string): boolean {
+    if (!url) return false;
+
+    // If the URL is from AWS S3 or similar cloud storage, it might not have a file extension
+    // Check for common image content-type indicators in the URL
+    const containsImageKeywords = url.toLowerCase().includes('image') ||
+                                 url.toLowerCase().includes('picture') ||
+                                 url.toLowerCase().includes('photo');
+
+    // Check for common image extensions. Strip any query parameters first
+    const baseUrl = url.split('?')[0];
+    const hasImageExtension =
+      baseUrl.toLowerCase().endsWith('.jpg') ||
+      baseUrl.toLowerCase().endsWith('.jpeg') ||
+      baseUrl.toLowerCase().endsWith('.png') ||
+      baseUrl.toLowerCase().endsWith('.gif') ||
+      baseUrl.toLowerCase().endsWith('.webp') ||
+      baseUrl.toLowerCase().endsWith('.bmp') ||
+      baseUrl.toLowerCase().endsWith('.svg');
+
+    // If either condition is true, consider it an image
+    return hasImageExtension || containsImageKeywords;
+  }
+
+  getDocumentViewerUrl(url: string): SafeResourceUrl {
+    if (!url) {
+      console.error('Empty URL passed to getDocumentViewerUrl');
+      return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    }
+
+    try {
+      // For MS Office documents, use the Office Online viewer
+      if (this.isWordOrExcel(url)) {
+        const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+          url
+        )}`;
+        return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
+      }
+
+      // For all other document types, sanitize the URL directly
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } catch (error) {
+      console.error('Error in getDocumentViewerUrl:', error);
+      return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    }
   }
 
   download(imageUrl: string, fileName: string): void {
@@ -1537,25 +1609,6 @@ export class TrackerWiseProjectDetailsComponent {
       url?.endsWith('.xlsx') ||
       false
     );
-  }
-
-  isImage(url: string): boolean {
-    return (
-      url?.endsWith('.jpg') ||
-      url?.endsWith('.jpeg') ||
-      url?.endsWith('.png') ||
-      false
-    );
-  }
-
-  getDocumentViewerUrl(url: string): SafeResourceUrl {
-    if (this.isWordOrExcel(url)) {
-      const officeUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-        url
-      )}`;
-      return this.sanitizer.bypassSecurityTrustResourceUrl(officeUrl);
-    }
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   uploadDocuments(event: any): void {
@@ -1875,6 +1928,8 @@ export class TrackerWiseProjectDetailsComponent {
         if (response?.status) {
           this.notificationService.showSuccess('images add succesfully');
           this.imageFields = [{ text: '', file: null }];
+          // Refresh the project strips data to show the newly added images
+          this.getProjectStrips();
         } else {
           this.notificationService.showError(response?.message);
         }
