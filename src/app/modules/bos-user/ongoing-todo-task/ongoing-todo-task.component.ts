@@ -952,26 +952,40 @@ export class OngoingTodoTaskComponent {
     return candidateId === this.loginUser.id;
   }
 
-  // Initialize minutes options with 10min increments up to 3 hours, then 30min up to 24 hours
   initializeMinutesOptions() {
-    // 10 minute increments up to 3 hours (180 minutes)
-    for (let i = 10; i <= 180; i += 10) {
-      if (i < 60) {
-        this.minutesOptions.push({ value: i, label: `${i} min` });
-      } else {
-        const hours = Math.floor(i / 60);
-        const mins = i % 60;
-        const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
-        this.minutesOptions.push({ value: i, label });
-      }
+    // Clear existing options if any
+    this.minutesOptions = [];
+
+    // Individual minutes: 1, 2, 3, 4, 5
+    for (let i = 1; i <= 5; i++) {
+      this.minutesOptions.push({
+        label: `${i} min`,
+        value: i
+      });
     }
 
-    // 30 minute increments from 3 hours to 24 hours
+    // 5-minute intervals from 10 to 60 minutes
+    for (let i = 10; i <= 60; i += 5) {
+      this.minutesOptions.push({
+        label: `${i} min`,
+        value: i
+      });
+    }
+
+    // Keep existing intervals: 10-minute intervals from 70 to 180 minutes (3 hours)
+    for (let i = 70; i <= 180; i += 10) {
+      this.minutesOptions.push({
+        label: i < 60 ? `${i} min` : `${Math.floor(i / 60)} hour${i % 60 === 0 ? '' : ` ${i % 60} min`}`,
+        value: i
+      });
+    }
+
+    // Keep existing intervals: 30-minute intervals from 3.5 hours to 24 hours
     for (let i = 210; i <= 1440; i += 30) {
-      const hours = Math.floor(i / 60);
-      const mins = i % 60;
-      const label = mins > 0 ? `${hours} hour ${mins} min` : `${hours} hour`;
-      this.minutesOptions.push({ value: i, label });
+      this.minutesOptions.push({
+        label: `${Math.floor(i / 60)} hour${i % 60 === 0 ? '' : ` ${i % 60} min`}`,
+        value: i
+      });
     }
   }
 }
