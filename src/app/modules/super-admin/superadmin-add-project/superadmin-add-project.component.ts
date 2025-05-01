@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { formatDate, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -70,7 +70,8 @@ export class SuperadminAddProjectComponent implements OnInit {
     private projectService: ProjectService,
     private notificationService: NotificationService,
     private router: Router,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private location: Location
   ) {
   }
 
@@ -272,6 +273,13 @@ export class SuperadminAddProjectComponent implements OnInit {
         }
       );
     }
+  }
+
+  /**
+   * Navigate back to the previous page
+   */
+  goBack(): void {
+    this.location.back();
   }
 
 }

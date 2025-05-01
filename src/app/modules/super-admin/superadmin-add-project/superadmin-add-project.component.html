@@ -4,10 +4,7 @@
       <div class="row mb-4">
         <div class="col-12 d-flex justify-content-between align-items-center">
           <h4 class="text-theme mb-0"><strong *ngIf="!projectId">Add Project</strong><strong *ngIf="projectId">Edit Project</strong></h4>
-          <button type="button"
-            [routerLink]="projectId ? ['/super-admin/tracker-wise-project-details'] : ['/super-admin/status-wise-tracker']"
-            [queryParams]="projectId ? {id: projectId} : {}"
-            class="btn btn-primary">Back</button>
+          <button type="button" (click)="goBack()" class="btn btn-primary">Back</button>
         </div>
       </div>
       <form [formGroup]="productForm" (ngSubmit)="submitForm()">
