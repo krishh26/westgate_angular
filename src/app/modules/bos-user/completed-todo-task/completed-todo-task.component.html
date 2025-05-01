@@ -147,7 +147,7 @@
         <div class="flex-grow-1 pe-3">
           <div class="mb-3" *ngIf="modalTask?.discription">
             <h6><strong>Description</strong></h6>
-            <p>{{ modalTask?.discription }}</p>
+            <p [innerHTML]="modalTask?.discription"></p>
             <p *ngIf="!modalTask?.discription">No Record Found.</p>
           </div>
 
