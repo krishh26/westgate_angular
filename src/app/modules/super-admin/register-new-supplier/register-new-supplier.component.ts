@@ -54,6 +54,12 @@ export class RegisterNewSupplierComponent implements OnInit {
   industryList: any[] = [];
   selectedIndustries: string[] = [];
 
+  // Properties for expertise modal
+  showExpertiseModal: boolean = false;
+  newExpertiseName: string = '';
+  newExpertiseType: string = 'technologies'; // Changed to lowercase to match the expertise-list component
+  addExpertiseTag = false; // Disabling automatic tag addition
+
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
@@ -816,28 +822,61 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   // Method to handle adding custom expertise items if needed
-  onItemAddExpertise(event: any) {
-    if (event) {
-      console.log('Adding custom expertise:', event);
-      // If it's a string from addTag
-      if (typeof event === 'string') {
-        // Check if the object with this value already exists
-        const exists = this.expertiseDropdownOptions.some(item => item.name === event);
-        if (!exists) {
-          const newItem: ExpertiseItem = {
-            itemId: null,
-            name: event,
-            type: 'technologies'
-          };
-          this.expertiseDropdownOptions.push(newItem);
-        }
-      } else if (event && event.name) {
-        // It's an object from the selection
-        const exists = this.expertiseDropdownOptions.some(item => item.name === event.name);
-        if (!exists) {
-          this.expertiseDropdownOptions.push(event);
-        }
-      }
+  onItemAddExpertise(item: any) {
+    // If this method is called directly, use the default type
+    if (!item.type) {
+      item.type = 'Technologies';
     }
+
+    // Add to dropdown options if it doesn't exist
+    if (!this.expertiseDropdownOptions.some(e => e.name === item.name)) {
+      this.expertiseDropdownOptions.push(item);
+    }
+  }
+
+  // Implementation of onAddTag for adding expertise with type selection
+  onAddTag = (name: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
+
+    const expertiseType = this.newExpertiseType;
+
+    const newExpertise = {
+      name: name,
+      type: expertiseType,
+      itemId: null
+    };
+
+    // Make API call to create custom expertise
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: name,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status) {
+          // Update the itemId with the returned ID
+          newExpertise.itemId = response.data._id || response.data.itemId;
+          this.notificationService.showSuccess('New expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to create expertise');
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Failed to create expertise');
+      }
+    );
+
+    // Add to dropdown options if it doesn't exist
+    if (!this.expertiseDropdownOptions.some(e => e.name === newExpertise.name)) {
+      this.expertiseDropdownOptions.push(newExpertise);
+    }
+
+    // Return the new expertise object so it can be added to the list while API call is in progress
+    return newExpertise;
   }
 }
