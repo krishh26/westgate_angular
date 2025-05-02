@@ -62,6 +62,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
   activeSubExpertiseSelection: string[] = [];
   activeExpertiseIndex: number = -1;
 
+  // Properties for expertise type selection
+  newExpertiseType: string = 'technologies';
+
   constructor(
     private notificationService: NotificationService,
     private router: Router,
@@ -232,20 +235,73 @@ export class SupplierUserProfileEditComponent implements OnInit {
     }
   }
 
+  // Implementation of onAddTag for adding expertise with type selection
+  onAddTag = (name: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
+
+    const expertiseType = this.newExpertiseType;
+
+    const newExpertise: ExpertiseItem = {
+      name: name,
+      type: expertiseType,
+      itemId: null
+    };
+
+    // Make API call to create custom expertise
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: name,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status) {
+          // Update the itemId with the returned ID
+          newExpertise.itemId = response.data._id || response.data.itemId;
+          this.notificationService.showSuccess('New expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to create expertise');
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Failed to create expertise');
+      }
+    );
+
+    // Add to dropdown options if it doesn't exist
+    if (!this.expertiseDropdownOptions.some(e => e.name === newExpertise.name)) {
+      this.expertiseDropdownOptions.push(newExpertise);
+    }
+
+    // Return the new expertise object so it can be added to the list while API call is in progress
+    return newExpertise;
+  }
+
+  // Update the addExpertiseFromSelection method to handle the new selectedExpertiseName format
   addExpertiseFromSelection() {
     console.log('Method called with selectedExpertiseName:', this.selectedExpertiseName);
-    console.log('Available expertiseDropdownOptions:', this.expertiseDropdownOptions);
 
     if (this.selectedExpertiseName) {
+      // If selectedExpertiseName is an object (from ng-select), extract the name
+      const expertiseName = typeof this.selectedExpertiseName === 'object'
+        ? (this.selectedExpertiseName as any).name
+        : this.selectedExpertiseName;
+
       // Find the selected expertise from the dropdown options
-      const selectedExp = this.expertiseDropdownOptions.find(exp => exp.name === this.selectedExpertiseName);
+      const selectedExp = this.expertiseDropdownOptions.find(exp =>
+        exp.name === expertiseName
+      );
 
       console.log('Found expertise object:', selectedExp);
 
       if (selectedExp) {
         // Check if this expertise already exists in the list
         const exists = this.supplierDetails.expertise.some((item: any) =>
-          item.name === this.selectedExpertiseName
+          item.name === selectedExp.name
         );
 
         console.log('Expertise already exists:', exists);
