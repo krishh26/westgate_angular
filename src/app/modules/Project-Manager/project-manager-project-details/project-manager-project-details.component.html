@@ -137,6 +137,26 @@
                 {{ projectDetails?.categorisation || "-" }}
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Contract Start Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.periodOfContractStart
+                ? (projectDetails?.periodOfContractStart | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Contract End Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.periodOfContractEnd
+                ? (projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -324,11 +344,11 @@
                       View all
                     </button>
                     <button class="btn btn-sm btn-success" style="flex-grow: 0; min-width: 80px"
-                      (click)="selectSupplier(supplier)" >
+                      (click)="selectSupplier(supplier)">
                       Select
                     </button>
                     <button class="btn btn-sm btn-danger" style="flex-grow: 0; min-width: 80px"
-                      (click)="deSelectSupplier(supplier)" >
+                      (click)="deSelectSupplier(supplier)">
                       De-Select
                     </button>
                     <button class="btn btn-sm btn-danger" style="flex-grow: 0; min-width: 80px"
@@ -1130,7 +1150,8 @@
 
           <div class="form-group mb-3">
             <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="display" bindValue="value" [items]="ForTitleuserList" formControlName="roles">
+              [multiple]="true" bindLabel="display" bindValue="value" [items]="ForTitleuserList"
+              formControlName="roles">
             </ng-select>
           </div>
         </div>
@@ -1151,7 +1172,8 @@
 
           <div class="form-group mb-3">
             <ng-select id="assignTo" class="form-select custom-ng-select-option" placeholder="Select Role"
-              [multiple]="true" bindLabel="display" bindValue="value" [items]="ForTitleuserList" formControlName="roles">
+              [multiple]="true" bindLabel="display" bindValue="value" [items]="ForTitleuserList"
+              formControlName="roles">
             </ng-select>
           </div>
         </ng-template>

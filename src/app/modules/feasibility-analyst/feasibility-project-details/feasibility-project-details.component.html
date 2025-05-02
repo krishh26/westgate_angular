@@ -124,6 +124,26 @@
                 {{ projectDetails?.categorisation || "-" }}
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Contract Start Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.periodOfContractStart
+                ? (projectDetails?.periodOfContractStart | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Contract End Date:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.periodOfContractEnd
+                ? (projectDetails?.periodOfContractEnd | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
