@@ -9,6 +9,7 @@ import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-a
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import Swal from 'sweetalert2';
 declare var bootstrap: any;
 
 @Component({
@@ -257,6 +258,37 @@ export class AdminCaseStudiesListComponent {
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
     }
+  }
+
+  deleteCaseStudy(caseStudyId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this case study?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superService.deleteCaseStudy(caseStudyId).subscribe(
+          (response) => {
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Case study deleted successfully.');
+              this.getCaseStudiesList(); // Refresh the list
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete case study.');
+            }
+            this.showLoader = false;
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting the case study.');
+            this.showLoader = false;
+          }
+        );
+      }
+    });
   }
 
 }

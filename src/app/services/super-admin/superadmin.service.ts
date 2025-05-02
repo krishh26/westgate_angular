@@ -56,7 +56,8 @@ export enum SuperAdminEndPoint {
   CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom',
   DELETE_EXPERTISE = '/web-user/expertise',
   DELETE_SUB_EXPERTISE = '/web-user/expertise/:id/subexpertise',
-  GET_TECHNOLOGIES = '/roles/get-technologies'
+  GET_TECHNOLOGIES = '/roles/get-technologies',
+  DELETE_CASE_STUDY = '/case-study/delete/'
 }
 
 @Injectable({
@@ -680,6 +681,12 @@ export class SuperadminService {
     return this.httpClient.get<any>(
       this.baseUrl + '/roles/get-all',
       { params: queryParams }
+    );
+  }
+
+  deleteCaseStudy(caseStudyId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      this.baseUrl + SuperAdminEndPoint.DELETE_CASE_STUDY + caseStudyId
     );
   }
 }
