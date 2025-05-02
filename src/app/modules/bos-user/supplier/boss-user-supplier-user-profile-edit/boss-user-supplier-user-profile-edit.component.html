@@ -279,9 +279,9 @@
                             <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
                           </div>
                           <div class="mt-2">
-                            <div style="border: 1px solid #ced4da; border-radius: 4px; padding: 2px;">
+                            <div class="dropdown">
                               <ng-select
-                                [(ngModel)]="activeSubExpertiseSelection"
+                                [(ngModel)]="selectedSubExpertiseMap[i]"
                                 name="subExpertise_{{i}}"
                                 [items]="subExpertiseOptions"
                                 [multiple]="true"
@@ -289,13 +289,12 @@
                                 [closeOnSelect]="false"
                                 [searchable]="true"
                                 [clearable]="true"
-                                class="custom-ng-select-option"
-                                (focus)="setActiveExpertise(i)">
+                                (change)="onSubExpertiseChange(i, $event)">
                               </ng-select>
                             </div>
                             <button type="button" class="btn btn-primary mt-2"
                               (click)="addMultipleSubExpertise(i)"
-                              [disabled]="!activeSubExpertiseSelection || activeSubExpertiseSelection.length === 0">
+                              [disabled]="!selectedSubExpertiseMap[i] || selectedSubExpertiseMap[i].length === 0">
                               Add Sub-Expertise
                             </button>
                             <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
@@ -306,16 +305,23 @@
                       </div>
                       <div class="mt-2">
                         <div class="dropdown">
-                          <select class="form-select" [(ngModel)]="selectedExpertiseName" name="selectedExpertiseName">
-                            <option value="" disabled selected>Select expertise</option>
-                            <option *ngFor="let exp of expertiseDropdownOptions" [value]="exp.name">
-                              {{ exp.name }}
-                            </option>
-                          </select>
+                          <ng-select
+                            placeholder="Select expertise"
+                            [items]="expertiseDropdownOptions"
+                            bindLabel="name"
+                            [multiple]="true"
+                            [(ngModel)]="selectedExpertiseItems"
+                            name="selectedExpertiseItems"
+                            [closeOnSelect]="false"
+                            [searchable]="true"
+                            [clearable]="true"
+                            [addTag]="true"
+                            (add)="onItemAddExpertise($event)">
+                          </ng-select>
                         </div>
                         <button type="button" class="btn btn-primary mt-2"
-                          (click)="addExpertiseFromSelection()"
-                          [disabled]="!selectedExpertiseName">
+                          (click)="addSelectedExpertise()"
+                          [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
                           Add Expertise
                         </button>
                       </div>

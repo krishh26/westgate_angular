@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 interface ExpertiseItem {
   itemId: string | null;
   name: string;
@@ -66,7 +66,9 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
   technologiesList: any[] = [];
   selectedTechnologies: string[] = [];
 
-  // Individual selection for the active sub-expertise dropdown
+  // Expertise selection properties
+  selectedExpertiseItems: any[] = [];
+  selectedSubExpertiseMap: { [key: number]: string[] } = {};
   activeSubExpertiseSelection: string[] = [];
   activeExpertiseIndex: number = -1;
   subExpertiseInput$ = new Subject<string>();
@@ -75,7 +77,8 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private supplierService: SupplierAdminService,
-    private http: HttpClient
+    private http: HttpClient,
+    private superadminService: SuperadminService,
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
 
@@ -116,14 +119,145 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     // Load expertise options
     this.loadExpertiseOptions();
     this.loadSubExpertiseOptions();
-
+    this.getExpertiseDropdownData();
+    this.getSubExpertiseDropdownData();
     // Load dropdown data
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
-
+    this.getCategoryDomains();
     // Initialize selections from supplier details
     this.initializeSelectionsFromSupplierDetails();
+  }
+
+  getCategoryDomains() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down?type=domain`;
+    console.log('Fetching domain categories from URL:', url);
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw domain API response:', response);
+        if (response?.status) {
+          // Check if the data is an array of objects or simple strings
+          if (response.data && response.data.length > 0) {
+            console.log('First item in data:', response.data[0]);
+            if (typeof response.data[0] === 'object') {
+              // If data contains objects, transform to format compatible with ng-select
+              this.categoryDomains = response.data.map((item: any) => {
+                // For ng-select, we need objects with consistent properties
+                // If item already has name/value, use it
+                if (item.name && item.value) {
+                  return item;
+                }
+
+                // Try different property names that might exist
+                const value = item.name || item.value || item.domain || item.category || JSON.stringify(item);
+                return {
+                  name: value,
+                  value: value
+                };
+              });
+            } else {
+              // If data is already an array of strings, convert to objects for ng-select
+              this.categoryDomains = response.data.map((item: string) => {
+                return {
+                  name: item,
+                  value: item
+                };
+              });
+            }
+          } else {
+            this.categoryDomains = [];
+          }
+          console.log('Processed category domains for ng-select:', this.categoryDomains);
+        } else {
+          console.error('Failed to fetch category domains:', response?.message);
+          this.notificationService.showError('Failed to fetch category domains');
+          this.categoryDomains = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching category domains:', error);
+        this.notificationService.showError('Error fetching category domains');
+        this.showLoader = false;
+        this.categoryDomains = [];
+      }
+    );
+  }
+
+
+  getSubExpertiseDropdownData(searchText: string = '') {
+    this.showLoader = true;
+    console.log('Fetching sub-expertise data...');
+
+    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
+      (response) => {
+        console.log('Sub-expertise API response:', response);
+
+        if (response?.status) {
+          // Handle the array of strings directly
+          this.subExpertiseOptions = response.data || [];
+          console.log('Loaded sub-expertise options:', this.subExpertiseOptions);
+        } else {
+          console.error('Failed to fetch sub-expertise dropdown data:', response?.message);
+          this.notificationService.showError('Failed to fetch sub-expertise dropdown data');
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching sub-expertise dropdown data:', error);
+        this.notificationService.showError('Error fetching sub-expertise dropdown data');
+        this.showLoader = false;
+      }
+    );
+  }
+
+
+  getExpertiseDropdownData() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    console.log('Fetching expertise data from URL:', url);
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        console.log('Raw expertise API response:', response);
+        if (response?.status || response?.data) {
+          const data = response.data || response;
+
+          // Process the data to make it compatible with ng-select
+          if (Array.isArray(data)) {
+            this.expertiseDropdownOptions = data.map((item: any) => {
+              // For ng-select, we need objects with consistent properties
+              // Get the type and remove "-other" suffix if it exists
+              let type = item.type || 'technologies';
+              if (type.endsWith('-other')) {
+                type = type.replace('-other', '');
+              }
+
+              return {
+                itemId: item.itemId || item._id,
+                name: item.name,
+                type: type
+              };
+            });
+          }
+          console.log('Processed expertise list for ng-select:', this.expertiseDropdownOptions);
+        } else {
+          console.error('Failed to fetch expertise data:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise data');
+          this.expertiseDropdownOptions = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching expertise data:', error);
+        this.notificationService.showError('Error fetching expertise data');
+        this.showLoader = false;
+        this.expertiseDropdownOptions = [];
+      }
+    );
   }
 
   // Initialize selections from supplier details
@@ -141,6 +275,13 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     // Initialize technology selections
     if (this.supplierDetails.technologyStack && this.supplierDetails.technologyStack.length > 0) {
       this.selectedTechnologies = [...this.supplierDetails.technologyStack];
+    }
+
+    // Initialize selectedSubExpertiseMap
+    if (this.supplierDetails.expertise && this.supplierDetails.expertise.length > 0) {
+      this.supplierDetails.expertise.forEach((expertise: any, index: number) => {
+        this.selectedSubExpertiseMap[index] = [];
+      });
     }
   }
 
@@ -203,36 +344,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
           'AWS', 'Azure', 'Google Cloud', 'DevOps',
           'Big Data', 'Machine Learning', 'Business Intelligence',
           'Network Security', 'Application Security', 'Security Auditing'
-        ];
-      }
-    );
-  }
-
-  // Get category domains for dropdown
-  getCategoryDomains() {
-    this.showLoader = true;
-    this.http.get<any>(`${environment.baseUrl}/roles/get-categories`).subscribe(
-      (response) => {
-        this.showLoader = false;
-        if (response?.status || response?.data) {
-          const data = response.data || response;
-          if (Array.isArray(data)) {
-            this.categoryDomains = data.map((item: any) => {
-              const value = item.name || item.value || item.category || JSON.stringify(item);
-              return { name: value, value: value };
-            });
-          }
-        }
-      },
-      (error) => {
-        this.showLoader = false;
-        console.error('Error loading category domains:', error);
-        // Fallback categories
-        this.categoryDomains = [
-          { name: 'IT Services', value: 'IT Services' },
-          { name: 'Software Development', value: 'Software Development' },
-          { name: 'Consulting', value: 'Consulting' },
-          { name: 'Cloud Services', value: 'Cloud Services' }
         ];
       }
     );
@@ -495,21 +606,87 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     }
   }
 
+  // Method to add expertise from multi-select dropdown
+  addSelectedExpertise() {
+    if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
+      // Initialize expertise array if it doesn't exist
+      if (!this.supplierDetails.expertise) {
+        this.supplierDetails.expertise = [];
+      }
+
+      // Add each selected expertise item
+      for (const item of this.selectedExpertiseItems) {
+        // Check if this expertise already exists
+        const exists = this.supplierDetails.expertise.some((exp: any) =>
+          exp.name === (typeof item === 'string' ? item : item.name)
+        );
+
+        if (!exists) {
+          // Add the expertise item
+          if (typeof item === 'string') {
+            // Handle string items (from addTag)
+            this.supplierDetails.expertise.push({
+              name: item,
+              type: 'technologies',
+              subExpertise: []
+            });
+          } else {
+            // Handle object items (from dropdown)
+            this.supplierDetails.expertise.push({
+              name: item.name,
+              type: item.type || 'technologies',
+              itemId: item.itemId,
+              subExpertise: []
+            });
+          }
+        }
+      }
+
+      // Clear the selection
+      this.selectedExpertiseItems = [];
+      this.notificationService.showSuccess('Expertise added successfully');
+    } else {
+      this.notificationService.showWarning('Please select at least one expertise');
+    }
+  }
+
+  // Method to handle adding custom expertise items
+  onItemAddExpertise(event: any) {
+    if (event && typeof event === 'string') {
+      // Check if this expertise already exists in the dropdown options
+      const exists = this.expertiseDropdownOptions.some(item => item.name === event);
+      if (!exists) {
+        // Add the new expertise to the dropdown options
+        this.expertiseDropdownOptions.push({
+          itemId: null,
+          name: event,
+          type: 'technologies'
+        });
+      }
+    }
+  }
+
+  // Method to handle changes in sub-expertise selection
+  onSubExpertiseChange(expertiseIndex: number, selectedItems: any) {
+    // Store the selection for the current expertise index
+    this.selectedSubExpertiseMap[expertiseIndex] = selectedItems;
+  }
+
   // Add multiple sub-expertise method
   addMultipleSubExpertise(expertiseIndex: number) {
-    if (this.activeSubExpertiseSelection && this.activeSubExpertiseSelection.length > 0) {
+    if (this.selectedSubExpertiseMap[expertiseIndex] && this.selectedSubExpertiseMap[expertiseIndex].length > 0) {
       // Get existing sub-expertise as a Set for faster lookup
       const existingSubExpertise = new Set(this.supplierDetails.expertise[expertiseIndex].subExpertise);
 
       // Add each selected sub-expertise that doesn't already exist
-      for (const subExp of this.activeSubExpertiseSelection) {
+      for (const subExp of this.selectedSubExpertiseMap[expertiseIndex]) {
         if (!existingSubExpertise.has(subExp)) {
           this.supplierDetails.expertise[expertiseIndex].subExpertise.push(subExp);
         }
       }
 
       // Clear the selection
-      this.activeSubExpertiseSelection = [];
+      this.selectedSubExpertiseMap[expertiseIndex] = [];
     }
   }
 
