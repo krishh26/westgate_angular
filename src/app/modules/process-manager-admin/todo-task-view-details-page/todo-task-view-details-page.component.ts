@@ -513,7 +513,7 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
       params.project = paramValue;
     } else if (paramKey === 'completedTask') {
       params.completedTask = paramValue;
-      params.status = 'Completed'; // Explicitly set status to 'Completed'
+
     } else if (paramKey === 'type') {
       params.type = paramValue;
     }
