@@ -30,7 +30,7 @@ export class GapAnalysisComponent {
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
   categorywiseList: string[] = ['DPS', 'Framework', 'DTD'];
-  projectwiseList: string[] = ['Product', 'Development/Service', 'Staff Augmentation'];
+  projectwiseList: string[] = ['Product', 'Development/Service', 'StaffAugmentation'];
   selectedCategory: string | undefined;
   selectedProduct: string | undefined;
   selectedCategorisation: string = '';
