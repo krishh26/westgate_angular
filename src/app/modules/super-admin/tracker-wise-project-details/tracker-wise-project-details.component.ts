@@ -758,12 +758,17 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   getUserDetails() {
+    this.allSuppliers = [];
+
     this.projectManagerService.getUserList('SupplierAdmin').subscribe(
       (response) => {
         if (response?.status == true) {
 
           this.userDetail = response?.data;
-          this.allSuppliers = response?.data;
+          // this.allSuppliers = response?.data;
+          // Hide the inactive supplier
+          this.allSuppliers = response?.data?.filter((element: any) => element?.active);
+
           this.selectedSuppliers = this.userDetail.reduce(
             (acc: any, supplier: any) => {
               acc[supplier._id] = { company: '', startDate: null };
@@ -1358,8 +1363,8 @@ export class TrackerWiseProjectDetailsComponent {
     // If the URL is from AWS S3 or similar cloud storage, it might not have a file extension
     // Check for common image content-type indicators in the URL
     const containsImageKeywords = url.toLowerCase().includes('image') ||
-                                 url.toLowerCase().includes('picture') ||
-                                 url.toLowerCase().includes('photo');
+      url.toLowerCase().includes('picture') ||
+      url.toLowerCase().includes('photo');
 
     // Check for common image extensions. Strip any query parameters first
     const baseUrl = url.split('?')[0];
