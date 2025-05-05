@@ -99,7 +99,7 @@
                   <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year Established</label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.yearOfEstablishment" name="yearOfEstablishment" type="date"
-                      class="form-control" id="yearOfEstablishment">
+                      class="form-control" id="yearOfEstablishment" [max]="today">
                   </div>
                 </div>
               </div>
@@ -195,18 +195,19 @@
                 <div class="row">
                   <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector</label>
                   <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let industry of supplierDetails.industry_Sector; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ industry }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('industry_Sector', i)"></button>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter industry sector and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'industry_Sector')">
-                      </div>
-                    </div>
+                    <ng-select
+                      placeholder="Select Industry Sector"
+                      class="custom-ng-select-option"
+                      [items]="industryList"
+                      bindLabel="name"
+                      [multiple]="true"
+                      bindValue="value"
+                      [(ngModel)]="selectedIndustries"
+                      name="selectedIndustries"
+                      (change)="onIndustryChange()"
+                      [addTag]="true"
+                      (add)="onItemAddIndustry($event)">
+                    </ng-select>
                   </div>
                 </div>
               </div>
@@ -278,20 +279,22 @@
                             <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
                           </div>
                           <div class="mt-2">
-                            <ng-select
-                              [(ngModel)]="activeSubExpertiseSelection"
-                              name="subExpertise_{{i}}"
-                              [items]="subExpertiseOptions"
-                              [multiple]="true"
-                              placeholder="Select sub-expertise (required)"
-                              [closeOnSelect]="false"
-                              [searchable]="true"
-                              [clearable]="true"
-                              (focus)="setActiveExpertise(i)">
-                            </ng-select>
+                            <div class="dropdown">
+                              <ng-select
+                                [(ngModel)]="selectedSubExpertiseMap[i]"
+                                name="subExpertise_{{i}}"
+                                [items]="subExpertiseOptions"
+                                [multiple]="true"
+                                placeholder="Select sub-expertise (required)"
+                                [closeOnSelect]="false"
+                                [searchable]="true"
+                                [clearable]="true"
+                                (change)="onSubExpertiseChange(i, $event)">
+                              </ng-select>
+                            </div>
                             <button type="button" class="btn btn-primary mt-2"
                               (click)="addMultipleSubExpertise(i)"
-                              [disabled]="!activeSubExpertiseSelection || activeSubExpertiseSelection.length === 0">
+                              [disabled]="!selectedSubExpertiseMap[i] || selectedSubExpertiseMap[i].length === 0">
                               Add Sub-Expertise
                             </button>
                             <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
@@ -306,40 +309,19 @@
                             placeholder="Select expertise"
                             [items]="expertiseDropdownOptions"
                             bindLabel="name"
-                            [multiple]="false"
-                            [(ngModel)]="selectedExpertiseName"
-                            name="selectedExpertiseName"
+                            [multiple]="true"
+                            [(ngModel)]="selectedExpertiseItems"
+                            name="selectedExpertiseItems"
                             [closeOnSelect]="false"
                             [searchable]="true"
                             [clearable]="true"
-                            [addTag]="onAddTag">
-                            <ng-template ng-tag-tmp let-search="searchTerm">
-                              <div *ngIf="search">
-                                <div class="mb-2">Add "{{search}}" to expertise</div>
-                                <div class="radio-group d-flex flex-column">
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeTech"
-                                      [(ngModel)]="newExpertiseType" value="technologies">
-                                    <label class="form-check-label" for="typeTech">Technologies</label>
-                                  </div>
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct"
-                                      [(ngModel)]="newExpertiseType" value="product">
-                                    <label class="form-check-label" for="typeProduct">Product</label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain"
-                                      [(ngModel)]="newExpertiseType" value="domain">
-                                    <label class="form-check-label" for="typeDomain">Domain</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </ng-template>
+                            [addTag]="true"
+                            (add)="onItemAddExpertise($event)">
                           </ng-select>
                         </div>
                         <button type="button" class="btn btn-primary mt-2"
-                          (click)="addExpertiseFromSelection()"
-                          [disabled]="!selectedExpertiseName">
+                          (click)="addSelectedExpertise()"
+                          [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
                           Add Expertise
                         </button>
                       </div>
@@ -352,18 +334,19 @@
                 <div class="row">
                   <label for="categoryList" class="col-sm-4 col-form-label">Category</label>
                   <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let cat of supplierDetails.categoryList; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ cat }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('categoryList', i)"></button>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter category and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'categoryList')">
-                      </div>
-                    </div>
+                    <ng-select
+                      placeholder="Select Category"
+                      class="custom-ng-select-option"
+                      [items]="categoryDomains"
+                      bindLabel="name"
+                      [multiple]="true"
+                      bindValue="value"
+                      [(ngModel)]="selectedCategories"
+                      name="selectedCategories"
+                      (change)="onCategoryChange()"
+                      [addTag]="true"
+                      (add)="onItemAddCategory($event)">
+                    </ng-select>
                   </div>
                 </div>
               </div>
@@ -372,18 +355,19 @@
                 <div class="row">
                   <label for="technologyStack" class="col-sm-4 col-form-label">Technology Stack</label>
                   <div class="col-sm-8">
-                    <div class="form-control p-2">
-                      <div *ngFor="let tech of supplierDetails.technologyStack; let i = index" class="mb-2">
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-primary me-2">{{ tech }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeArrayItem('technologyStack', i)"></button>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <input type="text" class="form-control" placeholder="Enter technology and press Enter"
-                          (keydown.enter)="handleEnterKey($event, 'technologyStack')">
-                      </div>
-                    </div>
+                    <ng-select
+                      placeholder="Select Technologies"
+                      class="custom-ng-select-option"
+                      [items]="technologiesList"
+                      bindLabel="name"
+                      [multiple]="true"
+                      bindValue="value"
+                      [(ngModel)]="selectedTechnologies"
+                      name="selectedTechnologies"
+                      (change)="onTechnologiesChange()"
+                      [addTag]="true"
+                      (add)="onItemAddTechnology($event)">
+                    </ng-select>
                   </div>
                 </div>
               </div>

@@ -5,6 +5,8 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environment/environment';
 
 interface ExpertiseItem {
   itemId: string | null;
@@ -57,8 +59,19 @@ export class SupplierUserProfileEditComponent implements OnInit {
   randomString: string = '';
   expertiseDropdownOptions: ExpertiseItem[] = [];
   inHoldComment: string = '';
+  today: string = new Date().toISOString().split('T')[0];
 
-  // Individual selection for the active sub-expertise dropdown
+  // Industry, Category, and Technology lists
+  industryList: any[] = [];
+  selectedIndustries: string[] = [];
+  categoryDomains: any[] = [];
+  selectedCategories: string[] = [];
+  technologiesList: any[] = [];
+  selectedTechnologies: string[] = [];
+
+  // Expertise selection properties
+  selectedExpertiseItems: any[] = [];
+  selectedSubExpertiseMap: { [key: number]: string[] } = {};
   activeSubExpertiseSelection: string[] = [];
   activeExpertiseIndex: number = -1;
 
@@ -69,7 +82,8 @@ export class SupplierUserProfileEditComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private supplierService: SupplierAdminService,
-    private superadminService: SuperadminService
+    private superadminService: SuperadminService,
+    private http: HttpClient
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
 
@@ -115,13 +129,262 @@ export class SupplierUserProfileEditComponent implements OnInit {
     // Initialize if needed
     this.getExpertiseDropdownData();
     this.getSubExpertiseDropdownData();
+
+    // Load dropdown data
+    this.getCategoryDomains();
+    this.getTechnologiesList();
+    this.getIndustryList();
+
+    // Initialize selections from supplier details
+    this.initializeSelectionsFromSupplierDetails();
+  }
+
+  // Initialize selections from supplier details
+  initializeSelectionsFromSupplierDetails() {
+    // Initialize industry selections
+    if (this.supplierDetails.industry_Sector && this.supplierDetails.industry_Sector.length > 0) {
+      this.selectedIndustries = [...this.supplierDetails.industry_Sector];
+    }
+
+    // Initialize category selections
+    if (this.supplierDetails.categoryList && this.supplierDetails.categoryList.length > 0) {
+      this.selectedCategories = [...this.supplierDetails.categoryList];
+    }
+
+    // Initialize technology selections
+    if (this.supplierDetails.technologyStack && this.supplierDetails.technologyStack.length > 0) {
+      this.selectedTechnologies = [...this.supplierDetails.technologyStack];
+    }
+
+    // Initialize selectedSubExpertiseMap
+    if (this.supplierDetails.expertise && this.supplierDetails.expertise.length > 0) {
+      this.supplierDetails.expertise.forEach((expertise: any, index: number) => {
+        this.selectedSubExpertiseMap[index] = [];
+      });
+    }
+  }
+
+  // Get industry list for dropdown
+  getIndustryList() {
+    this.showLoader = true;
+    this.http.get<any>(`${environment.baseUrl}/web-user/sub-expertise/list`).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status) {
+          if (response.data && Array.isArray(response.data)) {
+            this.industryList = response.data.map((item: any) => {
+              const value = item.name || item.value || item.industry || JSON.stringify(item);
+              return { name: value, value: value };
+            });
+          }
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        console.error('Error loading industry list:', error);
+        // Fallback industries
+        this.industryList = [
+          { name: 'Healthcare', value: 'Healthcare' },
+          { name: 'Finance', value: 'Finance' },
+          { name: 'Education', value: 'Education' },
+          { name: 'Retail', value: 'Retail' },
+          { name: 'Manufacturing', value: 'Manufacturing' }
+        ];
+      }
+    );
+  }
+
+  // Get category domains for dropdown
+  getCategoryDomains() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down?type=domain`;
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        if (response?.status) {
+          // Check if the data is an array of objects or simple strings
+          if (response.data && response.data.length > 0) {
+            if (typeof response.data[0] === 'object') {
+              // If data contains objects, transform to format compatible with ng-select
+              this.categoryDomains = response.data.map((item: any) => {
+                // For ng-select, we need objects with consistent properties
+                // If item already has name/value, use it
+                if (item.name && item.value) {
+                  return item;
+                }
+
+                // Try different property names that might exist
+                const value = item.name || item.value || item.domain || item.category || JSON.stringify(item);
+                return {
+                  name: value,
+                  value: value
+                };
+              });
+            } else {
+              // If data is already an array of strings, convert to objects for ng-select
+              this.categoryDomains = response.data.map((item: string) => {
+                return {
+                  name: item,
+                  value: item
+                };
+              });
+            }
+          } else {
+            this.categoryDomains = [];
+          }
+        } else {
+          this.notificationService.showError('Failed to fetch category domains');
+          this.categoryDomains = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        console.error('Error fetching category domains:', error);
+        this.notificationService.showError('Error fetching category domains');
+        this.showLoader = false;
+        this.categoryDomains = [];
+      }
+    );
+  }
+
+  // Get technologies list for dropdown
+  getTechnologiesList() {
+    this.showLoader = true;
+    this.http.get<any>(`${environment.baseUrl}/roles/get-technologies`).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status || response?.data) {
+          const data = response.data || response;
+          if (Array.isArray(data)) {
+            this.technologiesList = data.map((item: any) => {
+              const value = item.name || item.value || item.technology || JSON.stringify(item);
+              return { name: value, value: value };
+            });
+          }
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        console.error('Error loading technologies list:', error);
+        // Fallback technologies
+        this.technologiesList = [
+          { name: 'Angular', value: 'Angular' },
+          { name: 'React', value: 'React' },
+          { name: 'Node.js', value: 'Node.js' },
+          { name: 'Python', value: 'Python' },
+          { name: 'Java', value: 'Java' }
+        ];
+      }
+    );
   }
 
   // Method to set the active expertise being edited
   setActiveExpertise(index: number) {
     this.activeExpertiseIndex = index;
     this.activeSubExpertiseSelection = [];
-    console.log('Set active expertise to index:', index);
+  }
+
+  // Method to handle changes in sub-expertise selection
+  onSubExpertiseChange(expertiseIndex: number, selectedItems: any) {
+    // Store the selection for the current expertise index
+    this.selectedSubExpertiseMap[expertiseIndex] = selectedItems;
+  }
+
+  // Update method to handle changes in the industry selection
+  onIndustryChange() {
+    if (this.selectedIndustries && this.selectedIndustries.length > 0) {
+      this.supplierDetails.industry_Sector = [...this.selectedIndustries];
+    } else {
+      this.supplierDetails.industry_Sector = [];
+    }
+  }
+
+  // Update method to handle changes in the category selection
+  onCategoryChange() {
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      this.supplierDetails.categoryList = [...this.selectedCategories];
+    } else {
+      this.supplierDetails.categoryList = [];
+    }
+  }
+
+  // Update method to handle changes in the technology selection
+  onTechnologiesChange() {
+    if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
+      this.supplierDetails.technologyStack = [...this.selectedTechnologies];
+    } else {
+      this.supplierDetails.technologyStack = [];
+    }
+  }
+
+  // Add custom industry item
+  onItemAddIndustry(event: any) {
+    if (event) {
+      // If it's a string from addTag
+      if (typeof event === 'string') {
+        // Check if this value already exists in the list
+        const exists = this.industryList.some(item => item.value === event);
+        if (!exists) {
+          this.industryList.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        // It's an object from the selection
+        const exists = this.industryList.some(item => item.value === event.value);
+        if (!exists) {
+          this.industryList.push(event);
+        }
+      }
+    }
+  }
+
+  // Add custom category item
+  onItemAddCategory(event: any) {
+    if (event) {
+      if (typeof event === 'string') {
+        const exists = this.categoryDomains.some(item => item.value === event);
+        if (!exists) {
+          this.categoryDomains.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        const exists = this.categoryDomains.some(item => item.value === event.value);
+        if (!exists) {
+          this.categoryDomains.push(event);
+        }
+      }
+    }
+  }
+
+  // Add custom technology item
+  onItemAddTechnology(event: any) {
+    if (event) {
+      if (typeof event === 'string') {
+        const exists = this.technologiesList.some(item => item.value === event);
+        if (!exists) {
+          this.technologiesList.push({ name: event, value: event });
+        }
+      } else if (event && event.value) {
+        const exists = this.technologiesList.some(item => item.value === event.value);
+        if (!exists) {
+          this.technologiesList.push(event);
+        }
+      }
+    }
+  }
+
+  // Method to handle adding custom expertise items
+  onItemAddExpertise(event: any) {
+    if (event && typeof event === 'string') {
+      // Check if this expertise already exists in the dropdown options
+      const exists = this.expertiseDropdownOptions.some(item => item.name === event);
+      if (!exists) {
+        // Add the new expertise to the dropdown options
+        this.expertiseDropdownOptions.push({
+          itemId: null,
+          name: event,
+          type: 'technologies'
+        });
+      }
+    }
   }
 
   getExpertiseDropdownData() {
@@ -159,16 +422,12 @@ export class SupplierUserProfileEditComponent implements OnInit {
 
   getSubExpertiseDropdownData(searchText: string = '') {
     this.showLoader = true;
-    console.log('Fetching sub-expertise data...');
 
     this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
       (response) => {
-        console.log('Sub-expertise API response:', response);
-
         if (response?.status) {
           // Handle the array of strings directly
           this.subExpertiseOptions = response.data || [];
-          console.log('Loaded sub-expertise options:', this.subExpertiseOptions);
 
           // Add dummy data if API returns empty
           if (this.subExpertiseOptions.length === 0) {
@@ -199,7 +458,6 @@ export class SupplierUserProfileEditComponent implements OnInit {
       'Healthcare',
       'Insurance'
     ];
-    console.log('Added fallback sub-expertise options:', this.subExpertiseOptions);
   }
 
   removeArrayItem(arrayName: string, index: number) {
@@ -232,6 +490,50 @@ export class SupplierUserProfileEditComponent implements OnInit {
       });
 
       this.currentExpertise = '';
+    }
+  }
+
+  // Method to add expertise from multi-select dropdown
+  addSelectedExpertise() {
+    if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
+      // Initialize expertise array if it doesn't exist
+      if (!this.supplierDetails.expertise) {
+        this.supplierDetails.expertise = [];
+      }
+
+      // Add each selected expertise item
+      for (const item of this.selectedExpertiseItems) {
+        // Check if this expertise already exists
+        const exists = this.supplierDetails.expertise.some((exp: any) =>
+          exp.name === (typeof item === 'string' ? item : item.name)
+        );
+
+        if (!exists) {
+          // Add the expertise item
+          if (typeof item === 'string') {
+            // Handle string items (from addTag)
+            this.supplierDetails.expertise.push({
+              name: item,
+              type: 'technologies',
+              subExpertise: []
+            });
+          } else {
+            // Handle object items (from dropdown)
+            this.supplierDetails.expertise.push({
+              name: item.name,
+              type: item.type || 'technologies',
+              itemId: item.itemId,
+              subExpertise: []
+            });
+          }
+        }
+      }
+
+      // Clear the selection
+      this.selectedExpertiseItems = [];
+      this.notificationService.showSuccess('Expertise added successfully');
+    } else {
+      this.notificationService.showWarning('Please select at least one expertise');
     }
   }
 
@@ -283,8 +585,6 @@ export class SupplierUserProfileEditComponent implements OnInit {
 
   // Update the addExpertiseFromSelection method to handle the new selectedExpertiseName format
   addExpertiseFromSelection() {
-    console.log('Method called with selectedExpertiseName:', this.selectedExpertiseName);
-
     if (this.selectedExpertiseName) {
       // If selectedExpertiseName is an object (from ng-select), extract the name
       const expertiseName = typeof this.selectedExpertiseName === 'object'
@@ -296,15 +596,11 @@ export class SupplierUserProfileEditComponent implements OnInit {
         exp.name === expertiseName
       );
 
-      console.log('Found expertise object:', selectedExp);
-
       if (selectedExp) {
         // Check if this expertise already exists in the list
         const exists = this.supplierDetails.expertise.some((item: any) =>
           item.name === selectedExp.name
         );
-
-        console.log('Expertise already exists:', exists);
 
         if (!exists) {
           // Initialize expertise array if it doesn't exist
@@ -320,18 +616,12 @@ export class SupplierUserProfileEditComponent implements OnInit {
             subExpertise: []
           });
 
-          console.log('Added expertise:', selectedExp.name);
-          console.log('Updated expertise list:', this.supplierDetails.expertise);
-
           // Notify user of successful addition
           this.notificationService.showSuccess(`Added expertise: ${selectedExp.name}`);
         } else {
-          console.log('Expertise already exists:', selectedExp.name);
           this.notificationService.showInfo(`Expertise "${selectedExp.name}" already exists`);
         }
       } else {
-        console.log('Selected expertise not found in dropdown options');
-
         // Try adding by name directly as a fallback
         if (!this.supplierDetails.expertise) {
           this.supplierDetails.expertise = [];
@@ -343,14 +633,12 @@ export class SupplierUserProfileEditComponent implements OnInit {
           subExpertise: []
         });
 
-        console.log('Added expertise by name directly:', this.selectedExpertiseName);
         this.notificationService.showSuccess(`Added expertise: ${this.selectedExpertiseName}`);
       }
 
       // Clear the selection
       this.selectedExpertiseName = '';
     } else {
-      console.log('No expertise selected');
       this.notificationService.showWarning('Please select an expertise first');
     }
   }
@@ -368,27 +656,21 @@ export class SupplierUserProfileEditComponent implements OnInit {
     }
   }
 
-  // Add multiple sub-expertise method updated to use the active selection
+  // Add multiple sub-expertise method
   addMultipleSubExpertise(expertiseIndex: number) {
-    console.log('Adding multiple sub-expertise:', this.activeSubExpertiseSelection, 'to expertise index:', expertiseIndex);
-
-    if (this.activeSubExpertiseSelection && this.activeSubExpertiseSelection.length > 0) {
+    if (this.selectedSubExpertiseMap[expertiseIndex] && this.selectedSubExpertiseMap[expertiseIndex].length > 0) {
       // Get existing sub-expertise as a Set for faster lookup
       const existingSubExpertise = new Set(this.supplierDetails.expertise[expertiseIndex].subExpertise);
 
       // Add each selected sub-expertise that doesn't already exist
-      for (const subExp of this.activeSubExpertiseSelection) {
+      for (const subExp of this.selectedSubExpertiseMap[expertiseIndex]) {
         if (!existingSubExpertise.has(subExp)) {
           this.supplierDetails.expertise[expertiseIndex].subExpertise.push(subExp);
         }
       }
 
-      console.log('Updated sub-expertise list:', this.supplierDetails.expertise[expertiseIndex].subExpertise);
-
       // Clear the selection
-      this.activeSubExpertiseSelection = [];
-    } else {
-      console.log('No sub-expertise selected');
+      this.selectedSubExpertiseMap[expertiseIndex] = [];
     }
   }
 
@@ -422,6 +704,11 @@ export class SupplierUserProfileEditComponent implements OnInit {
   }
 
   submitForm() {
+    // Update the supplier details with the selected dropdown values
+    this.onIndustryChange();
+    this.onCategoryChange();
+    this.onTechnologiesChange();
+
     if (!this.supplierDetails.companyName || !this.supplierDetails.poc_name || !this.supplierDetails.poc_phone) {
       this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
       return;
@@ -480,6 +767,11 @@ export class SupplierUserProfileEditComponent implements OnInit {
     // Remove empty fields to avoid issues with the API
     if (!supplierDataToSend.email) delete supplierDataToSend.email;
     if (!supplierDataToSend.poc_email) delete supplierDataToSend.poc_email;
+
+    // Remove activeStatus parameter
+    if (supplierDataToSend.hasOwnProperty('activeStatus')) {
+      delete supplierDataToSend.activeStatus;
+    }
 
     console.log('Submitting updated supplier details:', supplierDataToSend);
 

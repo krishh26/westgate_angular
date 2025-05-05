@@ -792,6 +792,11 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     if (!supplierDataToSend.email) delete supplierDataToSend.email;
     if (!supplierDataToSend.poc_email) delete supplierDataToSend.poc_email;
 
+    // Remove activeStatus parameter
+    if (supplierDataToSend.hasOwnProperty('activeStatus')) {
+      delete supplierDataToSend.activeStatus;
+    }
+
     console.log('Submitting updated supplier details:', supplierDataToSend);
 
     this.showLoader = true;
