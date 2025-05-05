@@ -73,6 +73,9 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
   activeExpertiseIndex: number = -1;
   subExpertiseInput$ = new Subject<string>();
 
+  // Property for expertise type selection
+  newExpertiseType: string = 'technologies';
+
   constructor(
     private notificationService: NotificationService,
     private router: Router,
@@ -664,6 +667,52 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
         });
       }
     }
+  }
+
+  // Implementation of onAddTag for adding expertise with type selection
+  onAddTag = (name: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
+
+    const expertiseType = this.newExpertiseType;
+
+    const newExpertise: ExpertiseItem = {
+      name: name,
+      type: expertiseType,
+      itemId: null
+    };
+
+    // Make API call to create custom expertise
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: name,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status) {
+          // Update the itemId with the returned ID
+          newExpertise.itemId = response.data._id || response.data.itemId;
+          this.notificationService.showSuccess('New expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to create expertise');
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Failed to create expertise');
+      }
+    );
+
+    // Add to dropdown options if it doesn't exist
+    if (!this.expertiseDropdownOptions.some(e => e.name === newExpertise.name)) {
+      this.expertiseDropdownOptions.push(newExpertise);
+    }
+
+    // Return the new expertise object so it can be added to the list while API call is in progress
+    return newExpertise;
   }
 
   // Method to handle changes in sub-expertise selection
