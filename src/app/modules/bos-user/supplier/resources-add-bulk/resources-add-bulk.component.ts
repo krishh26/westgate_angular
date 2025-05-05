@@ -15,7 +15,7 @@ export class ResourcesAddBulkComponent implements OnInit {
   showLoader: boolean = false;
   supplierData: any = [];
   supplierID: string = '';
-  roleId: string = '';
+  roleId: string[] = [];
 
   constructor(
     private notificationService: NotificationService,
@@ -27,7 +27,20 @@ export class ResourcesAddBulkComponent implements OnInit {
 
   ngOnInit(): void {
     const storedData = localStorage.getItem("supplierData");
-    this.roleId = localStorage.getItem("selectedRoleId") || '';
+    const storedRoleIds = localStorage.getItem("selectedRoleId");
+
+    // Parse roleIds from localStorage
+    if (storedRoleIds) {
+      try {
+        // First try to parse as JSON array
+        this.roleId = JSON.parse(storedRoleIds);
+      } catch (e) {
+        // If not a valid JSON, treat as a single value and convert to array
+        this.roleId = [storedRoleIds];
+      }
+    }
+
+    console.log('Role IDs:', this.roleId); // Log roleIds for debugging
 
     if (storedData) {
       this.supplierData = JSON.parse(storedData);
@@ -118,7 +131,7 @@ export class ResourcesAddBulkComponent implements OnInit {
         };
       });
 
-      console.log(jsonData);
+      console.log('Generated JSON data with roleIds:', jsonData); // Debug log
       const payload = {
         data: jsonData
       };
@@ -200,7 +213,14 @@ export class ResourcesAddBulkComponent implements OnInit {
 
   private uploadResources(resources: any[]) {
     this.spinner.show();
+
+    // Ensure each resource has the roleId array
+    resources.forEach(resource => {
+      resource.roleId = this.roleId;
+    });
+
     const payload = { data: resources };
+    console.log('Uploading resources with roleIds:', this.roleId);
 
     this.superService.addCandidate(payload).subscribe({
       next: (response) => {
