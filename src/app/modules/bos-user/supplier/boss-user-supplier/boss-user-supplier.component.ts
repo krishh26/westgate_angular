@@ -153,6 +153,7 @@ export class BossUserSupplierComponent {
       case 'inactive':
         // 'status' is the parameter name expected by the API for inactive status
         payload.active = false;
+        payload.inHold = false;
         break;
       case 'resourceSharing':
         // Match the property name expected by the service (resourceSharing)
