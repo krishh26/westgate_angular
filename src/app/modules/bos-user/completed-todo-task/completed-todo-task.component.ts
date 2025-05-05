@@ -412,7 +412,7 @@ export class CompletedTodoTaskComponent {
       };
 
       if (this.timeMinutes !== null) {
-        payload.minutes = Number(this.timeMinutes).toFixed(2);
+        payload.minutes = Number(this.timeMinutes);
       }
 
       this.superService.addComments(payload, id).subscribe(

@@ -869,7 +869,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
       // Add minutes parameter if it has a value
       if (this.timeMinutes !== null) {
-        payload.minutes = Number(this.timeMinutes).toFixed(2);
+        payload.minutes = Number(this.timeMinutes);
       }
 
       this.spinner.show();
