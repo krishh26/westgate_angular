@@ -18,6 +18,7 @@ export class AdminDataSettingsComponent implements OnInit {
   technologies: any[] = [];
   expertises: any[] = [];
   roles: any[] = [];
+  subExpertises: any[] = [];
   error: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
@@ -62,6 +63,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadTechnologies();
     } else if (option === 'expertise') {
       this.loadExpertises();
+    } else if (option === 'subexpertise') {
+      this.loadSubExpertises();
     } else if (option === 'role') {
       this.loadRoles();
     }
@@ -103,6 +106,26 @@ export class AdminDataSettingsComponent implements OnInit {
       },
       error: (error: any) => {
         this.error = error?.message || 'An error occurred while loading expertises';
+        this.showLoader = false;
+      }
+    });
+  }
+
+  loadSubExpertises(): void {
+    this.showLoader = true;
+    this.superadminService.getSubExpertiseDropdownList().subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.subExpertises = response.data.map((item: string) => ({
+            name: item
+          }));
+        } else {
+          this.error = response?.message || 'Failed to load sub expertises';
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading sub expertises';
         this.showLoader = false;
       }
     });
@@ -260,9 +283,9 @@ export class AdminDataSettingsComponent implements OnInit {
       case 'technology':
         return 'Technology Settings';
       case 'expertise':
-        return 'expertise Sector Settings';
-      case 'category':
-        return 'Category Settings';
+        return 'Expertise Settings';
+      case 'subexpertise':
+        return 'Sub Expertise Settings';
       case 'role':
         return 'Role Settings';
       default:

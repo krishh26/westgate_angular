@@ -14,8 +14,8 @@
             <li class="list-group-item" [class.active]="selectedOption === 'expertise'" (click)="selectOption('expertise')">
               <i class="bi bi-building me-2"></i>Expertise
             </li>
-            <li class="list-group-item" [class.active]="selectedOption === 'category'" (click)="selectOption('category')">
-              <i class="bi bi-tags me-2"></i>Category
+            <li class="list-group-item" [class.active]="selectedOption === 'subexpertise'" (click)="selectOption('subexpertise')">
+              <i class="bi bi-tags me-2"></i>Sub Expertise
             </li>
             <li class="list-group-item" [class.active]="selectedOption === 'role'" (click)="selectOption('role')">
               <i class="bi bi-person-badge me-2"></i>Role
@@ -125,9 +125,30 @@
             </div>
           </div>
 
-          <!-- Category Section -->
-          <div *ngIf="selectedOption === 'category'">
-            <p>Category settings content will go here.</p>
+          <!-- Sub Expertise Section -->
+          <div *ngIf="selectedOption === 'subexpertise'">
+            <div class="card">
+              <div class="card-body">
+                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let subExpertise of subExpertises">
+                        <td>{{ subExpertise.name }}</td>
+                      </tr>
+                      <tr *ngIf="subExpertises.length === 0">
+                        <td class="text-center">No sub expertises found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Role Section -->
