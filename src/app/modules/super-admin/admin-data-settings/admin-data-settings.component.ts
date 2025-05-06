@@ -80,7 +80,7 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadExpertises(): void {
     this.showLoader = true;
-    this.superadminService.getExpertiseDropdown(this.selectedExpertiseType).subscribe({
+    this.superadminService.getExpertiseDropdownList(this.selectedExpertiseType).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.expertises = response.data || [];
@@ -170,7 +170,7 @@ export class AdminDataSettingsComponent implements OnInit {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.superadminService.deleteExpertise(expertiseId, '').subscribe({
+        this.superadminService.deleteExpertiseWithoutSupplier(expertiseId).subscribe({
           next: (response: any) => {
             if (response?.status) {
               this.notificationService.showSuccess('Expertise deleted successfully');
@@ -207,7 +207,7 @@ export class AdminDataSettingsComponent implements OnInit {
       type: this.expertiseForm.value.type
     };
 
-    this.superadminService.addExpertiseandSubExpertise(payload).subscribe({
+    this.superadminService.createCustomExpertise(payload).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess('Expertise added successfully');

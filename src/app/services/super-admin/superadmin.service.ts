@@ -651,6 +651,11 @@ export class SuperadminService {
     });
   }
 
+  deleteExpertiseWithoutSupplier(expertiseId: string): Observable<any> {
+    const url = `${this.baseUrl}${SuperAdminEndPoint.DELETE_EXPERTISE}/${expertiseId}`;
+    return this.httpClient.request<any>('DELETE', url);
+  }
+
   deleteSubExpertise(expertiseId: string, subExpertise: string, supplierId: string): Observable<any> {
     const url = `${this.baseUrl}${SuperAdminEndPoint.DELETE_SUB_EXPERTISE.replace(':id', expertiseId)}`;
     const body = { subExpertise, supplierId };
