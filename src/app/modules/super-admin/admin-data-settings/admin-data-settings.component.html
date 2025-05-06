@@ -48,7 +48,7 @@
                   <tr *ngFor="let tech of technologies">
                     <td>{{ tech.name }}</td>
                     <td>
-                      <button class="btn btn-sm btn-outline-danger" (click)="deleteTechnology(tech.id)">
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteTechnology(tech._id)">
                         <i class="bi bi-trash"></i>
                       </button>
                     </td>

@@ -56,9 +56,9 @@ export enum SuperAdminEndPoint {
   CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom',
   DELETE_EXPERTISE = '/web-user/expertise',
   DELETE_SUB_EXPERTISE = '/web-user/expertise/:id/subexpertise',
-  GET_TECHNOLOGIES = '/roles/get-technologies',
-  CREATE_TECHNOLOGY = '/tech-language/technologies',
-  DELETE_TECHNOLOGY = '/tech-language/technologies/',
+  GET_TECHNOLOGIES = '/tech-language/technologies',
+  CREATE_TECHNOLOGY = '/tech-language/create',
+  DELETE_TECHNOLOGY = '/tech-language/technologies/_id',
   DELETE_CASE_STUDY = '/case-study/delete/'
 }
 
@@ -701,7 +701,7 @@ export class SuperadminService {
 
   deleteTechnology(technologyId: string): Observable<any> {
     return this.httpClient.delete<any>(
-      this.baseUrl + SuperAdminEndPoint.DELETE_TECHNOLOGY + technologyId
+      this.baseUrl + SuperAdminEndPoint.DELETE_TECHNOLOGY.replace('_id', technologyId)
     );
   }
 }
