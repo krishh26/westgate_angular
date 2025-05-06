@@ -55,10 +55,13 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
-  selectedTechnologies: string[] = [];
+  selectedTechnologies: any[] = [];
   industryList: any[] = [];
   selectedIndustries: string[] = [];
   selectedExpertiseItems: ExpertiseItem[] = [];
+  isLoadingTechnologies: boolean = false;
+  technologiesInput$ = new Subject<string>();
+  newExpertiseType: string = 'technologies';
 
   constructor(
     private superadminService: SuperadminService,
@@ -91,6 +94,28 @@ export class BossUserAddNewSupplierComponent implements OnInit {
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
+
+    // Setup typeahead for technologies search
+    this.technologiesInput$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.isLoadingTechnologies = true;
+        return this.http.get<ApiResponse<any[]>>(`${environment.baseUrl}/tech-language/technologies?search=${term}`);
+      })
+    ).subscribe(
+      response => {
+        this.isLoadingTechnologies = false;
+        if (response?.status) {
+          this.technologiesList = response.data || [];
+        }
+      },
+      error => {
+        this.isLoadingTechnologies = false;
+        console.error('Error fetching technologies:', error);
+        this.notificationService.showError('Error fetching technologies');
+      }
+    );
 
     // Add some fallback sub-expertise options in case the API fails
     if (this.subExpertiseOptions.length === 0) {
@@ -580,27 +605,6 @@ export class BossUserAddNewSupplierComponent implements OnInit {
     console.log('Updated categories in form:', this.companyForm.categoryList);
   }
 
-  // Add method for adding custom items
-  onItemAddCategory(event: any) {
-    if (event) {
-      console.log('Adding custom category:', event);
-      // If it's a string from addTag
-      if (typeof event === 'string') {
-        // Check if the object with this value already exists
-        const exists = this.categoryDomains.some(item => item.value === event);
-        if (!exists) {
-          this.categoryDomains.push({ name: event, value: event });
-        }
-      } else if (event && event.value) {
-        // It's an object from the selection
-        const exists = this.categoryDomains.some(item => item.value === event.value);
-        if (!exists) {
-          this.categoryDomains.push(event);
-        }
-      }
-    }
-  }
-
   getTechnologiesList() {
     this.showLoader = true;
     const url = `${environment.baseUrl}/roles/get-technologies`;
@@ -688,11 +692,27 @@ export class BossUserAddNewSupplierComponent implements OnInit {
       console.log('Adding custom technology:', event);
       // If it's a string from addTag
       if (typeof event === 'string') {
-        // Check if the object with this value already exists
-        const exists = this.technologiesList.some(item => item.value === event);
-        if (!exists) {
-          this.technologiesList.push({ name: event, value: event });
-        }
+        // Call API to create new technology
+        this.showLoader = true;
+        const url = `${environment.baseUrl}/tech-language/technologies`;
+        const payload = { name: event };
+
+        this.http.post(url, payload).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              // Add to local list if API call successful
+              this.technologiesList.push({ name: event, value: event });
+              this.notificationService.showSuccess('Technology added successfully');
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to add technology');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'Failed to add technology');
+            this.showLoader = false;
+          }
+        });
       } else if (event && event.value) {
         // It's an object from the selection
         const exists = this.technologiesList.some(item => item.value === event.value);
@@ -701,6 +721,35 @@ export class BossUserAddNewSupplierComponent implements OnInit {
         }
       }
     }
+  }
+
+  // Add this method to handle adding new technologies with Promise
+  addTechnology = (name: string) => {
+    return new Promise<any>((resolve) => {
+      this.showLoader = true;
+      const url = `${environment.baseUrl}/tech-language/technologies`;
+      const payload = { name: name };
+
+      this.http.post(url, payload).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            const newTech = { name: name, value: name };
+            this.technologiesList = [...this.technologiesList, newTech];
+            this.notificationService.showSuccess('Technology added successfully');
+            resolve(newTech);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add technology');
+            resolve(null);
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'Failed to add technology');
+          this.showLoader = false;
+          resolve(null);
+        }
+      });
+    });
   }
 
   getIndustryList() {
@@ -783,5 +832,85 @@ export class BossUserAddNewSupplierComponent implements OnInit {
         }
       }
     }
+  }
+
+  // Add Promise-based method for adding industries
+  addIndustry = (name: string) => {
+    return new Promise<any>((resolve) => {
+      // Check if industry already exists
+      const exists = this.industryList.some(item => item.value === name);
+      if (!exists) {
+        const newIndustry = { name: name, value: name };
+        this.industryList.push(newIndustry);
+        resolve(newIndustry);
+      } else {
+        // Return existing industry
+        const existingIndustry = this.industryList.find(item => item.value === name);
+        resolve(existingIndustry);
+      }
+    });
+  }
+
+  // Add Promise-based method for adding categories
+  addCategory = (name: string) => {
+    return new Promise<any>((resolve) => {
+      // Check if category already exists
+      const exists = this.categoryDomains.some(item => item.value === name);
+      if (!exists) {
+        const newCategory = { name: name, value: name };
+        this.categoryDomains.push(newCategory);
+        resolve(newCategory);
+      } else {
+        // Return existing category
+        const existingCategory = this.categoryDomains.find(item => item.value === name);
+        resolve(existingCategory);
+      }
+    });
+  }
+
+  // Implementation of onAddTag for adding expertise with type selection
+  onAddTag = (name: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
+
+    const expertiseType = this.newExpertiseType;
+
+    const newExpertise: ExpertiseItem = {
+      name: name,
+      type: expertiseType,
+      itemId: null
+    };
+
+    // Make API call to create custom expertise
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: name,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        this.showLoader = false;
+        if (response?.status) {
+          // Update the itemId with the returned ID
+          newExpertise.itemId = response.data._id || response.data.itemId;
+          this.notificationService.showSuccess('New expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to create expertise');
+        }
+      },
+      (error: any) => {
+        this.showLoader = false;
+        this.notificationService.showError(error?.message || 'Failed to create expertise');
+      }
+    );
+
+    // Add to dropdown options if it doesn't exist
+    if (!this.expertiseDropdownOptions.some(e => e.name === newExpertise.name)) {
+      this.expertiseDropdownOptions.push(newExpertise);
+    }
+
+    // Return the new expertise object so it can be added to the list while API call is in progress
+    return newExpertise;
   }
 }

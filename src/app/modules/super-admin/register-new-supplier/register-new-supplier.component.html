@@ -403,8 +403,8 @@
                           [(ngModel)]="selectedTechnologies"
                           name="selectedTechnologies"
                           (change)="onTechnologiesChange()"
-                          [addTag]="true"
-                          (add)="onItemAddTechnology($event)">
+                          [addTag]="addTechnology"
+                          [loading]="showLoader">
                         </ng-select>
                       </div>
                     </div>

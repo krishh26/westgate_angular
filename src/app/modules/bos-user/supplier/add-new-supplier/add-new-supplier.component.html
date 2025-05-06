@@ -197,8 +197,7 @@
                             [(ngModel)]="selectedIndustries"
                             name="selectedIndustries"
                             (change)="onIndustryChange()"
-                            [addTag]="true"
-                            (add)="onItemAddIndustry($event)">
+                            [addTag]="addIndustry">
                           </ng-select>
                         </div>
                       </div>
@@ -307,8 +306,29 @@
                                   [closeOnSelect]="false"
                                   [searchable]="true"
                                   [clearable]="true"
-                                  [addTag]="true"
-                                  (add)="onItemAddExpertise($event)">
+                                  [addTag]="onAddTag">
+                                  <ng-template ng-tag-tmp let-search="searchTerm">
+                                    <div *ngIf="search">
+                                      <div class="mb-2">Add "{{search}}" to expertise</div>
+                                      <div class="radio-group d-flex flex-column">
+                                        <div class="form-check mb-1">
+                                          <input class="form-check-input" type="radio" name="expertiseType" id="typeTech"
+                                            [(ngModel)]="newExpertiseType" value="technologies">
+                                          <label class="form-check-label" for="typeTech">Technologies</label>
+                                        </div>
+                                        <div class="form-check mb-1">
+                                          <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct"
+                                            [(ngModel)]="newExpertiseType" value="product">
+                                          <label class="form-check-label" for="typeProduct">Product</label>
+                                        </div>
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain"
+                                            [(ngModel)]="newExpertiseType" value="domain">
+                                          <label class="form-check-label" for="typeDomain">Domain</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ng-template>
                                 </ng-select>
                               </div>
                               <button type="button" class="btn btn-primary mt-2"
@@ -336,8 +356,7 @@
                             [(ngModel)]="selectedCategories"
                             name="selectedCategories"
                             (change)="onCategoryChange()"
-                            [addTag]="true"
-                            (add)="onItemAddCategory($event)">
+                            [addTag]="addCategory">
                           </ng-select>
                         </div>
                       </div>
@@ -348,17 +367,17 @@
                         <label for="technologyStack" class="col-sm-4 col-form-label">Technology Stack</label>
                         <div class="col-sm-8">
                           <ng-select
-                            placeholder="Select Technologies"
+                            placeholder="Select or add technologies"
                             class="custom-ng-select-option"
                             [items]="technologiesList"
                             bindLabel="name"
                             [multiple]="true"
-                            bindValue="value"
                             [(ngModel)]="selectedTechnologies"
                             name="selectedTechnologies"
                             (change)="onTechnologiesChange()"
-                            [addTag]="true"
-                            (add)="onItemAddTechnology($event)">
+                            [addTag]="addTechnology"
+                            [loading]="isLoadingTechnologies"
+                            [typeahead]="technologiesInput$">
                           </ng-select>
                         </div>
                       </div>

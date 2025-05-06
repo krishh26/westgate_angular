@@ -67,7 +67,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
-  selectedTechnologies: string[] = [];
+  selectedTechnologies: any[] = [];
+  isLoadingTechnologies: boolean = false;
+  technologiesInput$ = new Subject<string>();
 
   // Expertise selection properties
   selectedExpertiseItems: any[] = [];
@@ -123,6 +125,28 @@ export class SupplierUserProfileEditComponent implements OnInit {
         this.subExpertiseOptions = response.data || [];
       }
     });
+
+    // Setup typeahead for technologies search
+    this.technologiesInput$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.isLoadingTechnologies = true;
+        return this.http.get<any>(`${environment.baseUrl}/tech-language/technologies?search=${term}`);
+      })
+    ).subscribe(
+      response => {
+        this.isLoadingTechnologies = false;
+        if (response?.status) {
+          this.technologiesList = response.data || [];
+        }
+      },
+      error => {
+        this.isLoadingTechnologies = false;
+        console.error('Error fetching technologies:', error);
+        this.notificationService.showError('Error fetching technologies');
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -153,7 +177,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
 
     // Initialize technology selections
     if (this.supplierDetails.technologyStack && this.supplierDetails.technologyStack.length > 0) {
-      this.selectedTechnologies = [...this.supplierDetails.technologyStack];
+      this.selectedTechnologies = this.supplierDetails.technologyStack.map((tech: string) => ({
+        name: tech
+      }));
     }
 
     // Initialize selectedSubExpertiseMap
@@ -249,31 +275,28 @@ export class SupplierUserProfileEditComponent implements OnInit {
 
   // Get technologies list for dropdown
   getTechnologiesList() {
-    this.showLoader = true;
-    this.http.get<any>(`${environment.baseUrl}/roles/get-technologies`).subscribe(
-      (response) => {
-        this.showLoader = false;
-        if (response?.status || response?.data) {
-          const data = response.data || response;
-          if (Array.isArray(data)) {
-            this.technologiesList = data.map((item: any) => {
-              const value = item.name || item.value || item.technology || JSON.stringify(item);
-              return { name: value, value: value };
-            });
+    this.isLoadingTechnologies = true;
+    this.http.get<any>(`${environment.baseUrl}/tech-language/technologies`).subscribe(
+      response => {
+        this.isLoadingTechnologies = false;
+        if (response?.status) {
+          this.technologiesList = response.data || [];
+
+          // If we have existing technologies in the form, select them
+          if (this.supplierDetails.technologyStack?.length) {
+            this.selectedTechnologies = this.supplierDetails.technologyStack.map((tech: string) => ({
+              name: tech
+            }));
           }
+        } else {
+          console.error('Failed to fetch technologies:', response?.message);
+          this.notificationService.showError('Failed to fetch technologies');
         }
       },
-      (error) => {
-        this.showLoader = false;
-        console.error('Error loading technologies list:', error);
-        // Fallback technologies
-        this.technologiesList = [
-          { name: 'Angular', value: 'Angular' },
-          { name: 'React', value: 'React' },
-          { name: 'Node.js', value: 'Node.js' },
-          { name: 'Python', value: 'Python' },
-          { name: 'Java', value: 'Java' }
-        ];
+      error => {
+        this.isLoadingTechnologies = false;
+        console.error('Error fetching technologies:', error);
+        this.notificationService.showError('Error fetching technologies');
       }
     );
   }
@@ -311,7 +334,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
   // Update method to handle changes in the technology selection
   onTechnologiesChange() {
     if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
-      this.supplierDetails.technologyStack = [...this.selectedTechnologies];
+      this.supplierDetails.technologyStack = this.selectedTechnologies.map(tech =>
+        typeof tech === 'string' ? tech : tech.name
+      );
     } else {
       this.supplierDetails.technologyStack = [];
     }
@@ -337,6 +362,23 @@ export class SupplierUserProfileEditComponent implements OnInit {
     }
   }
 
+  // Add Promise-based method for adding industries
+  addIndustry = (name: string) => {
+    return new Promise<any>((resolve) => {
+      // Check if industry already exists
+      const exists = this.industryList.some(item => item.value === name);
+      if (!exists) {
+        const newIndustry = { name: name, value: name };
+        this.industryList.push(newIndustry);
+        resolve(newIndustry);
+      } else {
+        // Return existing industry
+        const existingIndustry = this.industryList.find(item => item.value === name);
+        resolve(existingIndustry);
+      }
+    });
+  }
+
   // Add custom category item
   onItemAddCategory(event: any) {
     if (event) {
@@ -354,21 +396,94 @@ export class SupplierUserProfileEditComponent implements OnInit {
     }
   }
 
+  // Add Promise-based method for adding categories
+  addCategory = (name: string) => {
+    return new Promise<any>((resolve) => {
+      // Check if category already exists
+      const exists = this.categoryDomains.some(item => item.value === name);
+      if (!exists) {
+        const newCategory = { name: name, value: name };
+        this.categoryDomains.push(newCategory);
+        resolve(newCategory);
+      } else {
+        // Return existing category
+        const existingCategory = this.categoryDomains.find(item => item.value === name);
+        resolve(existingCategory);
+      }
+    });
+  }
+
   // Add custom technology item
   onItemAddTechnology(event: any) {
     if (event) {
+      console.log('Adding custom technology:', event);
+      // If it's a string from addTag
       if (typeof event === 'string') {
-        const exists = this.technologiesList.some(item => item.value === event);
-        if (!exists) {
-          this.technologiesList.push({ name: event, value: event });
-        }
+        // Call API to create new technology
+        this.showLoader = true;
+        const url = `${environment.baseUrl}/tech-language/technologies`;
+        const payload = { name: event };
+
+        this.http.post(url, payload).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              // Add to local list if API call successful
+              this.technologiesList.push({ name: event, value: event });
+
+              // Add to selected technologies if not already there
+              if (!this.selectedTechnologies.find(t => t.name === event)) {
+                this.selectedTechnologies = [...this.selectedTechnologies, { name: event, value: event }];
+                this.onTechnologiesChange();
+              }
+
+              this.notificationService.showSuccess('Technology added successfully');
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to add technology');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'Failed to add technology');
+            this.showLoader = false;
+          }
+        });
       } else if (event && event.value) {
+        // It's an object from the selection
         const exists = this.technologiesList.some(item => item.value === event.value);
         if (!exists) {
           this.technologiesList.push(event);
         }
       }
     }
+  }
+
+  // Add this method to handle adding new technologies with Promise
+  addTechnology = (name: string) => {
+    return new Promise<any>((resolve) => {
+      this.showLoader = true;
+      const url = `${environment.baseUrl}/tech-language/technologies`;
+      const payload = { name: name };
+
+      this.http.post(url, payload).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            const newTech = { name: name, value: name };
+            this.technologiesList = [...this.technologiesList, newTech];
+            this.notificationService.showSuccess('Technology added successfully');
+            resolve(newTech);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add technology');
+            resolve(null);
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'Failed to add technology');
+          this.showLoader = false;
+          resolve(null);
+        }
+      });
+    });
   }
 
   // Method to handle adding custom expertise items

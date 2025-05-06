@@ -205,8 +205,7 @@
                       [(ngModel)]="selectedIndustries"
                       name="selectedIndustries"
                       (change)="onIndustryChange()"
-                      [addTag]="true"
-                      (add)="onItemAddIndustry($event)">
+                      [addTag]="addIndustry">
                     </ng-select>
                   </div>
                 </div>
@@ -365,8 +364,7 @@
                       [(ngModel)]="selectedCategories"
                       name="selectedCategories"
                       (change)="onCategoryChange()"
-                      [addTag]="true"
-                      (add)="onItemAddCategory($event)">
+                      [addTag]="addCategory">
                     </ng-select>
                   </div>
                 </div>
@@ -377,17 +375,17 @@
                   <label for="technologyStack" class="col-sm-4 col-form-label">Technology Stack</label>
                   <div class="col-sm-8">
                     <ng-select
-                      placeholder="Select Technologies"
+                      placeholder="Select or add technologies"
                       class="custom-ng-select-option"
                       [items]="technologiesList"
                       bindLabel="name"
                       [multiple]="true"
-                      bindValue="value"
                       [(ngModel)]="selectedTechnologies"
                       name="selectedTechnologies"
                       (change)="onTechnologiesChange()"
-                      [addTag]="true"
-                      (add)="onItemAddTechnology($event)">
+                      [addTag]="addTechnology"
+                      [loading]="isLoadingTechnologies"
+                      [typeahead]="technologiesInput$">
                     </ng-select>
                   </div>
                 </div>

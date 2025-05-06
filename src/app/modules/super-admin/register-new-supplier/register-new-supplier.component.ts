@@ -690,11 +690,27 @@ export class RegisterNewSupplierComponent implements OnInit {
       console.log('Adding custom technology:', event);
       // If it's a string from addTag
       if (typeof event === 'string') {
-        // Check if the object with this value already exists
-        const exists = this.technologiesList.some(item => item.value === event);
-        if (!exists) {
-          this.technologiesList.push({ name: event, value: event });
-        }
+        // Call API to create new technology
+        this.showLoader = true;
+        const url = `${environment.baseUrl}/tech-language/technologies`;
+        const payload = { name: event };
+
+        this.http.post(url, payload).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              // Add to local list if API call successful
+              this.technologiesList.push({ name: event, value: event });
+              this.notificationService.showSuccess('Technology added successfully');
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to add technology');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'Failed to add technology');
+            this.showLoader = false;
+          }
+        });
       } else if (event && event.value) {
         // It's an object from the selection
         const exists = this.technologiesList.some(item => item.value === event.value);
@@ -878,5 +894,34 @@ export class RegisterNewSupplierComponent implements OnInit {
 
     // Return the new expertise object so it can be added to the list while API call is in progress
     return newExpertise;
+  }
+
+  // Add this method to handle adding new technologies
+  addTechnology = (name: string) => {
+    return new Promise<any>((resolve) => {
+      this.showLoader = true;
+      const url = `${environment.baseUrl}/tech-language/technologies`;
+      const payload = { name: name };
+
+      this.http.post(url, payload).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            const newTech = { name: name, value: name };
+            this.technologiesList = [...this.technologiesList, newTech];
+            this.notificationService.showSuccess('Technology added successfully');
+            resolve(newTech);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add technology');
+            resolve(null);
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'Failed to add technology');
+          this.showLoader = false;
+          resolve(null);
+        }
+      });
+    });
   }
 }
