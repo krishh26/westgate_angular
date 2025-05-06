@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-data-settings',
@@ -16,18 +17,27 @@ export class AdminDataSettingsComponent implements OnInit {
   selectedExpertiseType: string = 'technologies';
   technologies: any[] = [];
   expertises: any[] = [];
+  roles: any[] = [];
   error: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
-  submitted = false;
-  showLoader = false;
+  roleData: any = {
+    name: '',
+    otherRoles: []
+  };
+  isLoading: boolean = false;
+  showLoader: boolean = false;
+  newOtherRole: string = '';
+  otherRoles: string[] = [];
+  submitted: boolean = false;
 
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private toastr: ToastrService
   ) {
     this.technologyForm = this.fb.group({
       name: ['', [Validators.required]]
@@ -52,6 +62,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadTechnologies();
     } else if (option === 'expertise') {
       this.loadExpertises();
+    } else if (option === 'role') {
+      this.loadRoles();
     }
   }
 
@@ -91,6 +103,24 @@ export class AdminDataSettingsComponent implements OnInit {
       },
       error: (error: any) => {
         this.error = error?.message || 'An error occurred while loading expertises';
+        this.showLoader = false;
+      }
+    });
+  }
+
+  loadRoles(): void {
+    this.showLoader = true;
+    this.superadminService.getAllRoles().subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.roles = response?.data?.roles || [];
+        } else {
+          this.error = response?.message || 'Failed to load roles';
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading roles';
         this.showLoader = false;
       }
     });
@@ -233,8 +263,90 @@ export class AdminDataSettingsComponent implements OnInit {
         return 'expertise Sector Settings';
       case 'category':
         return 'Category Settings';
+      case 'role':
+        return 'Role Settings';
       default:
         return 'Admin Data Settings';
     }
+  }
+
+  deleteRole(roleId: string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this role?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.deleteRole(roleId).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.roles = this.roles.filter(role => role._id !== roleId);
+              this.notificationService.showSuccess('Role deleted successfully');
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete role');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            console.error('Error deleting role:', error);
+            this.notificationService.showError('Failed to delete role');
+            this.showLoader = false;
+          }
+        });
+      }
+    });
+  }
+
+  openAddRoleModal(content: any): void {
+    this.roleData = {
+      name: '',
+      otherRoles: []
+    };
+    this.otherRoles = [];
+    this.newOtherRole = '';
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  addOtherRole(): void {
+    if (this.newOtherRole?.trim() && !this.otherRoles.includes(this.newOtherRole.trim())) {
+      this.otherRoles.push(this.newOtherRole.trim());
+      this.newOtherRole = '';
+    }
+  }
+
+  removeOtherRole(index: number): void {
+    this.otherRoles.splice(index, 1);
+  }
+
+  onSubmitRole(): void {
+    if (!this.roleData.name) {
+      this.notificationService.showError('Please enter role name');
+      return;
+    }
+
+    this.isLoading = true;
+    this.roleData.otherRoles = this.otherRoles;
+
+    this.superadminService.addRole(this.roleData).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        if (response.status) {
+          this.notificationService.showSuccess('Role added successfully');
+          this.modalService.dismissAll();
+          this.loadRoles();
+        } else {
+          this.notificationService.showError(response.message || 'Failed to add role');
+        }
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        this.notificationService.showError(error.message || 'An error occurred while adding role');
+      }
+    });
   }
 }
