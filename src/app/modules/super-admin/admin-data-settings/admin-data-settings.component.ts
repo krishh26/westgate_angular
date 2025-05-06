@@ -31,6 +31,8 @@ export class AdminDataSettingsComponent implements OnInit {
   newOtherRole: string = '';
   otherRoles: string[] = [];
   submitted: boolean = false;
+  searchQuery: string = '';
+  searchTimeout: any;
 
   constructor(
     private superadminService: SuperadminService,
@@ -133,7 +135,10 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadRoles(): void {
     this.showLoader = true;
-    this.superadminService.getAllRoles().subscribe({
+    const params = {
+      search: this.searchQuery
+    };
+    this.superadminService.getAllRoles(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.roles = response?.data?.roles || [];
@@ -147,6 +152,19 @@ export class AdminDataSettingsComponent implements OnInit {
         this.showLoader = false;
       }
     });
+  }
+
+  onSearchChange(query: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+
+    // Set a new timeout to debounce the search
+    this.searchTimeout = setTimeout(() => {
+      this.searchQuery = query;
+      this.loadRoles();
+    }, 300); // Wait for 300ms after user stops typing
   }
 
   openAddTechnologyModal(content: any): void {
