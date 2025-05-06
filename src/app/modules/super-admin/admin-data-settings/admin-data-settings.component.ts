@@ -13,9 +13,12 @@ import Swal from 'sweetalert2';
 })
 export class AdminDataSettingsComponent implements OnInit {
   selectedOption: string = 'technology';
+  selectedExpertiseType: string = 'technologies';
   technologies: any[] = [];
+  expertises: any[] = [];
   error: string = '';
   technologyForm: FormGroup;
+  expertiseForm: FormGroup;
   submitted = false;
   showLoader = false;
 
@@ -28,6 +31,10 @@ export class AdminDataSettingsComponent implements OnInit {
   ) {
     this.technologyForm = this.fb.group({
       name: ['', [Validators.required]]
+    });
+    this.expertiseForm = this.fb.group({
+      name: ['', [Validators.required]],
+      type: ['', [Validators.required]]
     });
   }
 
@@ -43,7 +50,14 @@ export class AdminDataSettingsComponent implements OnInit {
     this.selectedOption = option;
     if (option === 'technology') {
       this.loadTechnologies();
+    } else if (option === 'expertise') {
+      this.loadExpertises();
     }
+  }
+
+  selectExpertiseType(type: string): void {
+    this.selectedExpertiseType = type;
+    this.loadExpertises();
   }
 
   loadTechnologies(): void {
@@ -59,6 +73,24 @@ export class AdminDataSettingsComponent implements OnInit {
       },
       error: (error: any) => {
         this.error = error?.message || 'An error occurred while loading technologies';
+        this.showLoader = false;
+      }
+    });
+  }
+
+  loadExpertises(): void {
+    this.showLoader = true;
+    this.superadminService.getExpertiseDropdown(this.selectedExpertiseType).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.expertises = response.data || [];
+        } else {
+          this.error = response?.message || 'Failed to load expertises';
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading expertises';
         this.showLoader = false;
       }
     });
@@ -126,12 +158,79 @@ export class AdminDataSettingsComponent implements OnInit {
     });
   }
 
+  deleteExpertise(expertiseId: string): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this expertise?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.deleteExpertise(expertiseId, '').subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.notificationService.showSuccess('Expertise deleted successfully');
+              this.loadExpertises();
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete expertise');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting expertise');
+            this.showLoader = false;
+          }
+        });
+      }
+    });
+  }
+
+  openAddExpertiseModal(content: any): void {
+    this.expertiseForm.reset();
+    this.submitted = false;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onSubmitExpertise(): void {
+    this.submitted = true;
+    if (this.expertiseForm.invalid) {
+      return;
+    }
+
+    this.showLoader = true;
+    const payload = {
+      name: this.expertiseForm.value.name,
+      type: this.expertiseForm.value.type
+    };
+
+    this.superadminService.addExpertiseandSubExpertise(payload).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Expertise added successfully');
+          this.modalService.dismissAll();
+          this.loadExpertises();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add expertise');
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred while adding expertise');
+        this.showLoader = false;
+      }
+    });
+  }
+
   getSelectedOptionTitle(): string {
     switch (this.selectedOption) {
       case 'technology':
         return 'Technology Settings';
-      case 'industry':
-        return 'Industry Sector Settings';
+      case 'expertise':
+        return 'expertise Sector Settings';
       case 'category':
         return 'Category Settings';
       default:
