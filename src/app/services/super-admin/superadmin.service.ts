@@ -605,11 +605,15 @@ export class SuperadminService {
     );
   }
 
-  getExpertiseDropdownList(type?: string): Observable<any> {
+  getExpertiseDropdownList(type?: string, search?: string): Observable<any> {
     let params = new HttpParams();
 
     if (type) {
       params = params.set('type', type);
+    }
+
+    if (search) {
+      params = params.set('search', search);
     }
 
     return this.httpClient.get<any>(
@@ -622,7 +626,7 @@ export class SuperadminService {
     let params = new HttpParams();
 
     if (searchText) {
-      params = params.set('searchText', searchText);
+      params = params.set('search', searchText);
     }
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.SUB_EXPERTISE_DROPDOWN,

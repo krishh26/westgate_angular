@@ -33,6 +33,10 @@ export class AdminDataSettingsComponent implements OnInit {
   submitted: boolean = false;
   searchQuery: string = '';
   searchTimeout: any;
+  expertiseSearchQuery: string = '';
+  expertiseSearchTimeout: any;
+  subExpertiseSearchQuery: string = '';
+  subExpertiseSearchTimeout: any;
 
   constructor(
     private superadminService: SuperadminService,
@@ -97,7 +101,8 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadExpertises(): void {
     this.showLoader = true;
-    this.superadminService.getExpertiseDropdownList(this.selectedExpertiseType).subscribe({
+
+    this.superadminService.getExpertiseDropdownList(this.selectedExpertiseType, this.expertiseSearchQuery).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.expertises = response.data || [];
@@ -115,7 +120,7 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadSubExpertises(): void {
     this.showLoader = true;
-    this.superadminService.getSubExpertiseDropdownList().subscribe({
+    this.superadminService.getSubExpertiseDropdownList(this.subExpertiseSearchQuery).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.subExpertises = response.data.map((item: string) => ({
@@ -389,5 +394,31 @@ export class AdminDataSettingsComponent implements OnInit {
         this.notificationService.showError(error.message || 'An error occurred while adding role');
       }
     });
+  }
+
+  onExpertiseSearchChange(query: string): void {
+    // Clear any existing timeout
+    if (this.expertiseSearchTimeout) {
+      clearTimeout(this.expertiseSearchTimeout);
+    }
+
+    // Set a new timeout to debounce the search
+    this.expertiseSearchTimeout = setTimeout(() => {
+      this.expertiseSearchQuery = query;
+      this.loadExpertises();
+    }, 300); // Wait for 300ms after user stops typing
+  }
+
+  onSubExpertiseSearchChange(query: string): void {
+    // Clear any existing timeout
+    if (this.subExpertiseSearchTimeout) {
+      clearTimeout(this.subExpertiseSearchTimeout);
+    }
+
+    // Set a new timeout to debounce the search
+    this.subExpertiseSearchTimeout = setTimeout(() => {
+      this.subExpertiseSearchQuery = query;
+      this.loadSubExpertises();
+    }, 300); // Wait for 300ms after user stops typing
   }
 }
