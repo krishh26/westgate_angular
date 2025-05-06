@@ -1,0 +1,107 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="card sidebar-card">
+        <div class="card-header">
+          <h5 class="mb-0">Settings</h5>
+        </div>
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" [class.active]="selectedOption === 'technology'" (click)="selectOption('technology')">
+              <i class="bi bi-cpu me-2"></i>Technology
+            </li>
+            <li class="list-group-item" [class.active]="selectedOption === 'industry'" (click)="selectOption('industry')">
+              <i class="bi bi-building me-2"></i>Industry Sector
+            </li>
+            <li class="list-group-item" [class.active]="selectedOption === 'category'" (click)="selectOption('category')">
+              <i class="bi bi-tags me-2"></i>Category
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">{{ getSelectedOptionTitle() }}</h4>
+          <button class="btn btn-primary" *ngIf="selectedOption === 'technology'" (click)="openAddTechnologyModal(addTechnologyModal)">
+            <i class="bi bi-plus-circle me-2"></i>Add Technology
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Technology Section -->
+          <div *ngIf="selectedOption === 'technology'">
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tech of technologies">
+                    <td>{{ tech.name }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteTechnology(tech.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="technologies.length === 0">
+                    <td colspan="2" class="text-center">No technologies found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Industry Section -->
+          <div *ngIf="selectedOption === 'industry'">
+            <p>Industry Sector settings content will go here.</p>
+          </div>
+
+          <!-- Category Section -->
+          <div *ngIf="selectedOption === 'category'">
+            <p>Category settings content will go here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Technology Modal -->
+<ng-template #addTechnologyModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Technology</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="technologyForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="technologyName" class="form-label">Technology Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="technologyName"
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': submitted && technologyForm.get('name')?.errors }"
+          placeholder="Enter technology name"
+        >
+        <div class="invalid-feedback" *ngIf="submitted && technologyForm.get('name')?.errors?.['required']">
+          Technology name is required
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Technology</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

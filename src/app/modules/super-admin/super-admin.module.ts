@@ -63,6 +63,7 @@ import { ResourcesCommentModalComponent } from './resources-comment-modal/resour
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/supplier-wise-project-list.component';
 import { FilterNonZeroCountsPipe } from '../../pipes/filter-non-zero-counts.pipe';
+import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -117,7 +118,8 @@ import { FilterNonZeroCountsPipe } from '../../pipes/filter-non-zero-counts.pipe
     ResourcesCommentModalComponent,
     TimeFormatPipe,
     SupplierWiseProjectListComponent,
-    FilterNonZeroCountsPipe
+    FilterNonZeroCountsPipe,
+    AdminDataSettingsComponent
   ],
 
   imports: [

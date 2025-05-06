@@ -47,6 +47,7 @@ import { ResourcesProductivityViewComponent } from './resources-productivity-vie
 import { TeamProductivityViewComponent } from './team-productivity-view/team-productivity-view.component';
 import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
 import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/supplier-wise-project-list.component';
+import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
 
 const routes: Routes = [
   {
@@ -236,6 +237,10 @@ const routes: Routes = [
       {
         path: "supplier-wise-project-list",
         component: SupplierWiseProjectListComponent
+      },
+      {
+        path: "admin-data-settings",
+        component: AdminDataSettingsComponent
       },
     ]
   },

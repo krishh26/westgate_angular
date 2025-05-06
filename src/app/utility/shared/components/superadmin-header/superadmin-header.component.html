@@ -39,6 +39,7 @@
           <ul class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
             <li><a routerLink="/super-admin/super-admin-user-profile" (click)="closeMobileNav()">Profile Setting</a>
             </li>
+            <li><a routerLink="/super-admin/admin-data-settings" (click)="closeMobileNav()">Admin Data Settings</a></li>
             <li><a routerLink="/super-admin/change-password" (click)="closeMobileNav()">Security</a></li>
             <li><a style="cursor: pointer" (click)="logout(); closeMobileNav()">Logout</a></li>
           </ul>
