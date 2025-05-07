@@ -20,6 +20,7 @@ export class AdminDataSettingsComponent implements OnInit {
   roles: any[] = [];
   subExpertises: any[] = [];
   error: string = '';
+  success: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
   roleData: any = {
@@ -37,6 +38,8 @@ export class AdminDataSettingsComponent implements OnInit {
   expertiseSearchTimeout: any;
   subExpertiseSearchQuery: string = '';
   subExpertiseSearchTimeout: any;
+  addSubExpertiseName: string = '';
+  addSubExpertiseSubmitted: boolean = false;
 
   constructor(
     private superadminService: SuperadminService,
@@ -120,12 +123,10 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadSubExpertises(): void {
     this.showLoader = true;
-    this.superadminService.getSubExpertiseDropdownList(this.subExpertiseSearchQuery).subscribe({
+    this.superadminService.getWithoutSupplierSubExpertiseDropdownList(this.subExpertiseSearchQuery).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.subExpertises = response.data.map((item: string) => ({
-            name: item
-          }));
+          this.subExpertises = response.data || [];
         } else {
           this.error = response?.message || 'Failed to load sub expertises';
         }
@@ -234,7 +235,7 @@ export class AdminDataSettingsComponent implements OnInit {
     });
   }
 
-  deleteExpertise(expertiseId: string): void {
+  deleteExpertise(expertise: any): void {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to delete this expertise?',
@@ -246,11 +247,11 @@ export class AdminDataSettingsComponent implements OnInit {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.superadminService.deleteExpertiseWithoutSupplier(expertiseId).subscribe({
+        this.superadminService.deleteExpertiseWithoutSupplier(expertise._id).subscribe({
           next: (response: any) => {
             if (response?.status) {
-              this.notificationService.showSuccess('Expertise deleted successfully');
               this.loadExpertises();
+              this.notificationService.showSuccess('Expertise deleted successfully');
             } else {
               this.notificationService.showError(response?.message || 'Failed to delete expertise');
             }
@@ -420,5 +421,70 @@ export class AdminDataSettingsComponent implements OnInit {
       this.subExpertiseSearchQuery = query;
       this.loadSubExpertises();
     }, 300); // Wait for 300ms after user stops typing
+  }
+
+  deleteSubExpertise(subExpertise: any): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this sub expertise?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.deleteSubExpertiseById(subExpertise.id).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.loadSubExpertises();
+              this.notificationService.showSuccess('Sub expertise deleted successfully');
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete sub expertise');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting sub expertise');
+            this.showLoader = false;
+          }
+        });
+      }
+    });
+  }
+
+  openAddSubExpertiseModal(content: any): void {
+    this.addSubExpertiseName = '';
+    this.addSubExpertiseSubmitted = false;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  closeAddSubExpertiseModal(): void {
+    this.modalService.dismissAll();
+  }
+
+  onSubmitAddSubExpertise(): void {
+    this.addSubExpertiseSubmitted = true;
+    if (!this.addSubExpertiseName.trim()) {
+      return;
+    }
+    this.showLoader = true;
+    this.superadminService.addSubExpertiseByName(this.addSubExpertiseName.trim()).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Sub expertise added successfully');
+          this.closeAddSubExpertiseModal();
+          this.loadSubExpertises();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add sub expertise');
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred while adding sub expertise');
+        this.showLoader = false;
+      }
+    });
   }
 }

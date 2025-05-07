@@ -122,7 +122,7 @@
                   <tr *ngFor="let expertise of expertises">
                     <td>{{ expertise.name }}</td>
                     <td>
-                      <button class="btn btn-sm btn-outline-danger" (click)="deleteExpertise(expertise._id)">
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteExpertise(expertise)">
                         <i class="bi bi-trash"></i>
                       </button>
                     </td>
@@ -141,14 +141,19 @@
               <div class="card-body">
                 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">Sub Expertise List</h5>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Search sub expertises..."
-                      [(ngModel)]="subExpertiseSearchQuery"
-                      (ngModelChange)="onSubExpertiseSearchChange($event)">
+
+                  <div class="d-flex align-items-center" style="gap: 10px;">
+                    <button class="btn btn-primary" (click)="openAddSubExpertiseModal(addSubExpertiseModal)">
+                      <i class="bi bi-plus-circle me-2"></i>Add Sub Expertise
+                    </button>
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search sub expertises..."
+                        [(ngModel)]="subExpertiseSearchQuery"
+                        (ngModelChange)="onSubExpertiseSearchChange($event)">
+                    </div>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -156,14 +161,20 @@
                     <thead>
                       <tr>
                         <th>Name</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let subExpertise of subExpertises">
                         <td>{{ subExpertise.name }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline-danger" (click)="deleteSubExpertise(subExpertise)">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
                       </tr>
                       <tr *ngIf="subExpertises.length === 0">
-                        <td class="text-center">No sub expertises found</td>
+                        <td colspan="2" class="text-center">No sub expertises found</td>
                       </tr>
                     </tbody>
                   </table>
@@ -353,6 +364,38 @@
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
           Save Role
         </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Add Sub Expertise Modal -->
+<ng-template #addSubExpertiseModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Sub Expertise</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeAddSubExpertiseModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmitAddSubExpertise()">
+      <div class="mb-3">
+        <label for="subExpertiseName" class="form-label">Sub Expertise Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="subExpertiseName"
+          [(ngModel)]="addSubExpertiseName"
+          name="addSubExpertiseName"
+          [ngClass]="{ 'is-invalid': addSubExpertiseSubmitted && !addSubExpertiseName.trim() }"
+          placeholder="Enter sub expertise name"
+          required
+        >
+        <div class="invalid-feedback" *ngIf="addSubExpertiseSubmitted && !addSubExpertiseName.trim()">
+          Sub expertise name is required
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeAddSubExpertiseModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Sub Expertise</button>
       </div>
     </form>
   </div>

@@ -56,10 +56,12 @@ export enum SuperAdminEndPoint {
   CREATE_CUSTOM_EXPERTISE = '/web-user/masterlist/custom',
   DELETE_EXPERTISE = '/web-user/expertise',
   DELETE_SUB_EXPERTISE = '/web-user/expertise/:id/subexpertise',
+  DELETE_SUB_EXPERTISE_BY_ID = '/sub-expertise/delete',
   GET_TECHNOLOGIES = '/tech-language/technologies',
   CREATE_TECHNOLOGY = '/tech-language/create',
   DELETE_TECHNOLOGY = '/tech-language/technologies/_id',
-  DELETE_CASE_STUDY = '/case-study/delete/'
+  DELETE_CASE_STUDY = '/case-study/delete/',
+  WITHOUT_SUPPLIER_SUB_EXPERTISE_DROPDOWN = '/sub-expertise/list',
 }
 
 @Injectable({
@@ -634,6 +636,18 @@ export class SuperadminService {
     );
   }
 
+  getWithoutSupplierSubExpertiseDropdownList(searchText?: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (searchText) {
+      params = params.set('search', searchText);
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.WITHOUT_SUPPLIER_SUB_EXPERTISE_DROPDOWN,
+      { params }
+    );
+  }
+
   addSubExpertise(subExpertiseData: any): Observable<any> {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.ADD_SUB_EXPERTISE,
@@ -711,6 +725,19 @@ export class SuperadminService {
   deleteTechnology(technologyId: string): Observable<any> {
     return this.httpClient.delete<any>(
       this.baseUrl + SuperAdminEndPoint.DELETE_TECHNOLOGY.replace('_id', technologyId)
+    );
+  }
+
+  deleteSubExpertiseById(subExpertiseId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      this.baseUrl + SuperAdminEndPoint.DELETE_SUB_EXPERTISE_BY_ID + '/' + subExpertiseId
+    );
+  }
+
+  addSubExpertiseByName(name: string): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + '/sub-expertise/add',
+      { name }
     );
   }
 }
