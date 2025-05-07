@@ -101,8 +101,9 @@ export class ResourcesAddBulkComponent implements OnInit {
         const hourlyRate = hourlyRateValue ? Number(hourlyRateValue) : 0;
 
         return {
-          roleId: this.roleId,
+          // roleId: this.roleId,
           supplierId: this.supplierID,
+
           fullName: this.getValueOrEmpty(row[0]),
           gender: this.getValueOrEmpty(row[1]),
           nationality: this.getValueOrEmpty(row[2]),
@@ -111,30 +112,24 @@ export class ResourcesAddBulkComponent implements OnInit {
           totalExperience: this.getValueOrEmpty(row[5]),
           startDate: typeof row[6] === 'number' ? convertExcelDate(row[6]) : replaceNullWithEmptyString(row[6]),
           keyResponsibilities: this.getValueOrEmpty(row[7]),
-          previousEmployers: this.getValueOrEmpty(row[8]),
-          technicalSkills: this.getValueOrEmpty(row[9]),
-          softSkills: this.getValueOrEmpty(row[10]),
+          previousEmployers: this.convertToArray(row[8]),
+          technicalSkills: this.convertToArray(row[9]),
+          softSkills: this.convertToArray(row[10]),
           languagesKnown: this.convertToArray(row[11]),
-          availableFrom:  typeof row[12] === 'number' ? convertExcelDate(row[12]) : replaceNullWithEmptyString(row[12]),
-          hourlyRate: hourlyRate,
-          projectName: this.convertToArray(row[14]),
-          clientName: this.getValueOrEmpty(row[15]),
-          projectDuration: this.getValueOrEmpty(row[16]),
-          industryDomain: this.convertExcelDate(row[17]),
-          projectDescription: this.getValueOrEmpty(row[18]),
-          techStackUsed: this.getValueOrEmpty(row[19]),
-          teamSize: this.getValueOrEmpty(row[20]),
-          contributionPercentage: this.getValueOrEmpty(row[21]),
-          projectComplexity: this.getValueOrEmpty(row[22]),
-          outcomeImpact: this.getValueOrEmpty(row[23]),
-          clientFeedback: this.getValueOrEmpty(row[24]),
+          ctc :this.getValueOrEmpty(row[12]),
+          currentRole : this.getValueOrEmpty(row[13]),
+          roleId: this.convertToArray(row[14]),
+          certifications: this.convertToArray(row[15]),
+          projectsExecuted : this.getValueOrEmpty(row[16])
         };
       });
 
       console.log(jsonData);
+
       const payload = {
         data: jsonData
       };
+
       this.spinner.show();
       this.superService.addCandidate(payload).subscribe(
         (res) => {
