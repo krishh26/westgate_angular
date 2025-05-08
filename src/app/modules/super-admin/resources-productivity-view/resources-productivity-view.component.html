@@ -39,8 +39,9 @@
             <span [ngClass]="{
                 'selected-user': selectedUserIds.includes(user._id)
               }" (click)="toggleUserSelection(user._id)">
-              {{ user.userName }} - {{ user?.taskcount }}
+              {{ user.userName }}
             </span>
+            - {{ user?.taskcount }}
           </li>
           <!-- View More / View Less Link -->
           <li *ngIf="userList.length > 7">
@@ -54,8 +55,31 @@
     <div class="row mb-4">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-body" style="height: 400px; position: relative;">
-            <canvas id="productivityChart"></canvas>
+          <div class="card-header">
+            <h5 class="mb-0">Date-wise Productivity Chart</h5>
+            <small class="text-muted">Shows productivity by date with grouped bars for selected users. Select users from the list above to compare.</small>
+          </div>
+          <div class="card-body" style="height: 400px; position: relative; overflow-x: auto;">
+            <div style="height: 100%;">
+              <canvas id="productivityChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Hours Bar Chart -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">User Task Count Distribution</h5>
+            <small class="text-muted">Shows the total number of tasks assigned to each user in descending order.</small>
+          </div>
+          <div class="card-body" style="height: 400px; position: relative; overflow-x: auto;">
+            <div style="height: 100%;">
+              <canvas id="userHoursChart"></canvas>
+            </div>
           </div>
         </div>
       </div>
