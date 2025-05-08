@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 interface Expertise {
   name: string;
@@ -63,7 +64,8 @@ export class RegisterNewSupplierComponent implements OnInit {
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private spinner: NgxSpinnerService
   ) {
     // Generate a random string to prevent form autofill
     this.randomString = Math.random().toString(36).substring(2, 15);
@@ -376,20 +378,23 @@ export class RegisterNewSupplierComponent implements OnInit {
     }
 
     console.log('Submitting Data (with selected values):', formData);
+    this.spinner.show();
     this.superadminService.supplierregister(formData).subscribe((response) => {
       if (response?.status === true) {
         this.showLoader = false;
         this.notificationService.showSuccess('Supplier admin added successfully.');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       } else {
         this.notificationService.showError(response?.message);
         this.showLoader = false;
       }
+      this.spinner.hide();
     }, (error) => {
       this.notificationService.showError(error?.error?.message);
       this.showLoader = false;
+      this.spinner.hide();
     });
   }
 
