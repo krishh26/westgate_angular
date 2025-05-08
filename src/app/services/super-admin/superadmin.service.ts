@@ -16,6 +16,7 @@ export enum SuperAdminEndPoint {
   PROJECT_MAIL_SEND = '/project/new-project-mail',
   CREATE_TASK = '/task/create',
   GET_TASK = '/task/list',
+  TASK_GRAPH = '/task/graph',
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
   UPDATE_COMMENT = '/task/update-comment',
@@ -738,6 +739,33 @@ export class SuperadminService {
     return this.httpClient.post<any>(
       this.baseUrl + '/sub-expertise/add',
       { name }
+    );
+  }
+
+  getTaskGraph(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    // Add params to HttpParams
+    Object.keys(params).forEach(key => {
+      if (key === 'userIds' && params[key]) {
+        // Fix leading/trailing comma issues
+        let userIds = params[key];
+
+        // Clean up userIds by removing any leading or trailing commas
+        userIds = userIds.replace(/^,|,$/g, '');
+
+        // Only add the parameter if there are actually userIds after cleaning
+        if (userIds.length > 0) {
+          queryParams = queryParams.set('userIds', userIds);
+        }
+      } else {
+        queryParams = queryParams.set(key, params[key]);
+      }
+    });
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.TASK_GRAPH,
+      { params: queryParams }
     );
   }
 }

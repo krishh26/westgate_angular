@@ -5,6 +5,8 @@ import { default as Annotation } from 'chartjs-plugin-annotation';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
+import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-resources-productivity-view',
@@ -16,40 +18,16 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   showLoader: boolean = false;
   displayedUsers: any[] = [];
   loginUser: any;
-  selectedUserIds: number[] = [];
+  selectedUserIds: string[] = [];
   userList: any = [];
   showAll = false;
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
-    ],
+    labels: [],
     datasets: [{
-      label: 'Productivity',
-      data: [65, 59, 80, 81, 56, 55, 40],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(201, 203, 207, 0.2)'
-      ],
-      borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)',
-        'rgb(54, 162, 235)',
-        'rgb(153, 102, 255)',
-        'rgb(201, 203, 207)'
-      ],
+      label: 'Hours',
+      data: [],
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgb(75, 192, 192)',
       borderWidth: 1
     }]
   };
@@ -77,7 +55,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     plugins: {
       title: {
         display: true,
-        text: 'Resource Productivity Trend'
+        text: 'Resource Productivity'
       }
     },
     scales: {
@@ -85,13 +63,13 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Productivity Score'
+          text: 'Hours'
         }
       },
       x: {
         title: {
           display: true,
-          text: 'Month'
+          text: 'Date'
         }
       }
     }
@@ -120,41 +98,206 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   public lineChartType: ChartType = 'bar' as const;
   private chart2!: Chart;
 
+  startDate: string = '';
+  endDate: string = '';
+
   constructor(
     private projectManagerService: ProjectManagerService,
     private notificationService: NotificationService,
     private localStorageService: LocalStorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private superadminService: SuperadminService
   ) {
     this.loginUser = this.localStorageService.getLogger();
     Chart.register(Annotation);
   }
 
   ngOnInit(): void {
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    this.startDate = todayStr;
+    this.endDate = todayStr;
     this.getUserAllList();
-    // First chart
-    const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
-    const existingChart1 = Chart.getChart(canvas1);
-    if (existingChart1) {
-      existingChart1.destroy();
-    }
-    const chart1 = new Chart(canvas1, {
-      type: 'bar',
-      data: this.lineChartData,
-      options: this.lineChartOptions
-    });
+    this.getTaskGraphData();
+  }
 
-    // Second chart
-    const canvas2 = document.getElementById('productivityChart2') as HTMLCanvasElement;
-    const existingChart2 = Chart.getChart(canvas2);
-    if (existingChart2) {
-      existingChart2.destroy();
+  onDateChange() {
+    if (this.startDate && this.endDate) {
+      this.getTaskGraphData();
     }
-    this.chart2 = new Chart(canvas2, {
-      type: 'bar',
-      data: this.interactiveChartData,
-      options: this.interactiveChartOptions
-    });
+  }
+
+  formatDate(dateString: string, fullFormat = true): string {
+    // Format date to display as "dd-MM-yyyy" format
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    if (fullFormat) {
+      return `${day}-${month}-${year}`;
+    } else {
+      // Shorter format for many dates
+      return `${day}-${month}`;
+    }
+  }
+
+  // Helper method to generate dates between start and end
+  getDatesInRange(startDate: string, endDate: string): string[] {
+    const dateArray = [];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Set hours to ensure proper date comparison
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    // Clone the start date to avoid modifying it
+    let currentDate = new Date(start);
+
+    // Loop until we reach the end date
+    while (currentDate <= end) {
+      dateArray.push(new Date(currentDate).toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dateArray;
+  }
+
+  getTaskGraphData() {
+    this.showLoader = true;
+
+    // Ensure dates are in YYYY-MM-DD format for API
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(this.endDate);
+
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const formattedEndDate = endDate.toISOString().split('T')[0];
+
+    const params: any = {
+      startDate: formattedStartDate,
+      endDate: formattedEndDate
+    };
+
+    // Add userIds to params if users are selected
+    if (this.selectedUserIds.length > 0) {
+      params.userIds = this.selectedUserIds.join(',');
+    }
+
+    this.superadminService.getTaskGraph(params).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true) {
+          // Process the 'byDate' data for the chart
+          if (response.data && response.data.byDate) {
+            // Get all dates in the selected range
+            const allDatesInRange = this.getDatesInRange(formattedStartDate, formattedEndDate);
+            const dateLabels: string[] = [];
+            const hourValues: number[] = [];
+
+            // Create a map of date to hours for quick lookup
+            const dateToHoursMap = new Map();
+            response.data.byDate.forEach((dateEntry: any) => {
+              const dateKey = dateEntry.date.split('T')[0]; // Remove time part
+              dateToHoursMap.set(dateKey, dateEntry.totalHours || 0);
+            });
+
+            // Determine if we need shorter date format based on number of dates
+            const useShortFormat = allDatesInRange.length > 10;
+
+            // Fill in data for all dates in range, using 0 for dates with no data
+            allDatesInRange.forEach(date => {
+              dateLabels.push(this.formatDate(date, !useShortFormat));
+              const hours = dateToHoursMap.get(date) || 0;
+              hourValues.push(hours);
+            });
+
+            // Update chart data
+            this.lineChartData.labels = dateLabels;
+            this.lineChartData.datasets = [{
+              label: 'Hours',
+              data: hourValues,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgb(75, 192, 192)',
+              borderWidth: 1
+            }];
+
+            // Update chart options
+            this.lineChartOptions = {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Resource Productivity by Date',
+                  font: {
+                    size: 16
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return `Hours: ${context.raw}`;
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Hours',
+                    font: {
+                      weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    precision: 1
+                  }
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Date',
+                    font: {
+                      weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    maxRotation: 90,
+                    minRotation: 45,
+                    autoSkip: true,
+                    maxTicksLimit: 15,
+                    font: {
+                      size: 10
+                    }
+                  }
+                }
+              }
+            };
+
+            // Update the chart
+            const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
+            const existingChart1 = Chart.getChart(canvas1);
+            if (existingChart1) {
+              existingChart1.destroy();
+            }
+            const chart1 = new Chart(canvas1, {
+              type: 'bar',
+              data: this.lineChartData,
+              options: this.lineChartOptions
+            });
+          }
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch task graph data');
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError('Failed to fetch task graph data');
+      }
+    );
   }
 
   toggleView() {
@@ -165,14 +308,18 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleUserSelection(userId: number): void {
+  toggleUserSelection(userId: string): void {
+    if (!userId) return;
+
     const index = this.selectedUserIds.indexOf(userId);
     if (index > -1) {
       this.selectedUserIds.splice(index, 1);
     } else {
       this.selectedUserIds.push(userId);
     }
-    // this.getTask();
+
+    // Refresh the chart with the selected users
+    this.getTaskGraphData();
   }
 
 

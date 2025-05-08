@@ -20,7 +20,15 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h4 class="text-theme mb-4"><strong>Resource Productivity View</strong></h4>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h4 class="text-theme mb-0"><strong>Resource Productivity View</strong></h4>
+          <div class="d-flex gap-3 align-items-center">
+            <label class="mb-0 me-2"><strong>Date Range:</strong></label>
+            <input type="date" class="form-control" style="max-width: 180px;" [(ngModel)]="startDate" (change)="onDateChange()" />
+            <span class="mx-1">to</span>
+            <input type="date" class="form-control" style="max-width: 180px;" [(ngModel)]="endDate" (change)="onDateChange()" />
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -44,27 +52,13 @@
       </div>
     </div>
     <div class="row mb-4">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" style="height: 400px; position: relative;">
             <canvas id="productivityChart"></canvas>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <div class="chart-controls mb-3">
-              <button class="btn btn-sm btn-primary me-2" (click)="randomizeData()">Randomize</button>
-              <button class="btn btn-sm btn-success me-2" (click)="addDataset()">Add Dataset</button>
-              <button class="btn btn-sm btn-info me-2" (click)="addData()">Add Data</button>
-              <button class="btn btn-sm btn-warning me-2" (click)="removeDataset()">Remove Dataset</button>
-              <button class="btn btn-sm btn-danger" (click)="removeData()">Remove Data</button>
-            </div>
-            <canvas id="productivityChart2"></canvas>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </section>
