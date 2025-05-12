@@ -965,4 +965,72 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     const date = new Date(dateString);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
+
+  // Get user name by ID
+  getUserName(userId: string): string {
+    // First check taskGraphData
+    if (this.taskGraphData && this.taskGraphData.byUser) {
+      const userData = this.taskGraphData.byUser.find((u: any) =>
+        u.user && (u.user.id === userId || u.user._id === userId)
+      );
+
+      if (userData && userData.user && userData.user.name) {
+        return userData.user.name;
+      }
+    }
+
+    // Then check userList
+    const user = this.userList.find((u: any) => u._id === userId);
+    if (user) {
+      return user.userName || 'Unknown User';
+    }
+
+    return 'Unknown User';
+  }
+
+  // Get completed tasks count by user ID
+  getUserCompletedTasks(userId: string): number {
+    if (this.taskGraphData && this.taskGraphData.byUser) {
+      const userData = this.taskGraphData.byUser.find((u: any) =>
+        u.user && (u.user.id === userId || u.user._id === userId)
+      );
+
+      if (userData) {
+        return userData.completedTasks || 0;
+      }
+    }
+
+    return 0;
+  }
+
+  // Get pending tasks count by user ID
+  getUserPendingTasks(userId: string): number {
+    if (this.taskGraphData && this.taskGraphData.byUser) {
+      const userData = this.taskGraphData.byUser.find((u: any) =>
+        u.user && (u.user.id === userId || u.user._id === userId)
+      );
+
+      if (userData) {
+        return userData.pendingTasks || 0;
+      }
+    }
+
+    return 0;
+  }
+
+  // Get total hours by user ID
+  getUserTotalHours(userId: string): number {
+    if (this.taskGraphData && this.taskGraphData.byUser) {
+      const userData = this.taskGraphData.byUser.find((u: any) =>
+        u.user && (u.user.id === userId || u.user._id === userId)
+      );
+
+      if (userData) {
+        const hours = userData.totalHours || 0;
+        return parseFloat(hours.toFixed(2));
+      }
+    }
+
+    return 0;
+  }
 }
