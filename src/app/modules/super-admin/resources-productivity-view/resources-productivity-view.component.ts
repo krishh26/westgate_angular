@@ -21,6 +21,13 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   selectedUserIds: string[] = [];
   userList: any = [];
   showAll = false;
+
+  // Task details display
+  selectedTaskDetails: any[] = [];
+  selectedUser: string = '';
+  selectedDate: string = '';
+  showTaskDetails: boolean = false;
+
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: [{
@@ -156,6 +163,9 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   startDate: string = '';
   endDate: string = '';
 
+  // Store full API response for accessing task details
+  private taskGraphData: any = null;
+
   constructor(
     private projectManagerService: ProjectManagerService,
     private notificationService: NotificationService,
@@ -221,6 +231,8 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
   getTaskGraphData() {
     this.showLoader = true;
+    this.showTaskDetails = false;
+    this.selectedTaskDetails = [];
 
     // Ensure dates are in YYYY-MM-DD format for API
     const startDate = new Date(this.startDate);
@@ -246,6 +258,9 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         if (response?.status === true) {
           console.log('API Response data structure:', response.data);
+
+          // Store full response for later use
+          this.taskGraphData = response.data;
 
           // Get all dates in the selected range for chart labels
           const allDatesInRange = this.getDatesInRange(formattedStartDate, formattedEndDate);
@@ -550,7 +565,26 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
           const chart1 = new Chart(canvas1, {
             type: 'bar',
             data: this.lineChartData,
-            options: this.lineChartOptions
+            options: {
+              ...this.lineChartOptions,
+              onClick: (event, elements) => {
+                if (elements && elements.length > 0) {
+                  const clickedElement = elements[0];
+                  const datasetIndex = clickedElement.datasetIndex;
+                  const index = clickedElement.index;
+
+                  // Get the date that was clicked
+                  const dateLabel = this.lineChartData.labels?.[index];
+                  const dateObj = dateLabel ? this.convertLabelToDate(dateLabel.toString()) : '';
+
+                  // Get the user that was clicked (if applicable)
+                  const userName = this.lineChartData.datasets[datasetIndex].label || '';
+                  const userId = this.findUserIdByName(userName);
+
+                  this.showTaskDetailsForUserAndDate(userId, dateObj);
+                }
+              }
+            }
           });
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch task graph data');
@@ -751,5 +785,184 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     if (existingChart2) {
       existingChart2.destroy();
     }
+  }
+
+  // Convert a formatted date label back to a YYYY-MM-DD date string
+  convertLabelToDate(label: string): string {
+    if (!label) return '';
+
+    // Try to parse the date from label format (dd-MM-yyyy or dd/MM)
+    let day: string, month: string, year: string;
+
+    if (label.includes('-')) {
+      const parts = label.split('-');
+      day = parts[0];
+      month = parts[1];
+      year = parts.length > 2 ? parts[2] : new Date().getFullYear().toString();
+    } else if (label.includes('/')) {
+      const parts = label.split('/');
+      day = parts[0];
+      month = parts[1];
+      year = new Date().getFullYear().toString();
+    } else {
+      return '';
+    }
+
+    // Convert to YYYY-MM-DD format
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+
+  // Find user ID by name
+  findUserIdByName(userName: string): string {
+    // First check selected users
+    if (this.taskGraphData && this.taskGraphData.byUser) {
+      for (const userData of this.taskGraphData.byUser) {
+        if (userData.user && userData.user.name === userName) {
+          return userData.user.id;
+        }
+      }
+    }
+
+    // Then check userList
+    for (const user of this.userList) {
+      if (user.userName === userName) {
+        return user._id;
+      }
+    }
+
+    return '';
+  }
+
+  // Show task details for a specific user and date
+  showTaskDetailsForUserAndDate(userId: string, dateString: string) {
+    if (!this.taskGraphData) {
+      this.notificationService.showError('No task data available');
+      return;
+    }
+
+    this.selectedTaskDetails = [];
+    this.selectedDate = dateString;
+    this.selectedUser = '';
+
+    // Find the user name
+    let userName = '';
+    if (this.taskGraphData.byUser) {
+      const userInfo = this.taskGraphData.byUser.find((u: any) => u.user && u.user.id === userId);
+      if (userInfo && userInfo.user) {
+        userName = userInfo.user.name || '';
+        this.selectedUser = userName;
+      }
+    }
+
+    if (!userName) {
+      const userInfo = this.userList.find((u: any) => u._id === userId);
+      if (userInfo) {
+        userName = userInfo.userName || '';
+        this.selectedUser = userName;
+      }
+    }
+
+    // Find tasks for this date
+    if (this.taskGraphData.byDate) {
+      const dateData = this.taskGraphData.byDate.find((d: any) => {
+        return d.date && d.date.split('T')[0] === dateString;
+      });
+
+      if (dateData) {
+        console.log(`Found data for date: ${dateString}`);
+
+        // If we have user-specific data for this date
+        if (dateData.users && Array.isArray(dateData.users)) {
+          const userOnDate = dateData.users.find((u: any) => {
+            if (u.user) {
+              return u.user.id === userId;
+            }
+            return (u._id === userId || u.userId === userId || u.id === userId);
+          });
+
+          if (userOnDate) {
+            console.log(`Found user data for ${userName} on ${dateString}`);
+
+            // Extract tasks
+            if (userOnDate.tasks && Array.isArray(userOnDate.tasks)) {
+              this.selectedTaskDetails = userOnDate.tasks.map((task: any) => {
+                return {
+                  taskId: task.id,
+                  taskName: task.name,
+                  status: task.status,
+                  hours: task.totalHours || 0,
+                  comments: task.comments || []
+                };
+              });
+            }
+          }
+        }
+
+        // If we still don't have tasks, try to get from all tasks for this date
+        if (this.selectedTaskDetails.length === 0 && dateData.tasks && Array.isArray(dateData.tasks)) {
+          this.selectedTaskDetails = dateData.tasks
+            .filter((task: any) => {
+              // Find tasks for this user
+              if (task.comments && Array.isArray(task.comments)) {
+                return task.comments.some((comment: any) => comment.user === userId);
+              }
+              return false;
+            })
+            .map((task: any) => {
+              return {
+                taskId: task.id,
+                taskName: task.name,
+                status: task.status,
+                hours: task.totalHours || 0,
+                comments: task.comments ? task.comments.filter((c: any) => c.user === userId) : []
+              };
+            });
+        }
+      }
+    }
+
+    // If still no tasks, check byUser data
+    if (this.selectedTaskDetails.length === 0 && this.taskGraphData.byUser) {
+      const userData = this.taskGraphData.byUser.find((u: any) => u.user && u.user.id === userId);
+
+      if (userData && userData.tasks && Array.isArray(userData.tasks)) {
+        // Filter tasks for the selected date
+        this.selectedTaskDetails = userData.tasks
+          .filter((task: any) => {
+            if (task.comments && Array.isArray(task.comments)) {
+              return task.comments.some((comment: any) => {
+                // Check if comment was made on the selected date
+                return comment.date && comment.date.split('T')[0] === dateString;
+              });
+            }
+            return false;
+          })
+          .map((task: any) => {
+            return {
+              taskId: task.id,
+              taskName: task.name,
+              status: task.status,
+              hours: task.totalHours || 0,
+              comments: task.comments ? task.comments.filter((c: any) =>
+                c.date && c.date.split('T')[0] === dateString
+              ) : []
+            };
+          });
+      }
+    }
+
+    // Show the task details section
+    this.showTaskDetails = this.selectedTaskDetails.length > 0;
+
+    if (!this.showTaskDetails) {
+      this.notificationService.showInfo(`No tasks found for ${userName} on ${this.formatDate(dateString)}`);
+    }
+  }
+
+  // Format a comment date
+  formatCommentDate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }
