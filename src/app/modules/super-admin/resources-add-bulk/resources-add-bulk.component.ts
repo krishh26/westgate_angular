@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-resources-add-bulk',
@@ -16,13 +17,18 @@ export class ResourcesAddBulkComponent implements OnInit {
   supplierData: any = [];
   supplierID: string = '';
   roleId: string[] = [];
+  exchangeRate: number = 114.32;
+  workingDaysPerYear: number = 240;
+  hoursPerDay: number = 8;
+  ukMultiplier: number = 3;
 
   constructor(
     private notificationService: NotificationService,
     private router: Router,
     private superService: SuperadminService,
     private activeModal: NgbActiveModal,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +54,66 @@ export class ResourcesAddBulkComponent implements OnInit {
     } else {
       console.log("No supplier data found in localStorage");
     }
+
+    this.fetchExchangeRate();
+  }
+
+  fetchExchangeRate() {
+    const apiUrl = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_n1aAXw7HKXT0Epyvzptrkg4cO2Q23FmFwgiewENj';
+    this.http.get(apiUrl).subscribe(
+      (response: any) => {
+        if (response && response.rates && response.rates.INR) {
+          this.exchangeRate = parseFloat(response.rates.INR.toFixed(2));
+        }
+      },
+      (error) => {
+        // fallback to default
+      }
+    );
+  }
+
+  parseNumericValue(value: string | number): number {
+    if (typeof value === 'string') {
+      return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+    }
+    return value || 0;
+  }
+
+  formatIndianCurrency(amount: number): string {
+    if (!amount) return '';
+    const [integerPart, decimalPart] = amount.toFixed(2).toString().split('.');
+    let formattedInteger = '';
+    let i = integerPart.length;
+    while (i > 0) {
+      if (i > 3) {
+        const chunkSize = (i - 3) > 0 && (i - 3) % 2 === 0 ? 2 : 1;
+        formattedInteger = ',' + integerPart.substring(i - chunkSize, i) + formattedInteger;
+        i -= chunkSize;
+      } else {
+        formattedInteger = integerPart.substring(0, i) + formattedInteger;
+        break;
+      }
+    }
+    return formattedInteger + (decimalPart ? '.' + decimalPart : '');
+  }
+
+  formatUKCurrency(amount: number): string {
+    if (!amount) return '';
+    return amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  calculateRatesFromCTC(ctc: number) {
+    const poundsEquivalent = ctc / this.exchangeRate;
+    const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
+    const ukDayRate = poundsPerDay * this.ukMultiplier;
+    const ukHourlyRate = ukDayRate / this.hoursPerDay;
+    const indianDayRate = ctc / this.workingDaysPerYear;
+    return {
+      ukHourlyRate: this.formatUKCurrency(ukHourlyRate),
+      ukDayRate: this.formatUKCurrency(ukDayRate),
+      indianDayRate: this.formatIndianCurrency(indianDayRate),
+      formattedCTC: this.formatIndianCurrency(ctc)
+    };
   }
 
   onFileChange(event: any) {
@@ -100,10 +166,25 @@ export class ResourcesAddBulkComponent implements OnInit {
         const hourlyRateValue = row[13];
         const hourlyRate = hourlyRateValue ? Number(hourlyRateValue) : 0;
 
+        let ctcValue = this.getValueOrEmpty(row[12]);
+        let ctcNumericValue = this.parseNumericValue(ctcValue);
+        let ratesCalculated = { ukHourlyRate: '', ukDayRate: '', indianDayRate: '', formattedCTC: '' };
+        let ukHourlyRateNum = 0, ukDayRateNum = 0, indianDayRateNum = 0;
+        if (ctcNumericValue > 0) {
+          // Calculate rates as numbers
+          const poundsEquivalent = ctcNumericValue / this.exchangeRate;
+          const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
+          const ukDayRate = poundsPerDay * this.ukMultiplier;
+          const ukHourlyRate = ukDayRate / this.hoursPerDay;
+          const indianDayRate = ctcNumericValue / this.workingDaysPerYear;
+          ukHourlyRateNum = +ukHourlyRate.toFixed(2);
+          ukDayRateNum = +ukDayRate.toFixed(2);
+          indianDayRateNum = +indianDayRate.toFixed(2);
+          // For display, you can still use the formatted strings if needed
+          ratesCalculated = this.calculateRatesFromCTC(ctcNumericValue);
+        }
         return {
-          // roleId: this.roleId,
           supplierId: this.supplierID,
-
           fullName: this.getValueOrEmpty(row[0]),
           gender: this.getValueOrEmpty(row[1]),
           nationality: this.getValueOrEmpty(row[2]),
@@ -116,11 +197,16 @@ export class ResourcesAddBulkComponent implements OnInit {
           technicalSkills: this.convertToArray(row[9]),
           softSkills: this.convertToArray(row[10]),
           languagesKnown: this.convertToArray(row[11]),
-          ctc :this.getValueOrEmpty(row[12]),
-          currentRole : this.getValueOrEmpty(row[13]),
+          ctc: ctcNumericValue,
+          ...(ctcNumericValue > 0 ? {
+            ukHourlyRate: ukHourlyRateNum,
+            ukDayRate: ukDayRateNum,
+            indianDayRate: indianDayRateNum
+          } : {}),
+          currentRole: this.getValueOrEmpty(row[13]),
           roleId: this.convertToArray(row[14]),
           certifications: this.convertToArray(row[15]),
-          projectsExecuted : this.getValueOrEmpty(row[16])
+          projectsExecuted: this.getValueOrEmpty(row[16])
         };
       });
 
@@ -129,7 +215,8 @@ export class ResourcesAddBulkComponent implements OnInit {
       const payload = {
         data: jsonData
       };
-
+      console.log(payload);
+      // return
       this.spinner.show();
       this.superService.addCandidate(payload).subscribe(
         (res) => {
@@ -215,8 +302,6 @@ export class ResourcesAddBulkComponent implements OnInit {
     });
 
     const payload = { data: resources };
-    console.log('Uploading resources with roleIds:', this.roleId);
-
     this.superService.addCandidate(payload).subscribe({
       next: (response) => {
         this.spinner.hide();
