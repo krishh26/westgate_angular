@@ -183,6 +183,11 @@ export class ResourcesAddBulkComponent implements OnInit {
           // For display, you can still use the formatted strings if needed
           ratesCalculated = this.calculateRatesFromCTC(ctcNumericValue);
         }
+        const currentRole = this.getValueOrEmpty(row[13]);
+        let roleIdArr = this.convertToArray(row[14]);
+        if (currentRole && !roleIdArr.includes(currentRole)) {
+          roleIdArr.push(currentRole);
+        }
         return {
           supplierId: this.supplierID,
           fullName: this.getValueOrEmpty(row[0]),
@@ -203,8 +208,8 @@ export class ResourcesAddBulkComponent implements OnInit {
             ukDayRate: ukDayRateNum,
             indianDayRate: indianDayRateNum
           } : {}),
-          currentRole: this.getValueOrEmpty(row[13]),
-          roleId: this.convertToArray(row[14]),
+          currentRole: currentRole,
+          roleId: roleIdArr,
           certifications: this.convertToArray(row[15]),
           projectsExecuted: this.getValueOrEmpty(row[16])
         };
