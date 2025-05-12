@@ -257,7 +257,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
-          console.log('API Response data structure:', response.data);
+          // console.log('API Response data structure:', response.data);
 
           // Store full response for later use
           this.taskGraphData = response.data;
@@ -390,7 +390,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
                 borderRadius: 4
               });
 
-              console.log(`Created dataset for ${userName} with ${dailyData.length} date values`);
+              // console.log(`Created dataset for ${userName} with ${dailyData.length} date values`);
             });
 
             // Update chart data
@@ -605,7 +605,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     // Calculate total hours per user from the API response
     const userHours: Map<string, number> = new Map();
 
-    console.log('Creating user hours chart with userList length:', this.userList.length);
+    // console.log('Creating user hours chart with userList length:', this.userList.length);
 
     // Make sure we have valid user data
     if (!this.userList || this.userList.length === 0) {
