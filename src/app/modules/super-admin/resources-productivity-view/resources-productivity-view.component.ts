@@ -245,33 +245,103 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
       (response) => {
         this.showLoader = false;
         if (response?.status === true) {
-          // Process the 'byDate' data for the chart
-          if (response.data && response.data.byDate) {
-            console.log('API Response data structure:', response.data);
+          console.log('API Response data structure:', response.data);
 
-            // Initialize map to store user-specific data by date
-            const userDataMap = new Map<string, Map<string, number>>();
-            const userDatasets: any[] = [];
-            const selectedUserMap = new Map<string, string>(); // Map user IDs to names
+          // Get all dates in the selected range for chart labels
+          const allDatesInRange = this.getDatesInRange(formattedStartDate, formattedEndDate);
+          const useShortFormat = allDatesInRange.length > 10;
+          const dateLabels = allDatesInRange.map(date => this.formatDate(date, !useShortFormat));
 
-            // If we have user-specific data directly, use it
-            if (response.data.byUser && this.selectedUserIds.length > 0) {
-              console.log('Found byUser data in API response');
+          // Build a map of user IDs to names from userList
+          const userNameMap = new Map<string, string>();
+          this.userList.forEach((user: any) => {
+            if (user._id) {
+              userNameMap.set(user._id, user.userName || 'Unknown User');
+            }
+          });
 
-              // Process user-specific data
+          // Create a date range string for the chart title
+          const dateRangeText = `${this.formatDate(formattedStartDate)} to ${this.formatDate(formattedEndDate)}`;
+
+          // Generate colors for users
+          const userColors = [
+            { bg: 'rgba(75, 192, 192, 0.6)', border: 'rgb(75, 192, 192)' },
+            { bg: 'rgba(255, 99, 132, 0.6)', border: 'rgb(255, 99, 132)' },
+            { bg: 'rgba(54, 162, 235, 0.6)', border: 'rgb(54, 162, 235)' },
+            { bg: 'rgba(255, 206, 86, 0.6)', border: 'rgb(255, 206, 86)' },
+            { bg: 'rgba(153, 102, 255, 0.6)', border: 'rgb(153, 102, 255)' },
+            { bg: 'rgba(255, 159, 64, 0.6)', border: 'rgb(255, 159, 64)' }
+          ];
+
+          if (response.data && this.selectedUserIds.length > 0) {
+            console.log('Processing data for selected users');
+
+            // Maps to track user data
+            const userNamesByIds = new Map<string, string>();
+            const userDailyData = new Map<string, Map<string, number>>();
+
+            // First, initialize the daily data structure for all selected users and dates
+            this.selectedUserIds.forEach(userId => {
+              userDailyData.set(userId, new Map<string, number>());
+
+              // Initialize all dates to 0 hours
+              allDatesInRange.forEach(date => {
+                userDailyData.get(userId)?.set(date, 0);
+              });
+            });
+
+            // Process byUser data if available
+            if (response.data.byUser && Array.isArray(response.data.byUser)) {
               response.data.byUser.forEach((userData: any) => {
-                if (userData.userId && this.selectedUserIds.includes(userData.userId)) {
-                  if (!userDataMap.has(userData.userId)) {
-                    userDataMap.set(userData.userId, new Map());
-                  }
+                if (userData.user && userData.user.id) {
+                  const userId = userData.user.id;
+                  userNamesByIds.set(userId, userData.user.name || 'Unknown');
 
-                  // Process all dates for this user
-                  if (userData.dates && Array.isArray(userData.dates)) {
-                    userData.dates.forEach((dateData: any) => {
-                      if (dateData.date) {
-                        const dateKey = dateData.date.split('T')[0];
-                        userDataMap.get(userData.userId)?.set(dateKey, dateData.hours || 0);
-                        console.log(`User ${userData.userId} has ${dateData.hours} hours on ${dateKey} (from byUser)`);
+                  // Store total hours - we'll use this as fallback if we don't have daily data
+                  if (this.selectedUserIds.includes(userId)) {
+                    console.log(`Found user data for ${userData.user.name} (${userId}): ${userData.totalHours} hours`);
+                  }
+                }
+              });
+            }
+
+            // Process byDate data to extract per-user daily information
+            if (response.data.byDate && Array.isArray(response.data.byDate)) {
+              response.data.byDate.forEach((dateData: any) => {
+                if (dateData.date) {
+                  const dateKey = dateData.date.split('T')[0];
+
+                  // Process user data for this date if available
+                  if (dateData.users && Array.isArray(dateData.users)) {
+                    dateData.users.forEach((userOnDate: any) => {
+                      // Extract user ID - could be in different formats
+                      let userId;
+
+                      if (userOnDate.user) {
+                        // If user object is nested
+                        userId = userOnDate.user.id;
+
+                        if (userId && this.selectedUserIds.includes(userId)) {
+                          const userName = userOnDate.user.name || 'Unknown';
+                          userNamesByIds.set(userId, userName);
+
+                          // Store hours for this user on this date
+                          const hours = userOnDate.totalHours || 0;
+                          userDailyData.get(userId)?.set(dateKey, hours);
+
+                          console.log(`User ${userName} (${userId}) has ${hours} hours on ${dateKey}`);
+                        }
+                      } else {
+                        // If user ID is directly available
+                        userId = userOnDate._id || userOnDate.userId || userOnDate.id;
+
+                        if (userId && this.selectedUserIds.includes(userId)) {
+                          // Store hours for this user on this date
+                          const hours = userOnDate.totalHours || userOnDate.hours || 0;
+                          userDailyData.get(userId)?.set(dateKey, hours);
+
+                          console.log(`User ${userId} has ${hours} hours on ${dateKey}`);
+                        }
                       }
                     });
                   }
@@ -279,301 +349,209 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
               });
             }
 
-            // Get all dates in the selected range
-            const allDatesInRange = this.getDatesInRange(formattedStartDate, formattedEndDate);
-            const dateLabels: string[] = [];
+            // Create datasets for each selected user
+            const userDatasets: any[] = [];
+            this.selectedUserIds.forEach((userId, index) => {
+              // Get name from various sources
+              const userName = userNamesByIds.get(userId) || userNameMap.get(userId) || userId;
+              const color = userColors[index % userColors.length];
 
-            // Create a map of date to hours for quick lookup
-            const dateToHoursMap = new Map();
-            const dateToUsersMap = new Map();
+              // Get daily data for this user
+              const userDateMap = userDailyData.get(userId);
+              const dailyData = allDatesInRange.map(date => userDateMap?.get(date) || 0);
 
-            // Get user names for the selected IDs
-            if (this.selectedUserIds.length > 0) {
-              console.log('Selected User IDs:', this.selectedUserIds);
+              // Check if we have any non-zero values
+              const hasData = dailyData.some(value => value > 0);
 
-              // Find user names from userList
-              this.userList.forEach((user: any) => {
-                if (this.selectedUserIds.includes(user._id)) {
-                  selectedUserMap.set(user._id, user.userName);
-                  console.log(`Mapped user ID ${user._id} to name ${user.userName}`);
-                }
-              });
-            }
+              // If no daily data, use a small placeholder value to make bar visible
+              const chartData = hasData ? dailyData : dailyData.map(() => 0.1);
 
-            response.data.byDate.forEach((dateEntry: any) => {
-              const dateKey = dateEntry.date.split('T')[0]; // Remove time part
-              dateToHoursMap.set(dateKey, dateEntry.totalHours || 0);
-
-              // Store user names for each date if available
-              if (dateEntry.users && dateEntry.users.length > 0) {
-                // Filter out users with null/undefined/empty usernames
-                const validUsers = dateEntry.users
-                  .filter((user: any) => user && user.userName && typeof user.userName === 'string')
-                  .map((user: any) => user.userName);
-
-                if (validUsers.length > 0) {
-                  dateToUsersMap.set(dateKey, validUsers.join(', '));
-                } else {
-                  dateToUsersMap.set(dateKey, '');
-                }
-
-                // Store user-specific data for this date
-                if (this.selectedUserIds.length > 0) {
-                  console.log(`Date ${dateKey} has ${dateEntry.users.length} users`);
-
-                  dateEntry.users.forEach((user: any) => {
-                    // Log the user object structure to debug
-                    console.log('User data structure:', JSON.stringify(user));
-
-                    // Extract userId - could be _id, userId, or id
-                    const userId = user._id || user.userId || user.id;
-
-                    if (userId && this.selectedUserIds.includes(userId)) {
-                      // Initialize user data if not exists
-                      if (!userDataMap.has(userId)) {
-                        userDataMap.set(userId, new Map());
-                      }
-
-                      // Try to find hours in different possible properties
-                      const userHours = user.hours || user.totalHours || user.productivity || 0;
-                      userDataMap.get(userId)?.set(dateKey, userHours);
-
-                      console.log(`User ${userId} has ${userHours} hours on ${dateKey}`);
-                    }
-                  });
-                }
-              } else {
-                dateToUsersMap.set(dateKey, '');
-              }
-            });
-
-            // Determine if we need shorter date format based on number of dates
-            const useShortFormat = allDatesInRange.length > 10;
-
-            // Fill in data for all dates in range for the total
-            const hourValues: number[] = [];
-            const userNames: string[] = [];
-
-            allDatesInRange.forEach(date => {
-              dateLabels.push(this.formatDate(date, !useShortFormat));
-              const hours = dateToHoursMap.get(date) || 0;
-              hourValues.push(hours);
-              userNames.push(dateToUsersMap.get(date) || '');
-            });
-
-            // Create color array based on user presence
-            const backgroundColors = hourValues.map(hours => {
-              return hours > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(220, 220, 220, 0.3)';
-            });
-
-            const borderColors = hourValues.map(hours => {
-              return hours > 0 ? 'rgb(75, 192, 192)' : 'rgb(200, 200, 200)';
-            });
-
-            // Update chart data with user information
-            const xAxisLabels = dateLabels.map((date, index) => {
-              const username = userNames[index] || '';
-              return {
-                date: date,
-                user: username
-              };
-            });
-
-            // Prepare chart datasets
-            let datasets: any[] = [];
-
-            // If users are selected, create a dataset for each user
-            if (this.selectedUserIds.length > 0) {
-              // Generate colors for users
-              const userColors = [
-                { bg: 'rgba(75, 192, 192, 0.6)', border: 'rgb(75, 192, 192)' },
-                { bg: 'rgba(255, 99, 132, 0.6)', border: 'rgb(255, 99, 132)' },
-                { bg: 'rgba(54, 162, 235, 0.6)', border: 'rgb(54, 162, 235)' },
-                { bg: 'rgba(255, 206, 86, 0.6)', border: 'rgb(255, 206, 86)' },
-                { bg: 'rgba(153, 102, 255, 0.6)', border: 'rgb(153, 102, 255)' },
-                { bg: 'rgba(255, 159, 64, 0.6)', border: 'rgb(255, 159, 64)' }
-              ];
-
-              // Create a dataset for each selected user
-              this.selectedUserIds.forEach((userId, index) => {
-                const userData: number[] = [];
-                const color = userColors[index % userColors.length];
-                const userName = selectedUserMap.get(userId) || userId;
-
-                console.log(`Processing data for user ${userName} (${userId})`);
-
-                allDatesInRange.forEach(date => {
-                  const userDateMap = userDataMap.get(userId);
-                  // Add a small value (0.1) to ensure bars are at least minimally visible
-                  // This makes it easier to see which user has data on which date
-                  const userHours = userDateMap ? (userDateMap.get(date) || 0.1) : 0.1;
-                  userData.push(userHours);
-                  console.log(`- Date ${date}: ${userHours} hours`);
-                });
-
-                datasets.push({
-                  label: userName,
-                  data: userData,
-                  backgroundColor: color.bg,
-                  borderColor: color.border,
-                  borderWidth: 1,
-                  borderRadius: 4,
-                  barPercentage: 0.8,
-                  categoryPercentage: 0.7  // For better grouped bar spacing
-                });
-              });
-            } else {
-              // Just use the total hours for all users
-              datasets = [{
-                label: 'Hours',
-                data: hourValues,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
+              userDatasets.push({
+                label: userName,
+                data: chartData,
+                backgroundColor: color.bg,
+                borderColor: color.border,
                 borderWidth: 1,
-                borderRadius: 4,
-                hoverBackgroundColor: 'rgba(75, 192, 192, 0.8)',
-                barPercentage: 0.9
-              }];
-            }
+                borderRadius: 4
+              });
+
+              console.log(`Created dataset for ${userName} with ${dailyData.length} date values`);
+            });
 
             // Update chart data
-            this.lineChartData.labels = xAxisLabels.map(item => item.date);
-            this.lineChartData.datasets = datasets;
+            this.lineChartData.labels = dateLabels;
+            this.lineChartData.datasets = userDatasets;
 
-            // Update chart options for grouped bars if necessary
-            if (this.selectedUserIds.length > 0) {
-              this.lineChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
+            // Update chart options for date-based view
+            this.lineChartOptions = {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: `User Hours by Date (${dateRangeText})`,
+                  font: {
+                    size: 16
+                  }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  titleFont: {
+                    size: 13
+                  },
+                  bodyFont: {
+                    size: 12
+                  },
+                  padding: 10,
+                  callbacks: {
+                    title: (tooltipItems) => {
+                      return `Date: ${tooltipItems[0].label}`;
+                    },
+                    label: (context) => {
+                      const userName = context.dataset.label || '';
+                      const hoursValue = context.raw as number;
+                      const displayHours = hoursValue > 0.1 ? hoursValue.toFixed(1) : '0';
+                      return `${userName}: ${displayHours} hours`;
+                    }
+                  }
+                },
+                legend: {
+                  display: true,
+                  position: 'top'
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
                   title: {
                     display: true,
-                    text: 'Resource Productivity by User & Date',
+                    text: 'Hours',
                     font: {
-                      size: 16
+                      weight: 'bold'
                     }
                   },
-                  tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleFont: {
-                      size: 13
-                    },
-                    bodyFont: {
-                      size: 12
-                    },
-                    padding: 10,
-                    callbacks: {
-                      title: (tooltipItems) => {
-                        const index = tooltipItems[0].dataIndex;
-                        return `Date: ${xAxisLabels[index].date}`;
-                      },
-                      label: (context) => {
-                        const userName = context.dataset.label || '';
-                        const hoursValue = context.raw as number;
-                        // Display "-" if hours is essentially just the placeholder value
-                        const hoursDisplay = hoursValue > 0.1 ? `${hoursValue.toFixed(1)} hours` : '-';
-                        return `${userName}: ${hoursDisplay}`;
-                      }
-                    }
+                  ticks: {
+                    precision: 1
                   },
-                  legend: {
-                    display: true,
-                    position: 'top'
-                  }
+                  stacked: false
                 },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: {
-                      display: true,
-                      text: 'Hours',
-                      font: {
-                        weight: 'bold'
-                      }
-                    },
-                    ticks: {
-                      precision: 1
-                    },
-                    // Ensure minimum scale so tiny bars are visible
-                    min: 0,
-                    suggestedMax: 10
-                  },
-                  x: {
-                    title: {
-                      display: true,
-                      text: 'Date',
-                      font: {
-                        weight: 'bold'
-                      }
-                    },
-                    ticks: {
-                      maxRotation: 90,
-                      minRotation: 45,
-                      autoSkip: true,
-                      maxTicksLimit: 30,
-                      font: {
-                        size: 10
-                      },
-                      padding: 10
-                    },
-                    grid: {
-                      display: true,
-                      drawOnChartArea: false
-                    }
-                  }
-                }
-              };
-            } else {
-              // Update chart options for single dataset
-              this.lineChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
+                x: {
                   title: {
                     display: true,
-                    text: 'Resource Productivity'
-                  }
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: {
-                      display: true,
-                      text: 'Hours'
+                    text: 'Date',
+                    font: {
+                      weight: 'bold'
                     }
                   },
-                  x: {
-                    title: {
-                      display: true,
-                      text: 'Date'
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45,
+                    font: {
+                      size: 10
                     }
                   }
                 }
-              };
+              }
+            };
+          } else {
+            // Fallback to daily hours chart if no users selected
+
+            // Create a map to store hours by date
+            const dateHoursMap = new Map<string, number>();
+
+            // Process byDate data to get hours for each date
+            if (response.data.byDate && Array.isArray(response.data.byDate)) {
+              response.data.byDate.forEach((dateData: any) => {
+                if (dateData.date) {
+                  const dateKey = dateData.date.split('T')[0];
+                  dateHoursMap.set(dateKey, dateData.totalHours || 0);
+                }
+              });
             }
 
-            // Update the chart
-            const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
-            const existingChart1 = Chart.getChart(canvas1);
-            if (existingChart1) {
-              existingChart1.destroy();
-            }
+            // Create the dataset with hours for each date in the range
+            const hoursByDate = allDatesInRange.map(date => dateHoursMap.get(date) || 0);
 
-            // Determine the minimum width based on the number of data points
-            const minWidth = Math.max(1200, allDatesInRange.length * 40);
+            // Update chart data
+            this.lineChartData.labels = dateLabels;
+            this.lineChartData.datasets = [{
+              label: 'Total Hours',
+              data: hoursByDate,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgb(75, 192, 192)',
+              borderWidth: 1,
+              borderRadius: 4
+            }];
 
-            // Update the containing div's width
-            const chartContainer = canvas1.parentElement;
-            if (chartContainer) {
-              chartContainer.style.minWidth = `${minWidth}px`;
-            }
-
-            const chart1 = new Chart(canvas1, {
-              type: 'bar',
-              data: this.lineChartData,
-              options: this.lineChartOptions
-            });
+            this.lineChartOptions = {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: `Daily Hours (${dateRangeText})`,
+                  font: {
+                    size: 16
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      const hours = context.raw as number;
+                      return `Hours: ${hours.toFixed(1)}`;
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Hours',
+                    font: {
+                      weight: 'bold'
+                    }
+                  }
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Date',
+                    font: {
+                      weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45
+                  }
+                }
+              }
+            };
           }
+
+          // Update the chart
+          const canvas1 = document.getElementById('productivityChart') as HTMLCanvasElement;
+          const existingChart1 = Chart.getChart(canvas1);
+          if (existingChart1) {
+            existingChart1.destroy();
+          }
+
+          // Determine the minimum width based on the number of data points
+          const minWidth = Math.max(800, this.lineChartData.labels.length * 40);
+
+          // Update the containing div's width
+          const chartContainer = canvas1.parentElement;
+          if (chartContainer) {
+            chartContainer.style.minWidth = `${minWidth}px`;
+          }
+
+          const chart1 = new Chart(canvas1, {
+            type: 'bar',
+            data: this.lineChartData,
+            options: this.lineChartOptions
+          });
         } else {
           this.notificationService.showError(response?.message || 'Failed to fetch task graph data');
         }
@@ -606,7 +584,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
         // Use taskcount as a proxy for hours, ensure it's at least 1 for visibility
         const count = user.taskcount !== undefined ? Math.max(user.taskcount, 1) : 1;
         userHours.set(user.userName, count);
-        console.log(`User ${user.userName} has ${count} tasks`);
+        // console.log(`User ${user.userName} has ${count} tasks`);
       }
     });
 
