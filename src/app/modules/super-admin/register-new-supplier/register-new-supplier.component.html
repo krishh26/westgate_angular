@@ -82,7 +82,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="row">
                       <label for="email" class="col-sm-4 col-form-label">Contact Email <span
-                        class="text-danger">*</span></label>
+                          class="text-danger">*</span></label>
                       <div class="col-sm-8">
                         <input [(ngModel)]="companyForm.email" name="email" type="text" class="form-control"
                           placeholder="Enter contact email" id="email" required #companyEmailInput="ngModel">
@@ -320,7 +320,7 @@
                                 <ng-template ng-header-tmp>
                                   <div class="p-2 border-bottom">
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" 
+                                      <input class="form-check-input" type="checkbox"
                                         [checked]="selectedExpertiseItems?.length === expertiseDropdownOptions?.length"
                                         (change)="toggleSelectAllExpertise($event)">
                                       <label class="form-check-label">Select All</label>
@@ -380,13 +380,15 @@
                               </div>
                               <div class="mt-2">
                                 <div class="dropdown">
-                                  <ng-select [(ngModel)]="selectedSubExpertiseICanDoMap[i]" name="subExpertiseICanDo_{{i}}"
-                                    [items]="subExpertiseOptions" [multiple]="true"
+                                  <ng-select [(ngModel)]="selectedSubExpertiseICanDoMap[i]"
+                                    name="subExpertiseICanDo_{{i}}" [items]="subExpertiseOptions" [multiple]="true"
                                     placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
-                                    [searchable]="true" [clearable]="true" (change)="onSubExpertiseICanDoChange(i, $event)">
+                                    [searchable]="true" [clearable]="true"
+                                    (change)="onSubExpertiseICanDoChange(i, $event)">
                                   </ng-select>
                                 </div>
-                                <button type="button" class="btn btn-primary mt-2" (click)="addMultipleSubExpertiseICanDo(i)"
+                                <button type="button" class="btn btn-primary mt-2"
+                                  (click)="addMultipleSubExpertiseICanDo(i)"
                                   [disabled]="!selectedSubExpertiseICanDoMap[i] || selectedSubExpertiseICanDoMap[i].length === 0">
                                   Add Sub-Expertise
                                 </button>
@@ -405,7 +407,7 @@
                                 <ng-template ng-header-tmp>
                                   <div class="p-2 border-bottom">
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" 
+                                      <input class="form-check-input" type="checkbox"
                                         [checked]="selectedExpertiseICanDoItems?.length === expertiseDropdownOptions?.length"
                                         (change)="toggleSelectAllExpertiseICanDo($event)">
                                       <label class="form-check-label">Select All</label>
@@ -417,8 +419,8 @@
                                     <div class="mb-2">Add "{{search}}" to expertise</div>
                                     <div class="radio-group d-flex flex-column">
                                       <div class="form-check mb-1">
-                                        <input class="form-check-input" type="radio" name="expertiseICanDoType" id="typeTechICanDo"
-                                          [(ngModel)]="newExpertiseICanDoType" value="technologies">
+                                        <input class="form-check-input" type="radio" name="expertiseICanDoType"
+                                          id="typeTechICanDo" [(ngModel)]="newExpertiseICanDoType" value="technologies">
                                         <label class="form-check-label" for="typeTechICanDo">Technologies</label>
                                       </div>
                                       <div class="form-check mb-1">
@@ -446,7 +448,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6 mb-3">
+                  <!-- <div class="col-md-6 mb-3">
                     <div class="row">
                       <label for="categoryList" class="col-sm-4 col-form-label">Category</label>
                       <div class="col-sm-8">
@@ -457,7 +459,7 @@
                         </ng-select>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="col-md-6 mb-3">
                     <div class="row">
