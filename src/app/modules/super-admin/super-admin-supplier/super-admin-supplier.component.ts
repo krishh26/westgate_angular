@@ -103,7 +103,12 @@ export class SuperAdminSupplierComponent {
           console.log('Activation response:', response);
           if (response?.status) {
             this.notificationService.showSuccess(response?.message || 'Supplier activated successfully');
-            this.getManageUserList();
+            // Maintain the current filter instead of resetting it
+            if (this.currentFilter && this.currentFilter !== 'clear') {
+              this.applyFilter(this.currentFilter);
+            } else {
+              this.getManageUserList();
+            }
           } else {
             this.notificationService.showError(response?.message || 'Failed to activate supplier');
             item.active = false; // Revert the toggle if there's an error
@@ -134,7 +139,12 @@ export class SuperAdminSupplierComponent {
           if (response?.status == true) {
             this.showLoader = false;
             this.notificationService.showSuccess('Supplier successfully deleted');
-            this.getManageUserList();
+            // Maintain the current filter after deletion
+            if (this.currentFilter && this.currentFilter !== 'clear') {
+              this.applyFilter(this.currentFilter);
+            } else {
+              this.getManageUserList();
+            }
           } else {
             this.showLoader = false;
             this.notificationService.showError(response?.message);
@@ -149,7 +159,12 @@ export class SuperAdminSupplierComponent {
 
   searchtext() {
     this.page = 1;
-    this.getManageUserList();
+    // Maintain the current filter when searching
+    if (this.currentFilter && this.currentFilter !== 'clear') {
+      this.applyFilter(this.currentFilter);
+    } else {
+      this.getManageUserList();
+    }
   }
 
   getManageUserList() {
@@ -478,7 +493,12 @@ export class SuperAdminSupplierComponent {
 
   applyDateFilter() {
     this.page = 1;
-    this.getManageUserList();
+    // Maintain the current filter when applying date filter
+    if (this.currentFilter && this.currentFilter !== 'clear') {
+      this.applyFilter(this.currentFilter);
+    } else {
+      this.getManageUserList();
+    }
   }
 
   projectDetails(projectId: any, item: any) {
@@ -579,7 +599,12 @@ export class SuperAdminSupplierComponent {
     modalRef.result.then(
       (result) => {
         console.log('Modal closed with result:', result);
-        this.getManageUserList();
+        // Maintain the current filter instead of resetting it
+        if (this.currentFilter && this.currentFilter !== 'clear') {
+          this.applyFilter(this.currentFilter);
+        } else {
+          this.getManageUserList();
+        }
       },
       (reason) => {
         console.log('Modal dismissed:', reason);
