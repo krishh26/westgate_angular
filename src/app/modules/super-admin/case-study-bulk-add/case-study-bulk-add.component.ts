@@ -102,9 +102,7 @@ export class CaseStudyBulkAddComponent {
           resourcesUsed: replaceNullWithEmptyString(row[8]),     // row[8]
           industry: replaceNullWithEmptyString(row[9]),          // row[9]
           type: replaceNullWithEmptyString(row[10]),             // row[10]
-          date: typeof row[11] === 'number'
-            ? convertExcelDate(row[11])
-            : replaceNullWithEmptyString(row[11]),               // row[11]
+          date: replaceNullWithEmptyString(row[11]),              // row[11]
           contractDuration: typeof row[12] === 'number'
             ? convertExcelDate(row[12])
             : replaceNullWithEmptyString(row[12]),               // row[12]
