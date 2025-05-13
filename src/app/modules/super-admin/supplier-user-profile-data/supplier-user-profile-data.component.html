@@ -185,6 +185,21 @@
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
+                  <label class="form-label">I Can Do</label>
+                  <div class="border rounded p-3">
+                    <ul class="list-unstyled mb-0">
+                      <li *ngFor="let exp of supplierDetails?.expertiseICanDo" class="badge bg-primary me-2 mb-2">
+                        {{ exp.name }}
+                        <!-- <ul *ngIf="exp.subExpertise && exp.subExpertise.length" class="list-unstyled mt-2">
+                          <li *ngFor="let sub of exp.subExpertise" class="badge bg-secondary me-2 mb-2">
+                            {{ sub }}
+                          </li>
+                        </ul> -->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
                   <label class="form-label">Category</label>
                   <div class="border rounded p-3">
                     <ul class="list-unstyled mb-0">

@@ -656,10 +656,15 @@ export class SuperadminService {
     );
   }
 
-  createCustomExpertise(expertiseData: { name: string; type: string }): Observable<any> {
+  createCustomExpertise(expertiseData: { name: string; type: string; value?: string }): Observable<any> {
+    // If value is not provided, use name as the value
+    const payload = {
+      ...expertiseData,
+      value: expertiseData.value || expertiseData.name
+    };
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.CREATE_CUSTOM_EXPERTISE,
-      expertiseData
+      payload
     );
   }
 

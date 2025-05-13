@@ -315,6 +315,16 @@
                             [searchable]="true"
                             [clearable]="true"
                             [addTag]="onAddTag">
+                            <ng-template ng-header-tmp>
+                              <div class="p-2 border-bottom">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" 
+                                    [checked]="selectedExpertiseItems?.length === expertiseDropdownOptions?.length"
+                                    (change)="toggleSelectAllExpertise($event)">
+                                  <label class="form-check-label">Select All</label>
+                                </div>
+                              </div>
+                            </ng-template>
                             <ng-template ng-tag-tmp let-search="searchTerm">
                               <div *ngIf="search">
                                 <div class="mb-2">Add "{{search}}" to expertise</div>
@@ -342,6 +352,105 @@
                         <button type="button" class="btn btn-primary mt-2"
                           (click)="addSelectedExpertise()"
                           [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
+                          Add Expertise
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="row">
+                  <label for="expertiseICanDo" class="col-sm-4 col-form-label">I Can Do</label>
+                  <div class="col-sm-8">
+                    <div class="form-control p-2">
+                      <div *ngFor="let expertise of supplierDetails.expertiseICanDo; let i = index" class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                          <span class="badge bg-primary me-2">{{ expertise.name }}</span>
+                          <button type="button" class="btn-close ms-2" (click)="removeExpertiseICanDo(i)"></button>
+                        </div>
+                        <div class="ms-3">
+                          <div *ngFor="let sub of expertise.subExpertise; let j = index"
+                            class="d-flex align-items-center mb-1">
+                            <span class="badge bg-secondary me-2">{{ sub }}</span>
+                            <button type="button" class="btn-close ms-2" (click)="removeSubExpertiseICanDo(i, j)"></button>
+                          </div>
+                          <div class="mt-2">
+                            <div class="dropdown">
+                              <ng-select
+                                [(ngModel)]="selectedSubExpertiseICanDoMap[i]"
+                                name="subExpertiseICanDo_{{i}}"
+                                [items]="subExpertiseOptions"
+                                [multiple]="true"
+                                placeholder="Select sub-expertise (required)"
+                                [closeOnSelect]="false"
+                                [searchable]="true"
+                                [clearable]="true"
+                                (change)="onSubExpertiseICanDoChange(i, $event)">
+                              </ng-select>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2"
+                              (click)="addMultipleSubExpertiseICanDo(i)"
+                              [disabled]="!selectedSubExpertiseICanDoMap[i] || selectedSubExpertiseICanDoMap[i].length === 0">
+                              Add Sub-Expertise
+                            </button>
+                            <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
+                              Sub-expertise is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-2">
+                        <div class="dropdown">
+                          <ng-select
+                            placeholder="Select expertise"
+                            [items]="expertiseDropdownOptions"
+                            bindLabel="name"
+                            [multiple]="true"
+                            [(ngModel)]="selectedExpertiseICanDoItems"
+                            name="selectedExpertiseICanDoItems"
+                            [closeOnSelect]="false"
+                            [searchable]="true"
+                            [clearable]="true"
+                            [addTag]="onAddTagICanDo">
+                            <ng-template ng-header-tmp>
+                              <div class="p-2 border-bottom">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" 
+                                    [checked]="selectedExpertiseICanDoItems?.length === expertiseDropdownOptions?.length"
+                                    (change)="toggleSelectAllExpertiseICanDo($event)">
+                                  <label class="form-check-label">Select All</label>
+                                </div>
+                              </div>
+                            </ng-template>
+                            <ng-template ng-tag-tmp let-search="searchTerm">
+                              <div *ngIf="search">
+                                <div class="mb-2">Add "{{search}}" to expertise</div>
+                                <div class="radio-group d-flex flex-column">
+                                  <div class="form-check mb-1">
+                                    <input class="form-check-input" type="radio" name="expertiseICanDoType" id="typeTechICanDo"
+                                      [(ngModel)]="newExpertiseICanDoType" value="technologies">
+                                    <label class="form-check-label" for="typeTechICanDo">Technologies</label>
+                                  </div>
+                                  <div class="form-check mb-1">
+                                    <input class="form-check-input" type="radio" name="expertiseICanDoType" id="typeProductICanDo"
+                                      [(ngModel)]="newExpertiseICanDoType" value="product">
+                                    <label class="form-check-label" for="typeProductICanDo">Product</label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="expertiseICanDoType" id="typeDomainICanDo"
+                                      [(ngModel)]="newExpertiseICanDoType" value="domain">
+                                    <label class="form-check-label" for="typeDomainICanDo">Domain</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <button type="button" class="btn btn-primary mt-2"
+                          (click)="addSelectedExpertiseICanDo()"
+                          [disabled]="!selectedExpertiseICanDoItems || selectedExpertiseICanDoItems.length === 0">
                           Add Expertise
                         </button>
                       </div>
