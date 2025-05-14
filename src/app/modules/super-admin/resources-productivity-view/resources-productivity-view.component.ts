@@ -193,8 +193,10 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   }
 
   formatDate(dateString: string, fullFormat = true): string {
+    // Create a date object with a specific time to avoid timezone issues
+    const date = new Date(dateString + 'T00:00:00');
+
     // Format date to display as "dd-MM" or "dd-MM-yyyy" format
-    const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
@@ -210,19 +212,24 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   // Helper method to generate dates between start and end
   getDatesInRange(startDate: string, endDate: string): string[] {
     const dateArray = [];
-    const start = new Date(startDate);
-    const end = new Date(endDate);
 
-    // Set hours to ensure proper date comparison
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
+    // Create dates using the YYYY-MM-DD format directly to avoid timezone issues
+    // This avoids the timezone offset problem by treating dates as local midnight
+    const start = new Date(startDate + 'T00:00:00');
+    const end = new Date(endDate + 'T00:00:00');
 
     // Clone the start date to avoid modifying it
     let currentDate = new Date(start);
 
-    // Loop until we reach the end date
+    // Loop until we reach the end date (inclusive)
     while (currentDate <= end) {
-      dateArray.push(new Date(currentDate).toISOString().split('T')[0]);
+      // Format as YYYY-MM-DD to avoid timezone issues
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const day = String(currentDate.getDate()).padStart(2, '0');
+      dateArray.push(`${year}-${month}-${day}`);
+
+      // Move to next day
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
@@ -808,7 +815,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    // Convert to YYYY-MM-DD format
+    // Format properly, ensuring padding with leading zeros
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   }
 

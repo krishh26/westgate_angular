@@ -687,9 +687,16 @@ export class SuperadminService {
     return this.httpClient.request<any>('DELETE', url, { body });
   }
 
-  getTechnologies(): Observable<any> {
+  getTechnologies(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+
     return this.httpClient.get<any>(
-      this.baseUrl + SuperAdminEndPoint.GET_TECHNOLOGIES
+      this.baseUrl + SuperAdminEndPoint.GET_TECHNOLOGIES,
+      { params: queryParams }
     );
   }
 

@@ -38,6 +38,8 @@ export class AdminDataSettingsComponent implements OnInit {
   expertiseSearchTimeout: any;
   subExpertiseSearchQuery: string = '';
   subExpertiseSearchTimeout: any;
+  technologySearchQuery: string = '';
+  technologySearchTimeout: any;
   addSubExpertiseName: string = '';
   addSubExpertiseSubmitted: boolean = false;
 
@@ -86,7 +88,14 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadTechnologies(): void {
     this.showLoader = true;
-    this.superadminService.getTechnologies().subscribe({
+
+    // Create params object to include search if present
+    const params: any = {};
+    if (this.technologySearchQuery) {
+      params.search = this.technologySearchQuery;
+    }
+
+    this.superadminService.getTechnologies(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.technologies = response.data || [];
@@ -486,5 +495,18 @@ export class AdminDataSettingsComponent implements OnInit {
         this.showLoader = false;
       }
     });
+  }
+
+  onTechnologySearchChange(query: string): void {
+    // Clear any existing timeout
+    if (this.technologySearchTimeout) {
+      clearTimeout(this.technologySearchTimeout);
+    }
+
+    // Set a new timeout to debounce the search
+    this.technologySearchTimeout = setTimeout(() => {
+      this.technologySearchQuery = query;
+      this.loadTechnologies();
+    }, 300); // Wait for 300ms after user stops typing
   }
 }
