@@ -298,7 +298,8 @@
                                   <ng-select [(ngModel)]="selectedSubExpertiseMap[i]" name="subExpertise_{{i}}"
                                     [items]="subExpertiseOptions" [multiple]="true"
                                     placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
-                                    [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)">
+                                    [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)"
+                                    [addTag]="onAddTagSubExpertise" [loading]="addingNewSubExpertise">
                                     <ng-template ng-header-tmp>
                                       <div class="p-2 border-bottom">
                                         <div class="form-check">
@@ -307,6 +308,11 @@
                                             (change)="toggleSelectAllSubExpertise(i, $event)">
                                           <label class="form-check-label">Select All</label>
                                         </div>
+                                      </div>
+                                    </ng-template>
+                                    <ng-template ng-tag-tmp let-search="searchTerm">
+                                      <div *ngIf="search">
+                                        <span>Add new sub-expertise "{{search}}"</span>
                                       </div>
                                     </ng-template>
                                   </ng-select>
@@ -391,18 +397,24 @@
                               <div class="mt-2">
                                 <div class="dropdown">
                                   <ng-select [(ngModel)]="selectedSubExpertiseICanDoMap[i]"
-                                    name="subExpertiseICanDo_{{i}}" [items]="subExpertiseOptions" [multiple]="true"
+                                    name="subExpertiseICanDo_{{i}}" [items]="subExpertiseICanDoOptions" [multiple]="true"
                                     placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
                                     [searchable]="true" [clearable]="true"
-                                    (change)="onSubExpertiseICanDoChange(i, $event)">
+                                    (change)="onSubExpertiseICanDoChange(i, $event)"
+                                    [addTag]="onAddTagSubExpertiseICanDo" [loading]="addingNewSubExpertise">
                                     <ng-template ng-header-tmp>
                                       <div class="p-2 border-bottom">
                                         <div class="form-check">
                                           <input class="form-check-input" type="checkbox"
-                                            [checked]="selectedSubExpertiseICanDoMap[i]?.length === subExpertiseOptions?.length"
+                                            [checked]="selectedSubExpertiseICanDoMap[i]?.length === subExpertiseICanDoOptions?.length"
                                             (change)="toggleSelectAllSubExpertiseICanDo(i, $event)">
                                           <label class="form-check-label">Select All</label>
                                         </div>
+                                      </div>
+                                    </ng-template>
+                                    <ng-template ng-tag-tmp let-search="searchTerm">
+                                      <div *ngIf="search">
+                                        <span>Add new sub-expertise "{{search}}"</span>
                                       </div>
                                     </ng-template>
                                   </ng-select>
