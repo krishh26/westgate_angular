@@ -299,6 +299,16 @@
                                     [items]="subExpertiseOptions" [multiple]="true"
                                     placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
                                     [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)">
+                                    <ng-template ng-header-tmp>
+                                      <div class="p-2 border-bottom">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox"
+                                            [checked]="selectedSubExpertiseMap[i]?.length === subExpertiseOptions?.length"
+                                            (change)="toggleSelectAllSubExpertise(i, $event)">
+                                          <label class="form-check-label">Select All</label>
+                                        </div>
+                                      </div>
+                                    </ng-template>
                                   </ng-select>
                                 </div>
                                 <button type="button" class="btn btn-primary mt-2" (click)="addMultipleSubExpertise(i)"
@@ -385,6 +395,16 @@
                                     placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
                                     [searchable]="true" [clearable]="true"
                                     (change)="onSubExpertiseICanDoChange(i, $event)">
+                                    <ng-template ng-header-tmp>
+                                      <div class="p-2 border-bottom">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox"
+                                            [checked]="selectedSubExpertiseICanDoMap[i]?.length === subExpertiseOptions?.length"
+                                            (change)="toggleSelectAllSubExpertiseICanDo(i, $event)">
+                                          <label class="form-check-label">Select All</label>
+                                        </div>
+                                      </div>
+                                    </ng-template>
                                   </ng-select>
                                 </div>
                                 <button type="button" class="btn btn-primary mt-2"

@@ -478,9 +478,9 @@ export class RegisterNewSupplierComponent implements OnInit {
   }
 
   hasInvalidExpertise(): boolean {
-    return this.companyForm.expertise.some((expertise: ExpertiseItem) => 
+    return this.companyForm.expertise.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
-    ) || this.companyForm.expertiseICanDo.some((expertise: ExpertiseItem) => 
+    ) || this.companyForm.expertiseICanDo.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
     );
   }
@@ -525,6 +525,15 @@ export class RegisterNewSupplierComponent implements OnInit {
       this.selectedSubExpertiseMap[expertiseIndex] = [];
     } else {
       console.log('No sub-expertise selected');
+    }
+  }
+
+  // Method to toggle select all for sub-expertise
+  toggleSelectAllSubExpertise(expertiseIndex: number, event: any) {
+    if (event.target.checked) {
+      this.selectedSubExpertiseMap[expertiseIndex] = [...this.subExpertiseOptions];
+    } else {
+      this.selectedSubExpertiseMap[expertiseIndex] = [];
     }
   }
 
@@ -1168,6 +1177,15 @@ export class RegisterNewSupplierComponent implements OnInit {
         type: item.type,
         itemId: item.itemId
       });
+    }
+  }
+
+  // Method to toggle select all for I Can Do sub-expertise
+  toggleSelectAllSubExpertiseICanDo(expertiseIndex: number, event: any) {
+    if (event.target.checked) {
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [...this.subExpertiseOptions];
+    } else {
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
     }
   }
 }
