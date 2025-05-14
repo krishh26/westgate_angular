@@ -582,13 +582,26 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
                   // Get the date that was clicked
                   const dateLabel = this.lineChartData.labels?.[index];
-                  const dateObj = dateLabel ? this.convertLabelToDate(dateLabel.toString()) : '';
+                  if (!dateLabel) return;
 
-                  // Get the user that was clicked (if applicable)
+                  // Get the date in YYYY-MM-DD format for filtering
+                  const formattedDate = this.convertLabelToDate(dateLabel.toString());
+                  if (!formattedDate) {
+                    console.error('Could not convert date label to date string:', dateLabel);
+                    return;
+                  }
+
+                  // Get the user that was clicked
                   const userName = this.lineChartData.datasets[datasetIndex].label || '';
                   const userId = this.findUserIdByName(userName);
 
-                  this.showTaskDetailsForUserAndDate(userId, dateObj);
+                  if (!userId) {
+                    console.error('Could not find user ID for user:', userName);
+                    return;
+                  }
+
+                  console.log(`Showing task details for ${userName} (${userId}) on ${formattedDate}`);
+                  this.showTaskDetailsForUserAndDate(userId, formattedDate);
                 }
               }
             }
@@ -800,23 +813,46 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
     // Try to parse the date from label format (dd-MM-yyyy or dd/MM)
     let day: string, month: string, year: string;
+    const currentYear = new Date().getFullYear().toString();
 
-    if (label.includes('-')) {
-      const parts = label.split('-');
-      day = parts[0];
-      month = parts[1];
-      year = parts.length > 2 ? parts[2] : new Date().getFullYear().toString();
-    } else if (label.includes('/')) {
-      const parts = label.split('/');
-      day = parts[0];
-      month = parts[1];
-      year = new Date().getFullYear().toString();
-    } else {
+    try {
+      if (label.includes('-')) {
+        const parts = label.split('-');
+        if (parts.length >= 2) {
+          day = parts[0].padStart(2, '0');
+          month = parts[1].padStart(2, '0');
+          year = parts.length > 2 ? parts[2] : currentYear;
+        } else {
+          return '';
+        }
+      } else if (label.includes('/')) {
+        const parts = label.split('/');
+        if (parts.length >= 2) {
+          day = parts[0].padStart(2, '0');
+          month = parts[1].padStart(2, '0');
+          year = parts.length > 2 ? parts[2] : currentYear;
+        } else {
+          return '';
+        }
+      } else {
+        // Try to parse as a date object if it's in a different format
+        const dateObj = new Date(label);
+        if (!isNaN(dateObj.getTime())) {
+          day = dateObj.getDate().toString().padStart(2, '0');
+          month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+          year = dateObj.getFullYear().toString();
+        } else {
+          console.warn('Unable to parse date label:', label);
+          return '';
+        }
+      }
+
+      // Format properly, ensuring padding with leading zeros
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    } catch (error) {
+      console.error('Error parsing date label:', label, error);
       return '';
     }
-
-    // Format properly, ensuring padding with leading zeros
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   }
 
   // Find user ID by name
@@ -869,90 +905,44 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
       }
     }
 
-    // Find tasks for this date
-    if (this.taskGraphData.byDate) {
-      const dateData = this.taskGraphData.byDate.find((d: any) => {
-        return d.date && d.date.split('T')[0] === dateString;
-      });
-
-      if (dateData) {
-        console.log(`Found data for date: ${dateString}`);
-
-        // If we have user-specific data for this date
-        if (dateData.users && Array.isArray(dateData.users)) {
-          const userOnDate = dateData.users.find((u: any) => {
-            if (u.user) {
-              return u.user.id === userId;
-            }
-            return (u._id === userId || u.userId === userId || u.id === userId);
-          });
-
-          if (userOnDate) {
-            console.log(`Found user data for ${userName} on ${dateString}`);
-
-            // Extract tasks
-            if (userOnDate.tasks && Array.isArray(userOnDate.tasks)) {
-              this.selectedTaskDetails = userOnDate.tasks.map((task: any) => {
-                return {
-                  taskId: task.id,
-                  taskName: task.name,
-                  status: task.status,
-                  hours: task.totalHours || 0,
-                  comments: task.comments || []
-                };
-              });
-            }
-          }
-        }
-
-        // If we still don't have tasks, try to get from all tasks for this date
-        if (this.selectedTaskDetails.length === 0 && dateData.tasks && Array.isArray(dateData.tasks)) {
-          this.selectedTaskDetails = dateData.tasks
-            .filter((task: any) => {
-              // Find tasks for this user
-              if (task.comments && Array.isArray(task.comments)) {
-                return task.comments.some((comment: any) => comment.user === userId);
-              }
-              return false;
-            })
-            .map((task: any) => {
-              return {
-                taskId: task.id,
-                taskName: task.name,
-                status: task.status,
-                hours: task.totalHours || 0,
-                comments: task.comments ? task.comments.filter((c: any) => c.user === userId) : []
-              };
-            });
-        }
-      }
-    }
-
-    // If still no tasks, check byUser data
-    if (this.selectedTaskDetails.length === 0 && this.taskGraphData.byUser) {
+    // Filter tasks that have comments for this specific date
+    if (this.taskGraphData.byUser) {
       const userData = this.taskGraphData.byUser.find((u: any) => u.user && u.user.id === userId);
 
       if (userData && userData.tasks && Array.isArray(userData.tasks)) {
-        // Filter tasks for the selected date
+        // Get all tasks for this user
         this.selectedTaskDetails = userData.tasks
           .filter((task: any) => {
+            // Only include tasks that have comments for the selected date
             if (task.comments && Array.isArray(task.comments)) {
               return task.comments.some((comment: any) => {
                 // Check if comment was made on the selected date
-                return comment.date && comment.date.split('T')[0] === dateString;
+                if (comment.date) {
+                  const commentDate = comment.date.split('T')[0];
+                  return commentDate === dateString;
+                }
+                return false;
               });
             }
             return false;
           })
           .map((task: any) => {
+            // Filter comments to only include those from the selected date
+            const dateFilteredComments = task.comments ?
+              task.comments.filter((c: any) => {
+                if (c.date) {
+                  const commentDate = c.date.split('T')[0];
+                  return commentDate === dateString;
+                }
+                return false;
+              }) : [];
+
             return {
               taskId: task.id,
               taskName: task.name,
               status: task.status,
               hours: task.totalHours || 0,
-              comments: task.comments ? task.comments.filter((c: any) =>
-                c.date && c.date.split('T')[0] === dateString
-              ) : []
+              comments: dateFilteredComments
             };
           });
       }
