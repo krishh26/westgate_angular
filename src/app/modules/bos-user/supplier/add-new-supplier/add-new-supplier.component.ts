@@ -76,6 +76,9 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   subExpertiseICanDoOptions: string[] = [];
   subExpertiseICanDoInput$ = new Subject<string>();
 
+  // Add this property
+  addingNewSubExpertise: boolean = false;
+
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
@@ -1182,9 +1185,55 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   // Method to toggle select all for I Can Do sub-expertise
   toggleSelectAllSubExpertiseICanDo(expertiseIndex: number, event: any) {
     if (event.target.checked) {
-      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [...this.subExpertiseOptions];
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [...this.subExpertiseICanDoOptions];
     } else {
       this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
     }
+  }
+
+  // Add a method to handle adding a new sub-expertise tag
+  onAddTagSubExpertise = (name: string) => {
+    if (!name.trim()) {
+      return null;
+    }
+
+    this.addingNewSubExpertise = true;
+    const newSubExpertise = name.trim();
+
+    // Show loader
+    this.showLoader = true;
+
+    // Call the API to add the new sub-expertise
+    this.superadminService.addSubExpertiseByName(newSubExpertise).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          // Add to both local options arrays to ensure they are in sync
+          if (!this.subExpertiseOptions.includes(newSubExpertise)) {
+            this.subExpertiseOptions.push(newSubExpertise);
+          }
+          if (!this.subExpertiseICanDoOptions.includes(newSubExpertise)) {
+            this.subExpertiseICanDoOptions.push(newSubExpertise);
+          }
+          this.notificationService.showSuccess('Sub-expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add sub-expertise');
+        }
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add sub-expertise');
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      }
+    });
+
+    // Return the new sub-expertise so it appears in the dropdown immediately
+    return newSubExpertise;
+  }
+
+  // Add a method for I Can Do sub-expertise
+  onAddTagSubExpertiseICanDo = (name: string) => {
+    return this.onAddTagSubExpertise(name); // Reuse the same implementation
   }
 }
