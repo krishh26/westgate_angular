@@ -220,6 +220,8 @@ export class TrackerWiseProjectDetailsComponent {
     this.summaryForm.controls['projectId'].setValue(this.projectId);
   }
 
+  bidStatusDisable : boolean = true;
+
   ngOnInit(): void {
     this.getProjectDetails();
     // this.getSummaryList();
@@ -243,6 +245,12 @@ export class TrackerWiseProjectDetailsComponent {
     this.editor = new Editor();
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
+
+    this.bidManagerStatusComment.valueChanges?.subscribe((value) => {
+      if(value && this.status && value !== "<p></p>") {
+        this.bidStatusDisable = false;
+      }
+    })
   }
 
   ngOnDestroy() {

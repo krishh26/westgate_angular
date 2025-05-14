@@ -536,7 +536,7 @@
                       [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
-                  <button class="btn btn-primary" type="button" (click)="pushFeasibilityStatus()">
+                  <button class="btn btn-primary" type="button" [disabled]="!feasibilityStatusComment.value || !feasibilityStatus" (click)="pushFeasibilityStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
@@ -727,7 +727,7 @@
                       [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
-                  <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                  <button class="btn btn-primary" type="button" [disabled]="bidStatusDisable"  (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
