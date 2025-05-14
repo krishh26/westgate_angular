@@ -92,10 +92,16 @@
                       <strong>{{ getUserName(userId) }}</strong>
                     </td>
                     <td class="text-center">
-                      <span class=" badge py-2 px-3" style="background-color: #20B2AA; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px; font-size: 14px;">{{ getUserCompletedTasks(userId) }}</span>
+                      <span class="badge py-2 px-3" style="background-color: #20B2AA; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px; font-size: 14px; cursor: pointer;" (click)="showTasksByStatus(userId, 'Completed')" title="Click to view completed tasks">
+                        {{ getUserCompletedTasks(userId) }}
+                        <i class="fas fa-eye ms-2" style="font-size: 12px;"></i>
+                      </span>
                     </td>
                     <td class="text-center">
-                      <span class=" badge py-2 px-3" style="background-color: #20B2AA; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px; font-size: 14px;">{{ getUserPendingTasks(userId) }}</span>
+                      <span class="badge py-2 px-3" style="background-color: #20B2AA; color: white; border-radius: 4px; display: flex; justify-content: center; align-items: center; height: 38px; font-size: 14px; cursor: pointer;" (click)="showTasksByStatus(userId, 'Pending')" title="Click to view pending tasks">
+                        {{ getUserPendingTasks(userId) }}
+                        <i class="fas fa-eye ms-2" style="font-size: 12px;"></i>
+                      </span>
                     </td>
                     <td class="text-center">
                       {{ getUserTotalHours(userId) }} hours
@@ -103,6 +109,81 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks by Status Section -->
+    <div class="mt-4" *ngIf="statusFilterTitle">
+      <div class="card">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            {{ statusFilterTitle }}
+          </h5>
+          <button class="btn btn-sm btn-outline-secondary" *ngIf="tasksByStatus.length > 0" (click)="tasksByStatus = []; statusFilterTitle = ''">
+            <i class="fa fa-times"></i> Close
+          </button>
+        </div>
+        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+          <!-- Loading indicator -->
+          <div *ngIf="showLoader" class="text-center p-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading tasks...</p>
+          </div>
+
+          <!-- No tasks message -->
+          <div *ngIf="!showLoader && tasksByStatus.length === 0" class="alert alert-info">
+            No matching tasks found for the selected criteria.
+          </div>
+
+          <!-- Task list -->
+          <div *ngIf="!showLoader && tasksByStatus.length > 0">
+            <div *ngFor="let task of tasksByStatus" class="mb-4 task-detail-card">
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h6 class="mb-0">{{ task.name }}</h6>
+                  <span class="badge"
+                        [class.bg-success]="task.isCompleted"
+                        [class.bg-warning]="!task.isCompleted && (task.isPending || task.status === 'Ongoing')"
+                        [class.bg-danger]="!task.isCompleted && task.status === 'Overdue'"
+                        [class.bg-info]="!task.isCompleted && !task.isPending && task.status !== 'Ongoing' && task.status !== 'Overdue'">
+                    {{ task.status }}
+                  </span>
+                </div>
+                <div class="card-body">
+                  <div class="row mb-2" *ngIf="task.description">
+                    <div class="col-md-12"><strong>Description:</strong></div>
+                    <div class="col-md-12 mt-2">{{ task.description }}</div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-md-4"><strong>Hours:</strong></div>
+                    <div class="col-md-8">{{ task.totalHours || 0 }} hours</div>
+                  </div>
+                  <!-- <div class="row mb-2" *ngIf="task.dueDate">
+                    <div class="col-md-4"><strong>Due Date:</strong></div>
+                    <div class="col-md-8">{{ formatDate(task.dueDate) }}</div>
+                  </div> -->
+
+                  <!-- Comments Section -->
+                  <div class="mt-3" *ngIf="task.comments && task.comments.length > 0">
+                    <h6>Comments ({{ task.comments.length }})</h6>
+                    <hr>
+                    <div class="comments-container" style="max-height: 200px; overflow-y: auto;">
+                      <div *ngFor="let comment of task.comments" class="comment-card p-2 mb-2 border-left border-primary rounded">
+                        <div class="d-flex justify-content-between">
+                          <small class="text-muted">{{ formatCommentDate(comment.date) }}</small>
+                          <small class="text-muted">{{ (comment.minutes / 60).toFixed(1) }} hours</small>
+                        </div>
+                        <div class="comment-text mt-1" [innerHTML]="comment.text"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -128,12 +209,13 @@
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h6 class="mb-0">{{ task.taskName }}</h6>
-                  <span class="badge" [ngClass]="{
-                    'bg-success': task.status === 'Completed',
-                    'bg-warning': task.status === 'Ongoing',
-                    'bg-danger': task.status === 'Overdue',
-                    'bg-info': task.status !== 'Completed' && task.status !== 'Ongoing' && task.status !== 'Overdue'
-                  }">{{ task.status }}</span>
+                  <span class="badge"
+                        [class.bg-success]="task.isCompleted || task.status === 'Completed'"
+                        [class.bg-warning]="!task.isCompleted && (task.isPending || task.status === 'Ongoing')"
+                        [class.bg-danger]="!task.isCompleted && task.status === 'Overdue'"
+                        [class.bg-info]="!task.isCompleted && !task.isPending && task.status !== 'Ongoing' && task.status !== 'Completed' && task.status !== 'Overdue'">
+                    {{ task.status }}
+                  </span>
                 </div>
                 <div class="card-body">
                   <!-- <div class="row mb-2">

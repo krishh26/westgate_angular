@@ -28,6 +28,10 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   selectedDate: string = '';
   showTaskDetails: boolean = false;
 
+  // Tasks filtered by status display
+  tasksByStatus: any[] = [];
+  statusFilterTitle: string = '';
+
   public lineChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: [{
@@ -188,6 +192,13 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
   onDateChange() {
     if (this.startDate && this.endDate) {
+      // Clear any task status view
+      this.clearTaskStatusView();
+
+      // Also clear task details from chart clicks
+      this.showTaskDetails = false;
+      this.selectedTaskDetails = [];
+
       this.getTaskGraphData();
     }
   }
@@ -700,6 +711,9 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   toggleUserSelection(userId: string): void {
     if (!userId) return;
 
+    // Clear any task status view that might be displayed
+    this.clearTaskStatusView();
+
     const index = this.selectedUserIds.indexOf(userId);
     if (index > -1) {
       this.selectedUserIds.splice(index, 1);
@@ -711,6 +725,11 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     this.getTaskGraphData();
   }
 
+  // Clear the tasks by status view
+  clearTaskStatusView(): void {
+    this.tasksByStatus = [];
+    this.statusFilterTitle = '';
+  }
 
   getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
@@ -1029,5 +1048,128 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     }
 
     return 0;
+  }
+
+  // Show tasks filtered by status for a specific user
+  showTasksByStatus(userId: string, status: string): void {
+    // Clear existing tasks
+    this.tasksByStatus = [];
+
+    // Hide any task details showing from chart clicks
+    this.showTaskDetails = false;
+    this.selectedTaskDetails = [];
+
+    const userName = this.getUserName(userId);
+    this.statusFilterTitle = `${status} Tasks for ${userName}`;
+
+    // Show loading state
+    this.showLoader = true;
+
+    // Ensure dates are in YYYY-MM-DD format for API
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(this.endDate);
+
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const formattedEndDate = endDate.toISOString().split('T')[0];
+
+    // Prepare request parameters
+    const params: any = {
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+      userIds: userId
+    };
+
+    // Add status filter, converting to match API expectations
+    if (status === 'Completed') {
+      // Try both approaches to ensure compatibility
+      params.status = 'complete';
+      params.isCompleted = true;
+    } else if (status === 'Pending') {
+      params.status = 'pending';
+      params.isPending = true;
+    }
+
+    console.log(`Fetching ${status} tasks for user ${userName} with params:`, params);
+
+    // Call API with status filter
+    this.superadminService.getTaskGraph(params).subscribe(
+      (response) => {
+        this.showLoader = false;
+        if (response?.status === true && response.data) {
+          // Process tasks from the response
+          this.processTasksResponse(response.data, userId, status);
+        } else {
+          this.notificationService.showError(response?.message || `Failed to fetch ${status} tasks`);
+        }
+      },
+      (error) => {
+        this.showLoader = false;
+        this.notificationService.showError(`Failed to fetch ${status} tasks`);
+      }
+    );
+  }
+
+  // Process the task response data and extract tasks
+  private processTasksResponse(data: any, userId: string, status: string): void {
+    this.tasksByStatus = [];
+
+    if (!data) {
+      this.notificationService.showInfo(`No ${status} tasks found for this user.`);
+      return;
+    }
+
+    // Try to find user data in different possible response formats
+    let tasks: any[] = [];
+
+    // Check for tasks in byUser format
+    if (data.byUser && Array.isArray(data.byUser)) {
+      const userData = data.byUser.find((u: any) =>
+        u.user && (u.user.id === userId || u.user._id === userId)
+      );
+
+      if (userData && userData.tasks && Array.isArray(userData.tasks)) {
+        tasks = userData.tasks;
+      }
+    }
+
+    // If no tasks found in byUser, try direct tasks array
+    if (tasks.length === 0 && data.tasks && Array.isArray(data.tasks)) {
+      tasks = data.tasks;
+    }
+
+    // Filter tasks by status if needed
+    if (tasks.length > 0) {
+      this.tasksByStatus = tasks.filter((task: any) => {
+        if (status === 'Completed') {
+          // Primarily use isCompleted flag if available
+          if (task.isCompleted !== undefined) {
+            return task.isCompleted === true;
+          }
+          // Fallback to status field
+          const taskStatus = (task.status || '').toLowerCase();
+          return taskStatus === 'complete' || taskStatus === 'completed';
+        } else if (status === 'Pending') {
+          // Primarily use isPending flag if available
+          if (task.isPending !== undefined) {
+            return task.isPending === true;
+          }
+          // Otherwise check that isCompleted is false or status isn't complete
+          if (task.isCompleted !== undefined) {
+            return !task.isCompleted;
+          }
+          // Last fallback to status field
+          const taskStatus = (task.status || '').toLowerCase();
+          return taskStatus !== 'complete' && taskStatus !== 'completed';
+        }
+        return true;
+      });
+    }
+
+    // Log result and show message if no tasks found
+    console.log(`Found ${this.tasksByStatus.length} ${status} tasks for user ID ${userId}`);
+
+    if (this.tasksByStatus.length === 0) {
+      this.notificationService.showInfo(`No ${status} tasks found for this user.`);
+    }
   }
 }
