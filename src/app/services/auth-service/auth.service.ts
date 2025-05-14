@@ -57,9 +57,27 @@ export class AuthService {
       .patch<any>(this.baseUrl + AuthEndPoint.CHANGE_PASSWORD + '/' + id, payload );
   }
 
-  getUserList(userRoles: string): Observable<any> {
+  getUserList(userRoles: string, additionalParams?: any): Observable<any> {
     // Construct parameters
     let params = new HttpParams().set('userRoles', userRoles);
+
+    // Add additional parameters if provided
+    if (additionalParams) {
+      // Add date filter parameters if present
+      if (additionalParams.startDate) {
+        params = params.set('startDate', additionalParams.startDate);
+      }
+      if (additionalParams.endDate) {
+        params = params.set('endDate', additionalParams.endDate);
+      }
+
+      // Add any other additional parameters that might be in the payload
+      Object.keys(additionalParams).forEach(key => {
+        if (key !== 'role' && key !== 'startDate' && key !== 'endDate') {
+          params = params.set(key, additionalParams[key]);
+        }
+      });
+    }
 
     // Make the GET request with parameters
     return this.httpClient.get<any>(this.baseUrl + '/user/list', { params: params });

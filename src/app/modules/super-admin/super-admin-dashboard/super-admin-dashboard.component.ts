@@ -83,7 +83,9 @@ export class SuperAdminDashboardComponent {
     }
 
     console.log("Filtering data from", startDate, "to", endDate);
+    this.resetPagination(); // Reset pagination when applying new filters
     this.getProjectDetails(true);
+    this.getManageUserList(true); // Also update supplier list with date filter
   }
 
   onDurationChange(duration: 'yearly' | 'monthly' | 'weekly' | 'daily') {
@@ -266,9 +268,21 @@ export class SuperAdminDashboardComponent {
   }
 
 
-  getManageUserList() {
+  getManageUserList(dateFilter?: boolean) {
     this.showLoader = true;
-    this.authservice.getUserList('SupplierAdmin').subscribe(
+
+    // Build payload with date filter if needed
+    const payload: any = {
+      role: 'SupplierAdmin'
+    };
+
+    // Add date filter parameters if dateFilter is true
+    if (dateFilter) {
+      payload.startDate = this.trackerStartDate.value || '';
+      payload.endDate = this.trackerEndDate.value || '';
+    }
+
+    this.authservice.getUserList('SupplierAdmin', payload).subscribe(
       (response) => {
         this.supplierUserList = [];
         this.totalRecords = response?.data?.meta_data?.items;
@@ -294,5 +308,9 @@ export class SuperAdminDashboardComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Helper method to reset pagination when filters change
+  resetPagination(): void {
+    this.page = 1; // Reset to first page when filters are applied
+  }
 
 }
