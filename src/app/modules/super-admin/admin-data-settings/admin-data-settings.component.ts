@@ -23,6 +23,8 @@ export class AdminDataSettingsComponent implements OnInit {
   success: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
+  editExpertiseForm: FormGroup;
+  selectedExpertise: any = null;
   roleData: any = {
     name: '',
     otherRoles: []
@@ -32,6 +34,7 @@ export class AdminDataSettingsComponent implements OnInit {
   newOtherRole: string = '';
   otherRoles: string[] = [];
   submitted: boolean = false;
+  editSubmitted: boolean = false;
   searchQuery: string = '';
   searchTimeout: any;
   expertiseSearchQuery: string = '';
@@ -57,6 +60,11 @@ export class AdminDataSettingsComponent implements OnInit {
     this.expertiseForm = this.fb.group({
       name: ['', [Validators.required]],
       type: ['', [Validators.required]]
+    });
+    this.editExpertiseForm = this.fb.group({
+      name: ['', [Validators.required]],
+      itemId: ['', [Validators.required]],
+      promoteToType: ['', [Validators.required]]
     });
   }
 
@@ -508,5 +516,47 @@ export class AdminDataSettingsComponent implements OnInit {
       this.technologySearchQuery = query;
       this.loadTechnologies();
     }, 300); // Wait for 300ms after user stops typing
+  }
+
+  openEditExpertiseModal(content: any, expertise: any): void {
+    this.selectedExpertise = expertise;
+    this.editSubmitted = false;
+    this.editExpertiseForm.patchValue({
+      name: expertise.name,
+      itemId: expertise._id,
+      promoteToType: this.selectedExpertiseType
+    });
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onSubmitEditExpertise(): void {
+    this.editSubmitted = true;
+    if (this.editExpertiseForm.invalid) {
+      return;
+    }
+
+    this.showLoader = true;
+    const payload = {
+      itemId: this.editExpertiseForm.value.itemId,
+      promoteToType: this.editExpertiseForm.value.promoteToType
+    };
+
+    this.superadminService.promoteExpertise(payload).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Expertise promoted successfully');
+          this.modalService.dismissAll();
+          this.loadExpertises();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to promote expertise');
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred while promoting expertise');
+        this.showLoader = false;
+      }
+    });
   }
 }

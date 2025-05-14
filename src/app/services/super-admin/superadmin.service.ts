@@ -63,6 +63,7 @@ export enum SuperAdminEndPoint {
   DELETE_TECHNOLOGY = '/tech-language/technologies/_id',
   DELETE_CASE_STUDY = '/case-study/delete/',
   WITHOUT_SUPPLIER_SUB_EXPERTISE_DROPDOWN = '/sub-expertise/list',
+  PROMOTE_EXPERTISE = '/web-user/masterlist/promote',
 }
 
 @Injectable({
@@ -778,6 +779,13 @@ export class SuperadminService {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.TASK_GRAPH,
       { params: queryParams }
+    );
+  }
+
+  promoteExpertise(payload: { itemId: string, promoteToType: string }): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.PROMOTE_EXPERTISE,
+      payload
     );
   }
 }
