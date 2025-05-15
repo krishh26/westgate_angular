@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdminDataSettingsComponent implements OnInit {
   selectedOption: string = 'technology';
-  selectedExpertiseType: string = 'technologies';
+  selectedExpertiseType: string = 'technologies-other';
   technologies: any[] = [];
   expertises: any[] = [];
   roles: any[] = [];
@@ -90,7 +90,15 @@ export class AdminDataSettingsComponent implements OnInit {
   }
 
   selectExpertiseType(type: string): void {
-    this.selectedExpertiseType = type;
+    if (type === 'technologies') {
+      this.selectedExpertiseType = 'technologies-other';
+    } else if (type === 'product') {
+      this.selectedExpertiseType = 'product-other';
+    } else if (type === 'domain') {
+      this.selectedExpertiseType = 'domain-other';
+    } else {
+      this.selectedExpertiseType = type;
+    }
     this.loadExpertises();
   }
 

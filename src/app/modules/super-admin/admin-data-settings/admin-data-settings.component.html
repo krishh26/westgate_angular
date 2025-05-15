@@ -88,24 +88,24 @@
                   <button
                     type="button"
                     class="btn px-4"
-                    [class.btn-primary]="selectedExpertiseType === 'technologies'"
-                    [class.btn-outline-primary]="selectedExpertiseType !== 'technologies'"
+                    [class.btn-primary]="selectedExpertiseType === 'technologies-other'"
+                    [class.btn-outline-primary]="selectedExpertiseType !== 'technologies-other'"
                     (click)="selectExpertiseType('technologies')">
                     Technologies
                   </button>
                   <button
                     type="button"
                     class="btn px-4"
-                    [class.btn-primary]="selectedExpertiseType === 'product'"
-                    [class.btn-outline-primary]="selectedExpertiseType !== 'product'"
+                    [class.btn-primary]="selectedExpertiseType === 'product-other'"
+                    [class.btn-outline-primary]="selectedExpertiseType !== 'product-other'"
                     (click)="selectExpertiseType('product')">
                     Products
                   </button>
                   <button
                     type="button"
                     class="btn px-4"
-                    [class.btn-primary]="selectedExpertiseType === 'domain'"
-                    [class.btn-outline-primary]="selectedExpertiseType !== 'domain'"
+                    [class.btn-primary]="selectedExpertiseType === 'domain-other'"
+                    [class.btn-outline-primary]="selectedExpertiseType !== 'domain-other'"
                     (click)="selectExpertiseType('domain')">
                     Domain
                   </button>
@@ -312,15 +312,15 @@
       <div class="mb-3">
         <label class="form-label d-block">Type</label>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="type" id="typeTechnologies" value="technologies">
+          <input class="form-check-input" type="radio" formControlName="type" id="typeTechnologies" value="technologies-other">
           <label class="form-check-label" for="typeTechnologies">Technologies</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="type" id="typeProduct" value="product">
+          <input class="form-check-input" type="radio" formControlName="type" id="typeProduct" value="product-other">
           <label class="form-check-label" for="typeProduct">Product</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="type" id="typeDomain" value="domain">
+          <input class="form-check-input" type="radio" formControlName="type" id="typeDomain" value="domain-other">
           <label class="form-check-label" for="typeDomain">Domain</label>
         </div>
         <div class="invalid-feedback" *ngIf="submitted && expertiseForm.get('type')?.errors?.['required']">
@@ -444,15 +444,15 @@
       <div class="mb-3">
         <label class="form-label d-block">Promote To Type</label>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeTechnologies" value="technologies">
+          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeTechnologies" value="technologies-other">
           <label class="form-check-label" for="editTypeTechnologies">Technologies</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeProduct" value="product">
+          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeProduct" value="product-other">
           <label class="form-check-label" for="editTypeProduct">Product</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeDomain" value="domain">
+          <input class="form-check-input" type="radio" formControlName="promoteToType" id="editTypeDomain" value="domain-other">
           <label class="form-check-label" for="editTypeDomain">Domain</label>
         </div>
         <div class="invalid-feedback" *ngIf="editSubmitted && editExpertiseForm.get('promoteToType')?.errors?.['required']">
