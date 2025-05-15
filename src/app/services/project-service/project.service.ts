@@ -76,7 +76,7 @@ export class ProjectService {
     startCreatedDate?: string,
     endCreatedDate?: string,
     categorisation?: string,
-    BidManagerAppointed?: string
+    assignBidManagerId?: string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -155,8 +155,8 @@ export class ProjectService {
     } if (params?.expired) { // Add this condition
       queryParams = queryParams.set('expired', params?.expired);
     }
-    if (params?.BidManagerAppointed) {
-      queryParams = queryParams.set('BidManagerAppointed', params?.BidManagerAppointed);
+    if (params?.assignBidManagerId) {
+      queryParams = queryParams.set('assignBidManagerId', params?.assignBidManagerId);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
@@ -189,7 +189,7 @@ export class ProjectService {
     endCreatedDate?: string,
     categorisation?: string,
     notRelatedDashboard?: boolean,
-    BidManagerAppointed?: string
+    assignBidManagerId?: string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -251,8 +251,8 @@ export class ProjectService {
       queryParams = queryParams.set('categorisation', params.categorisation.trim());
     }
 
-    if (params?.BidManagerAppointed) {
-      queryParams = queryParams.set('BidManagerAppointed', params?.BidManagerAppointed);
+    if (params?.assignBidManagerId) {
+      queryParams = queryParams.set('assignBidManagerId', params?.assignBidManagerId);
     }
 
     if (params?.clientType) {
@@ -309,7 +309,7 @@ export class ProjectService {
     endCreatedDate?: string,
     categorisation?: string,
     notRelatedDashboard?: boolean,
-    BidManagerAppointed?: string
+    assignBidManagerId?: string
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -393,8 +393,8 @@ export class ProjectService {
     } if (params?.expired) { // Add this condition
       queryParams = queryParams.set('expired', params?.expired);
     }
-    if (params?.BidManagerAppointed) {
-      queryParams = queryParams.set('BidManagerAppointed', params?.BidManagerAppointed);
+    if (params?.assignBidManagerId) {
+      queryParams = queryParams.set('assignBidManagerId', params?.assignBidManagerId);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }

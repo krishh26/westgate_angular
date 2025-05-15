@@ -168,11 +168,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
 
-    // Explicitly set BidManagerAppointed parameter with selected user ids
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    // Explicitly set assignBidManagerId parameter with selected user ids
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     console.log('Bid Managers Selected in search:', this.selectedBidUsers.map(user => user.name));
-    console.log('BidManagerAppointed param in search:', Payload.projectListStatusWiseTracker.BidManagerAppointed);
+    console.log('assignBidManagerId param in search:', Payload.projectListStatusWiseTracker.assignBidManagerId);
 
     this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
       (response) => {
@@ -224,7 +224,6 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
   searchtext() {
     this.showLoader = true;
-    // console.log('this is called', this.searchText);
 
     // Update payload with filters
     Payload.projectListStatusWiseTracker.keyword = this.searchText;
@@ -250,12 +249,16 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.valueRange =
       this.minValue + '-' + this.maxValue;
 
-    // Include new checkbox values as a comma-separated string
+    // Include checkbox values as a comma-separated string
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.categorisation =
       this.selectedCategorisation.join(',');
-    // Add BidManagerAppointed parameter with selected user ids
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+
+    // Explicitly set assignBidManagerId parameter with selected user ids
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+
+    console.log('Bid Managers Selected:', this.selectedBidUsers.map(user => user.name));
+    console.log('assignBidManagerId param:', Payload.projectListStatusWiseTracker.assignBidManagerId);
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -358,8 +361,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       }
     );
 
-    // Update BidManagerAppointed before getting project list
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    // Update assignBidManagerId before getting project list
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
     this.getProjectList();
   }
 
@@ -428,8 +431,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   paginate(page: number) {
     this.page = page;
 
-    // Make sure BidManagerAppointed is still set when paginating
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    // Make sure assignBidManagerId is still set when paginating
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     this.getProjectList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -452,8 +455,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
 
-    // Make sure BidManagerAppointed is explicitly set before API call
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    // Make sure assignBidManagerId is explicitly set before API call
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     if (type === 'feasibility') {
       Payload.projectListStatusWiseTracker.status = this.status || '';
@@ -533,9 +536,9 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
     }
 
-    // Make sure BidManagerAppointed is preserved during filtering
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
-    console.log('Filter operation - BidManagerAppointed param:', Payload.projectListStatusWiseTracker.BidManagerAppointed);
+    // Make sure assignBidManagerId is preserved during filtering
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+    console.log('Filter operation - assignBidManagerId param:', Payload.projectListStatusWiseTracker.assignBidManagerId);
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
@@ -565,8 +568,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       this.selectedBidUsers.push(user);
     }
 
-    // Update BidManagerAppointed in payload
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    // Update assignBidManagerId in payload
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     // Update the filtered project list
     this.searchtext();
@@ -581,8 +584,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   clearSelectedBidUsers() {
     this.selectedBidUsers = [];
 
-    // Clear BidManagerAppointed in payload
-    Payload.projectListStatusWiseTracker.BidManagerAppointed = '';
+    // Clear assignBidManagerId in payload
+    Payload.projectListStatusWiseTracker.assignBidManagerId = '';
 
     this.searchtext();
   }
