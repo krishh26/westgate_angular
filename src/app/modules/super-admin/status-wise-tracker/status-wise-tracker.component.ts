@@ -12,6 +12,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 
 @Component({
   selector: 'app-status-wise-tracker',
@@ -61,7 +62,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
-
+  BiduserList: any = [];
+  selectedBidUsers: any[] = [];
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -88,7 +90,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private router: Router,
     private projectService: ProjectService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private projectManagerService: ProjectManagerService,
   ) {
     // Initialize search subscription with debounce
     this.searchSubscription = this.searchSubject.pipe(
@@ -106,6 +109,28 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     });
     this.getDataByStatus();
     this.getProjectList();
+    this.getUserAllList();
+  }
+
+  getUserAllList() {
+    this.showLoader = true;
+    this.projectManagerService.getUserAllList().subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.BiduserList = response?.data?.filter(
+            (user: any) => user?.role === 'ProjectManager'
+          );
+          this.showLoader = false;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message);
+        this.showLoader = false;
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -142,6 +167,12 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.valueRange = this.minValue + '-' + this.maxValue;
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+
+    // Explicitly set BidManagerAppointed parameter with selected user ids
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+
+    console.log('Bid Managers Selected in search:', this.selectedBidUsers.map(user => user.name));
+    console.log('BidManagerAppointed param in search:', Payload.projectListStatusWiseTracker.BidManagerAppointed);
 
     this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
       (response) => {
@@ -223,6 +254,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.categorisation =
       this.selectedCategorisation.join(',');
+    // Add BidManagerAppointed parameter with selected user ids
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -325,6 +358,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       }
     );
 
+    // Update BidManagerAppointed before getting project list
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
     this.getProjectList();
   }
 
@@ -392,6 +427,10 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
   paginate(page: number) {
     this.page = page;
+
+    // Make sure BidManagerAppointed is still set when paginating
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+
     this.getProjectList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -412,6 +451,10 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
+
+    // Make sure BidManagerAppointed is explicitly set before API call
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+
     if (type === 'feasibility') {
       Payload.projectListStatusWiseTracker.status = this.status || '';
       Payload.projectListStatusWiseTracker.bidManagerStatus = '';
@@ -484,12 +527,15 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       // Clear other relevant parameters
       Payload.projectListStatusWiseTracker.status = '';
       Payload.projectListStatusWiseTracker.bidManagerStatus = '';
-      // Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else {
       // Use the existing filter logic for other statuses
       this.status = this.filterObject[value];
       Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
     }
+
+    // Make sure BidManagerAppointed is preserved during filtering
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+    console.log('Filter operation - BidManagerAppointed param:', Payload.projectListStatusWiseTracker.BidManagerAppointed);
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
@@ -506,5 +552,38 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       return false;
     }
     return this.viewComments.some((comment: any) => comment?.pinnedAt);
+  }
+
+  // Add new method to toggle user selection
+  toggleBidUserSelection(user: any) {
+    const index = this.selectedBidUsers.findIndex(selected => selected._id === user._id);
+    if (index > -1) {
+      // User is already selected, remove them
+      this.selectedBidUsers.splice(index, 1);
+    } else {
+      // User is not selected, add them
+      this.selectedBidUsers.push(user);
+    }
+
+    // Update BidManagerAppointed in payload
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = this.selectedBidUsers.map(user => user._id).join(',');
+
+    // Update the filtered project list
+    this.searchtext();
+  }
+
+  // Helper method to check if a user is selected
+  isUserSelected(userId: string): boolean {
+    return this.selectedBidUsers.some(user => user._id === userId);
+  }
+
+  // Method to clear all selected users
+  clearSelectedBidUsers() {
+    this.selectedBidUsers = [];
+
+    // Clear BidManagerAppointed in payload
+    Payload.projectListStatusWiseTracker.BidManagerAppointed = '';
+
+    this.searchtext();
   }
 }

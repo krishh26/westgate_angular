@@ -54,7 +54,8 @@ export const Payload = {
     startCreatedDate: '',
     endCreatedDate: '',
     categorisation: '',
-    supplierId: ''
+    supplierId: '',
+    BidManagerAppointed: ''
   },
 
   projectListSupplierwise: {
