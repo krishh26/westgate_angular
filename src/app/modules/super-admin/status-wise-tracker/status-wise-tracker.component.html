@@ -110,6 +110,8 @@
                         (change)="toggleBidUserSelection(user)">
                       <label class="form-check-label" [for]="'bidUser' + user._id">
                         {{ user.name }}
+                        <!-- Always show project count badge -->
+                        <span class="badge bg-secondary ms-1">{{ getBidManagerCount(user._id) || 0 }}</span>
                       </label>
                     </div>
                   </div>

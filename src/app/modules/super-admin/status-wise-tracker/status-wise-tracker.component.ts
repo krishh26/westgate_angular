@@ -64,6 +64,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   selectedStatuses: any[] = [];
   BiduserList: any = [];
   selectedBidUsers: any[] = [];
+  bidManagerCounts: { _id: string; name: string; email: string; projectCount: number }[] = [];
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -181,6 +182,10 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
+          // Store bid manager counts if available in response
+          if (response?.data?.bidManagerCounts) {
+            this.bidManagerCounts = response.data.bidManagerCounts;
+          }
 
           this.projectList.forEach((project: any) => {
             const dueDate = new Date(project.dueDate);
@@ -270,6 +275,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
             this.showLoader = false;
             this.projectList = response?.data?.data;
 
+            // Store bid manager counts if available in response
+            if (response?.data?.bidManagerCounts) {
+              this.bidManagerCounts = response.data.bidManagerCounts;
+            }
+
             this.projectList.forEach((project: any) => {
               const dueDate = new Date(project.dueDate);
               const currentDate = new Date();
@@ -351,6 +361,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
               count: BidStatusCount[status] || 0,
               value: BidStatusValue[status] || 0,
             }));
+
+          // Get bid manager counts if available
+          if (response.data.bidManagerCounts) {
+            this.bidManagerCounts = response.data.bidManagerCounts;
+          }
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -588,5 +603,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.assignBidManagerId = '';
 
     this.searchtext();
+  }
+
+  // Method to get project count for a specific bid manager
+  getBidManagerCount(userId: string): number | null {
+    const manager = this.bidManagerCounts.find(m => m._id === userId);
+    return manager ? manager.projectCount : null;
   }
 }
