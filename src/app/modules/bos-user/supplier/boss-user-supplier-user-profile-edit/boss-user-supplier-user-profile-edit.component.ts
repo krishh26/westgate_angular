@@ -7,10 +7,13 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+
 interface ExpertiseItem {
   itemId: string | null;
   name: string;
   type: string;
+  value?: string;
+  subExpertise?: string[];
 }
 
 @Component({
@@ -45,7 +48,8 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     technologyStack: [],
     keyClients: [],
     resourceSharingSupplier: false,
-    subcontractingSupplier: false
+    subcontractingSupplier: false,
+    expertiseICanDo: []
   };
 
   showLoader: boolean = false;
@@ -77,6 +81,19 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
 
   // Property for expertise type selection
   newExpertiseType: string = 'technologies';
+
+  // I Can Do properties
+  selectedExpertiseICanDoItems: any[] = [];
+  selectedSubExpertiseICanDoMap: { [key: number]: any[] } = {};
+  newExpertiseICanDoType: string = 'technologies';
+
+  // Add this property for tracking sub-expertise addition
+  addingNewSubExpertise: boolean = false;
+
+  // Separate properties for I Can Do
+  expertiseICanDoDropdownOptions: ExpertiseItem[] = [];
+  subExpertiseICanDoOptions: string[] = [];
+  subExpertiseICanDoInput$ = new Subject<string>();
 
   constructor(
     private notificationService: NotificationService,
@@ -147,14 +164,31 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
     this.loadExpertiseOptions();
     this.loadSubExpertiseOptions();
     this.getExpertiseDropdownData();
+    this.getExpertiseICanDoDropdownData();
     this.getSubExpertiseDropdownData();
+    this.getSubExpertiseICanDoDropdownData();
+
     // Load dropdown data
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
-    this.getCategoryDomains();
+
     // Initialize selections from supplier details
     this.initializeSelectionsFromSupplierDetails();
+
+    // Add fallback options if needed
+    if (this.subExpertiseOptions.length === 0) {
+      this.addFallbackSubExpertiseOptions();
+    }
+    if (this.subExpertiseICanDoOptions.length === 0) {
+      this.addFallbackSubExpertiseICanDoOptions();
+    }
+
+    // Initialize expertiseDropdownOptions with value property
+    this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => ({
+      ...item,
+      value: item.name
+    }));
   }
 
   getCategoryDomains() {
@@ -865,12 +899,10 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
   }
 
   hasInvalidExpertise(): boolean {
-    if (!this.supplierDetails.expertise || this.supplierDetails.expertise.length === 0) {
-      return false; // No expertise selected yet, so not invalid
-    }
-
-    return this.supplierDetails.expertise.some((exp: any) =>
-      !exp.subExpertise || exp.subExpertise.length === 0
+    return this.supplierDetails.expertise.some((expertise: ExpertiseItem) =>
+      !expertise.subExpertise || expertise.subExpertise.length === 0
+    ) || this.supplierDetails.expertiseICanDo.some((expertise: ExpertiseItem) =>
+      !expertise.subExpertise || expertise.subExpertise.length === 0
     );
   }
 
@@ -977,5 +1009,225 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit {
         this.showLoader = false;
       }
     );
+  }
+
+  // Add method for getting I Can Do expertise dropdown data
+  getExpertiseICanDoDropdownData() {
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        if (response?.status || response?.data) {
+          const data = response.data || response;
+          if (Array.isArray(data)) {
+            this.expertiseICanDoDropdownOptions = data.map((item: any) => ({
+              itemId: item.itemId || item._id,
+              name: item.name,
+              type: item.type || 'technologies',
+              value: item.name
+            }));
+          }
+        } else {
+          this.notificationService.showError('Failed to fetch I Can Do expertise data');
+          this.expertiseICanDoDropdownOptions = [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError('Error fetching I Can Do expertise data');
+        this.showLoader = false;
+        this.expertiseICanDoDropdownOptions = [];
+      }
+    );
+  }
+
+  getSubExpertiseICanDoDropdownData(searchText: string = '') {
+    this.showLoader = true;
+    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.subExpertiseICanDoOptions = response.data || [];
+        } else {
+          this.notificationService.showError('Failed to fetch I Can Do sub-expertise dropdown data');
+          this.addFallbackSubExpertiseICanDoOptions();
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError('Error fetching I Can Do sub-expertise dropdown data');
+        this.addFallbackSubExpertiseICanDoOptions();
+        this.showLoader = false;
+      }
+    );
+  }
+
+  addFallbackSubExpertiseOptions() {
+    this.subExpertiseOptions = [
+      'Banking',
+      'Information Technology (IT)',
+      'Education',
+      'Healthcare',
+      'Insurance'
+    ];
+  }
+
+  addFallbackSubExpertiseICanDoOptions() {
+    this.subExpertiseICanDoOptions = [
+      'Banking',
+      'Information Technology (IT)',
+      'Education',
+      'Healthcare',
+      'Insurance'
+    ];
+  }
+
+  // I Can Do functionality methods
+  removeExpertiseICanDo(index: number) {
+    this.supplierDetails.expertiseICanDo.splice(index, 1);
+    delete this.selectedSubExpertiseICanDoMap[index];
+  }
+
+  removeSubExpertiseICanDo(expertiseIndex: number, subExpertiseIndex: number) {
+    this.supplierDetails.expertiseICanDo[expertiseIndex].subExpertise.splice(subExpertiseIndex, 1);
+  }
+
+  onSubExpertiseICanDoChange(expertiseIndex: number, selectedItems: any) {
+    this.selectedSubExpertiseICanDoMap[expertiseIndex] = selectedItems;
+  }
+
+  addMultipleSubExpertiseICanDo(expertiseIndex: number) {
+    if (this.selectedSubExpertiseICanDoMap[expertiseIndex] && this.selectedSubExpertiseICanDoMap[expertiseIndex].length > 0) {
+      const expertise = this.supplierDetails.expertiseICanDo[expertiseIndex];
+      this.selectedSubExpertiseICanDoMap[expertiseIndex].forEach(subExpertise => {
+        if (!expertise.subExpertise.includes(subExpertise)) {
+          expertise.subExpertise.push(subExpertise);
+        }
+      });
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
+    }
+  }
+
+  onAddTagICanDo = (name: string) => {
+    return new Promise<any>((resolve) => {
+      if (!this.newExpertiseICanDoType) {
+        this.notificationService.showError('Please select a type for the new expertise');
+        resolve(null);
+        return;
+      }
+
+      const newExpertise = {
+        name: name,
+        type: this.newExpertiseICanDoType,
+        value: name
+      };
+
+      this.superadminService.createCustomExpertise(newExpertise).subscribe(
+        (response) => {
+          if (response?.status) {
+            this.notificationService.showSuccess('Expertise added successfully');
+            resolve(newExpertise);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add expertise');
+            resolve(null);
+          }
+        },
+        (error) => {
+          this.notificationService.showError('Error adding expertise');
+          resolve(null);
+        }
+      );
+    });
+  }
+
+  addSelectedExpertiseICanDo() {
+    if (this.selectedExpertiseICanDoItems && this.selectedExpertiseICanDoItems.length > 0) {
+      this.selectedExpertiseICanDoItems.forEach(item => {
+        // Check if this expertise already exists
+        const exists = this.supplierDetails.expertiseICanDo.some((exp: ExpertiseItem) => exp.name === item.name);
+        if (!exists) {
+          this.supplierDetails.expertiseICanDo.push({
+            name: item.name,
+            type: item.type || this.newExpertiseICanDoType,
+            itemId: item.itemId,
+            value: item.name,
+            subExpertise: []
+          });
+        }
+      });
+      this.selectedExpertiseICanDoItems = [];
+    }
+  }
+
+  onAddTagSubExpertise = (name: string) => {
+    if (!name.trim()) {
+      return null;
+    }
+
+    this.addingNewSubExpertise = true;
+    const newSubExpertise = name.trim();
+
+    // Show loader
+    this.showLoader = true;
+
+    // Call the API to add the new sub-expertise
+    this.superadminService.addSubExpertiseByName(newSubExpertise).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          // Add to local options array
+          if (!this.subExpertiseOptions.includes(newSubExpertise)) {
+            this.subExpertiseOptions.push(newSubExpertise);
+          }
+          if (!this.subExpertiseICanDoOptions.includes(newSubExpertise)) {
+            this.subExpertiseICanDoOptions.push(newSubExpertise);
+          }
+          this.notificationService.showSuccess('Sub-expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add sub-expertise');
+        }
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add sub-expertise');
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      }
+    });
+
+    // Return the new sub-expertise so it appears in the dropdown immediately
+    return newSubExpertise;
+  }
+
+  toggleSelectAllSubExpertise(expertiseIndex: number, event: any) {
+    if (event.target.checked) {
+      this.selectedSubExpertiseMap[expertiseIndex] = [...this.subExpertiseOptions];
+    } else {
+      this.selectedSubExpertiseMap[expertiseIndex] = [];
+    }
+  }
+
+  toggleSelectAllExpertise(event: any) {
+    if (event.target.checked) {
+      this.selectedExpertiseItems = [...this.expertiseDropdownOptions];
+    } else {
+      this.selectedExpertiseItems = [];
+    }
+  }
+
+  toggleSelectAllExpertiseICanDo(event: any) {
+    if (event.target.checked) {
+      this.selectedExpertiseICanDoItems = [...this.expertiseDropdownOptions];
+    } else {
+      this.selectedExpertiseICanDoItems = [];
+    }
+  }
+
+  toggleSelectAllSubExpertiseICanDo(expertiseIndex: number, event: any) {
+    if (event.target.checked) {
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [...this.subExpertiseICanDoOptions];
+    } else {
+      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
+    }
   }
 }
