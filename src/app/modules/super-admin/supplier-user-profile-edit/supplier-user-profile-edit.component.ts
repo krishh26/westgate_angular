@@ -829,9 +829,9 @@ export class SupplierUserProfileEditComponent implements OnInit {
   }
 
   hasInvalidExpertise(): boolean {
-    return this.supplierDetails.expertise.some((expertise: ExpertiseItem) => 
+    return this.supplierDetails.expertise.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
-    ) || this.supplierDetails.expertiseICanDo.some((expertise: ExpertiseItem) => 
+    ) || this.supplierDetails.expertiseICanDo.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
     );
   }
