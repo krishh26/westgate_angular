@@ -253,7 +253,10 @@
                   </td>
                   <td v-align="middle">{{ item?.BOSID }}</td>
                   <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
-                  <td>{{ item?.dueDate | date : "dd/MM/yyyy, h:mm a" }}</td>
+                  <td>
+                    {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                    {{ item.bidsubmissiontime }}
+                  </td>
                   <td>{{ item?.status }}</td>
                   <td>{{ item?.bidManagerStatus }}</td>
                   <td>

@@ -170,7 +170,10 @@
                   </td>
                   <td v-align="middle">{{ item?.BOSID }}</td>
                   <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
-                  <td>{{ item?.dueDate | date : "dd/MM/yyyy, h:mm a" }}</td>
+                  <td>
+                    {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                    {{ item.bidsubmissiontime }}
+                  </td>
                   <td>
                     <ng-container *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
                       <span>Waiting for approval</span>

@@ -90,7 +90,7 @@ export class FailAproveRejectComponent {
 
   bidstatusList = [
     { bidvalue: 'Awaiting', bidstatus: 'Awaiting' },
-    { bidvalue: 'InSolution', bidstatus: 'In Soulution' },
+    { bidvalue: 'InSolution', bidstatus: 'In Solution' },
     { bidvalue: 'NotAwarded', bidstatus: 'Not Awarded' },
     { bidvalue: 'Awarded', bidstatus: 'Awarded' },
     { bidvalue: 'Dropped after feasibility', bidstatus: 'Dropped after feasibility' },
