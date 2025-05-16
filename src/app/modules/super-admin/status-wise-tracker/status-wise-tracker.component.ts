@@ -330,7 +330,10 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       endDate,
       expired: this.isExpired, // Pass expired value
       categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
+      assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','), // Add bid manager IDs
     };
+
+    console.log('getDataByStatus - assignBidManagerId:', payload.assignBidManagerId);
 
     // Call the service to fetch data
     this.supplierService.getDataBYStatus(payload).subscribe(
@@ -557,6 +560,9 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
+
+    // Also refresh the status data with the new filters
+    this.getDataByStatus();
   }
 
   showComments(data: any) {
@@ -609,5 +615,20 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   getBidManagerCount(userId: string): number | null {
     const manager = this.bidManagerCounts.find(m => m._id === userId);
     return manager ? manager.projectCount : null;
+  }
+
+  // Method for ng-select dropdown selection change
+  onBidManagerSelectionChange() {
+    // Update assignBidManagerId in payload
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+
+    console.log('Bid Manager selection changed. Selected managers:', this.selectedBidUsers.map(user => user.name));
+    console.log('onBidManagerSelectionChange - assignBidManagerId:', Payload.projectListStatusWiseTracker.assignBidManagerId);
+
+    // Update the filtered project list
+    this.searchtext();
+
+    // Also update the status counts and values
+    this.getDataByStatus();
   }
 }

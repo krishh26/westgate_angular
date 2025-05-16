@@ -89,32 +89,15 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-12">
-                  <!-- Display Selected Users as Badges at the top -->
-                  <div *ngIf="selectedBidUsers.length > 0" class="alert alert-primary mb-3">
-                    <strong>Selected Bid Managers:</strong>
-                    <div class="mt-2">
-                      <span class="badge bg-primary me-2 mb-1" *ngFor="let user of selectedBidUsers">
-                        {{ user.name }}
-                        <i class="bi bi-x-circle-fill ms-1" style="cursor: pointer;" (click)="toggleBidUserSelection(user)"></i>
-                      </span>
-                    </div>
-                  </div>
-                  <!-- User Checkboxes -->
-                  <div class="d-flex flex-wrap">
-                    <div *ngFor="let user of BiduserList" class="form-check me-3 mb-2">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        [id]="'bidUser' + user._id"
-                        [checked]="isUserSelected(user._id)"
-                        (change)="toggleBidUserSelection(user)">
-                      <label class="form-check-label" [for]="'bidUser' + user._id">
-                        {{ user.name }}
-                        <!-- Always show project count badge -->
-                        <span class="badge bg-secondary ms-1">{{ getBidManagerCount(user._id) || 0 }}</span>
-                      </label>
-                    </div>
-                  </div>
+                  <ng-select
+                    [items]="BiduserList"
+                    bindLabel="name"
+                    [multiple]="true"
+                    [(ngModel)]="selectedBidUsers"
+                    placeholder="Select Bid Managers"
+                    (change)="onBidManagerSelectionChange()"
+                    class="custom-ng-select">
+                  </ng-select>
                 </div>
               </div>
             </div>

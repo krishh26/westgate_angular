@@ -72,6 +72,9 @@ export class SupplierAdminService {
     if (params.expired) {
       queryParams = queryParams.set('expired', params.expired);
     }
+    if (params.assignBidManagerId) {
+      queryParams = queryParams.set('assignBidManagerId', params.assignBidManagerId);
+    }
 
     return this.httpClient.get<any>(url, { params: queryParams });
   }
