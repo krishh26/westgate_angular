@@ -75,13 +75,9 @@ export class ProjectMangerProfileComponent implements OnInit {
 
   userDataForm = {
     name: new FormControl("", [Validators.required,]),
-    location: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required]),
-    phoneNumber: new FormControl("", [Validators.required]),
-    jobTitle: new FormControl("", [Validators.required]),
-    professionalSkill: new FormControl("", [Validators.required]),
-    reportTo: new FormControl("", [Validators.required]),
-    manages: new FormControl("", [Validators.required]),
+    role: new FormControl({ value: "", disabled: true }),
+    email: new FormControl({ value: "", disabled: true }),
+    createdAt: new FormControl({ value: "", disabled: true }),
   };
 
   userForm = new FormGroup(this.userDataForm, []);
@@ -102,7 +98,17 @@ export class ProjectMangerProfileComponent implements OnInit {
         console.log('response.data', response.data);
         this.userForm.controls['email'].setValue(response?.data?.email || "");
         this.userForm.controls['name'].setValue(response?.data?.name || "");
-        this.userForm.controls['location'].setValue(response?.data?.location || "");
+        this.userForm.controls['role'].setValue(response?.data?.role || "");
+
+        // Format the created date if available
+        if (response?.data?.createdAt) {
+          const createdDate = new Date(response.data.createdAt);
+          // Format date as dd/MM/yyyy
+          const day = String(createdDate.getDate()).padStart(2, '0');
+          const month = String(createdDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+          const year = createdDate.getFullYear();
+          this.userForm.controls['createdAt'].setValue(`${day}/${month}/${year}`);
+        }
       }
     }, (error) => {
       this.notificationService.showError(error?.error?.message || 'Error');
