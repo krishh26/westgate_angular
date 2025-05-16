@@ -1430,6 +1430,9 @@ export class ProjectManagerProjectDetailsComponent {
 
   canSaveFeasibilityStatus(): boolean {
     if (!this.feasibilityStatus) return false;
+    if (this.feasibilityStatus === 'Fail') {
+      return this.failStatusReasons.some(reason => reason.comment && reason.comment.trim().length > 0);
+    }
     return this.newCommentAddedForStatus;
   }
 }
