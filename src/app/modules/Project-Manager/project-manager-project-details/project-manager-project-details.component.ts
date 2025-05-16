@@ -57,6 +57,8 @@ export class ProjectManagerProjectDetailsComponent {
   failStatusImage: any;
   filteredTasks: any = [];
   showAllLogs: boolean = false;
+  newCommentAddedForStatus: boolean = false;
+  newCommentAddedForBidStatus: boolean = false;
   documentUploadType: any = {
     subContractDocument: 'SubContract',
     economicalPartnershipQuery: 'economicalPartnershipQuery',
@@ -599,12 +601,14 @@ export class ProjectManagerProjectDetailsComponent {
     this.status = status;
     this.commentData = [];
     this.bidManagerStatusComment.reset();
+    this.newCommentAddedForBidStatus = false;
   }
 
   statusFeasibilityChange(status: string) {
     this.feasibilityStatus = status;
     this.feasibilityCommentData = [];
     this.feasibilityStatusComment.reset();
+    this.newCommentAddedForStatus = false;
   }
 
   pushStatus() {
@@ -625,6 +629,7 @@ export class ProjectManagerProjectDetailsComponent {
         bidManagerStatus: this.status,
         userId: this.loginUser?._id,
       });
+      this.newCommentAddedForBidStatus = true;
     }
     this.bidManagerStatusComment.reset();
   }
@@ -664,6 +669,7 @@ export class ProjectManagerProjectDetailsComponent {
         },
       ];
       console.log('New Comment Added:', this.feasibilityCommentData);
+      this.newCommentAddedForStatus = true;
     } else {
       console.log('Duplicate comment detected. Skipping push.');
     }
@@ -952,7 +958,7 @@ export class ProjectManagerProjectDetailsComponent {
       };
 
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason.value];
       }
 
       // Conditionally add the `subContracting` field if it is defined
@@ -1215,6 +1221,7 @@ export class ProjectManagerProjectDetailsComponent {
               'Project updated successfully'
             );
             this.isEditing = false;
+            this.newCommentAddedForBidStatus = false;
             this.getProjectDetails(); // Refresh project details after save
           } else {
             this.notificationService.showError(
@@ -1230,11 +1237,8 @@ export class ProjectManagerProjectDetailsComponent {
 
   isBidCommentValid(): boolean {
     // Validate if a comment exists for the selected status or is added
-    const hasComment = this.commentData.some(
-      (item) => item.bidManagerStatus === this.status
-    );
-    const hasUnaddedComment = this.bidManagerStatusComment.value && !hasComment;
-    return this.status && (hasComment || hasUnaddedComment);
+    if (!this.status) return false;
+    return this.newCommentAddedForBidStatus;
   }
 
   addFailReason() {
@@ -1320,7 +1324,7 @@ export class ProjectManagerProjectDetailsComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason.value];
       }
     }
 
@@ -1334,6 +1338,7 @@ export class ProjectManagerProjectDetailsComponent {
               'Project updated successfully'
             );
             this.isEditing = false;
+            this.newCommentAddedForStatus = false;
             this.getProjectDetails();
           } else {
             this.notificationService.showError(
@@ -1421,5 +1426,10 @@ export class ProjectManagerProjectDetailsComponent {
   }
   isSupplierSelected(supplierId: string): boolean {
     return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
+  }
+
+  canSaveFeasibilityStatus(): boolean {
+    if (!this.feasibilityStatus) return false;
+    return this.newCommentAddedForStatus;
   }
 }

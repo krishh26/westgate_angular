@@ -514,8 +514,12 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveFeasibilityStatus('save')" [class.disabled]="!isCommentValid() && status !== 'Fail'"
-                      class="btn btn-primary w-100">Save Status</a>
+                    <button
+                      (click)="saveFeasibilityStatus('save')"
+                      [disabled]="!canSaveFeasibilityStatus()"
+                      class="btn btn-primary w-100">
+                      Save Status
+                    </button>
                   </div>
                 </div>
               </ng-container>
@@ -686,10 +690,7 @@
               <ng-container>
                 <div class="row justify-content-end mb-2 mt-3">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveBidStatus('save')" [class.disabled]="
-                        !isBidCommentValid() &&
-                        status !== 'Dropped after feasibility'
-                      " class="btn btn-primary w-100">
+                    <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
                       Save Bid Status
                     </a>
                   </div>
@@ -1219,6 +1220,14 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
 
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
