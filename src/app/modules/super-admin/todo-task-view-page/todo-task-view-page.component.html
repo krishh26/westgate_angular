@@ -233,7 +233,7 @@
                       [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
 
                       <h6 *ngIf="comment?.comment == 'No comments available for this date'">
-                        {{ comment?.commentDate | date : "dd/MM/yyyy" }}
+                        {{ comment?.commentDate | date : "dd/MM/yyyy" }} 
                       </h6>
 
                       <div class="row align-items-center mb-3">
@@ -245,6 +245,8 @@
                               <span *ngIf="comment?.timeStart && comment?.timeEnd">
                                 ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
                               </span>
+                              <br>
+                              {{ comment?.minutes || '0' }} Min
                             </small>
                           </div>
                           <small class="user-role d-block">

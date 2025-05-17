@@ -14,6 +14,9 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+
 declare var bootstrap: any;
 @Component({
   selector: 'app-to-do-tasks-process-manager',
@@ -21,6 +24,8 @@ declare var bootstrap: any;
   styleUrls: ['./to-do-tasks-process-manager.component.scss']
 })
 export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -133,6 +138,18 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
       // Listen for modal close event
       this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   paginate(page: number) {

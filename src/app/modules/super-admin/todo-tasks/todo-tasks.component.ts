@@ -14,6 +14,9 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+
 declare var bootstrap: any;
 
 @Component({
@@ -23,6 +26,7 @@ declare var bootstrap: any;
   providers: [NgbActiveModal], // Add here
 })
 export class TodoTasksComponent implements OnInit, OnDestroy {
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -127,6 +131,18 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   paginate(page: number) {

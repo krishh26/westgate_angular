@@ -64,8 +64,8 @@
                 <div class="flex-grow-1">
                   <div class="form-group mb-0 position-relative">
                     <span class="input-icon"><i class="bi bi-search"></i></span>
-                    <input class="form-control control-search" placeholder="Search by Title" type="text"
-                      [(ngModel)]="searchText" (input)="searchtext()" />
+                    <input #searchInput class="form-control control-search" placeholder="Search by Title" type="text" />
+                    <!-- [(ngModel)]="searchText" (input)="searchtext()" -->
                   </div>
                 </div>
               </div>

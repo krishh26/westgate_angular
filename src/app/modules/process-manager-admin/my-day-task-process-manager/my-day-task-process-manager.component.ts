@@ -13,6 +13,9 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+
 declare var bootstrap: any;
 @Component({
   selector: 'app-my-day-task-process-manager',
@@ -55,6 +58,7 @@ export class MyDayTaskProcessManagerComponent {
   page: number = 1;
   pagesize: number = 50;
   totalRecords: number = 0;
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -84,7 +88,7 @@ export class MyDayTaskProcessManagerComponent {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
-    private spinner : NgxSpinnerService
+    private spinner: NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
@@ -101,6 +105,18 @@ export class MyDayTaskProcessManagerComponent {
       // Listen for modal close event
       this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   // Navigate to task detail page instead of opening modal

@@ -236,7 +236,8 @@
                           <div class="d-flex justify-content-between">
                             <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
                             <small class="comment-date" *ngIf="comment?.date">
-                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }} <br>
+                              {{ comment?.minutes || '0' }} Min
                             </small>
                           </div>
                           <small class="user-role d-block">
@@ -348,8 +349,7 @@
                       </button>
                     </div>
                     <div class="col-12 mb-2" *ngIf="modalTask?.myDay?.includes(loginUser?._id)">
-                      <button class="btn btn-primary w-100"
-                        (click)="removeTaskFromMyDay()">
+                      <button class="btn btn-primary w-100" (click)="removeTaskFromMyDay()">
                         Remove From My Day
                       </button>
                     </div>

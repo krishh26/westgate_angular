@@ -13,6 +13,9 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+
 declare var bootstrap: any;
 
 @Component({
@@ -21,6 +24,7 @@ declare var bootstrap: any;
   styleUrls: ['./my-day-tasks.component.scss']
 })
 export class MyDayTasksComponent {
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -101,6 +105,18 @@ export class MyDayTasksComponent {
       // Listen for modal close event
       this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   paginate(page: number) {

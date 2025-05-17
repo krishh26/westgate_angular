@@ -13,6 +13,9 @@ import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import Swal from 'sweetalert2';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+
 declare var bootstrap: any;
 @Component({
   selector: 'app-completed-tasks',
@@ -20,6 +23,7 @@ declare var bootstrap: any;
   styleUrls: ['./completed-tasks.component.scss']
 })
 export class CompletedTasksComponent {
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -101,6 +105,18 @@ export class CompletedTasksComponent {
       // Listen for modal close event
       this.modalElement.addEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   paginate(page: number) {
@@ -788,7 +804,7 @@ export class CompletedTasksComponent {
                 'Comment successfully deleted'
               );
               this.getTask();
-            //  window.location.reload();
+              //  window.location.reload();
             } else {
               this.notificationService.showError(response?.message);
             }
