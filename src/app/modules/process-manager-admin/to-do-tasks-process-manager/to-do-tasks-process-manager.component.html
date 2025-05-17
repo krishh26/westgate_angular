@@ -285,7 +285,15 @@
         <input class="form-control" placeholder="Enter Task Titles" cols="100" rows="3" [(ngModel)]="taskTitle" />
       </div>
       <div class="modal-body">
-        <textarea class="form-control" placeholder="Enter Task Description" [(ngModel)]="taskDetails"></textarea>
+        <label>Task Description</label>
+        <form [formGroup]="taskForm">
+          <div class="NgxEditor__Wrapper">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="editor" rows="5" formControlName="description" [disabled]="false"
+              [placeholder]="'Type here...'"></ngx-editor>
+          </div>
+        </form>
       </div>
       <div class="modal-body">
         <label>Due Date</label>

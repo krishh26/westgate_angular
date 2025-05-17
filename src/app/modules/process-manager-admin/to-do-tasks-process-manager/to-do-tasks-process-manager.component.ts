@@ -81,6 +81,22 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   private modalInstance: any;
   private hiddenEventSubscription!: Subscription;
 
+  // Editor related properties
+  editor!: Editor;
+  taskForm!: FormGroup;
+  @ViewChild('taskModal') taskModal!: ElementRef;
+
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private superService: SuperadminService,
     private notificationService: NotificationService,
@@ -90,12 +106,21 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
     private router: Router,
     private feasibilityService: FeasibilityService,
     private localStorageService: LocalStorageService,
+    private fb: FormBuilder,
     private spinner: NgxSpinnerService
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
   ngOnInit(): void {
+    // Initialize editor
+    this.editor = new Editor();
+
+    // Initialize task form
+    this.taskForm = this.fb.group({
+      description: ['', Validators.required]
+    });
+
     this.getTask();
     this.getUserAllList();
     this.getProjectList();
@@ -149,6 +174,9 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
     if (this.modalElement) {
       this.modalElement.removeEventListener('hidden.bs.modal', this.onModalClose.bind(this));
     }
+
+    // Destroy editor
+    this.editor.destroy();
   }
   onDueDateChange(date: NgbDate | null) {
     if (date) {
@@ -319,21 +347,32 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   }
 
   addTask() {
-    if (this.taskDetails.trim()) {
+    if (this.taskTitle.trim() && this.taskForm.valid) {
+      const description = this.taskForm.get('description')?.value;
+
       const payload = {
-        discription: this.taskDetails,
+        discription: description,
         task: this.taskTitle,
         status: 'Ongoing',
         dueDate: this.dueDate ? this.formatDate(this.dueDate) : null,
         assignTo: this.assignTo,
         type: this.type
       };
+
       this.superService.createTask(payload).subscribe(
         (response) => {
           if (response?.status === true) {
             this.notificationService.showSuccess('Task Created Successfully');
-            this.getTask();
-            // this.activeModal.close();
+            // Reset form
+            this.taskForm.reset();
+            this.taskTitle = '';
+            // Close modal
+            const modalElement = document.getElementById('exampleModal');
+            if (modalElement) {
+              const modal = bootstrap.Modal.getInstance(modalElement);
+              if (modal) modal.hide();
+            }
+            // Reload the page after modal is closed
             window.location.reload();
           } else {
             this.notificationService.showError(response?.message);
@@ -344,7 +383,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      this.notificationService.showError('Please Enter Task Details');
+      this.notificationService.showError('Please enter a task title and description');
     }
   }
 
