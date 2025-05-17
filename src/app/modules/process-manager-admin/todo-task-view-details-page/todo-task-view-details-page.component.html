@@ -36,7 +36,7 @@
                   </div>
                 </div>
 
-                <div [@slideInOut]="showSubtasks ? 'in' : 'out'" class="subtasks-content">
+                <div class="subtasks-content">
                   <!-- Existing Subtasks List -->
                   <div class="subtasks-container mb-4">
                     <div class="row g-2">
@@ -61,7 +61,7 @@
                   </div>
 
                   <!-- Add New Subtask Form -->
-                  <div class="add-subtask-form p-3">
+                  <div class="add-subtask-form p-3" *ngIf="showSubtasks">
                     <div class="row g-2">
                       <!-- First Row -->
                       <div class="col-md-6">
@@ -78,8 +78,7 @@
                       </div>
                       <div class="col-md-6">
                         <ng-select class="form-select custom-ng-select-option" placeholder="Assign to"
-                          [items]="userList" bindLabel="userName" bindValue="_id"
-                          [(ngModel)]="newSubtask.assignedTo">
+                          [items]="userList" bindLabel="userName" bindValue="_id" [(ngModel)]="newSubtask.assignedTo">
                         </ng-select>
                       </div>
                     </div>
@@ -332,7 +331,7 @@
                 <!-- Buttons in one row -->
                 <div class="detail-item mb-3">
                   <div class="row g-2">
-                    <div class="col-12 mb-2">
+                    <div class="col-12 mb-2" *ngIf="!modalTask?.myDay?.includes(loginUser?._id)">
                       <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus"
                         (click)="onChangeMyday('MyDay')">
                         Add to My Day
@@ -346,6 +345,12 @@
                     <div class="col-12 mb-2">
                       <button class="btn btn-secondary w-100" (click)="onChange('completedTask', false)">
                         Not Completed
+                      </button>
+                    </div>
+                    <div class="col-12 mb-2" *ngIf="modalTask?.myDay?.includes(loginUser?._id)">
+                      <button class="btn btn-primary w-100"
+                        (click)="removeTaskFromMyDay()">
+                        Remove From My Day
                       </button>
                     </div>
                   </div>

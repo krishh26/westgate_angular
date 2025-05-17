@@ -21,7 +21,7 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
   templateUrl: './todo-task-view-details-page.component.html',
   styleUrls: ['./todo-task-view-details-page.component.scss']
 })
-export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
+export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
@@ -179,7 +179,7 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
     this.showLoader = true;
     this.spinner.show();
     // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '',  this.page, 5000)
+    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, 5000)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
@@ -1198,4 +1198,38 @@ export class TodoTaskViewDetailsPageComponent  implements OnInit, OnDestroy {
       });
     }
   }
+
+  removeTaskFromMyDay() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want remove task from my day ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService.removeTaskFromMyDay(this.modalTask?._id, this.loginUser._id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Task successfully removed from my-day');
+              window.location.reload();
+              this.getTask();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.message);
+          }
+        );
+      }
+    });
+  }
+
 }
