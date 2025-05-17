@@ -72,8 +72,8 @@
           <div *ngFor="let subTaskData of task?.subtasks; let j = index">
             <div class="accordion-item mb-2">
               <h2 class="accordion-header" [id]="'flush-TodoList' + j">
-                <button class="accordion-button d-flex justify-content-between align-items-center sub-task-list-bg" type="button"
-                  [ngClass]="{
+                <button class="accordion-button d-flex justify-content-between align-items-center sub-task-list-bg"
+                  type="button" [ngClass]="{
                     'bg-light-yellow': task?.pickACategory === 'low',
                     'bg-light-green': task?.pickACategory === 'Medium',
                     'bg-light-orange': task?.pickACategory === 'High'
@@ -165,7 +165,8 @@
           </div>
           <div class="mb-3" *ngIf="modalTask?.project">
             <h6><strong>Status</strong></h6>
-            <p> {{ ['Fail', 'Not Releted'].includes(modalTask?.project?.adminStatus) ? 'Waiting For Approval' : modalTask?.project?.status }}</p>
+            <p> {{ ['Fail', 'Not Releted'].includes(modalTask?.project?.adminStatus) ? 'Waiting For Approval' :
+              modalTask?.project?.status }}</p>
           </div>
           <div class="mb-3" *ngIf="modalTask?.project">
             <h6><strong>Bid Status</strong></h6>
@@ -266,7 +267,8 @@
                       </option>
                     </optgroup>
                   </select>
-                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger">Time is required for Project Managers</small>
+                  <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger">Time is required for Project
+                    Managers</small>
                   <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                 </div>
               </div>
@@ -284,6 +286,9 @@
                 </button>
                 <button class="btn btn-sm btn-success mt-2" (click)="onChange('completedTask', true)">
                   Completed Task
+                </button>
+                <button class="btn btn-sm btn-primary mt-2" (click)="removeTaskFromMyDay(modalTask?._id)">
+                  Remove From My Day Task
                 </button>
               </div>
             </div>
