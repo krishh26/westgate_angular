@@ -83,7 +83,7 @@ export class BossUserAddProjectComponent {
       this.productForm.patchValue(response?.data)
     },
       error => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       })
   }
@@ -99,7 +99,7 @@ export class BossUserAddProjectComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -121,7 +121,7 @@ export class BossUserAddProjectComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -145,7 +145,7 @@ export class BossUserAddProjectComponent {
         }
       },
         error => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         })
     } else {
@@ -159,7 +159,7 @@ export class BossUserAddProjectComponent {
           this.showLoader = false;
         }
       }, (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       });
     }
@@ -181,7 +181,7 @@ export class BossUserAddProjectComponent {
           this.showLoader = false;
         }
       }, (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       });
     }
@@ -205,7 +205,7 @@ export class BossUserAddProjectComponent {
           this.showLoader = false;
         }
       }, (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       });
     }

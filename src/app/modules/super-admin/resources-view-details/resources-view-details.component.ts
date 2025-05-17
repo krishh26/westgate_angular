@@ -126,7 +126,7 @@ export class ResourcesViewDetailsComponent implements OnInit {
         },
         (error) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.spinner.hide();
         }
       );

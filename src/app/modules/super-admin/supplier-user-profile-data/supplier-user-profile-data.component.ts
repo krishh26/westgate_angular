@@ -84,7 +84,7 @@ export class SupplierUserProfileDataComponent {
           }
         }, (error) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });
@@ -110,7 +110,7 @@ export class SupplierUserProfileDataComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -157,7 +157,7 @@ export class SupplierUserProfileDataComponent {
           }
         }, (error: any) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });

@@ -210,7 +210,7 @@ export class CompletedTasksComponent {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
           this.spinner.hide();
         }
@@ -238,7 +238,7 @@ export class CompletedTasksComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -371,7 +371,7 @@ export class CompletedTasksComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -488,7 +488,7 @@ export class CompletedTasksComponent {
         this.spinner.hide();
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
         this.spinner.hide();
       }
@@ -513,7 +513,7 @@ export class CompletedTasksComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -545,7 +545,7 @@ export class CompletedTasksComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -580,7 +580,7 @@ export class CompletedTasksComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -750,7 +750,7 @@ export class CompletedTasksComponent {
                 this.spinner.hide();
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
                 this.showLoader = false;
                 this.spinner.hide();
               }
@@ -795,7 +795,7 @@ export class CompletedTasksComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }

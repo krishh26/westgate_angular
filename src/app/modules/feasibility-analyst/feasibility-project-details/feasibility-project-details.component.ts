@@ -280,7 +280,7 @@ export class FeasibilityProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -361,7 +361,7 @@ export class FeasibilityProjectDetailsComponent {
         }
       },
       (error: any) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -380,7 +380,7 @@ export class FeasibilityProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -524,7 +524,7 @@ export class FeasibilityProjectDetailsComponent {
       },
       (error) => {
         this.filteredTasks = []; // No records found
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -560,7 +560,7 @@ export class FeasibilityProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );

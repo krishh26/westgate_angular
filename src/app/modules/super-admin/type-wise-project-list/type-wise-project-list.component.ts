@@ -175,7 +175,7 @@ export class TypeWiseProjectListComponent {
           this.showLoader = false;
         }
       }, (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       });
     }
@@ -198,7 +198,7 @@ export class TypeWiseProjectListComponent {
           this.showLoader = false;
         }
       }, (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       });
     }
@@ -229,7 +229,7 @@ export class TypeWiseProjectListComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -246,7 +246,7 @@ export class TypeWiseProjectListComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -277,7 +277,7 @@ export class TypeWiseProjectListComponent {
 
   // Function to handle API errors
   private handleApiError(error: any) {
-    this.notificationService.showError(error?.message);
+    this.notificationService.showError(error?.error?.message || error?.message);
     this.showLoader = false;
   }
 
@@ -312,7 +312,7 @@ export class TypeWiseProjectListComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }

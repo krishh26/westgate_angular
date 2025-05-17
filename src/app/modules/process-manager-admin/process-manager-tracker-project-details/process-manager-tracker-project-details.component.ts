@@ -114,21 +114,21 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
   FeasibilityuserList: any = [];
   getDroppedAfterReasonList: any = [];
 
-    // Editor related properties
-    editor!: Editor;
-    taskForm!: FormGroup;
-    @ViewChild('taskModal') taskModal!: ElementRef;
+  // Editor related properties
+  editor!: Editor;
+  taskForm!: FormGroup;
+  @ViewChild('taskModal') taskModal!: ElementRef;
 
-    toolbar: Toolbar = [
-      ['bold', 'italic'],
-      ['underline', 'strike'],
-      ['code', 'blockquote'],
-      ['ordered_list', 'bullet_list'],
-      [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-      ['link', 'image'],
-      ['text_color', 'background_color'],
-      ['align_left', 'align_center', 'align_right', 'align_justify'],
-    ];
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
 
   constructor(
     private projectService: ProjectService,
@@ -158,8 +158,8 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
 
   ngOnInit(): void {
 
-     // Initialize editor
-     this.editor = new Editor();
+    // Initialize editor
+    this.editor = new Editor();
 
     this.getProjectDetails();
     this.getUserAllList();
@@ -236,7 +236,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
 
       this.feasibilityService.uploadDocument(data).subscribe(
         (response) => {
-          this.spinner.hide();
+
 
           if (response?.status) {
             // Sub-contract document
@@ -315,6 +315,8 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
               this.projectDetails.loginDetail.push(objToBePushed);
               this.loginName = '';
             }
+            this.summaryDetail('save');
+            this.spinner.hide();
 
             return this.notificationService.showSuccess(response?.message);
           } else {
@@ -361,7 +363,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         // failStatusReason: this.failStatusReasons,
       };
     }
-
+    this.spinner.show();
     // API call to update project details
     this.feasibilityService.updateProjectDetails(payload, this.projectDetails._id).subscribe(
       (response) => {
@@ -372,8 +374,10 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
+        this.spinner.hide();
       },
       (error) => {
+        this.spinner.hide();
         this.notificationService.showError('Failed to update project');
       }
     );
@@ -415,7 +419,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -474,7 +478,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error: any) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -493,7 +497,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -661,7 +665,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
       },
       (error) => {
         this.filteredTasks = []; // No records found
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -680,7 +684,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -721,7 +725,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -747,8 +751,8 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
     // If the URL is from AWS S3 or similar cloud storage, it might not have a file extension
     // Check for common image content-type indicators in the URL
     const containsImageKeywords = url.toLowerCase().includes('image') ||
-                                 url.toLowerCase().includes('picture') ||
-                                 url.toLowerCase().includes('photo');
+      url.toLowerCase().includes('picture') ||
+      url.toLowerCase().includes('photo');
 
     // Check for common image extensions. Strip any query parameters first
     const baseUrl = url.split('?')[0];
@@ -808,7 +812,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -842,7 +846,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
       }
     );
   }

@@ -324,7 +324,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
 
       }
     );
@@ -476,7 +476,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -624,7 +624,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
         }
       );
@@ -651,7 +651,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
 
       }
     );
@@ -685,7 +685,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
         }
       );
@@ -716,7 +716,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -751,7 +751,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -788,7 +788,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1035,7 +1035,7 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
                 this.spinner.hide();
               }
             );

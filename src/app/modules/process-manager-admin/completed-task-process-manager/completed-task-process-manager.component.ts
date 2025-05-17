@@ -211,7 +211,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
           this.spinner.hide();
           this.taskList = [];  // Clear the list on error
@@ -242,7 +242,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.spinner.hide();
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
       this.spinner.hide();
     });
@@ -376,7 +376,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -497,7 +497,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
         this.spinner.hide();
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
         this.spinner.hide();
       }
@@ -523,7 +523,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
         this.spinner.hide();
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
         this.spinner.hide();
       }
@@ -556,7 +556,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -591,7 +591,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -761,7 +761,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
                 this.spinner.hide();
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
                 this.showLoader = false;
                 this.spinner.hide();
               }

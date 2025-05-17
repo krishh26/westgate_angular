@@ -226,7 +226,7 @@ export class BossUserExpertiseViewComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }

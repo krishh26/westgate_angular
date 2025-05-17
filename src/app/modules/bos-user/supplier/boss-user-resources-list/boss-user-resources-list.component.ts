@@ -188,7 +188,7 @@ export class BossUserResourcesListComponent {
             this.notificationService.showError(response?.message);
           }
         }, (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });

@@ -89,7 +89,7 @@ export class BossUserSupplierUserProfileComponent {
           }
         }, (error) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });
@@ -115,7 +115,7 @@ export class BossUserSupplierUserProfileComponent {
         this.showLoader = false;
       }
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
   }
@@ -162,7 +162,7 @@ export class BossUserSupplierUserProfileComponent {
           }
         }, (error: any) => {
           this.showLoader = false;
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });

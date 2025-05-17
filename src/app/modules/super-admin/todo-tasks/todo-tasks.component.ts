@@ -211,7 +211,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
 
       }
     );
@@ -351,7 +351,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -504,7 +504,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
           this.spinner.hide();
         }
@@ -531,7 +531,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
 
       }
     );
@@ -568,7 +568,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
           this.spinner.hide();
         }
@@ -601,7 +601,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -639,7 +639,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -676,7 +676,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -924,7 +924,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
                 this.spinner.hide();
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
 
                 this.spinner.hide();
               }

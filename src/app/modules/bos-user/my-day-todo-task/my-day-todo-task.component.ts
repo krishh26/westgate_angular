@@ -170,7 +170,7 @@ export class MyDayTodoTaskComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -225,7 +225,7 @@ export class MyDayTodoTaskComponent {
                 this.showLoader = false;
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
                 this.showLoader = false;
               }
             );
@@ -302,7 +302,7 @@ export class MyDayTodoTaskComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );
@@ -322,7 +322,7 @@ export class MyDayTodoTaskComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -354,7 +354,7 @@ export class MyDayTodoTaskComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -554,7 +554,7 @@ export class MyDayTodoTaskComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -669,7 +669,7 @@ export class MyDayTodoTaskComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );

@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -9,6 +9,8 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { BossUserBulkEntryComponent } from '../../bos-user/boss-user-bulk-entry/boss-user-bulk-entry.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { debounceTime, map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-process-manager-tracker',
@@ -76,6 +78,7 @@ export class ProcessManagerTrackerComponent {
   submissionEndDate: FormControl = new FormControl('');
   viewComments: any;
   myControl = new FormControl();
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -92,6 +95,18 @@ export class ProcessManagerTrackerComponent {
     });
     this.getDataByStatus();
     this.getProjectList();
+  }
+
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'input')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(500)
+      )
+      .subscribe(value => {
+        this.searchText = value;
+        this.searchtext(); // Call your search method
+      });
   }
 
   updateCategorisation(value: string, event: Event) {
@@ -175,7 +190,7 @@ export class ProcessManagerTrackerComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );
@@ -243,7 +258,7 @@ export class ProcessManagerTrackerComponent {
       },
       (error) => {
         this.showLoader = false;
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
       }
     );
 
@@ -369,7 +384,7 @@ export class ProcessManagerTrackerComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );

@@ -264,7 +264,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -284,7 +284,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -310,7 +310,7 @@ export class ApproveRejectProjectDetailsComponent {
       },
       (error) => {
         this.filteredTasks = []; // No records found
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -336,7 +336,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -376,7 +376,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
       }
     );
   }
@@ -530,7 +530,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -555,7 +555,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -603,7 +603,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -664,7 +664,7 @@ export class ApproveRejectProjectDetailsComponent {
             }
           },
           error: (error) => {
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
             this.showLoader = false;
           },
         });
@@ -682,7 +682,7 @@ export class ApproveRejectProjectDetailsComponent {
           }
         },
         error: (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         },
       });
@@ -709,7 +709,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -804,7 +804,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -855,7 +855,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -904,7 +904,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -953,7 +953,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -985,7 +985,7 @@ export class ApproveRejectProjectDetailsComponent {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1031,7 +1031,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1453,7 +1453,7 @@ export class ApproveRejectProjectDetailsComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );
@@ -1528,7 +1528,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error: any) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1547,7 +1547,7 @@ export class ApproveRejectProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1891,7 +1891,7 @@ export class ApproveRejectProjectDetailsComponent {
             },
             (error) => {
               this.showLoader = false;
-              this.notificationService.showError(error?.message);
+              this.notificationService.showError(error?.error?.message || error?.message);
             }
           );
         }

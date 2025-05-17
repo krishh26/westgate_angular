@@ -380,7 +380,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -414,7 +414,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -445,7 +445,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -465,7 +465,7 @@ export class TrackerWiseProjectDetailsComponent {
         this.showLoader = false;
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -491,7 +491,7 @@ export class TrackerWiseProjectDetailsComponent {
       },
       (error) => {
         this.filteredTasks = []; // No records found
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -520,7 +520,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -554,7 +554,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
       }
     );
   }
@@ -759,7 +759,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -790,7 +790,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -839,7 +839,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -923,7 +923,7 @@ export class TrackerWiseProjectDetailsComponent {
             }
           },
           error: (error) => {
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
 
           },
         });
@@ -941,7 +941,7 @@ export class TrackerWiseProjectDetailsComponent {
           }
         },
         error: (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
         },
       });
@@ -968,7 +968,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1078,7 +1078,7 @@ export class TrackerWiseProjectDetailsComponent {
             },
             (error) => {
 
-              this.notificationService.showError(error?.message);
+              this.notificationService.showError(error?.error?.message || error?.message);
             }
           );
       }
@@ -1129,7 +1129,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1180,7 +1180,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1233,7 +1233,7 @@ export class TrackerWiseProjectDetailsComponent {
             },
             (error) => {
 
-              this.notificationService.showError(error?.message);
+              this.notificationService.showError(error?.error?.message || error?.message);
             }
           );
       }
@@ -1267,7 +1267,7 @@ export class TrackerWiseProjectDetailsComponent {
           },
           (error) => {
 
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1310,7 +1310,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1771,7 +1771,7 @@ export class TrackerWiseProjectDetailsComponent {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
         }
       );
@@ -1842,7 +1842,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error: any) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -1860,7 +1860,7 @@ export class TrackerWiseProjectDetailsComponent {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -2274,7 +2274,7 @@ export class TrackerWiseProjectDetailsComponent {
       },
       (error) => {
         this.logsList = [];
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );

@@ -202,7 +202,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -379,7 +379,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -549,7 +549,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
           this.spinner.hide();
           this.taskList = [];  // Clear the list on error
@@ -577,7 +577,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
     );
@@ -614,7 +614,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           this.spinner.hide();
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
 
           this.spinner.hide();
         }
@@ -646,7 +646,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -684,7 +684,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -721,7 +721,7 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }

@@ -292,7 +292,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.spinner.hide();
     }, (error) => {
-      this.notificationService.showError(error?.message);
+      this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
       this.spinner.hide();
     });
@@ -444,7 +444,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
         }
       );
     } else {
@@ -597,7 +597,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           this.showLoader = false;
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );
@@ -624,7 +624,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
         this.spinner.hide();
       },
       (error) => {
-        this.notificationService.showError(error?.message);
+        this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
         this.spinner.hide();
       }
@@ -658,7 +658,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          this.notificationService.showError(error?.message);
+          this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
       );
@@ -689,7 +689,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -724,7 +724,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -761,7 +761,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
@@ -1005,7 +1005,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
                 this.showLoader = false;
               },
               (error) => {
-                this.notificationService.showError(error?.message);
+                this.notificationService.showError(error?.error?.message || error?.message);
                 this.showLoader = false;
               }
             );
@@ -1225,7 +1225,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.showLoader = false;
-            this.notificationService.showError(error?.message);
+            this.notificationService.showError(error?.error?.message || error?.message);
           }
         );
       }
