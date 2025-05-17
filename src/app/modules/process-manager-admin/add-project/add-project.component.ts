@@ -39,7 +39,7 @@ export class AddProjectComponent {
     CPVCodes: new FormControl(""),
     minValue: new FormControl(""),
     maxValue: new FormControl(""),
-    bidsubmissiontime: new FormControl("12"),
+    bidsubmissiontime: new FormControl(""),
     documentsLink: new FormControl(""),
     linkToPortal: new FormControl(""),
     password: new FormControl(""),
