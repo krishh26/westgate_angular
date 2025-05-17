@@ -151,6 +151,7 @@ export class OngoingTodoTaskSalesManagerComponent {
         this.spinner.hide();
         if (response?.status === true) {
           this.notificationService.showSuccess('Successfully logged out from task');
+          window.location.reload();
         } else {
           this.notificationService.showError(response?.message || 'Failed to logout from task');
         }
