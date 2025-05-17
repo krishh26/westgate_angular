@@ -430,4 +430,9 @@ export class ProcessManagerTrackerComponent {
     }
     return this.viewComments.some((comment: any) => comment?.pinnedAt);
   }
+
+  // Method to format the display of status labels
+  getFormattedStatus(status: string): string {
+    return status === 'Not Releted' ? 'Not Related' : status;
+  }
 }
