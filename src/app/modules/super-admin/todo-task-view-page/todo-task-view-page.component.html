@@ -233,7 +233,7 @@
                       [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
 
                       <h6 *ngIf="comment?.comment == 'No comments available for this date'">
-                        {{ comment?.commentDate | date : "dd/MM/yyyy" }} 
+                        {{ comment?.commentDate | date : "dd/MM/yyyy" }}
                       </h6>
 
                       <div class="row align-items-center mb-3">
@@ -341,10 +341,15 @@
                 <!-- Buttons in one row -->
                 <div class="detail-item mb-3">
                   <div class="row g-2">
-                    <div class="col-12 mb-2">
+                    <div class="col-12 mb-2" *ngIf="!modalTask?.myDay?.includes(loginUser?._id)">
                       <button class="btn btn-primary w-100" [(ngModel)]="selectedStatus"
                         (click)="onChangeMyday('MyDay')">
                         Add to My Day
+                      </button>
+                    </div>
+                    <div class="col-12 mb-2" *ngIf="modalTask?.myDay?.includes(loginUser?._id)">
+                      <button class="btn btn-primary w-100" (click)="removeTaskFromMyDay()">
+                        Remove From My Day
                       </button>
                     </div>
                     <div class="col-12 mb-2">

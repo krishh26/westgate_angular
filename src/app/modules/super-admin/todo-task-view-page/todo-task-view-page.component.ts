@@ -1200,6 +1200,39 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     return candidate ? candidate.name : 'Unassigned';
   }
 
+  removeTaskFromMyDay() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want remove task from my day ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.spinner.show();
+        this.projectService.removeTaskFromMyDay(this.modalTask?._id, this.loginUser._id).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.notificationService.showSuccess('Task successfully removed from my-day');
+              window.location.reload();
+              this.getTask();
+              this.spinner.hide();
+            } else {
+              this.notificationService.showError(response?.message);
+              this.spinner.hide();
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.error?.message || error?.message);
+            this.spinner.hide();
+          }
+        );
+      }
+    });
+  }
+
   logoutTask() {
     this.spinner.show();
     this.superService.logoutTask().subscribe(
