@@ -1431,12 +1431,7 @@ export class TrackerWiseProjectDetailsComponent {
     //   return this.notificationService.showError('Upload Client Document');
     // }
     this.saveChanges(type);
-
-    // if (type == 'next') {
-    //   this.router.navigate(['/super-admin/status-wise-tracker'], {
-    //     queryParams: { id: this.projectId },
-    //   });
-    // }
+    // No navigation needed - this will be handled in saveChanges
   }
 
   uploadDocument(event: any, type: string): void {
@@ -1516,6 +1511,22 @@ export class TrackerWiseProjectDetailsComponent {
               this.documentName = '';
             }
 
+            if (type == this.documentUploadType.loginDetailDocument) {
+              if (!this.loginName) {
+                return this.notificationService.showError('Enter Name');
+              }
+              this.loginDetailDocument = response?.data;
+              let objToBePushed = {
+                name: this.loginName,
+                file: response?.data,
+              };
+              this.projectDetails.loginDetail.push(objToBePushed);
+              this.loginName = '';
+            }
+
+            // Call summaryDetail directly after successful upload
+            this.summaryDetail('save');
+
             return this.notificationService.showSuccess(response?.message);
           } else {
             return this.notificationService.showError(response?.message);
@@ -1579,7 +1590,7 @@ export class TrackerWiseProjectDetailsComponent {
       };
 
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason?.value];
       }
     }
 
@@ -1594,9 +1605,8 @@ export class TrackerWiseProjectDetailsComponent {
             this.isEditing = false;
             this.getProjectDetails();
             if (type == 'save') {
-              this.router.navigate(['/super-admin/status-wise-tracker'], {
-                queryParams: { id: this.projectId },
-              });
+              // Reload the current page instead of navigating to the list
+              window.location.reload();
             }
           } else {
             this.notificationService.showError(
@@ -2031,7 +2041,7 @@ export class TrackerWiseProjectDetailsComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason?.value];
       }
     }
 
