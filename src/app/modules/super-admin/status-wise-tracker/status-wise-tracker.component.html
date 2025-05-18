@@ -115,7 +115,7 @@
             <li *ngFor="let item of feasibilityData" class="me-3">
               <div (click)="filter(item.status, 'feasibility')" (click)="selectStatus(item.status)"
                 [ngClass]="{ 'text-danger': selectedStatus === item.status }">
-                {{ item.status }} : {{ item.count }} : GBP
+                {{ getFormattedStatus(item.status) }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
             </li>
@@ -130,7 +130,7 @@
             <li *ngFor="let item of bidData" class="me-3">
               <div (click)="filter(item.status, 'bid')" (click)="selectBidStatus(item.status)"
                 [ngClass]="{ 'text-danger': selectedBidStatus === item.status }">
-                {{ item.status }} : {{ item.count }} : GBP
+                {{ getFormattedStatus(item.status) }} : {{ item.count }} : GBP
                 {{ item.value | number : "1.0-2" }}
               </div>
             </li>
@@ -190,9 +190,9 @@
                   {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
                   {{ item.bidsubmissiontime }}
                 </td>
-                <td>{{ item?.status }}</td>
+                <td>{{ getFormattedStatus(item?.status) }}</td>
                 <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
-                <td>{{ item?.bidManagerStatus }}</td>
+                <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
                 <td>{{ item?.assignBidmanager[0]?.name }}</td>
                 <td>
                   {{ item?.statusHistory?.[0]?.date | date:'dd/MM/yyyy, h:mm a' }}

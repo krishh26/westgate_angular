@@ -578,6 +578,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     return this.viewComments.some((comment: any) => comment?.pinnedAt);
   }
 
+  // Method to format the display of status labels
+  getFormattedStatus(status: string): string {
+    return status === 'Not Releted' ? 'Not Related' : status;
+  }
+
   // Add new method to toggle user selection
   toggleBidUserSelection(user: any) {
     const index = this.selectedBidUsers.findIndex(selected => selected._id === user._id);
