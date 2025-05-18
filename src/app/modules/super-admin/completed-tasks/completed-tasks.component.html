@@ -102,15 +102,14 @@
                     ({{ task?.pickACategory }})</span>
                   <span *ngIf="task?.project">
                     (Status :
-                    {{
-                    [
+                    {{['Fail', 'Not Releted'].includes(task?.project?.adminStatus) ?
+                    'Waiting For Approval' :
+                    ([
                     "Fail",
                     "DocumentsNotFound",
-                    "Awaiting",
-                    "Inhold"
-                    ].includes(task?.project?.status)
-                    ? task?.project?.status
-                    : task?.project?.bidManagerStatus
+                    "Not Releted"
+                    ].includes(task?.project?.status) ?
+                    task?.project?.status : task?.project?.bidManagerStatus)
                     }}
                     ) </span>&nbsp;
                 </div>
