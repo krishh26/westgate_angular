@@ -141,6 +141,14 @@ export class DropAfterFesibilityProjectsComponent {
     }
   }
 
+  // Method to check if there are any pinned comments
+  hasPinnedComments(): boolean {
+    if (!this.viewComments || this.viewComments.length === 0) {
+      return false;
+    }
+    return this.viewComments.some((comment: any) => comment?.pinnedAt);
+  }
+
   formatMilliseconds(milliseconds: number): string {
     const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
     return `${days} days`;

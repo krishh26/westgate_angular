@@ -9,6 +9,27 @@ ul.SecondarytaskList li{
   border: 1px solid #D9D9D9;
 }
 
+/* When a comment is both pinned and from admin */
+.pinned-comment.admin-comment {
+  background-color: #f1f5ff !important;
+  border: 1px solid red !important;
+  color: red !important;
+}
+
+/* Make the entire comment block red for Admin */
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
+/* Style for pinned comments */
+.pinned-comment {
+  background-color: #f1f5ff !important;
+  border-radius: 5px;
+}
+
 @media (min-width: 320px) and (max-width: 767px)
 {
  ul.projects-nav-tab{
@@ -24,4 +45,6 @@ ul.SecondarytaskList li{
    border: 1px solid #d9d9d9 !important;
    margin-bottom: 15px;
  }
+
+
 }

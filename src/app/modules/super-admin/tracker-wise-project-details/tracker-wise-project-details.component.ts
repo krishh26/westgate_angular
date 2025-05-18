@@ -388,9 +388,20 @@ export class TrackerWiseProjectDetailsComponent {
   }
 
   deleteDocuments(name: string, type: string) {
+    // Format the document type for display
+    let displayType = type;
+    if (type === 'clientDocument') {
+      displayType = 'Client Document';
+    } else if (type === 'westGetDocument') {
+      displayType = 'Westgate Document';
+    } else {
+      // Convert camelCase to Title Case with spaces
+      displayType = type.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    }
+
     Swal.fire({
       title: 'Are you sure?',
-      text: `Do you want to delete ${type}?`,
+      text: `Do you want to delete ${displayType}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#00B96F',
@@ -406,7 +417,7 @@ export class TrackerWiseProjectDetailsComponent {
           (response: any) => {
 
             if (response?.status === true) {
-              this.notificationService.showSuccess(`${type} successfully deleted`);
+              this.notificationService.showSuccess(`${displayType} successfully deleted`);
               window.location.reload();
             } else {
               this.notificationService.showError(response?.message);
