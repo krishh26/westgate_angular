@@ -1236,9 +1236,21 @@ export class ProjectManagerProjectDetailsComponent {
   }
 
   isBidCommentValid(): boolean {
-    // Validate if a comment exists for the selected status or is added
     if (!this.status) return false;
-    return this.newCommentAddedForBidStatus;
+
+    // Check if there are existing comments for this status
+    const hasExistingComment = this.commentData.some(
+      (item) => item.bidManagerStatus === this.status
+    );
+
+    // For Dropped after feasibility status
+    if (this.status === 'Dropped after feasibility') {
+      return this.droppedStatusReasons.length > 0 &&
+             this.droppedStatusReasons.every(reason => reason.comment && reason.comment.trim().length > 0);
+    }
+
+    // For other statuses, check if there's either an existing comment or a new comment
+    return hasExistingComment || this.newCommentAddedForBidStatus;
   }
 
   addFailReason() {
