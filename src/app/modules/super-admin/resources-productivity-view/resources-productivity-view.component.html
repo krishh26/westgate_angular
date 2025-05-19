@@ -249,7 +249,7 @@
                       <div *ngFor="let comment of task.comments" class="comment-card p-2 mb-2 border-left border-primary rounded">
                         <div class="d-flex justify-content-between">
                           <small class="text-muted">{{ formatCommentDate(comment.date) }}</small>
-                          <small class="text-muted">{{ (comment.minutes / 60).toFixed(1) }} hours</small>
+                          <small class="text-muted">{{ convertMinutesToHourMin(comment.minutes) }}</small>
                         </div>
                         <div class="comment-text mt-1" [innerHTML]="comment.text"></div>
                       </div>
