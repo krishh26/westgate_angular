@@ -1043,7 +1043,7 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
 
       if (userData) {
         const hours = userData.totalHours || 0;
-        return parseFloat(hours.toFixed(2));
+        return this.convertHoursToHourMin(hours);
       }
     }
 
@@ -1171,5 +1171,29 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     if (this.tasksByStatus.length === 0) {
       this.notificationService.showInfo(`No ${status} tasks found for this user.`);
     }
+  }
+
+  convertHoursToHourMin(hours: number): any {
+    if (hours < 0 || isNaN(hours)) return 'Invalid input';
+
+    const h = Math.floor(hours);
+    const minutes = Math.round((hours - h) * 60);
+
+    const hourPart = h > 0 ? `${h} Hour${h > 1 ? 's' : ''}` : '';
+    const minutePart = minutes > 0 ? `${minutes} Min` : '';
+
+    return [hourPart, minutePart].filter(Boolean).join(' ');
+  }
+
+  convertMinutesToHourMin(minutes: number): any {
+    if (minutes < 0 || isNaN(minutes)) return 'Invalid input';
+
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+
+    const hourPart = h > 0 ? `${h} Hour${h > 1 ? 's' : ''}` : '';
+    const minutePart = m > 0 ? `${m} Min` : '';
+
+    return [hourPart, minutePart].filter(Boolean).join(' ');
   }
 }
