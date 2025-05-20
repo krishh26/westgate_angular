@@ -535,61 +535,61 @@
             </div>
 
             <!-- Status Buttons -->
-            <div class="d-flex justify-content-between flex-wrap mb-4" *ngIf="
+            <div class="d-flex flex-wrap gap-2 mb-4" *ngIf="
                 projectDetails?.bidManagerStatus != 'Awarded' &&
                 projectDetails?.bidManagerStatus !=
                   'Dropped after feasibility' &&
                 projectDetails?.bidManagerStatus != 'NotAwarded'
               ">
-              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'Awaiting'"
+              <button class="btn btn-outline-info" [class.active]="status === 'Awaiting'"
                 (click)="statusChange('Awaiting')">
                 Awaiting
               </button>
-              <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
+              <button class="btn btn-outline-info" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution
               </button>
-              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'WaitingForResult'"
+              <button class="btn btn-outline-secondary" [class.active]="status === 'WaitingForResult'"
                 (click)="statusChange('WaitingForResult')">
                 Waiting For Result
               </button>
-              <button class="btn btn-outline-success flex-fill m-1"
+              <button class="btn btn-outline-success"
                 [class.active]="status === 'Dropped after feasibility'"
                 (click)="statusChange('Dropped after feasibility')">
                 Dropped After Feasibility
               </button>
-              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'Awarded'"
+              <button class="btn btn-outline-danger" [class.active]="status === 'Awarded'"
                 (click)="statusChange('Awarded')">
                 Awarded
               </button>
-              <button class="btn btn-outline-warning flex-fill m-1" [class.active]="status === 'NotAwarded'"
+              <button class="btn btn-outline-warning" [class.active]="status === 'NotAwarded'"
                 (click)="statusChange('NotAwarded')">
                 Not Awarded
               </button>
-              <button class="btn btn-outline-dark flex-fill m-1" [class.active]="status === 'Nosuppliermatched'"
+              <button class="btn btn-outline-dark" [class.active]="status === 'Nosuppliermatched'"
                 (click)="statusChange('Nosuppliermatched')">
                 No Supplier Matched
               </button>
-              <button class="btn btn-outline-secondary flex-fill m-1" [class.active]="status === 'Go-NoGoStage1'"
+              <button class="btn btn-outline-secondary" [class.active]="status === 'Go-NoGoStage1'"
                 (click)="statusChange('Go-NoGoStage1')">
                 GO-NO GO STAGE 1
               </button>
-              <button class="btn btn-outline-danger flex-fill m-1" [class.active]="status === 'SupplierConfirmation'"
+              <button class="btn btn-outline-danger" [class.active]="status === 'SupplierConfirmation'"
                 (click)="statusChange('SupplierConfirmation')">
                 SUPPLIER CONFIRMATION
               </button>
-              <button class="btn btn-outline-success flex-fill m-1" [class.active]="status === 'Go-NoGoStage2'"
+              <button class="btn btn-outline-success" [class.active]="status === 'Go-NoGoStage2'"
                 (click)="statusChange('Go-NoGoStage2')">
                 GO-NO GO STAGE 2
               </button>
             </div>
 
             <!-- Dynamic Comment Section -->
-            <div *ngIf="status" class="status-section comments-section">
+            <div *ngIf="status" class="status-section">
               <h6 class="text-secondary mb-3">{{ status }} Comments</h6>
 
               <!-- Display Existing Comments -->
-              <div *ngIf="commentData?.length" class="comment-list">
+              <div *ngIf="commentData?.length" class="comment-list" style="max-height: 300px; overflow-y: auto;">
                 <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -607,7 +607,7 @@
                 </div>
               </div>
 
-              <div class="comment-list comments-section">
+              <div class="comment-list" style="max-height: 300px; overflow-y: auto;">
                 <div class="comment-item border rounded p-3 mb-2"
                   *ngFor="let droppedreason of getDroppedAfterReasonList">
                   <div class="comment mb-3">
@@ -628,74 +628,76 @@
                 </div>
               </div>
 
-              <!-- Add New Comment -->
-              <ng-container>
-                <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
-                  *ngIf="status !== 'Dropped after feasibility'">
-                  <div class="NgxEditor__Wrapper flex-grow-1">
-                    <ngx-editor-menu [editor]="bidStatusEditor" [toolbar]="toolbar">
-                    </ngx-editor-menu>
-                    <ngx-editor [editor]="bidStatusEditor" [formControl]="bidManagerStatusComment"
-                      [placeholder]="'Type here...'" class="ngx-editor-textarea">
-                    </ngx-editor>
-                  </div>
-                  <button class="btn btn-primary" type="button" (click)="pushStatus()">
-                    <i class="bi bi-plus-lg"></i> Add
-                  </button>
-                </div>
-              </ng-container>
-
-              <!-- Dropper After Feasibility Specific Fields -->
-              <ng-container>
-                <div *ngIf="status === 'Dropped after feasibility'" class="mt-4">
-                  <div class="d-flex align-items-center gap-3">
-                    <select class="form-select" [(ngModel)]="selectedDroppedAfterFeasibilityReason">
-                      <option disabled selected hidden value="">
-                        Select Dropper After Feasibility
-                      </option>
-                      <option value="Subcontracting No">
-                        Subcontracting No
-                      </option>
-                      <option value="Supplier Dropped">Supplier Dropped</option>
-                      <option value="Time Constrain">Time Constrain</option>
-                      <option value="Rejected In Yes/No Call">
-                        Rejected In Yes/No Call
-                      </option>
-                      <option value="Supplier Did Not Meet Eligibility Criteria">
-                        Supplier Did Not Meet Eligibility Criteria
-                      </option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <button class="btn btn-outline-primary" type="button" (click)="adddroppedReason()">
-                      <i class="bi bi-plus-lg">Dropped</i>
+              <!-- Add New Comment - Fixed Position -->
+              <div class="add-comment-section mt-3">
+                <ng-container>
+                  <div class="add-comment d-flex gap-3 align-items-center mt-3 mb-2"
+                    *ngIf="status !== 'Dropped after feasibility'">
+                    <div class="NgxEditor__Wrapper flex-grow-1">
+                      <ngx-editor-menu [editor]="bidStatusEditor" [toolbar]="toolbar">
+                      </ngx-editor-menu>
+                      <ngx-editor [editor]="bidStatusEditor" [formControl]="bidManagerStatusComment"
+                        [placeholder]="'Type here...'" class="ngx-editor-textarea">
+                      </ngx-editor>
+                    </div>
+                    <button class="btn btn-primary" type="button" (click)="pushStatus()">
+                      <i class="bi bi-plus-lg"></i> Add
                     </button>
                   </div>
+                </ng-container>
 
-                  <!-- Display added bid reasons and comments -->
-                  <div class="mt-3">
-                    <div class="reason-item border rounded p-3 mb-2"
-                      *ngFor="let reason of droppedStatusReasons; let i = index">
-                      <div class="d-flex align-items-center">
-                        <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
-                        <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
-                          [(ngModel)]="reason.comment" />
-                        <button class="btn btn-sm btn-danger" type="button" (click)="removeDroppedReason(i)">
-                          Remove
-                        </button>
+                <!-- Dropper After Feasibility Specific Fields -->
+                <ng-container>
+                  <div *ngIf="status === 'Dropped after feasibility'" class="mt-4">
+                    <div class="d-flex align-items-center gap-3">
+                      <select class="form-select" [(ngModel)]="selectedDroppedAfterFeasibilityReason">
+                        <option disabled selected hidden value="">
+                          Select Dropper After Feasibility
+                        </option>
+                        <option value="Subcontracting No">
+                          Subcontracting No
+                        </option>
+                        <option value="Supplier Dropped">Supplier Dropped</option>
+                        <option value="Time Constrain">Time Constrain</option>
+                        <option value="Rejected In Yes/No Call">
+                          Rejected In Yes/No Call
+                        </option>
+                        <option value="Supplier Did Not Meet Eligibility Criteria">
+                          Supplier Did Not Meet Eligibility Criteria
+                        </option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <button class="btn btn-outline-primary" type="button" (click)="adddroppedReason()">
+                        <i class="bi bi-plus-lg">Dropped</i>
+                      </button>
+                    </div>
+
+                    <!-- Display added bid reasons and comments -->
+                    <div class="mt-3">
+                      <div class="reason-item border rounded p-3 mb-2"
+                        *ngFor="let reason of droppedStatusReasons; let i = index">
+                        <div class="d-flex align-items-center">
+                          <span class="me-3"><strong>Reason:</strong> {{ reason?.tag }}</span>
+                          <input type="text" class="form-control me-3" style="flex: 1" placeholder="Add your comment"
+                            [(ngModel)]="reason.comment" />
+                          <button class="btn btn-sm btn-danger" type="button" (click)="removeDroppedReason(i)">
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </ng-container>
-              <ng-container>
-                <div class="row justify-content-end mb-2 mt-3">
-                  <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
-                      Save Bid Status
-                    </a>
+                </ng-container>
+                <ng-container>
+                  <div class="row justify-content-end mb-2 mt-3">
+                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
+                      <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+                        Save Bid Status
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </ng-container>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
