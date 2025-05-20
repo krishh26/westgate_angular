@@ -165,10 +165,14 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="row">
-                      <label for="poc_email" class="col-sm-4 col-form-label">POC Email</label>
+                      <label for="poc_email" class="col-sm-4 col-form-label">POC Email <span class="text-danger">*</span></label>
                       <div class="col-sm-8">
                         <input [(ngModel)]="companyForm.poc_email" name="poc_email" type="text" class="form-control"
-                          placeholder="Enter POC email" id="poc_email">
+                          placeholder="Enter POC email" id="poc_email" required #pocEmailInput="ngModel">
+                        <div *ngIf="pocEmailInput.invalid && (pocEmailInput.dirty || pocEmailInput.touched)"
+                          class="text-danger small">
+                          POC Email is required
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -596,7 +600,7 @@
         </div>
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary mob-w-100 me-2" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone ||
+            <button type="submit" class="btn btn-primary mob-w-100 me-2" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone || !companyForm.poc_email ||
                         (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier) ||
                         hasInvalidExpertise()">Submit</button>
           </div>
