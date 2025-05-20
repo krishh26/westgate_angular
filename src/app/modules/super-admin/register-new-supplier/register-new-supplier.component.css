@@ -6,16 +6,36 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
 }
 .tag {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
+  background: #eaf4fd;
+  color: #222;
+  border-radius: 4px;
+  border: 1px solid #d0e3f6;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  padding: 3px 12px 3px 6px;
+  font-weight: 500;
 }
 .remove-tag {
-  margin-left: 8px;
+  margin-right: 6px;
+  margin-left: 2px;
   cursor: pointer;
+  color: #888;
+  font-size: 15px;
+  font-weight: bold;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.remove-tag:hover {
+  opacity: 1;
+  color: #1976d2;
 }
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
@@ -34,4 +54,9 @@
 .form-control.ng-invalid.ng-touched,
 .form-select.ng-invalid.ng-touched {
   animation: shake 0.3s ease-in-out;
+}
+
+.subexpertise-row {
+  display: block;
+  margin-bottom: 6px;
 }
