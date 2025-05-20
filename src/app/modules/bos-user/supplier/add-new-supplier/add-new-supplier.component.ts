@@ -265,7 +265,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
               }
 
               return {
-                itemId: item.itemId || item._id,
+                itemId: item._id,
                 name: item.name,
                 type: type,
                 value: item.name
@@ -903,7 +903,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
         this.companyForm.expertise.push({
           name: item.name,
           type: this.newExpertiseType,
-          itemId: item.value,
+          itemId: item.itemId,
           value: item.value,
           subExpertise: []
         });
@@ -1071,7 +1071,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
         this.companyForm.expertiseICanDo.push({
           name: item.name,
           type: this.newExpertiseICanDoType,
-          itemId: item.value,
+          itemId: item.itemId,
           value: item.value,
           subExpertise: []
         });
@@ -1115,7 +1115,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
           const data = response.data || response;
           if (Array.isArray(data)) {
             this.expertiseICanDoDropdownOptions = data.map((item: any) => ({
-              itemId: item.itemId || item._id,
+              itemId: item._id,
               name: item.name,
               type: item.type || 'technologies',
               value: item.name
