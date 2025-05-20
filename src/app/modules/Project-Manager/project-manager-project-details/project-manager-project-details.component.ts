@@ -1223,6 +1223,7 @@ export class ProjectManagerProjectDetailsComponent {
             this.isEditing = false;
             this.newCommentAddedForBidStatus = false;
             this.getProjectDetails(); // Refresh project details after save
+            window.location.reload();
           } else {
             this.notificationService.showError(
               response?.message || 'Failed to update project'
