@@ -31,7 +31,7 @@ export class SupplierWiseProjectListComponent {
   viewComments: any;
 
   statusList = [
-    { name: 'Shortlisted', count: 0 },
+    { name: 'SortListed', count: 0 },
     { name: 'InSolution', count: 0 },
     { name: 'WaitingForResult', count: 0 },
     { name: 'Awarded', count: 0 },
@@ -162,7 +162,7 @@ export class SupplierWiseProjectListComponent {
       supplierId: this.supplierID
     };
 
-    if (this.status === 'Shortlisted') {
+    if (this.status === 'SortListed') {
       params.sortlist = true;
     } else {
       params.status = this.status;
