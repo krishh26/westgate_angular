@@ -20,6 +20,7 @@ interface ExpertiseItem {
   itemId?: any;
   value: string;
   subExpertise?: string[];
+  originalType?: string;
 }
 
 interface SubExpertise {
@@ -48,6 +49,7 @@ export class RegisterNewSupplierComponent implements OnInit {
   randomString: string = '';
   today: string = new Date().toISOString().split('T')[0];
   expertiseDropdownOptions: ExpertiseItem[] = [];
+  expertiseGroupedOptions: ExpertiseItem[] = [];
   selectedExpertiseItems: ExpertiseItem[] = [];
   inHoldComment: string = '';
   categoryDomains: any[] = [];
@@ -252,32 +254,68 @@ export class RegisterNewSupplierComponent implements OnInit {
     this.http.get<any>(url).subscribe(
       (response) => {
         console.log('Raw expertise API response:', response);
-        if (response?.status || response?.data) {
-          const data = response.data || response;
+        if (response?.status && response?.data) {
+          const data = response.data || [];
 
-          // Process the data to make it compatible with ng-select
-          if (Array.isArray(data)) {
-            this.expertiseDropdownOptions = data.map((item: any) => {
-              // For ng-select, we need objects with consistent properties
-              // Get the type and remove "-other" suffix if it exists
-              let type = item.type || 'technologies';
-              if (type.endsWith('-other')) {
-                type = type.replace('-other', '');
-              }
+          // Define the 6 specific types we want to display
+          const typeGroups: { [key: string]: ExpertiseItem[] } = {
+            'product': [],
+            'domain': [],
+            'technologies': [],
+            'product-other': [],
+            'domain-other': [],
+            'technologies-other': []
+          };
 
-              return {
-                itemId: item._id,
-                name: item.name,
-                type: type,
-                value: item.name
-              };
-            });
-          }
-          console.log('Processed expertise list for ng-select:', this.expertiseDropdownOptions);
+          // Process grouped data from the API
+          data.forEach((group: any) => {
+            if (!group || Object.keys(group).length === 0) {
+              return; // Skip empty groups
+            }
+
+            // Each group is an object with a single key (the type) and array value
+            const groupType = Object.keys(group)[0];
+            const items = group[groupType] || [];
+
+            // Check if this is one of our tracked types
+            if (groupType in typeGroups) {
+              // Process items in this group
+              items.forEach((item: any) => {
+                typeGroups[groupType].push({
+                  itemId: item._id,
+                  name: item.name,
+                  type: groupType,
+                  originalType: groupType,
+                  value: item.name
+                });
+              });
+            }
+          });
+
+          // Combine all items into a single array in the desired order
+          let allItems: ExpertiseItem[] = [];
+          // First add the 3 main types
+          allItems = allItems.concat(
+            typeGroups['product'],
+            typeGroups['domain'],
+            typeGroups['technologies']
+          );
+
+          // Then add the 3 "other" types
+          allItems = allItems.concat(
+            typeGroups['product-other'],
+            typeGroups['domain-other'],
+            typeGroups['technologies-other']
+          );
+
+          this.expertiseDropdownOptions = allItems;
+          this.expertiseGroupedOptions = allItems;
+          console.log('Processed expertise list for ng-select:', this.expertiseGroupedOptions);
         } else {
           console.error('Failed to fetch expertise data:', response?.message);
           this.notificationService.showError('Failed to fetch expertise data');
           this.expertiseDropdownOptions = [];
+          this.expertiseGroupedOptions = [];
         }
         this.showLoader = false;
       },
@@ -286,6 +324,7 @@ export class RegisterNewSupplierComponent implements OnInit {
         this.notificationService.showError('Error fetching expertise data');
         this.showLoader = false;
         this.expertiseDropdownOptions = [];
+        this.expertiseGroupedOptions = [];
       }
     );
   }
@@ -1112,23 +1151,70 @@ export class RegisterNewSupplierComponent implements OnInit {
 
     this.http.get<any>(url).subscribe(
       (response) => {
-        if (response?.status || response?.data) {
-          const data = response.data || response;
-          if (Array.isArray(data)) {
-            this.expertiseICanDoDropdownOptions = data.map((item: any) => ({
-              itemId: item._id,
-              name: item.name,
-              type: item.type || 'technologies',
-              value: item.name
-            }));
-          }
+        if (response?.status && response?.data) {
+          const data = response.data || [];
+
+          // Define the 6 specific types we want to display
+          const typeGroups: { [key: string]: ExpertiseItem[] } = {
+            'product': [],
+            'domain': [],
+            'technologies': [],
+            'product-other': [],
+            'domain-other': [],
+            'technologies-other': []
+          };
+
+          // Process grouped data from the API
+          data.forEach((group: any) => {
+            if (!group || Object.keys(group).length === 0) {
+              return; // Skip empty groups
+            }
+
+            // Each group is an object with a single key (the type) and array value
+            const groupType = Object.keys(group)[0];
+            const items = group[groupType] || [];
+
+            // Check if this is one of our tracked types
+            if (groupType in typeGroups) {
+              // Process items in this group
+              items.forEach((item: any) => {
+                typeGroups[groupType].push({
+                  itemId: item._id,
+                  name: item.name,
+                  type: groupType,
+                  originalType: groupType,
+                  value: item.name
+                });
+              });
+            }
+          });
+
+          // Combine all items into a single array in the desired order
+          let allItems: ExpertiseItem[] = [];
+          // First add the 3 main types
+          allItems = allItems.concat(
+            typeGroups['product'],
+            typeGroups['domain'],
+            typeGroups['technologies']
+          );
+
+          // Then add the 3 "other" types
+          allItems = allItems.concat(
+            typeGroups['product-other'],
+            typeGroups['domain-other'],
+            typeGroups['technologies-other']
+          );
+
+          this.expertiseICanDoDropdownOptions = allItems;
         } else {
+          console.error('Failed to fetch I Can Do expertise data:', response?.message);
           this.notificationService.showError('Failed to fetch I Can Do expertise data');
           this.expertiseICanDoDropdownOptions = [];
         }
         this.showLoader = false;
       },
       (error) => {
+        console.error('Error fetching I Can Do expertise data:', error);
         this.notificationService.showError('Error fetching I Can Do expertise data');
         this.showLoader = false;
         this.expertiseICanDoDropdownOptions = [];
