@@ -333,7 +333,8 @@
                           <ng-select placeholder="Select expertise" [items]="expertiseDropdownOptions"
                             bindLabel="name" [multiple]="true" [(ngModel)]="selectedExpertiseItems"
                             name="selectedExpertiseItems" [closeOnSelect]="false" [searchable]="true"
-                            [clearable]="true" [addTag]="onAddTag">
+                            [clearable]="true" [addTag]="onAddTag" [groupBy]="'type'" [hideSelected]="false"
+                            [virtualScroll]="true">
                             <ng-template ng-header-tmp>
                               <div class="p-2 border-bottom">
                                 <div class="form-check">
@@ -343,6 +344,15 @@
                                   <label class="form-check-label">Select All</label>
                                 </div>
                               </div>
+                            </ng-template>
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              <span class="group-header text-primary">{{item.type | titlecase}}</span>
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                              <span>{{item.name}}</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                              <span>{{item.name}}</span>
                             </ng-template>
                             <ng-template ng-tag-tmp let-search="searchTerm">
                               <div *ngIf="search">
@@ -430,19 +440,29 @@
                       </div>
                       <div class="mt-2">
                         <div class="dropdown">
-                          <ng-select placeholder="Select expertise" [items]="expertiseDropdownOptions"
+                          <ng-select placeholder="Select expertise" [items]="expertiseICanDoDropdownOptions"
                             bindLabel="name" [multiple]="true" [(ngModel)]="selectedExpertiseICanDoItems"
                             name="selectedExpertiseICanDoItems" [closeOnSelect]="false" [searchable]="true"
-                            [clearable]="true" [addTag]="onAddTagICanDo">
+                            [clearable]="true" [addTag]="onAddTagICanDo" [groupBy]="'type'" [hideSelected]="false"
+                            [virtualScroll]="true">
                             <ng-template ng-header-tmp>
                               <div class="p-2 border-bottom">
                                 <div class="form-check">
                                   <input class="form-check-input" type="checkbox"
-                                    [checked]="selectedExpertiseICanDoItems?.length === expertiseDropdownOptions?.length"
+                                    [checked]="selectedExpertiseICanDoItems?.length === expertiseICanDoDropdownOptions?.length"
                                     (change)="toggleSelectAllExpertiseICanDo($event)">
                                   <label class="form-check-label">Select All</label>
                                 </div>
                               </div>
+                            </ng-template>
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              <span class="group-header text-primary">{{item.type | titlecase}}</span>
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                              <span>{{item.name}}</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                              <span>{{item.name}}</span>
                             </ng-template>
                             <ng-template ng-tag-tmp let-search="searchTerm">
                               <div *ngIf="search">
