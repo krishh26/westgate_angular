@@ -75,6 +75,15 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
         title: {
           display: true,
           text: 'Hours'
+        },
+        ticks: {
+          callback: (value) => {
+            // Format y-axis labels to show hours and minutes
+            if (typeof value === 'number') {
+              return this.formatTimeValue(value);
+            }
+            return value;
+          }
         }
       },
       x: {
@@ -443,8 +452,22 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
                     label: (context) => {
                       const userName = context.dataset.label || '';
                       const hoursValue = context.raw as number;
-                      const displayHours = hoursValue > 0.1 ? hoursValue.toFixed(1) : '0';
-                      return `${userName}: ${displayHours} hours`;
+
+                      if (typeof hoursValue === 'number') {
+                        const hours = Math.floor(hoursValue);
+                        const minutes = Math.round((hoursValue - hours) * 60);
+
+                        let timeStr;
+                        if (hours === 0) {
+                          timeStr = minutes > 0 ? `${minutes} mins` : '0';
+                        } else {
+                          timeStr = `${hours} hr${hours > 1 ? 's' : ''}${minutes > 0 ? ` ${minutes} mins` : ''}`;
+                        }
+
+                        return `${userName}: ${timeStr}`;
+                      }
+
+                      return `${userName}: ${hoursValue} hours`;
                     }
                   }
                 },
@@ -454,15 +477,9 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
                 }
               },
               scales: {
+                ...(this.lineChartOptions?.scales as Record<string, any> || {}),
                 y: {
                   beginAtZero: true,
-                  title: {
-                    display: true,
-                    text: 'Hours',
-                    font: {
-                      weight: 'bold'
-                    }
-                  },
                   ticks: {
                     precision: 1
                   },
@@ -531,7 +548,12 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
                   callbacks: {
                     label: (context) => {
                       const hours = context.raw as number;
-                      return `Hours: ${hours.toFixed(1)}`;
+
+                      if (typeof hours === 'number') {
+                        return `Hours: ${this.formatTimeValue(hours)}`;
+                      }
+
+                      return `Hours: ${String(hours)}`;
                     }
                   }
                 }
@@ -544,6 +566,14 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
                     text: 'Hours',
                     font: {
                       weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    callback: (value) => {
+                      if (typeof value === 'number') {
+                        return this.formatTimeValue(value);
+                      }
+                      return value;
                     }
                   }
                 },
@@ -584,7 +614,66 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
             type: 'bar',
             data: this.lineChartData,
             options: {
-              ...this.lineChartOptions,
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Resource Productivity',
+                  font: {
+                    size: 16
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      const value = context.raw as number;
+                      if (typeof value === 'number') {
+                        return `${context.dataset.label || ''}: ${this.formatTimeValue(value)}`;
+                      }
+                      return `${context.dataset.label || ''}: ${value}`;
+                    }
+                  }
+                },
+                legend: {
+                  display: true,
+                  position: 'top'
+                }
+              },
+              scales: {
+                ...(this.lineChartOptions?.scales as Record<string, any> || {}),
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Hours',
+                    font: {
+                      weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    callback: (value) => {
+                      if (typeof value === 'number') {
+                        return this.formatTimeValue(value);
+                      }
+                      return value;
+                    }
+                  }
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Date',
+                    font: {
+                      weight: 'bold'
+                    }
+                  },
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45
+                  }
+                }
+              },
               onClick: (event, elements) => {
                 if (elements && elements.length > 0) {
                   const clickedElement = elements[0];
@@ -1173,27 +1262,25 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Helper method to format time values consistently
+  formatTimeValue(value: number): string {
+    if (value < 0 || isNaN(value)) return 'Invalid input';
+
+    const hours = Math.floor(value);
+    const minutes = Math.round((value - hours) * 60);
+
+    if (hours === 0) {
+      return minutes > 0 ? `${minutes} mins` : '0';
+    } else {
+      return `${hours} hr${hours > 1 ? 's' : ''}${minutes > 0 ? ` ${minutes} mins` : ''}`;
+    }
+  }
+
   convertHoursToHourMin(hours: number): any {
-    if (hours < 0 || isNaN(hours)) return 'Invalid input';
-
-    const h = Math.floor(hours);
-    const minutes = Math.round((hours - h) * 60);
-
-    const hourPart = h > 0 ? `${h} Hour${h > 1 ? 's' : ''}` : '';
-    const minutePart = minutes > 0 ? `${minutes} Min` : '';
-
-    return [hourPart, minutePart].filter(Boolean).join(' ');
+    return this.formatTimeValue(hours);
   }
 
   convertMinutesToHourMin(minutes: number): any {
-    if (minutes < 0 || isNaN(minutes)) return 'Invalid input';
-
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-
-    const hourPart = h > 0 ? `${h} Hour${h > 1 ? 's' : ''}` : '';
-    const minutePart = m > 0 ? `${m} Min` : '';
-
-    return [hourPart, minutePart].filter(Boolean).join(' ');
+    return this.formatTimeValue(minutes / 60);
   }
 }
