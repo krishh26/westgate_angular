@@ -34,7 +34,7 @@ export class SuperadminAddProjectComponent implements OnInit {
     bidsubmissionhour: new FormControl(""),
     bidsubmissionminute: new FormControl(""),
     categorisation: new FormControl(""),
-    dueDate: new FormControl("", Validators.required),
+    dueDate: new FormControl(moment(new Date()).format('YYYY-MM-DD'), Validators.required),
     noticeReference: new FormControl("", Validators.required),
     CPVCodes: new FormControl(""),
     minValue: new FormControl(""),
@@ -97,7 +97,26 @@ export class SuperadminAddProjectComponent implements OnInit {
 
   patchProjectValue() {
     this.projectService.getProjectDetailsById(this.projectId).subscribe((response) => {
-      this.productForm.patchValue(response?.data)
+      let projectData = {...response?.data};
+
+      // Format the date fields if they exist
+      if (projectData.dueDate) {
+        projectData.dueDate = moment(projectData.dueDate).format('YYYY-MM-DD');
+      }
+
+      if (projectData.publishDate) {
+        projectData.publishDate = moment(projectData.publishDate).format('YYYY-MM-DD');
+      }
+
+      if (projectData.periodOfContractStart) {
+        projectData.periodOfContractStart = moment(projectData.periodOfContractStart).format('YYYY-MM-DD');
+      }
+
+      if (projectData.periodOfContractEnd) {
+        projectData.periodOfContractEnd = moment(projectData.periodOfContractEnd).format('YYYY-MM-DD');
+      }
+
+      this.productForm.patchValue(projectData);
     },
       error => {
         this.notificationService.showError(error?.error?.message || error?.message);
