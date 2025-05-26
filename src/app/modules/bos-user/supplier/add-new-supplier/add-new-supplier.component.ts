@@ -27,6 +27,12 @@ interface SubExpertise {
   _id: string;
   name: string;
 }
+
+interface ServiceItem {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-add-new-supplier',
   templateUrl: './add-new-supplier.component.html',
@@ -80,6 +86,9 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   // Add this property
   addingNewSubExpertise: boolean = false;
 
+  servicesList: ServiceItem[] = [];
+  selectedServices: ServiceItem[] = [];
+
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
@@ -129,6 +138,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
+    this.initializeServicesList();
 
     // Add fallback options for both expertise and I Can Do
     if (this.subExpertiseOptions.length === 0) {
@@ -160,7 +170,10 @@ export class BossUserAddNewSupplierComponent implements OnInit {
       poc_name: "fg",
       poc_phone: "3453453453",
       poc_role: "",
-      typeOfCompany: [],
+      typeOfCompany: [
+        "Healthcare",
+        "Insurance"
+      ],
       industry_Sector: [
         "Healthcare",
         "Insurance"
@@ -228,6 +241,7 @@ export class BossUserAddNewSupplierComponent implements OnInit {
       keyClients: [],
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
+      icando: [],
       inHoldComment: []
     };
   }
@@ -1317,5 +1331,30 @@ export class BossUserAddNewSupplierComponent implements OnInit {
   // Add a method for I Can Do sub-expertise
   onAddTagSubExpertiseICanDo = (name: string) => {
     return this.onAddTagSubExpertise(name); // Reuse the same implementation
+  }
+
+  initializeServicesList() {
+    this.servicesList = [
+      { name: "Pre-Built Software Solutions", value: "pre-built-software-solutions" },
+      { name: "Custom Software Development", value: "custom-software-development" },
+      { name: "Hosting & Infrastructure", value: "hosting-infrastructure" },
+      { name: "Cloud Services", value: "cloud-services" },
+      { name: "IT Consulting", value: "it-consulting" },
+      { name: "IT Support & Maintenance", value: "it-support-maintenance" },
+      { name: "IT Training", value: "it-training" },
+      { name: "IT Security", value: "it-security" },
+      { name: "IT Audit", value: "it-audit" },
+      { name: "IT Governance", value: "it-governance" },
+      { name: "IT Risk Management", value: "it-risk-management" },
+      { name: "IT Compliance", value: "it-compliance" },
+      { name: "IT Strategy", value: "it-strategy" },
+      { name: "IT Architecture", value: "it-architecture" }
+    ];
+  }
+
+  onServicesChange() {
+    if (this.selectedServices) {
+      this.companyForm.icando = this.selectedServices.map(service => service.value);
+    }
   }
 }
