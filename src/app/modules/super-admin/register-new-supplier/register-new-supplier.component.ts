@@ -28,6 +28,11 @@ interface SubExpertise {
   name: string;
 }
 
+interface ServiceItem {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-register-new-supplier',
   templateUrl: './register-new-supplier.component.html',
@@ -58,6 +63,10 @@ export class RegisterNewSupplierComponent implements OnInit {
   selectedTechnologies: string[] = [];
   industryList: any[] = [];
   selectedIndustries: string[] = [];
+
+  // Services properties
+  servicesList: ServiceItem[] = [];
+  selectedServices: ServiceItem[] = [];
 
   // Properties for I Can Do field
   selectedExpertiseICanDoItems: ExpertiseItem[] = [];
@@ -131,6 +140,25 @@ export class RegisterNewSupplierComponent implements OnInit {
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
+
+    // Initialize services list
+    this.servicesList = [
+      { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
+      { name: 'Custom Software Development', value: 'Custom Software Development' },
+      { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
+      { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
+      { name: 'Support & Maintenance', value: 'Support & Maintenance' },
+      { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
+      { name: 'Security & Compliance', value: 'Security & Compliance' },
+      { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
+      { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
+      { name: 'DevOps & Automation', value: 'DevOps & Automation' },
+      { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
+      { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
+      { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
+      { name: 'Blockchain Development', value: 'Blockchain Development' },
+      { name: 'IoT Development', value: 'IoT Development' }
+    ];
 
     // Add fallback options for both expertise and I Can Do
     if (this.subExpertiseOptions.length === 0) {
@@ -230,7 +258,8 @@ export class RegisterNewSupplierComponent implements OnInit {
       keyClients: [],
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
-      inHoldComment: []
+      inHoldComment: [],
+      icando: []
     };
   }
 
@@ -533,6 +562,16 @@ export class RegisterNewSupplierComponent implements OnInit {
     } else {
       this.selectedExpertiseItems = [];
     }
+  }
+
+  toggleSelectAllServices(event: any) {
+    if (event.target.checked) {
+      this.selectedServices = [...this.servicesList];
+    } else {
+      this.selectedServices = [];
+    }
+    // Update the form's icando field
+    this.companyForm.icando = this.selectedServices.map(service => service.name);
   }
 
   toggleSelectAllExpertiseICanDo(event: any) {
@@ -1322,5 +1361,14 @@ export class RegisterNewSupplierComponent implements OnInit {
   // Add a method for I Can Do sub-expertise
   onAddTagSubExpertiseICanDo = (name: string) => {
     return this.onAddTagSubExpertise(name); // Reuse the same implementation
+  }
+
+  // Add method to handle services selection changes
+  onServicesChange() {
+    if (this.selectedServices && this.selectedServices.length > 0) {
+      this.companyForm.icando = this.selectedServices.map(service => service.name);
+    } else {
+      this.companyForm.icando = [];
+    }
   }
 }

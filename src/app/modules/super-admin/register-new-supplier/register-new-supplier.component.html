@@ -387,127 +387,18 @@
                   </div>
 
                   <div class="col-12 mb-3">
-                    <!-- I Can Do field -->
-                    <label for="expertiseICanDo" class="col-form-label">I Can Do</label>
-                    <div class="form-control p-2">
-                      <div *ngFor="let expertise of companyForm.expertiseICanDo; let i = index" class="mb-3">
-                        <span class="tag">
-                          <span class="remove-tag" (click)="removeExpertiseICanDo(i)">&times;</span>
-                          {{ expertise.name }}
-                        </span>
-                        <div class="ms-3">
-                          <div class="tags">
-                            <span *ngFor="let sub of expertise.subExpertise; let j = index" class="tag">
-                              <span class="remove-tag" (click)="removeSubExpertiseICanDo(i, j)">&times;</span>
-                              {{ sub }}
-                            </span>
-                          </div>
-                          <div class="mt-2">
-                            <div class="dropdown">
-                              <ng-select [(ngModel)]="selectedSubExpertiseICanDoMap[i]"
-                                name="subExpertiseICanDo_{{i}}" [items]="subExpertiseICanDoOptions" [multiple]="true"
-                                placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
-                                [searchable]="true" [clearable]="true"
-                                (change)="onSubExpertiseICanDoChange(i, $event)"
-                                [addTag]="onAddTagSubExpertiseICanDo" [loading]="addingNewSubExpertise">
-                                <ng-template ng-header-tmp>
-                                  <div class="p-2 border-bottom">
-                                    <div class="form-check">
-                                      <input class="form-check-input" type="checkbox"
-                                        [checked]="selectedSubExpertiseICanDoMap[i]?.length === subExpertiseICanDoOptions?.length"
-                                        (change)="toggleSelectAllSubExpertiseICanDo(i, $event)">
-                                      <label class="form-check-label">Select All</label>
-                                    </div>
-                                  </div>
-                                </ng-template>
-                                <ng-template ng-tag-tmp let-search="searchTerm">
-                                  <div *ngIf="search">
-                                    <span>Add new sub-expertise "{{search}}"</span>
-                                  </div>
-                                </ng-template>
-                              </ng-select>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-2"
-                              (click)="addMultipleSubExpertiseICanDo(i)"
-                              [disabled]="!selectedSubExpertiseICanDoMap[i] || selectedSubExpertiseICanDoMap[i].length === 0">
-                              Add Sub-Expertise
-                            </button>
-                            <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
-                              Sub-expertise is required
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <div class="dropdown">
-                          <ng-select placeholder="Select expertise" [items]="expertiseICanDoDropdownOptions"
-                            bindLabel="name" [multiple]="true" [(ngModel)]="selectedExpertiseICanDoItems"
-                            name="selectedExpertiseICanDoItems" [closeOnSelect]="false" [searchable]="true"
-                            [clearable]="true" [addTag]="onAddTagICanDo" [groupBy]="'type'" [hideSelected]="false"
-                            [virtualScroll]="true">
-                            <ng-template ng-header-tmp>
-                              <div class="p-2 border-bottom">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox"
-                                    [checked]="selectedExpertiseICanDoItems?.length === expertiseICanDoDropdownOptions?.length"
-                                    (change)="toggleSelectAllExpertiseICanDo($event)">
-                                  <label class="form-check-label">Select All</label>
-                                </div>
-                              </div>
-                            </ng-template>
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              <span class="group-header text-primary">{{item.type | titlecase}}</span>
-                            </ng-template>
-                            <ng-template ng-label-tmp let-item="item">
-                              <span>{{item.name}}</span>
-                            </ng-template>
-                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                              <span>{{item.name}}</span>
-                            </ng-template>
-                            <ng-template ng-tag-tmp let-search="searchTerm">
-                              <div *ngIf="search">
-                                <div class="mb-2">Add "{{search}}" to expertise</div>
-                                <div class="radio-group d-flex flex-column">
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseICanDoType"
-                                      id="typeTechICanDo" [(ngModel)]="newExpertiseICanDoType" value="technologies">
-                                    <label class="form-check-label" for="typeTechICanDo">Technologies</label>
-                                  </div>
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseICanDoType"
-                                      id="typeProductICanDo" [(ngModel)]="newExpertiseICanDoType" value="product">
-                                    <label class="form-check-label" for="typeProductICanDo">Product</label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="expertiseICanDoType"
-                                      id="typeDomainICanDo" [(ngModel)]="newExpertiseICanDoType" value="domain">
-                                    <label class="form-check-label" for="typeDomainICanDo">Domain</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </ng-template>
-                          </ng-select>
-                        </div>
-                        <button type="button" class="btn btn-primary mt-2" (click)="addSelectedExpertiseICanDo()"
-                          [disabled]="!selectedExpertiseICanDoItems || selectedExpertiseICanDoItems.length === 0">
-                          Add Expertise
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="col-md-6 mb-3">
+                    <!-- Services field -->
                     <div class="row">
-                      <label for="categoryList" class="col-sm-4 col-form-label">Category</label>
-                      <div class="col-sm-8">
-                        <ng-select placeholder="Select Category" class="custom-ng-select-option"
-                          [items]="categoryDomains" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedCategories" name="selectedCategories" (change)="onCategoryChange()"
-                          [addTag]="true" (add)="onItemAddCategory($event)">
+                      <label for="icando" class="col-sm-2 col-form-label">I Can Do</label>
+                      <div class="col-sm-10">
+                        <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
+                          [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
+                          [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false"
+                          [searchable]="true" [clearable]="true" (change)="onServicesChange()">
                         </ng-select>
                       </div>
                     </div>
-                  </div> -->
+                  </div>
 
                   <div class="col-md-6 mb-3">
                     <div class="row">
