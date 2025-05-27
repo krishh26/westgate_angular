@@ -165,7 +165,8 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="row">
-                      <label for="poc_email" class="col-sm-4 col-form-label">POC Email <span class="text-danger">*</span></label>
+                      <label for="poc_email" class="col-sm-4 col-form-label">POC Email <span
+                          class="text-danger">*</span></label>
                       <div class="col-sm-8">
                         <input [(ngModel)]="companyForm.poc_email" name="poc_email" type="text" class="form-control"
                           placeholder="Enter POC email" id="poc_email" required #pocEmailInput="ngModel">
@@ -330,11 +331,10 @@
                       </div>
                       <div class="mt-2">
                         <div class="dropdown">
-                          <ng-select placeholder="Select expertise" [items]="expertiseGroupedOptions"
-                            bindLabel="name" [multiple]="true" [(ngModel)]="selectedExpertiseItems"
-                            name="selectedExpertiseItems" [closeOnSelect]="false" [searchable]="true"
-                            [clearable]="true" [addTag]="onAddTag" [groupBy]="'type'" [hideSelected]="false"
-                            [virtualScroll]="true">
+                          <ng-select placeholder="Select expertise" [items]="expertiseGroupedOptions" bindLabel="name"
+                            [multiple]="true" [(ngModel)]="selectedExpertiseItems" name="selectedExpertiseItems"
+                            [closeOnSelect]="false" [searchable]="true" [clearable]="true" [addTag]="onAddTag"
+                            [groupBy]="'type'" [hideSelected]="false" [virtualScroll]="true">
                             <ng-template ng-header-tmp>
                               <div class="p-2 border-bottom">
                                 <div class="form-check">
@@ -364,13 +364,13 @@
                                     <label class="form-check-label" for="typeTech">Technologies</label>
                                   </div>
                                   <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType"
-                                      id="typeProduct" [(ngModel)]="newExpertiseType" value="product">
+                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct"
+                                      [(ngModel)]="newExpertiseType" value="product">
                                     <label class="form-check-label" for="typeProduct">Product</label>
                                   </div>
                                   <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="expertiseType"
-                                      id="typeDomain" [(ngModel)]="newExpertiseType" value="domain">
+                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain"
+                                      [(ngModel)]="newExpertiseType" value="domain">
                                     <label class="form-check-label" for="typeDomain">Domain</label>
                                   </div>
                                 </div>
@@ -393,8 +393,8 @@
                       <div class="col-sm-10">
                         <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
                           [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false"
-                          [searchable]="true" [clearable]="true" (change)="onServicesChange()">
+                          [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false" [searchable]="true"
+                          [clearable]="true" (change)="onServicesChange()">
                         </ng-select>
                       </div>
                     </div>
@@ -501,7 +501,20 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-12 text-end">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="companyForm.isSendMail"
+                    name="pocUpdateProfileMail" id="pocUpdateProfileMail">
+                  <label class="form-check-label" for="pocUpdateProfileMail">
+                    Send Mail To POC User For Update Profile.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-end">
             <button type="submit" class="btn btn-primary mob-w-100 me-2" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone || !companyForm.poc_email ||
                         (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier) ||
                         hasInvalidExpertise()">Submit</button>

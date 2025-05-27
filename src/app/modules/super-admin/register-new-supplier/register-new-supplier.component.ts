@@ -259,7 +259,8 @@ export class RegisterNewSupplierComponent implements OnInit {
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
       inHoldComment: [],
-      icando: []
+      icando: [],
+      isSendMail: false
     };
   }
 
