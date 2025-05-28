@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-admin-data-settings',
@@ -19,11 +20,13 @@ export class AdminDataSettingsComponent implements OnInit {
   expertises: any[] = [];
   roles: any[] = [];
   subExpertises: any[] = [];
+  users: any[] = [];
   error: string = '';
   success: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
   editExpertiseForm: FormGroup;
+  userForm: FormGroup;
   selectedExpertise: any = null;
   roleData: any = {
     name: '',
@@ -45,6 +48,9 @@ export class AdminDataSettingsComponent implements OnInit {
   technologySearchTimeout: any;
   addSubExpertiseName: string = '';
   addSubExpertiseSubmitted: boolean = false;
+  userSearchQuery: string = '';
+  userSearchTimeout: any;
+  userSubmitted: boolean = false;
 
   constructor(
     private superadminService: SuperadminService,
@@ -52,7 +58,8 @@ export class AdminDataSettingsComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private notificationService: NotificationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {
     this.technologyForm = this.fb.group({
       name: ['', [Validators.required]]
@@ -65,6 +72,18 @@ export class AdminDataSettingsComponent implements OnInit {
       name: ['', [Validators.required]],
       itemId: ['', [Validators.required]],
       promoteToType: ['', [Validators.required]]
+    });
+    this.userForm = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      userName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['', [Validators.required]],
+      companyName: [''],
+      designation: [''],
+      poc_name: ['', [Validators.required]],
+      poc_email: ['', [Validators.required, Validators.email]],
+      poc_phone: ['', [Validators.required]]
     });
   }
 
@@ -86,6 +105,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadSubExpertises();
     } else if (option === 'role') {
       this.loadRoles();
+    } else if (option === 'user') {
+      this.loadUsers();
     }
   }
 
@@ -337,6 +358,8 @@ export class AdminDataSettingsComponent implements OnInit {
         return 'Sub Expertise Settings';
       case 'role':
         return 'Role Settings';
+      case 'user':
+        return 'User Settings';
       default:
         return 'Admin Data Settings';
     }
@@ -564,6 +587,203 @@ export class AdminDataSettingsComponent implements OnInit {
       error: (error: any) => {
         this.notificationService.showError(error?.message || 'An error occurred while promoting expertise');
         this.showLoader = false;
+      }
+    });
+  }
+
+  loadUsers(): void {
+    this.showLoader = true;
+    const params = {
+      search: this.userSearchQuery
+    };
+    this.superadminService.getAllUsers(params).subscribe({
+      next: (response: any) => {
+        console.log('API Response:', response); // Debug log
+        if (response?.status) {
+          // Fix: data is directly in response.data, not response.data.users
+          this.users = response?.data || [];
+          console.log('Users loaded:', this.users); // Debug log
+        } else {
+          this.error = response?.message || 'Failed to load users';
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading users:', error); // Debug log
+        this.error = error?.message || 'An error occurred while loading users';
+        this.showLoader = false;
+      }
+    });
+  }
+
+  onUserSearchChange(query: string): void {
+    // Clear any existing timeout
+    if (this.userSearchTimeout) {
+      clearTimeout(this.userSearchTimeout);
+    }
+
+    // Set a new timeout to debounce the search
+    this.userSearchTimeout = setTimeout(() => {
+      this.userSearchQuery = query;
+      this.loadUsers();
+    }, 300); // Wait for 300ms after user stops typing
+  }
+
+  openAddUserModal(content: any): void {
+    this.userForm.reset();
+    this.userSubmitted = false;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onSubmitUser(): void {
+    this.userSubmitted = true;
+    if (this.userForm.invalid) {
+      return;
+    }
+
+    this.showLoader = true;
+    this.superadminService.registerUser(this.userForm.value).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('User added successfully');
+          this.modalService.dismissAll();
+          this.loadUsers();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add user');
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'An error occurred while adding user');
+        this.showLoader = false;
+      }
+    });
+  }
+
+  deleteUser(userId: string): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this user?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.superadminService.deleteUser(userId).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.notificationService.showSuccess('User deleted successfully');
+              this.loadUsers();
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete user');
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || 'An error occurred while deleting user');
+            this.showLoader = false;
+          }
+        });
+      }
+    });
+  }
+
+  viewUserDetails(user: any): void {
+    // Format user details for display
+    const userDetails = `
+      <div style="text-align: left;">
+        <h6><strong>Basic Information:</strong></h6>
+        <p><strong>Name:</strong> ${user.name}</p>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>Username:</strong> ${user.userName || 'N/A'}</p>
+        <p><strong>Role:</strong> ${user.role}</p>
+        <p><strong>Status:</strong> ${user.active ? 'Active' : 'Inactive'}</p>
+
+        <h6><strong>Company Information:</strong></h6>
+        <p><strong>Company:</strong> ${user.companyName || 'N/A'}</p>
+        <p><strong>Website:</strong> ${user.website || 'N/A'}</p>
+        <p><strong>Location:</strong> ${user.location || 'N/A'}</p>
+        <p><strong>Country:</strong> ${user.country || 'N/A'}</p>
+
+        <h6><strong>Contact Information:</strong></h6>
+        <p><strong>POC Name:</strong> ${user.poc_name || 'N/A'}</p>
+        <p><strong>POC Email:</strong> ${user.poc_email || 'N/A'}</p>
+        <p><strong>POC Phone:</strong> ${user.poc_phone || 'N/A'}</p>
+
+        <h6><strong>Activity:</strong></h6>
+        <p><strong>Last Login:</strong> ${user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never'}</p>
+        <p><strong>Joined:</strong> ${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
+      </div>
+    `;
+
+    Swal.fire({
+      title: `User Details - ${user.name}`,
+      html: userDetails,
+      icon: 'info',
+      confirmButtonText: 'Close',
+      confirmButtonColor: '#0d6efd',
+      width: '600px'
+    });
+  }
+
+  editUser(user: any): void {
+    // Populate form with user data for editing
+    this.userForm.patchValue({
+      name: user.name,
+      email: user.email,
+      userName: user.userName,
+      role: user.role,
+      companyName: user.companyName,
+      poc_name: user.poc_name,
+      poc_email: user.poc_email,
+      poc_phone: user.poc_phone
+    });
+
+    // Remove password requirement for editing
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('password')?.updateValueAndValidity();
+
+    this.userSubmitted = false;
+    // TODO: Open edit modal instead of add modal
+    // For now, we'll use the same modal but modify the submit behavior
+  }
+
+  toggleUserStatus(user: any): void {
+    const action = user.active ? 'deactivate' : 'activate';
+    const newStatus = !user.active;
+
+    Swal.fire({
+      title: `${action.charAt(0).toUpperCase() + action.slice(1)} User`,
+      text: `Are you sure you want to ${action} ${user.name}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: newStatus ? '#198754' : '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: `Yes, ${action.charAt(0).toUpperCase() + action.slice(1)}!`
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        // Update user status using AuthService
+        const payload = { active: newStatus };
+
+        this.authService.updateUser(user._id, payload).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.notificationService.showSuccess(`User ${action}d successfully`);
+              this.loadUsers();
+            } else {
+              this.notificationService.showError(response?.message || `Failed to ${action} user`);
+            }
+            this.showLoader = false;
+          },
+          error: (error: any) => {
+            this.notificationService.showError(error?.message || `An error occurred while ${action}ing user`);
+            this.showLoader = false;
+          }
+        });
       }
     });
   }

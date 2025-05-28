@@ -64,6 +64,9 @@ export enum SuperAdminEndPoint {
   DELETE_CASE_STUDY = '/case-study/delete/',
   WITHOUT_SUPPLIER_SUB_EXPERTISE_DROPDOWN = '/sub-expertise/list',
   PROMOTE_EXPERTISE = '/web-user/masterlist/promote',
+  USER_LIST = '/user/list',
+  USER_REGISTER = '/user/register',
+  USER_DELETE = '/user/delete',
 }
 
 @Injectable({
@@ -786,6 +789,39 @@ export class SuperadminService {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.PROMOTE_EXPERTISE,
       payload
+    );
+  }
+
+  // User Management Methods
+  getAllUsers(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params?.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+    if (params?.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params?.limit) {
+      queryParams = queryParams.set('limit', params.limit);
+    }
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.USER_LIST,
+      { params: queryParams }
+    );
+  }
+
+  registerUser(userData: any): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.USER_REGISTER,
+      userData
+    );
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      this.baseUrl + SuperAdminEndPoint.USER_DELETE + '/' + userId
     );
   }
 }

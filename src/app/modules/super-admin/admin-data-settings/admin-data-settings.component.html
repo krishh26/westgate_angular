@@ -20,6 +20,9 @@
             <li class="list-group-item" [class.active]="selectedOption === 'role'" (click)="selectOption('role')">
               <i class="bi bi-person-badge me-2"></i>Role
             </li>
+            <li class="list-group-item" [class.active]="selectedOption === 'user'" (click)="selectOption('user')">
+              <i class="bi bi-people me-2"></i>User Settings
+            </li>
           </ul>
         </div>
       </div>
@@ -32,6 +35,9 @@
           <h4 class="mb-0">{{ getSelectedOptionTitle() }}</h4>
           <button class="btn btn-primary" *ngIf="selectedOption === 'expertise'" (click)="openAddExpertiseModal(addExpertiseModal)">
             <i class="bi bi-plus-circle me-2"></i>Add Expertise
+          </button>
+          <button class="btn btn-primary" *ngIf="selectedOption === 'user'" (click)="openAddUserModal(addUserModal)">
+            <i class="bi bi-plus-circle me-2"></i>Add User
           </button>
         </div>
         <div class="card-body">
@@ -250,6 +256,93 @@
               </table>
             </div>
           </div>
+
+          <!-- User Settings Section -->
+          <div *ngIf="selectedOption === 'user'">
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+            <div class="table-responsive">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search users..."
+                    [(ngModel)]="userSearchQuery"
+                    (ngModelChange)="onUserSearchChange($event)">
+                </div>
+                <button class="btn btn-primary" (click)="openAddUserModal(addUserModal)">
+                  <i class="bi bi-plus-circle me-2"></i>Add User
+                </button>
+              </div>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Company</th>
+                    <th>Plan</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Joined Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of users">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.userName || '-' }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.companyName || '-' }}</td>
+                    <td>{{ user.plan || '-' }}</td>
+                    <td>{{ user.country || '-' }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="{
+                        'bg-success': user.active,
+                        'bg-danger': !user.active
+                      }">
+                        {{ user.active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+                    <td>{{ user.lastLogin ? (user.lastLogin | date:'medium') : 'Never' }}</td>
+                    <td>{{ user.createdAt ? (user.createdAt | date:'mediumDate') : '-' }}</td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-info" (click)="viewUserDetails(user)" title="View Details">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" (click)="editUser(user)" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          class="btn btn-sm"
+                          [ngClass]="{
+                            'btn-outline-warning': user.active,
+                            'btn-outline-success': !user.active
+                          }"
+                          (click)="toggleUserStatus(user)"
+                          [title]="user.active ? 'Deactivate' : 'Activate'">
+                          <i class="bi" [ngClass]="{
+                            'bi-pause-circle': user.active,
+                            'bi-play-circle': !user.active
+                          }"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user._id)" title="Delete">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="users.length === 0">
+                    <td colspan="11" class="text-center">No users found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -463,6 +556,192 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
         <button type="submit" class="btn btn-primary">Update Expertise</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Add User Modal -->
+<ng-template #addUserModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New User</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="userName" class="form-label">Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="userName"
+            formControlName="name"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('name')?.errors }"
+            placeholder="Enter full name"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('name')?.errors?.['required']">
+            Name is required
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="userEmail" class="form-label">Email <span class="text-danger">*</span></label>
+          <input
+            type="email"
+            class="form-control"
+            id="userEmail"
+            formControlName="email"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('email')?.errors }"
+            placeholder="Enter email address"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('email')?.errors?.['required']">
+            Email is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('email')?.errors?.['email']">
+            Please enter a valid email
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="userUsername" class="form-label">Username <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="userUsername"
+            formControlName="userName"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('userName')?.errors }"
+            placeholder="Enter username"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('userName')?.errors?.['required']">
+            Username is required
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="userPassword" class="form-label">Password <span class="text-danger">*</span></label>
+          <input
+            type="password"
+            class="form-control"
+            id="userPassword"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('password')?.errors }"
+            placeholder="Enter password (min 6 characters)"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('password')?.errors?.['required']">
+            Password is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('password')?.errors?.['minlength']">
+            Password must be at least 6 characters
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="userRole" class="form-label">Role <span class="text-danger">*</span></label>
+          <select
+            class="form-control"
+            id="userRole"
+            formControlName="role"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('role')?.errors }"
+          >
+            <option value="">Select Role</option>
+            <option value="BOS">BOS</option>
+            <option value="SupplierAdmin">Supplier Admin</option>
+            <option value="SupplierUser">Supplier User</option>
+            <option value="FeasibilityAdmin">Feasibility Admin</option>
+            <option value="FeasibilityUser">Feasibility User</option>
+            <option value="ProjectManager">Project Manager</option>
+            <option value="UKWriter">UK Writer</option>
+            <option value="BIDSubmition">BID Submission</option>
+            <option value="Admin">Admin</option>
+            <option value="ProjectCoOrdinator">Project Coordinator</option>
+            <option value="ProcessManagerAdmin">Process Manager Admin</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('role')?.errors?.['required']">
+            Role is required
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="userCompany" class="form-label">Company Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="userCompany"
+            formControlName="companyName"
+            placeholder="Enter company name (optional)"
+          >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="userDesignation" class="form-label">Designation</label>
+          <input
+            type="text"
+            class="form-control"
+            id="userDesignation"
+            formControlName="designation"
+            placeholder="Enter designation (optional)"
+          >
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="pocName" class="form-label">POC Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="pocName"
+            formControlName="poc_name"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_name')?.errors }"
+            placeholder="Enter POC name"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_name')?.errors?.['required']">
+            POC Name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="pocEmail" class="form-label">POC Email <span class="text-danger">*</span></label>
+          <input
+            type="email"
+            class="form-control"
+            id="pocEmail"
+            formControlName="poc_email"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_email')?.errors }"
+            placeholder="Enter POC email"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_email')?.errors?.['required']">
+            POC Email is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_email')?.errors?.['email']">
+            Please enter a valid POC email
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="pocPhone" class="form-label">POC Phone <span class="text-danger">*</span></label>
+          <input
+            type="tel"
+            class="form-control"
+            id="pocPhone"
+            formControlName="poc_phone"
+            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_phone')?.errors }"
+            placeholder="Enter POC phone number"
+          >
+          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_phone')?.errors?.['required']">
+            POC Phone is required
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
+          Add User
+        </button>
       </div>
     </form>
   </div>
