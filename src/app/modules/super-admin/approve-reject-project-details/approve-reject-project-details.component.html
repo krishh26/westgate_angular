@@ -537,6 +537,10 @@
                 (click)="statusChange('Awaiting')">
                 Awaiting
               </button>
+              <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Query Raised'"
+                (click)="statusChange('Query Raised')">
+                Query Raised
+              </button>
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution
