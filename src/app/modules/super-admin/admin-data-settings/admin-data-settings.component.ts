@@ -552,10 +552,18 @@ export class AdminDataSettingsComponent implements OnInit {
   openEditExpertiseModal(content: any, expertise: any): void {
     this.selectedExpertise = expertise;
     this.editSubmitted = false;
+
+    // Debug log to see expertise object structure
+    console.log('Expertise object:', expertise);
+    console.log('Selected expertise type:', this.selectedExpertiseType);
+
+    // Use expertise's own type if available, otherwise fall back to selectedExpertiseType
+    const expertiseType = expertise.type || this.selectedExpertiseType;
+
     this.editExpertiseForm.patchValue({
       name: expertise.name,
       itemId: expertise._id,
-      promoteToType: this.selectedExpertiseType
+      promoteToType: expertiseType
     });
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
@@ -568,9 +576,17 @@ export class AdminDataSettingsComponent implements OnInit {
     }
 
     this.showLoader = true;
+
+    // Remove "-other" suffix from promoteToType
+    let promoteToType = this.editExpertiseForm.value.promoteToType;
+    if (promoteToType.endsWith('-other')) {
+      promoteToType = promoteToType.replace('-other', '');
+    }
+
     const payload = {
       itemId: this.editExpertiseForm.value.itemId,
-      promoteToType: this.editExpertiseForm.value.promoteToType
+      name: this.editExpertiseForm.value.name,
+      promoteToType: promoteToType
     };
 
     this.superadminService.promoteExpertise(payload).subscribe({

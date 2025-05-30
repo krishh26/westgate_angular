@@ -527,7 +527,6 @@
           formControlName="name"
           [ngClass]="{ 'is-invalid': editSubmitted && editExpertiseForm.get('name')?.errors }"
           placeholder="Enter expertise name"
-          readonly
         >
         <div class="invalid-feedback" *ngIf="editSubmitted && editExpertiseForm.get('name')?.errors?.['required']">
           Expertise name is required
