@@ -820,8 +820,12 @@ export class SuperadminService {
   }
 
   deleteUser(userId: string): Observable<any> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('id', userId);
+
     return this.httpClient.delete<any>(
-      this.baseUrl + SuperAdminEndPoint.USER_DELETE + '/' + userId
+      this.baseUrl + SuperAdminEndPoint.USER_DELETE,
+      { params: queryParams }
     );
   }
 }
