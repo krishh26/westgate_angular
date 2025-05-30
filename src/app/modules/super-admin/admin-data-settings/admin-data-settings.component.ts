@@ -54,6 +54,7 @@ export class AdminDataSettingsComponent implements OnInit {
   editUserForm: FormGroup;
   editUserSubmitted = false;
   selectedUserForEdit: any;
+  servicesList: any[] = [];
   @ViewChild('editUserModal') editUserModal: any;
 
   constructor(
@@ -65,12 +66,31 @@ export class AdminDataSettingsComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService
   ) {
+    this.servicesList = [
+      { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
+      { name: 'Custom Software Development', value: 'Custom Software Development' },
+      { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
+      { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
+      { name: 'Support & Maintenance', value: 'Support & Maintenance' },
+      { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
+      { name: 'Security & Compliance', value: 'Security & Compliance' },
+      { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
+      { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
+      { name: 'DevOps & Automation', value: 'DevOps & Automation' },
+      { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
+      { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
+      { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
+      { name: 'Blockchain Development', value: 'Blockchain Development' },
+      { name: 'IoT Development', value: 'IoT Development' }
+    ];
+
     this.technologyForm = this.fb.group({
       name: ['', [Validators.required]]
     });
     this.expertiseForm = this.fb.group({
       name: ['', [Validators.required]],
-      type: ['', [Validators.required]]
+      type: ['', [Validators.required]],
+      tags: [[]]
     });
     this.editExpertiseForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -329,6 +349,9 @@ export class AdminDataSettingsComponent implements OnInit {
 
   openAddExpertiseModal(content: any): void {
     this.expertiseForm.reset();
+    this.expertiseForm.patchValue({
+      tags: []
+    });
     this.submitted = false;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
@@ -340,9 +363,17 @@ export class AdminDataSettingsComponent implements OnInit {
     }
 
     this.showLoader = true;
+
+    // Remove "-other" suffix from type
+    let expertiseType = this.expertiseForm.value.type;
+    if (expertiseType.endsWith('-other')) {
+      expertiseType = expertiseType.replace('-other', '');
+    }
+
     const payload = {
       name: this.expertiseForm.value.name,
-      type: this.expertiseForm.value.type
+      type: expertiseType,
+      tags: this.expertiseForm.value.tags
     };
 
     this.superadminService.createCustomExpertise(payload).subscribe({
