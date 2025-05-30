@@ -528,7 +528,9 @@
                       [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
-                  <button class="btn btn-primary" type="button" [disabled]="!feasibilityStatusComment.value || !feasibilityStatus" (click)="pushFeasibilityStatus()">
+                  <button class="btn btn-primary" type="button"
+                    [disabled]="!feasibilityStatusComment.value || !feasibilityStatus"
+                    (click)="pushFeasibilityStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
@@ -612,6 +614,10 @@
                 (click)="statusChange('Awaiting')">
                 Awaiting
               </button>
+              <button class="btn btn-outline-primary flex-fill m-1" [class.active]="status === 'Query Raised'"
+                (click)="statusChange('Query Raised')">
+                Query Raised
+              </button>
               <button class="btn btn-outline-info flex-fill m-1" [class.active]="status === 'InSolution'"
                 (click)="statusChange('InSolution')">
                 In-Solution
@@ -649,6 +655,7 @@
                 (click)="statusChange('Go-NoGoStage2')">
                 GO-NO GO STAGE 2
               </button>
+
             </div>
 
             <!-- Dynamic Comment Section -->
@@ -719,7 +726,7 @@
                       [placeholder]="'Type here...'" class="ngx-editor-textarea">
                     </ngx-editor>
                   </div>
-                  <button class="btn btn-primary" type="button" [disabled]="bidStatusDisable"  (click)="pushStatus()">
+                  <button class="btn btn-primary" type="button" [disabled]="bidStatusDisable" (click)="pushStatus()">
                     <i class="bi bi-plus-lg"></i> Add
                   </button>
                 </div>
@@ -928,10 +935,12 @@
       <div class="modal-header">
         <h5 class="modal-title" id="ViewProjectLogsLabel">Project Logs</h5>
         <div class="ms-auto me-3">
-          <button type="button" class="btn btn-outline-primary me-2" [class.active]="activeLogType === 'timeBased'" (click)="loadLogs('timeBased')">
+          <button type="button" class="btn btn-outline-primary me-2" [class.active]="activeLogType === 'timeBased'"
+            (click)="loadLogs('timeBased')">
             Time Based
           </button>
-          <button type="button" class="btn btn-outline-primary" [class.active]="activeLogType === 'projectBased'" (click)="loadLogs('projectBased')">
+          <button type="button" class="btn btn-outline-primary" [class.active]="activeLogType === 'projectBased'"
+            (click)="loadLogs('projectBased')">
             Project Based
           </button>
         </div>
@@ -1183,25 +1192,27 @@
 
         <!-- PDF Viewer -->
         <div *ngIf="selectViewImage?.url && isPdf(selectViewImage?.url)" class="alert alert-info">
-          PDF files cannot be displayed directly. <a [href]="selectViewImage?.url" target="_blank">Open PDF in new tab</a>
+          PDF files cannot be displayed directly. <a [href]="selectViewImage?.url" target="_blank">Open PDF in new
+            tab</a>
         </div>
 
         <!-- Office Documents -->
         <iframe *ngIf="selectViewImage?.url && isWordOrExcel(selectViewImage?.url)"
-          [src]="getDocumentViewerUrl(selectViewImage?.url)"
-          style="width: 100%; height: 600px"></iframe>
+          [src]="getDocumentViewerUrl(selectViewImage?.url)" style="width: 100%; height: 600px"></iframe>
 
         <!-- Images - try both with and without sanitization -->
         <div *ngIf="selectViewImage?.url && isImage(selectViewImage?.url)" class="text-center">
-          <img [src]="getDocumentViewerUrl(selectViewImage?.url)" class="img-fluid mb-3" alt="Sanitized Image"/>
+          <img [src]="getDocumentViewerUrl(selectViewImage?.url)" class="img-fluid mb-3" alt="Sanitized Image" />
         </div>
 
         <!-- Fallback for non-recognized formats -->
-        <div *ngIf="selectViewImage?.url && !isPdf(selectViewImage?.url) && !isWordOrExcel(selectViewImage?.url) && !isImage(selectViewImage?.url)" class="text-center">
+        <div
+          *ngIf="selectViewImage?.url && !isPdf(selectViewImage?.url) && !isWordOrExcel(selectViewImage?.url) && !isImage(selectViewImage?.url)"
+          class="text-center">
           <div class="alert alert-warning">
             File format not recognized as PDF, Office document, or standard image. Attempting to display directly:
           </div>
-          <img [src]="getDocumentViewerUrl(selectViewImage?.url)" class="img-fluid" alt="Direct Image"/>
+          <img [src]="getDocumentViewerUrl(selectViewImage?.url)" class="img-fluid" alt="Direct Image" />
         </div>
       </div>
       <div class="modal-footer">
