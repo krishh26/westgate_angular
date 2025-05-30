@@ -63,6 +63,7 @@ export class ProjectManagerToActionComponent implements OnDestroy {
     },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+    { bidvalue: 'Query Raised', bidstatus: 'Query Raised' },
   ];
 
   minValue: number = 0;

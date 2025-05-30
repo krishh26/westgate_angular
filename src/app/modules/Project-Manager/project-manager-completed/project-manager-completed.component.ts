@@ -93,6 +93,7 @@ export class ProjectManagerCompletedComponent {
     },
     { bidvalue: 'WaitingForResult', bidstatus: 'Waiting For Result' },
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' },
+    { bidvalue: 'Query Raised', bidstatus: 'Query Raised' },
   ];
 
   publishStartDate: FormControl = new FormControl('');
