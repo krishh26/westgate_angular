@@ -805,6 +805,9 @@ export class SuperadminService {
     if (params?.limit) {
       queryParams = queryParams.set('limit', params.limit);
     }
+    if (params?.userRoles) {
+      queryParams = queryParams.set('userRoles', params.userRoles);
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.USER_LIST,

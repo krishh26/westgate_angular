@@ -55,6 +55,8 @@ export class AdminDataSettingsComponent implements OnInit {
   editUserSubmitted = false;
   selectedUserForEdit: any;
   servicesList: any[] = [];
+  selectedUserRole: string = '';
+  rolesList: any[] = [];
   @ViewChild('editUserModal') editUserModal: any;
 
   constructor(
@@ -82,6 +84,15 @@ export class AdminDataSettingsComponent implements OnInit {
       { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
       { name: 'Blockchain Development', value: 'Blockchain Development' },
       { name: 'IoT Development', value: 'IoT Development' }
+    ];
+
+    this.rolesList = [
+      { label: 'Sales Manager', value: 'BOS' },
+      { label: 'Super Admin', value: 'Admin' },
+      { label: 'Process Manager', value: 'ProcessManagerAdmin' },
+      { label: 'Bid Manager', value: 'ProjectManager' },
+      { label: 'Users', value: 'SalesManager' },
+      { label: 'SupplierAdmin', value: 'SupplierAdmin' }
     ];
 
     this.technologyForm = this.fb.group({
@@ -655,23 +666,26 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadUsers(): void {
     this.showLoader = true;
-    const params = {
+    const params: any = {
       search: this.userSearchQuery
     };
+
+    // Only add userRoles parameter if a role is selected
+    if (this.selectedUserRole) {
+      params.userRoles = this.selectedUserRole;
+    }
+
     this.superadminService.getAllUsers(params).subscribe({
       next: (response: any) => {
-        console.log('API Response:', response); // Debug log
         if (response?.status) {
           // Fix: data is directly in response.data, not response.data.users
           this.users = response?.data || [];
-          console.log('Users loaded:', this.users); // Debug log
         } else {
           this.error = response?.message || 'Failed to load users';
         }
         this.showLoader = false;
       },
       error: (error: any) => {
-        console.error('Error loading users:', error); // Debug log
         this.error = error?.message || 'An error occurred while loading users';
         this.showLoader = false;
       }
@@ -870,5 +884,10 @@ export class AdminDataSettingsComponent implements OnInit {
         });
       }
     });
+  }
+
+  onUserRoleFilterChange(selectedRole: string): void {
+    this.selectedUserRole = selectedRole;
+    this.loadUsers();
   }
 }

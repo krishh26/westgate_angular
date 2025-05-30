@@ -262,13 +262,26 @@
             <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
             <div class="table-responsive">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="col-md-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search users..."
-                    [(ngModel)]="userSearchQuery"
-                    (ngModelChange)="onUserSearchChange($event)">
+                <div class="d-flex gap-3 align-items-center">
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Search users..."
+                      [(ngModel)]="userSearchQuery"
+                      (ngModelChange)="onUserSearchChange($event)">
+                  </div>
+                  <div class="col-md-3">
+                    <select
+                      class="form-control"
+                      [(ngModel)]="selectedUserRole"
+                      (change)="onUserRoleFilterChange($any($event.target).value)">
+                      <option value="">All Roles</option>
+                      <option *ngFor="let role of rolesList" [value]="role.value">
+                        {{ role.label }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <button class="btn btn-primary" (click)="openAddUserModal(addUserModal)">
                   <i class="bi bi-plus-circle me-2"></i>Add User
