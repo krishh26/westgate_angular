@@ -828,4 +828,8 @@ export class SuperadminService {
       { params: queryParams }
     );
   }
+
+  updateUser(userData: any) {
+    return this.httpClient.patch(`${this.baseUrl}/user/update/${userData._id}`, userData);
+  }
 }

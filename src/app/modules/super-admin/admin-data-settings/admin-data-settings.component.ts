@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -51,6 +51,10 @@ export class AdminDataSettingsComponent implements OnInit {
   userSearchQuery: string = '';
   userSearchTimeout: any;
   userSubmitted: boolean = false;
+  editUserForm: FormGroup;
+  editUserSubmitted = false;
+  selectedUserForEdit: any;
+  @ViewChild('editUserModal') editUserModal: any;
 
   constructor(
     private superadminService: SuperadminService,
@@ -84,6 +88,17 @@ export class AdminDataSettingsComponent implements OnInit {
       poc_name: ['', [Validators.required]],
       poc_email: ['', [Validators.required, Validators.email]],
       poc_phone: ['', [Validators.required]]
+    });
+    this.editUserForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      userName: ['', Validators.required],
+      role: ['', Validators.required],
+      companyName: [''],
+      designation: [''],
+      poc_name: ['', Validators.required],
+      poc_email: ['', [Validators.required, Validators.email]],
+      poc_phone: ['', Validators.required]
     });
   }
 
@@ -745,26 +760,48 @@ export class AdminDataSettingsComponent implements OnInit {
     });
   }
 
-  editUser(user: any): void {
-    // Populate form with user data for editing
-    this.userForm.patchValue({
+  editUser(user: any) {
+    this.selectedUserForEdit = user;
+    this.editUserForm.patchValue({
       name: user.name,
       email: user.email,
       userName: user.userName,
       role: user.role,
-      companyName: user.companyName,
+      companyName: user.companyName || '',
+      designation: user.designation || '',
       poc_name: user.poc_name,
       poc_email: user.poc_email,
       poc_phone: user.poc_phone
     });
+    this.modalService.open(this.editUserModal, { size: 'lg' });
+  }
 
-    // Remove password requirement for editing
-    this.userForm.get('password')?.clearValidators();
-    this.userForm.get('password')?.updateValueAndValidity();
+  onSubmitEditUser() {
+    this.editUserSubmitted = true;
+    if (this.editUserForm.invalid) {
+      return;
+    }
 
-    this.userSubmitted = false;
-    // TODO: Open edit modal instead of add modal
-    // For now, we'll use the same modal but modify the submit behavior
+    this.isLoading = true;
+    const formData = this.editUserForm.value;
+    formData._id = this.selectedUserForEdit._id;
+
+    this.superadminService.updateUser(formData).subscribe(
+      (response: any) => {
+        this.isLoading = false;
+        if (response?.status === true) {
+          this.notificationService.showSuccess('User updated successfully');
+          this.modalService.dismissAll();
+          this.loadUsers(); // Refresh the users list
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update user');
+        }
+      },
+      (error) => {
+        this.isLoading = false;
+        this.notificationService.showError(error?.error?.message || error?.message || 'Failed to update user');
+      }
+    );
   }
 
   toggleUserStatus(user: any): void {
