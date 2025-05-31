@@ -49,8 +49,11 @@ export class SupplierUserProfileEditComponent implements OnInit {
     keyClients: [],
     resourceSharingSupplier: false,
     subcontractingSupplier: false,
-    expertiseICanDo: []
+    expertiseICanDo: [],
+    icando: [],
   };
+  servicesList: any[] = [];
+  selectedServices: any[] = [];
 
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
@@ -114,7 +117,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
       this.mapLegacyFieldNames(data);
 
       // Initialize arrays if they don't exist in the incoming data
-      const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients'];
+      const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients', 'icando'];
       arrayFields.forEach(field => {
         if (!data[field]) {
           data[field] = [];
@@ -127,6 +130,27 @@ export class SupplierUserProfileEditComponent implements OnInit {
       if (this.supplierDetails.inHoldComment && this.supplierDetails.inHoldComment.length > 0) {
         this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
       }
+
+      this.selectedServices = this.supplierDetails?.icando;
+
+      // Initialize services list
+      this.servicesList = [
+        { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
+        { name: 'Custom Software Development', value: 'Custom Software Development' },
+        { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
+        { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
+        { name: 'Support & Maintenance', value: 'Support & Maintenance' },
+        { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
+        { name: 'Security & Compliance', value: 'Security & Compliance' },
+        { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
+        { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
+        { name: 'DevOps & Automation', value: 'DevOps & Automation' },
+        { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
+        { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
+        { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
+        { name: 'Blockchain Development', value: 'Blockchain Development' },
+        { name: 'IoT Development', value: 'IoT Development' }
+      ];
     }
 
     // Setup typeahead for sub-expertise search
@@ -195,6 +219,15 @@ export class SupplierUserProfileEditComponent implements OnInit {
       ...item,
       value: item.name
     }));
+  }
+
+  // Add method to handle services selection changes
+  onServicesChange() {
+    if (this.selectedServices && this.selectedServices.length > 0) {
+      this.supplierDetails.icando = this.selectedServices.map(service => service.name);
+    } else {
+      this.supplierDetails.icando = [];
+    }
   }
 
   // Initialize selections from supplier details
