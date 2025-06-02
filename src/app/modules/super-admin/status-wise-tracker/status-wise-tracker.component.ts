@@ -55,7 +55,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     'Go-NoGoStage1': 'Go-NoGoStage1',
     SupplierConfirmation: 'SupplierConfirmation',
     'Go-NoGoStage2': 'Go-NoGoStage2',
-    "Not Releted": 'Not Releted'
+    "Not Releted": 'Not Releted',
+    'Query Raised': 'Query Raised'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -472,6 +473,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
+    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
 
     // Make sure assignBidManagerId is explicitly set before API call
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
@@ -482,7 +484,16 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     } else if (type === 'bid') {
       Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
       Payload.projectListStatusWiseTracker.status = 'Passed';
+    } else {
+      // For other cases, preserve the current status values
+      if (this.status) {
+        Payload.projectListStatusWiseTracker.status = this.status;
+      }
     }
+
+    console.log('getProjectList - Current status:', this.status);
+    console.log('getProjectList - Payload status:', Payload.projectListStatusWiseTracker.status);
+    console.log('getProjectList - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -538,7 +549,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   }
 
   filter(value: any, type: string) {
-    console.log('this is values', value, this.filterObject[value], type);
+    console.log('Filter called with:', { value, type, filterObjectValue: this.filterObject[value] });
 
     // Check if the status is "Shortlisted"
     if (value === 'Shortlisted') {
@@ -552,11 +563,23 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       // Use the existing filter logic for other statuses
       this.status = this.filterObject[value];
       Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
+
+      // Immediately set the status in payload based on type
+      if (type === 'feasibility') {
+        Payload.projectListStatusWiseTracker.status = this.status || '';
+        Payload.projectListStatusWiseTracker.bidManagerStatus = '';
+      } else if (type === 'bid') {
+        Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
+        Payload.projectListStatusWiseTracker.status = 'Passed';
+      }
     }
 
     // Make sure assignBidManagerId is preserved during filtering
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
-    console.log('Filter operation - assignBidManagerId param:', Payload.projectListStatusWiseTracker.assignBidManagerId);
+
+    console.log('Filter - Status set to:', this.status);
+    console.log('Filter - Payload status:', Payload.projectListStatusWiseTracker.status);
+    console.log('Filter - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
