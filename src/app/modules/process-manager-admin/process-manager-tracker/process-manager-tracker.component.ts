@@ -53,7 +53,8 @@ export class ProcessManagerTrackerComponent {
     'Go-NoGoStage1': 'Go-NoGoStage1',
     SupplierConfirmation: 'SupplierConfirmation',
     'Go-NoGoStage2': 'Go-NoGoStage2',
-    "Not Releted": 'Not Releted'
+    "Not Releted": 'Not Releted',
+    'Query Raised': 'Query Raised'
   };
   selectedCategories: any[] = [];
   selectedIndustries: any[] = [];
@@ -350,13 +351,24 @@ export class ProcessManagerTrackerComponent {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
+    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+
     if (type === 'feasibility') {
       Payload.projectListStatusWiseTracker.status = this.status || '';
       Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else if (type === 'bid') {
       Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
       Payload.projectListStatusWiseTracker.status = 'Passed';
+    } else {
+      // For other cases, preserve the current status values
+      if (this.status) {
+        Payload.projectListStatusWiseTracker.status = this.status;
+      }
     }
+
+    console.log('ProcessManager getProjectList - Current status:', this.status);
+    console.log('ProcessManager getProjectList - Payload status:', Payload.projectListStatusWiseTracker.status);
+    console.log('ProcessManager getProjectList - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -412,7 +424,7 @@ export class ProcessManagerTrackerComponent {
   }
 
   filter(value: any, type: string) {
-    console.log('this is values', value, this.filterObject[value], type);
+    console.log('ProcessManager Filter called with:', { value, type, filterObjectValue: this.filterObject[value] });
 
     // Check if the status is "Shortlisted"
     if (value === 'Shortlisted') {
@@ -422,12 +434,24 @@ export class ProcessManagerTrackerComponent {
       // Clear other relevant parameters
       Payload.projectListStatusWiseTracker.status = '';
       Payload.projectListStatusWiseTracker.bidManagerStatus = '';
-      // Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else {
       // Use the existing filter logic for other statuses
       this.status = this.filterObject[value];
       Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
+
+      // Immediately set the status in payload based on type
+      if (type === 'feasibility') {
+        Payload.projectListStatusWiseTracker.status = this.status || '';
+        Payload.projectListStatusWiseTracker.bidManagerStatus = '';
+      } else if (type === 'bid') {
+        Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
+        Payload.projectListStatusWiseTracker.status = 'Passed';
+      }
     }
+
+    console.log('ProcessManager Filter - Status set to:', this.status);
+    console.log('ProcessManager Filter - Payload status:', Payload.projectListStatusWiseTracker.status);
+    console.log('ProcessManager Filter - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
