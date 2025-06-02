@@ -984,8 +984,37 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  dateWiseTaskCount: any = {};
+
+  calculateTaskByUser(userId: string, dateString: string) {
+    console.log("this is testing data", userId, dateString);
+    const dateWiseTask = this.taskGraphData.byDate.find((u: any) => u.date === dateString);
+    console.log("dateWiseTask", dateWiseTask);
+    if (dateWiseTask) {
+      const data: any = dateWiseTask?.users?.find((element: any) => element?.user?.id == userId);
+      this.dateWiseTaskCount = data;
+    }
+  }
+
+  getDataBasedOnDate(userId: string, type: string) {
+    if (userId == this.dateWiseTaskCount?.user?.id) {
+      if (type == 'completed') {
+        return this.dateWiseTaskCount?.completedTasks;
+      }
+      if (type == 'pending') {
+        return this.dateWiseTaskCount?.pendingTasks;
+      }
+      if (type == 'time') {
+        return this.dateWiseTaskCount?.totalHoursFormatted;
+      }
+    }
+
+    return 0;
+  }
+
   // Show task details for a specific user and date
   showTaskDetailsForUserAndDate(userId: string, dateString: string) {
+    this.calculateTaskByUser(userId, dateString);
     if (!this.taskGraphData) {
       this.notificationService.showError('No task data available');
       return;
