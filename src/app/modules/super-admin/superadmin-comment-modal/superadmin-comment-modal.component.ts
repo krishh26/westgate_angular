@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -20,6 +21,7 @@ export class SuperadminCommentModalComponent implements OnInit {
   userDataForm = {
     activeStatus: new FormControl("", [Validators.required]),
     active: new FormControl(false),
+    isSendMail: new FormControl(false)
   };
 
   userForm = new FormGroup(this.userDataForm);
@@ -28,7 +30,8 @@ export class SuperadminCommentModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private authService: AuthService,
     private superadminService: SuperadminService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -52,11 +55,6 @@ export class SuperadminCommentModalComponent implements OnInit {
       activeStatus: commentString,
       active: false,
     });
-    console.log('Modal initialized with:', {
-      itemType: this.itemType,
-      sourceComponent: this.sourceComponent,
-      supplierId: this.supplier?._id
-    });
   }
 
   close() {
@@ -69,15 +67,10 @@ export class SuperadminCommentModalComponent implements OnInit {
       return;
     }
 
-    console.log('Source component:', this.sourceComponent);
-    console.log('Item type:', this.itemType);
-
     // Determine which API to call based on the source component
     if (this.sourceComponent === 'super-admin-supplier') {
-      console.log('Calling supplier update API...');
       this.updateSupplier();
     } else {
-      console.log('Calling candidate update API...');
       this.updateCandidate();
     }
   }
@@ -85,23 +78,23 @@ export class SuperadminCommentModalComponent implements OnInit {
   updateSupplier() {
     const payload = {
       active: false,
-      activeStatus: this.userForm.get('activeStatus')?.value
+      activeStatus: this.userForm.get('activeStatus')?.value,
+      isSendMail: this.userForm.get('isSendMail')?.value
     };
-
-    console.log('Updating supplier with payload:', payload);
-
+    this.spinner.show();
     this.authService.updateUser(this.supplier._id, payload).subscribe(
       (response: any) => {
-        console.log('Update supplier response:', response);
         if (response?.status) {
           this.notificationService.showSuccess(response?.message || 'Supplier updated successfully');
+          this.spinner.hide();
           this.activeModal.close(true);
         } else {
           this.notificationService.showError(response?.message || 'Failed to update supplier');
+          this.spinner.hide();
         }
       },
       (error: any) => {
-        console.error('Error updating supplier:', error);
+        this.spinner.hide();
         this.notificationService.showError(error?.error?.message || 'Error updating supplier');
         this.activeModal.dismiss('Error');
       }
@@ -112,24 +105,23 @@ export class SuperadminCommentModalComponent implements OnInit {
     const payload = {
       data: {
         active: false,
-        inactiveComment: this.userForm.get('activeStatus')?.value
+        inactiveComment: this.userForm.get('activeStatus')?.value,
       }
     };
-
-    console.log('Updating candidate with payload:', payload);
-
+     this.spinner.show();
     this.superadminService.updateCandidate(this.supplier._id, payload).subscribe(
       (response: any) => {
-        console.log('Update candidate response:', response);
         if (response?.status) {
+          this.spinner.hide();
           this.notificationService.showSuccess(response?.message || 'Candidate updated successfully');
           this.activeModal.close(true);
         } else {
+          this.spinner.hide();
           this.notificationService.showError(response?.message || 'Failed to update candidate');
         }
       },
       (error: any) => {
-        console.error('Error updating candidate:', error);
+        this.spinner.hide();
         this.notificationService.showError(error?.error?.message || 'Error updating candidate');
         this.activeModal.dismiss('Error');
       }

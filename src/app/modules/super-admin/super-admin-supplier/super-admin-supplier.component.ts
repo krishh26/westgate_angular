@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bulk-add.component';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-super-admin-supplier',
@@ -58,7 +59,8 @@ export class SuperAdminSupplierComponent {
     private notificationService: NotificationService,
     private router: Router,
     private modalService: NgbModal,
-    private superService: SuperadminService
+    private superService: SuperadminService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -85,22 +87,43 @@ export class SuperAdminSupplierComponent {
   }
 
   onToggleSwitch(item: any) {
-    console.log('Toggle switch clicked, new state:', item.active);
-
     // When switching to inactive (false), open the comment modal
     if (item.active === false) {
       this.openCommentModal(item);
     } else {
+      this.emailConfirmationForActiveSupplier(item);
+    }
+  }
+
+
+  emailConfirmationForActiveSupplier(item: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to send mail to supplier ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
+    }).then((result: any) => {
+      let payload = {};
       // When switching to active (true), update directly
-      const payload = {
-        active: true
-      };
-
-      console.log('Activating supplier with payload:', payload);
-
+      console.log("result?.value", result?.value);
+      if (result?.value) {
+        payload = {
+          active: true,
+          isSendMail: true
+        };
+      } else {
+        payload = {
+          active: true,
+          isSendMail: false
+        };
+      }
+      this.spinner.show();
       this.authservice.updateUser(item._id, payload).subscribe(
         (response: any) => {
-          console.log('Activation response:', response);
           if (response?.status) {
             this.notificationService.showSuccess(response?.message || 'Supplier activated successfully');
             // Maintain the current filter instead of resetting it
@@ -113,14 +136,15 @@ export class SuperAdminSupplierComponent {
             this.notificationService.showError(response?.message || 'Failed to activate supplier');
             item.active = false; // Revert the toggle if there's an error
           }
+          this.spinner.hide();
         },
         (error: any) => {
-          console.error('Error activating supplier:', error);
+          this.spinner.hide();
           this.notificationService.showError(error?.error?.message || 'Error activating supplier');
           item.active = false; // Revert the toggle if there's an error
         }
       );
-    }
+    });
   }
 
   deleteSupplier(id: any) {
@@ -634,7 +658,7 @@ export class SuperAdminSupplierComponent {
     if (!this.supplierUserList || this.supplierUserList.length === 0) {
       return false;
     }
-    return this.supplierUserList.some((supplier: any) => supplier.isInHold=== true);
+    return this.supplierUserList.some((supplier: any) => supplier.isInHold === true);
   }
 
   // Add a helper method to get inHold comment
@@ -651,7 +675,7 @@ export class SuperAdminSupplierComponent {
     } else if (typeof firstComment === 'object') {
       // Check various possible properties that might contain the comment text
       return firstComment.comment || firstComment.text || firstComment.message ||
-             firstComment.content || JSON.stringify(firstComment);
+        firstComment.content || JSON.stringify(firstComment);
     }
 
     return '-';
