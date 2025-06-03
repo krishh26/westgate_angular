@@ -61,6 +61,8 @@ export class ProcessManagerTrackerComponent {
   selectedProjectTypes: any[] = [];
   selectedClientTypes: any[] = [];
   selectedStatuses: any[] = [];
+  selectedBidUsers: any[] = [];
+  BiduserList: any[] = [];
 
   minValue: number = 0;
   maxValue: number = 99999999999999999;
@@ -344,6 +346,8 @@ export class ProcessManagerTrackerComponent {
     const endCreatedDate = this.trackerEndDate.value
       ? this.formatDate(this.trackerEndDate.value)
       : '';
+
+    // Set basic payload parameters
     Payload.projectListStatusWiseTracker.adminReview = '';
     Payload.projectListStatusWiseTracker.keyword = this.searchText;
     Payload.projectListStatusWiseTracker.page = String(this.page);
@@ -352,21 +356,11 @@ export class ProcessManagerTrackerComponent {
     Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
     Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
-    if (type === 'feasibility') {
-      Payload.projectListStatusWiseTracker.status = this.status || '';
-      Payload.projectListStatusWiseTracker.bidManagerStatus = '';
-    } else if (type === 'bid') {
-      Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
-      Payload.projectListStatusWiseTracker.status = 'Passed';
-    } else {
-      // For other cases, preserve the current status values
-      if (this.status) {
-        Payload.projectListStatusWiseTracker.status = this.status;
-      }
-    }
+    // Do not modify status parameters here - they should already be set in the filter method
 
-    console.log('ProcessManager getProjectList - Current status:', this.status);
+    console.log('ProcessManager getProjectList - Type:', type);
     console.log('ProcessManager getProjectList - Payload status:', Payload.projectListStatusWiseTracker.status);
     console.log('ProcessManager getProjectList - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
@@ -426,35 +420,40 @@ export class ProcessManagerTrackerComponent {
   filter(value: any, type: string) {
     console.log('ProcessManager Filter called with:', { value, type, filterObjectValue: this.filterObject[value] });
 
-    // Check if the status is "Shortlisted"
+    // Reset both statuses first
+    Payload.projectListStatusWiseTracker.status = '';
+    Payload.projectListStatusWiseTracker.bidManagerStatus = '';
+    Payload.projectListStatusWiseTracker.sortlist = false;
+
     if (value === 'Shortlisted') {
-      // Set shortlisted to true
+      // Handle shortlisted case
       Payload.projectListStatusWiseTracker.sortlist = true;
       this.status = '';
-      // Clear other relevant parameters
-      Payload.projectListStatusWiseTracker.status = '';
-      Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     } else {
-      // Use the existing filter logic for other statuses
-      this.status = this.filterObject[value];
-      Payload.projectListStatusWiseTracker.sortlist = false; // Clear shortlisted if not shortlisted
+      const statusValue = this.filterObject[value];
 
-      // Immediately set the status in payload based on type
       if (type === 'feasibility') {
-        Payload.projectListStatusWiseTracker.status = this.status || '';
+        // For feasibility, only set status
+        Payload.projectListStatusWiseTracker.status = statusValue;
         Payload.projectListStatusWiseTracker.bidManagerStatus = '';
       } else if (type === 'bid') {
-        Payload.projectListStatusWiseTracker.bidManagerStatus = this.status || '';
+        // For bid, set status to 'Passed' and bidManagerStatus to the selected value
         Payload.projectListStatusWiseTracker.status = 'Passed';
+        Payload.projectListStatusWiseTracker.bidManagerStatus = statusValue;
       }
     }
 
-    console.log('ProcessManager Filter - Status set to:', this.status);
-    console.log('ProcessManager Filter - Payload status:', Payload.projectListStatusWiseTracker.status);
-    console.log('ProcessManager Filter - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
+    // Make sure assignBidManagerId is preserved during filtering
+    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+
+    console.log('ProcessManager Filter - Status set to:', Payload.projectListStatusWiseTracker.status);
+    console.log('ProcessManager Filter - BidManagerStatus set to:', Payload.projectListStatusWiseTracker.bidManagerStatus);
 
     // Call the method to get the project list with the updated parameters
     this.getProjectList(type);
+
+    // Also refresh the status data with the new filters
+    this.getDataByStatus();
   }
 
   showComments(data: any) {
