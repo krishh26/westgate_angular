@@ -132,12 +132,21 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Tags</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let expertise of expertises">
                     <td>{{ expertise.name }}</td>
+                    <td>
+                      <div class="d-flex flex-wrap gap-1">
+                        <span *ngIf="expertise?.tags && expertise.tags.length > 0">
+                          <span *ngFor="let tag of expertise.tags" class="badge bg-primary me-1 mb-1">{{tag}}</span>
+                        </span>
+                        <span *ngIf="!expertise?.tags || expertise.tags.length === 0">-</span>
+                      </div>
+                    </td>
                     <td>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="openEditExpertiseModal(editExpertiseModal, expertise)">
@@ -150,7 +159,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="expertises.length === 0">
-                    <td colspan="2" class="text-center">No expertises found</td>
+                    <td colspan="3" class="text-center">No expertises found</td>
                   </tr>
                 </tbody>
               </table>
