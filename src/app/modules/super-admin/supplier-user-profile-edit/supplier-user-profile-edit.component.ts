@@ -8,12 +8,15 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 interface ExpertiseItem {
   name: string;
   type?: string;
-  itemId?: any;
-  value: string;
+  itemId?: string | null;
+  value?: string;
+  originalType?: string;
   subExpertise?: string[];
 }
 
@@ -100,13 +103,18 @@ export class SupplierUserProfileEditComponent implements OnInit {
   subExpertiseICanDoOptions: string[] = [];
   subExpertiseICanDoInput$ = new Subject<string>();
 
+  // New properties for expertise dropdown functionality
+  expertiseGroupedOptions: ExpertiseItem[] = [];
+
   constructor(
     private notificationService: NotificationService,
     private router: Router,
     private supplierService: SupplierAdminService,
     private superadminService: SuperadminService,
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
 
@@ -571,34 +579,73 @@ export class SupplierUserProfileEditComponent implements OnInit {
   getExpertiseDropdownData() {
     this.showLoader = true;
     const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    console.log('Fetching expertise data from URL:', url);
 
     this.http.get<any>(url).subscribe(
       (response) => {
-        if (response?.status || response?.data) {
-          const data = response.data || response;
+        console.log('Raw expertise API response:', response);
+        if (response?.status && response?.data) {
+          const data = response.data || [];
 
-          // Process the data to make it compatible with ng-select
-          if (Array.isArray(data)) {
-            this.expertiseDropdownOptions = data.map((item: any) => {
-              // For ng-select, we need objects with consistent properties
-              // Get the type and remove "-other" suffix if it exists
-              let type = item.type || 'technologies';
-              if (type.endsWith('-other')) {
-                type = type.replace('-other', '');
-              }
+          // Define the 6 specific types we want to display
+          const typeGroups: { [key: string]: ExpertiseItem[] } = {
+            'product': [],
+            'domain': [],
+            'technologies': [],
+            'product-other': [],
+            'domain-other': [],
+            'technologies-other': []
+          };
 
-              return {
-                itemId: item.itemId || item._id,
-                name: item.name,
-                type: type,
-                value: item.name
-              };
-            });
-          }
+          // Process grouped data from the API
+          data.forEach((group: any) => {
+            if (!group || Object.keys(group).length === 0) {
+              return; // Skip empty groups
+            }
+
+            // Each group is an object with a single key (the type) and array value
+            const groupType = Object.keys(group)[0];
+            const items = group[groupType] || [];
+
+            // Check if this is one of our tracked types
+            if (groupType in typeGroups) {
+              // Process items in this group
+              items.forEach((item: any) => {
+                typeGroups[groupType].push({
+                  itemId: item._id,
+                  name: item.name,
+                  type: groupType,
+                  originalType: groupType,
+                  value: item.name
+                });
+              });
+            }
+          });
+
+          // Combine all items into a single array in the desired order
+          let allItems: ExpertiseItem[] = [];
+          // First add the 3 main types
+          allItems = allItems.concat(
+            typeGroups['product'],
+            typeGroups['domain'],
+            typeGroups['technologies']
+          );
+
+          // Then add the 3 "other" types
+          allItems = allItems.concat(
+            typeGroups['product-other'],
+            typeGroups['domain-other'],
+            typeGroups['technologies-other']
+          );
+
+          this.expertiseDropdownOptions = allItems;
+          this.expertiseGroupedOptions = allItems;
+          console.log('Processed expertise list for ng-select:', this.expertiseGroupedOptions);
         } else {
           console.error('Failed to fetch expertise data:', response?.message);
           this.notificationService.showError('Failed to fetch expertise data');
           this.expertiseDropdownOptions = [];
+          this.expertiseGroupedOptions = [];
         }
         this.showLoader = false;
       },
@@ -607,6 +654,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
         this.notificationService.showError('Error fetching expertise data');
         this.showLoader = false;
         this.expertiseDropdownOptions = [];
+        this.expertiseGroupedOptions = [];
       }
     );
   }
@@ -744,15 +792,19 @@ export class SupplierUserProfileEditComponent implements OnInit {
   addSelectedExpertise() {
     if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
       this.selectedExpertiseItems.forEach(item => {
-        this.supplierDetails.expertise.push({
-          name: item.name,
-          type: item.type,
-          itemId: item.itemId,
-          value: item.name,
-          subExpertise: []
-        });
+        const exists = this.supplierDetails.expertise.some((exp: any) => exp.name === item.name);
+        if (!exists) {
+          this.supplierDetails.expertise.push({
+            name: item.name,
+            type: item.type || this.newExpertiseType,
+            itemId: item.itemId,
+            value: item.value,
+            subExpertise: []
+          });
+        }
       });
       this.selectedExpertiseItems = [];
+      this.notificationService.showSuccess('Expertise added successfully');
     }
   }
 
@@ -848,36 +900,43 @@ export class SupplierUserProfileEditComponent implements OnInit {
     }
   }
 
-  onAddTag = (name: string) => {
-    return new Promise<any>((resolve) => {
-      if (!this.newExpertiseType) {
-        this.toastr.error('Please select a type for the new expertise');
-        resolve(null);
-        return;
-      }
+  onAddTag = (term: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
 
-      const newExpertise = {
-        name: name,
-        type: this.newExpertiseType,
-        value: name
-      };
+    const expertiseType = this.newExpertiseType;
+    const newExpertise = {
+      name: term,
+      value: term,
+      type: expertiseType,
+      itemId: null
+    };
 
-      this.superadminService.createCustomExpertise(newExpertise).subscribe(
-        (response) => {
-          if (response?.status) {
-            this.toastr.success('Expertise added successfully');
-            resolve(newExpertise);
-          } else {
-            this.toastr.error(response?.message || 'Failed to add expertise');
-            resolve(null);
-          }
-        },
-        (error) => {
-          this.toastr.error('Error adding expertise');
-          resolve(null);
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: term,
+      value: term,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          newExpertise.itemId = response.data._id;
+          this.expertiseDropdownOptions = [...this.expertiseDropdownOptions, newExpertise];
+          this.notificationService.showSuccess('Expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add expertise');
         }
-      );
-    });
+        this.showLoader = false;
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add expertise');
+        this.showLoader = false;
+      }
+    );
+
+    return newExpertise;
   }
 
   // Add missing methods for I Can Do functionality

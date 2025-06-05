@@ -266,89 +266,96 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-12 mb-3">
-                <div class="row">
-                  <label for="expertise" class="col-2 col-sm-2 col-form-label">Expertise</label>
-                  <div class="col-10 col-sm-10">
-                    <div class="form-control p-2">
-                      <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                          <span class="badge bg-primary me-2">{{ expertise.name }}</span>
-                          <button type="button" class="btn-close ms-2" (click)="removeExpertise(i)"></button>
-                        </div>
-                        <div class="ms-3">
-                          <div *ngFor="let sub of expertise.subExpertise; let j = index"
-                            class="d-flex align-items-center mb-1">
-                            <span class="badge bg-secondary me-2">{{ sub }}</span>
-                            <button type="button" class="btn-close ms-2" (click)="removeSubExpertise(i, j)"></button>
-                          </div>
-                          <div class="mt-2">
-                            <div class="dropdown">
-                              <ng-select [(ngModel)]="selectedSubExpertiseMap[i]" name="subExpertise_{{i}}"
-                                [items]="subExpertiseOptions" [multiple]="true"
-                                placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
-                                [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)">
-                              </ng-select>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-2" (click)="addMultipleSubExpertise(i)"
-                              [disabled]="!selectedSubExpertiseMap[i] || selectedSubExpertiseMap[i].length === 0">
-                              Add Sub-Expertise
-                            </button>
-                            <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
-                              Sub-expertise is required
-                            </div>
-                          </div>
-                        </div>
+              <div class="col-12 mb-3">
+                <!-- Expertise field -->
+                <label for="expertise" class="col-form-label">Expertise</label>
+                <div class="form-control p-2">
+                  <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-3">
+                    <span class="tag">
+                      <span class="remove-tag" (click)="removeExpertise(i)">&times;</span>
+                      {{ expertise.name }}
+                    </span>
+                    <div class="ms-3">
+                      <div class="tags">
+                        <span *ngFor="let sub of expertise.subExpertise; let j = index" class="tag">
+                          <span class="remove-tag" (click)="removeSubExpertise(i, j)">&times;</span>
+                          {{ sub }}
+                        </span>
                       </div>
                       <div class="mt-2">
                         <div class="dropdown">
-                          <ng-select placeholder="Select expertise" [items]="expertiseDropdownOptions" bindLabel="name"
-                            [multiple]="true" [(ngModel)]="selectedExpertiseItems" name="selectedExpertiseItems"
-                            [closeOnSelect]="false" [searchable]="true" [clearable]="true" [addTag]="onAddTag">
-                            <ng-template ng-header-tmp>
-                              <div class="p-2 border-bottom">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox"
-                                    [checked]="selectedExpertiseItems?.length === expertiseDropdownOptions?.length"
-                                    (change)="toggleSelectAllExpertise($event)">
-                                  <label class="form-check-label">Select All</label>
-                                </div>
-                              </div>
-                            </ng-template>
-                            <ng-template ng-tag-tmp let-search="searchTerm">
-                              <div *ngIf="search">
-                                <div class="mb-2">Add "{{search}}" to expertise</div>
-                                <div class="radio-group d-flex flex-column">
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeTech"
-                                      [(ngModel)]="newExpertiseType" value="technologies">
-                                    <label class="form-check-label" for="typeTech">Technologies</label>
-                                  </div>
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct"
-                                      [(ngModel)]="newExpertiseType" value="product">
-                                    <label class="form-check-label" for="typeProduct">Product</label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain"
-                                      [(ngModel)]="newExpertiseType" value="domain">
-                                    <label class="form-check-label" for="typeDomain">Domain</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </ng-template>
+                          <ng-select [(ngModel)]="selectedSubExpertiseMap[i]" name="subExpertise_{{i}}"
+                            [items]="subExpertiseOptions" [multiple]="true"
+                            placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
+                            [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)">
                           </ng-select>
                         </div>
-                        <button type="button" class="btn btn-primary mt-2" (click)="addSelectedExpertise()"
-                          [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
-                          Add Expertise
+                        <button type="button" class="btn btn-primary mt-2" (click)="addMultipleSubExpertise(i)"
+                          [disabled]="!selectedSubExpertiseMap[i] || selectedSubExpertiseMap[i].length === 0">
+                          Add Sub-Expertise
                         </button>
+                        <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
+                          Sub-expertise is required
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div class="mt-2">
+                    <div class="dropdown">
+                      <ng-select placeholder="Select expertise" [items]="expertiseGroupedOptions" bindLabel="name"
+                        [multiple]="true" [(ngModel)]="selectedExpertiseItems" name="selectedExpertiseItems"
+                        [closeOnSelect]="false" [searchable]="true" [clearable]="true" [addTag]="onAddTag"
+                        [groupBy]="'type'" [hideSelected]="false" [virtualScroll]="true">
+                        <ng-template ng-header-tmp>
+                          <div class="p-2 border-bottom">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox"
+                                [checked]="selectedExpertiseItems?.length === expertiseDropdownOptions?.length"
+                                (change)="toggleSelectAllExpertise($event)">
+                              <label class="form-check-label">Select All</label>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template ng-optgroup-tmp let-item="item">
+                          <span class="group-header text-primary">{{item.type | titlecase}}</span>
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                          <span>{{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <span>{{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-tag-tmp let-search="searchTerm">
+                          <div *ngIf="search">
+                            <div class="mb-2">Add "{{search}}" to expertise</div>
+                            <div class="radio-group d-flex flex-column">
+                              <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="expertiseType" id="typeTech"
+                                  [(ngModel)]="newExpertiseType" value="technologies">
+                                <label class="form-check-label" for="typeTech">Technologies</label>
+                              </div>
+                              <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="expertiseType" id="typeProduct"
+                                  [(ngModel)]="newExpertiseType" value="product">
+                                <label class="form-check-label" for="typeProduct">Product</label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="expertiseType" id="typeDomain"
+                                  [(ngModel)]="newExpertiseType" value="domain">
+                                <label class="form-check-label" for="typeDomain">Domain</label>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                    <button type="button" class="btn btn-primary mt-2" (click)="addSelectedExpertise()"
+                      [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
+                      Add Expertise
+                    </button>
+                  </div>
                 </div>
               </div>
-
 
               <div class="col-12 mb-3">
                 <!-- Services field -->
