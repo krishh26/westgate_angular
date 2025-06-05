@@ -219,7 +219,11 @@ export class AdminDataSettingsComponent implements OnInit {
     this.superadminService.getWithoutSupplierSubExpertiseDropdownList(this.subExpertiseSearchQuery).subscribe({
       next: (response: any) => {
         if (response?.status) {
+          // Log the response to see the data structure
+          console.log('Sub Expertise Response:', response);
           this.subExpertises = response.data || [];
+          // Log the mapped data
+          console.log('Mapped Sub Expertises:', this.subExpertises);
         } else {
           this.error = response?.message || 'Failed to load sub expertises';
         }
@@ -530,6 +534,14 @@ export class AdminDataSettingsComponent implements OnInit {
   }
 
   deleteSubExpertise(subExpertise: any): void {
+    // Get the ID from either _id or id field
+    const subExpertiseId = subExpertise._id || subExpertise.id;
+
+    if (!subExpertiseId) {
+      this.notificationService.showError('Invalid sub expertise ID');
+      return;
+    }
+
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to delete this sub expertise?',
@@ -541,7 +553,7 @@ export class AdminDataSettingsComponent implements OnInit {
     }).then((result: any) => {
       if (result?.value) {
         this.showLoader = true;
-        this.superadminService.deleteSubExpertiseById(subExpertise.id).subscribe({
+        this.superadminService.deleteSubExpertiseById(subExpertiseId).subscribe({
           next: (response: any) => {
             if (response?.status) {
               this.loadSubExpertises();
@@ -615,8 +627,11 @@ export class AdminDataSettingsComponent implements OnInit {
     console.log('Expertise object:', expertise);
     console.log('Selected expertise type:', this.selectedExpertiseType);
 
-    // Use expertise's own type if available, otherwise fall back to selectedExpertiseType
-    const expertiseType = expertise.type || this.selectedExpertiseType;
+    // Get the expertise type and append "-other" if it doesn't already have it
+    let expertiseType = expertise.type || this.selectedExpertiseType;
+    if (!expertiseType.endsWith('-other')) {
+      expertiseType = `${expertiseType}-other`;
+    }
 
     this.editExpertiseForm.patchValue({
       name: expertise.name,
