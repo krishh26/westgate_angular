@@ -106,7 +106,8 @@ export class AdminDataSettingsComponent implements OnInit {
     this.editExpertiseForm = this.fb.group({
       name: ['', [Validators.required]],
       itemId: ['', [Validators.required]],
-      promoteToType: ['', [Validators.required]]
+      promoteToType: ['', [Validators.required]],
+      tags: [[]]
     });
     this.userForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -620,7 +621,8 @@ export class AdminDataSettingsComponent implements OnInit {
     this.editExpertiseForm.patchValue({
       name: expertise.name,
       itemId: expertise._id,
-      promoteToType: expertiseType
+      promoteToType: expertiseType,
+      tags: expertise.tags || []
     });
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
@@ -643,7 +645,8 @@ export class AdminDataSettingsComponent implements OnInit {
     const payload = {
       itemId: this.editExpertiseForm.value.itemId,
       name: this.editExpertiseForm.value.name,
-      promoteToType: promoteToType
+      promoteToType: promoteToType,
+      tags: this.editExpertiseForm.value.tags
     };
 
     this.superadminService.promoteExpertise(payload).subscribe({

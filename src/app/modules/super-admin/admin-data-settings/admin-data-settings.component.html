@@ -574,6 +574,21 @@
         </div>
       </div>
 
+      <div class="mb-3">
+        <label for="editExpertiseTags" class="form-label">Services/Tags</label>
+        <ng-select
+          [items]="servicesList"
+          bindLabel="name"
+          bindValue="value"
+          [multiple]="true"
+          [clearable]="true"
+          [searchable]="true"
+          placeholder="Select services/tags..."
+          formControlName="tags"
+          class="custom-ng-select">
+        </ng-select>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
         <button type="submit" class="btn btn-primary">Update Expertise</button>
