@@ -592,7 +592,20 @@
 
         <!-- Submit Button -->
         <div class="row mt-4">
-          <div class="col-12 text-end">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="supplierDetails.isSendMail"
+                    name="pocUpdateProfileMail" id="pocUpdateProfileMail">
+                  <label class="form-check-label" for="pocUpdateProfileMail">
+                    Send Mail To POC User For Update Profile.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-end">
             <button type="button" routerLink="/super-admin/supplier-user-profile"
               class="btn btn-primary">Back</button>&nbsp;
             <button type="submit" class="btn btn-primary" [disabled]="!supplierDetails.companyName || !supplierDetails.poc_name || !supplierDetails.poc_phone ||
