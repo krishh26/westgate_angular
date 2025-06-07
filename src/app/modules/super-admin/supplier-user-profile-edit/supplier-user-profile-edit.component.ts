@@ -54,6 +54,7 @@ export class SupplierUserProfileEditComponent implements OnInit {
     subcontractingSupplier: false,
     expertiseICanDo: [],
     icando: [],
+    isSendMail: false
   };
   servicesList: any[] = [];
   selectedServices: any[] = [];
