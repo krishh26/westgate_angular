@@ -133,6 +133,7 @@
                   <tr>
                     <th>Name</th>
                     <th>Tags</th>
+                    <th>Mandatory</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -148,6 +149,16 @@
                       </div>
                     </td>
                     <td>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                          [checked]="expertise.isMandatory"
+                          (change)="toggleMandatory(expertise)">
+                        <label class="form-check-label ms-2">
+                          {{ expertise.isMandatory ? 'On' : 'Off' }}
+                        </label>
+                      </div>
+                    </td>
+                    <td>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="openEditExpertiseModal(editExpertiseModal, expertise)">
                           <i class="bi bi-pencil"></i>
@@ -159,7 +170,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="expertises.length === 0">
-                    <td colspan="3" class="text-center">No expertises found</td>
+                    <td colspan="4" class="text-center">No expertises found</td>
                   </tr>
                 </tbody>
               </table>

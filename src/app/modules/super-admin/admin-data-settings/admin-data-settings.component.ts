@@ -661,7 +661,8 @@ export class AdminDataSettingsComponent implements OnInit {
       itemId: this.editExpertiseForm.value.itemId,
       name: this.editExpertiseForm.value.name,
       promoteToType: promoteToType,
-      tags: this.editExpertiseForm.value.tags
+      tags: this.editExpertiseForm.value.tags,
+      isMandatory: this.selectedExpertise.isMandatory
     };
 
     this.superadminService.promoteExpertise(payload).subscribe({
@@ -907,5 +908,29 @@ export class AdminDataSettingsComponent implements OnInit {
   onUserRoleFilterChange(selectedRole: string): void {
     this.selectedUserRole = selectedRole;
     this.loadUsers();
+  }
+
+  toggleMandatory(expertise: any): void {
+    const updatedData = {
+      itemId: expertise._id,
+      promoteToType: expertise.type || this.selectedExpertiseType,
+      isMandatory: !expertise.isMandatory
+    };
+
+    this.superadminService.promoteExpertise(updatedData).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.toastr.success('Expertise updated successfully');
+          this.loadExpertises();
+        } else {
+          this.toastr.error(response?.message || 'Failed to update expertise');
+          expertise.isMandatory = !expertise.isMandatory;
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error(error?.message || 'An error occurred while updating expertise');
+        expertise.isMandatory = !expertise.isMandatory;
+      }
+    });
   }
 }
