@@ -22,7 +22,7 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
   resourcesList: any = [];
   candidatesList: any = [];
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  pagesize = 50;
   totalRecords: number = pagination.totalRecords;
   loading: boolean = false;
   supplierID: string = '';
@@ -146,7 +146,8 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
         this.loading = false;
         if (response && response.status) {
           this.candidatesList = response?.data?.data || [];
-          this.totalRecords = response?.totalRecords || 0;
+          // Update totalRecords from meta_data
+          this.totalRecords = response?.data?.meta_data?.items || 0;
           // Store candidates list in localStorage
           localStorage.setItem('candidatesList', JSON.stringify(this.candidatesList));
         } else {
