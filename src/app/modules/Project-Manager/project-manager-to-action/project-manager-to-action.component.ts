@@ -414,7 +414,7 @@ export class ProjectManagerToActionComponent implements OnDestroy {
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     // this.tempPayload.projectList.status = 'Passed'
     this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
-    this.tempPayload.projectList.bidManagerStatus = 'Awaiting';
+    this.tempPayload.projectList.bidManagerStatus = 'Awaiting,Query Raised';
     this.tempPayload.projectList.expired = true;
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
