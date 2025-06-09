@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -10,6 +10,8 @@ import { environment } from 'src/environment/environment';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+declare var bootstrap: any;
 
 interface ExpertiseItem {
   name: string;
@@ -25,7 +27,7 @@ interface ExpertiseItem {
   templateUrl: './supplier-user-profile-edit.component.html',
   styleUrls: ['./supplier-user-profile-edit.component.scss']
 })
-export class SupplierUserProfileEditComponent implements OnInit {
+export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   supplierDetails: any = {
     companyName: '',
     // logo: '',
@@ -228,6 +230,20 @@ export class SupplierUserProfileEditComponent implements OnInit {
       ...item,
       value: item.name
     }));
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize Bootstrap tooltips
+    setTimeout(() => {
+      this.initializeTooltips();
+    }, 100);
+  }
+
+  initializeTooltips(): void {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]') as NodeListOf<HTMLElement>;
+    Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
   }
 
   // Add method to handle services selection changes

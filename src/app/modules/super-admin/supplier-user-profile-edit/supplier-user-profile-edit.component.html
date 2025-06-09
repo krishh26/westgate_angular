@@ -1,4 +1,23 @@
 <main id="main">
+  <style>
+    .fa-info-circle {
+      color: #6c757d;
+      font-size: 0.85rem;
+      cursor: help;
+      transition: color 0.2s ease;
+      margin-left: 4px;
+    }
+    .fa-info-circle:hover {
+      color: #0d6efd;
+    }
+    .tooltip {
+      font-size: 0.875rem;
+    }
+    .tooltip-inner {
+      max-width: 300px;
+      text-align: left;
+    }
+  </style>
   <section class="casestudy-section">
     <div class="container-fluid">
       <div class="row">
@@ -24,7 +43,10 @@
               <div class="col-md-6 mb-3">
                 <div class="row">
                   <label for="companyName" class="col-sm-4 col-form-label">Company Name <span
-                      class="text-danger">*</span></label>
+                      class="text-danger">*</span>
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the full legal name of the company."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.companyName" name="companyName" class="form-control"
                       placeholder="Enter company name" id="companyName" required #companyNameInput="ngModel">
@@ -48,7 +70,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="website" class="col-sm-4 col-form-label">Company Website</label>
+                  <label for="website" class="col-sm-4 col-form-label">Company Website
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the official website URL (e.g., https://www.example.com)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.website" name="website" type="text" class="form-control"
                       placeholder="Enter company website" id="website">
@@ -58,7 +83,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="companyAddress" class="col-sm-4 col-form-label">Company Address</label>
+                  <label for="companyAddress" class="col-sm-4 col-form-label">Company Address
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Provide the complete address including street, city, and postal code."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.companyAddress" name="companyAddress" type="text"
                       class="form-control" placeholder="Enter company address" id="companyAddress">
@@ -68,7 +96,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="country" class="col-sm-4 col-form-label">Country</label>
+                  <label for="country" class="col-sm-4 col-form-label">Country
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Select or type the country where the company is registered."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.country" name="country" type="text" class="form-control"
                       placeholder="Enter country" id="country">
@@ -78,7 +109,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="email" class="col-sm-4 col-form-label">Contact Email</label>
+                  <label for="email" class="col-sm-4 col-form-label">Contact Email
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the official email address for business communication."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.email" name="email" type="text" class="form-control"
                       placeholder="Enter contact email" id="email">
@@ -88,7 +122,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="phone" class="col-sm-4 col-form-label">Contact Number</label>
+                  <label for="phone" class="col-sm-4 col-form-label">Contact Number
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Provide a valid phone number with country code."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.companyContactNumber" name="phone" type="text"
                       class="form-control" placeholder="Enter contact number" [maxlength]="10" [minlength]="10"
@@ -99,7 +136,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year Established</label>
+                  <label for="yearOfEstablishment" class="col-sm-4 col-form-label">Year Established
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the date the company was founded (dd/mm/yyyy)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.yearOfEstablishment" name="yearOfEstablishment" type="date"
                       class="form-control" id="yearOfEstablishment" [max]="today">
@@ -109,7 +149,10 @@
 
               <div class="col-md-12 mb-3">
                 <div class="row">
-                  <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary</label>
+                  <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Write a brief summary of your company's mission, services, and goals."></i>
+                  </label>
                   <div class="col-sm-10">
                     <textarea [(ngModel)]="supplierDetails.executiveSummary" name="executiveSummary"
                       class="form-control" placeholder="Enter company executive summary" id="executiveSummary"
@@ -126,7 +169,10 @@
               <div class="col-md-6 mb-3">
                 <div class="row">
                   <label for="poc_name" class="col-sm-4 col-form-label">POC Name <span
-                      class="text-danger">*</span></label>
+                      class="text-danger">*</span>
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the full name of the Point of Contact."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_name" name="poc_name" type="text" class="form-control"
                       placeholder="Enter POC name" id="poc_name" required #pocNameInput="ngModel">
@@ -141,7 +187,10 @@
               <div class="col-md-6 mb-3">
                 <div class="row">
                   <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone <span
-                      class="text-danger">*</span></label>
+                      class="text-danger">*</span>
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the direct contact number for the POC."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_phone" name="poc_phone" type="text" class="form-control"
                       placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10"
@@ -156,7 +205,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="poc_email" class="col-sm-4 col-form-label">POC Email</label>
+                  <label for="poc_email" class="col-sm-4 col-form-label">POC Email
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Provide the email address of the POC, this email will be used for login."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_email" name="poc_email" type="text" class="form-control"
                       placeholder="Enter POC email" id="poc_email">
@@ -166,7 +218,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="poc_role" class="col-sm-4 col-form-label">POC Role</label>
+                  <label for="poc_role" class="col-sm-4 col-form-label">POC Role
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Specify the role or designation of the POC in the company."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.poc_role" name="poc_role" type="text" class="form-control"
                       placeholder="Enter POC role" id="poc_role">
@@ -202,7 +257,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector</label>
+                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Select the relevant industry category (e.g., IT, Healthcare, Finance)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <ng-select placeholder="Select Industry Sector" class="custom-ng-select-option"
                       [items]="industryList" bindLabel="name" [multiple]="true" bindValue="value"
@@ -215,7 +273,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="employeeCount" class="col-sm-4 col-form-label">Company Size</label>
+                  <label for="employeeCount" class="col-sm-4 col-form-label">Company Size
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Enter the number of employees (e.g., 10–50, 100–500)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.employeeCount" name="employeeCount" type="text"
                       class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)"
@@ -226,7 +287,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="turnover" class="col-sm-4 col-form-label">Turnover</label>
+                  <label for="turnover" class="col-sm-4 col-form-label">Turnover
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Mention the annual revenue or turnover (e.g., ₹5 Cr, $1M)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.turnover" name="turnover" type="text" class="form-control"
                       placeholder="Enter turnover" (keypress)="NumberOnly($event)" id="turnover">
@@ -236,7 +300,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="totalProjectsExecuted" class="col-sm-4 col-form-label">Total Projects Executed</label>
+                  <label for="totalProjectsExecuted" class="col-sm-4 col-form-label">Total Projects Executed
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Specify the number of completed projects to date."></i>
+                  </label>
                   <div class="col-sm-8">
                     <input [(ngModel)]="supplierDetails.totalProjectsExecuted" name="totalProjectsExecuted" type="text"
                       class="form-control" placeholder="Enter total projects executed" (keypress)="NumberOnly($event)"
@@ -247,7 +314,10 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="certifications" class="col-sm-4 col-form-label">Certifications</label>
+                  <label for="certifications" class="col-sm-4 col-form-label">Certifications
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="List any official certifications or accreditations (e.g., ISO 9001, CMMI)."></i>
+                  </label>
                   <div class="col-sm-8">
                     <div class="form-control p-2">
                       <div *ngFor="let cert of supplierDetails.certifications; let i = index" class="mb-2">
@@ -268,7 +338,10 @@
 
               <div class="col-12 mb-3">
                 <!-- Expertise field -->
-                <label for="expertise" class="col-form-label">Expertise</label>
+                <label for="expertise" class="col-form-label">Expertise
+                  <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                     title="List all the products, platforms, or software solutions your company has built or developed over time (e.g., ERP systems, mobile apps, SaaS platforms)."></i>
+                </label>
                 <div class="form-control p-2">
                   <div *ngFor="let expertise of supplierDetails.expertise; let i = index" class="mb-3">
                     <span class="tag">
@@ -286,7 +359,7 @@
                         <div class="dropdown">
                           <ng-select [(ngModel)]="selectedSubExpertiseMap[i]" name="subExpertise_{{i}}"
                             [items]="subExpertiseOptions" [multiple]="true"
-                            placeholder="Select sub-expertise (required)" [closeOnSelect]="false"
+                            placeholder="Select sub-expertise (required) - Mention the industries or sectors your company has delivered this solution to (e.g., Education, Healthcare, FinTech, Retail)." [closeOnSelect]="false"
                             [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)">
                           </ng-select>
                         </div>
@@ -360,7 +433,10 @@
               <div class="col-12 mb-3">
                 <!-- Services field -->
                 <div class="row">
-                  <label for="icando" class="col-sm-2 col-form-label">I Can Do</label>
+                  <label for="icando" class="col-sm-2 col-form-label">I Can Do
+                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="Select the type of solutions you offer"></i>
+                  </label>
                   <div class="col-sm-10">
                     <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
                       [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
