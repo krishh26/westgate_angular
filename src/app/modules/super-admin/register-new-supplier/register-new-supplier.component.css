@@ -37,6 +37,20 @@
   opacity: 1;
   color: #1976d2;
 }
+
+.fa-info-circle {
+  color: #6c757d;
+  font-size: 0.9rem;
+  cursor: help;
+  transition: color 0.2s ease;
+}
+.fa-info-circle:hover {
+  color: #0d6efd;
+}
+.tooltip {
+  font-size: 0.875rem;
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }

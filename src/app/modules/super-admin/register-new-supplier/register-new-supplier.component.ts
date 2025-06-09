@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Subject } from 'rxjs';
@@ -6,6 +6,8 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+declare var bootstrap: any;
 
 interface Expertise {
   name: string;
@@ -38,7 +40,7 @@ interface ServiceItem {
   templateUrl: './register-new-supplier.component.html',
   styleUrls: ['./register-new-supplier.component.css']
 })
-export class RegisterNewSupplierComponent implements OnInit {
+export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   companyForm: any = {};
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
@@ -173,6 +175,20 @@ export class RegisterNewSupplierComponent implements OnInit {
       ...item,
       value: item.name
     }));
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize Bootstrap tooltips
+    setTimeout(() => {
+      this.initializeTooltips();
+    }, 100);
+  }
+
+  initializeTooltips(): void {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]') as NodeListOf<HTMLElement>;
+    Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
   }
 
   populateSampleData() {
