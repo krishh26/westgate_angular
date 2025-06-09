@@ -65,6 +65,10 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
   industryList: any[] = [];
   selectedIndustries: string[] = [];
 
+  // Business Types properties
+  businessTypesList: any[] = [];
+  selectedBusinessTypes: string[] = [];
+
   // Properties for I Can Do field
   selectedExpertiseICanDoItems: ExpertiseItem[] = [];
   selectedSubExpertiseICanDoMap: { [key: number]: string[] } = {};
@@ -1366,11 +1370,33 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       { name: "IT Strategy", value: "it-strategy" },
       { name: "IT Architecture", value: "it-architecture" }
     ];
+
+    // Initialize business types list
+    this.businessTypesList = [
+      { name: 'Private Limited Company', value: 'Private Limited Company' },
+      { name: 'Public Limited Company', value: 'Public Limited Company' },
+      { name: 'Limited Liability Partnership (LLP)', value: 'Limited Liability Partnership (LLP)' },
+      { name: 'Partnership Firm', value: 'Partnership Firm' },
+      { name: 'Sole Proprietorship', value: 'Sole Proprietorship' },
+      { name: 'One Person Company (OPC)', value: 'One Person Company (OPC)' },
+      { name: 'Section 8 Company (Non-Profit)', value: 'Section 8 Company (Non-Profit)' },
+      { name: 'Hindu Undivided Family (HUF)', value: 'Hindu Undivided Family (HUF)' },
+      { name: 'Cooperative Society', value: 'Cooperative Society' },
+      { name: 'Trust', value: 'Trust' }
+    ];
   }
 
   onServicesChange() {
     if (this.selectedServices) {
       this.companyForm.icando = this.selectedServices.map(service => service.value);
+    }
+  }
+
+  onBusinessTypeChange() {
+    if (this.selectedBusinessTypes && this.selectedBusinessTypes.length > 0) {
+      this.companyForm.typeOfCompany = [...this.selectedBusinessTypes];
+    } else {
+      this.companyForm.typeOfCompany = [];
     }
   }
 }

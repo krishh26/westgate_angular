@@ -76,6 +76,11 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   // Industry, Category, and Technology lists
   industryList: any[] = [];
   selectedIndustries: string[] = [];
+
+  // Business Types properties
+  businessTypesList: any[] = [];
+  selectedBusinessTypes: string[] = [];
+
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
@@ -213,6 +218,20 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     this.getTechnologiesList();
     this.getIndustryList();
 
+    // Initialize business types list
+    this.businessTypesList = [
+      { name: 'Private Limited Company', value: 'Private Limited Company' },
+      { name: 'Public Limited Company', value: 'Public Limited Company' },
+      { name: 'Limited Liability Partnership (LLP)', value: 'Limited Liability Partnership (LLP)' },
+      { name: 'Partnership Firm', value: 'Partnership Firm' },
+      { name: 'Sole Proprietorship', value: 'Sole Proprietorship' },
+      { name: 'One Person Company (OPC)', value: 'One Person Company (OPC)' },
+      { name: 'Section 8 Company (Non-Profit)', value: 'Section 8 Company (Non-Profit)' },
+      { name: 'Hindu Undivided Family (HUF)', value: 'Hindu Undivided Family (HUF)' },
+      { name: 'Cooperative Society', value: 'Cooperative Society' },
+      { name: 'Trust', value: 'Trust' }
+    ];
+
     // Initialize selections from supplier details
     this.initializeSelectionsFromSupplierDetails();
 
@@ -278,6 +297,11 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       this.supplierDetails.expertise.forEach((expertise: any, index: number) => {
         this.selectedSubExpertiseMap[index] = [];
       });
+    }
+
+    // Initialize business type selections
+    if (this.supplierDetails.typeOfCompany && this.supplierDetails.typeOfCompany.length > 0) {
+      this.selectedBusinessTypes = [...this.supplierDetails.typeOfCompany];
     }
   }
 
@@ -410,6 +434,15 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       this.supplierDetails.industry_Sector = [...this.selectedIndustries];
     } else {
       this.supplierDetails.industry_Sector = [];
+    }
+  }
+
+  // Method to handle changes in the business type selection
+  onBusinessTypeChange() {
+    if (this.selectedBusinessTypes && this.selectedBusinessTypes.length > 0) {
+      this.supplierDetails.typeOfCompany = [...this.selectedBusinessTypes];
+    } else {
+      this.supplierDetails.typeOfCompany = [];
     }
   }
 

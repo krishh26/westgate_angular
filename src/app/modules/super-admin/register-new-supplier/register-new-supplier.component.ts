@@ -66,6 +66,10 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   industryList: any[] = [];
   selectedIndustries: string[] = [];
 
+  // Business Types properties
+  businessTypesList: any[] = [];
+  selectedBusinessTypes: string[] = [];
+
   // Services properties
   servicesList: ServiceItem[] = [];
   selectedServices: ServiceItem[] = [];
@@ -160,6 +164,20 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
       { name: 'Blockchain Development', value: 'Blockchain Development' },
       { name: 'IoT Development', value: 'IoT Development' }
+    ];
+
+    // Initialize business types list
+    this.businessTypesList = [
+      { name: 'Private Limited Company', value: 'Private Limited Company' },
+      { name: 'Public Limited Company', value: 'Public Limited Company' },
+      { name: 'Limited Liability Partnership (LLP)', value: 'Limited Liability Partnership (LLP)' },
+      { name: 'Partnership Firm', value: 'Partnership Firm' },
+      { name: 'Sole Proprietorship', value: 'Sole Proprietorship' },
+      { name: 'One Person Company (OPC)', value: 'One Person Company (OPC)' },
+      { name: 'Section 8 Company (Non-Profit)', value: 'Section 8 Company (Non-Profit)' },
+      { name: 'Hindu Undivided Family (HUF)', value: 'Hindu Undivided Family (HUF)' },
+      { name: 'Cooperative Society', value: 'Cooperative Society' },
+      { name: 'Trust', value: 'Trust' }
     ];
 
     // Add fallback options for both expertise and I Can Do
@@ -957,12 +975,10 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   // Updated method to handle changes in the industry ng-select component
   onIndustryChange() {
     if (this.selectedIndustries && this.selectedIndustries.length > 0) {
-      // Extract just the values/names directly to the form array
       this.companyForm.industry_Sector = [...this.selectedIndustries];
     } else {
       this.companyForm.industry_Sector = [];
     }
-    console.log('Updated industry focus in form:', this.companyForm.industry_Sector);
   }
 
   // Add method for adding custom industry items
@@ -1386,6 +1402,14 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       this.companyForm.icando = this.selectedServices.map(service => service.name);
     } else {
       this.companyForm.icando = [];
+    }
+  }
+
+  onBusinessTypeChange() {
+    if (this.selectedBusinessTypes && this.selectedBusinessTypes.length > 0) {
+      this.companyForm.typeOfCompany = [...this.selectedBusinessTypes];
+    } else {
+      this.companyForm.typeOfCompany = [];
     }
   }
 }
