@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-resources-add',
@@ -15,8 +14,8 @@ export class ResourcesAddComponent implements OnInit {
   // Form controls for the user profile
   userProfileForm: FormGroup = this.fb.group({});
 
-  // Exchange rate (INR to GBP)
-  exchangeRate: number = 114.32; // Default value with decimal precision, will be updated from API
+  // Pound rate (from internal API /pound-rate)
+  poundRate: number = 30; // Default value, will be updated from internal pound-rate API
   workingDaysPerYear: number = 240;
   hoursPerDay: number = 8;
   ukMultiplier: number = 3; // UK Day Rate = Pound equivalent * 3
@@ -59,14 +58,13 @@ export class ResourcesAddComponent implements OnInit {
     private router: Router,
     private superService: SuperadminService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
-    private http: HttpClient
+    private route: ActivatedRoute
   ) {
     this.initializeForm();
     this.getRolesList();
     this.getTechnologies();
     this.getIndustryDomains();
-    this.fetchExchangeRate();
+    this.fetchPoundRate();
   }
 
   ngOnInit(): void {
@@ -624,31 +622,38 @@ export class ResourcesAddComponent implements OnInit {
     });
   }
 
-  // Fetch live exchange rate from API
-  fetchExchangeRate() {
-    // Using ExchangeRate-API for live rates
-    // Free tier allows limited requests per month
-    const apiUrl = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_n1aAXw7HKXT0Epyvzptrkg4cO2Q23FmFwgiewENj';
+  // Fetch pound rate from internal API
+  fetchPoundRate() {
+    this.superService.getPoundRate().subscribe({
+      next: (response: any) => {
+        console.log('Pound Rate API Response:', response);
+        if (response?.status) {
+          // Handle different possible response structures
+          const rate = response.data?.rate || response.rate || null;
+          if (rate !== null) {
+            this.poundRate = parseFloat(rate.toString());
+            console.log(`Pound rate loaded from API: £${this.poundRate}`);
+            this.notificationService.showSuccess(`Using current pound rate: £${this.poundRate}`);
 
-    this.http.get(apiUrl).subscribe(
-      (response: any) => {
-        if (response && response.rates && response.rates.INR) {
-          this.exchangeRate = parseFloat(response.rates.INR.toFixed(2)); // Keep 2 decimal places for precision
-          console.log(`Live exchange rate loaded: 1 GBP = ${this.exchangeRate} INR (exact)`);
-          this.notificationService.showSuccess(`Using current exchange rate: 1 GBP = ${this.exchangeRate} INR`);
-
-          // Recalculate rates if CTC is already entered
-          const ctcValue = this.userProfileForm.get('ctc')?.value;
-          if (ctcValue) {
-            this.calculateRatesFromCTC(this.parseNumericValue(ctcValue));
+            // Recalculate rates if CTC is already entered
+            const ctcValue = this.userProfileForm.get('ctc')?.value;
+            if (ctcValue) {
+              this.calculateRatesFromCTC(this.parseNumericValue(ctcValue));
+            }
+          } else {
+            console.log('No pound rate found in API response, using default');
+            this.notificationService.showInfo(`Using default pound rate: £${this.poundRate}`);
           }
+        } else {
+          console.log('API response status false, using default pound rate');
+          this.notificationService.showWarning(`Could not fetch pound rate. Using default: £${this.poundRate}`);
         }
       },
-      (error) => {
-        console.error('Error fetching exchange rate:', error);
-        this.notificationService.showError(`Could not fetch live exchange rate. Using default rate: 1 GBP = ${this.exchangeRate} INR`);
+      error: (error: any) => {
+        console.error('Error fetching pound rate:', error);
+        this.notificationService.showError(`Could not fetch pound rate from server. Using default: £${this.poundRate}`);
       }
-    );
+    });
   }
 
   // Update calculation methods to handle text inputs with commas
@@ -695,8 +700,8 @@ export class ResourcesAddComponent implements OnInit {
 
   // Update the calculation methods to handle formatting
   calculateRatesFromCTC(ctc: number) {
-    // Convert to GBP (pounds)
-    const poundsEquivalent = ctc / this.exchangeRate;
+    // Convert CTC to pounds using the pound rate
+    const poundsEquivalent = ctc / this.poundRate;
 
     // Calculate UK Day Rate and UK Hourly Rate
     const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
@@ -719,7 +724,7 @@ export class ResourcesAddComponent implements OnInit {
     const ukDayRate = ukHourlyRate * this.hoursPerDay;
     const poundsPerDay = ukDayRate / this.ukMultiplier;
     const poundsEquivalent = poundsPerDay * this.workingDaysPerYear;
-    const ctc = poundsEquivalent * this.exchangeRate;
+    const ctc = poundsEquivalent * this.poundRate;
     const indianDayRate = ctc / this.workingDaysPerYear;
 
     this.userProfileForm.patchValue({
@@ -734,7 +739,7 @@ export class ResourcesAddComponent implements OnInit {
     const ukHourlyRate = ukDayRate / this.hoursPerDay;
     const poundsPerDay = ukDayRate / this.ukMultiplier;
     const poundsEquivalent = poundsPerDay * this.workingDaysPerYear;
-    const ctc = poundsEquivalent * this.exchangeRate;
+    const ctc = poundsEquivalent * this.poundRate;
     const indianDayRate = ctc / this.workingDaysPerYear;
 
     this.userProfileForm.patchValue({
@@ -747,7 +752,7 @@ export class ResourcesAddComponent implements OnInit {
   // Calculate rates from Indian Day Rate
   calculateFromIndianDayRate(indianDayRate: number) {
     const ctc = indianDayRate * this.workingDaysPerYear;
-    const poundsEquivalent = ctc / this.exchangeRate;
+    const poundsEquivalent = ctc / this.poundRate;
     const poundsPerDay = poundsEquivalent / this.workingDaysPerYear;
     const ukDayRate = poundsPerDay * this.ukMultiplier;
     const ukHourlyRate = ukDayRate / this.hoursPerDay;
