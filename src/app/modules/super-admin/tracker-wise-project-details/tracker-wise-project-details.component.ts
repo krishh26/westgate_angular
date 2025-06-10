@@ -1593,12 +1593,16 @@ export class TrackerWiseProjectDetailsComponent {
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         westGetDocument: this.projectDetails?.westGetDocument || [],
-        status: this.status || '',
-        statusComment: this.feasibilityCommentData,
-        bidManagerStatus: this.bidStatus || '',
-        bidManagerStatusComment: this.bidCommentData,
-        failStatusImage: this.failStatusImage || '',
       };
+
+      // Only include status fields if this is not just a document upload
+      if (type !== 'save') {
+        payload.status = this.feasibilityStatus || '';
+        payload.statusComment = this.feasibilityCommentData;
+        payload.bidManagerStatus = this.status || '';
+        payload.bidManagerStatusComment = this.bidCommentData;
+        payload.failStatusImage = this.failStatusImage || '';
+      }
 
       if (this.failStatusReason?.value) {
         payload['failStatusReason'] = [this.failStatusReason?.value];
