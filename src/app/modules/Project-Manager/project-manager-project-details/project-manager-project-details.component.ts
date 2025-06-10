@@ -950,12 +950,16 @@ export class ProjectManagerProjectDetailsComponent {
         comment: this.comment || '',
         clientDocument: this.projectDetails?.clientDocument || [],
         westGetDocument: this.projectDetails?.westGetDocument || [],
-        bidManagerStatus: this.status || '',
-        bidManagerStatusComment: this.commentData,
-        status: this.feasibilityStatus || '',
-        statusComment: this.feasibilityCommentData,
-        failStatusImage: this.failStatusImage || '',
       };
+
+      // Only include status fields if this is not just a document upload
+      if (type !== 'save') {
+        payload.bidManagerStatus = this.status || '';
+        payload.bidManagerStatusComment = this.commentData;
+        payload.status = this.feasibilityStatus || '';
+        payload.statusComment = this.feasibilityCommentData;
+        payload.failStatusImage = this.failStatusImage || '';
+      }
 
       if (this.failStatusReason?.value) {
         payload['failStatusReason'] = [this.failStatusReason.value];
