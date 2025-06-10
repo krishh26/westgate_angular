@@ -23,6 +23,9 @@
             <li class="list-group-item" [class.active]="selectedOption === 'user'" (click)="selectOption('user')">
               <i class="bi bi-people me-2"></i>User Settings
             </li>
+            <li class="list-group-item" [class.active]="selectedOption === 'pound-rate'" (click)="selectOption('pound-rate')">
+              <i class="bi bi-currency-pound me-2"></i>Pound Rate
+            </li>
           </ul>
         </div>
       </div>
@@ -368,6 +371,81 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+                    <!-- Pound Rate Section -->
+          <div *ngIf="selectedOption === 'pound-rate'">
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+            <div *ngIf="success" class="alert alert-success">{{ success }}</div>
+
+            <!-- Loading Indicator -->
+            <div *ngIf="showLoader" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading previous pound rate...</span>
+              </div>
+              <p class="mt-2 text-muted">Loading previous pound rate...</p>
+            </div>
+
+            <div class="card" *ngIf="!showLoader">
+              <div class="card-body">
+                <form [formGroup]="poundRateForm" (ngSubmit)="onSubmitPoundRate()">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="poundRate" class="form-label">Pound Rate <span class="text-danger">*</span></label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="poundRate"
+                        formControlName="rate"
+                        [ngClass]="{ 'is-invalid': poundRateSubmitted && poundRateForm.get('rate')?.errors }"
+                        placeholder="Enter pound rate"
+                        min="0"
+                        step="0.01"
+                      >
+                      <div class="invalid-feedback" *ngIf="poundRateSubmitted && poundRateForm.get('rate')?.errors?.['required']">
+                        Pound rate is required
+                      </div>
+                      <div class="invalid-feedback" *ngIf="poundRateSubmitted && poundRateForm.get('rate')?.errors?.['min']">
+                        Pound rate must be greater than 0
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
+                        <i class="bi bi-save me-2" *ngIf="!isLoading"></i>
+                        {{ isLoading ? 'Saving...' : 'Save Pound Rate' }}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <!-- Current Rate Display -->
+                <div class="mt-4" *ngIf="currentPoundRate !== null">
+                  <div class="alert alert-info">
+                    <h6 class="mb-1">
+                      <i class="bi bi-info-circle me-2"></i>Current Pound Rate
+                    </h6>
+                    <strong>£{{ currentPoundRate }}</strong>
+                    <small class="d-block mt-1 text-muted">
+                      This is the previously saved rate loaded from the system
+                    </small>
+                  </div>
+                </div>
+
+                <!-- No Rate Found Display -->
+                <div class="mt-4" *ngIf="currentPoundRate === null && !showLoader">
+                  <div class="alert alert-warning">
+                    <h6 class="mb-1">
+                      <i class="bi bi-exclamation-triangle me-2"></i>No Previous Rate Found
+                    </h6>
+                    <small>No pound rate has been set previously. Enter a new rate above.</small>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

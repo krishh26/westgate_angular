@@ -67,6 +67,8 @@ export enum SuperAdminEndPoint {
   USER_LIST = '/user/list',
   USER_REGISTER = '/user/register',
   USER_DELETE = '/user/delete',
+  POUND_RATE_GET = '/pound-rate',
+  POUND_RATE_UPDATE = '/pound-rate',
 }
 
 @Injectable({
@@ -834,5 +836,29 @@ export class SuperadminService {
 
   updateUser(userData: any) {
     return this.httpClient.patch(`${this.baseUrl}/user/update/${userData._id}`, userData);
+  }
+
+  // Pound Rate Methods
+  /**
+   * Get current pound rate
+   * GET /pound-rate
+   * Expected response: { status: boolean, data: { rate: number } } or { status: boolean, rate: number }
+   */
+  getPoundRate(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.POUND_RATE_GET
+    );
+  }
+
+  /**
+   * Update pound rate
+   * POST /pound-rate
+   * Payload: { rate: number }
+   */
+  updatePoundRate(data: { rate: number }): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.POUND_RATE_UPDATE,
+      data
+    );
   }
 }

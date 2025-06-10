@@ -59,6 +59,11 @@ export class AdminDataSettingsComponent implements OnInit {
   rolesList: any[] = [];
   @ViewChild('editUserModal') editUserModal: any;
 
+  // Pound Rate properties
+  poundRateForm: FormGroup;
+  poundRateSubmitted: boolean = false;
+  currentPoundRate: number | null = null;
+
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
@@ -132,10 +137,17 @@ export class AdminDataSettingsComponent implements OnInit {
       poc_email: ['', [Validators.required, Validators.email]],
       poc_phone: ['', Validators.required]
     });
+    this.poundRateForm = this.fb.group({
+      rate: ['', [Validators.required, Validators.min(0.01)]]
+    });
   }
 
   ngOnInit(): void {
     this.loadTechnologies();
+    // Load pound rate if it's the selected option
+    if (this.selectedOption === 'pound-rate') {
+      this.loadPoundRate();
+    }
   }
 
   closeModal(): void {
@@ -154,6 +166,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadRoles();
     } else if (option === 'user') {
       this.loadUsers();
+    } else if (option === 'pound-rate') {
+      this.loadPoundRate();
     }
   }
 
@@ -422,6 +436,8 @@ export class AdminDataSettingsComponent implements OnInit {
         return 'Role Settings';
       case 'user':
         return 'User Settings';
+      case 'pound-rate':
+        return 'Pound Rate Settings';
       default:
         return 'Admin Data Settings';
     }
@@ -930,6 +946,81 @@ export class AdminDataSettingsComponent implements OnInit {
       error: (error: any) => {
         this.toastr.error(error?.message || 'An error occurred while updating expertise');
         expertise.isMandatory = !expertise.isMandatory;
+      }
+    });
+  }
+
+  // Pound Rate Methods
+  loadPoundRate(): void {
+    this.error = '';
+    this.success = '';
+    this.showLoader = true;
+
+    this.superadminService.getPoundRate().subscribe({
+      next: (response: any) => {
+        console.log('Pound Rate API Response:', response);
+        if (response?.status) {
+          // Handle different possible response structures
+          const rate = response.data?.rate || response.rate || null;
+          this.currentPoundRate = rate;
+
+          if (this.currentPoundRate !== null) {
+            // Pre-populate the form with the current/previous value
+            this.poundRateForm.patchValue({
+              rate: this.currentPoundRate
+            });
+            console.log('Previous pound rate loaded:', this.currentPoundRate);
+          } else {
+            // If no previous value exists, set default or leave empty
+            this.poundRateForm.patchValue({ rate: '' });
+            console.log('No previous pound rate found');
+          }
+        } else {
+          this.error = response?.message || 'Failed to load pound rate';
+          // Still allow form to be used even if no previous value
+          this.poundRateForm.patchValue({ rate: '' });
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading pound rate:', error);
+        this.error = error?.message || error?.error?.message || 'An error occurred while loading pound rate';
+        // Allow form to be used even if API fails
+        this.poundRateForm.patchValue({ rate: '' });
+        this.currentPoundRate = null;
+        this.showLoader = false;
+      }
+    });
+  }
+
+  onSubmitPoundRate(): void {
+    this.poundRateSubmitted = true;
+    this.error = '';
+    this.success = '';
+
+    if (this.poundRateForm.invalid) {
+      return;
+    }
+
+    this.isLoading = true;
+    const formData = {
+      rate: this.poundRateForm.value.rate
+    };
+
+    this.superadminService.updatePoundRate(formData).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.success = 'Pound rate updated successfully';
+          this.currentPoundRate = formData.rate;
+          this.poundRateSubmitted = false;
+        } else {
+          this.error = response?.message || 'Failed to update pound rate';
+        }
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while updating pound rate';
+        this.isLoading = false;
       }
     });
   }
