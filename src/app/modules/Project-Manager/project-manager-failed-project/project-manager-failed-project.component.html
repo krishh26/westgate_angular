@@ -170,6 +170,9 @@
                         'background-color': getStatusColor(item)
                       }"></span>
                   </td>
+                  <td>
+                    <span *ngIf="item?.register_interest" class="status-dot ms-2" style="background-color: blue;"></span>
+                  </td>
                 </tr>
               </tbody>
             </table>
