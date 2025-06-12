@@ -69,6 +69,7 @@ export enum SuperAdminEndPoint {
   USER_DELETE = '/user/delete',
   POUND_RATE_GET = '/pound-rate',
   POUND_RATE_UPDATE = '/pound-rate',
+  UPDATE_ATTENDEE = '/project/update-attendee'
 }
 
 @Injectable({
@@ -859,6 +860,13 @@ export class SuperadminService {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.POUND_RATE_UPDATE,
       data
+    );
+  }
+
+  updateAttendee(payload: { projectId: string, supplierId: string, attendee: boolean }): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.UPDATE_ATTENDEE,
+      payload
     );
   }
 }
