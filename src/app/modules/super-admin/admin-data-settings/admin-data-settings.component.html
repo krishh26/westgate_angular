@@ -315,7 +315,6 @@
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Username</th>
                     <th>Role</th>
                     <th>Company</th>
                     <th>Status</th>
@@ -327,7 +326,6 @@
                   <tr *ngFor="let user of users">
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.userName || '-' }}</td>
                     <td>{{ user.role }}</td>
                     <td>{{ user.companyName || '-' }}</td>
                     <td>

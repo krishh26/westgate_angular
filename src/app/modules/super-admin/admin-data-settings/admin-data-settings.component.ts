@@ -809,7 +809,7 @@ export class AdminDataSettingsComponent implements OnInit {
         <h6><strong>Basic Information:</strong></h6>
         <p><strong>Name:</strong> ${user.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Username:</strong> ${user.userName || 'N/A'}</p>
+
         <p><strong>Role:</strong> ${user.role}</p>
         <p><strong>Status:</strong> ${user.active ? 'Active' : 'Inactive'}</p>
 
