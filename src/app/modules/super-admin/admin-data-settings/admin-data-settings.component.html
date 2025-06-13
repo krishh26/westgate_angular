@@ -781,17 +781,12 @@
             [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('role')?.errors }"
           >
             <option value="">Select Role</option>
-            <option value="BOS">BOS</option>
+            <option value="BOS">Sales Manager</option>
+            <option value="ProjectManager">Bid Manager</option>
+            <option value="ProcessManagerAdmin">Process Manager</option>
+            <option value="Admin">Super Admin</option>
             <option value="SupplierAdmin">Supplier Admin</option>
-            <option value="SupplierUser">Supplier User</option>
-            <option value="FeasibilityAdmin">Feasibility Admin</option>
-            <option value="FeasibilityUser">Feasibility User</option>
-            <option value="ProjectManager">Project Manager</option>
-            <option value="UKWriter">UK Writer</option>
-            <option value="BIDSubmition">BID Submission</option>
-            <option value="Admin">Admin</option>
-            <option value="ProjectCoOrdinator">Project Coordinator</option>
-            <option value="ProcessManagerAdmin">Process Manager Admin</option>
+            <option value="SalesManager">Users</option>
           </select>
           <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('role')?.errors?.['required']">
             Role is required
