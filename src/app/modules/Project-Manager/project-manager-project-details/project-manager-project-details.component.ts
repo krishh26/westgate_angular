@@ -1460,7 +1460,7 @@ export class ProjectManagerProjectDetailsComponent {
 
     const payload = {
       projectId: this.projectId,
-      supplierId: supplier.supplierId,
+      supplierId: supplier._id,
       attendee: !supplier.attendee
     };
 
