@@ -175,6 +175,16 @@
                 }}
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Result Expected:</strong></div>
+              <div class="col-md-10">
+                {{
+                projectDetails?.resultExpected
+                ? (projectDetails?.resultExpected | date : "dd/MM/yyyy")
+                : "-"
+                }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
