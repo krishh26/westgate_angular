@@ -411,7 +411,7 @@ export class BossUserResourcesAddComponent {
         highestQualification: candidateData.highestQualification,
         yearOfGraduation: candidateData.yearOfGraduation,
         totalExperience: candidateData.totalExperience,
-        startDate: candidateData.startDate,
+        startDate: this.formatDateForInput(candidateData.startDate),
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
         hourlyRate: candidateData.hourlyRate,
@@ -461,10 +461,6 @@ export class BossUserResourcesAddComponent {
           this.projectTechStacks.push(project.techStackUsed || []);
         });
       }
-
-      // After loading the data, clear it from localStorage to avoid issues if the user refreshes
-      // Comment out this line if you need to persist the data across refreshes
-      // localStorage.removeItem('editCandidateData');
     } else {
       this.notificationService.showError('Failed to load candidate data');
       this.router.navigate(['/boss-user/resources-list']);

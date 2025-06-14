@@ -482,7 +482,7 @@ export class ResourcesAddComponent implements OnInit {
         highestQualification: candidateData.highestQualification,
         yearOfGraduation: candidateData.yearOfGraduation,
         totalExperience: candidateData.totalExperience,
-        startDate: candidateData.startDate,
+        startDate: this.formatDateForInput(candidateData.startDate),
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
         // hourlyRate: candidateData.hourlyRate,
