@@ -76,7 +76,7 @@
               <th>Experience</th>
               <th>Technical Skills</th>
               <!-- <th>Languages</th> -->
-              <th>Hourly Rate</th>
+              <th>Day Rate</th>
               <!-- <th>Available From</th> -->
               <th>Actions</th>
             </tr>
@@ -103,7 +103,7 @@
                   {{skill}}{{!last ? ', ' : ''}}
                 </span>
               </td>
-              <td>£ {{candidate?.ukHourlyRate}}</td>
+              <td>£ {{candidate?.ukDayRate}}</td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i
                     class="bi bi-eye"></i> View</button>
