@@ -44,7 +44,8 @@ export class SuperadminAddProjectComponent implements OnInit {
     linkToPortal: new FormControl(""),
     password: new FormControl(""),
     loginID: new FormControl(""),
-    chatGptLink: new FormControl("")
+    chatGptLink: new FormControl(""),
+    resultExpected: new FormControl("")
   }
 
   productForm: FormGroup = new FormGroup(this.addEditProjectForm);
