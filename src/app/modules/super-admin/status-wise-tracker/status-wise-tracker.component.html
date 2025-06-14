@@ -154,11 +154,10 @@
                   Due Date & Time <i class="bi bi-sort-up"></i>
                 </th>
                 <th>Feasibility Status</th>
-                <!-- <th>Feasibility Assign User</th> -->
                 <th>Bid Status</th>
                 <th>Bid Assign User</th>
+                <th *ngIf="selectedBidStatus === 'WaitingForResult'">Result Expected</th>
                 <th>Log Time</th>
-                <!-- <th>Documents</th> -->
                 <th></th>
               </tr>
             </thead>
@@ -191,9 +190,9 @@
                   {{ item.bidsubmissiontime }}
                 </td>
                 <td>{{ getFormattedStatus(item?.status) }}</td>
-                <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
                 <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
                 <td>{{ item?.assignBidmanager[0]?.name }}</td>
+                <td *ngIf="selectedBidStatus === 'WaitingForResult'">{{ item?.resultExpected }}</td>
                 <td>
                   {{ item?.statusHistory?.[0]?.date | date:'dd/MM/yyyy, h:mm a' }}
 
