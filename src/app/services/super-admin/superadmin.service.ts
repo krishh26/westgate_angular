@@ -69,7 +69,10 @@ export enum SuperAdminEndPoint {
   USER_DELETE = '/user/delete',
   POUND_RATE_GET = '/pound-rate',
   POUND_RATE_UPDATE = '/pound-rate',
-  UPDATE_ATTENDEE = '/project/update-attendee'
+  UPDATE_ATTENDEE = '/project/update-attendee',
+  GET_TAGS = '/tags',
+  ADD_TAG = '/tags/add',
+  DELETE_TAG = '/tags/delete'
 }
 
 @Injectable({
@@ -864,9 +867,29 @@ export class SuperadminService {
   }
 
   updateAttendee(payload: { projectId: string, supplierId: string, attendee: boolean }): Observable<any> {
-    return this.httpClient.patch<any>(
+    return this.httpClient.put<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_ATTENDEE,
       payload
+    );
+  }
+
+  getTags(options: { params?: HttpParams } = {}): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_TAGS,
+      options
+    );
+  }
+
+  addTag(tagData: { name: string }): Observable<any> {
+    return this.httpClient.post<any>(
+      this.baseUrl + SuperAdminEndPoint.ADD_TAG,
+      tagData
+    );
+  }
+
+  deleteTag(tagId: string): Observable<any> {
+    return this.httpClient.delete<any>(
+      `${this.baseUrl}/tags/delete/${tagId}`
     );
   }
 }

@@ -7,6 +7,7 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-data-settings',
@@ -21,12 +22,17 @@ export class AdminDataSettingsComponent implements OnInit {
   roles: any[] = [];
   subExpertises: any[] = [];
   users: any[] = [];
+  tags: any[] = [];
   error: string = '';
   success: string = '';
   technologyForm: FormGroup;
   expertiseForm: FormGroup;
   editExpertiseForm: FormGroup;
   userForm: FormGroup;
+  tagForm: FormGroup;
+  tagSubmitted: boolean = false;
+  tagSearchQuery: string = '';
+  tagSearchTimeout: any;
   selectedExpertise: any = null;
   roleData: any = {
     name: '',
@@ -140,6 +146,9 @@ export class AdminDataSettingsComponent implements OnInit {
     this.poundRateForm = this.fb.group({
       rate: ['', [Validators.required, Validators.min(0.01)]]
     });
+    this.tagForm = this.fb.group({
+      name: ['', [Validators.required]]
+    });
   }
 
   ngOnInit(): void {
@@ -168,6 +177,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadUsers();
     } else if (option === 'pound-rate') {
       this.loadPoundRate();
+    } else if (option === 'tags') {
+      this.loadTags();
     }
   }
 
@@ -438,6 +449,8 @@ export class AdminDataSettingsComponent implements OnInit {
         return 'User Settings';
       case 'pound-rate':
         return 'Pound Rate Settings';
+      case 'tags':
+        return 'Tags/Services Settings';
       default:
         return 'Admin Data Settings';
     }
@@ -1027,6 +1040,95 @@ export class AdminDataSettingsComponent implements OnInit {
       error: (error: any) => {
         this.error = error?.message || 'An error occurred while updating pound rate';
         this.isLoading = false;
+      }
+    });
+  }
+
+  // Tag related methods
+  loadTags(): void {
+    this.showLoader = true;
+    const params = new HttpParams().set('search', this.tagSearchQuery || '');
+
+    this.superadminService.getTags({ params }).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.tags = response.data?.tags || [];
+        } else {
+          this.error = response?.message || 'Failed to load tags';
+        }
+      },
+      error: (error: any) => {
+        this.error = error?.error?.message || 'Failed to load tags';
+      },
+      complete: () => {
+        this.showLoader = false;
+      }
+    });
+  }
+
+  onTagSearchChange(query: string): void {
+    if (this.tagSearchTimeout) {
+      clearTimeout(this.tagSearchTimeout);
+    }
+    this.tagSearchTimeout = setTimeout(() => {
+      this.tagSearchQuery = query;
+      this.loadTags();
+    }, 500);
+  }
+
+  openAddTagModal(content: any): void {
+    this.tagForm.reset();
+    this.tagSubmitted = false;
+    this.modalService.open(content);
+  }
+
+  onSubmitTag(): void {
+    this.tagSubmitted = true;
+    if (this.tagForm.valid) {
+      this.isLoading = true;
+      this.superadminService.addTag(this.tagForm.value).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            this.toastr.success('Tag added successfully');
+            this.modalService.dismissAll();
+            this.loadTags();
+          } else {
+            this.error = response?.message || 'Failed to add tag';
+          }
+        },
+        error: (error: any) => {
+          this.error = error?.error?.message || 'Failed to add tag';
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  deleteTag(tagId: string): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this tag!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.superadminService.deleteTag(tagId).subscribe({
+          next: (response: any) => {
+            if (response?.status) {
+              this.toastr.success('Tag deleted successfully');
+              this.loadTags();
+            } else {
+              this.error = response?.message || 'Failed to delete tag';
+            }
+          },
+          error: (error: any) => {
+            this.error = error?.error?.message || 'Failed to delete tag';
+          }
+        });
       }
     });
   }

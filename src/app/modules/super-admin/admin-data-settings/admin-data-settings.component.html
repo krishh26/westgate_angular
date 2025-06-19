@@ -26,6 +26,9 @@
             <li class="list-group-item" [class.active]="selectedOption === 'pound-rate'" (click)="selectOption('pound-rate')">
               <i class="bi bi-currency-pound me-2"></i>Pound Rate
             </li>
+            <li class="list-group-item" [class.active]="selectedOption === 'tags'" (click)="selectOption('tags')">
+              <i class="bi bi-tags me-2"></i>Tags/Services
+            </li>
           </ul>
         </div>
       </div>
@@ -38,6 +41,9 @@
           <h4 class="mb-0">{{ getSelectedOptionTitle() }}</h4>
           <button class="btn btn-primary" *ngIf="selectedOption === 'expertise'" (click)="openAddExpertiseModal(addExpertiseModal)">
             <i class="bi bi-plus-circle me-2"></i>Add Expertise
+          </button>
+          <button class="btn btn-primary" *ngIf="selectedOption === 'tags'" (click)="openAddTagModal(addTagModal)">
+            <i class="bi bi-plus-circle me-2"></i>Add Tag
           </button>
           <!-- <button class="btn btn-primary" *ngIf="selectedOption === 'user'" (click)="openAddUserModal(addUserModal)">
             <i class="bi bi-plus-circle me-2"></i>Add User
@@ -444,6 +450,46 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Tags Section -->
+          <div *ngIf="selectedOption === 'tags'">
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+            <div class="table-responsive">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search tags..."
+                    [(ngModel)]="tagSearchQuery"
+                    (ngModelChange)="onTagSearchChange($event)">
+                </div>
+              </div>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tag of tags">
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.createdAt | date:'medium' }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteTag(tag._id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="tags.length === 0">
+                    <td colspan="3" class="text-center">No tags found</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1038,6 +1084,36 @@
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
           Update User
         </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Add Tag Modal -->
+<ng-template #addTagModal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Tag</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="tagForm" (ngSubmit)="onSubmitTag()">
+      <div class="mb-3">
+        <label for="tagName" class="form-label">Tag Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="tagName"
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': tagSubmitted && tagForm.get('name')?.errors }"
+          placeholder="Enter tag name"
+        >
+        <div class="invalid-feedback" *ngIf="tagSubmitted && tagForm.get('name')?.errors?.['required']">
+          Tag name is required
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Tag</button>
       </div>
     </form>
   </div>
