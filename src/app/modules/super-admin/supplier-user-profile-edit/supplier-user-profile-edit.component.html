@@ -428,15 +428,33 @@
               <div class="col-12 mb-3">
                 <!-- Services field -->
                 <div class="row">
-                  <label for="icando" class="col-sm-2 col-form-label">I Can Do
+                  <label for="expertiseICanDo" class="col-sm-2 col-form-label">I Can Do
                     <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
                        title="Select the type of solutions you offer"></i>
                   </label>
                   <div class="col-sm-10">
-                    <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
-                      [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
-                      [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false" [searchable]="true"
-                      [clearable]="true" (change)="onServicesChange()">
+                    <ng-select placeholder="Search and select services" class="custom-ng-select-option"
+                      [items]="servicesList"
+                      bindLabel="name"
+                      [multiple]="true"
+                      [(ngModel)]="selectedServices"
+                      name="expertiseICanDo"
+                      [closeOnSelect]="false"
+                      [searchable]="true"
+                      [clearable]="true"
+                      (change)="onServicesChange()"
+                      [loading]="isLoadingServices"
+                      [typeahead]="servicesInput$"
+                      [virtualScroll]="true">
+                      <ng-template ng-option-tmp let-item="item">
+                        <i class="bi bi-check2" *ngIf="item.selected"></i>
+                        {{item.name}}
+                      </ng-template>
+                      <ng-template ng-notfound-tmp>
+                        <div class="p-2">
+                          No services found. Type to search more...
+                        </div>
+                      </ng-template>
                     </ng-select>
                   </div>
                 </div>
@@ -679,9 +697,7 @@
           <div class="col-6 text-end">
             <button type="button" routerLink="/super-admin/supplier-user-profile"
               class="btn btn-primary">Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary" [disabled]="!supplierDetails.companyName || !supplierDetails.poc_name || !supplierDetails.poc_phone ||
-                        (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier) ||
-                        hasInvalidExpertise()">
+            <button type="submit" class="btn btn-primary" [disabled]="isUpdateButtonDisabled() || hasInvalidExpertise()">
               Update Supplier
             </button>
           </div>

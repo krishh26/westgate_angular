@@ -4,12 +4,13 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { of } from 'rxjs';
 
 interface ExpertiseItem {
   name: string;
@@ -59,6 +60,8 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   };
   servicesList: any[] = [];
   selectedServices: any[] = [];
+  isLoadingServices: boolean = false;
+  servicesInput$ = new Subject<string>();
 
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
@@ -124,49 +127,8 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     private spinner: NgxSpinnerService
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
-
-    const navigation = this.router.getCurrentNavigation();
-    const data = navigation?.extras.state;
-    if (data) {
-      // Map old field names to new ones if they exist
-      this.mapLegacyFieldNames(data);
-
-      // Initialize arrays if they don't exist in the incoming data
-      const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients', 'icando'];
-      arrayFields.forEach(field => {
-        if (!data[field]) {
-          data[field] = [];
-        }
-      });
-
-      this.supplierDetails = { ...this.supplierDetails, ...data };
-
-      // Extract inHoldComment if it exists
-      if (this.supplierDetails.inHoldComment && this.supplierDetails.inHoldComment.length > 0) {
-        this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
-      }
-
-      this.selectedServices = this.supplierDetails?.icando;
-
-      // Initialize services list
-      // this.servicesList = [
-      //   { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
-      //   { name: 'Custom Software Development', value: 'Custom Software Development' },
-      //   { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
-      //   { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
-      //   { name: 'Support & Maintenance', value: 'Support & Maintenance' },
-      //   { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
-      //   { name: 'Security & Compliance', value: 'Security & Compliance' },
-      //   { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
-      //   { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
-      //   { name: 'DevOps & Automation', value: 'DevOps & Automation' },
-      //   { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
-      //   { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
-      //   { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
-      //   { name: 'Blockchain Development', value: 'Blockchain Development' },
-      //   { name: 'IoT Development', value: 'IoT Development' }
-      // ];
-    }
+    this.initializeFromNavigationState();
+    this.setupServicesTypeahead();
 
     // Setup typeahead for sub-expertise search
     this.subExpertiseInput$.pipe(
@@ -207,7 +169,7 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   }
 
   ngOnInit(): void {
-    // Initialize if needed
+    this.loadInitialServices();
     this.getExpertiseDropdownData();
     this.getExpertiseICanDoDropdownData();
     this.getSubExpertiseDropdownData();
@@ -250,6 +212,97 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     }));
   }
 
+  private initializeFromNavigationState() {
+    const navigation = this.router.getCurrentNavigation();
+    const data = navigation?.extras.state;
+    if (data) {
+      this.mapLegacyFieldNames(data);
+      this.initializeArrayFields(data);
+      this.supplierDetails = { ...this.supplierDetails, ...data };
+      this.handleInHoldComment();
+
+      // Initialize selectedServices from expertiseICanDo
+      if (this.supplierDetails?.expertiseICanDo?.length > 0) {
+        this.selectedServices = this.supplierDetails.expertiseICanDo.map((item: { name: string; itemId: string }) => ({
+          name: item.name,
+          itemId: item.itemId,
+          _id: item.itemId
+        }));
+      } else {
+        this.selectedServices = [];
+      }
+    }
+  }
+
+  private loadInitialServices() {
+    this.isLoadingServices = true;
+    this.http.get<any>(`${environment.baseUrl}/tags?search=`).subscribe({
+      next: (response: any) => {
+        this.isLoadingServices = false;
+        if (response?.status && response?.data?.tags) {
+          this.servicesList = response.data.tags.map((item: any) => ({
+            name: item.name,
+            itemId: item._id,
+            _id: item._id
+          }));
+        }
+      },
+      error: (error) => {
+        this.isLoadingServices = false;
+        console.error('Error loading services:', error);
+      }
+    });
+  }
+
+  private setupServicesTypeahead() {
+    this.servicesInput$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.isLoadingServices = true;
+        return this.http.get<any>(`${environment.baseUrl}/tags?search=${term}`).pipe(
+          catchError(error => {
+            console.error('Error fetching services:', error);
+            return of([]);
+          })
+        );
+      })
+    ).subscribe({
+      next: (response: any) => {
+        this.isLoadingServices = false;
+        if (response?.status && response?.data?.tags) {
+          this.servicesList = response.data.tags.map((item: any) => ({
+            name: item.name,
+            itemId: item._id,
+            _id: item._id
+          }));
+        }
+      },
+      error: (error) => {
+        this.isLoadingServices = false;
+        console.error('Error in services typeahead:', error);
+      }
+    });
+  }
+
+  toggleSelectAllServices(event: any) {
+    if (event.target.checked) {
+      this.selectedServices = [...this.servicesList];
+    } else {
+      this.selectedServices = [];
+    }
+    this.onServicesChange();
+  }
+
+  onServicesChange() {
+    if (this.supplierDetails) {
+      this.supplierDetails.expertiseICanDo = this.selectedServices.map(service => ({
+        itemId: service.itemId || service._id,
+        name: service.name
+      }));
+    }
+  }
+
   // Update loadTags method to only include necessary fields
   loadTags(search: string = ''): void {
     this.showLoader = true;
@@ -285,15 +338,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-  }
-
-  // Add method to handle services selection changes
-  onServicesChange() {
-    if (this.selectedServices && this.selectedServices.length > 0) {
-      this.supplierDetails.icando = this.selectedServices.map(service => service.name);
-    } else {
-      this.supplierDetails.icando = [];
-    }
   }
 
   // Initialize selections from supplier details
@@ -1197,4 +1241,29 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
     }
   }
+
+  private initializeArrayFields(data: any) {
+    const arrayFields = [
+      'typeOfCompany',
+      'industry_Sector',
+      'certifications',
+      'expertise',
+      'categoryList',
+      'technologyStack',
+      'keyClients',
+      'expertiseICanDo'
+    ];
+    arrayFields.forEach(field => {
+      if (!data[field]) {
+        data[field] = [];
+      }
+    });
+  }
+
+  private handleInHoldComment() {
+    if (this.supplierDetails.inHoldComment?.length > 0) {
+      this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
+    }
+  }
 }
+

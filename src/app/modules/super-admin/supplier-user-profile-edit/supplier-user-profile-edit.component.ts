@@ -1,14 +1,13 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var bootstrap: any;
@@ -60,6 +59,8 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   };
   servicesList: any[] = [];
   selectedServices: any[] = [];
+  isLoadingServices: boolean = false;
+  servicesInput$ = new Subject<string>();
 
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
@@ -125,49 +126,7 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     private spinner: NgxSpinnerService
   ) {
     this.randomString = Math.random().toString(36).substring(2, 15);
-
-    const navigation = this.router.getCurrentNavigation();
-    const data = navigation?.extras.state;
-    if (data) {
-      // Map old field names to new ones if they exist
-      this.mapLegacyFieldNames(data);
-
-      // Initialize arrays if they don't exist in the incoming data
-      const arrayFields = ['typeOfCompany', 'industry_Sector', 'certifications', 'expertise', 'categoryList', 'technologyStack', 'keyClients', 'icando'];
-      arrayFields.forEach(field => {
-        if (!data[field]) {
-          data[field] = [];
-        }
-      });
-
-      this.supplierDetails = { ...this.supplierDetails, ...data };
-
-      // Extract inHoldComment if it exists
-      if (this.supplierDetails.inHoldComment && this.supplierDetails.inHoldComment.length > 0) {
-        this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
-      }
-
-      this.selectedServices = this.supplierDetails?.icando;
-
-      // Initialize services list
-      // this.servicesList = [
-      //   { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
-      //   { name: 'Custom Software Development', value: 'Custom Software Development' },
-      //   { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
-      //   { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
-      //   { name: 'Support & Maintenance', value: 'Support & Maintenance' },
-      //   { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
-      //   { name: 'Security & Compliance', value: 'Security & Compliance' },
-      //   { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
-      //   { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
-      //   { name: 'DevOps & Automation', value: 'DevOps & Automation' },
-      //   { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
-      //   { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
-      //   { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
-      //   { name: 'Blockchain Development', value: 'Blockchain Development' },
-      //   { name: 'IoT Development', value: 'IoT Development' }
-      // ];
-    }
+    this.initializeFromNavigationState();
 
     // Setup typeahead for sub-expertise search
     this.subExpertiseInput$.pipe(
@@ -208,71 +167,182 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // Initialize if needed
+    this.loadInitialServices();
+    this.setupServicesTypeahead();
     this.getExpertiseDropdownData();
-    this.getExpertiseICanDoDropdownData();
-    this.getSubExpertiseDropdownData();
-    this.getSubExpertiseICanDoDropdownData();
-
-    // Load dropdown data
-    this.getCategoryDomains();
-    this.getTechnologiesList();
-    this.getIndustryList();
-
-    // Initialize business types list
-    this.businessTypesList = [
-      { name: 'Private Limited Company', value: 'Private Limited Company' },
-      { name: 'Public Limited Company', value: 'Public Limited Company' },
-      { name: 'Limited Liability Partnership (LLP)', value: 'Limited Liability Partnership (LLP)' },
-      { name: 'Partnership Firm', value: 'Partnership Firm' },
-      { name: 'Sole Proprietorship', value: 'Sole Proprietorship' },
-      { name: 'One Person Company (OPC)', value: 'One Person Company (OPC)' },
-      { name: 'Section 8 Company (Non-Profit)', value: 'Section 8 Company (Non-Profit)' },
-      { name: 'Hindu Undivided Family (HUF)', value: 'Hindu Undivided Family (HUF)' },
-      { name: 'Cooperative Society', value: 'Cooperative Society' },
-      { name: 'Trust', value: 'Trust' }
-    ];
-
-    // Initialize selections from supplier details
-    this.initializeSelectionsFromSupplierDetails();
-
-    // Add fallback options if needed
-    if (this.subExpertiseOptions.length === 0) {
-      this.addFallbackSubExpertiseOptions();
-    }
-    if (this.subExpertiseICanDoOptions.length === 0) {
-      this.addFallbackSubExpertiseICanDoOptions();
-    }
-
-    // Initialize expertiseDropdownOptions with value property
-    this.expertiseDropdownOptions = this.expertiseDropdownOptions.map(item => ({
-      ...item,
-      value: item.name
-    }));
-    this.loadTags();
   }
 
-  // Update loadTags method to only include necessary fields
-  loadTags(search: string = ''): void {
-    this.showLoader = true;
-    const params = new HttpParams().set('search', search);
+  private initializeFromNavigationState() {
+    const navigation = this.router.getCurrentNavigation();
+    const data = navigation?.extras.state;
+    if (data) {
+      console.log('Initial navigation data:', data);
+      this.mapLegacyFieldNames(data);
+      this.initializeArrayFields(data);
 
-    this.superadminService.getTags({ params }).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          this.servicesList = (response.data?.tags || []).map((tag: any) => ({
-            name: tag.name,
-            _id: tag._id,
-            itemId: tag._id
-          }));
-        }
-        this.showLoader = false;
-      },
-      error: (error: any) => {
-        console.error('Error loading tags:', error);
-        this.showLoader = false;
+      // First spread the data, then override with required fields to ensure they're not null
+      this.supplierDetails = {
+        ...data,
+        companyName: data['companyName'] || '',
+        poc_name: data['poc_name'] || '',
+        poc_phone: data['poc_phone'] || '',
+        resourceSharingSupplier: data['resourceSharingSupplier'] ?? false,
+        subcontractingSupplier: data['subcontractingSupplier'] ?? false,
+        // Ensure expertiseICanDo is an array and filter out invalid items
+        expertiseICanDo: Array.isArray(data['expertiseICanDo'])
+          ? data['expertiseICanDo']
+              .filter((item: any) => item && item.itemId && item.name)
+              .map((item: any) => ({
+                itemId: item.itemId,
+                name: item.name
+              }))
+          : []
+      };
+
+      // Initialize selectedServices from expertiseICanDo
+      this.selectedServices = this.supplierDetails.expertiseICanDo
+        .filter((item: any) => item && item.itemId && item.name)
+        .map((item: any) => ({
+          name: item.name,
+          _id: item.itemId
+        }));
+
+      console.log('Initialized supplier details:', this.supplierDetails);
+      console.log('Initialized selected services:', this.selectedServices);
+
+      this.handleInHoldComment();
+    }
+  }
+
+  private initializeArrayFields(data: any) {
+    const arrayFields = [
+      'typeOfCompany',
+      'industry_Sector',
+      'certifications',
+      'expertise',
+      'categoryList',
+      'technologyStack',
+      'keyClients',
+      'expertiseICanDo'
+    ];
+    arrayFields.forEach(field => {
+      if (!data[field]) {
+        data[field] = [];
       }
     });
+  }
+
+  private handleInHoldComment() {
+    if (this.supplierDetails.inHoldComment?.length > 0) {
+      this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
+    }
+  }
+
+  private loadInitialServices() {
+    this.isLoadingServices = true;
+    this.http.get<any>(`${environment.baseUrl}/tags?search=`).subscribe({
+      next: (response: any) => {
+        this.isLoadingServices = false;
+        console.log('Initial services response:', response);
+
+        if (response?.status && response?.data?.tags) {
+          this.servicesList = response.data.tags
+            .filter((item: any) => item && item._id && item.name)
+            .map((item: any) => ({
+              name: item.name,
+              _id: item._id
+            }));
+
+          // If we have existing expertiseICanDo, map it to selectedServices
+          if (this.supplierDetails.expertiseICanDo?.length > 0) {
+            this.selectedServices = this.supplierDetails.expertiseICanDo
+              .filter((item: any) => item && item.itemId && item.name)
+              .map((item: any) => ({
+                name: item.name,
+                _id: item.itemId
+              }));
+          }
+
+          console.log('Initial services list:', this.servicesList);
+          console.log('Initial selected services:', this.selectedServices);
+        }
+      },
+      error: (error) => {
+        this.isLoadingServices = false;
+        console.error('Error loading initial services:', error);
+        this.servicesList = [];
+        this.selectedServices = [];
+      }
+    });
+  }
+
+  private setupServicesTypeahead() {
+    this.servicesInput$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.isLoadingServices = true;
+        return this.http.get<any>(`${environment.baseUrl}/tags?search=${term}`).pipe(
+          catchError(error => {
+            console.error('Error fetching services:', error);
+            return of([]);
+          })
+        );
+      })
+    ).subscribe({
+      next: (response: any) => {
+        this.isLoadingServices = false;
+        if (response?.status && response?.data?.tags) {
+          this.servicesList = response.data.tags.map((item: any) => ({
+            name: item.name,
+            value: item.name,
+            _id: item._id
+          }));
+        }
+      },
+      error: (error) => {
+        this.isLoadingServices = false;
+        console.error('Error in services subscription:', error);
+      }
+    });
+  }
+
+  onServicesChange() {
+    console.log('Selected services before mapping:', this.selectedServices);
+
+    if (!Array.isArray(this.selectedServices)) {
+      this.selectedServices = [];
+    }
+
+    // Filter out any invalid services and map to the correct format
+    const validServices = this.selectedServices
+      .filter(service => service && service._id && service.name)
+      .map(service => ({
+        itemId: service._id,
+        name: service.name
+      }));
+
+    console.log('Valid services mapped:', validServices);
+
+    // Update expertiseICanDo in supplierDetails
+    this.supplierDetails = {
+      ...this.supplierDetails,
+      expertiseICanDo: validServices
+    };
+
+    console.log('Updated supplier details:', {
+      expertiseICanDo: this.supplierDetails.expertiseICanDo,
+      selectedServices: this.selectedServices
+    });
+  }
+
+  toggleSelectAllServices(event: any) {
+    if (event.target.checked) {
+      this.selectedServices = [...this.servicesList];
+    } else {
+      this.selectedServices = [];
+    }
+    this.onServicesChange();
   }
 
   ngAfterViewInit(): void {
@@ -287,15 +357,6 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => {
       new bootstrap.Tooltip(tooltipTriggerEl);
     });
-  }
-
-  // Add method to handle services selection changes
-  onServicesChange() {
-    if (this.selectedServices && this.selectedServices.length > 0) {
-      this.supplierDetails.icando = this.selectedServices.map(service => service.name);
-    } else {
-      this.supplierDetails.icando = [];
-    }
   }
 
   // Initialize selections from supplier details
@@ -1094,9 +1155,8 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   }
 
   hasInvalidExpertise(): boolean {
+    // Only check expertise section for sub-expertise requirement
     return this.supplierDetails.expertise.some((expertise: ExpertiseItem) =>
-      !expertise.subExpertise || expertise.subExpertise.length === 0
-    ) || this.supplierDetails.expertiseICanDo.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
     );
   }
@@ -1198,5 +1258,57 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     } else {
       this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
     }
+  }
+
+  loadServices(searchTerm: string = '') {
+    this.isLoadingServices = true;
+    this.http.get<any>(`${environment.baseUrl}/tags?search=${searchTerm}`).pipe(
+      catchError(error => {
+        console.error('Error fetching services:', error);
+        return of({ status: false, data: { tags: [] } });
+      })
+    ).subscribe(
+      (response: any) => {
+        this.isLoadingServices = false;
+        console.log('Services API response:', response);
+
+        if (response?.status && response?.data?.tags) {
+          this.servicesList = response.data.tags
+            .filter((item: any) => item && item._id && item.name) // Filter out invalid items
+            .map((item: any) => ({
+              name: item.name,
+              _id: item._id
+            }));
+
+          console.log('Processed services list:', this.servicesList);
+        } else {
+          console.warn('Invalid services response:', response);
+          this.servicesList = [];
+        }
+      },
+      error => {
+        this.isLoadingServices = false;
+        console.error('Error loading services:', error);
+        this.servicesList = [];
+      }
+    );
+  }
+
+  isUpdateButtonDisabled(): boolean {
+    const isDisabled = !this.supplierDetails['companyName'] ||
+                      !this.supplierDetails['poc_name'] ||
+                      !this.supplierDetails['poc_phone'] ||
+                      (!this.supplierDetails['resourceSharingSupplier'] && !this.supplierDetails['subcontractingSupplier']);
+
+    console.log('Button disabled state:', {
+      companyName: this.supplierDetails['companyName'],
+      pocName: this.supplierDetails['poc_name'],
+      pocPhone: this.supplierDetails['poc_phone'],
+      resourceSharing: this.supplierDetails['resourceSharingSupplier'],
+      subcontracting: this.supplierDetails['subcontractingSupplier'],
+      isDisabled: isDisabled
+    });
+
+    return isDisabled;
   }
 }
