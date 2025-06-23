@@ -5,7 +5,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
@@ -150,23 +150,23 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       this.selectedServices = this.supplierDetails?.icando;
 
       // Initialize services list
-      this.servicesList = [
-        { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
-        { name: 'Custom Software Development', value: 'Custom Software Development' },
-        { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
-        { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
-        { name: 'Support & Maintenance', value: 'Support & Maintenance' },
-        { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
-        { name: 'Security & Compliance', value: 'Security & Compliance' },
-        { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
-        { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
-        { name: 'DevOps & Automation', value: 'DevOps & Automation' },
-        { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
-        { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
-        { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
-        { name: 'Blockchain Development', value: 'Blockchain Development' },
-        { name: 'IoT Development', value: 'IoT Development' }
-      ];
+      // this.servicesList = [
+      //   { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
+      //   { name: 'Custom Software Development', value: 'Custom Software Development' },
+      //   { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
+      //   { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
+      //   { name: 'Support & Maintenance', value: 'Support & Maintenance' },
+      //   { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
+      //   { name: 'Security & Compliance', value: 'Security & Compliance' },
+      //   { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
+      //   { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
+      //   { name: 'DevOps & Automation', value: 'DevOps & Automation' },
+      //   { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
+      //   { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
+      //   { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
+      //   { name: 'Blockchain Development', value: 'Blockchain Development' },
+      //   { name: 'IoT Development', value: 'IoT Development' }
+      // ];
     }
 
     // Setup typeahead for sub-expertise search
@@ -249,6 +249,30 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       ...item,
       value: item.name
     }));
+    this.loadTags();
+  }
+
+  // Update loadTags method to only include necessary fields
+  loadTags(search: string = ''): void {
+    this.showLoader = true;
+    const params = new HttpParams().set('search', search);
+
+    this.superadminService.getTags({ params }).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.servicesList = (response.data?.tags || []).map((tag: any) => ({
+            name: tag.name,
+            _id: tag._id,
+            itemId: tag._id
+          }));
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading tags:', error);
+        this.showLoader = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
