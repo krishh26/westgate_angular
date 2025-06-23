@@ -462,15 +462,21 @@
                   <div class="col-12 mb-3">
                     <!-- Services field -->
                     <div class="row">
-                      <label for="icando" class="col-sm-2 col-form-label">I Can Do
+                      <label for="expertiseICanDo" class="col-sm-2 col-form-label">I Can Do
                         <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
                            title="Select the type of solutions you offer"></i>
                       </label>
                       <div class="col-sm-10">
                         <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
-                          [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false" [searchable]="true"
-                          [clearable]="true" (change)="onServicesChange()">
+                          [items]="servicesList" bindLabel="name" [multiple]="true"
+                          [(ngModel)]="selectedServices" name="expertiseICanDo"
+                          [closeOnSelect]="false" [searchable]="true" [clearable]="true"
+                          (change)="onServicesChange()" [loading]="showLoader"
+                          [typeahead]="tagSearchInput$" (search)="onTagSearch($event)"
+                          [hideSelected]="true">
+                          <ng-template ng-option-tmp let-item="item">
+                            {{ item.name }}
+                          </ng-template>
                         </ng-select>
                       </div>
                     </div>

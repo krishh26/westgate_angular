@@ -3,9 +3,10 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -32,7 +33,8 @@ interface SubExpertise {
 
 interface ServiceItem {
   name: string;
-  value: string;
+  _id?: string;
+  itemId: string;
 }
 
 @Component({
@@ -73,6 +75,9 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   // Services properties
   servicesList: ServiceItem[] = [];
   selectedServices: ServiceItem[] = [];
+  tagSearchQuery: string = '';
+  tagSearchTimeout: any;
+  tagSearchInput$ = new Subject<string>();
 
   // Properties for I Can Do field
   selectedExpertiseICanDoItems: ExpertiseItem[] = [];
@@ -100,6 +105,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   constructor(
     private superadminService: SuperadminService,
     private notificationService: NotificationService,
+    private router: Router,
     private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
@@ -135,6 +141,32 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
         this.subExpertiseICanDoOptions = response.data || [];
       }
     });
+
+    // Setup typeahead for tag search
+    this.tagSearchInput$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        this.showLoader = true;
+        const params = new HttpParams().set('search', term || '');
+        return this.superadminService.getTags({ params });
+      })
+    ).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.servicesList = (response.data?.tags || []).map((tag: any) => ({
+            name: tag.name,
+            itemId: tag._id,
+            value: tag.name
+          }));
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading tags:', error);
+        this.showLoader = false;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -146,25 +178,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     this.getCategoryDomains();
     this.getTechnologiesList();
     this.getIndustryList();
-
-    // Initialize services list
-    this.servicesList = [
-      { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
-      { name: 'Custom Software Development', value: 'Custom Software Development' },
-      { name: 'Hosting & Infrastructure', value: 'Hosting & Infrastructure' },
-      { name: 'IT Consulting & System Integration', value: 'IT Consulting & System Integration' },
-      { name: 'Support & Maintenance', value: 'Support & Maintenance' },
-      { name: 'Analytics & Reporting', value: 'Analytics & Reporting' },
-      { name: 'Security & Compliance', value: 'Security & Compliance' },
-      { name: 'Logos, UI/UX', value: 'Logos, UI/UX' },
-      { name: 'Digital Marketing & SEO', value: 'Digital Marketing & SEO' },
-      { name: 'DevOps & Automation', value: 'DevOps & Automation' },
-      { name: 'AI & Machine Learning', value: 'AI & Machine Learning' },
-      { name: 'Data Migration & Legacy Modernisation', value: 'Data Migration & Legacy Modernisation' },
-      { name: 'Quality Assurance and Software Testing', value: 'Quality Assurance and Software Testing' },
-      { name: 'Blockchain Development', value: 'Blockchain Development' },
-      { name: 'IoT Development', value: 'IoT Development' }
-    ];
+    this.loadTags(); // Load initial tags
 
     // Initialize business types list
     this.businessTypesList = [
@@ -180,7 +194,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       { name: 'Trust', value: 'Trust' }
     ];
 
-    // Add fallback options for both expertise and I Can Do
+    // Add fallback options for expertise and I Can Do
     if (this.subExpertiseOptions.length === 0) {
       this.addFallbackSubExpertiseOptions();
     }
@@ -293,7 +307,6 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
       inHoldComment: [],
-      icando: [],
       isSendMail: false
     };
   }
@@ -486,18 +499,6 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       }
     }
 
-    // Check if all I Can Do items have at least one sub-expertise
-    if (this.companyForm.expertiseICanDo.length > 0) {
-      const missingSubExpertise = this.companyForm.expertiseICanDo.some((expertise: any) =>
-        !expertise.subExpertise || expertise.subExpertise.length === 0
-      );
-
-      if (missingSubExpertise) {
-        this.notificationService.showError('Each I Can Do item must have at least one sub-expertise');
-        return;
-      }
-    }
-
     // Ensure selected categories, industries, and technologies are in the form data
     this.onCategoryChange();
     this.onIndustryChange();
@@ -584,9 +585,11 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   }
 
   hasInvalidExpertise(): boolean {
+    // Only check subExpertise for expertise items, not expertiseICanDo
+    if (!this.companyForm.expertise || !Array.isArray(this.companyForm.expertise)) {
+      return false;
+    }
     return this.companyForm.expertise.some((expertise: ExpertiseItem) =>
-      !expertise.subExpertise || expertise.subExpertise.length === 0
-    ) || this.companyForm.expertiseICanDo.some((expertise: ExpertiseItem) =>
       !expertise.subExpertise || expertise.subExpertise.length === 0
     );
   }
@@ -606,7 +609,11 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       this.selectedServices = [];
     }
     // Update the form's icando field
-    this.companyForm.icando = this.selectedServices.map(service => service.name);
+    this.companyForm.expertiseICanDo = this.selectedServices.map(service => ({
+      name: service.name,
+      type: 'service',
+      subExpertise: []
+    }));
   }
 
   toggleSelectAllExpertiseICanDo(event: any) {
@@ -1396,12 +1403,16 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     return this.onAddTagSubExpertise(name); // Reuse the same implementation
   }
 
-  // Add method to handle services selection changes
+  // Update services change method
   onServicesChange() {
-    if (this.selectedServices && this.selectedServices.length > 0) {
-      this.companyForm.icando = this.selectedServices.map(service => service.name);
+    if (this.selectedServices && Array.isArray(this.selectedServices)) {
+      // Map the selected services to only include itemId and name
+      this.companyForm.expertiseICanDo = this.selectedServices.map(service => ({
+        itemId: service._id || service.itemId,
+        name: service.name
+      }));
     } else {
-      this.companyForm.icando = [];
+      this.companyForm.expertiseICanDo = [];
     }
   }
 
@@ -1411,5 +1422,33 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     } else {
       this.companyForm.typeOfCompany = [];
     }
+  }
+
+  // Update loadTags method to only include necessary fields
+  loadTags(search: string = ''): void {
+    this.showLoader = true;
+    const params = new HttpParams().set('search', search);
+
+    this.superadminService.getTags({ params }).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.servicesList = (response.data?.tags || []).map((tag: any) => ({
+            name: tag.name,
+            _id: tag._id,
+            itemId: tag._id
+          }));
+        }
+        this.showLoader = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading tags:', error);
+        this.showLoader = false;
+      }
+    });
+  }
+
+  // Add method to handle tag search
+  onTagSearch(event: { term: string, items: any[] }): void {
+    this.loadTags(event.term);
   }
 }
