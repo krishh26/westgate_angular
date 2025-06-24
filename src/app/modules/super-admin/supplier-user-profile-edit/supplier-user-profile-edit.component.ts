@@ -167,9 +167,32 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // Load all dropdown data
     this.loadInitialServices();
     this.setupServicesTypeahead();
     this.getExpertiseDropdownData();
+    this.getIndustryList();
+    this.getCategoryDomains();
+    this.getTechnologiesList();
+    this.getExpertiseICanDoDropdownData();
+    this.getSubExpertiseDropdownData();
+
+    // Initialize business types list
+    this.businessTypesList = [
+      { name: 'Private Limited Company', value: 'Private Limited Company' },
+      { name: 'Public Limited Company', value: 'Public Limited Company' },
+      { name: 'Limited Liability Partnership (LLP)', value: 'Limited Liability Partnership (LLP)' },
+      { name: 'Partnership Firm', value: 'Partnership Firm' },
+      { name: 'Sole Proprietorship', value: 'Sole Proprietorship' },
+      { name: 'One Person Company (OPC)', value: 'One Person Company (OPC)' },
+      { name: 'Section 8 Company (Non-Profit)', value: 'Section 8 Company (Non-Profit)' },
+      { name: 'Hindu Undivided Family (HUF)', value: 'Hindu Undivided Family (HUF)' },
+      { name: 'Cooperative Society', value: 'Cooperative Society' },
+      { name: 'Trust', value: 'Trust' }
+    ];
+
+    // Initialize selections from existing data
+    this.initializeSelectionsFromSupplierDetails();
   }
 
   private initializeFromNavigationState() {
@@ -378,16 +401,17 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       }));
     }
 
+    // Initialize business type selections
+    if (this.supplierDetails.typeOfCompany && this.supplierDetails.typeOfCompany.length > 0) {
+      this.selectedBusinessTypes = [...this.supplierDetails.typeOfCompany];
+      console.log('Initialized business types:', this.selectedBusinessTypes);
+    }
+
     // Initialize selectedSubExpertiseMap
     if (this.supplierDetails.expertise && this.supplierDetails.expertise.length > 0) {
       this.supplierDetails.expertise.forEach((expertise: any, index: number) => {
         this.selectedSubExpertiseMap[index] = [];
       });
-    }
-
-    // Initialize business type selections
-    if (this.supplierDetails.typeOfCompany && this.supplierDetails.typeOfCompany.length > 0) {
-      this.selectedBusinessTypes = [...this.supplierDetails.typeOfCompany];
     }
   }
 
@@ -424,62 +448,61 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   // Get category domains for dropdown
   getCategoryDomains() {
     this.showLoader = true;
+    console.log('Fetching category domains...');
     const url = `${environment.baseUrl}/web-user/drop-down?type=domain`;
 
-    this.http.get<any>(url).subscribe(
-      (response) => {
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        console.log('Category domains response:', response);
         if (response?.status) {
-          // Check if the data is an array of objects or simple strings
           if (response.data && response.data.length > 0) {
             if (typeof response.data[0] === 'object') {
-              // If data contains objects, transform to format compatible with ng-select
-              this.categoryDomains = response.data.map((item: any) => {
-                // For ng-select, we need objects with consistent properties
-                // If item already has name/value, use it
-                if (item.name && item.value) {
-                  return item;
-                }
-
-                // Try different property names that might exist
-                const value = item.name || item.value || item.domain || item.category || JSON.stringify(item);
-                return {
-                  name: value,
-                  value: value
-                };
-              });
+              this.categoryDomains = response.data.map((item: any) => ({
+                name: item.name || item.value || item.domain || item.category || JSON.stringify(item),
+                value: item.name || item.value || item.domain || item.category || JSON.stringify(item)
+              }));
             } else {
-              // If data is already an array of strings, convert to objects for ng-select
-              this.categoryDomains = response.data.map((item: string) => {
-                return {
-                  name: item,
-                  value: item
-                };
-              });
+              this.categoryDomains = response.data.map((item: string) => ({
+                name: item,
+                value: item
+              }));
             }
-          } else {
-            this.categoryDomains = [];
           }
+          console.log('Processed category domains:', this.categoryDomains);
         } else {
+          console.error('Failed to fetch category domains:', response?.message);
           this.notificationService.showError('Failed to fetch category domains');
-          this.categoryDomains = [];
+          this.setFallbackCategoryDomains();
         }
         this.showLoader = false;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching category domains:', error);
         this.notificationService.showError('Error fetching category domains');
+        this.setFallbackCategoryDomains();
         this.showLoader = false;
-        this.categoryDomains = [];
       }
-    );
+    });
+  }
+
+  private setFallbackCategoryDomains() {
+    this.categoryDomains = [
+      { name: 'Software Development', value: 'Software Development' },
+      { name: 'IT Services', value: 'IT Services' },
+      { name: 'Consulting', value: 'Consulting' },
+      { name: 'Digital Marketing', value: 'Digital Marketing' },
+      { name: 'Cloud Services', value: 'Cloud Services' }
+    ];
   }
 
   // Get technologies list for dropdown
   getTechnologiesList() {
     this.isLoadingTechnologies = true;
-    this.http.get<any>(`${environment.baseUrl}/tech-language/technologies`).subscribe(
-      response => {
-        this.isLoadingTechnologies = false;
+    console.log('Fetching technologies list...');
+
+    this.http.get<any>(`${environment.baseUrl}/tech-language/technologies`).subscribe({
+      next: (response) => {
+        console.log('Technologies response:', response);
         if (response?.status) {
           this.technologiesList = response.data || [];
 
@@ -489,17 +512,31 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
               name: tech
             }));
           }
+          console.log('Processed technologies list:', this.technologiesList);
         } else {
           console.error('Failed to fetch technologies:', response?.message);
           this.notificationService.showError('Failed to fetch technologies');
+          this.setFallbackTechnologies();
         }
-      },
-      error => {
         this.isLoadingTechnologies = false;
+      },
+      error: (error) => {
         console.error('Error fetching technologies:', error);
         this.notificationService.showError('Error fetching technologies');
+        this.setFallbackTechnologies();
+        this.isLoadingTechnologies = false;
       }
-    );
+    });
+  }
+
+  private setFallbackTechnologies() {
+    this.technologiesList = [
+      { name: 'JavaScript', value: 'JavaScript' },
+      { name: 'Python', value: 'Python' },
+      { name: 'Java', value: 'Java' },
+      { name: 'C#', value: 'C#' },
+      { name: 'PHP', value: 'PHP' }
+    ];
   }
 
   // Method to set the active expertise being edited
@@ -716,8 +753,8 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     const url = `${environment.baseUrl}/web-user/drop-down-list`;
     console.log('Fetching expertise data from URL:', url);
 
-    this.http.get<any>(url).subscribe(
-      (response) => {
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
         console.log('Raw expertise API response:', response);
         if (response?.status && response?.data) {
           const data = response.data || [];
@@ -775,23 +812,32 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
 
           this.expertiseDropdownOptions = allItems;
           this.expertiseGroupedOptions = allItems;
-          console.log('Processed expertise list for ng-select:', this.expertiseGroupedOptions);
+          console.log('Processed expertise list:', this.expertiseGroupedOptions);
         } else {
           console.error('Failed to fetch expertise data:', response?.message);
           this.notificationService.showError('Failed to fetch expertise data');
-          this.expertiseDropdownOptions = [];
-          this.expertiseGroupedOptions = [];
+          this.setFallbackExpertise();
         }
         this.showLoader = false;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching expertise data:', error);
         this.notificationService.showError('Error fetching expertise data');
+        this.setFallbackExpertise();
         this.showLoader = false;
-        this.expertiseDropdownOptions = [];
-        this.expertiseGroupedOptions = [];
       }
-    );
+    });
+  }
+
+  private setFallbackExpertise() {
+    this.expertiseDropdownOptions = [
+      { name: 'Web Development', value: 'Web Development', type: 'technologies', itemId: '1' },
+      { name: 'Mobile Development', value: 'Mobile Development', type: 'technologies', itemId: '2' },
+      { name: 'Cloud Services', value: 'Cloud Services', type: 'product', itemId: '3' },
+      { name: 'Healthcare', value: 'Healthcare', type: 'domain', itemId: '4' },
+      { name: 'Finance', value: 'Finance', type: 'domain', itemId: '5' }
+    ];
+    this.expertiseGroupedOptions = [...this.expertiseDropdownOptions];
   }
 
   // Add method for getting I Can Do expertise dropdown data
@@ -827,14 +873,16 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
 
   getSubExpertiseDropdownData(searchText: string = '') {
     this.showLoader = true;
+    console.log('Fetching sub-expertise data with search:', searchText);
 
-    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
-      (response) => {
+    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe({
+      next: (response) => {
+        console.log('Sub-expertise response:', response);
         if (response?.status) {
-          // Handle the array of strings directly
           this.subExpertiseOptions = response.data || [];
+          console.log('Processed sub-expertise options:', this.subExpertiseOptions);
 
-          // Add dummy data if API returns empty
+          // Add fallback data if API returns empty
           if (this.subExpertiseOptions.length === 0) {
             this.addFallbackSubExpertiseOptions();
           }
@@ -845,23 +893,28 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
         }
         this.showLoader = false;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching sub-expertise dropdown data:', error);
         this.notificationService.showError('Error fetching sub-expertise dropdown data');
         this.addFallbackSubExpertiseOptions();
         this.showLoader = false;
       }
-    );
+    });
   }
 
   addFallbackSubExpertiseOptions() {
-    // This is just for testing if the dropdown works with data
+    console.log('Adding fallback sub-expertise options');
     this.subExpertiseOptions = [
       'Banking',
       'Information Technology (IT)',
       'Education',
       'Healthcare',
-      'Insurance'
+      'Insurance',
+      'E-commerce',
+      'Manufacturing',
+      'Telecommunications',
+      'Retail',
+      'Media & Entertainment'
     ];
   }
 
