@@ -140,16 +140,6 @@
               <div class="col-sm-8">
                 <ng-select [items]="rolesList" bindLabel="name" bindValue="_id" [multiple]="true"
                   placeholder="Select Roles" formControlName="roleId">
-                  <ng-template ng-label-tmp let-item="item">
-                    {{item.name}}
-                  </ng-template>
-                  <ng-template ng-option-tmp let-item="item">
-                    <div
-                      [title]="item.otherRoles && item.otherRoles.length > 0 ? 'Also known as: ' + item.otherRoles.join(', ') : ''">
-                      {{item.name}} <span
-                        *ngIf="item.otherRoles && item.otherRoles.length > 0">({{item.otherRoles.join(', ')}})</span>
-                    </div>
-                  </ng-template>
                 </ng-select>
                 <div *ngIf="userProfileForm.get('roleId')?.invalid && userProfileForm.get('roleId')?.touched"
                   class="text-danger">
