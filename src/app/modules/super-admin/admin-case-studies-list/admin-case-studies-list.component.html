@@ -78,7 +78,7 @@
                   <td>{{item?.industry}}</td>
                   <td>{{item?.type}}</td>
                   <td>{{item?.date}}</td>
-                  <td><a title="{{ item?.description }}">{{ item?.description | slice:0:10 }}</a></td>
+                  <td><a title="{{ item?.description }}">{{ item?.description | slice:0:50 }}{{item?.description?.length > 30 ? '...' : ''}}</a></td>
                   <td>
                     <div class="d-flex gap-2">
                       <button class="btn btn-sm btn-primary" (click)="viewCaseStudyDetails(item)" title="View Details">
