@@ -76,8 +76,8 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   today: string = new Date().toISOString().split('T')[0];
 
   // Industry, Category, and Technology lists
-  industryList: any[] = [];
-  selectedIndustries: string[] = [];
+  industryList: { name: string; value: string; }[] = [];
+  // selectedIndustries: string[] = [];
 
   // Business Types properties
   businessTypesList: any[] = [];
@@ -86,7 +86,7 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
-  selectedTechnologies: any[] = [];
+  selectedTechnologies: { name: string; value: string; }[] = [];
   isLoadingTechnologies: boolean = false;
   technologiesInput$ = new Subject<string>();
 
@@ -176,6 +176,8 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     this.getTechnologiesList();
     this.getExpertiseICanDoDropdownData();
     this.getSubExpertiseDropdownData();
+    this.getSubExpertiseICanDoDropdownData();
+    this.loadTags(); // Load initial tags
 
     // Initialize business types list
     this.businessTypesList = [
@@ -384,11 +386,6 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
 
   // Initialize selections from supplier details
   initializeSelectionsFromSupplierDetails() {
-    // Initialize industry selections
-    if (this.supplierDetails.industry_Sector && this.supplierDetails.industry_Sector.length > 0) {
-      this.selectedIndustries = [...this.supplierDetails.industry_Sector];
-    }
-
     // Initialize category selections
     if (this.supplierDetails.categoryList && this.supplierDetails.categoryList.length > 0) {
       this.selectedCategories = [...this.supplierDetails.categoryList];
@@ -549,15 +546,6 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   onSubExpertiseChange(expertiseIndex: number, selectedItems: any) {
     // Store the selection for the current expertise index
     this.selectedSubExpertiseMap[expertiseIndex] = selectedItems;
-  }
-
-  // Update method to handle changes in the industry selection
-  onIndustryChange() {
-    if (this.selectedIndustries && this.selectedIndustries.length > 0) {
-      this.supplierDetails.industry_Sector = [...this.selectedIndustries];
-    } else {
-      this.supplierDetails.industry_Sector = [];
-    }
   }
 
   // Method to handle changes in the business type selection
@@ -1363,5 +1351,9 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     });
 
     return isDisabled;
+  }
+
+  loadTags() {
+    // Implementation of loadTags method
   }
 }

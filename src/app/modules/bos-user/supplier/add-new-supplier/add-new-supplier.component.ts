@@ -62,8 +62,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
   selectedTechnologies: string[] = [];
-  industryList: any[] = [];
-  selectedIndustries: string[] = [];
 
   // Business Types properties
   businessTypesList: any[] = [];
@@ -94,6 +92,9 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
   servicesList: ServiceItem[] = [];
   selectedServices: ServiceItem[] = [];
+  tagSearchQuery: string = '';
+  tagSearchTimeout: any;
+  tagSearchInput$ = new Subject<string>();
 
   constructor(
     private superadminService: SuperadminService,
@@ -143,7 +144,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     this.getSubExpertiseICanDoDropdownData();
     this.getCategoryDomains();
     this.getTechnologiesList();
-    this.getIndustryList();
     this.initializeServicesList();
 
     // Add fallback options for both expertise and I Can Do
@@ -249,7 +249,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       poc_email: '',
       poc_role: '',
       typeOfCompany: [],
-      industry_Sector: [],
       employeeCount: '',
       turnover: '',
       totalProjectsExecuted: '',
@@ -465,7 +464,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
     // Ensure selected categories, industries, and technologies are in the form data
     this.onCategoryChange();
-    this.onIndustryChange();
     this.onTechnologiesChange();
 
     // Create a copy of the form data
@@ -877,482 +875,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getIndustryList() {
-    this.showLoader = true;
-    const url = `${environment.baseUrl}/web-user/sub-expertise/list`;
-    console.log('Fetching industry data from URL:', url);
-
-    this.http.get<any>(url).subscribe(
-      (response) => {
-        console.log('Raw industry API response:', response);
-        if (response?.status) {
-          // Process the data
-          if (response.data && Array.isArray(response.data)) {
-            if (response.data.length > 0) {
-              if (typeof response.data[0] === 'object') {
-                // If response.data contains objects, format them for ng-select
-                this.industryList = response.data.map((item: any) => {
-                  return {
-                    name: item.name || item.value || item.subExpertise || item.expertise || JSON.stringify(item),
-                    value: item.name || item.value || item.subExpertise || item.expertise || JSON.stringify(item)
-                  };
-                });
-              } else {
-                // If data is already an array of strings
-                this.industryList = response.data.map((item: string) => {
-                  return {
-                    name: item,
-                    value: item
-                  };
-                });
-              }
-            }
-          } else {
-            this.industryList = [];
-          }
-          console.log('Processed industry list for ng-select:', this.industryList);
-        } else {
-          console.error('Failed to fetch industry data:', response?.message);
-          this.notificationService.showError('Failed to fetch industry data');
-          this.industryList = [];
-        }
-        this.showLoader = false;
-      },
-      (error) => {
-        console.error('Error fetching industry data:', error);
-        this.notificationService.showError('Error fetching industry data');
-        this.showLoader = false;
-        this.industryList = [];
-      }
-    );
-  }
-
-  // Updated method to handle changes in the industry ng-select component
-  onIndustryChange() {
-    if (this.selectedIndustries && this.selectedIndustries.length > 0) {
-      // Extract just the values/names directly to the form array
-      this.companyForm.industry_Sector = [...this.selectedIndustries];
-    } else {
-      this.companyForm.industry_Sector = [];
-    }
-    console.log('Updated industry focus in form:', this.companyForm.industry_Sector);
-  }
-
-  // Add method for adding custom industry items
-  onItemAddIndustry(event: any) {
-    if (event) {
-      console.log('Adding custom industry:', event);
-      // If it's a string from addTag
-      if (typeof event === 'string') {
-        // Check if the object with this value already exists
-        const exists = this.industryList.some(item => item.value === event);
-        if (!exists) {
-          this.industryList.push({ name: event, value: event });
-        }
-      } else if (event && event.value) {
-        // It's an object from the selection
-        const exists = this.industryList.some(item => item.value === event.value);
-        if (!exists) {
-          this.industryList.push(event);
-        }
-      }
-    }
-  }
-
-  // Update to use ng-select for expertise
-  onExpertiseChange() {
-    // This will be triggered when the expertise selection changes in ng-select
-    console.log('Expertise selection changed:', this.selectedExpertiseItems);
-  }
-
-  // Add expertise from ng-select dropdown
-  addSelectedExpertise() {
-    if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
-      this.selectedExpertiseItems.forEach(item => {
-        this.companyForm.expertise.push({
-          name: item.name,
-          type: this.newExpertiseType,
-          itemId: item.itemId,
-          value: item.value,
-          subExpertise: []
-        });
-      });
-      this.selectedExpertiseItems = [];
-    }
-  }
-
-  // Method to handle adding custom expertise items if needed
-  onItemAddExpertise(item: any) {
-    // If this method is called directly, use the default type
-    if (!item.type) {
-      item.type = 'Technologies';
-    }
-
-    // Add to dropdown options if it doesn't exist
-    if (!this.expertiseDropdownOptions.some(e => e.name === item.name)) {
-      this.expertiseDropdownOptions.push({
-        name: item.name,
-        value: item.name,
-        type: item.type,
-        itemId: item.itemId
-      });
-    }
-  }
-
-  // Implementation of onAddTag for adding expertise with type selection
-  onAddTag = (term: string) => {
-    if (!this.newExpertiseType) {
-      this.notificationService.showError('Please select expertise type');
-      return null;
-    }
-
-    const expertiseType = this.newExpertiseType;
-    const newExpertise = {
-      name: term,
-      value: term,
-      type: expertiseType,
-      itemId: null
-    };
-
-    this.showLoader = true;
-    this.superadminService.createCustomExpertise({
-      name: term,
-      value: term,
-      type: expertiseType
-    }).subscribe(
-      (response: any) => {
-        if (response?.status) {
-          newExpertise.itemId = response.data._id;
-          this.expertiseDropdownOptions = [...this.expertiseDropdownOptions, newExpertise];
-          this.notificationService.showSuccess('Expertise added successfully');
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add expertise');
-        }
-        this.showLoader = false;
-      },
-      (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to add expertise');
-        this.showLoader = false;
-      }
-    );
-
-    return newExpertise;
-  }
-
-  // Add this method to handle adding new technologies
-  addTechnology = (name: string) => {
-    return new Promise<any>((resolve) => {
-      this.showLoader = true;
-      const url = `${environment.baseUrl}/tech-language/technologies`;
-      const payload = { name: name, value: name };
-
-      this.http.post(url, payload).subscribe({
-        next: (response: any) => {
-          if (response?.status) {
-            const newTech = { name: name, value: name };
-            this.technologiesList = [...this.technologiesList, newTech];
-            this.notificationService.showSuccess('Technology added successfully');
-            resolve(newTech);
-          } else {
-            this.notificationService.showError(response?.message || 'Failed to add technology');
-            resolve(null);
-          }
-          this.showLoader = false;
-        },
-        error: (error: any) => {
-          this.notificationService.showError(error?.message || 'Failed to add technology');
-          this.showLoader = false;
-          resolve(null);
-        }
-      });
-    });
-  }
-
-  // Add methods for I Can Do functionality
-  removeExpertiseICanDo(index: number) {
-    this.companyForm.expertiseICanDo.splice(index, 1);
-    delete this.selectedSubExpertiseICanDoMap[index];
-  }
-
-  removeSubExpertiseICanDo(expertiseIndex: number, subIndex: number) {
-    this.companyForm.expertiseICanDo[expertiseIndex].subExpertise.splice(subIndex, 1);
-  }
-
-  onSubExpertiseICanDoChange(index: number, selected: string[]) {
-    this.selectedSubExpertiseICanDoMap[index] = [...selected];
-  }
-
-  addMultipleSubExpertiseICanDo(index: number) {
-    const selectedItems = this.selectedSubExpertiseICanDoMap[index] || [];
-    if (selectedItems && selectedItems.length > 0) {
-      const existingSubExpertise = new Set(this.companyForm.expertiseICanDo[index].subExpertise);
-      for (const subExp of selectedItems) {
-        if (!existingSubExpertise.has(subExp)) {
-          this.companyForm.expertiseICanDo[index].subExpertise.push(subExp);
-        }
-      }
-      this.selectedSubExpertiseICanDoMap[index] = [];
-    }
-  }
-
-  onAddTagICanDo = (term: string) => {
-    if (!this.newExpertiseICanDoType) {
-      this.notificationService.showError('Please select I Can Do expertise type');
-      return null;
-    }
-
-    const expertiseType = this.newExpertiseICanDoType;
-    const newExpertise = {
-      name: term,
-      value: term,
-      type: expertiseType,
-      itemId: null
-    };
-
-    this.showLoader = true;
-    this.superadminService.createCustomExpertise({
-      name: term,
-      value: term,
-      type: expertiseType
-    }).subscribe(
-      (response: any) => {
-        if (response?.status) {
-          newExpertise.itemId = response.data._id;
-          this.expertiseICanDoDropdownOptions = [...this.expertiseICanDoDropdownOptions, newExpertise];
-          this.notificationService.showSuccess('I Can Do expertise added successfully');
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add I Can Do expertise');
-        }
-        this.showLoader = false;
-      },
-      (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to add I Can Do expertise');
-        this.showLoader = false;
-      }
-    );
-
-    return newExpertise;
-  }
-
-  addSelectedExpertiseICanDo() {
-    if (this.selectedExpertiseICanDoItems && this.selectedExpertiseICanDoItems.length > 0) {
-      this.selectedExpertiseICanDoItems.forEach(item => {
-        this.companyForm.expertiseICanDo.push({
-          name: item.name,
-          type: this.newExpertiseICanDoType,
-          itemId: item.itemId,
-          value: item.value,
-          subExpertise: []
-        });
-      });
-      this.selectedExpertiseICanDoItems = [];
-    }
-  }
-
-  loadExpertises() {
-    this.showLoader = true;
-    this.superadminService.getExpertiseList().subscribe(
-      (response: any) => {
-        if (response?.status) {
-          this.expertiseDropdownOptions = response.data.map((item: any) => ({
-            name: item.name,
-            value: item.name,
-            type: item.type,
-            itemId: item._id
-          }));
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to load expertise list');
-        }
-        this.showLoader = false;
-      },
-      (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to load expertise list');
-        this.showLoader = false;
-      }
-    );
-  }
-
-  // Separate methods for I Can Do functionality
-  getExpertiseICanDoDropdownData() {
-    this.showLoader = true;
-    const url = `${environment.baseUrl}/web-user/drop-down-list`;
-    console.log('Fetching I Can Do expertise data from URL:', url);
-
-    this.http.get<any>(url).subscribe(
-      (response) => {
-        if (response?.status && response?.data) {
-          const data = response.data || [];
-
-          // Define the 6 specific types we want to display
-          const typeGroups: { [key: string]: ExpertiseItem[] } = {
-            'product': [],
-            'domain': [],
-            'technologies': [],
-            'product-other': [],
-            'domain-other': [],
-            'technologies-other': []
-          };
-
-          // Process grouped data from the API
-          data.forEach((group: any) => {
-            if (!group || Object.keys(group).length === 0) {
-              return; // Skip empty groups
-            }
-
-            // Each group is an object with a single key (the type) and array value
-            const groupType = Object.keys(group)[0];
-            const items = group[groupType] || [];
-
-            // Check if this is one of our tracked types
-            if (groupType in typeGroups) {
-              // Process items in this group
-              items.forEach((item: any) => {
-                typeGroups[groupType].push({
-                  itemId: item._id,
-                  name: item.name,
-                  type: groupType,
-                  originalType: groupType,
-                  value: item.name
-                });
-              });
-            }
-          });
-
-          // Combine all items into a single array in the desired order
-          let allItems: ExpertiseItem[] = [];
-          // First add the 3 main types
-          allItems = allItems.concat(
-            typeGroups['product'],
-            typeGroups['domain'],
-            typeGroups['technologies']
-          );
-
-          // Then add the 3 "other" types
-          allItems = allItems.concat(
-            typeGroups['product-other'],
-            typeGroups['domain-other'],
-            typeGroups['technologies-other']
-          );
-
-          this.expertiseICanDoDropdownOptions = allItems;
-        } else {
-          console.error('Failed to fetch I Can Do expertise data:', response?.message);
-          this.notificationService.showError('Failed to fetch I Can Do expertise data');
-          this.expertiseICanDoDropdownOptions = [];
-        }
-        this.showLoader = false;
-      },
-      (error) => {
-        console.error('Error fetching I Can Do expertise data:', error);
-        this.notificationService.showError('Error fetching I Can Do expertise data');
-        this.showLoader = false;
-        this.expertiseICanDoDropdownOptions = [];
-      }
-    );
-  }
-
-  getSubExpertiseICanDoDropdownData(searchText: string = '') {
-    this.showLoader = true;
-    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
-      (response) => {
-        if (response?.status) {
-          this.subExpertiseICanDoOptions = response.data || [];
-        } else {
-          this.notificationService.showError('Failed to fetch I Can Do sub-expertise dropdown data');
-        }
-        this.showLoader = false;
-      },
-      (error) => {
-        this.notificationService.showError('Error fetching I Can Do sub-expertise dropdown data');
-        this.showLoader = false;
-      }
-    );
-  }
-
-  addFallbackSubExpertiseICanDoOptions() {
-    this.subExpertiseICanDoOptions = [
-      'Banking',
-      'Information Technology (IT)',
-      'Education',
-      'Healthcare',
-      'Insurance'
-    ];
-  }
-
-  onExpertiseICanDoChange() {
-    console.log('I Can Do expertise selection changed:', this.selectedExpertiseICanDoItems);
-  }
-
-  onItemAddExpertiseICanDo(item: any) {
-    if (!item.type) {
-      item.type = 'Technologies';
-    }
-
-    if (!this.expertiseICanDoDropdownOptions.some(e => e.name === item.name)) {
-      this.expertiseICanDoDropdownOptions.push({
-        name: item.name,
-        value: item.name,
-        type: item.type,
-        itemId: item.itemId
-      });
-    }
-  }
-
-  // Method to toggle select all for I Can Do sub-expertise
-  toggleSelectAllSubExpertiseICanDo(expertiseIndex: number, event: any) {
-    if (event.target.checked) {
-      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [...this.subExpertiseICanDoOptions];
-    } else {
-      this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
-    }
-  }
-
-  // Add a method to handle adding a new sub-expertise tag
-  onAddTagSubExpertise = (name: string) => {
-    if (!name.trim()) {
-      return null;
-    }
-
-    this.addingNewSubExpertise = true;
-    const newSubExpertise = name.trim();
-
-    // Show loader
-    this.showLoader = true;
-
-    // Call the API to add the new sub-expertise
-    this.superadminService.addSubExpertiseByName(newSubExpertise).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          // Add to both local options arrays to ensure they are in sync
-          if (!this.subExpertiseOptions.includes(newSubExpertise)) {
-            this.subExpertiseOptions.push(newSubExpertise);
-          }
-          if (!this.subExpertiseICanDoOptions.includes(newSubExpertise)) {
-            this.subExpertiseICanDoOptions.push(newSubExpertise);
-          }
-          this.notificationService.showSuccess('Sub-expertise added successfully');
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add sub-expertise');
-        }
-        this.showLoader = false;
-        this.addingNewSubExpertise = false;
-      },
-      error: (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to add sub-expertise');
-        this.showLoader = false;
-        this.addingNewSubExpertise = false;
-      }
-    });
-
-    // Return the new sub-expertise so it appears in the dropdown immediately
-    return newSubExpertise;
-  }
-
-  // Add a method for I Can Do sub-expertise
-  onAddTagSubExpertiseICanDo = (name: string) => {
-    return this.onAddTagSubExpertise(name); // Reuse the same implementation
-  }
-
   initializeServicesList() {
     this.servicesList = [
       { name: "Pre-Built Software Solutions", value: "pre-built-software-solutions" },
@@ -1398,5 +920,179 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     } else {
       this.companyForm.typeOfCompany = [];
     }
+  }
+
+  getExpertiseICanDoDropdownData() {
+    // Simplified version since we removed industry sector
+    this.showLoader = true;
+    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+
+    this.http.get<any>(url).subscribe(
+      (response) => {
+        if (response?.status && response?.data) {
+          this.expertiseICanDoDropdownOptions = response.data.map((item: any) => ({
+            itemId: item._id,
+            name: item.name,
+            type: item.type,
+            value: item.name
+          }));
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError('Error fetching expertise data');
+        this.showLoader = false;
+        this.expertiseICanDoDropdownOptions = [];
+      }
+    );
+  }
+
+  getSubExpertiseICanDoDropdownData(searchText: string = '') {
+    this.showLoader = true;
+    this.superadminService.getSubExpertiseDropdownList(searchText).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.subExpertiseICanDoOptions = response.data || [];
+        }
+        this.showLoader = false;
+      },
+      (error) => {
+        this.notificationService.showError('Error fetching sub-expertise data');
+        this.showLoader = false;
+      }
+    );
+  }
+
+  addFallbackSubExpertiseICanDoOptions() {
+    this.subExpertiseICanDoOptions = [
+      'Banking',
+      'Information Technology (IT)',
+      'Education',
+      'Healthcare',
+      'Insurance'
+    ];
+  }
+
+  // Add back necessary methods for expertise handling
+  onAddTag = (term: string) => {
+    if (!this.newExpertiseType) {
+      this.notificationService.showError('Please select expertise type');
+      return null;
+    }
+
+    const expertiseType = this.newExpertiseType;
+    const newExpertise = {
+      name: term,
+      value: term,
+      type: expertiseType,
+      itemId: null
+    };
+
+    this.showLoader = true;
+    this.superadminService.createCustomExpertise({
+      name: term,
+      value: term,
+      type: expertiseType
+    }).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          newExpertise.itemId = response.data._id;
+          this.expertiseDropdownOptions = [...this.expertiseDropdownOptions, newExpertise];
+          this.notificationService.showSuccess('Expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add expertise');
+        }
+        this.showLoader = false;
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add expertise');
+        this.showLoader = false;
+      }
+    );
+
+    return newExpertise;
+  }
+
+  addSelectedExpertise() {
+    if (this.selectedExpertiseItems && this.selectedExpertiseItems.length > 0) {
+      this.selectedExpertiseItems.forEach(item => {
+        this.companyForm.expertise.push({
+          name: item.name,
+          type: this.newExpertiseType,
+          itemId: item.itemId,
+          value: item.value,
+          subExpertise: []
+        });
+      });
+      this.selectedExpertiseItems = [];
+    }
+  }
+
+  addTechnology = (name: string) => {
+    return new Promise<any>((resolve) => {
+      this.showLoader = true;
+      const url = `${environment.baseUrl}/tech-language/technologies`;
+      const payload = { name: name, value: name };
+
+      this.http.post(url, payload).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            const newTech = { name: name, value: name };
+            this.technologiesList = [...this.technologiesList, newTech];
+            this.notificationService.showSuccess('Technology added successfully');
+            resolve(newTech);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add technology');
+            resolve(null);
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'Failed to add technology');
+          this.showLoader = false;
+          resolve(null);
+        }
+      });
+    });
+  }
+
+  onAddTagSubExpertise = (name: string) => {
+    if (!name.trim()) {
+      return null;
+    }
+
+    this.addingNewSubExpertise = true;
+    const newSubExpertise = name.trim();
+
+    this.showLoader = true;
+
+    this.superadminService.addSubExpertiseByName(newSubExpertise).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          if (!this.subExpertiseOptions.includes(newSubExpertise)) {
+            this.subExpertiseOptions.push(newSubExpertise);
+          }
+          if (!this.subExpertiseICanDoOptions.includes(newSubExpertise)) {
+            this.subExpertiseICanDoOptions.push(newSubExpertise);
+          }
+          this.notificationService.showSuccess('Sub-expertise added successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add sub-expertise');
+        }
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add sub-expertise');
+        this.showLoader = false;
+        this.addingNewSubExpertise = false;
+      }
+    });
+
+    return newSubExpertise;
+  }
+
+  onAddTagSubExpertiseICanDo = (name: string) => {
+    return this.onAddTagSubExpertise(name);
   }
 }

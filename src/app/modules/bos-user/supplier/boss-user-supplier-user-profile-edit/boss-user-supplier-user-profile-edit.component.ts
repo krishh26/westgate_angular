@@ -44,7 +44,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     poc_email: '',
     poc_role: '',
     typeOfCompany: [],
-    industry_Sector: [],
     employeeCount: '',
     turnover: '',
     totalProjectsExecuted: '',
@@ -77,8 +76,8 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   today: string = new Date().toISOString().split('T')[0];
 
   // Industry, Category, and Technology lists
-  industryList: any[] = [];
-  selectedIndustries: string[] = [];
+  // industryList: any[] = [];
+  // selectedIndustries: string[] = [];
 
   // Business Types properties
   businessTypesList: any[] = [];
@@ -87,7 +86,7 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   categoryDomains: any[] = [];
   selectedCategories: string[] = [];
   technologiesList: any[] = [];
-  selectedTechnologies: any[] = [];
+  selectedTechnologies: { name: string; value: string; }[] = [];
   isLoadingTechnologies: boolean = false;
   technologiesInput$ = new Subject<string>();
 
@@ -174,11 +173,9 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     this.getExpertiseICanDoDropdownData();
     this.getSubExpertiseDropdownData();
     this.getSubExpertiseICanDoDropdownData();
-
-    // Load dropdown data
     this.getCategoryDomains();
     this.getTechnologiesList();
-    this.getIndustryList();
+    this.loadTags();
 
     // Initialize business types list
     this.businessTypesList = [
@@ -342,11 +339,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
 
   // Initialize selections from supplier details
   initializeSelectionsFromSupplierDetails() {
-    // Initialize industry selections
-    if (this.supplierDetails.industry_Sector && this.supplierDetails.industry_Sector.length > 0) {
-      this.selectedIndustries = [...this.supplierDetails.industry_Sector];
-    }
-
     // Initialize category selections
     if (this.supplierDetails.categoryList && this.supplierDetails.categoryList.length > 0) {
       this.selectedCategories = [...this.supplierDetails.categoryList];
@@ -355,14 +347,19 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     // Initialize technology selections
     if (this.supplierDetails.technologyStack && this.supplierDetails.technologyStack.length > 0) {
       this.selectedTechnologies = this.supplierDetails.technologyStack.map((tech: string) => ({
-        name: tech
+        name: tech,
+        value: tech
       }));
     }
 
     // Initialize selectedSubExpertiseMap
     if (this.supplierDetails.expertise && this.supplierDetails.expertise.length > 0) {
       this.supplierDetails.expertise.forEach((expertise: any, index: number) => {
-        this.selectedSubExpertiseMap[index] = [];
+        if (expertise.subExpertise) {
+          this.selectedSubExpertiseMap[index] = [...expertise.subExpertise];
+        } else {
+          this.selectedSubExpertiseMap[index] = [];
+        }
       });
     }
 
@@ -370,36 +367,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     if (this.supplierDetails.typeOfCompany && this.supplierDetails.typeOfCompany.length > 0) {
       this.selectedBusinessTypes = [...this.supplierDetails.typeOfCompany];
     }
-  }
-
-  // Get industry list for dropdown
-  getIndustryList() {
-    this.showLoader = true;
-    this.http.get<any>(`${environment.baseUrl}/web-user/sub-expertise/list`).subscribe(
-      (response) => {
-        this.showLoader = false;
-        if (response?.status) {
-          if (response.data && Array.isArray(response.data)) {
-            this.industryList = response.data.map((item: any) => {
-              const value = item.name || item.value || item.industry || JSON.stringify(item);
-              return { name: value, value: value };
-            });
-          }
-        }
-      },
-      (error) => {
-        this.showLoader = false;
-        console.error('Error loading industry list:', error);
-        // Fallback industries
-        this.industryList = [
-          { name: 'Healthcare', value: 'Healthcare' },
-          { name: 'Finance', value: 'Finance' },
-          { name: 'Education', value: 'Education' },
-          { name: 'Retail', value: 'Retail' },
-          { name: 'Manufacturing', value: 'Manufacturing' }
-        ];
-      }
-    );
   }
 
   // Get category domains for dropdown
@@ -458,29 +425,30 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   // Get technologies list for dropdown
   getTechnologiesList() {
     this.isLoadingTechnologies = true;
-    this.http.get<any>(`${environment.baseUrl}/tech-language/technologies`).subscribe(
-      response => {
+    this.http.get<any>(`${environment.baseUrl}/tech-language/technologies`).subscribe({
+      next: (response) => {
         this.isLoadingTechnologies = false;
         if (response?.status) {
-          this.technologiesList = response.data || [];
+          this.technologiesList = (response.data || []).map((tech: any) => ({
+            name: tech.name || tech,
+            value: tech.name || tech
+          }));
 
-          // If we have existing technologies in the form, select them
-          if (this.supplierDetails.technologyStack?.length) {
+          // Initialize selected technologies if they exist in supplier details
+          if (this.supplierDetails.technologyStack?.length > 0) {
             this.selectedTechnologies = this.supplierDetails.technologyStack.map((tech: string) => ({
-              name: tech
+              name: tech,
+              value: tech
             }));
           }
-        } else {
-          console.error('Failed to fetch technologies:', response?.message);
-          this.notificationService.showError('Failed to fetch technologies');
         }
       },
-      error => {
+      error: (error) => {
         this.isLoadingTechnologies = false;
         console.error('Error fetching technologies:', error);
         this.notificationService.showError('Error fetching technologies');
       }
-    );
+    });
   }
 
   // Method to set the active expertise being edited
@@ -493,15 +461,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   onSubExpertiseChange(expertiseIndex: number, selectedItems: any) {
     // Store the selection for the current expertise index
     this.selectedSubExpertiseMap[expertiseIndex] = selectedItems;
-  }
-
-  // Update method to handle changes in the industry selection
-  onIndustryChange() {
-    if (this.selectedIndustries && this.selectedIndustries.length > 0) {
-      this.supplierDetails.industry_Sector = [...this.selectedIndustries];
-    } else {
-      this.supplierDetails.industry_Sector = [];
-    }
   }
 
   // Method to handle changes in the business type selection
@@ -525,49 +484,10 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   // Update method to handle changes in the technology selection
   onTechnologiesChange() {
     if (this.selectedTechnologies && this.selectedTechnologies.length > 0) {
-      this.supplierDetails.technologyStack = this.selectedTechnologies.map(tech =>
-        typeof tech === 'string' ? tech : tech.name
-      );
+      this.supplierDetails.technologyStack = this.selectedTechnologies.map(tech => tech.name || tech);
     } else {
       this.supplierDetails.technologyStack = [];
     }
-  }
-
-  // Add custom industry item
-  onItemAddIndustry(event: any) {
-    if (event) {
-      // If it's a string from addTag
-      if (typeof event === 'string') {
-        // Check if this value already exists in the list
-        const exists = this.industryList.some(item => item.value === event);
-        if (!exists) {
-          this.industryList.push({ name: event, value: event });
-        }
-      } else if (event && event.value) {
-        // It's an object from the selection
-        const exists = this.industryList.some(item => item.value === event.value);
-        if (!exists) {
-          this.industryList.push(event);
-        }
-      }
-    }
-  }
-
-  // Add Promise-based method for adding industries
-  addIndustry = (name: string) => {
-    return new Promise<any>((resolve) => {
-      // Check if industry already exists
-      const exists = this.industryList.some(item => item.value === name);
-      if (!exists) {
-        const newIndustry = { name: name, value: name };
-        this.industryList.push(newIndustry);
-        resolve(newIndustry);
-      } else {
-        // Return existing industry
-        const existingIndustry = this.industryList.find(item => item.value === name);
-        resolve(existingIndustry);
-      }
-    });
   }
 
   // Add custom category item
@@ -601,79 +521,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
         const existingCategory = this.categoryDomains.find(item => item.value === name);
         resolve(existingCategory);
       }
-    });
-  }
-
-  // Add custom technology item
-  onItemAddTechnology(event: any) {
-    if (event) {
-      console.log('Adding custom technology:', event);
-      // If it's a string from addTag
-      if (typeof event === 'string') {
-        // Call API to create new technology
-        this.showLoader = true;
-        const url = `${environment.baseUrl}/tech-language/technologies`;
-        const payload = { name: event };
-
-        this.http.post(url, payload).subscribe({
-          next: (response: any) => {
-            if (response?.status) {
-              // Add to local list if API call successful
-              this.technologiesList.push({ name: event, value: event });
-
-              // Add to selected technologies if not already there
-              if (!this.selectedTechnologies.find(t => t.name === event)) {
-                this.selectedTechnologies = [...this.selectedTechnologies, { name: event, value: event }];
-                this.onTechnologiesChange();
-              }
-
-              this.notificationService.showSuccess('Technology added successfully');
-            } else {
-              this.notificationService.showError(response?.message || 'Failed to add technology');
-            }
-            this.showLoader = false;
-          },
-          error: (error: any) => {
-            this.notificationService.showError(error?.message || 'Failed to add technology');
-            this.showLoader = false;
-          }
-        });
-      } else if (event && event.value) {
-        // It's an object from the selection
-        const exists = this.technologiesList.some(item => item.value === event.value);
-        if (!exists) {
-          this.technologiesList.push(event);
-        }
-      }
-    }
-  }
-
-  // Add this method to handle adding new technologies with Promise
-  addTechnology = (name: string) => {
-    return new Promise<any>((resolve) => {
-      this.showLoader = true;
-      const url = `${environment.baseUrl}/tech-language/technologies`;
-      const payload = { name: name };
-
-      this.http.post(url, payload).subscribe({
-        next: (response: any) => {
-          if (response?.status) {
-            const newTech = { name: name, value: name };
-            this.technologiesList = [...this.technologiesList, newTech];
-            this.notificationService.showSuccess('Technology added successfully');
-            resolve(newTech);
-          } else {
-            this.notificationService.showError(response?.message || 'Failed to add technology');
-            resolve(null);
-          }
-          this.showLoader = false;
-        },
-        error: (error: any) => {
-          this.notificationService.showError(error?.message || 'Failed to add technology');
-          this.showLoader = false;
-          resolve(null);
-        }
-      });
     });
   }
 
@@ -965,26 +812,40 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   }
 
   // Method to map legacy field names to new format
-  mapLegacyFieldNames(data: any) {
-    // Map industryFocus to industry_Sector if needed
-    if (data.industryFocus && !data.industry_Sector) {
-      data.industry_Sector = data.industryFocus;
-      delete data.industryFocus;
-    }
+  private mapLegacyFieldNames(data: any) {
+    // Map legacy field names to new ones
+    if (data.company_name) data.companyName = data.company_name;
+    if (data.company_address) data.companyAddress = data.company_address;
+    if (data.company_contact_number) data.companyContactNumber = data.company_contact_number;
+    if (data.year_of_establishment) data.yearOfEstablishment = data.year_of_establishment;
+    if (data.executive_summary) data.executiveSummary = data.executive_summary;
+    if (data.total_projects_executed) data.totalProjectsExecuted = data.total_projects_executed;
+    if (data.key_clients) data.keyClients = data.key_clients;
+    if (data.technology_stack) data.technologyStack = data.technology_stack;
+    if (data.category_list) data.categoryList = data.category_list;
+    if (data.type_of_company) data.typeOfCompany = data.type_of_company;
+    if (data.employee_count) data.employeeCount = data.employee_count;
+    if (data.expertise_i_can_do) data.expertiseICanDo = data.expertise_i_can_do;
+  }
 
-    // Map category to categoryList if needed
-    if (data.category && !data.categoryList) {
-      data.categoryList = data.category;
-      delete data.category;
-    }
+  private initializeArrayFields(data: any) {
+    // Initialize arrays with empty arrays if they don't exist
+    this.supplierDetails.typeOfCompany = data.typeOfCompany || [];
+    this.supplierDetails.certifications = data.certifications || [];
+    this.supplierDetails.expertise = data.expertise || [];
+    this.supplierDetails.categoryList = data.categoryList || [];
+    this.supplierDetails.technologyStack = data.technologyStack || [];
+    this.supplierDetails.keyClients = data.keyClients || [];
+    this.supplierDetails.expertiseICanDo = data.expertiseICanDo || [];
+    this.supplierDetails.icando = data.icando || [];
 
-    // Map technologies to technologyStack if needed
-    if (data.technologies && !data.technologyStack) {
-      data.technologyStack = data.technologies;
-      delete data.technologies;
-    }
-
-    return data;
+    // Initialize selections
+    this.selectedBusinessTypes = [...this.supplierDetails.typeOfCompany];
+    this.selectedCategories = [...this.supplierDetails.categoryList];
+    this.selectedTechnologies = this.supplierDetails.technologyStack.map((tech: string) => ({
+      name: tech,
+      value: tech
+    }));
   }
 
   // Add missing methods
@@ -1132,7 +993,7 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   }
 
   checkSupplierTypeSelection() {
-    this.showSupplierTypeError = !this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier;
+    return this.supplierDetails.resourceSharingSupplier || this.supplierDetails.subcontractingSupplier;
   }
 
   hasInvalidExpertise(): boolean {
@@ -1144,33 +1005,49 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   }
 
   submitForm() {
-    if (this.hasInvalidExpertise()) {
-      this.toastr.error('Please add at least one sub-expertise for each expertise');
-      return;
-    }
-
-    if (!this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier) {
+    if (!this.checkSupplierTypeSelection()) {
       this.showSupplierTypeError = true;
-      this.toastr.error('Please select at least one supplier type');
       return;
     }
 
+    if (this.hasInvalidExpertise()) {
+      this.notificationService.showError('Please select at least one expertise and sub-expertise for each expertise type.');
+      return;
+    }
+
+    // Show loader
     this.showLoader = true;
-    this.superadminService.updateSupplierExpertise(this.supplierDetails._id, this.supplierDetails).subscribe(
-      (response: any) => {
-        this.showLoader = false;
-        if (response?.status) {
-          this.toastr.success('Supplier profile updated successfully');
-          this.router.navigate(['/boss-user/supplier']);
-        } else {
-          this.toastr.error(response?.message || 'Failed to update supplier profile');
+
+    // Create a copy of the supplier details for submission
+    const submissionData = {
+      ...this.supplierDetails,
+      typeOfCompany: this.selectedBusinessTypes,
+      categoryList: this.selectedCategories,
+      technologyStack: this.selectedTechnologies.map(tech => tech.name || tech),
+      expertiseICanDo: this.selectedServices.map(service => ({
+        name: service.name,
+        itemId: service.itemId || service._id,
+        subExpertise: service.subExpertise || []
+      }))
+    };
+
+    // Make the API call
+    this.http.put(`${environment.baseUrl}/supplier/update-supplier-details`, submissionData)
+      .subscribe({
+        next: (response: any) => {
+          this.showLoader = false;
+          if (response?.status) {
+            this.notificationService.showSuccess('Supplier details updated successfully');
+            this.router.navigate(['/bos-user/supplier/supplier-list']);
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to update supplier details');
+          }
+        },
+        error: (error) => {
+          this.showLoader = false;
+          this.notificationService.showError(error?.message || 'Failed to update supplier details');
         }
-      },
-      (error: any) => {
-        this.showLoader = false;
-        this.toastr.error('Error updating supplier profile');
-      }
-    );
+      });
   }
 
   toggleSelectAllExpertise(event: any) {
@@ -1240,24 +1117,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     } else {
       this.selectedSubExpertiseICanDoMap[expertiseIndex] = [];
     }
-  }
-
-  private initializeArrayFields(data: any) {
-    const arrayFields = [
-      'typeOfCompany',
-      'industry_Sector',
-      'certifications',
-      'expertise',
-      'categoryList',
-      'technologyStack',
-      'keyClients',
-      'expertiseICanDo'
-    ];
-    arrayFields.forEach(field => {
-      if (!data[field]) {
-        data[field] = [];
-      }
-    });
   }
 
   private handleInHoldComment() {

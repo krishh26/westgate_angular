@@ -266,22 +266,6 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="row">
-                      <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Select the relevant industry category (e.g., IT, Healthcare, Finance)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <ng-select placeholder="Select Industry Sector" class="custom-ng-select-option"
-                          [items]="industryList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedIndustries" name="selectedIndustries" (change)="onIndustryChange()"
-                          [addTag]="true" (add)="onItemAddIndustry($event)">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
                       <label for="employeeCount" class="col-sm-4 col-form-label">Company Size
                         <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
                            title="Enter the number of employees (e.g., 10–50, 100–500)."></i>

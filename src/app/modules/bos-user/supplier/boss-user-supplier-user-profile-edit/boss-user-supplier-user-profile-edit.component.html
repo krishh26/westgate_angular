@@ -253,22 +253,6 @@
 
               <div class="col-md-6 mb-3">
                 <div class="row">
-                  <label for="industry_Sector" class="col-sm-4 col-form-label">Industry Sector
-                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                      title="Select the relevant industry category (e.g., IT, Healthcare, Finance)."></i>
-                  </label>
-                  <div class="col-sm-8">
-                    <ng-select placeholder="Select Industry Sector" class="custom-ng-select-option"
-                      [items]="industryList" bindLabel="name" [multiple]="true" bindValue="value"
-                      [(ngModel)]="selectedIndustries" name="selectedIndustries" (change)="onIndustryChange()"
-                      [addTag]="addIndustry">
-                    </ng-select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
                   <label for="employeeCount" class="col-sm-4 col-form-label">Company Size
                     <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
                       title="Enter the number of employees (e.g., 10–50, 100–500)."></i>
@@ -470,7 +454,7 @@
                   <div class="col-sm-8">
                     <ng-select placeholder="Select or add technologies" class="custom-ng-select-option"
                       [items]="technologiesList" bindLabel="name" [multiple]="true" [(ngModel)]="selectedTechnologies"
-                      name="selectedTechnologies" (change)="onTechnologiesChange()" [addTag]="addTechnology"
+                      name="selectedTechnologies" (change)="onTechnologiesChange()"
                       [loading]="isLoadingTechnologies" [typeahead]="technologiesInput$">
                     </ng-select>
                   </div>
@@ -561,7 +545,7 @@
             </div>
           </div>
           <div class="col-6 text-end">
-            <button type="button" routerLink="/super-admin/supplier-user-profile"
+            <button type="button" routerLink="/bos-user/supplier/supplier-list"
               class="btn btn-primary">Back</button>&nbsp;
             <button type="submit" class="btn btn-primary" [disabled]="!supplierDetails.companyName || !supplierDetails.poc_name || !supplierDetails.poc_phone ||
                             (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier) ||
