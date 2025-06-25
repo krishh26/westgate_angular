@@ -31,7 +31,7 @@ export class NoSupplierMatchProjectsComponent {
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  pagesize: number = 50;
   totalRecords: number = pagination.totalRecords;
   dueDate: any;
   currentDate: Date = new Date();

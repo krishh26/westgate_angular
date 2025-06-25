@@ -23,7 +23,7 @@ export class SuperAdminSupplierComponent {
   supplierUserList: any = [];
   switchFlag: boolean = false;
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  pagesize: number = 50;
   totalRecords: number = pagination.totalRecords;
   startDate: string = '';
   endDate: string = '';

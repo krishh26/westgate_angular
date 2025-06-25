@@ -32,7 +32,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   trackerEndDate: FormControl = new FormControl('');
   projectList: any = [];
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  pagesize: number = 50;  // Override the default pagination size
   totalRecords: number = pagination.totalRecords;
   searchText: any;
   dateDifference: any;

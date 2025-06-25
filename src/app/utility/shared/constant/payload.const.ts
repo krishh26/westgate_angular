@@ -210,7 +210,7 @@ export const Payload = {
 
   manageSUpplierUserList: {
     page: '1',
-    limit: '10',
+    limit: '50',
     userId: '',
   },
 
