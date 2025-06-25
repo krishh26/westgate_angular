@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project-service/project.service
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
+import Swal from 'sweetalert2';
 
 interface Project {
   _id: string;
@@ -41,7 +42,7 @@ export class FailAproveRejectComponent {
   myControl = new FormControl();
   categoryList: any = [];
   industryList: any = [];
-  viewComments: any;
+  viewComments: any[] = [];
   // statusList: any = [
   //   "Awaiting",
   //   "⁠Documents not found",
@@ -98,9 +99,50 @@ export class FailAproveRejectComponent {
     { bidvalue: 'Nosuppliermatched', bidstatus: 'No Supplier Matched' }
   ]
 
-  showComments(data: any) {
-    console.log('this is my view comment', data);
-    this.viewComments = data;
+  showComments(comments: any[]) {
+    this.viewComments = comments || [];
+  }
+
+  deleteComments(id: any) {
+    let param = {
+      commentId: id,
+    };
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        // Get the task ID from the project data
+        const taskId = this.projectList.find((project: any) => project.task?.comments?.some((comment: any) => comment.commentId === id))?.task?._id;
+        if (!taskId) {
+          this.notificationService.showError('Task ID not found');
+          this.showLoader = false;
+          return;
+        }
+        this.projectService.deleteComment(taskId, param).subscribe(
+          (response: any) => {
+            if (response?.status == true) {
+              this.showLoader = false;
+              this.notificationService.showSuccess('Comment deleted successfully');
+              this.getProjectList();
+            } else {
+              this.showLoader = false;
+              this.notificationService.showError(response?.message);
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.error?.message || error?.message);
+          }
+        );
+      }
+    });
   }
 
   publishStartDate: FormControl = new FormControl('');
@@ -150,10 +192,7 @@ export class FailAproveRejectComponent {
 
   // Method to check if there are any pinned comments
   hasPinnedComments(): boolean {
-    if (!this.viewComments || this.viewComments.length === 0) {
-      return false;
-    }
-    return this.viewComments.some((comment: any) => comment?.pinnedAt);
+    return this.viewComments?.some(comment => comment?.pinnedAt);
   }
 
   formatMilliseconds(milliseconds: number): string {

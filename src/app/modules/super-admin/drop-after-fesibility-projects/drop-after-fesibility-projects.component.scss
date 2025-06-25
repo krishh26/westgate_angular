@@ -30,6 +30,25 @@ ul.SecondarytaskList li{
   border-radius: 5px;
 }
 
+.delete-btn {
+  background: transparent;
+  color: #dc3545;
+  border: none;
+  padding: 4px 8px;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+
 @media (min-width: 320px) and (max-width: 767px)
 {
  ul.projects-nav-tab{
