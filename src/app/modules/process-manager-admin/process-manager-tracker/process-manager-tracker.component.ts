@@ -30,7 +30,7 @@ export class ProcessManagerTrackerComponent {
   trackerEndDate: FormControl = new FormControl('');
   projectList: any = [];
   page: number = pagination.page;
-  pagesize = pagination.itemsPerPage;
+  pagesize = 50;
   totalRecords: number = pagination.totalRecords;
   searchText: any;
   dateDifference: any;
