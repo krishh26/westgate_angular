@@ -2,7 +2,7 @@ export const Payload = {
   projectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -31,7 +31,7 @@ export const Payload = {
   projectListStatusWiseTracker: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -61,7 +61,7 @@ export const Payload = {
   projectListSupplierwise: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -95,7 +95,7 @@ export const Payload = {
   pmAllProjectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -116,7 +116,7 @@ export const Payload = {
   pmShortlistsupplierProjectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -136,7 +136,7 @@ export const Payload = {
   pmMatchProjectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -156,7 +156,7 @@ export const Payload = {
   pmCloseProjectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
@@ -174,7 +174,7 @@ export const Payload = {
   pmShortlistProjectList: {
     keyword: '',
     page: '1',
-    limit: '10',
+    limit: '50',
     applied: false,
     sortlist: false,
     match: '',
