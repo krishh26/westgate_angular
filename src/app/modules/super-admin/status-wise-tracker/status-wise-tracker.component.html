@@ -259,7 +259,14 @@
                       </div>
 
                       <!-- Comment content -->
-                      <div class="comment-text" [innerHTML]="comment?.comment"></div>
+                      <div class="d-flex justify-content-between">
+                        <div class="comment-text" [innerHTML]="comment?.comment"></div>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-sm delete-btn" (click)="deleteComments(comment?.commentId)">
+                            <i class="bi bi-trash3"></i>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
                 </ul>
@@ -286,7 +293,14 @@
                     </div>
 
                     <!-- Comment content -->
-                    <div class="comment-text" [innerHTML]="comment?.comment"></div>
+                    <div class="d-flex justify-content-between">
+                      <div class="comment-text" [innerHTML]="comment?.comment"></div>
+                      <div class="d-flex gap-2">
+                        <button class="btn btn-sm delete-btn" (click)="deleteComments(comment?.commentId)">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </li>
               </ul>
