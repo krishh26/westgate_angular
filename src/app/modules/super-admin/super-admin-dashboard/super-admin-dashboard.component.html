@@ -6,21 +6,25 @@
           <h4 class="text-theme"><strong>Welcome Admin!</strong></h4>
         </div>
         <div class="col-12 mb-3">
-          <div class="row">
-            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-6">
-              <div class="form-group">
+          <div class="row align-items-center">
+           <div class="col-lg-8 col-xl-8 col-md-12 col-sm-12 col-12">
+             <div class="row">
+              <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12 mob-mb1">
+              <div class="form-group mb-0">
                 <input class="form-control" type="date" [formControl]="trackerStartDate" />
               </div>
             </div>
-            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-6">
-              <div class="form-group">
+            <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12 mob-mb1">
+              <div class="form-group mb-0">
                 <input class="form-control" type="date" [formControl]="trackerEndDate" />
               </div>
             </div>
-            <div class="col-lg-3 col-xl-3 col-md-3 col-sm-3 col-12 d-flex gap-2">
-              <button class="btn btn-primary" type="button" (click)="onSubmitDaterange()">Submit</button>
-              <button class="btn btn-primary" type="button" (click)="export()">Download Excel</button>
-              <button class="btn btn-primary" type="button" (click)="exportDatabase()">Download Database</button>
+             </div>
+           </div>
+            <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-12">
+              <button class="btn btn-primary dme-2 mob-w100 mob-mb1" type="button" (click)="onSubmitDaterange()">Submit</button>
+              <button class="btn btn-primary dme-2 mob-w100 mob-mb1" type="button" (click)="export()">Download Excel</button>
+              <button class="btn btn-primary mob-w100 mob-mb1" type="button" (click)="exportDatabase()">Download Database</button>
             </div>
           </div>
         </div>
