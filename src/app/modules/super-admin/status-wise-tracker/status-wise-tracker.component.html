@@ -173,6 +173,7 @@
                     <th>Log Time</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -220,6 +221,9 @@
                       <span *ngIf="!item?.westGetDocument?.length" class="text-danger">
                         <i class="bi bi-circle-fill"></i>
                       </span>
+                    </td>
+                    <td>
+                      <span *ngIf="item?.register_interest == true" class="text-primary ms-2"><i class="bi bi-circle-fill"></i></span>
                     </td>
                   </tr>
                 </tbody>
