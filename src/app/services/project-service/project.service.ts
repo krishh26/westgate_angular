@@ -65,7 +65,7 @@ export class ProjectService {
     publishDateRange?: string,
     SubmissionDueDateRange?: string,
     valueRange?: any,
-    selectedSupplier?: boolean // Add this line
+    selectedSupplier?: boolean
     expired?: boolean,
     supplierStatus?: string,
     appointed?: string,
@@ -76,7 +76,8 @@ export class ProjectService {
     startCreatedDate?: string,
     endCreatedDate?: string,
     categorisation?: string,
-    assignBidManagerId?: string
+    assignBidManagerId?: string,
+    registerInterest?: boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -150,13 +151,17 @@ export class ProjectService {
     if (params?.valueRange) {
       queryParams = queryParams.set('valueRange', params?.valueRange);
     }
-    if (params?.selectedSupplier) { // Add this condition
+    if (params?.selectedSupplier) {
       queryParams = queryParams.set('selectedSupplier', params?.selectedSupplier);
-    } if (params?.expired) { // Add this condition
+    }
+    if (params?.expired) {
       queryParams = queryParams.set('expired', params?.expired);
     }
     if (params?.assignBidManagerId) {
       queryParams = queryParams.set('assignBidManagerId', params?.assignBidManagerId);
+    }
+    if (typeof params?.registerInterest === 'boolean') {
+      queryParams = queryParams.set('registerInterest', params.registerInterest);
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }

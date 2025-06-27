@@ -101,63 +101,71 @@
         <p class="mt-2">Loading suppliers...</p>
       </div>
 
-      <div class="table-responsive mb-3" *ngIf="!showLoader">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th width="200px">Supplier Name</th>
-              <th>Join Date</th>
-              <th>Last Login</th>
-              <th>Total Employees</th>
-              <th>Total Candidates</th>
-              <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
-                Assigned Projects</th>
-              <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
-              <th>Action</th>
-              <th *ngIf="currentFilter !== 'isDeleted'">Status</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+        <div class="Flatcard shadow-1 mt-4 border">
+          <div class="card-body">
+            <div class="table-responsive mb-3" *ngIf="!showLoader">
+              <table class="table align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th width="200px">Supplier Name</th>
+                    <th>Join Date</th>
+                    <th>Last Login</th>
+                    <th>Total Employees</th>
+                    <th>Total Candidates</th>
+                    <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
+                      Assigned Projects</th>
+                    <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
+                    <th>Action</th>
+                    <th *ngIf="currentFilter !== 'isDeleted'">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-            <tr>
-              <td *ngIf="!supplierUserList?.length" colspan="8">
-                <app-no-record-found></app-no-record-found>
-              </td>
-            </tr>
+                  <tr>
+                    <td *ngIf="!supplierUserList?.length" colspan="8">
+                      <app-no-record-found></app-no-record-found>
+                    </td>
+                  </tr>
 
-            <tr
-              *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
-              <td>{{item?.companyName || item?.name}}</td>
-              <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-              <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
-              <td>{{item?.employeeCount}}</td>
-              <td>{{item?.totalCandidates}}</td>
-              <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
-                {{item?.assignedProjectCount}}
-              </td>
-              <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
-                {{ getFirstInHoldComment(item?.inHoldComment) }}
-              </td>
-              <td>
-                <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
-                  title="View Details">
-                  View
-                </a>
-              </td>
-              <td *ngIf="currentFilter !== 'isDeleted'">
-                <label class="switch">
-                  <input type="checkbox" [(ngModel)]="item.active" (ngModelChange)="onToggleSwitch(item)">
-                  <span class="slider round"></span>
-                </label>
-              </td>
-              <!-- <td> <a (click)="deleteSupplier(item?._id)" class="btn btn-danger btn-sm"><i
-                    class="bi bi-trash3-fill"></i>
-                </a>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
+                  <tr
+                    *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
+                    <td>{{item?.companyName || item?.name}}</td>
+                    <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+                    <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
+                    <td>{{item?.employeeCount}}</td>
+                    <td>{{item?.totalCandidates}}</td>
+                    <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
+                      {{item?.assignedProjectCount}}
+                    </td>
+                    <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
+                      {{ getFirstInHoldComment(item?.inHoldComment) }}
+                    </td>
+                    <td>
+                      <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
+                        title="View Details">
+                        View
+                      </a>
+                    </td>
+                    <td *ngIf="currentFilter !== 'isDeleted'">
+                      <label class="switch">
+                        <input type="checkbox" [(ngModel)]="item.active" (ngModelChange)="onToggleSwitch(item)">
+                        <span class="slider round"></span>
+                      </label>
+                    </td>
+                    <!-- <td> <a (click)="deleteSupplier(item?._id)" class="btn btn-danger btn-sm"><i
+                          class="bi bi-trash3-fill"></i>
+                      </a>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+
+
       <div class="row mt-3 align-items-center" *ngIf="!showLoader && supplierUserList?.length">
         <div class="row">
           <div class="pagination">

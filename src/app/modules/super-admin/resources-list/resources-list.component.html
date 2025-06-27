@@ -1,5 +1,5 @@
 <main id="main">
-  <section class="casestudy-section">
+  <section>
     <div class="container-fluids mb-3">
       <div class="row align-items-center">
         <nav>
@@ -37,7 +37,8 @@
               <nav id="navbar" class="navbar mb-2 mb-md-0 p-0 me-md-2 w-100 w-md-auto">
                 <ul class="w-100">
                   <li class="dropdown">
-                    <span class="btn btn-outline-white w-100 text-nowrap" style="min-width: 120px;">+ Add Candidate</span>
+                    <span class="btn btn-outline-white w-100 text-nowrap" style="min-width: 120px;">+ Add
+                      Candidate</span>
                     <ul>
                       <li><a routerLink="/super-admin/resources-add">Single Entry</a></li>
                       <li><a (click)="openAddResourceModal()">Bulk Entry</a></li>
@@ -48,7 +49,8 @@
               <div class="d-flex align-items-center mt-2 mt-md-0 w-100 w-md-auto">
                 <div class="form-check form-switch me-3">
                   <label class="form-check-label me-2" for="executiveSwitch">Show Executive Only</label>
-                  <input class="form-check-input" type="checkbox" id="executiveSwitch" [(ngModel)]="isExecutive" (change)="onExecutiveToggle()">
+                  <input class="form-check-input" type="checkbox" id="executiveSwitch" [(ngModel)]="isExecutive"
+                    (change)="onExecutiveToggle()">
                 </div>
                 <button class="btn btn-primary btn-sm text-nowrap" style="min-width: 85px;" (click)="goBack()">
                   Back to List
@@ -66,58 +68,67 @@
         </div>
       </div>
 
-      <!-- Candidate table -->
-      <div class="table-responsive">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Roles</th>
-              <th>Experience</th>
-              <th>Technical Skills</th>
-              <!-- <th>Languages</th> -->
-              <th>Day Rate</th>
-              <!-- <th>Available From</th> -->
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+        <div class="Flatcard shadow-1 mt-4 border">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Roles</th>
+                    <th>Experience</th>
+                    <th>Technical Skills</th>
+                    <!-- <th>Languages</th> -->
+                    <th>Day Rate</th>
+                    <!-- <th>Available From</th> -->
+                    <th>Actions</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
 
-            <tr>
-              <td *ngIf="!candidatesList?.length" colspan="13">
-                <app-no-record-found></app-no-record-found>
-              </td>
-            </tr>
+                  <tr>
+                    <td *ngIf="!candidatesList?.length" colspan="13">
+                      <app-no-record-found></app-no-record-found>
+                    </td>
+                  </tr>
 
-            <tr
-              *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
-              <td>{{candidate?.fullName}}</td>
-              <td>
-                <span *ngFor="let role of candidate?.roleId" class="badge bg-primary me-1">
-                  {{role.name}}
-                </span>
-              </td>
-              <td>{{candidate?.totalExperience}} years</td>
-              <td>
-                <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
-                  {{skill}}{{!last ? ', ' : ''}}
-                </span>
-              </td>
-              <td>£ {{candidate?.ukDayRate}}</td>
-              <td>
-                <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i
-                    class="bi bi-eye"></i> View</button>
-              </td>
-              <td>
-                <label class="switch">
-                  <input type="checkbox" [(ngModel)]="candidate.active" (ngModelChange)="onToggleSwitch(candidate)">
-                  <span class="slider round"></span>
-                </label>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <tr
+                    *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                    <td>{{candidate?.fullName}}</td>
+                    <td>
+                      <span *ngFor="let role of candidate?.roleId" class="badge bg-primary me-1">
+                        {{role.name}}
+                      </span>
+                    </td>
+                    <td>{{candidate?.totalExperience}} years</td>
+                    <td>
+                      <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
+                        {{skill}}{{!last ? ', ' : ''}}
+                      </span>
+                    </td>
+                    <td>£ {{candidate?.ukDayRate}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" (click)="viewCandidateDetails(candidate)"> <i
+                          class="bi bi-eye"></i> View</button>
+                    </td>
+                    <td>
+                      <label class="switch">
+                        <input type="checkbox" [(ngModel)]="candidate.active"
+                          (ngModelChange)="onToggleSwitch(candidate)">
+                        <span class="slider round"></span>
+                      </label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+
+
       <!-- Pagination -->
       <div *ngIf="candidatesList?.length > 0" class="d-flex justify-content-start mt-4">
         <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>

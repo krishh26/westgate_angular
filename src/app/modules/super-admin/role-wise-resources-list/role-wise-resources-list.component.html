@@ -80,39 +80,48 @@
         </div>
       </div>
 
-      <!-- Roles table -->
-      <div *ngIf="!isLoading" class="table-responsive">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th>Role Name</th>
-              <th>Active Supplier</th>
-              <th>Active Candidate</th>
-              <th>Executive Candidate</th>
-              <th>Normal Candidate</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+        <div class="Flatcard shadow-1 mt-4 border">
+          <div class="card-body">
+            <div *ngIf="!isLoading" class="table-responsive">
+              <table class="table align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Role Name</th>
+                    <th>Active Supplier</th>
+                    <th>Active Candidate</th>
+                    <th>Executive Candidate</th>
+                    <th>Normal Candidate</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
 
-            <tr>
-              <td *ngIf="!rolesList?.length" colspan="13">
-                <app-no-record-found></app-no-record-found>
-              </td>
-            </tr>
+                  <tr>
+                    <td *ngIf="!rolesList?.length" colspan="13">
+                      <app-no-record-found></app-no-record-found>
+                    </td>
+                  </tr>
 
-            <tr *ngFor="let role of rolesList">
-              <td>{{role?.name}}</td>
-              <td>{{role?.activeSuppliersCount}}</td>
-              <td>{{role?.activeCandidatesCount}}</td>
-              <td>{{role?.executiveTrueCount}}</td>
-              <td>{{role?.executiveFalseCount}}</td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View Resources</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <tr *ngFor="let role of rolesList">
+                    <td>{{role?.name}}</td>
+                    <td>{{role?.activeSuppliersCount}}</td>
+                    <td>{{role?.activeCandidatesCount}}</td>
+                    <td>{{role?.executiveTrueCount}}</td>
+                    <td>{{role?.executiveFalseCount}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary" (click)="viewRoleDetails(role)">View Resources</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- Roles table -->
+
 
       <div *ngIf="!loading && (!rolesList || rolesList.length === 0)" class="text-center">
         <p>No roles found.</p>

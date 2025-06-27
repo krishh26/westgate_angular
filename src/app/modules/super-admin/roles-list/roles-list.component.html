@@ -17,66 +17,73 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-              <!-- Loading spinner -->
-              <div *ngIf="isLoading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
+
+          <div class="card-body">
+            <!-- Loading spinner -->
+            <div *ngIf="isLoading" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+              <div class="Flatcard shadow-1 mt-4 border">
+                <div class="card-body">
+                  <div *ngIf="!isLoading && rolesList && rolesList.length > 0" class="table-responsive">
+                    <table class="table align-middle">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Role</th>
+                          <th>Related Roles</th>
+                          <th>Created Date</th>
+                          <th class="text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td *ngIf="!rolesList?.length" colspan="13">
+                            <app-no-record-found></app-no-record-found>
+                          </td>
+                        </tr>
+
+                        <tr *ngFor="let role of rolesList">
+                          <td>{{role?.name}}</td>
+                          <td>
+                            <div class="d-flex flex-wrap gap-1">
+                              <span *ngIf="role?.otherRoles && role.otherRoles.length > 0">
+                                <span *ngFor="let subRole of role.otherRoles">
+                                  <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
+                                </span>
+                              </span>
+                              <span *ngIf="!role?.otherRoles || role.otherRoles.length === 0">-</span>
+                            </div>
+                          </td>
+                          <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
+                          <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                              <button class="btn btn-sm btn-primary" (click)="editRole(role?._id)">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                              <button class="btn btn-sm btn-danger" (click)="deleteRole(role?._id)">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-
-              <!-- Roles table -->
-              <div *ngIf="!isLoading && rolesList && rolesList.length > 0" class="table-responsive">
-                <table class="table table-striped align-middle">
-                  <thead>
-                    <tr>
-                      <th>Role</th>
-                      <th>Related Roles</th>
-                      <th>Created Date</th>
-                      <th class="text-end">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                    <tr>
-                      <td *ngIf="!rolesList?.length" colspan="13">
-                        <app-no-record-found></app-no-record-found>
-                      </td>
-                    </tr>
-
-                    <tr
-                      *ngFor="let role of rolesList">
-                      <td>{{role?.name}}</td>
-                      <td>
-                        <div class="d-flex flex-wrap gap-1">
-                          <span *ngIf="role?.otherRoles && role.otherRoles.length > 0">
-                            <span *ngFor="let subRole of role.otherRoles">
-                              <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
-                            </span>
-                          </span>
-                          <span *ngIf="!role?.otherRoles || role.otherRoles.length === 0">-</span>
-                        </div>
-                      </td>
-                      <td>{{role?.createdAt | date:'dd/MM/yyyy'}}</td>
-                      <td class="text-end">
-                        <div class="d-flex justify-content-end gap-2">
-                          <button class="btn btn-sm btn-primary" (click)="editRole(role?._id)">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-sm btn-danger" (click)="deleteRole(role?._id)">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
             </div>
+
+            <!-- Roles table -->
+
+
           </div>
+
         </div>
       </div>
     </div>

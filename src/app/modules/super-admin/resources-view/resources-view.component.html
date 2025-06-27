@@ -68,45 +68,53 @@
         </div>
       </div>
 
-      <!-- Candidates table -->
-      <div *ngIf="!loading && candidatesList && candidatesList.length > 0" class="table-responsive">
-        <table class="table table-striped align-middle">
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Roles</th>
-              <th>Experience</th>
-              <th>Technical Skills</th>
-              <th>Hourly Rate</th>
-              <th>Supplier Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
-              <td>{{candidate?.fullName}}</td>
-              <td>
-                <div class="d-flex flex-wrap gap-1">
-                  {{getRoleNames(candidate?.roleId)}}
-                </div>
-              </td>
-              <td>{{candidate?.totalExperience}} years</td>
-              <td>
-                <div class="d-flex flex-wrap gap-1">
-                  <span *ngFor="let skill of candidate?.technicalSkills" class="badge bg-secondary">{{skill}}</span>
-                </div>
-              </td>
-              <td>£ {{candidate?.ukHourlyRate}}</td>
-              <td>{{candidate?.supplierId?.name}}</td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
-              </td>
+      <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+        <div class="Flatcard shadow-1 mt-4 border">
+          <div class="card-body">
+            <div *ngIf="!loading && candidatesList && candidatesList.length > 0" class="table-responsive">
+              <table class="table align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Roles</th>
+                    <th>Experience</th>
+                    <th>Technical Skills</th>
+                    <th>Hourly Rate</th>
+                    <th>Supplier Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
+                    <td>{{candidate?.fullName}}</td>
+                    <td>
+                      <div class="d-flex flex-wrap gap-1">
+                        {{getRoleNames(candidate?.roleId)}}
+                      </div>
+                    </td>
+                    <td>{{candidate?.totalExperience}} years</td>
+                    <td>
+                      <div class="d-flex flex-wrap gap-1">
+                        <span *ngFor="let skill of candidate?.technicalSkills" class="badge bg-secondary">{{skill}}</span>
+                      </div>
+                    </td>
+                    <td>£ {{candidate?.ukHourlyRate}}</td>
+                    <td>{{candidate?.supplierId?.name}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary" (click)="viewCandidateDetails(candidate)">View</button>
+                    </td>
 
-            </tr>
-          </tbody>
-        </table>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- Candidates table -->
+
 
       <!-- No data message -->
       <div *ngIf="!loading && (!candidatesList || candidatesList.length === 0)" class="text-center py-4">

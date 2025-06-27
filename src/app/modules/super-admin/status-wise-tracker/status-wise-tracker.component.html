@@ -105,6 +105,16 @@
         </div>
       </div>
 
+      <!-- Interested Supplier Button -->
+      <div class="row mt-2">
+        <div class="col-12">
+          <button class="btn" [class.btn-primary]="!isInterestedSupplier" [class.btn-success]="isInterestedSupplier" (click)="toggleInterestedSupplier()">
+            <i class="bi" [class.bi-star]="!isInterestedSupplier" [class.bi-star-fill]="isInterestedSupplier"></i>
+            {{ isInterestedSupplier ? 'Interested Supplier (Active)' : 'Interested Supplier' }}
+          </button>
+        </div>
+      </div>
+
     </div>
 
     <div class="container-fluid">
@@ -140,81 +150,87 @@
     </div>
 
     <div class="container-fluid">
+
       <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
-        <div class="table-responsive mt-5 mb-3">
-          <table class="table table-striped align-middle">
-            <thead>
-              <tr>
-                <th>Project Title</th>
-                <th>BOS ID</th>
-                <th style="cursor: pointer" (click)="sort('publishDate')">
-                  Publish Date <i class="bi bi-sort-up"></i>
-                </th>
-                <th style="cursor: pointer" (click)="duedatesort('dueDate')">
-                  Due Date & Time <i class="bi bi-sort-up"></i>
-                </th>
-                <th>Feasibility Status</th>
-                <th>Bid Status</th>
-                <th>Bid Assign User</th>
-                <th *ngIf="selectedBidStatus === 'WaitingForResult'">Result Expected</th>
-                <th>Log Time</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td *ngIf="!projectList?.length" colspan="15">
-                  <app-no-record-found></app-no-record-found>
-                </td>
-              </tr>
+        <div class="Flatcard shadow-1 mt-4 border">
+          <div class="card-body">
+            <div class="table-responsive mb-3">
+              <table class="table align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Project Title</th>
+                    <th>BOS ID</th>
+                    <th style="cursor: pointer" (click)="sort('publishDate')">
+                      Publish Date <i class="bi bi-sort-up"></i>
+                    </th>
+                    <th style="cursor: pointer" (click)="duedatesort('dueDate')">
+                      Due Date & Time <i class="bi bi-sort-up"></i>
+                    </th>
+                    <th>Feasibility Status</th>
+                    <th>Bid Status</th>
+                    <th>Bid Assign User</th>
+                    <th *ngIf="selectedBidStatus === 'WaitingForResult'">Result Expected</th>
+                    <th>Log Time</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td *ngIf="!projectList?.length" colspan="15">
+                      <app-no-record-found></app-no-record-found>
+                    </td>
+                  </tr>
 
-              <tr *ngFor="
-                  let item of projectList
-                    | paginate
-                      : {
-                          itemsPerPage: pagesize,
-                          currentPage: page,
-                          totalItems: totalRecords
-                        };
-                  let i = index
-                ">
-                <td>
-                  <a href="javascript:;" (click)="projectDetails(item?._id)">{{
-                    item?.projectName
-                    }}</a>
-                </td>
-                <td v-align="middle">{{ item?.BOSID }}</td>
-                <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
-                <td>
-                  {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
-                  {{ item.bidsubmissiontime }}
-                </td>
-                <td>{{ getFormattedStatus(item?.status) }}</td>
-                <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
-                <td>{{ item?.assignBidmanager[0]?.name }}</td>
-                <td *ngIf="selectedBidStatus === 'WaitingForResult'">{{ item?.resultExpected }}</td>
-                <td>
-                  {{ item?.statusHistory?.[0]?.date | date:'dd/MM/yyyy, h:mm a' }}
+                  <tr *ngFor="
+                      let item of projectList
+                        | paginate
+                          : {
+                              itemsPerPage: pagesize,
+                              currentPage: page,
+                              totalItems: totalRecords
+                            };
+                      let i = index
+                    ">
+                    <td>
+                      <a href="javascript:;" (click)="projectDetails(item?._id)">{{
+                        item?.projectName
+                        }}</a>
+                    </td>
+                    <td v-align="middle">{{ item?.BOSID }}</td>
+                    <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
+                    <td>
+                      {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                      {{ item.bidsubmissiontime }}
+                    </td>
+                    <td>{{ getFormattedStatus(item?.status) }}</td>
+                    <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
+                    <td>{{ item?.assignBidmanager[0]?.name }}</td>
+                    <td *ngIf="selectedBidStatus === 'WaitingForResult'">{{ item?.resultExpected }}</td>
+                    <td>
+                      {{ item?.statusHistory?.[0]?.date | date:'dd/MM/yyyy, h:mm a' }}
 
-                </td>
-                <td>
-                  <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
-                    data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
-                  </a>
-                </td>
-                <td>
-                  <span *ngIf="!item?.westGetDocument?.length" class="text-danger">
-                    <i class="bi bi-circle-fill"></i>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="row mt-3 align-items-center">
-          <div class="row">
-            <div class="pagination">
-              <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                    </td>
+                    <td>
+                      <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                        data-bs-target="#viewAllProjects" (click)="showComments(item?.task?.comments)">View
+                      </a>
+                    </td>
+                    <td>
+                      <span *ngIf="!item?.westGetDocument?.length" class="text-danger">
+                        <i class="bi bi-circle-fill"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row mt-3 align-items-center">
+              <div class="row">
+                <div class="pagination">
+                  <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -131,85 +131,95 @@
                 title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
           </div>
-          <div class="table-responsive mt-5 mb-3">
-            <table class="table table-striped align-middle">
-              <thead>
-                <tr>
-                  <th>Project Title</th>
-                  <th>BOS ID</th>
-                  <th style="cursor: pointer" (click)="sort('publishDate')">
-                    Publish Date <i class="bi bi-sort-up"></i>
-                  </th>
-                  <th style="cursor: pointer" (click)="duedatesort('dueDate')">
-                    Due Date & Time <i class="bi bi-sort-up"></i>
-                  </th>
-                  <th>Status</th>
-                  <th>Bid Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngIf="projectList?.length === 0">
-                  <td colspan="7" class="text-center">
-                    <app-no-record-found></app-no-record-found>
-                  </td>
-                </tr>
 
-                <tr *ngFor="
-                    let item of projectList
-                      | paginate
-                        : {
-                            itemsPerPage: pagesize,
-                            currentPage: page,
-                            totalItems: totalRecords
-                          };
-                    let i = index
-                  ">
-                  <td>
-                    <a (click)="projectDetails(item?._id)" href="javascript:;">{{ item?.projectName }}</a>
-                  </td>
-                  <td v-align="middle">{{ item?.BOSID }}</td>
-                  <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
-                  <td>
-                    {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
-                    {{ item.bidsubmissiontime }}
-                  </td>
-                  <td>
-                    <ng-container
-                      *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
-                      <span>Waiting for approval</span>
-                    </ng-container>
-                    <ng-template #failStatus>
-                      {{ item?.status }}
-                    </ng-template>
-                  </td>
+          <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+            <div class="Flatcard shadow-1 mt-3 border">
+              <div class="card-body">
+                <div class="table-responsive mt-0 mb-3">
+                  <table class="table align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Project Title</th>
+                        <th>BOS ID</th>
+                        <th style="cursor: pointer" (click)="sort('publishDate')">
+                          Publish Date <i class="bi bi-sort-up"></i>
+                        </th>
+                        <th style="cursor: pointer" (click)="duedatesort('dueDate')">
+                          Due Date & Time <i class="bi bi-sort-up"></i>
+                        </th>
+                        <th>Status</th>
+                        <th>Bid Status</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="projectList?.length === 0">
+                        <td colspan="7" class="text-center">
+                          <app-no-record-found></app-no-record-found>
+                        </td>
+                      </tr>
 
-                  <td>
-                    <ng-container *ngIf="
-                        !(
-                          item?.adminStatus === 'Nosuppliermatched' ||
-                          item?.adminStatus === 'Dropped after feasibility'
-                        );
-                        else waitingForApproval
-                      ">
-                      {{ item?.bidManagerStatus }}
-                    </ng-container>
-                    <ng-template #waitingForApproval>
-                      <span>Waiting for approval</span>
-                    </ng-template>
-                  </td>
-                  <td>
-                    <span class="status-dot" [ngStyle]="{
-                        'background-color': getStatusColor(item)
-                      }"></span>
-                  </td>
-                  <td>
-                    <span *ngIf="item?.register_interest" class="status-dot ms-2" style="background-color: blue;"></span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      <tr *ngFor="
+                          let item of projectList
+                            | paginate
+                              : {
+                                  itemsPerPage: pagesize,
+                                  currentPage: page,
+                                  totalItems: totalRecords
+                                };
+                          let i = index
+                        ">
+                        <td>
+                          <a (click)="projectDetails(item?._id)" href="javascript:;">{{ item?.projectName }}</a>
+                        </td>
+                        <td v-align="middle">{{ item?.BOSID }}</td>
+                        <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
+                        <td>
+                          {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                          {{ item.bidsubmissiontime }}
+                        </td>
+                        <td>
+                          <ng-container
+                            *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
+                            <span>Waiting for approval</span>
+                          </ng-container>
+                          <ng-template #failStatus>
+                            {{ item?.status }}
+                          </ng-template>
+                        </td>
+
+                        <td>
+                          <ng-container *ngIf="
+                              !(
+                                item?.adminStatus === 'Nosuppliermatched' ||
+                                item?.adminStatus === 'Dropped after feasibility'
+                              );
+                              else waitingForApproval
+                            ">
+                            {{ item?.bidManagerStatus }}
+                          </ng-container>
+                          <ng-template #waitingForApproval>
+                            <span>Waiting for approval</span>
+                          </ng-template>
+                        </td>
+                        <td>
+                          <span class="status-dot" [ngStyle]="{
+                              'background-color': getStatusColor(item)
+                            }"></span>
+                        </td>
+                        <td>
+                          <span *ngIf="item?.register_interest" class="status-dot ms-2" style="background-color: blue;"></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
+
+
           <div class="row mt-3 align-items-center">
             <div class="row">
               <div class="pagination">
