@@ -1074,7 +1074,7 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
           this.showLoader = false;
           if (response?.status) {
             this.notificationService.showSuccess('Supplier details updated successfully');
-            this.router.navigate(['/bos-user/supplier/supplier-list']);
+            this.router.navigate(['/boss-user/supplier']);
           } else {
             this.notificationService.showError(response?.message || 'Failed to update supplier details');
           }
