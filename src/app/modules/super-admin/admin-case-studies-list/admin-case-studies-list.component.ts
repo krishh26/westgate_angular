@@ -68,6 +68,12 @@ export class AdminCaseStudiesListComponent {
 
   }
 
+  // Helper method to check if description exceeds a certain length
+  isDescriptionLong(description: string, length: number = 100): boolean {
+    if (!description) return false;
+    return description.length > length;
+  }
+
   goBack() {
     this.router.navigate(['/super-admin/super-admin-supplier']);
   }
@@ -108,6 +114,11 @@ export class AdminCaseStudiesListComponent {
         this.caseStudyList = response?.data?.data || [];
         this.totalRecords = response?.data?.meta_data?.items || 0;
         console.log('Case Study List:', this.caseStudyList);
+
+        // Initialize showFullDescription property for each case study
+        this.caseStudyList.forEach((caseStudy: any) => {
+          caseStudy.showFullDescription = false;
+        });
         console.log('Total Records:', this.totalRecords);
       } else {
         this.notificationService.showError(response?.message);
