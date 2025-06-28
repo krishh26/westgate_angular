@@ -7,6 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 declare var bootstrap: any;
 
@@ -43,7 +44,42 @@ interface ServiceItem {
   styleUrls: ['./register-new-supplier.component.css']
 })
 export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
-  companyForm: any = {};
+  companyForm: any = {
+    companyName: '',
+    website: '',
+    companyAddress: '',
+    country: '',
+    email: '',
+    companyContactNumber: '',
+    yearOfEstablishment: '',
+    executiveSummary: '',
+    poc_name: '',
+    poc_phone: '',
+    poc_email: '',
+    poc_role: '',
+    typeOfCompany: [],
+    employeeCount: '',
+    turnover: '',
+    totalProjectsExecuted: '',
+    certifications: [],
+    expertise: [],
+    expertiseICanDo: [],
+    categoryList: [],
+    technologyStack: [],
+    keyClients: [],
+    resourceSharingSupplier: false,
+    subcontractingSupplier: false,
+    inHoldComment: [],
+    isSendMail: false,
+    pocDetails: [
+      {
+        name: '',
+        phone: '',
+        email: '',
+        role: ''
+      }
+    ]
+  };
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
   currentExpertise: string = '';
@@ -105,7 +141,8 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private router: Router,
     private http: HttpClient,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService
   ) {
     // Generate a random string to prevent form autofill
     this.randomString = Math.random().toString(36).substring(2, 15);
@@ -235,7 +272,10 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       poc_name: "fg",
       poc_phone: "3453453453",
       poc_role: "",
-      typeOfCompany: [],
+      typeOfCompany: [
+        "Healthcare",
+        "Insurance"
+      ],
       industry_Sector: [
         "Healthcare",
         "Insurance"
@@ -303,7 +343,15 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
       inHoldComment: [],
-      isSendMail: false
+      isSendMail: false,
+      pocDetails: [
+        {
+          name: '',
+          phone: '',
+          email: '',
+          role: ''
+        }
+      ]
     };
   }
 
@@ -468,49 +516,52 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   }
 
   submitForm() {
-    // Check required fields
-    if (!this.companyForm.companyName || !this.companyForm.poc_name || !this.companyForm.poc_phone) {
-      this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
+    // Validate POC details
+    const isValidPOCs = this.companyForm.pocDetails.every((poc: any) =>
+      poc.name && poc.phone && poc.email
+    );
+
+    if (!this.companyForm.companyName) {
+      this.toastr.error('Please enter Company Name');
       return;
     }
 
-    // Check at least one supplier type is selected
+    if (!isValidPOCs) {
+      this.toastr.error('Please fill in all required POC fields (Name, Phone, and Email)');
+      return;
+    }
+
     if (!this.companyForm.resourceSharingSupplier && !this.companyForm.subcontractingSupplier) {
       this.showSupplierTypeError = true;
-      this.notificationService.showError('Please select at least one supplier type');
+      this.toastr.error('Please select at least one supplier type');
       return;
-    } else {
-      this.showSupplierTypeError = false;
     }
 
-    // Check if all expertise items have at least one sub-expertise
-    if (this.companyForm.expertise.length > 0) {
-      const missingSubExpertise = this.companyForm.expertise.some((expertise: any) =>
-        !expertise.subExpertise || expertise.subExpertise.length === 0
-      );
-
-      if (missingSubExpertise) {
-        this.notificationService.showError('Each expertise must have at least one sub-expertise');
-        return;
-      }
+    if (this.hasInvalidExpertise()) {
+      this.toastr.error('Please ensure all expertise entries have sub-expertise');
+      return;
     }
 
-    // Ensure selected categories, industries, and technologies are in the form data
-    this.onCategoryChange();
-    this.onTechnologiesChange();
+    this.showSupplierTypeError = false;
+    this.spinner.show();
+    this.showLoader = true;
 
-    // Create a copy of the form data
-    const formData = { ...this.companyForm };
+    // Create API request body
+    const formData = {
+      ...this.companyForm,
+      pocDetails: this.companyForm.pocDetails.map((poc: any) => ({
+        name: poc.name,
+        phone: poc.phone,
+        email: poc.email,
+        role: poc.role || ''
+      }))
+    };
 
-    // Remove empty email field
-    if (!formData.email) {
-      delete formData.email;
-    }
-
-    // Remove empty POC email field
-    if (!formData.poc_email) {
-      delete formData.poc_email;
-    }
+    // Remove old POC fields that are now in pocDetails
+    delete formData.poc_name;
+    delete formData.poc_phone;
+    delete formData.poc_email;
+    delete formData.poc_role;
 
     // Prepare year of establishment
     if (formData.yearOfEstablishment) {
@@ -529,7 +580,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     }
 
     // Add inHoldComment in the required format
-    if (this.inHoldComment.trim()) {
+    if (this.inHoldComment?.trim()) {
       formData.inHoldComment = [
         {
           comment: this.inHoldComment.trim()
@@ -537,23 +588,24 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       ];
     }
 
-    this.spinner.show();
-    this.superadminService.supplierregister(formData).subscribe((response) => {
-      if (response?.status === true) {
+    this.superadminService.supplierregister(formData).subscribe({
+      next: (response: any) => {
         this.showLoader = false;
-        this.notificationService.showSuccess('Supplier admin added successfully.');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      } else {
-        this.notificationService.showError(response?.message);
+        this.spinner.hide();
+        if (response?.status === true) {
+          this.toastr.success('Supplier admin added successfully');
+          setTimeout(() => {
+            this.router.navigate(['/super-admin/super-admin-supplier']);
+          }, 1000);
+        } else {
+          this.toastr.error(response?.message || 'Failed to register supplier');
+        }
+      },
+      error: (error: any) => {
         this.showLoader = false;
+        this.spinner.hide();
+        this.toastr.error(error?.error?.message || 'Failed to register supplier');
       }
-      this.spinner.hide();
-    }, (error) => {
-      this.notificationService.showError(error?.error?.message);
-      this.showLoader = false;
-      this.spinner.hide();
     });
   }
 
@@ -1260,5 +1312,20 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
         }
       });
     });
+  }
+
+  addNewPOC() {
+    this.companyForm.pocDetails.push({
+      name: '',
+      phone: '',
+      email: '',
+      role: ''
+    });
+  }
+
+  removePOC(index: number) {
+    if (this.companyForm.pocDetails.length > 1) {
+      this.companyForm.pocDetails.splice(index, 1);
+    }
   }
 }

@@ -41,7 +41,38 @@ interface ServiceItem {
   styleUrls: ['./add-new-supplier.component.scss']
 })
 export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
-  companyForm: any = {};
+  companyForm: any = {
+    companyName: '',
+    website: '',
+    companyAddress: '',
+    country: '',
+    email: '',
+    companyContactNumber: '',
+    yearOfEstablishment: '',
+    executiveSummary: '',
+    pocDetails: [
+      {
+        name: '',
+        phone: '',
+        email: '',
+        role: ''
+      }
+    ],
+    typeOfCompany: [],
+    employeeCount: '',
+    turnover: '',
+    totalProjectsExecuted: '',
+    certifications: [],
+    expertise: [],
+    expertiseICanDo: [],
+    categoryList: [],
+    technologyStack: [],
+    keyClients: [],
+    resourceSharingSupplier: false,
+    subcontractingSupplier: false,
+    inHoldComment: [],
+    isSendMail: false
+  };
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
   currentExpertise: string = '';
@@ -244,10 +275,14 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       companyContactNumber: '',
       yearOfEstablishment: '',
       executiveSummary: '',
-      poc_name: '',
-      poc_phone: '',
-      poc_email: '',
-      poc_role: '',
+      pocDetails: [
+        {
+          name: '',
+          phone: '',
+          email: '',
+          role: ''
+        }
+      ],
       typeOfCompany: [],
       employeeCount: '',
       turnover: '',
@@ -260,8 +295,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       keyClients: [],
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
-      icando: [],
-      inHoldComment: []
+      inHoldComment: [],
+      isSendMail: false
     };
   }
 
@@ -423,48 +458,33 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
   }
 
   submitForm() {
-    // Check required fields
-    if (!this.companyForm.companyName || !this.companyForm.poc_name || !this.companyForm.poc_phone) {
-      this.notificationService.showError('Please fill in all required fields: Company Name, POC Name, and POC Phone');
+    // Validate POC details
+    const isValidPOCs = this.companyForm.pocDetails.every((poc: any) =>
+      poc.name && poc.phone && poc.email
+    );
+
+    if (!this.companyForm.companyName) {
+      this.notificationService.showError('Please enter Company Name');
       return;
     }
 
-    // Check at least one supplier type is selected
+    if (!isValidPOCs) {
+      this.notificationService.showError('Please fill in all required POC fields (Name, Phone, and Email)');
+      return;
+    }
+
     if (!this.companyForm.resourceSharingSupplier && !this.companyForm.subcontractingSupplier) {
       this.showSupplierTypeError = true;
       this.notificationService.showError('Please select at least one supplier type');
       return;
-    } else {
-      this.showSupplierTypeError = false;
     }
 
-    // Check if all expertise items have at least one sub-expertise
-    if (this.companyForm.expertise.length > 0) {
-      const missingSubExpertise = this.companyForm.expertise.some((expertise: any) =>
-        !expertise.subExpertise || expertise.subExpertise.length === 0
-      );
-
-      if (missingSubExpertise) {
-        this.notificationService.showError('Each expertise must have at least one sub-expertise');
-        return;
-      }
+    if (this.hasInvalidExpertise()) {
+      this.notificationService.showError('Please ensure all expertise entries have sub-expertise');
+      return;
     }
 
-    // Check if all I Can Do items have at least one sub-expertise
-    if (this.companyForm.expertiseICanDo.length > 0) {
-      const missingSubExpertise = this.companyForm.expertiseICanDo.some((expertise: any) =>
-        !expertise.subExpertise || expertise.subExpertise.length === 0
-      );
-
-      if (missingSubExpertise) {
-        this.notificationService.showError('Each I Can Do item must have at least one sub-expertise');
-        return;
-      }
-    }
-
-    // Ensure selected categories, industries, and technologies are in the form data
-    this.onCategoryChange();
-    this.onTechnologiesChange();
+    this.showSupplierTypeError = false;
 
     // Create a copy of the form data
     const formData = { ...this.companyForm };
@@ -472,11 +492,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     // Remove empty email field
     if (!formData.email) {
       delete formData.email;
-    }
-
-    // Remove empty POC email field
-    if (!formData.poc_email) {
-      delete formData.poc_email;
     }
 
     // Prepare year of establishment
@@ -496,7 +511,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     }
 
     // Add inHoldComment in the required format
-    if (this.inHoldComment.trim()) {
+    if (this.inHoldComment?.trim()) {
       formData.inHoldComment = [
         {
           comment: this.inHoldComment.trim()
@@ -505,22 +520,25 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     }
 
     this.spinner.show();
-    this.superadminService.supplierregister(formData).subscribe((response) => {
-      if (response?.status === true) {
+    this.superadminService.supplierregister(formData).subscribe({
+      next: (response: any) => {
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.notificationService.showSuccess('Supplier admin added successfully.');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+        this.spinner.hide();
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.error?.message);
         this.showLoader = false;
-        this.notificationService.showSuccess('Supplier admin added successfully.');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      } else {
-        this.notificationService.showError(response?.message);
-        this.showLoader = false;
+        this.spinner.hide();
       }
-      this.spinner.hide();
-    }, (error) => {
-      this.notificationService.showError(error?.error?.message);
-      this.showLoader = false;
-      this.spinner.hide();
     });
   }
 
@@ -910,7 +928,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
   onServicesChange() {
     if (this.selectedServices) {
-      this.companyForm.icando = this.selectedServices.map(service => service.value);
+      this.companyForm.expertiseICanDo = this.selectedServices.map(service => service.value);
     }
   }
 
@@ -1094,5 +1112,20 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
   onAddTagSubExpertiseICanDo = (name: string) => {
     return this.onAddTagSubExpertise(name);
+  }
+
+  addNewPOC() {
+    this.companyForm.pocDetails.push({
+      name: '',
+      phone: '',
+      email: '',
+      role: ''
+    });
+  }
+
+  removePOC(index: number) {
+    if (this.companyForm.pocDetails.length > 1) {
+      this.companyForm.pocDetails.splice(index, 1);
+    }
   }
 }
