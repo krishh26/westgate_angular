@@ -26,7 +26,6 @@ export interface POCDetails {
   phone: string;
   email: string;
   role: string;
-  isPrimary: boolean;
   _id?: string;
 }
 
@@ -70,8 +69,7 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       name: '',
       phone: '',
       email: '',
-      role: '',
-      isPrimary: true
+      role: ''
     }] as POCDetails[]
   };
   servicesList: any[] = [];
@@ -1285,11 +1283,6 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       }
     }
 
-    // Ensure at least one POC is marked as primary
-    if (!this.supplierDetails.pocDetails.some((poc: POCDetails) => poc.isPrimary)) {
-      this.supplierDetails.pocDetails[0].isPrimary = true;
-    }
-
     return true;
   }
 
@@ -1423,18 +1416,13 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       name: '',
       phone: '',
       email: '',
-      role: '',
-      isPrimary: false
+      role: ''
     } as POCDetails);
   }
 
   removePOC(index: number) {
     if (this.supplierDetails.pocDetails.length > 1) {
       this.supplierDetails.pocDetails.splice(index, 1);
-      // If we removed the primary POC, make the first one primary
-      if (!this.supplierDetails.pocDetails.some((poc: POCDetails) => poc.isPrimary)) {
-        this.supplierDetails.pocDetails[0].isPrimary = true;
-      }
     }
   }
 
@@ -1442,41 +1430,23 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   loadSupplierDetails() {
     this.supplierService.getSupplierDetails(this.supplierId).subscribe({
       next: (response: any) => {
-        this.supplierDetails = response.data;
-        // Initialize POC details if not present
-        if (!this.supplierDetails.pocDetails || !this.supplierDetails.pocDetails.length) {
-          this.supplierDetails.pocDetails = [{
-            name: this.supplierDetails.poc_name || '',
-            phone: this.supplierDetails.poc_phone || '',
-            email: this.supplierDetails.poc_email || '',
-            role: this.supplierDetails.poc_role || '',
-            isPrimary: true
-          }] as POCDetails[];
+        if (response?.status) {
+          this.supplierDetails = response.data;
+          // Initialize POC details if not present
+          if (!this.supplierDetails.pocDetails || !Array.isArray(this.supplierDetails.pocDetails)) {
+            this.supplierDetails.pocDetails = [{
+              name: '',
+              phone: '',
+              email: '',
+              role: ''
+            }] as POCDetails[];
+          }
+          // ... rest of the existing code ...
         }
-        // ... rest of the existing code ...
       },
       error: (error: any) => {
         console.error('Error loading supplier details:', error);
       }
     });
-  }
-
-  onPrimaryPOCChange(index: number) {
-    // If this POC is being set as primary
-    if (this.supplierDetails.pocDetails[index].isPrimary) {
-      // Set all other POCs as non-primary
-      this.supplierDetails.pocDetails.forEach((poc: POCDetails, i: number) => {
-        if (i !== index) {
-          poc.isPrimary = false;
-        }
-      });
-    } else {
-      // If this POC is being unchecked, make sure at least one POC is primary
-      const hasPrimary = this.supplierDetails.pocDetails.some((poc: POCDetails, i: number) => i !== index && poc.isPrimary);
-      if (!hasPrimary) {
-        // If no other POC is primary, keep this one as primary
-        this.supplierDetails.pocDetails[index].isPrimary = true;
-      }
-    }
   }
 }

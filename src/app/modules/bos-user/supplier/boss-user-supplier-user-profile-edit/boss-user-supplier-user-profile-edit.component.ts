@@ -39,16 +39,12 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     companyContactNumber: '',
     yearOfEstablishment: '',
     executiveSummary: '',
-    pocDetails: [
-      {
-        name: '',
-        phone: '',
-        email: '',
-        role: '',
-        isPrimary: false
-      }
-    ],
+    poc_name: '',
+    poc_phone: '',
+    poc_email: '',
+    poc_role: '',
     typeOfCompany: [],
+    industry_Sector: [],
     employeeCount: '',
     turnover: '',
     totalProjectsExecuted: '',
@@ -61,6 +57,13 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     subcontractingSupplier: false,
     expertiseICanDo: [],
     icando: [],
+    isUpdateSendMail: false,
+    pocDetails: [{
+      name: '',
+      phone: '',
+      email: '',
+      role: ''
+    }]
   };
   servicesList: any[] = [];
   selectedServices: any[] = [];
@@ -1163,8 +1166,7 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       name: '',
       phone: '',
       email: '',
-      role: '',
-      isPrimary: false
+      role: ''
     });
   }
 
