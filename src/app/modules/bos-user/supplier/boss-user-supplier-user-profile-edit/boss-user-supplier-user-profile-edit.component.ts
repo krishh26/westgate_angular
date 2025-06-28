@@ -39,10 +39,15 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     companyContactNumber: '',
     yearOfEstablishment: '',
     executiveSummary: '',
-    poc_name: '',
-    poc_phone: '',
-    poc_email: '',
-    poc_role: '',
+    pocDetails: [
+      {
+        name: '',
+        phone: '',
+        email: '',
+        role: '',
+        isPrimary: false
+      }
+    ],
     typeOfCompany: [],
     employeeCount: '',
     turnover: '',
@@ -1015,8 +1020,26 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       return;
     }
 
-    // Show loader
-    this.showLoader = true;
+    // Validate POC details
+    const isValidPOCs = this.supplierDetails.pocDetails.every((poc: any) =>
+      poc.name && poc.phone && poc.email
+    );
+
+    if (!this.supplierDetails.companyName) {
+      this.notificationService.showError('Please enter Company Name');
+      return;
+    }
+
+    if (!isValidPOCs) {
+      this.notificationService.showError('Please fill in all required POC fields (Name, Phone, and Email)');
+      return;
+    }
+
+    // Remove old POC fields if they exist
+    delete this.supplierDetails.poc_name;
+    delete this.supplierDetails.poc_phone;
+    delete this.supplierDetails.poc_email;
+    delete this.supplierDetails.poc_role;
 
     // Create a copy of the supplier details for submission
     const submissionData = {
@@ -1031,8 +1054,18 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       }))
     };
 
-    // Make the API call
-    this.http.put(`${environment.baseUrl}/supplier/update-supplier-details`, submissionData)
+    // Get the supplier ID
+    const id = this.supplierDetails._id;
+    if (!id) {
+      this.notificationService.showError('Supplier ID not found');
+      return;
+    }
+
+    // Show loader
+    this.showLoader = true;
+
+    // Make the API call using the supplier service
+    this.supplierService.updateSuppilerDetails(id, submissionData)
       .subscribe({
         next: (response: any) => {
           this.showLoader = false;
@@ -1122,6 +1155,22 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   private handleInHoldComment() {
     if (this.supplierDetails.inHoldComment?.length > 0) {
       this.inHoldComment = this.supplierDetails.inHoldComment[0]?.comment || '';
+    }
+  }
+
+  addNewPOC() {
+    this.supplierDetails.pocDetails.push({
+      name: '',
+      phone: '',
+      email: '',
+      role: '',
+      isPrimary: false
+    });
+  }
+
+  removePOC(index: number) {
+    if (this.supplierDetails.pocDetails.length > 1) {
+      this.supplierDetails.pocDetails.splice(index, 1);
     }
   }
 }

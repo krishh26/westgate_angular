@@ -132,7 +132,7 @@ export class SupplierAdminService {
         + id, payload);
   }
 
-  updateSuppilerDetails(payload: any, id: string) {
+  updateSuppilerDetails(id: string, payload: any) {
     return this.httpClient
       .patch<any>(this.baseUrl + SupplierAdminEndPoint.UPDATE_USER
         + id, payload);

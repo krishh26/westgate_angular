@@ -21,12 +21,22 @@ interface ExpertiseItem {
   subExpertise?: string[];
 }
 
+export interface POCDetails {
+  name: string;
+  phone: string;
+  email: string;
+  role: string;
+  isPrimary: boolean;
+  _id?: string;
+}
+
 @Component({
   selector: 'app-supplier-user-profile-edit',
   templateUrl: './supplier-user-profile-edit.component.html',
   styleUrls: ['./supplier-user-profile-edit.component.scss']
 })
 export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
+  supplierId: string = '';
   supplierDetails: any = {
     companyName: '',
     // logo: '',
@@ -55,7 +65,14 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     subcontractingSupplier: false,
     expertiseICanDo: [],
     icando: [],
-    isUpdateSendMail: false
+    isUpdateSendMail: false,
+    pocDetails: [{
+      name: '',
+      phone: '',
+      email: '',
+      role: '',
+      isPrimary: true
+    }] as POCDetails[]
   };
   servicesList: any[] = [];
   selectedServices: any[] = [];
@@ -167,6 +184,16 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // Get supplier ID from route params if not set from navigation state
+    if (!this.supplierId) {
+      this.route.queryParams.subscribe(params => {
+        this.supplierId = params['id'] || '';
+        if (this.supplierId) {
+          this.loadSupplierDetails();
+        }
+      });
+    }
+
     // Load all dropdown data
     this.loadInitialServices();
     this.setupServicesTypeahead();
@@ -205,9 +232,13 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       this.mapLegacyFieldNames(data);
       this.initializeArrayFields(data);
 
+      // Set the supplier ID
+      this.supplierId = data['_id'] || '';
+
       // First spread the data, then override with required fields to ensure they're not null
       this.supplierDetails = {
         ...data,
+        _id: data['_id'] || '',
         companyName: data['companyName'] || '',
         poc_name: data['poc_name'] || '',
         poc_phone: data['poc_phone'] || '',
@@ -231,11 +262,6 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
           name: item.name,
           _id: item.itemId
         }));
-
-      console.log('Initialized supplier details:', this.supplierDetails);
-      console.log('Initialized selected services:', this.selectedServices);
-
-      this.handleInHoldComment();
     }
   }
 
@@ -1202,34 +1228,69 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
     );
   }
 
-  submitForm() {
-    if (this.hasInvalidExpertise()) {
-      this.toastr.error('Please add at least one sub-expertise for each expertise');
+  onSubmit() {
+    // Validate POC details
+    if (!this.validatePOCDetails()) {
+      this.notificationService.showError('Please fill in all required POC details');
       return;
     }
 
-    if (!this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier) {
-      this.showSupplierTypeError = true;
-      this.toastr.error('Please select at least one supplier type');
+    // Create the payload
+    const payload = {
+      ...this.supplierDetails,
+      // Remove old POC fields if they exist
+      poc_name: undefined,
+      poc_phone: undefined,
+      poc_email: undefined,
+      poc_role: undefined,
+      // Keep the pocDetails array
+      pocDetails: this.supplierDetails.pocDetails
+    };
+
+    // Get the correct supplier ID
+    const id = this.supplierId || this.supplierDetails['_id'];
+    if (!id) {
+      this.notificationService.showError('Supplier ID not found');
       return;
     }
 
     this.showLoader = true;
-    this.superadminService.updateSupplierExpertise(this.supplierDetails._id, this.supplierDetails).subscribe(
-      (response: any) => {
+    this.supplierService.updateSuppilerDetails(id, payload).subscribe({
+      next: (response: any) => {
         this.showLoader = false;
-        if (response?.status) {
-          this.toastr.success('Supplier profile updated successfully');
-          this.router.navigate(['/super-admin/supplier-user-profile']);
+        if (response.status) {
+          this.notificationService.showSuccess('Supplier details updated successfully');
+          this.router.navigate(['/super-admin/super-admin-supplier']);
         } else {
-          this.toastr.error(response?.message || 'Failed to update supplier profile');
+          this.notificationService.showError(response.message || 'Failed to update supplier details');
         }
       },
-      (error: any) => {
+      error: (error: any) => {
         this.showLoader = false;
-        this.toastr.error('Error updating supplier profile');
+        this.notificationService.showError(error?.error?.message || error?.message || 'Failed to update supplier details');
       }
-    );
+    });
+  }
+
+  validatePOCDetails(): boolean {
+    // Check if at least one POC is present
+    if (!this.supplierDetails.pocDetails || this.supplierDetails.pocDetails.length === 0) {
+      return false;
+    }
+
+    // Check if all required fields are filled
+    for (const poc of this.supplierDetails.pocDetails as POCDetails[]) {
+      if (!poc.name || !poc.phone || !poc.email) {
+        return false;
+      }
+    }
+
+    // Ensure at least one POC is marked as primary
+    if (!this.supplierDetails.pocDetails.some((poc: POCDetails) => poc.isPrimary)) {
+      this.supplierDetails.pocDetails[0].isPrimary = true;
+    }
+
+    return true;
   }
 
   toggleSelectAllExpertise(event: any) {
@@ -1355,5 +1416,67 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
 
   loadTags() {
     // Implementation of loadTags method
+  }
+
+  addNewPOC() {
+    this.supplierDetails.pocDetails.push({
+      name: '',
+      phone: '',
+      email: '',
+      role: '',
+      isPrimary: false
+    } as POCDetails);
+  }
+
+  removePOC(index: number) {
+    if (this.supplierDetails.pocDetails.length > 1) {
+      this.supplierDetails.pocDetails.splice(index, 1);
+      // If we removed the primary POC, make the first one primary
+      if (!this.supplierDetails.pocDetails.some((poc: POCDetails) => poc.isPrimary)) {
+        this.supplierDetails.pocDetails[0].isPrimary = true;
+      }
+    }
+  }
+
+  // Update the loadSupplierDetails method to handle POC details
+  loadSupplierDetails() {
+    this.supplierService.getSupplierDetails(this.supplierId).subscribe({
+      next: (response: any) => {
+        this.supplierDetails = response.data;
+        // Initialize POC details if not present
+        if (!this.supplierDetails.pocDetails || !this.supplierDetails.pocDetails.length) {
+          this.supplierDetails.pocDetails = [{
+            name: this.supplierDetails.poc_name || '',
+            phone: this.supplierDetails.poc_phone || '',
+            email: this.supplierDetails.poc_email || '',
+            role: this.supplierDetails.poc_role || '',
+            isPrimary: true
+          }] as POCDetails[];
+        }
+        // ... rest of the existing code ...
+      },
+      error: (error: any) => {
+        console.error('Error loading supplier details:', error);
+      }
+    });
+  }
+
+  onPrimaryPOCChange(index: number) {
+    // If this POC is being set as primary
+    if (this.supplierDetails.pocDetails[index].isPrimary) {
+      // Set all other POCs as non-primary
+      this.supplierDetails.pocDetails.forEach((poc: POCDetails, i: number) => {
+        if (i !== index) {
+          poc.isPrimary = false;
+        }
+      });
+    } else {
+      // If this POC is being unchecked, make sure at least one POC is primary
+      const hasPrimary = this.supplierDetails.pocDetails.some((poc: POCDetails, i: number) => i !== index && poc.isPrimary);
+      if (!hasPrimary) {
+        // If no other POC is primary, keep this one as primary
+        this.supplierDetails.pocDetails[index].isPrimary = true;
+      }
+    }
   }
 }

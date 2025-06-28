@@ -53,10 +53,15 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     companyContactNumber: '',
     yearOfEstablishment: '',
     executiveSummary: '',
-    poc_name: '',
-    poc_phone: '',
-    poc_email: '',
-    poc_role: '',
+    pocDetails: [
+      {
+        name: '',
+        phone: '',
+        email: '',
+        role: '',
+        isPrimary: false
+      }
+    ],
     typeOfCompany: [],
     employeeCount: '',
     turnover: '',
@@ -70,15 +75,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     resourceSharingSupplier: false,
     subcontractingSupplier: false,
     inHoldComment: [],
-    isSendMail: false,
-    pocDetails: [
-      {
-        name: '',
-        phone: '',
-        email: '',
-        role: ''
-      }
-    ]
+    isSendMail: false
   };
   showLoader: boolean = false;
   showSupplierTypeError: boolean = false;
@@ -326,10 +323,15 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       companyContactNumber: '',
       yearOfEstablishment: '',
       executiveSummary: '',
-      poc_name: '',
-      poc_phone: '',
-      poc_email: '',
-      poc_role: '',
+      pocDetails: [
+        {
+          name: '',
+          phone: '',
+          email: '',
+          role: '',
+          isPrimary: false
+        }
+      ],
       typeOfCompany: [],
       employeeCount: '',
       turnover: '',
@@ -343,15 +345,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       resourceSharingSupplier: false,
       subcontractingSupplier: false,
       inHoldComment: [],
-      isSendMail: false,
-      pocDetails: [
-        {
-          name: '',
-          phone: '',
-          email: '',
-          role: ''
-        }
-      ]
+      isSendMail: false
     };
   }
 
@@ -543,21 +537,16 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
     }
 
     this.showSupplierTypeError = false;
-    this.spinner.show();
-    this.showLoader = true;
 
-    // Create API request body
-    const formData = {
-      ...this.companyForm,
-      pocDetails: this.companyForm.pocDetails.map((poc: any) => ({
-        name: poc.name,
-        phone: poc.phone,
-        email: poc.email,
-        role: poc.role || ''
-      }))
-    };
+    // Create a copy of the form data
+    const formData = { ...this.companyForm };
 
-    // Remove old POC fields that are now in pocDetails
+    // Remove empty email field
+    if (!formData.email) {
+      delete formData.email;
+    }
+
+    // Remove old POC fields if they exist
     delete formData.poc_name;
     delete formData.poc_phone;
     delete formData.poc_email;
@@ -588,10 +577,9 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       ];
     }
 
+    this.spinner.show();
     this.superadminService.supplierregister(formData).subscribe({
       next: (response: any) => {
-        this.showLoader = false;
-        this.spinner.hide();
         if (response?.status === true) {
           this.toastr.success('Supplier admin added successfully');
           setTimeout(() => {
@@ -600,11 +588,11 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
         } else {
           this.toastr.error(response?.message || 'Failed to register supplier');
         }
+        this.spinner.hide();
       },
       error: (error: any) => {
-        this.showLoader = false;
-        this.spinner.hide();
         this.toastr.error(error?.error?.message || 'Failed to register supplier');
+        this.spinner.hide();
       }
     });
   }
@@ -1319,7 +1307,8 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
       name: '',
       phone: '',
       email: '',
-      role: ''
+      role: '',
+      isPrimary: false
     });
   }
 

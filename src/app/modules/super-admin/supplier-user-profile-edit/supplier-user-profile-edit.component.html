@@ -31,7 +31,7 @@
     <br />
 
     <div class="container-fluid">
-      <form (ngSubmit)="submitForm()" autocomplete="off" novalidate>
+      <form (ngSubmit)="onSubmit()" #supplierForm="ngForm" autocomplete="off" novalidate>
         <div class="row">
           <div class="col-12">
             <div class="row">
@@ -162,69 +162,102 @@
               </div>
 
               <!-- POC Details -->
-              <div class="col-12">
-                <h5 class="text-primary mb-3">POC Details</h5>
-              </div>
+              <div class="row mb-4">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                  <h5 class="text-primary mb-3">POC Details</h5>
+                  <button type="button" class="btn btn-primary btn-sm mb-3" (click)="addNewPOC()">
+                    <i class="fas fa-plus"></i> Add POC
+                  </button>
+                </div>
 
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_name" class="col-sm-4 col-form-label">POC Name <span
-                      class="text-danger">*</span>
-                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                       title="Enter the full name of the Point of Contact."></i>
-                  </label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.poc_name" name="poc_name" type="text" class="form-control"
-                      placeholder="Enter POC name" id="poc_name" required #pocNameInput="ngModel">
-                    <div *ngIf="pocNameInput.invalid && (pocNameInput.dirty || pocNameInput.touched)"
-                      class="text-danger small">
-                      POC Name is required
+                <div *ngFor="let poc of supplierDetails.pocDetails; let i = index" class="col-12 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">POC #{{i + 1}}</h6>
+                        <button *ngIf="supplierDetails.pocDetails.length > 1" type="button" class="btn btn-danger btn-sm" (click)="removePOC(i)">
+                          <i class="fas fa-trash"></i> Remove
+                        </button>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <div class="row">
+                            <label [for]="'poc_name_' + i" class="col-sm-4 col-form-label">POC Name <span class="text-danger">*</span>
+                              <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                 title="Enter the full name of the Point of Contact."></i>
+                            </label>
+                            <div class="col-sm-8">
+                              <input [(ngModel)]="poc.name" [name]="'poc_name_' + i" type="text" class="form-control"
+                                placeholder="Enter POC name" [id]="'poc_name_' + i" required #pocNameInput="ngModel">
+                              <div *ngIf="pocNameInput.invalid && (pocNameInput.dirty || pocNameInput.touched)"
+                                class="text-danger small">
+                                POC Name is required
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <div class="row">
+                            <label [for]="'poc_phone_' + i" class="col-sm-4 col-form-label">POC Phone <span class="text-danger">*</span>
+                              <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                 title="Enter the direct contact number for the POC."></i>
+                            </label>
+                            <div class="col-sm-8">
+                              <input [(ngModel)]="poc.phone" [name]="'poc_phone_' + i" type="text" class="form-control"
+                                placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10"
+                                (keypress)="NumberOnly($event)" [id]="'poc_phone_' + i" required #pocPhoneInput="ngModel">
+                              <div *ngIf="pocPhoneInput.invalid && (pocPhoneInput.dirty || pocPhoneInput.touched)"
+                                class="text-danger small">
+                                POC Phone is required
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <div class="row">
+                            <label [for]="'poc_email_' + i" class="col-sm-4 col-form-label">POC Email <span class="text-danger">*</span>
+                              <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                 title="Provide the email address of the POC."></i>
+                            </label>
+                            <div class="col-sm-8">
+                              <input [(ngModel)]="poc.email" [name]="'poc_email_' + i" type="text" class="form-control"
+                                placeholder="Enter POC email" [id]="'poc_email_' + i" required #pocEmailInput="ngModel">
+                              <div *ngIf="pocEmailInput.invalid && (pocEmailInput.dirty || pocEmailInput.touched)"
+                                class="text-danger small">
+                                POC Email is required
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <div class="row">
+                            <label [for]="'poc_role_' + i" class="col-sm-4 col-form-label">POC Role
+                              <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                 title="Specify the role or designation of the POC in the company."></i>
+                            </label>
+                            <div class="col-sm-8">
+                              <input [(ngModel)]="poc.role" [name]="'poc_role_' + i" type="text" class="form-control"
+                                placeholder="Enter POC role" [id]="'poc_role_' + i">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="poc.isPrimary"
+                              [name]="'poc_primary_' + i" [id]="'poc_primary_' + i"
+                              (change)="onPrimaryPOCChange(i)">
+                            <label class="form-check-label" [for]="'poc_primary_' + i">
+                              Set as Primary POC
+                            </label>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_phone" class="col-sm-4 col-form-label">POC Phone <span
-                      class="text-danger">*</span>
-                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                       title="Enter the direct contact number for the POC."></i>
-                  </label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.poc_phone" name="poc_phone" type="text" class="form-control"
-                      placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10"
-                      (keypress)="NumberOnly($event)" id="poc_phone" required #pocPhoneInput="ngModel">
-                    <div *ngIf="pocPhoneInput.invalid && (pocPhoneInput.dirty || pocPhoneInput.touched)"
-                      class="text-danger small">
-                      POC Phone is required
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_email" class="col-sm-4 col-form-label">POC Email
-                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                       title="Provide the email address of the POC, this email will be used for login."></i>
-                  </label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.poc_email" name="poc_email" type="text" class="form-control"
-                      placeholder="Enter POC email" id="poc_email">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <div class="row">
-                  <label for="poc_role" class="col-sm-4 col-form-label">POC Role
-                    <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                       title="Specify the role or designation of the POC in the company."></i>
-                  </label>
-                  <div class="col-sm-8">
-                    <input [(ngModel)]="supplierDetails.poc_role" name="poc_role" type="text" class="form-control"
-                      placeholder="Enter POC role" id="poc_role">
                   </div>
                 </div>
               </div>
@@ -664,27 +697,13 @@
         </div> -->
 
         <!-- Submit Button -->
-        <div class="row mt-4">
-          <div class="col-6">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" [(ngModel)]="supplierDetails.isUpdateSendMail"
-                    name="pocUpdateProfileMail" id="pocUpdateProfileMail">
-                  <label class="form-check-label" for="pocUpdateProfileMail">
-                    Send Mail To POC User For Update Profile.
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 text-end">
-            <button type="button" routerLink="/super-admin/supplier-user-profile"
-              class="btn btn-primary">Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary" [disabled]="isUpdateButtonDisabled() || hasInvalidExpertise()">
-              Update Supplier
-            </button>
-          </div>
+        <div class="col-12 text-end mt-4">
+          <button type="button" class="btn btn-secondary me-2" routerLink="/super-admin/super-admin-supplier">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="!supplierForm.form.valid">
+            Update Supplier
+          </button>
         </div>
       </form>
     </div>
