@@ -11,6 +11,27 @@ import { CaseStudyBulkAddComponent } from '../case-study-bulk-add/case-study-bul
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
 declare var bootstrap: any;
 
+interface CaseStudyItem {
+  _id?: string;
+  name?: string;
+  description?: string;
+  industry?: string;
+  type?: string;
+  date?: string;
+  problem?: string;
+  contractDuration?: string;
+  technologies?: string;
+  solutionProvided?: string;
+  cost?: string;
+  resourcesUsed?: string;
+  clientName?: string;
+  resultAchieved?: string;
+  link?: {
+    url?: string;
+  };
+  showFullDescription?: boolean;
+}
+
 @Component({
   selector: 'app-boss-user-admin-case-study-list',
   templateUrl: './boss-user-admin-case-study-list.component.html',
@@ -20,7 +41,7 @@ export class BossUserAdminCaseStudyListComponent {
 
 
   showLoader: boolean = false;
-  caseStudyList: any = [];
+  caseStudyList: CaseStudyItem[] = [];
   file: any;
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
@@ -72,6 +93,12 @@ export class BossUserAdminCaseStudyListComponent {
 
   }
 
+    // Helper method to check if description exceeds a certain length
+    isDescriptionLong(description: string | undefined | null, length: number = 100): boolean {
+      if (!description) return false;
+      return description.length > length;
+    }
+
   openAddTeamModal() {
     this.modalService.open(CaseStudyBulkAddComponent, { size: 'xl' });
   }
@@ -104,7 +131,10 @@ export class BossUserAdminCaseStudyListComponent {
     this.supplierService.getadminCaseStudyList(Payload.casestudyList).subscribe((response) => {
       console.log('API response:', response);
       if (response?.status === true) {
-        this.caseStudyList = response?.data?.data || [];
+        this.caseStudyList = (response?.data?.data || []).map((item: CaseStudyItem) => ({
+          ...item,
+          showFullDescription: false
+        }));
         this.totalRecords = response?.data?.meta_data?.items || 0;
         console.log('Case Study List:', this.caseStudyList);
         console.log('Total Records:', this.totalRecords);
