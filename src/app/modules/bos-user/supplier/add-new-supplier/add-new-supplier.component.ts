@@ -468,6 +468,11 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if (!this.companyForm.email) {
+      this.notificationService.showError('Please enter Contact Email');
+      return;
+    }
+
     if (!isValidPOCs) {
       this.notificationService.showError('Please fill in all required POC fields (Name, Phone, and Email)');
       return;
@@ -476,11 +481,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     if (!this.companyForm.resourceSharingSupplier && !this.companyForm.subcontractingSupplier) {
       this.showSupplierTypeError = true;
       this.notificationService.showError('Please select at least one supplier type');
-      return;
-    }
-
-    if (this.hasInvalidExpertise()) {
-      this.notificationService.showError('Please ensure all expertise entries have sub-expertise');
       return;
     }
 

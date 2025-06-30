@@ -588,9 +588,15 @@
         </div>
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary mob-w-100 me-2" [disabled]="!companyForm.companyName || !companyForm.poc_name || !companyForm.poc_phone || !companyForm.poc_email ||
-                        (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier) ||
-                        hasInvalidExpertise()">Submit</button>
+            <button type="submit" class="btn btn-primary mob-w-100 me-2"
+              [disabled]="!companyForm.companyName ||
+                          !companyForm.email ||
+                          !companyForm.pocDetails[0]?.name ||
+                          !companyForm.pocDetails[0]?.phone ||
+                          !companyForm.pocDetails[0]?.email ||
+                          (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier)">
+              Submit
+            </button>
           </div>
         </div>
       </form>

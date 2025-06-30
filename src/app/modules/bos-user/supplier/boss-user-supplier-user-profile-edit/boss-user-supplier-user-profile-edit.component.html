@@ -569,12 +569,14 @@
           <div class="col-6 text-end">
             <button type="button" routerLink="/boss-user/supplier"
               class="btn btn-primary">Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary" [disabled]="!supplierDetails.companyName ||
-                            !supplierDetails.pocDetails?.length ||
-                            !supplierDetails.pocDetails[0]?.name ||
-                            !supplierDetails.pocDetails[0]?.phone ||
-                            (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier) ||
-                            hasInvalidExpertise()">
+            <button type="submit" class="btn btn-primary"
+              [disabled]="!supplierDetails.companyName ||
+                          !supplierDetails.email ||
+                          !supplierDetails.pocDetails?.length ||
+                          !supplierDetails.pocDetails[0]?.name ||
+                          !supplierDetails.pocDetails[0]?.phone ||
+                          !supplierDetails.pocDetails[0]?.email ||
+                          (!supplierDetails.resourceSharingSupplier && !supplierDetails.subcontractingSupplier)">
               Update Supplier
             </button>
           </div>

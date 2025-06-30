@@ -1004,12 +1004,74 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     return this.supplierDetails.resourceSharingSupplier || this.supplierDetails.subcontractingSupplier;
   }
 
+  checkMandatoryFields(): { isValid: boolean, messages: string[] } {
+    const result = {
+        isValid: true,
+        messages: [] as string[]
+    };
+
+    // Check company name
+    if (!this.supplierDetails.companyName) {
+        result.messages.push('Company Name is required');
+        result.isValid = false;
+    }
+
+    // Check Contact Email
+    if (!this.supplierDetails.email) {
+        result.messages.push('Contact Email is required');
+        result.isValid = false;
+    }
+
+    // Check POC details - only first POC is mandatory
+    if (!this.supplierDetails.pocDetails?.length) {
+        result.messages.push('At least one POC is required');
+        result.isValid = false;
+    } else {
+        const firstPOC = this.supplierDetails.pocDetails[0];
+        if (!firstPOC?.name) {
+            result.messages.push('POC Name is required');
+            result.isValid = false;
+        }
+        if (!firstPOC?.email) {
+            result.messages.push('POC Email is required');
+            result.isValid = false;
+        }
+        if (!firstPOC?.phone) {
+            result.messages.push('POC Phone is required');
+            result.isValid = false;
+        }
+    }
+
+    // Check supplier type
+    if (!this.supplierDetails.resourceSharingSupplier && !this.supplierDetails.subcontractingSupplier) {
+        result.messages.push('At least one Supplier Type must be selected');
+        result.isValid = false;
+    }
+
+    // Log the validation results
+    console.log('Validation Results:', {
+        isValid: result.isValid,
+        messages: result.messages,
+        supplierDetails: {
+            companyName: this.supplierDetails.companyName,
+            email: this.supplierDetails.email,
+            pocDetails: this.supplierDetails.pocDetails?.[0],
+            resourceSharingSupplier: this.supplierDetails.resourceSharingSupplier,
+            subcontractingSupplier: this.supplierDetails.subcontractingSupplier
+        }
+    });
+
+    return result;
+  }
+
   hasInvalidExpertise(): boolean {
-    return this.supplierDetails.expertise.some((expertise: ExpertiseItem) =>
-      !expertise.subExpertise || expertise.subExpertise.length === 0
-    ) || this.supplierDetails.expertiseICanDo.some((expertise: ExpertiseItem) =>
-      !expertise.subExpertise || expertise.subExpertise.length === 0
-    );
+    const validation = this.checkMandatoryFields();
+    if (!validation.isValid) {
+        validation.messages.forEach(msg => {
+            this.notificationService.showError(msg);
+        });
+    }
+    return !validation.isValid;
   }
 
   submitForm() {
