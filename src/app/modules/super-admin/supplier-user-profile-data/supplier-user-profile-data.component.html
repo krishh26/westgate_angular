@@ -105,6 +105,39 @@
                   <h5 class="text-primary mb-3">POC Details</h5>
                 </div>
 
+                <!-- Single POC Details -->
+                <div class="col-12 mb-4">
+                  <div class="border rounded p-3" style="background-color: #f8f9fa;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="mb-0">Primary POC Details</h6>
+                      <span class="badge bg-primary">Primary</span>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Name</label>
+                        <input type="text" class="form-control" [value]="supplierDetails?.poc_name" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Phone</label>
+                        <input type="text" class="form-control" [value]="supplierDetails?.poc_phone" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Email</label>
+                        <input type="text" class="form-control" [value]="supplierDetails?.poc_email" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Role</label>
+                        <input type="text" class="form-control" [value]="supplierDetails?.poc_role || 'N/A'" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Additional POC Details -->
+                <div class="col-12">
+                  <h6 class="mb-3">Additional POC Details</h6>
+                </div>
+
                 <!-- Repeat this section for each POC -->
                 <div class="col-12 mb-4" *ngFor="let poc of supplierDetails?.pocDetails; let i = index">
                   <div class="border rounded p-3">
