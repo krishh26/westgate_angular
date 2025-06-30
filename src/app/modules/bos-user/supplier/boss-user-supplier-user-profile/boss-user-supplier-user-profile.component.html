@@ -97,21 +97,33 @@
                 <div class="col-12">
                   <h5 class="text-primary mb-3">POC Details</h5>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">POC Name</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_name" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">POC Phone</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_phone" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">POC Email</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_email" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">POC Role</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.poc_role" readonly>
+
+                <!-- Repeat this section for each POC -->
+                <div class="col-12 mb-4" *ngFor="let poc of supplierDetails?.pocDetails; let i = index">
+                  <div class="border rounded p-3">
+                    <div class="d-flex justify-content-between mb-3">
+                      <h6 class="mb-0">POC {{i + 1}}</h6>
+                      <span *ngIf="poc.isPrimary" class="badge bg-success">Primary Contact</span>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Name</label>
+                        <input type="text" class="form-control" [value]="poc.name" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Phone</label>
+                        <input type="text" class="form-control" [value]="poc.phone" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Email</label>
+                        <input type="text" class="form-control" [value]="poc.email" readonly>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">POC Role</label>
+                        <input type="text" class="form-control" [value]="poc.role || 'N/A'" readonly>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
