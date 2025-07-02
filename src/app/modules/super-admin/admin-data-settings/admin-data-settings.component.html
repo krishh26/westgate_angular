@@ -254,25 +254,33 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>Role</th>
-                    <th>Other Roles</th>
-                    <th>Actions</th>
+                    <th style="width: 25%">Role</th>
+                    <th style="width: 65%">Other Roles</th>
+                    <th style="width: 10%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let role of roles">
-                    <td>{{ role.name }}</td>
-                    <td>
-                      <div class="d-flex flex-wrap gap-1">
-                        <span *ngIf="role?.otherRoles && role.otherRoles.length > 0">
-                          <span *ngFor="let subRole of role.otherRoles">
-                            <span class="badge bg-primary me-1 mb-1" style="font-size: 14px;">{{subRole}}</span>
+                    <td style="width: 25%; vertical-align: top;">
+                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="role.name" placement="top">
+                        {{ role.name }}
+                      </span>
+                    </td>
+                    <td style="width: 65%;">
+                      <div class="d-flex flex-wrap" style="gap: 8px; padding: 4px 0;">
+                        <ng-container *ngIf="role?.otherRoles && role.otherRoles.length > 0">
+                          <span *ngFor="let subRole of role.otherRoles"
+                                class="badge bg-primary"
+                                [ngbTooltip]="subRole"
+                                placement="top"
+                                style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2;">
+                            {{subRole}}
                           </span>
-                        </span>
+                        </ng-container>
                         <span *ngIf="!role?.otherRoles || role.otherRoles.length === 0">-</span>
                       </div>
                     </td>
-                    <td>
+                    <td style="width: 10%; vertical-align: top;">
                       <button class="btn btn-sm btn-outline-danger" (click)="deleteRole(role._id)">
                         <i class="bi bi-trash"></i>
                       </button>
@@ -621,9 +629,9 @@
           <div *ngIf="otherRoles.length > 0" class="mt-2">
             <div class="d-flex flex-wrap gap-2">
               <div *ngFor="let role of otherRoles; let i = index"
-                class="badge bg-primary p-2 d-flex align-items-center">
-                {{role}}
-                <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem;"
+                class="badge bg-primary p-2 d-flex align-items-center" style="font-size: 0.875rem; max-width: 100%; word-break: break-word;">
+                <span class="me-2">{{role}}</span>
+                <button type="button" class="btn-close btn-close-white" style="font-size: 0.5rem;"
                   (click)="removeOtherRole(i)"></button>
               </div>
             </div>
