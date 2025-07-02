@@ -140,24 +140,34 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Tags</th>
-                    <th>Mandatory</th>
-                    <th>Actions</th>
+                    <th style="width: 25%">Name</th>
+                    <th style="width: 55%">Tags</th>
+                    <th style="width: 10%">Mandatory</th>
+                    <th style="width: 10%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let expertise of expertises">
-                    <td>{{ expertise.name }}</td>
+                    <td style="vertical-align: top;">
+                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="expertise.name" placement="top">
+                        {{ expertise.name }}
+                      </span>
+                    </td>
                     <td>
-                      <div class="d-flex flex-wrap gap-1">
-                        <span *ngIf="expertise?.tags && expertise.tags.length > 0">
-                          <span *ngFor="let tag of expertise.tags" class="badge bg-primary me-1 mb-1">{{tag}}</span>
-                        </span>
+                      <div class="d-flex flex-wrap" style="gap: 8px; padding: 4px 0;">
+                        <ng-container *ngIf="expertise?.tags && expertise.tags.length > 0">
+                          <span *ngFor="let tag of expertise.tags"
+                                class="badge bg-primary"
+                                [ngbTooltip]="tag"
+                                placement="top"
+                                style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2;">
+                            {{tag}}
+                          </span>
+                        </ng-container>
                         <span *ngIf="!expertise?.tags || expertise.tags.length === 0">-</span>
                       </div>
                     </td>
-                    <td>
+                    <td style="vertical-align: top;">
                       <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch"
                           [checked]="expertise.isMandatory"
@@ -167,12 +177,12 @@
                         </label>
                       </div>
                     </td>
-                    <td>
+                    <td style="vertical-align: top;">
                       <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-outline-primary" (click)="openEditExpertiseModal(editExpertiseModal, expertise)">
+                        <button class="btn btn-sm btn-outline-primary" (click)="openEditExpertiseModal(editExpertiseModal, expertise)" [ngbTooltip]="'Edit'" placement="top">
                           <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteExpertise(expertise)">
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteExpertise(expertise)" [ngbTooltip]="'Delete'" placement="top">
                           <i class="bi bi-trash"></i>
                         </button>
                       </div>
@@ -327,22 +337,30 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Company</th>
-                    <th>Status</th>
-                    <th>Joined Date</th>
-                    <th>Actions</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 20%">Email</th>
+                    <th style="width: 15%">Role</th>
+                    <th style="width: 15%">Company</th>
+                    <th style="width: 10%">Status</th>
+                    <th style="width: 15%">Joined Date</th>
+                    <th style="width: 10%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let user of users">
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
-                    <td>{{ user.companyName || '-' }}</td>
-                    <td>
+                    <td style="vertical-align: top;">
+                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="user.name" placement="top">
+                        {{ user.name }}
+                      </span>
+                    </td>
+                    <td style="vertical-align: top;">
+                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="user.email" placement="top">
+                        {{ user.email }}
+                      </span>
+                    </td>
+                    <td style="vertical-align: top;">{{ user.role }}</td>
+                    <td style="vertical-align: top;">{{ user.companyName || '-' }}</td>
+                    <td style="vertical-align: top;">
                       <span class="badge" [ngClass]="{
                         'bg-success': user.active,
                         'bg-danger': !user.active
@@ -350,13 +368,13 @@
                         {{ user.active ? 'Active' : 'Inactive' }}
                       </span>
                     </td>
-                    <td>{{ user.createdAt ? (user.createdAt | date:'mediumDate') : '-' }}</td>
-                    <td>
+                    <td style="vertical-align: top;">{{ user.createdAt ? (user.createdAt | date:'mediumDate') : '-' }}</td>
+                    <td style="vertical-align: top;">
                       <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-outline-info" (click)="viewUserDetails(user)" title="View Details">
+                        <button class="btn btn-sm btn-outline-info" (click)="viewUserDetails(user)" [ngbTooltip]="'View Details'" placement="top">
                           <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-primary" (click)="editUser(user)" title="Edit">
+                        <button class="btn btn-sm btn-outline-primary" (click)="editUser(user)" [ngbTooltip]="'Edit'" placement="top">
                           <i class="bi bi-pencil"></i>
                         </button>
                         <button
@@ -366,13 +384,14 @@
                             'btn-outline-success': !user.active
                           }"
                           (click)="toggleUserStatus(user)"
-                          [title]="user.active ? 'Deactivate' : 'Activate'">
+                          [ngbTooltip]="user.active ? 'Deactivate' : 'Activate'"
+                          placement="top">
                           <i class="bi" [ngClass]="{
                             'bi-pause-circle': user.active,
                             'bi-play-circle': !user.active
                           }"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user._id)" title="Delete">
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user._id)" [ngbTooltip]="'Delete'" placement="top">
                           <i class="bi bi-trash"></i>
                         </button>
                       </div>
