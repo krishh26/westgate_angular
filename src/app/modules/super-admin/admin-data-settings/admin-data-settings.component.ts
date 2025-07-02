@@ -70,6 +70,12 @@ export class AdminDataSettingsComponent implements OnInit {
   poundRateSubmitted: boolean = false;
   currentPoundRate: number | null = null;
 
+  editRoleData: any = {
+    name: '',
+    otherRoles: []
+  };
+  selectedRoleId: string = '';
+
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
@@ -1129,6 +1135,41 @@ export class AdminDataSettingsComponent implements OnInit {
             this.error = error?.error?.message || 'Failed to delete tag';
           }
         });
+      }
+    });
+  }
+
+  openEditRoleModal(content: any, role: any): void {
+    this.editRoleData = {
+      name: role.name,
+      otherRoles: [...(role.otherRoles || [])]
+    };
+    this.selectedRoleId = role._id;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onSubmitEditRole(): void {
+    if (!this.editRoleData.name.trim()) {
+      this.toastr.error('Role name is required');
+      return;
+    }
+
+    this.isLoading = true;
+    const payload = {
+      name: this.editRoleData.name,
+      otherRoles: this.editRoleData.otherRoles
+    };
+
+    this.superadminService.updateRole(this.selectedRoleId, payload).subscribe({
+      next: (response) => {
+        this.toastr.success('Role updated successfully');
+        this.modalService.dismissAll();
+        this.loadRoles();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.toastr.error(error.error.message || 'Failed to update role');
+        this.isLoading = false;
       }
     });
   }
