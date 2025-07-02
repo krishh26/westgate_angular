@@ -889,7 +889,14 @@ export class SuperadminService {
 
   deleteTag(tagId: string): Observable<any> {
     return this.httpClient.delete<any>(
-      `${this.baseUrl}/tags/delete/${tagId}`
+      `${this.baseUrl}${SuperAdminEndPoint.DELETE_TAG}/${tagId}`
+    );
+  }
+
+  updateTag(tagId: string, data: { name: string }): Observable<any> {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}/tags/update/${tagId}`,
+      data
     );
   }
 }

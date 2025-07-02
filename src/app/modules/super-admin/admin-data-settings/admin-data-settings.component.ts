@@ -76,6 +76,10 @@ export class AdminDataSettingsComponent implements OnInit {
   };
   selectedRoleId: string = '';
 
+  editTagForm: FormGroup;
+  editTagSubmitted: boolean = false;
+  selectedTagId: string = '';
+
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
@@ -154,6 +158,9 @@ export class AdminDataSettingsComponent implements OnInit {
     });
     this.tagForm = this.fb.group({
       name: ['', [Validators.required]]
+    });
+    this.editTagForm = this.fb.group({
+      name: ['', Validators.required]
     });
   }
 
@@ -1169,6 +1176,41 @@ export class AdminDataSettingsComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error(error.error.message || 'Failed to update role');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  openEditTagModal(content: any, tag: any): void {
+    this.editTagForm.patchValue({
+      name: tag.name
+    });
+    this.selectedTagId = tag._id;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onSubmitEditTag(): void {
+    this.editTagSubmitted = true;
+
+    if (this.editTagForm.invalid) {
+      return;
+    }
+
+    this.isLoading = true;
+    const payload = {
+      name: this.editTagForm.value.name
+    };
+
+    this.superadminService.updateTag(this.selectedTagId, payload).subscribe({
+      next: (response) => {
+        this.toastr.success('Tag updated successfully');
+        this.modalService.dismissAll();
+        this.loadTags();
+        this.isLoading = false;
+        this.editTagSubmitted = false;
+      },
+      error: (error) => {
+        this.toastr.error(error.error.message || 'Failed to update tag');
         this.isLoading = false;
       }
     });
