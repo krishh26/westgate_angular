@@ -363,7 +363,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
 
   getExpertiseDropdownData() {
     this.showLoader = true;
-    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    const url = `${environment.baseUrl}/web-user/drop-down-list?mandatory=true`;
     console.log('Fetching expertise data from URL:', url);
 
     this.http.get<any>(url).subscribe(
@@ -990,7 +990,7 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
   // Separate methods for I Can Do functionality
   getExpertiseICanDoDropdownData() {
     this.showLoader = true;
-    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    const url = `${environment.baseUrl}/web-user/drop-down-list?mandatory=true`;
     console.log('Fetching I Can Do expertise data from URL:', url);
 
     this.http.get<any>(url).subscribe(
