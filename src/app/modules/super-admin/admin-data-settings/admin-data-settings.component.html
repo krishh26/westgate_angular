@@ -664,12 +664,12 @@
           <div class="input-group">
             <input type="text" class="form-control" [(ngModel)]="newOtherRole"
               [ngModelOptions]="{standalone: true}" placeholder="Add other role"
-              (keydown.enter)="addOtherRole(); $event.stopPropagation()">
+              (keydown.enter)="addOtherRole(); $event.preventDefault()">
             <button class="btn btn-outline-primary" type="button" (click)="addOtherRole()">Add</button>
           </div>
-          <div *ngIf="otherRoles.length > 0" class="mt-2">
+          <div *ngIf="roleData.otherRoles?.length > 0" class="mt-2">
             <div class="d-flex flex-wrap gap-2">
-              <div *ngFor="let role of otherRoles; let i = index"
+              <div *ngFor="let role of roleData.otherRoles; let i = index"
                 class="badge bg-primary p-2 d-flex align-items-center" style="font-size: 0.875rem; max-width: 100%; word-break: break-word;">
                 <span class="me-2">{{role}}</span>
                 <button type="button" class="btn-close btn-close-white" style="font-size: 0.5rem;"
@@ -1190,7 +1190,7 @@
           <div class="input-group">
             <input type="text" class="form-control" [(ngModel)]="newOtherRole"
               [ngModelOptions]="{standalone: true}" placeholder="Add other role"
-              (keydown.enter)="addOtherRole(); $event.stopPropagation()">
+              (keydown.enter)="addOtherRole(); $event.preventDefault()">
             <button class="btn btn-outline-primary" type="button" (click)="addOtherRole()">Add</button>
           </div>
           <div *ngIf="editRoleData.otherRoles?.length > 0" class="mt-2">
