@@ -465,10 +465,7 @@ export class NoSupplierMatchProjectsComponent {
     );
   }
 
-  deleteComments(id: any) {
-    let param = {
-      commentId: id,
-    };
+  deleteComments(commentId: number) {
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -481,17 +478,22 @@ export class NoSupplierMatchProjectsComponent {
       if (result?.value) {
         this.showLoader = true;
         // Get the task ID from the project data
-        const taskId = this.projectList.find((project: any) => project.task?.comments?.some((comment: any) => comment.commentId === id))?.task?._id;
+        const taskId = this.projectList.find((project: any) =>
+          project.task?.comments?.some((comment: any) => comment.commentId === commentId)
+        )?.task?._id;
+
         if (!taskId) {
           this.notificationService.showError('Task ID not found');
           this.showLoader = false;
           return;
         }
-        this.projectService.deleteComment(taskId, param).subscribe(
+
+        this.superService.deleteNoSupplierComment(taskId, commentId).subscribe(
           (response: any) => {
             if (response?.status == true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Comment deleted successfully');
+              window.location.reload();
               this.getProjectList();
             } else {
               this.showLoader = false;

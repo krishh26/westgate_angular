@@ -20,6 +20,7 @@ export enum SuperAdminEndPoint {
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
   UPDATE_COMMENT = '/task/update-comment',
+  DELETE_NO_SUPPLIER_COMMENT = '/task/delete-comment',
   APPOINT_FEASIBLITY_USER = '/project/update/appoint-user',
   APPOINT_BID_USER = '/project/update/appoint-bidmanager',
   APPROVE_OR_REJECT = '/project/update/approve-reject',
@@ -897,6 +898,13 @@ export class SuperadminService {
     return this.httpClient.patch<any>(
       `${this.baseUrl}/tags/update/${tagId}`,
       data
+    );
+  }
+
+  deleteNoSupplierComment(taskId: string, commentId: number): Observable<any> {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.DELETE_NO_SUPPLIER_COMMENT}/${taskId}`,
+      { commentId }
     );
   }
 }
