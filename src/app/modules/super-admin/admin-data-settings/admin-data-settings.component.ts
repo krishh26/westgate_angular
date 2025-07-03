@@ -981,15 +981,8 @@ export class AdminDataSettingsComponent implements OnInit {
   }
 
   toggleMandatory(expertise: any): void {
-    // Get the expertise type and remove "-other" suffix if it exists
-    let expertiseType = expertise.type || this.selectedExpertiseType;
-    if (expertiseType.endsWith('-other')) {
-      expertiseType = expertiseType.replace('-other', '');
-    }
-
     const updatedData = {
       itemId: expertise._id,
-      promoteToType: expertiseType,
       isMandatory: !expertise.isMandatory
     };
 

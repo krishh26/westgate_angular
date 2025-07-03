@@ -792,7 +792,7 @@ export class SuperadminService {
     );
   }
 
-  promoteExpertise(payload: { itemId: string, promoteToType: string }): Observable<any> {
+  promoteExpertise(payload: { itemId: string, promoteToType?: string, isMandatory?: boolean }): Observable<any> {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.PROMOTE_EXPERTISE,
       payload
