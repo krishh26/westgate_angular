@@ -262,14 +262,14 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.expired = this.isExpired;
     Payload.projectListStatusWiseTracker.categorisation =
       this.selectedCategorisation.join(',');
-    Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
+   // Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
 
     // Explicitly set assignBidManagerId parameter with selected user ids
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     console.log('Bid Managers Selected:', this.selectedBidUsers.map(user => user.name));
     console.log('assignBidManagerId param:', Payload.projectListStatusWiseTracker.assignBidManagerId);
-    console.log('registerInterest param:', Payload.projectListStatusWiseTracker.registerInterest);
+   // console.log('registerInterest param:', Payload.projectListStatusWiseTracker.registerInterest);
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -482,14 +482,14 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
     Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
-    Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
+  //  Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
 
     // Do not modify status parameters here - they should already be set in the filter method
 
     console.log('getProjectList - Type:', type);
     console.log('getProjectList - Payload status:', Payload.projectListStatusWiseTracker.status);
     console.log('getProjectList - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
-    console.log('getProjectList - Payload registerInterest:', Payload.projectListStatusWiseTracker.registerInterest);
+  //  console.log('getProjectList - Payload registerInterest:', Payload.projectListStatusWiseTracker.registerInterest);
 
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
@@ -551,7 +551,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     Payload.projectListStatusWiseTracker.status = '';
     Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     Payload.projectListStatusWiseTracker.sortlist = false;
-    Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
+   // Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
 
     if (value === 'Shortlisted') {
       // Handle shortlisted case
@@ -695,7 +695,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
   toggleInterestedSupplier() {
     this.isInterestedSupplier = !this.isInterestedSupplier;
-    Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
+  //  Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
     console.log('Toggling Interested Supplier:', this.isInterestedSupplier);
     this.getProjectList();
     this.getDataByStatus();
