@@ -314,7 +314,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
   getExpertiseDropdownData() {
     this.showLoader = true;
-    const url = `${environment.baseUrl}/web-user/drop-down-list`;
+    const url = `${environment.baseUrl}/web-user/drop-down-list?mandatory=true`;
     console.log('Fetching expertise data from URL:', url);
 
     this.http.get<any>(url).subscribe(
