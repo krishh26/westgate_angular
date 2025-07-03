@@ -512,14 +512,38 @@ export class AdminDataSettingsComponent implements OnInit {
   }
 
   addOtherRole(): void {
-    if (this.newOtherRole?.trim() && !this.otherRoles.includes(this.newOtherRole.trim())) {
-      this.otherRoles.push(this.newOtherRole.trim());
-      this.newOtherRole = '';
+    if (this.newOtherRole?.trim()) {
+      // Add to editRoleData.otherRoles if we're editing
+      if (this.selectedRoleId) {
+        if (!this.editRoleData.otherRoles) {
+          this.editRoleData.otherRoles = [];
+        }
+        if (!this.editRoleData.otherRoles.includes(this.newOtherRole.trim())) {
+          this.editRoleData.otherRoles.push(this.newOtherRole.trim());
+        }
+      }
+      // Add to roleData.otherRoles if we're adding new
+      else {
+        if (!this.roleData.otherRoles) {
+          this.roleData.otherRoles = [];
+        }
+        if (!this.roleData.otherRoles.includes(this.newOtherRole.trim())) {
+          this.roleData.otherRoles.push(this.newOtherRole.trim());
+        }
+      }
+      this.newOtherRole = ''; // Clear the input
     }
   }
 
   removeOtherRole(index: number): void {
-    this.otherRoles.splice(index, 1);
+    // Remove from editRoleData.otherRoles if we're editing
+    if (this.selectedRoleId && this.editRoleData.otherRoles) {
+      this.editRoleData.otherRoles.splice(index, 1);
+    }
+    // Remove from roleData.otherRoles if we're adding new
+    else if (this.roleData.otherRoles) {
+      this.roleData.otherRoles.splice(index, 1);
+    }
   }
 
   onSubmitRole(): void {
@@ -1149,33 +1173,37 @@ export class AdminDataSettingsComponent implements OnInit {
   openEditRoleModal(content: any, role: any): void {
     this.editRoleData = {
       name: role.name,
-      otherRoles: [...(role.otherRoles || [])]
+      otherRoles: [...(role.otherRoles || [])]  // Create a new array to avoid reference issues
     };
     this.selectedRoleId = role._id;
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, { size: 'lg' });
   }
 
   onSubmitEditRole(): void {
-    if (!this.editRoleData.name.trim()) {
+    if (!this.editRoleData.name?.trim()) {
       this.toastr.error('Role name is required');
       return;
     }
 
     this.isLoading = true;
     const payload = {
-      name: this.editRoleData.name,
-      otherRoles: this.editRoleData.otherRoles
+      name: this.editRoleData.name.trim(),
+      otherRoles: this.editRoleData.otherRoles || []
     };
 
     this.superadminService.updateRole(this.selectedRoleId, payload).subscribe({
-      next: (response) => {
-        this.toastr.success('Role updated successfully');
-        this.modalService.dismissAll();
-        this.loadRoles();
+      next: (response: any) => {
+        if (response?.status) {
+          this.toastr.success('Role updated successfully');
+          this.loadRoles();
+          this.closeModal();
+        } else {
+          this.toastr.error(response?.message || 'Failed to update role');
+        }
         this.isLoading = false;
       },
-      error: (error) => {
-        this.toastr.error(error.error.message || 'Failed to update role');
+      error: (error: any) => {
+        this.toastr.error(error?.message || 'An error occurred while updating role');
         this.isLoading = false;
       }
     });
