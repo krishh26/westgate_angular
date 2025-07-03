@@ -80,6 +80,9 @@ export class AdminDataSettingsComponent implements OnInit {
   editTagSubmitted: boolean = false;
   selectedTagId: string = '';
 
+  selectedTechnologyId: string = '';
+  isEditingTechnology: boolean = false;
+
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
@@ -308,9 +311,20 @@ export class AdminDataSettingsComponent implements OnInit {
     }, 300); // Wait for 300ms after user stops typing
   }
 
-  openAddTechnologyModal(content: any): void {
+  openAddTechnologyModal(content: any, technology?: any): void {
     this.technologyForm.reset();
     this.submitted = false;
+    this.isEditingTechnology = false;
+    this.selectedTechnologyId = '';
+
+    if (technology) {
+      this.isEditingTechnology = true;
+      this.selectedTechnologyId = technology._id;
+      this.technologyForm.patchValue({
+        name: technology.name
+      });
+    }
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
@@ -321,22 +335,44 @@ export class AdminDataSettingsComponent implements OnInit {
     }
 
     this.showLoader = true;
-    this.superadminService.createTechnology(this.technologyForm.value).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          this.notificationService.showSuccess('Technology added successfully');
-          this.modalService.dismissAll();
-          this.loadTechnologies();
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add technology');
+
+    if (this.isEditingTechnology) {
+      // Update existing technology
+      this.superadminService.updateTechnology(this.selectedTechnologyId, this.technologyForm.value).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            this.notificationService.showSuccess('Technology updated successfully');
+            this.modalService.dismissAll();
+            this.loadTechnologies();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to update technology');
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'An error occurred while updating technology');
+          this.showLoader = false;
         }
-        this.showLoader = false;
-      },
-      error: (error: any) => {
-        this.notificationService.showError(error?.message || 'An error occurred while adding technology');
-        this.showLoader = false;
-      }
-    });
+      });
+    } else {
+      // Create new technology
+      this.superadminService.createTechnology(this.technologyForm.value).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            this.notificationService.showSuccess('Technology added successfully');
+            this.modalService.dismissAll();
+            this.loadTechnologies();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add technology');
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'An error occurred while adding technology');
+          this.showLoader = false;
+        }
+      });
+    }
   }
 
   deleteTechnology(id: string): void {

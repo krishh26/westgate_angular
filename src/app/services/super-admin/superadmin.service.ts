@@ -907,4 +907,11 @@ export class SuperadminService {
       { commentId }
     );
   }
+
+  updateTechnology(technologyId: string, data: { name: string }): Observable<any> {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}${SuperAdminEndPoint.GET_TECHNOLOGIES}/${technologyId}`,
+      data
+    );
+  }
 }
