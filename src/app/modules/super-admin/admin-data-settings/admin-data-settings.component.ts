@@ -54,6 +54,8 @@ export class AdminDataSettingsComponent implements OnInit {
   technologySearchTimeout: any;
   addSubExpertiseName: string = '';
   addSubExpertiseSubmitted: boolean = false;
+  selectedSubExpertiseId: string = '';
+  isEditingSubExpertise: boolean = false;
   userSearchQuery: string = '';
   userSearchTimeout: any;
   userSubmitted: boolean = false;
@@ -678,9 +680,18 @@ export class AdminDataSettingsComponent implements OnInit {
     });
   }
 
-  openAddSubExpertiseModal(content: any): void {
+  openAddSubExpertiseModal(content: any, subExpertise?: any): void {
     this.addSubExpertiseName = '';
     this.addSubExpertiseSubmitted = false;
+    this.isEditingSubExpertise = false;
+    this.selectedSubExpertiseId = '';
+
+    if (subExpertise) {
+      this.isEditingSubExpertise = true;
+      this.selectedSubExpertiseId = subExpertise._id;
+      this.addSubExpertiseName = subExpertise.name;
+    }
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
@@ -694,22 +705,44 @@ export class AdminDataSettingsComponent implements OnInit {
       return;
     }
     this.showLoader = true;
-    this.superadminService.addSubExpertiseByName(this.addSubExpertiseName.trim()).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          this.notificationService.showSuccess('Sub expertise added successfully');
-          this.closeAddSubExpertiseModal();
-          this.loadSubExpertises();
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add sub expertise');
+
+    if (this.isEditingSubExpertise) {
+      // Update existing sub expertise
+      this.superadminService.updateSubExpertise(this.selectedSubExpertiseId, { name: this.addSubExpertiseName.trim() }).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            this.notificationService.showSuccess('Sub expertise updated successfully');
+            this.closeAddSubExpertiseModal();
+            this.loadSubExpertises();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to update sub expertise');
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'An error occurred while updating sub expertise');
+          this.showLoader = false;
         }
-        this.showLoader = false;
-      },
-      error: (error: any) => {
-        this.notificationService.showError(error?.message || 'An error occurred while adding sub expertise');
-        this.showLoader = false;
-      }
-    });
+      });
+    } else {
+      // Create new sub expertise
+      this.superadminService.addSubExpertiseByName(this.addSubExpertiseName.trim()).subscribe({
+        next: (response: any) => {
+          if (response?.status) {
+            this.notificationService.showSuccess('Sub expertise added successfully');
+            this.closeAddSubExpertiseModal();
+            this.loadSubExpertises();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add sub expertise');
+          }
+          this.showLoader = false;
+        },
+        error: (error: any) => {
+          this.notificationService.showError(error?.message || 'An error occurred while adding sub expertise');
+          this.showLoader = false;
+        }
+      });
+    }
   }
 
   onTechnologySearchChange(query: string): void {

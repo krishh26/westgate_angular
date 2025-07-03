@@ -207,7 +207,6 @@
               <div class="card-body">
                 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-
                   <div class="d-flex align-items-center" style="gap: 10px;">
                     <button class="btn btn-primary" (click)="openAddSubExpertiseModal(addSubExpertiseModal)">
                       <i class="bi bi-plus-circle me-2"></i>Add Sub Expertise
@@ -234,9 +233,14 @@
                       <tr *ngFor="let subExpertise of subExpertises">
                         <td>{{ subExpertise.name }}</td>
                         <td>
-                          <button class="btn btn-sm btn-outline-danger" (click)="deleteSubExpertise(subExpertise)">
-                            <i class="bi bi-trash"></i>
-                          </button>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" (click)="openAddSubExpertiseModal(addSubExpertiseModal, subExpertise)" [ngbTooltip]="'Edit'" placement="top">
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteSubExpertise(subExpertise)" [ngbTooltip]="'Delete'" placement="top">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                       <tr *ngIf="subExpertises.length === 0">

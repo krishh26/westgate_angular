@@ -914,4 +914,11 @@ export class SuperadminService {
       data
     );
   }
+
+  updateSubExpertise(subExpertiseId: string, data: { name: string }): Observable<any> {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}/sub-expertise/update/${subExpertiseId}`,
+      data
+    );
+  }
 }
