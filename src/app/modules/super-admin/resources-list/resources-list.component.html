@@ -104,8 +104,15 @@
                     </td>
                     <td>{{candidate?.totalExperience}} years</td>
                     <td>
-                      <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
-                        {{skill}}{{!last ? ', ' : ''}}
+                      <div class="skills-container" [class.expanded]="isSkillsExpanded(candidate._id)">
+                        <p class="skills-text">
+                          <span *ngFor="let skill of candidate?.technicalSkills; let last = last">
+                            {{skill}}{{!last ? ', ' : ''}}
+                          </span>
+                        </p>
+                      </div>
+                      <span *ngIf="candidate?.technicalSkills?.length > 3" class="view-more-btn" (click)="toggleSkills(candidate._id)">
+                        {{ isSkillsExpanded(candidate._id) ? 'View Less' : 'View More' }}
                       </span>
                     </td>
                     <td>£ {{candidate?.ukDayRate}}</td>

@@ -70,3 +70,31 @@ input:checked + .slider:before {
     margin-bottom: 15px;
   }
 }
+
+.skills-container {
+  position: relative;
+  max-height: 48px; // Approximately 2 lines of text
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+
+  &.expanded {
+    max-height: none;
+  }
+}
+
+.view-more-btn {
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.skills-text {
+  margin: 0;
+  line-height: 1.5;
+}

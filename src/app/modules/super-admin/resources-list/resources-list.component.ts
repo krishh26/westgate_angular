@@ -28,6 +28,7 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
   supplierID: string = '';
   supplierData: any = [];
   isExecutive: boolean = false;
+  expandedSkills: { [key: string]: boolean } = {}; // Track expanded state for each candidate
 
   constructor(
     private notificationService: NotificationService,
@@ -146,6 +147,10 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
         this.loading = false;
         if (response && response.status) {
           this.candidatesList = response?.data?.data || [];
+          // Initialize expanded state for each candidate
+          this.candidatesList.forEach((candidate: any) => {
+            this.expandedSkills[candidate._id] = false;
+          });
           // Update totalRecords from meta_data
           this.totalRecords = response?.data?.meta_data?.items || 0;
           // Store candidates list in localStorage
@@ -246,6 +251,16 @@ export class ResourcesListComponent implements OnInit, AfterViewInit {
 
     // Refresh candidate list with new filter
     this.getCandidatesList();
+  }
+
+  // Add method to toggle skills visibility
+  toggleSkills(candidateId: string) {
+    this.expandedSkills[candidateId] = !this.expandedSkills[candidateId];
+  }
+
+  // Add method to check if skills are expanded
+  isSkillsExpanded(candidateId: string): boolean {
+    return this.expandedSkills[candidateId] || false;
   }
 
 }
