@@ -128,6 +128,7 @@ export class ResourcesAddBulkComponent implements OnInit {
           projectComplexity: this.getValueOrEmpty(row[22]),
           outcomeImpact: this.getValueOrEmpty(row[23]),
           clientFeedback: this.getValueOrEmpty(row[24]),
+          uniqueId: this.getValueOrEmpty(row[25]),
         };
       });
 
