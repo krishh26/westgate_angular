@@ -75,6 +75,7 @@
               <table class="table align-middle">
                 <thead class="table-light">
                   <tr>
+                    <th>Resources ID</th>
                     <th>Full Name</th>
                     <th>Roles</th>
                     <th>Experience</th>
@@ -96,6 +97,7 @@
 
                   <tr
                     *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }; let i = index">
+                    <td>{{candidate?.uniqueId}}</td>
                     <td>{{candidate?.fullName}}</td>
                     <td>
                       <span *ngFor="let role of candidate?.roleId" class="badge bg-primary me-1">

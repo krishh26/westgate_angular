@@ -34,6 +34,10 @@
                   <h5 class="text-primary mb-3">Personal Information</h5>
                 </div>
                 <div class="col-md-6 mb-3">
+                  <label class="form-label">Resources ID</label>
+                  <input type="text" class="form-control" [value]="candidateDetails?.uniqueId" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
                   <label class="form-label">Full Name</label>
                   <input type="text" class="form-control" [value]="candidateDetails?.fullName" readonly>
                 </div>
@@ -89,22 +93,22 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">UK Day Rate</label>
-                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukDayRate)"
+                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukDayRate || '0')"
                     readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">UK Hourly Rate</label>
-                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukHourlyRate )"
+                  <input type="text" class="form-control" [value]="'£' + (candidateDetails?.ukHourlyRate || '0')"
                     readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Indian Day Rate</label>
-                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.indianDayRate)"
+                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.indianDayRate || '0')"
                     readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">CTC</label>
-                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.ctc)"
+                  <input type="text" class="form-control" [value]="'₹' + (candidateDetails?.ctc || '0')"
                     readonly>
                 </div>
               </div>

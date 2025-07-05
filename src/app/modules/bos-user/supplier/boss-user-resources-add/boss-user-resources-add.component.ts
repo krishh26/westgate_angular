@@ -109,6 +109,7 @@ export class BossUserResourcesAddComponent {
   initializeForm() {
     this.userProfileForm = this.fb.group({
       supplierId: [''],
+      uniqueId: ['', Validators.required],
       fullName: ['', Validators.required],
       gender: [''],
       nationality: ['', Validators.required],
@@ -405,6 +406,7 @@ export class BossUserResourcesAddComponent {
       // Patch the form with candidate data
       this.userProfileForm.patchValue({
         supplierId: candidateData.supplierId,
+        uniqueId: candidateData.uniqueId,
         fullName: candidateData.fullName,
         gender: candidateData.gender,
         nationality: candidateData.nationality,
