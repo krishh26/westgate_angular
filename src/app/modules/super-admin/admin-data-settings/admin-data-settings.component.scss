@@ -139,3 +139,15 @@
     margin-bottom: 0;
   }
 }
+
+:host ::ng-deep {
+  .custom-ng-select {
+    .ng-placeholder {
+      color: #6c757d;
+    }
+
+    .ng-select-container {
+      min-height: 38px;
+    }
+  }
+}

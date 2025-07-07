@@ -16,7 +16,7 @@ import { HttpParams } from '@angular/common/http';
 })
 export class AdminDataSettingsComponent implements OnInit {
   selectedOption: string = 'technology';
-  selectedExpertiseType: string = 'technologies-other';
+  selectedExpertiseType: string = 'Product';
   technologies: any[] = [];
   expertises: any[] = [];
   roles: any[] = [];
@@ -84,6 +84,32 @@ export class AdminDataSettingsComponent implements OnInit {
 
   selectedTechnologyId: string = '';
   isEditingTechnology: boolean = false;
+
+  expertiseTypes: any[] = [
+    { name: "Product", value: "Product" },
+    { name: "Service", value: "Service" },
+    { name: "Testing Tools", value: "Testing Tools" },
+    { name: "Cloud Platforms", value: "Cloud Platforms" },
+    { name: "DevOps & Automation", value: "DevOps & Automation" },
+    { name: "Containerization & Orchestration", value: "Containerization & Orchestration" },
+    { name: "Networking & Infrastructure", value: "Networking & Infrastructure" },
+    { name: "Database Platforms", value: "Database Platforms" },
+    { name: "Data, Analytics & BI", value: "Data, Analytics & BI" },
+    { name: "AI/ML Platforms", value: "AI/ML Platforms" },
+    { name: "Security & IAM", value: "Security & IAM" },
+    { name: "Monitoring & Observability", value: "Monitoring & Observability" },
+    { name: "Integration & API Management", value: "Integration & API Management" },
+    { name: "Event Streaming & Messaging", value: "Event Streaming & Messaging" },
+    { name: "ERP/Enterprise Systems", value: "ERP/Enterprise Systems" },
+    { name: "CRM & Customer Platforms", value: "CRM & Customer Platforms" },
+    { name: "ITSM/IT Operations", value: "ITSM/IT Operations" },
+    { name: "Business Apps & Productivity", value: "Business Apps & Productivity" },
+    { name: "E-Commerce & CMS", value: "E-Commerce & CMS" },
+    { name: "Learning & HR Systems", value: "Learning & HR Systems" },
+    { name: "Low-Code/No-Code Platforms", value: "Low-Code/No-Code Platforms" },
+    { name: "Testing & QA", value: "Testing & QA" },
+    { name: "Web3 & Decentralized Tech", value: "Web3 & Decentralized Tech" }
+  ];
 
   constructor(
     private superadminService: SuperadminService,
@@ -171,6 +197,11 @@ export class AdminDataSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTechnologies();
+    // Load expertises with Product filter initially
+    if (this.selectedOption === 'expertise') {
+      this.selectedExpertiseType = 'Product';
+      this.loadExpertises();
+    }
     // Load pound rate if it's the selected option
     if (this.selectedOption === 'pound-rate') {
       this.loadPoundRate();
@@ -186,6 +217,7 @@ export class AdminDataSettingsComponent implements OnInit {
     if (option === 'technology') {
       this.loadTechnologies();
     } else if (option === 'expertise') {
+      this.selectedExpertiseType = 'Product'; // Set to Product when switching to expertise
       this.loadExpertises();
     } else if (option === 'subexpertise') {
       this.loadSubExpertises();
@@ -198,19 +230,6 @@ export class AdminDataSettingsComponent implements OnInit {
     } else if (option === 'tags') {
       this.loadTags();
     }
-  }
-
-  selectExpertiseType(type: string): void {
-    if (type === 'technologies') {
-      this.selectedExpertiseType = 'technologies-other';
-    } else if (type === 'product') {
-      this.selectedExpertiseType = 'product-other';
-    } else if (type === 'domain') {
-      this.selectedExpertiseType = 'domain-other';
-    } else {
-      this.selectedExpertiseType = type;
-    }
-    this.loadExpertises();
   }
 
   loadTechnologies(): void {
@@ -241,7 +260,11 @@ export class AdminDataSettingsComponent implements OnInit {
   loadExpertises(): void {
     this.showLoader = true;
 
-    this.superadminService.getExpertiseDropdownList(this.selectedExpertiseType, this.expertiseSearchQuery).subscribe({
+    // Pass type and search as separate parameters
+    this.superadminService.getExpertiseDropdownList(
+      this.selectedExpertiseType || undefined,
+      this.expertiseSearchQuery || undefined
+    ).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.expertises = response.data || [];
@@ -456,16 +479,10 @@ export class AdminDataSettingsComponent implements OnInit {
 
     this.showLoader = true;
 
-    // Remove "-other" suffix from type
-    let expertiseType = this.expertiseForm.value.type;
-    if (expertiseType.endsWith('-other')) {
-      expertiseType = expertiseType.replace('-other', '');
-    }
-
     const payload = {
       name: this.expertiseForm.value.name,
-      type: expertiseType,
-      tags: this.expertiseForm.value.tags
+      type: this.expertiseForm.value.type,
+      tags: this.expertiseForm.value.tags || []
     };
 
     this.superadminService.createCustomExpertise(payload).subscribe({
@@ -762,20 +779,10 @@ export class AdminDataSettingsComponent implements OnInit {
     this.selectedExpertise = expertise;
     this.editSubmitted = false;
 
-    // Debug log to see expertise object structure
-    console.log('Expertise object:', expertise);
-    console.log('Selected expertise type:', this.selectedExpertiseType);
-
-    // Get the expertise type and append "-other" if it doesn't already have it
-    let expertiseType = expertise.type || this.selectedExpertiseType;
-    if (!expertiseType.endsWith('-other')) {
-      expertiseType = `${expertiseType}-other`;
-    }
-
     this.editExpertiseForm.patchValue({
       name: expertise.name,
       itemId: expertise._id,
-      promoteToType: expertiseType,
+      promoteToType: expertise.type,
       tags: expertise.tags || []
     });
 
@@ -790,33 +797,27 @@ export class AdminDataSettingsComponent implements OnInit {
 
     this.showLoader = true;
 
-    // Remove "-other" suffix from promoteToType
-    let promoteToType = this.editExpertiseForm.value.promoteToType;
-    if (promoteToType.endsWith('-other')) {
-      promoteToType = promoteToType.replace('-other', '');
-    }
-
     const payload = {
       itemId: this.editExpertiseForm.value.itemId,
       name: this.editExpertiseForm.value.name,
-      promoteToType: promoteToType,
-      tags: this.editExpertiseForm.value.tags,
+      type: this.editExpertiseForm.value.promoteToType,
+      tags: this.editExpertiseForm.value.tags || [],
       isMandatory: this.selectedExpertise.isMandatory
     };
 
     this.superadminService.promoteExpertise(payload).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.notificationService.showSuccess('Expertise promoted successfully');
+          this.notificationService.showSuccess('Expertise updated successfully');
           this.modalService.dismissAll();
           this.loadExpertises();
         } else {
-          this.notificationService.showError(response?.message || 'Failed to promote expertise');
+          this.notificationService.showError(response?.message || 'Failed to update expertise');
         }
         this.showLoader = false;
       },
       error: (error: any) => {
-        this.notificationService.showError(error?.message || 'An error occurred while promoting expertise');
+        this.notificationService.showError(error?.message || 'An error occurred while updating expertise');
         this.showLoader = false;
       }
     });
