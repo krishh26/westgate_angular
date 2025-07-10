@@ -160,9 +160,9 @@ export class ProjectService {
     if (params?.assignBidManagerId) {
       queryParams = queryParams.set('assignBidManagerId', params?.assignBidManagerId);
     }
-    // if (typeof params?.registerInterest === 'boolean') {
-    //   queryParams = queryParams.set('registerInterest', params.registerInterest);
-    // }
+    if (typeof params?.registerInterest === 'boolean') {
+      queryParams = queryParams.set('registerInterest', params.registerInterest.toString());
+    }
     return this.httpClient.get<any>(url, { params: queryParams });
   }
 

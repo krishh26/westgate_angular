@@ -24,6 +24,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   showLoader: boolean = false;
   selectedStatus: string | null = null;
   selectedBidStatus: string | null = null;
+  totalInterestedCount: number = 0;
   statusWiseData: { status: string; count: number; value: number }[] = [];
   projectStatuses: string[] = [];
   // Declare the properties
@@ -186,6 +187,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
         if (response?.status == true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
+          // Update total interested count
+          this.totalInterestedCount = response?.data?.totalInterestedCount || 0;
           // Store bid manager counts if available in response
           if (response?.data?.bidManagerCounts) {
             this.bidManagerCounts = response.data.bidManagerCounts;
@@ -334,12 +337,13 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     const payload = {
       startDate,
       endDate,
-      expired: this.isExpired, // Pass expired value
-      categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
-      assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','), // Add bid manager IDs
+      expired: this.isExpired,
+      categorisation: this.selectedCategorisation.join(','),
+      assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','),
+      registerInterest: this.isInterestedSupplier // Use registerInterest consistently
     };
 
-    console.log('getDataByStatus - assignBidManagerId:', payload.assignBidManagerId);
+    console.log('getDataByStatus - payload:', payload);
 
     // Call the service to fetch data
     this.supplierService.getDataBYStatus(payload).subscribe(
@@ -384,10 +388,6 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
         this.notificationService.showError(error?.error?.message || error?.message);
       }
     );
-
-    // Update assignBidManagerId before getting project list
-    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
-    this.getProjectList();
   }
 
 
@@ -458,7 +458,12 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     // Make sure assignBidManagerId is still set when paginating
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
-    this.getProjectList();
+    if (this.isInterestedSupplier) {
+      this.filterInterestedSupplier();
+    } else {
+      this.getProjectList();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -472,27 +477,28 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       ? this.formatDate(this.trackerEndDate.value)
       : '';
 
-    // Set basic payload parameters
-    Payload.projectListStatusWiseTracker.adminReview = '';
-    Payload.projectListStatusWiseTracker.keyword = this.searchText;
-    Payload.projectListStatusWiseTracker.page = String(this.page);
-    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
-    Payload.projectListStatusWiseTracker.expired = this.isExpired;
-    Payload.projectListStatusWiseTracker.startCreatedDate = startCreatedDate;
-    Payload.projectListStatusWiseTracker.endCreatedDate = endCreatedDate;
-    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
-    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
-  //  Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
-
-    // Do not modify status parameters here - they should already be set in the filter method
+    // Set basic payload parameters without registerInterest
+    const payload = {
+      keyword: this.searchText || '',
+      page: String(this.page),
+      limit: String(this.pagesize),
+      applied: false,
+      match: '',
+      expired: this.isExpired,
+      startCreatedDate,
+      endCreatedDate,
+      categorisation: this.selectedCategorisation.join(','),
+      assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','),
+      status: Payload.projectListStatusWiseTracker.status || '',
+      bidManagerStatus: Payload.projectListStatusWiseTracker.bidManagerStatus || '',
+      sortlist: Payload.projectListStatusWiseTracker.sortlist || false
+    };
 
     console.log('getProjectList - Type:', type);
-    console.log('getProjectList - Payload status:', Payload.projectListStatusWiseTracker.status);
-    console.log('getProjectList - Payload bidManagerStatus:', Payload.projectListStatusWiseTracker.bidManagerStatus);
-  //  console.log('getProjectList - Payload registerInterest:', Payload.projectListStatusWiseTracker.registerInterest);
+    console.log('getProjectList - Payload:', payload);
 
     this.projectService
-      .getProjectList(Payload.projectListStatusWiseTracker)
+      .getProjectList(payload)
       .subscribe(
         (response) => {
           this.projectList = [];
@@ -501,6 +507,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
           if (response?.status === true) {
             this.showLoader = false;
             this.projectList = response?.data?.data;
+            // Update total interested count
+            this.totalInterestedCount = response?.data?.totalInterestedCount || 0;
             this.projectList.forEach((project: any) => {
               const dueDate = new Date(project.dueDate);
               const currentDate = new Date();
@@ -693,11 +701,67 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     this.getDataByStatus();
   }
 
+  filterInterestedSupplier() {
+    this.showLoader = true;
+
+    // Create a new payload object with all required parameters
+    const payload = {
+      page: String(this.page),
+      limit: String(this.pagesize),
+      keyword: this.searchText || '',
+      applied: false,
+      match: '',
+      expired: this.isExpired,
+      categorisation: this.selectedCategorisation.join(','),
+      assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','),
+      startCreatedDate: this.trackerStartDate.value ? this.formatDate(this.trackerStartDate.value) : '',
+      endCreatedDate: this.trackerEndDate.value ? this.formatDate(this.trackerEndDate.value) : '',
+      status: Payload.projectListStatusWiseTracker.status || '',
+      bidManagerStatus: Payload.projectListStatusWiseTracker.bidManagerStatus || '',
+      sortlist: Payload.projectListStatusWiseTracker.sortlist || false,
+      registerInterest: true
+    };
+
+    console.log('Filtering interested suppliers with payload:', payload);
+
+    this.projectService.getProjectList(payload).subscribe(
+      (response) => {
+        this.projectList = [];
+        this.totalRecords = response?.data?.meta_data?.items;
+        if (response?.status === true) {
+          this.showLoader = false;
+          this.projectList = response?.data?.data;
+          this.totalInterestedCount = response?.data?.totalInterestedCount || 0;
+
+          // Update project list with date differences
+          this.projectList.forEach((project: any) => {
+            const dueDate = new Date(project.dueDate);
+            const currentDate = new Date();
+            const dateDifference = Math.abs(dueDate.getTime() - currentDate.getTime());
+            const formattedDateDifference: string = this.formatMilliseconds(dateDifference);
+            this.dateDifference = formattedDateDifference;
+          });
+
+          // Get status data with the same filter
+          this.getDataByStatus();
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.error?.message || error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
   toggleInterestedSupplier() {
     this.isInterestedSupplier = !this.isInterestedSupplier;
-  //  Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
-    console.log('Toggling Interested Supplier:', this.isInterestedSupplier);
-    this.getProjectList();
-    this.getDataByStatus();
+    if (this.isInterestedSupplier) {
+      this.filterInterestedSupplier();
+    } else {
+      this.getProjectList();
+    }
   }
 }
