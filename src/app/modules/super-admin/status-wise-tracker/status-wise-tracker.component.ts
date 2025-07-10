@@ -155,32 +155,40 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     this.searchText = searchValue;
 
+    // Create a copy of the payload to modify
+    const payloadCopy = { ...Payload.projectListStatusWiseTracker };
+
     // Update payload with filters
-    Payload.projectListStatusWiseTracker.keyword = searchValue;
-    Payload.projectListStatusWiseTracker.page = String(this.page);
-    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
-    Payload.projectListStatusWiseTracker.category = this.selectedCategories.join(',');
-    Payload.projectListStatusWiseTracker.industry = this.selectedIndustries.join(',');
-    Payload.projectListStatusWiseTracker.projectType = this.selectedProjectTypes.join(',');
-    Payload.projectListStatusWiseTracker.clientType = this.selectedClientTypes.join(',');
-    Payload.projectListStatusWiseTracker.status = this.status;
-    Payload.projectListStatusWiseTracker.publishDateRange = this.publishStartDate.value && this.publishEndDate.value
+    payloadCopy.keyword = searchValue;
+    payloadCopy.page = String(this.page);
+    payloadCopy.limit = String(this.pagesize);
+    payloadCopy.category = this.selectedCategories.join(',');
+    payloadCopy.industry = this.selectedIndustries.join(',');
+    payloadCopy.projectType = this.selectedProjectTypes.join(',');
+    payloadCopy.clientType = this.selectedClientTypes.join(',');
+    payloadCopy.status = this.status;
+    payloadCopy.publishDateRange = this.publishStartDate.value && this.publishEndDate.value
       ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
       : '';
-    Payload.projectListStatusWiseTracker.SubmissionDueDateRange = this.submissionStartDate.value && this.submissionEndDate.value
+    payloadCopy.SubmissionDueDateRange = this.submissionStartDate.value && this.submissionEndDate.value
       ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
       : '';
-    Payload.projectListStatusWiseTracker.valueRange = this.minValue + '-' + this.maxValue;
-    Payload.projectListStatusWiseTracker.expired = this.isExpired;
-    Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
+    payloadCopy.valueRange = this.minValue + '-' + this.maxValue;
+    payloadCopy.expired = this.isExpired;
+    payloadCopy.categorisation = this.selectedCategorisation.join(',');
+
+    // Only set registerInterest if it's true
+    if (this.isInterestedSupplier) {
+      payloadCopy.registerInterest = true;
+    }
 
     // Explicitly set assignBidManagerId parameter with selected user ids
-    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+    payloadCopy.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     console.log('Bid Managers Selected in search:', this.selectedBidUsers.map(user => user.name));
-    console.log('assignBidManagerId param in search:', Payload.projectListStatusWiseTracker.assignBidManagerId);
+    console.log('assignBidManagerId param in search:', payloadCopy.assignBidManagerId);
 
-    this.projectService.getProjectList(Payload.projectListStatusWiseTracker).subscribe(
+    this.projectService.getProjectList(payloadCopy).subscribe(
       (response) => {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
@@ -237,45 +245,45 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   searchtext() {
     this.showLoader = true;
 
+    // Create a copy of the payload to modify
+    const payloadCopy = { ...Payload.projectListStatusWiseTracker };
+
     // Update payload with filters
-    Payload.projectListStatusWiseTracker.keyword = this.searchText;
-    Payload.projectListStatusWiseTracker.page = String(this.page);
-    Payload.projectListStatusWiseTracker.limit = String(this.pagesize);
-    Payload.projectListStatusWiseTracker.category =
-      this.selectedCategories.join(',');
-    Payload.projectListStatusWiseTracker.industry =
-      this.selectedIndustries.join(',');
-    Payload.projectListStatusWiseTracker.projectType =
-      this.selectedProjectTypes.join(',');
-    Payload.projectListStatusWiseTracker.clientType =
-      this.selectedClientTypes.join(',');
-    Payload.projectListStatusWiseTracker.status = this.status;
-    Payload.projectListStatusWiseTracker.publishDateRange =
+    payloadCopy.keyword = this.searchText;
+    payloadCopy.page = String(this.page);
+    payloadCopy.limit = String(this.pagesize);
+    payloadCopy.category = this.selectedCategories.join(',');
+    payloadCopy.industry = this.selectedIndustries.join(',');
+    payloadCopy.projectType = this.selectedProjectTypes.join(',');
+    payloadCopy.clientType = this.selectedClientTypes.join(',');
+    payloadCopy.status = this.status;
+    payloadCopy.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
         : '';
-    Payload.projectListStatusWiseTracker.SubmissionDueDateRange =
+    payloadCopy.SubmissionDueDateRange =
       this.submissionStartDate.value && this.submissionEndDate.value
         ? `${this.submissionStartDate.value.year}-${this.submissionStartDate.value.month}-${this.submissionStartDate.value.day} , ${this.submissionEndDate.value.year}-${this.submissionEndDate.value.month}-${this.submissionEndDate.value.day}`
         : '';
-    Payload.projectListStatusWiseTracker.valueRange =
-      this.minValue + '-' + this.maxValue;
+    payloadCopy.valueRange = this.minValue + '-' + this.maxValue;
 
     // Include checkbox values as a comma-separated string
-    Payload.projectListStatusWiseTracker.expired = this.isExpired;
-    Payload.projectListStatusWiseTracker.categorisation =
-      this.selectedCategorisation.join(',');
-   // Payload.projectListStatusWiseTracker.registerInterest = this.isInterestedSupplier;
+    payloadCopy.expired = this.isExpired;
+    payloadCopy.categorisation = this.selectedCategorisation.join(',');
+
+    // Only set registerInterest if it's true
+    if (this.isInterestedSupplier) {
+      payloadCopy.registerInterest = true;
+    }
 
     // Explicitly set assignBidManagerId parameter with selected user ids
-    Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
+    payloadCopy.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
     console.log('Bid Managers Selected:', this.selectedBidUsers.map(user => user.name));
-    console.log('assignBidManagerId param:', Payload.projectListStatusWiseTracker.assignBidManagerId);
-   // console.log('registerInterest param:', Payload.projectListStatusWiseTracker.registerInterest);
+    console.log('assignBidManagerId param:', payloadCopy.assignBidManagerId);
 
     this.projectService
-      .getProjectList(Payload.projectListStatusWiseTracker)
+      .getProjectList(payloadCopy)
       .subscribe(
         (response) => {
           this.projectList = [];
@@ -334,14 +342,18 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       : '';
 
     // Prepare the request payload with expired and categorisation filters
-    const payload = {
+    const payload: any = {
       startDate,
       endDate,
       expired: this.isExpired,
       categorisation: this.selectedCategorisation.join(','),
       assignBidManagerId: this.selectedBidUsers.map(user => user._id).join(','),
-      registerInterest: this.isInterestedSupplier // Use registerInterest consistently
     };
+
+    // Only add registerInterest to payload if it's true
+    if (this.isInterestedSupplier) {
+      payload.registerInterest = true;
+    }
 
     console.log('getDataByStatus - payload:', payload);
 
@@ -478,7 +490,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       : '';
 
     // Set basic payload parameters without registerInterest
-    const payload = {
+    const payload: any = {
       keyword: this.searchText || '',
       page: String(this.page),
       limit: String(this.pagesize),
@@ -493,6 +505,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       bidManagerStatus: Payload.projectListStatusWiseTracker.bidManagerStatus || '',
       sortlist: Payload.projectListStatusWiseTracker.sortlist || false
     };
+
+    // Only add registerInterest to payload if it's true
+    if (this.isInterestedSupplier) {
+      payload.registerInterest = true;
+    }
 
     console.log('getProjectList - Type:', type);
     console.log('getProjectList - Payload:', payload);
