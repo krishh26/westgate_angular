@@ -470,9 +470,6 @@ export class DropAfterFesibilityProjectsComponent {
   }
 
   deleteComments(id: any) {
-    let param = {
-      commentId: id,
-    };
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -491,13 +488,17 @@ export class DropAfterFesibilityProjectsComponent {
           this.showLoader = false;
           return;
         }
-        this.projectService.deleteComment(param, taskId).subscribe(
+
+        // Create the payload with just the commentId
+        const payload = {
+          commentId: id
+        };
+
+        this.projectService.deleteComment(taskId, payload).subscribe(
           (response: any) => {
             if (response?.status === true) {
               this.showLoader = false;
-              this.notificationService.showSuccess(
-                'Comment successfully deleted'
-              );
+              this.notificationService.showSuccess('Comment successfully deleted');
               window.location.reload();
             } else {
               this.showLoader = false;
