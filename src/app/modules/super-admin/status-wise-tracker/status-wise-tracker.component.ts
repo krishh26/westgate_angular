@@ -618,9 +618,6 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   }
 
   deleteComments(id: any) {
-    let param = {
-      commentId: id,
-    };
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you want to delete this comment?`,
@@ -639,11 +636,15 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           return;
         }
-        this.projectService.deleteComment(taskId, param).subscribe(
+        const payload = {
+          commentId: id
+        };
+        this.projectService.deleteComment(taskId, payload).subscribe(
           (response: any) => {
             if (response?.status == true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Comment deleted successfully');
+              window.location.reload();
               this.getProjectList();
             } else {
               this.showLoader = false;

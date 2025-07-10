@@ -444,9 +444,9 @@ export class ProjectService {
       .delete<any>(this.baseUrl + ProjectEndPoint.DELETE_STRIPS + '/' + id);
   }
 
-  deleteComment(payload: any, id: any): Observable<any> {
+  deleteComment(taskId: any, payload: any): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + ProjectEndPoint.DELETE_COMMENT + '/' + id, payload);
+      .patch<any>(`${this.baseUrl}${ProjectEndPoint.DELETE_COMMENT}/${taskId}`, payload);
   }
 
   deleteFeasiblityBidComment(payload: any, id: any): Observable<any> {

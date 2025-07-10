@@ -495,6 +495,7 @@ export class ApproveRejectProjectComponent {
             if (response?.status == true) {
               this.showLoader = false;
               this.notificationService.showSuccess('Comment deleted successfully');
+              window.location.reload()
               this.getProjectList();
             } else {
               this.showLoader = false;
