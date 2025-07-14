@@ -1,608 +1,966 @@
-<main id="main">
-  <style>
-    .fa-info-circle {
-      color: #6c757d;
-      font-size: 0.85rem;
-      cursor: help;
-      transition: color 0.2s ease;
-      margin-left: 4px;
-    }
-    .fa-info-circle:hover {
-      color: #0d6efd;
-    }
-    .tooltip {
-      font-size: 0.875rem;
-    }
-    .tooltip-inner {
-      max-width: 300px;
-      text-align: left;
-    }
-  </style>
-  <section>
-    <div class="container-fluid">
-
-      <div class="row align-items-center justify-content-between">
-        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6">
-          <div class="form-group mb-0">
-            <h4 class="text-theme"><strong>Register New Supplier</strong></h4>
-          </div><br>
-        </div>
-        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6 text-end">
-          <button class="btn btn-primary" routerLink="/boss-user/supplier">
-            Back
-          </button>
-        </div>
+<section class="gray-body">
+  <div class="container">
+    <div class="row mb-3 align-items-center">
+      <div class="col-12">
+        <ul class="wizard">
+          <li *ngFor="let step of steps"
+              [class.active]="step.active"
+              [class.completed]="step.completed"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              [title]="step.title">
+          </li>
+        </ul>
       </div>
+    </div>
+    <div class="row mb-3 align-items-center" *ngIf="currentStep < totalSteps">
+      <div class="col-12">
+        <h4>{{ steps[currentStep - 1].title }}</h4>
+      </div>
+    </div>
 
-      <form (ngSubmit)="submitForm(); $event.preventDefault()" #supplierForm="ngForm" autocomplete="off" novalidate>
-        <div class="row">
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <!-- Company Details -->
-                <div class="row mb-4">
-                  <div class="col-12">
-                    <h5 class="text-primary mb-3">Company Details</h5>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="companyName" class="col-sm-4 col-form-label">Company Name <span
-                          class="text-danger">*</span>
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Enter the full legal name of the company."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.companyName" name="companyName" class="form-control"
-                          placeholder="Enter company name" id="companyName" required #companyNameInput="ngModel">
-                        <div *ngIf="companyNameInput.invalid && (companyNameInput.dirty || companyNameInput.touched)"
-                          class="text-danger small">
-                          Company Name is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="logo" class="col-sm-4 col-form-label">Company Logo URL</label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.logo" name="logo" type="text" class="form-control" placeholder="Enter logo URL" id="logo">
-                      </div>
-                    </div>
-                  </div> -->
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="website" class="col-sm-4 col-form-label">Company Website
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Enter the official website URL (e.g., https://www.example.com)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.website" name="website" type="text" class="form-control"
-                          placeholder="Enter company website" id="website">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="companyAddress" class="col-sm-4 col-form-label">Company Address
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Provide the complete address including street, city, and postal code."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.companyAddress" name="companyAddress" type="text"
-                          class="form-control" placeholder="Enter company address" id="companyAddress">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="country" class="col-sm-4 col-form-label">Country
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Select or type the country where the company is registered."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.country" name="country" type="text" class="form-control"
-                          placeholder="Enter country" id="country">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="email" class="col-sm-4 col-form-label">Contact Email <span
-                          class="text-danger">*</span>
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Enter the official email address for business communication."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.email" name="email" type="text" class="form-control"
-                          placeholder="Enter contact email" id="email" required #companyEmailInput="ngModel">
-                        <div *ngIf="companyEmailInput.invalid && (companyEmailInput.dirty || companyEmailInput.touched)"
-                          class="text-danger small">
-                          Contact email is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="phone" class="col-sm-4 col-form-label">Contact Number
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Provide a valid phone number with country code."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.companyContactNumber" name="phone" type="text"
-                          class="form-control" placeholder="Enter contact number" [maxlength]="10" [minlength]="10"
-                          (keypress)="NumberOnly($event)" id="phone">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="yearEstablishment" class="col-sm-4 col-form-label">Year Established
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Enter the date the company was founded (dd/mm/yyyy)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.yearOfEstablishment" name="yearOfEstablishment" type="date"
-                          class="form-control" [max]="today" id="yearEstablishment">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <div class="row">
-                      <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Write a brief summary of your company's mission, services, and goals."></i>
-                      </label>
-                      <div class="col-sm-10">
-                        <textarea [(ngModel)]="companyForm.executiveSummary" name="executiveSummary"
-                          class="form-control" placeholder="Enter company executive summary" id="executiveSummary"
-                          rows="4"></textarea>
-                      </div>
-                    </div>
-                  </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <!-- Step 1: Company Details -->
+      <div class="custom-card" *ngIf="currentStep === 1">
+        <div class="card-header"><strong>Company Details</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Company Name <span class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter the full legal name of the company"></i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" formControlName="companyName" placeholder="Enter company name"
+                    [class.is-invalid]="isFieldInvalid('companyName')">
                 </div>
-
-                <!-- POC Details -->
-                <div class="row mb-4">
-                  <div class="col-12 d-flex justify-content-between align-items-center">
-                    <h5 class="text-primary mb-3">POC Details</h5>
-                    <button type="button" class="btn btn-primary btn-sm mb-3" (click)="addNewPOC()">
-                      <i class="fas fa-plus"></i> Add POC
-                    </button>
-                  </div>
-
-                  <div *ngFor="let poc of companyForm.pocDetails; let i = index" class="col-12 mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <h6 class="mb-0">POC #{{i + 1}}</h6>
-                          <button *ngIf="companyForm.pocDetails.length > 1" type="button" class="btn btn-danger btn-sm" (click)="removePOC(i)">
-                            <i class="fas fa-trash"></i> Remove
-                          </button>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-6 mb-3">
-                            <div class="row">
-                              <label [for]="'poc_name_' + i" class="col-sm-4 col-form-label">POC Name <span class="text-danger">*</span>
-                                <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                   title="Enter the full name of the Point of Contact."></i>
-                              </label>
-                              <div class="col-sm-8">
-                                <input [(ngModel)]="poc.name" [name]="'poc_name_' + i" type="text" class="form-control"
-                                  placeholder="Enter POC name" [id]="'poc_name_' + i" required #pocNameInput="ngModel">
-                                <div *ngIf="pocNameInput.invalid && (pocNameInput.dirty || pocNameInput.touched)"
-                                  class="text-danger small">
-                                  POC Name is required
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <div class="row">
-                              <label [for]="'poc_phone_' + i" class="col-sm-4 col-form-label">POC Phone <span class="text-danger">*</span>
-                                <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                   title="Enter the direct contact number for the POC."></i>
-                              </label>
-                              <div class="col-sm-8">
-                                <input [(ngModel)]="poc.phone" [name]="'poc_phone_' + i" type="text" class="form-control"
-                                  placeholder="Enter POC phone number" [maxlength]="10" [minlength]="10"
-                                  (keypress)="NumberOnly($event)" [id]="'poc_phone_' + i" required #pocPhoneInput="ngModel">
-                                <div *ngIf="pocPhoneInput.invalid && (pocPhoneInput.dirty || pocPhoneInput.touched)"
-                                  class="text-danger small">
-                                  POC Phone is required
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <div class="row">
-                              <label [for]="'poc_email_' + i" class="col-sm-4 col-form-label">POC Email <span class="text-danger">*</span>
-                                <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                   title="Provide the email address of the POC."></i>
-                              </label>
-                              <div class="col-sm-8">
-                                <input [(ngModel)]="poc.email" [name]="'poc_email_' + i" type="text" class="form-control"
-                                  placeholder="Enter POC email" [id]="'poc_email_' + i" required #pocEmailInput="ngModel">
-                                <div *ngIf="pocEmailInput.invalid && (pocEmailInput.dirty || pocEmailInput.touched)"
-                                  class="text-danger small">
-                                  POC Email is required
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-6 mb-3">
-                            <div class="row">
-                              <label [for]="'poc_role_' + i" class="col-sm-4 col-form-label">POC Role
-                                <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                                   title="Specify the role or designation of the POC in the company."></i>
-                              </label>
-                              <div class="col-sm-8">
-                                <input [(ngModel)]="poc.role" [name]="'poc_role_' + i" type="text" class="form-control"
-                                  placeholder="Enter POC role" [id]="'poc_role_' + i">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Company Website
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter the official website URL"></i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" formControlName="website" placeholder="Enter website URL">
                 </div>
-
-                <!-- Business Details -->
-                <div class="row mb-4">
-                  <div class="col-12">
-                    <h5 class="text-primary mb-3">Business Details</h5>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="typeOfCompany" class="col-sm-4 col-form-label">Business Type
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Indicate the type of business (e.g., Private Limited, LLP, Sole Proprietor)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <ng-select placeholder="Select Business Type" class="custom-ng-select-option"
-                          [items]="businessTypesList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedBusinessTypes" name="selectedBusinessTypes" (change)="onBusinessTypeChange()"
-                          [closeOnSelect]="false" [searchable]="true" [clearable]="true">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="employeeCount" class="col-sm-4 col-form-label">Company Size
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Enter the number of employees (e.g., 10–50, 100–500)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.employeeCount" name="employeeCount" type="text"
-                          class="form-control" placeholder="Enter employee count" (keypress)="NumberOnly($event)"
-                          id="employeeCount">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="turnover" class="col-sm-4 col-form-label">Turnover
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Mention the annual revenue or turnover (e.g., ₹5 Cr, $1M)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.turnover" name="turnover" type="text" class="form-control"
-                          placeholder="Enter turnover" (keypress)="NumberOnly($event)" id="turnover">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="totalProjectsExecuted" class="col-sm-4 col-form-label">Total Projects Executed
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Specify the number of completed projects to date."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="companyForm.totalProjectsExecuted" name="totalProjectsExecuted" type="text"
-                          class="form-control" placeholder="Enter total projects executed"
-                          (keypress)="NumberOnly($event)" id="totalProjectsExecuted">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="certifications" class="col-sm-4 col-form-label">Certifications
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="List any official certifications or accreditations (e.g., ISO 9001, CMMI)."></i>
-                      </label>
-                      <div class="col-sm-8">
-                        <div class="form-control p-2">
-                          <div class="tags">
-                            <span *ngFor="let cert of companyForm.certifications; let i = index" class="tag">
-                              <span class="remove-tag" (click)="removeArrayItem('certifications', i)">&times;</span>
-                              {{ cert }}
-                            </span>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" placeholder="Enter certification and press Enter"
-                              (keydown.enter)="handleEnterKey($event, 'certifications')">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 mb-3">
-                    <!-- Expertise field -->
-                    <label for="expertise" class="col-form-label">Expertise
-                      <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                         title="List all the products, platforms, or software solutions your company has built or developed over time (e.g., ERP systems, mobile apps, SaaS platforms)."></i>
-                    </label>
-                    <div class="form-control p-2">
-                      <div *ngFor="let expertise of companyForm.expertise; let i = index" class="mb-3">
-                        <span class="tag">
-                          <span class="remove-tag" (click)="removeExpertise(i)">&times;</span>
-                          {{ expertise.name }}
-                        </span>
-                        <div class="ms-3">
-                          <div class="tags">
-                            <span *ngFor="let sub of expertise.subExpertise; let j = index" class="tag">
-                              <span class="remove-tag" (click)="removeSubExpertise(i, j)">&times;</span>
-                              {{ sub }}
-                            </span>
-                          </div>
-                          <div class="mt-2">
-                            <div class="dropdown">
-                              <ng-select [(ngModel)]="selectedSubExpertiseMap[i]" name="subExpertise_{{i}}"
-                                [items]="subExpertiseOptions" [multiple]="true"
-                                placeholder="Select sub-expertise (required) - Mention the industries or sectors your company has delivered this solution to (e.g., Education, Healthcare, FinTech, Retail)." [closeOnSelect]="false"
-                                [searchable]="true" [clearable]="true" (change)="onSubExpertiseChange(i, $event)"
-                                [addTag]="onAddTagSubExpertise" [loading]="addingNewSubExpertise">
-                                <ng-template ng-header-tmp>
-                                  <div class="p-2 border-bottom">
-                                    <div class="form-check">
-                                      <input class="form-check-input" type="checkbox"
-                                        [checked]="selectedSubExpertiseMap[i]?.length === subExpertiseOptions?.length"
-                                        (change)="toggleSelectAllSubExpertise(i, $event)">
-                                      <label class="form-check-label">Select All</label>
-                                    </div>
-                                  </div>
-                                </ng-template>
-                                <ng-template ng-tag-tmp let-search="searchTerm">
-                                  <div *ngIf="search">
-                                    <span>Add new sub-expertise "{{search}}"</span>
-                                  </div>
-                                </ng-template>
-                              </ng-select>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-2" (click)="addMultipleSubExpertise(i)"
-                              [disabled]="!selectedSubExpertiseMap[i] || selectedSubExpertiseMap[i].length === 0">
-                              Add Sub-Expertise
-                            </button>
-                            <div *ngIf="expertise.subExpertise.length === 0" class="text-danger small mt-1">
-                              Sub-expertise is required
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        <div class="dropdown">
-                          <ng-select placeholder="Select expertise" [items]="expertiseDropdownOptions"
-                            bindLabel="name" [multiple]="true" [(ngModel)]="selectedExpertiseItems"
-                            name="selectedExpertiseItems" [closeOnSelect]="false" [searchable]="true"
-                            [clearable]="true" [addTag]="onAddTag" [groupBy]="'type'" [hideSelected]="false"
-                            [virtualScroll]="true">
-                            <ng-template ng-header-tmp>
-                              <div class="p-2 border-bottom">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox"
-                                    [checked]="selectedExpertiseItems?.length === expertiseDropdownOptions?.length"
-                                    (change)="toggleSelectAllExpertise($event)">
-                                  <label class="form-check-label">Select All</label>
-                                </div>
-                              </div>
-                            </ng-template>
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              <span class="group-header text-primary">{{item.type | titlecase}}</span>
-                            </ng-template>
-                            <ng-template ng-label-tmp let-item="item">
-                              <span>{{item.name}}</span>
-                            </ng-template>
-                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                              <span>{{item.name}}</span>
-                            </ng-template>
-                            <ng-template ng-tag-tmp let-search="searchTerm">
-                              <div *ngIf="search">
-                                <div class="mb-2">Add "{{search}}" to expertise</div>
-                                <div class="radio-group d-flex flex-column">
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType" id="typeTech"
-                                      [(ngModel)]="newExpertiseType" value="technologies">
-                                    <label class="form-check-label" for="typeTech">Technologies</label>
-                                  </div>
-                                  <div class="form-check mb-1">
-                                    <input class="form-check-input" type="radio" name="expertiseType"
-                                      id="typeProduct" [(ngModel)]="newExpertiseType" value="product">
-                                    <label class="form-check-label" for="typeProduct">Product</label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="expertiseType"
-                                      id="typeDomain" [(ngModel)]="newExpertiseType" value="domain">
-                                    <label class="form-check-label" for="typeDomain">Domain</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </ng-template>
-                          </ng-select>
-                        </div>
-                        <button type="button" class="btn btn-primary mt-2" (click)="addSelectedExpertise()"
-                          [disabled]="!selectedExpertiseItems || selectedExpertiseItems.length === 0">
-                          Add Expertise
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 mb-3">
-                    <!-- I Can Do field -->
-                    <div class="row">
-                      <label for="icando" class="col-sm-2 col-form-label">I Can Do
-                        <i class="fas fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                           title="Select the type of solutions you offer"></i>
-                      </label>
-                      <div class="col-sm-10">
-                        <ng-select placeholder="Select I Can Do Services" class="custom-ng-select-option"
-                          [items]="servicesList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedServices" name="icando" [closeOnSelect]="false"
-                          [searchable]="true" [clearable]="true" (change)="onServicesChange()">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="categoryList" class="col-sm-4 col-form-label">Category</label>
-                      <div class="col-sm-8">
-                        <ng-select placeholder="Select Category" class="custom-ng-select-option"
-                          [items]="categoryDomains" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedCategories" name="selectedCategories" (change)="onCategoryChange()"
-                          [addTag]="true" (add)="onItemAddCategory($event)">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div> -->
-
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <label for="technologyStack" class="col-sm-4 col-form-label">Technology Stack</label>
-                      <div class="col-sm-8">
-                        <ng-select placeholder="Select Technologies" class="custom-ng-select-option"
-                          [items]="technologiesList" bindLabel="name" [multiple]="true" bindValue="value"
-                          [(ngModel)]="selectedTechnologies" name="selectedTechnologies"
-                          (change)="onTechnologiesChange()" [addTag]="addTechnology" [loading]="showLoader">
-                        </ng-select>
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Company Address
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter company address"></i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" formControlName="companyAddress"
+                    placeholder="Enter company address">
                 </div>
-
-                <!-- Client Information -->
-                <div class="row mb-4">
-                  <div class="col-12">
-                    <h5 class="text-primary mb-3">Client Information</h5>
-                  </div>
-                  <div class="col-md-12 mb-3">
-                    <div class="row">
-                      <label for="keyClients" class="col-sm-4 col-form-label">Key Clients</label>
-                      <div class="col-sm-8">
-                        <div class="form-control p-2">
-                          <div class="tags">
-                            <span *ngFor="let client of companyForm.keyClients; let i = index" class="tag">
-                              <span class="remove-tag" (click)="removeArrayItem('keyClients', i)">&times;</span>
-                              {{ client }}
-                            </span>
-                          </div>
-                          <div class="mt-2">
-                            <input type="text" class="form-control" placeholder="Enter key client and press Enter"
-                              (keydown.enter)="handleEnterKey($event, 'keyClients')">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Country
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter country"></i></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" formControlName="country" placeholder="Enter country">
                 </div>
-
-                <!-- Supplier Type -->
-                <div class="row mb-4">
-                  <div class="col-12">
-                    <h5 class="text-primary mb-3">Supplier Type <span class="text-danger">*</span></h5>
-                    <p class="text-muted small">At least one supplier type must be selected</p>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox"
-                            [(ngModel)]="companyForm.resourceSharingSupplier" name="resourceSharingSupplier"
-                            id="resourceSharingSupplier" (change)="checkSupplierTypeSelection()">
-                          <label class="form-check-label" for="resourceSharingSupplier">
-                            Resource Sharing Supplier
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox"
-                            [(ngModel)]="companyForm.subcontractingSupplier" name="subcontractingSupplier"
-                            id="subcontractingSupplier" (change)="checkSupplierTypeSelection()">
-                          <label class="form-check-label" for="subcontractingSupplier">
-                            Sub Contracting Supplier
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12" *ngIf="showSupplierTypeError">
-                    <div class="alert alert-danger py-1">
-                      Please select at least one supplier type
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Contact Email
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter the official email"></i></label>
+                <div class="col-sm-8">
+                  <input type="email" class="form-control" formControlName="email" placeholder="Enter email">
                 </div>
-
-                <!-- In Hold Comments -->
-                <!-- <div class="row mb-4">
-                  <div class="col-12">
-                    <h5 class="text-primary mb-3">In Hold Comments</h5>
-                  </div>
-                  <div class="col-md-12 mb-3">
-                    <div class="row">
-                      <label for="inHoldComment" class="col-sm-4 col-form-label">Comment</label>
-                      <div class="col-sm-8">
-                        <input [(ngModel)]="inHoldComment" name="inHoldComment" type="text" class="form-control"
-                          placeholder="Enter comment" id="inHoldComment">
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Contact Number
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Enter the official contact number"></i></label>
+                <div class="col-sm-8">
+                  <input type="tel" class="form-control" formControlName="companyContactNumber"
+                    placeholder="Enter contact number" (keypress)="NumberOnly($event)" minlength="10" maxlength="10">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-4 col-form-label col-form-label-sm">Established Year
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Select establishment date"></i></label>
+                <div class="col-sm-8">
+                  <input type="date" class="form-control" formControlName="yearOfEstablishment" [max]="currentDate"
+                    [min]="'1900-01-01'">
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Executive Summary
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Write a brief summary"></i></label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" formControlName="executiveSummary" rows="3"
+                    placeholder="Write a brief summary of your company"></textarea>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row mt-4">
+
+        <div class="card-header"><strong>POC Details</strong></div>
+        <div class="card-body">
+          <div formArrayName="pocDetails">
+            <div *ngFor="let poc of getPocDetails(); let i = index" [formGroupName]="i" class="row mb-3">
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3 align-items-center">
+                  <label class="col-sm-4 col-form-label col-form-label-sm">POC Name <span
+                      class="astric">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Enter POC name">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3 align-items-center">
+                  <label class="col-sm-4 col-form-label col-form-label-sm">POC Phone <span
+                      class="astric">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="tel" class="form-control" formControlName="phone" placeholder="Enter POC phone"
+                      (keypress)="NumberOnly($event)" minlength="10" maxlength="10">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3 align-items-center">
+                  <label class="col-sm-4 col-form-label col-form-label-sm">POC Email <span
+                      class="astric">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="email" class="form-control" formControlName="email" placeholder="Enter POC email">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-6 col-12">
+                <div class="row mb-3 align-items-center">
+                  <label class="col-sm-4 col-form-label col-form-label-sm">POC Role <span
+                      class="astric">*</span></label>
+                  <div class="col-sm-8 d-flex">
+                    <input type="text" class="form-control" formControlName="role" placeholder="Enter POC role">
+                    <button type="button" class="btn btn-danger ms-2" *ngIf="i > 0" (click)="removePocDetail(i)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-end">
+              <button type="button" class="btn btn-primary" (click)="addPocDetail()">Add Another POC</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header"><strong>Business Details</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3">
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-group">
+                    <label class="form-label">Business Type
+                      <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Select business type"></i>
+                    </label>
+                    <ng-select [items]="businessTypesList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                      [clearable]="true" bindLabel="name" bindValue="value" placeholder="Select business type"
+                      formControlName="typeOfCompany">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-group">
+                    <label class="form-label">Employee Count
+                      <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Enter total number of employees"></i>
+                    </label>
+                    <input type="text" class="form-control" formControlName="employeeCount"
+                      placeholder="Enter employee count" (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-group">
+                    <label class="form-label">Turnover
+                      <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Enter annual turnover"></i>
+                    </label>
+                    <input type="text" class="form-control" formControlName="turnover" placeholder="Enter turnover"
+                      (keypress)="NumberOnly($event)">
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-group">
+                    <div class="form-group">
+                      <label class="form-label">Total Projects
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Enter total projects executed"></i>
+                      </label>
+                      <input type="text" class="form-control" formControlName="totalProjectsExecuted"
+                        placeholder="Enter total projects" (keypress)="NumberOnly($event)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-group">
+                    <label class="form-label">Certifications
+                      <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Enter certifications"></i>
+                    </label>
+                    <div class="tag-input-container">
+                      <div class="tag-list" *ngIf="certificationTags.length > 0">
+                        <span class="tag" *ngFor="let tag of certificationTags; let i = index">
+                          {{tag}}
+                          <i class="bi bi-x" (click)="removeTag(i)"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control" [formControlName]="'certificationInput'"
+                        placeholder="Type certification and press Enter" (keyup.enter)="addTag($event)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="resourceSharingSupplier"
+                      id="resourceSharing">
+                    <label class="form-check-label" for="resourceSharing">
+                      Resource Sharing Supplier <span class="astric">*</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="subcontractingSupplier"
+                      id="subcontracting">
+                    <label class="form-check-label" for="subcontracting">
+                      Subcontracting Supplier <span class="astric">*</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3" *ngIf="!validateSupplierType() && submitted">
+                <div class="col-12">
+                  <div class="alert alert-danger">
+                    Please select at least one supplier type (Resource Sharing Supplier or Subcontracting Supplier).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Technology Stack & Services -->
+      <div class="custom-card" *ngIf="currentStep === 2">
+        <div class="card-header"><strong>Technology Stack & Services</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <!-- Services -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Services
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Select services you can provide"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="services" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Select services you can provide"
+                    formControlName="services">
+                  </ng-select>
+                </div>
+              </div>
+
+              <!-- Services Other -->
+              <div class="row mb-3 align-items-center" *ngIf="showServicesOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="servicesOther"
+                    placeholder="Please specify other services" [class.is-invalid]="isFieldInvalid('servicesOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('servicesOther')">
+                    Please specify other services
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Product dropdown -->
+              <div class="row mb-3 align-items-center" *ngIf="showProductDropdown">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Pre-Built Products
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Select products"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="products" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Select products"
+                    formControlName="product">
+                  </ng-select>
+                </div>
+              </div>
+
+              <!-- Technology Stack -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Technology Stack
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Select your technology stack"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="technologies" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Select your technology stack"
+                    formControlName="technologyStack">
+                  </ng-select>
+                </div>
+              </div>
+
+              <!-- Technology Stack Other -->
+              <div class="row mb-3 align-items-center" *ngIf="showTechnologyStackOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="technologyStackOther"
+                    placeholder="Please specify other technologies"
+                    [class.is-invalid]="isFieldInvalid('technologyStackOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('technologyStackOther')">
+                    Please specify other technologies
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Core Services & Capabilities -->
+      <div class="custom-card" *ngIf="currentStep === 3">
+        <div class="card-header"><strong>Services and Capabilities</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Cloud Platforms
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your cloud platforms"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="cloudPlatformsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingCloudPlatforms" bindLabel="name" bindValue="name"
+                    placeholder="Choose your cloud platforms" formControlName="cloudPlatforms">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showCloudPlatformsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="cloudPlatformsOther"
+                    placeholder="Please specify other cloud platforms"
+                    [class.is-invalid]="isFieldInvalid('cloudPlatformsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('cloudPlatformsOther')">
+                    Please specify other cloud platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">DevOps & Automation
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your DevOps tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="devOpsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingDropdownData" bindLabel="name" bindValue="name"
+                    placeholder="Choose your DevOps tools" formControlName="devOpsAutomation">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showDevOpsAutomationOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="devOpsAutomationOther"
+                    placeholder="Please specify other DevOps tools"
+                    [class.is-invalid]="isFieldInvalid('devOpsAutomationOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('devOpsAutomationOther')">
+                    Please specify other DevOps tools
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Containerization & Orchestration
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your containerization tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="containerizationList" [multiple]="true" [closeOnSelect]="false"
+                    [searchable]="true" [clearable]="true" [loading]="isLoadingDropdownData" bindLabel="name"
+                    bindValue="name" placeholder="Choose your containerization tools"
+                    formControlName="containerizationOrchestration">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showContainerizationOrchestrationOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="containerizationOrchestrationOther"
+                    placeholder="Please specify other containerization tools"
+                    [class.is-invalid]="isFieldInvalid('containerizationOrchestrationOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('containerizationOrchestrationOther')">
+                    Please specify other containerization tools
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Infrastructure, Integration & Security -->
+      <div class="custom-card" *ngIf="currentStep === 4">
+        <div class="card-header"><strong>Infrastructure, Integration and Security Details</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <!-- Networking and Infrastructure -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Networking and Infrastructure
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your networking & infrastructure tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="networkingList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
+                    placeholder="Choose your networking tools" formControlName="networkingInfrastructure">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showNetworkingInfrastructureOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="networkingInfrastructureOther"
+                    placeholder="Please specify other networking tools"
+                    [class.is-invalid]="isFieldInvalid('networkingInfrastructureOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('networkingInfrastructureOther')">
+                    Please specify other networking tools
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security and IAM -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Security and IAM
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your security & IAM tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="securityList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
+                    placeholder="Choose your security tools" formControlName="securityIAM">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showSecurityIAMOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="securityIAMOther"
+                    placeholder="Please specify other security tools"
+                    [class.is-invalid]="isFieldInvalid('securityIAMOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('securityIAMOther')">
+                    Please specify other security tools
+                  </div>
+                </div>
+              </div>
+
+              <!-- Monitoring and Observability -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Monitoring and Observability<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your monitoring & observability tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="monitoringList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
+                    placeholder="Choose your monitoring tools" formControlName="monitoringObservability"
+                    [class.is-invalid]="isFieldInvalid('monitoringObservability')">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('monitoringObservability')">
+                    Please select at least one monitoring tool
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showMonitoringObservabilityOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="monitoringObservabilityOther"
+                    placeholder="Please specify other monitoring tools"
+                    [class.is-invalid]="isFieldInvalid('monitoringObservabilityOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('monitoringObservabilityOther')">
+                    Please specify other monitoring tools
+                  </div>
+                </div>
+              </div>
+
+              <!-- Integration and API Management -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Integration and API Management<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your integration & API management tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="apiManagementList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
+                    placeholder="Choose your API management tools" formControlName="integrationAPIManagement"
+                    [class.is-invalid]="isFieldInvalid('integrationAPIManagement')">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('integrationAPIManagement')">
+                    Please select at least one API management tool
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showIntegrationAPIManagementOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="integrationAPIManagementOther"
+                    placeholder="Please specify other API management tools"
+                    [class.is-invalid]="isFieldInvalid('integrationAPIManagementOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('integrationAPIManagementOther')">
+                    Please specify other API management tools
+                  </div>
+                </div>
+              </div>
+
+              <!-- Event Streaming and Messaging -->
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Event Streaming and Messaging<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your event streaming & messaging tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="eventStreamingList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
+                    placeholder="Choose your event streaming tools" formControlName="eventStreamingMessaging"
+                    [class.is-invalid]="isFieldInvalid('eventStreamingMessaging')">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.name }}
+                    </ng-template>
+                  </ng-select>
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('eventStreamingMessaging')">
+                    Please select at least one event streaming tool
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showEventStreamingMessagingOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="eventStreamingMessagingOther"
+                    placeholder="Please specify other event streaming tools"
+                    [class.is-invalid]="isFieldInvalid('eventStreamingMessagingOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('eventStreamingMessagingOther')">
+                    Please specify other event streaming tools
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Data, Intelligence & Automation -->
+      <div class="custom-card" *ngIf="currentStep === 5">
+        <div class="card-header"><strong>Data, Intelligence and Automation Details</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Database Platforms<span class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your database platforms"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="databasePlatformsList" [multiple]="true" [closeOnSelect]="false"
+                    [searchable]="true" [clearable]="true" bindLabel="name" bindValue="name"
+                    placeholder="Choose database platforms" formControlName="databasePlatforms"
+                    [class.is-invalid]="isFieldInvalid('databasePlatforms')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showDatabasePlatformsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="databasePlatformsOther"
+                    placeholder="Please specify other database platforms"
+                    [class.is-invalid]="isFieldInvalid('databasePlatformsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('databasePlatformsOther')">
+                    Please specify other database platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Data, Analytics & BI<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your data, analytics & BI tools"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="dataAnalyticsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose data analytics & BI tools"
+                    formControlName="dataAnalyticsBI" [class.is-invalid]="isFieldInvalid('dataAnalyticsBI')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showDataAnalyticsBIOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="dataAnalyticsBIOther"
+                    placeholder="Please specify other data analytics tools"
+                    [class.is-invalid]="isFieldInvalid('dataAnalyticsBIOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('dataAnalyticsBIOther')">
+                    Please specify other data analytics tools
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">AI / ML Platforms<span class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your AI / ML platforms"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="aiMlPlatformsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose AI / ML platforms"
+                    formControlName="aiMLPlatforms" [class.is-invalid]="isFieldInvalid('aiMLPlatforms')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showAiMLPlatformsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="aiMLPlatformsOther"
+                    placeholder="Please specify other AI/ML platforms"
+                    [class.is-invalid]="isFieldInvalid('aiMLPlatformsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('aiMLPlatformsOther')">
+                    Please specify other AI/ML platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Enterprise Systems & Business Apps -->
+      <div class="custom-card" *ngIf="currentStep === 6">
+        <div class="card-header"><strong>Enterprise Systems and Business Application</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">ERP / Enterprise<br> Systems<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your ERP / Enterprise Systems"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="erpSystemsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose ERP / Enterprise systems"
+                    formControlName="erpEnterpriseSystems" [class.is-invalid]="isFieldInvalid('erpEnterpriseSystems')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showErpEnterpriseSystemsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="erpEnterpriseSystemsOther"
+                    placeholder="Please specify other ERP systems"
+                    [class.is-invalid]="isFieldInvalid('erpEnterpriseSystemsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('erpEnterpriseSystemsOther')">
+                    Please specify other ERP systems
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">CRM and Customer Platforms<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your CRM & Customer Platforms"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="crmPlatformsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose CRM & customer platforms"
+                    formControlName="crmCustomerPlatforms" [class.is-invalid]="isFieldInvalid('crmCustomerPlatforms')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showCrmCustomerPlatformsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="crmCustomerPlatformsOther"
+                    placeholder="Please specify other CRM platforms"
+                    [class.is-invalid]="isFieldInvalid('crmCustomerPlatformsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('crmCustomerPlatformsOther')">
+                    Please specify other CRM platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">ITSM / IT Operations<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your ITSM / IT Operations"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="itsmList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose ITSM / IT operations"
+                    formControlName="itsmITOperations" [class.is-invalid]="isFieldInvalid('itsmITOperations')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showItsmITOperationsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="itsmITOperationsOther"
+                    placeholder="Please specify other ITSM tools"
+                    [class.is-invalid]="isFieldInvalid('itsmITOperationsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('itsmITOperationsOther')">
+                    Please specify other ITSM tools
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Business Apps & Productivity<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your Business Apps & Productivity"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="businessAppsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name"
+                    placeholder="Choose Business Apps and productivity" formControlName="businessAppsProductivity"
+                    [class.is-invalid]="isFieldInvalid('businessAppsProductivity')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showBusinessAppsProductivityOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="businessAppsProductivityOther"
+                    placeholder="Please specify other business apps"
+                    [class.is-invalid]="isFieldInvalid('businessAppsProductivityOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('businessAppsProductivityOther')">
+                    Please specify other business apps
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7: Front-End, Composable & Emerging Tech -->
+      <div class="custom-card" *ngIf="currentStep === 7">
+        <div class="card-header"><strong>Front-End, Composable and Emerging Technology</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">E-Commerce & CMS<span class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your E-Commerce & CMS"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="eCommerceCmsList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose E-Commerce & CMS"
+                    formControlName="eCommerceCMS" [class.is-invalid]="isFieldInvalid('eCommerceCMS')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showECommerceCMSOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="eCommerceCMSOther"
+                    placeholder="Please specify other E-Commerce & CMS platforms"
+                    [class.is-invalid]="isFieldInvalid('eCommerceCMSOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('eCommerceCMSOther')">
+                    Please specify other E-Commerce & CMS platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Learning & HR Systems<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your Learning & HR Systems"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="learningHrSystemsList" [multiple]="true" [closeOnSelect]="false"
+                    [searchable]="true" [clearable]="true" bindLabel="name" bindValue="name"
+                    placeholder="Choose Learning & HR Systems" formControlName="learningHRSystems"
+                    [class.is-invalid]="isFieldInvalid('learningHRSystems')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showLearningHRSystemsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="learningHRSystemsOther"
+                    placeholder="Please specify other Learning & HR systems"
+                    [class.is-invalid]="isFieldInvalid('learningHRSystemsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('learningHRSystemsOther')">
+                    Please specify other Learning & HR systems
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Low-Code / No-Code Platforms<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your Low-Code / No-Code Platforms"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="lowCodeNoCodeList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name"
+                    placeholder="Choose Low-Code / No-Code Platforms" formControlName="lowCodeNoCodePlatforms"
+                    [class.is-invalid]="isFieldInvalid('lowCodeNoCodePlatforms')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showLowCodeNoCodePlatformsOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="lowCodeNoCodePlatformsOther"
+                    placeholder="Please specify other Low-Code / No-Code platforms"
+                    [class.is-invalid]="isFieldInvalid('lowCodeNoCodePlatformsOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('lowCodeNoCodePlatformsOther')">
+                    Please specify other Low-Code / No-Code platforms
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Testing and QA<span class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your Testing & QA"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="testingQaList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    [clearable]="true" bindLabel="name" bindValue="name" placeholder="Choose Testing & QA"
+                    formControlName="testingQA" [class.is-invalid]="isFieldInvalid('testingQA')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showTestingQAOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="testingQAOther"
+                    placeholder="Please specify other Testing & QA tools"
+                    [class.is-invalid]="isFieldInvalid('testingQAOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('testingQAOther')">
+                    Please specify other Testing & QA tools
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row mb-3 align-items-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Web3 and Decentralized Tech<span
+                    class="astric">*</span>
+                  <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Choose your Web3 & Decentralized Tech"></i></label>
+                <div class="col-sm-10">
+                  <ng-select [items]="web3DecentralizedList" [multiple]="true" [closeOnSelect]="false"
+                    [searchable]="true" [clearable]="true" bindLabel="name" bindValue="name"
+                    placeholder="Choose Web3 and decentralized tech" formControlName="web3DecentralizedTech"
+                    [class.is-invalid]="isFieldInvalid('web3DecentralizedTech')">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-3 align-items-center" *ngIf="showWeb3DecentralizedTechOther">
+                <label class="col-sm-2 col-form-label col-form-label-sm mobile-hide">&nbsp;</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="web3DecentralizedTechOther"
+                    placeholder="Please specify other Web3 & Decentralized tech"
+                    [class.is-invalid]="isFieldInvalid('web3DecentralizedTechOther')">
+                  <div class="invalid-feedback" *ngIf="isFieldInvalid('web3DecentralizedTechOther')">
+                    Please specify other Web3 & Decentralized tech
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
+      <!-- Error Message -->
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <!-- Navigation Buttons -->
+      <div class="card-footer" *ngIf="currentStep < totalSteps">
+        <div class="row">
           <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary mob-w-100 me-2"
-              [disabled]="!companyForm.companyName ||
-                          !companyForm.email ||
-                          !companyForm.pocDetails[0]?.name ||
-                          !companyForm.pocDetails[0]?.phone ||
-                          !companyForm.pocDetails[0]?.email ||
-                          (!companyForm.resourceSharingSupplier && !companyForm.subcontractingSupplier)">
-              Submit
+            <button type="button" class="btn btn-dark me-2" (click)="previousStep()"
+              *ngIf="currentStep > 1">Back</button>
+            <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < totalSteps - 1">Next
+              Step</button>
+            <button type="submit" class="btn btn-primary" *ngIf="currentStep === totalSteps - 1"
+              [disabled]="loading || !isCurrentStepValid()">
+              <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+              Submit Form
             </button>
           </div>
         </div>
-      </form>
+      </div>
+    </form>
+
+    <!-- Step 8: Success Section -->
+    <div class="custom-card p-5 text-center" *ngIf="currentStep === 8">
+      <img src="assets/img/success-image.png" width="230" class="mb-3" />
+      <h3 class="text-success"><strong>Registration Successful</strong></h3>
+      <p class="mb-0">You will get the registration details with registration id</p>
+      <p class="text-muted">Thank you for booking a registration.</p>
+      <a routerLink="/boss-user/supplier" class="btn btn-primary">BACK</a>
     </div>
-  </section>
-</main>
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+  </div>
+</section>
