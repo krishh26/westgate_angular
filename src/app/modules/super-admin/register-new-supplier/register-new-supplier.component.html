@@ -445,13 +445,13 @@
             <div class="col-12">
               <!-- Networking and Infrastructure -->
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Networking and Infrastructure
+                <label class="col-sm-2 col-form-label col-form-label-sm">Networking & Infrastructure
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your networking & infrastructure tools"></i></label>
                 <div class="col-sm-10">
                   <ng-select [items]="networkingList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
                     [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
-                    placeholder="Choose your networking tools" formControlName="networkingInfrastructure">
+                    placeholder="Choose your networking & infrastructure tools" formControlName="networkingInfrastructure">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.name }}
                     </ng-template>
@@ -472,13 +472,13 @@
 
               <!-- Security and IAM -->
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Security and IAM
+                <label class="col-sm-2 col-form-label col-form-label-sm">Security & IAM
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your security & IAM tools"></i></label>
                 <div class="col-sm-10">
                   <ng-select [items]="securityList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
                     [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
-                    placeholder="Choose your security tools" formControlName="securityIAM">
+                    placeholder="Choose your security & IAM tools" formControlName="securityIAM">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.name }}
                     </ng-template>
@@ -499,21 +499,17 @@
 
               <!-- Monitoring and Observability -->
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Monitoring and Observability
+                <label class="col-sm-2 col-form-label col-form-label-sm">Monitoring & Observability
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your monitoring & observability tools"></i></label>
                 <div class="col-sm-10">
                   <ng-select [items]="monitoringList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
                     [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
-                    placeholder="Choose your monitoring tools" formControlName="monitoringObservability"
-                    [class.is-invalid]="isFieldInvalid('monitoringObservability')">
+                    placeholder="Choose your monitoring & observability tools" formControlName="monitoringObservability">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.name }}
                     </ng-template>
                   </ng-select>
-                  <div class="invalid-feedback" *ngIf="isFieldInvalid('monitoringObservability')">
-                    Please select at least one monitoring tool
-                  </div>
                 </div>
               </div>
               <div class="row mb-3 align-items-center" *ngIf="showMonitoringObservabilityOther">
@@ -530,21 +526,17 @@
 
               <!-- Integration and API Management -->
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Integration and API Management
+                <label class="col-sm-2 col-form-label col-form-label-sm">Integration & API Management
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your integration & API management tools"></i></label>
                 <div class="col-sm-10">
                   <ng-select [items]="apiManagementList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
                     [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
-                    placeholder="Choose your API management tools" formControlName="integrationAPIManagement"
-                    [class.is-invalid]="isFieldInvalid('integrationAPIManagement')">
+                    placeholder="Choose your integration & API management tools" formControlName="integrationAPIManagement">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.name }}
                     </ng-template>
                   </ng-select>
-                  <div class="invalid-feedback" *ngIf="isFieldInvalid('integrationAPIManagement')">
-                    Please select at least one API management tool
-                  </div>
                 </div>
               </div>
               <div class="row mb-3 align-items-center" *ngIf="showIntegrationAPIManagementOther">
@@ -561,21 +553,17 @@
 
               <!-- Event Streaming and Messaging -->
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Event Streaming and Messaging
+                <label class="col-sm-2 col-form-label col-form-label-sm">Event Streaming & Messaging
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your event streaming & messaging tools"></i></label>
                 <div class="col-sm-10">
                   <ng-select [items]="eventStreamingList" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
                     [clearable]="true" [loading]="isLoadingStep4Data" bindLabel="name" bindValue="name"
-                    placeholder="Choose your event streaming tools" formControlName="eventStreamingMessaging"
-                    [class.is-invalid]="isFieldInvalid('eventStreamingMessaging')">
+                    placeholder="Choose your event streaming & messaging tools" formControlName="eventStreamingMessaging">
                     <ng-template ng-option-tmp let-item="item">
                       {{ item.name }}
                     </ng-template>
                   </ng-select>
-                  <div class="invalid-feedback" *ngIf="isFieldInvalid('eventStreamingMessaging')">
-                    Please select at least one event streaming tool
-                  </div>
                 </div>
               </div>
               <div class="row mb-3 align-items-center" *ngIf="showEventStreamingMessagingOther">
@@ -867,7 +855,7 @@
 
             <div class="col-12">
               <div class="row mb-3 align-items-center">
-                <label class="col-sm-2 col-form-label col-form-label-sm">Testing and QA
+                <label class="col-sm-2 col-form-label col-form-label-sm">Testing & QA
                   <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Choose your Testing & QA"></i></label>
                 <div class="col-sm-10">

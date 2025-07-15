@@ -609,10 +609,10 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
           params: { type: 'Database Platforms' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Data Analytics & BI' }
+          params: { type: 'Data, Analytics & BI' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'AI & ML Platforms' }
+          params: { type: 'AI/ML Platforms' }
         }).toPromise()
       ]);
 
@@ -644,16 +644,16 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
         businessAppsResponse
       ] = await Promise.all([
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'ERP Enterprise Systems' }
+          params: { type: 'ERP/Enterprise Systems' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'CRM Customer Platforms' }
+          params: { type: 'CRM & Customer Platforms' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'ITSM IT Operations' }
+          params: { type: 'ITSM/IT Operations' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Business Apps Productivity' }
+          params: { type: 'Business Apps & Productivity' }
         }).toPromise()
       ]);
 
@@ -689,19 +689,19 @@ export class RegisterNewSupplierComponent implements OnInit, AfterViewInit {
         web3Response
       ] = await Promise.all([
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'ECommerce CMS' }
+          params: { type: 'E-Commerce & CMS' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Learning HR Systems' }
+          params: { type: 'Learning & HR Systems' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Low Code No Code Platforms' }
+          params: { type: 'Low-Code/No-Code Platforms' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Testing QA' }
+          params: { type: 'Testing & QA' }
         }).toPromise(),
         this.http.get<any>('https://api.westgateithub.com/api/v1/web-user/drop-down-list', {
-          params: { type: 'Web3 Decentralized Tech' }
+          params: { type: 'Web3 & Decentralized Tech' }
         }).toPromise()
       ]);
 
