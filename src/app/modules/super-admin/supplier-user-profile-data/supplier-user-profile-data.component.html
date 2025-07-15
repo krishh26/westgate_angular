@@ -58,6 +58,9 @@
           <button class="btn btn-primary me-2" [routerLink]="['/super-admin/supplier-user-profile-edit', supplierDetails?._id]">
             Edit
           </button>
+          <button class="btn btn-danger me-2" (click)="deleteSupplier()">
+            Delete
+          </button>
           <button class="btn btn-primary" (click)="goBack()">
             Back
           </button>

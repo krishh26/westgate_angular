@@ -8,7 +8,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { SupplierAdminService } from 'src/app/services/supplier-admin/supplier-admin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Payload } from 'src/app/utility/shared/constant/payload.const';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import Swal from 'sweetalert2';
 
@@ -134,31 +134,48 @@ export class SupplierUserProfileDataComponent {
     );
   }
 
-  deleteSupplier(id: string) {
+  deleteSupplier() {
+    if (!this.supplierDetails?._id) {
+      Swal.fire('Error!', 'Supplier ID not found', 'error');
+      return;
+    }
+
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to delete this supplier?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#00B96F',
+      confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete!'
-    }).then((result: any) => {
-      if (result?.value) {
-        this.showLoader = true;
-        this.supplierService.deleteSupplierUser(id).subscribe((response: any) => {
-          if (response?.status) {
-            this.showLoader = false;
-            this.notificationService.showSuccess('Supplier successfully deleted');
-            this.router.navigate(['/super-admin/super-admin-supplier']);
-          } else {
-            this.showLoader = false;
-            this.notificationService.showError(response?.message);
-          }
-        }, (error: any) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.error?.message || error?.message);
-        });
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.httpClient.delete(`${environment.baseUrl}/user/delete?id=${this.supplierDetails._id}`)
+          .subscribe(
+            (response: any) => {
+              if (response?.status) {
+                Swal.fire(
+                  'Deleted!',
+                  'Supplier has been deleted successfully.',
+                  'success'
+                );
+                this.router.navigate(['/super-admin/super-admin-supplier']);
+              } else {
+                Swal.fire(
+                  'Error!',
+                  response?.message || 'Failed to delete supplier',
+                  'error'
+                );
+              }
+            },
+            (error) => {
+              Swal.fire(
+                'Error!',
+                error?.message || 'Something went wrong',
+                'error'
+              );
+            }
+          );
       }
     });
   }
