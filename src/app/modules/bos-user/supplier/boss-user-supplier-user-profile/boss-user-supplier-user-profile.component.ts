@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./boss-user-supplier-user-profile.component.scss']
 })
 export class BossUserSupplierUserProfileComponent {
-
+  activeTab: string = 'profile';
   supplierData: any = [];
   supplierID: string = '';
   showLoader: boolean = false;

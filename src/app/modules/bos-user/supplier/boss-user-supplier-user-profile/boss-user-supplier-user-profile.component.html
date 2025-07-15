@@ -21,390 +21,724 @@
       </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="d-flex align-items-center justify-content-between mb-4">
-            <h4 class="text-theme mb-0"><strong>Supplier Information</strong></h4>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm" (click)="goBack()">
-                <i class="bi bi-arrow-left"></i> Back to List
-              </button>
-              <a class="btn btn-primary btn-sm" routerLink="/boss-user/supplier-user-profile-edit"
-                [state]="supplierDetails">
-                <i class="bi bi-pencil-fill"></i> Edit
-              </a>
-              <!-- <button class="btn btn-danger btn-sm" (click)="deleteSupplier(supplierDetails?._id)">
-                <i class="bi bi-trash3-fill"></i> Delete
-              </button> -->
-            </div>
+
+    <!-- Navigation Tabs -->
+    <div class="d-flex border-bottom mb-4">
+      <a class="text-decoration-none px-4 py-2" [class.text-primary]="activeTab === 'profile'"
+        [class.border-bottom]="activeTab === 'profile'" [class.border-primary]="activeTab === 'profile'"
+        [class.border-3]="activeTab === 'profile'" (click)="activeTab = 'profile'" href="javascript:void(0)">
+        Profile
+      </a>
+      <a class="text-decoration-none px-4 py-2" [class.text-primary]="activeTab === 'tools'"
+        [class.border-bottom]="activeTab === 'tools'" [class.border-primary]="activeTab === 'tools'"
+        [class.border-3]="activeTab === 'tools'" (click)="activeTab = 'tools'" href="javascript:void(0)">
+        Tools, Technologies & Platforms
+      </a>
+    </div>
+
+    <!-- Profile Section -->
+    <section *ngIf="activeTab === 'profile'">
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6">
+            <div class="form-group mb-0">
+              <h4 class="text-theme"><strong>User Profile</strong></h4>
+            </div><br>
           </div>
-
-          <!-- Loading spinner -->
-          <div *ngIf="showLoader" class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+          <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-6 text-end">
+            <button class="btn btn-primary me-2" routerLink="/super-admin/supplier-user-profile-edit"
+              [state]="supplierDetails">
+              Edit
+            </button>
+            <button class="btn btn-primary" (click)="goBack()">
+              Back
+            </button>
           </div>
+        </div>
 
-          <!-- Company Details -->
-          <div *ngIf="!showLoader" class="card mb-4">
-            <div class="card-body">
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Company Details</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Company Name</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.companyName" readonly>
-                </div>
-                <!-- <div class="col-md-6 mb-3">
-                  <label class="form-label">Logo URL</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.logo" readonly>
-                </div> -->
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Website</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.website" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Company Address</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.companyAddress" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Country</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.country" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Contact Email</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.email" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.companyContactNumber" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Year of Establishment</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" readonly>
-                </div>
-                <div class="col-md-12 mb-3">
-                  <label class="form-label">Executive Summary</label>
-                  <textarea class="form-control" [value]="supplierDetails?.executiveSummary" readonly rows="4"></textarea>
-                </div>
-              </div>
-
-              <!-- POC Details -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">POC Details</h5>
-                </div>
-
-                <!-- Repeat this section for each POC -->
-                <div class="col-12 mb-4" *ngFor="let poc of supplierDetails?.pocDetails; let i = index">
-                  <div class="border rounded p-3">
-                    <div class="d-flex justify-content-between mb-3">
-                      <h6 class="mb-0">POC {{i + 1}}</h6>
-                      <span *ngIf="poc.isPrimary" class="badge bg-success">Primary Contact</span>
+        <form #userProfileForm="ngForm" autocomplete="off" novalidate>
+          <div class="row">
+            <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <!-- Company Details -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="text-primary mb-3">Company Details</h5>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label">POC Name</label>
-                        <input type="text" class="form-control" [value]="poc.name" readonly>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label">POC Phone</label>
-                        <input type="text" class="form-control" [value]="poc.phone" readonly>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label">POC Email</label>
-                        <input type="text" class="form-control" [value]="poc.email" readonly>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label">POC Role</label>
-                        <input type="text" class="form-control" [value]="poc.role || 'N/A'" readonly>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="companyName" class="col-sm-4 col-form-label">Company Name <span
+                            class="text-danger">*</span>
+                          <i class="fas fa-info-circle ms-1" [ngbTooltip]="'Enter the full legal name of the company.'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.companyName" class="form-control" readonly
+                            placeholder="Enter company name" id="companyName" />
+                        </div>
                       </div>
                     </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="website" class="col-sm-4 col-form-label">Company Website
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Enter the official website URL (e.g., https://www.example.com).'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.website" type="text" class="form-control" readonly
+                            placeholder="Enter company website" id="website">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="companyAddress" class="col-sm-4 col-form-label">Company Address
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Provide the complete address including street, city, and postal code.'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.companyAddress" type="text" readonly class="form-control"
+                            placeholder="Enter company address" id="companyAddress">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="country" class="col-sm-4 col-form-label">Country
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Select or type the country where the company is registered.'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.country" type="text" class="form-control" readonly
+                            placeholder="Enter country" id="country">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="email" class="col-sm-4 col-form-label">Contact Email <span
+                            class="text-danger">*</span>
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Enter the official email address for business communication.'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.email" type="text" class="form-control" readonly
+                            placeholder="Enter contact email" id="email">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="phone" class="col-sm-4 col-form-label">Contact Number
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Provide a valid phone number with country code.'" placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.companyContactNumber" type="text" readonly
+                            class="form-control" placeholder="Enter contact number" id="phone">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label for="yearEstablishment" class="col-sm-4 col-form-label">Year Established
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Enter the date the company was founded (dd/mm/yyyy).'" placement="top"></i>
+                        </label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.yearOfEstablishment | date:'dd/MM/yyyy'" type="text" readonly
+                            class="form-control" id="yearEstablishment">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                      <div class="row">
+                        <label for="executiveSummary" class="col-sm-2 col-form-label">Executive Summary
+                          <i class="fas fa-info-circle ms-1"
+                            [ngbTooltip]="'Write a brief summary of your company\'s mission, services, and goals.'"
+                            placement="top"></i>
+                        </label>
+                        <div class="col-sm-10">
+                          <textarea [value]="supplierDetails?.executiveSummary" readonly class="form-control"
+                            placeholder="Enter company executive summary" id="executiveSummary" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- POC Details -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="text-primary mb-3">POC Details</h5>
+                    </div>
+
+                    <div class="col-12 mb-4" *ngFor="let poc of supplierDetails?.pocDetails; let i = index">
+                      <div class="border rounded p-3">
+                        <div class="d-flex justify-content-between mb-3">
+                          <h6 class="mb-0">POC {{i + 1}}</h6>
+                          <span *ngIf="poc.isPrimary" class="badge bg-success">Primary Contact</span>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">POC Name</label>
+                            <input type="text" class="form-control" [value]="poc.name" readonly>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">POC Phone</label>
+                            <input type="text" class="form-control" [value]="poc.phone" readonly>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">POC Email</label>
+                            <input type="text" class="form-control" [value]="poc.email" readonly>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">POC Role</label>
+                            <input type="text" class="form-control" [value]="poc.role || 'N/A'" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Business Details -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="text-primary mb-3">Business Details</h5>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Business Type</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" [value]="supplierDetails?.typeOfCompany?.join(', ')"
+                            readonly>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Company Size</label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.employeeCount" type="text" readonly class="form-control"
+                            placeholder="Enter company size" id="employeeCount">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Turnover</label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.turnover" type="text" readonly class="form-control"
+                            placeholder="Enter turnover" id="turnover">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Total Projects Executed</label>
+                        <div class="col-sm-8">
+                          <input [value]="supplierDetails?.totalProjectsExecuted" type="text" readonly
+                            class="form-control" placeholder="Enter total projects" id="totalProjectsExecuted">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Certifications</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" [value]="supplierDetails?.certifications?.join(', ')"
+                            readonly>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Technology Stack</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" [value]="supplierDetails?.technologyStack?.join(', ')"
+                            readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Additional Information -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="text-primary mb-3">Additional Information</h5>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Resource Sharing Supplier</label>
+                        <div class="col-sm-8">
+                          <span class="form-control readonly-input">
+                            {{ supplierDetails?.resourceSharingSupplier ? 'Yes' : 'No' }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Subcontracting Supplier</label>
+                        <div class="col-sm-8">
+                          <span class="form-control readonly-input">
+                            {{ supplierDetails?.subcontractingSupplier ? 'Yes' : 'No' }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
 
-              <!-- Business Details -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Business Details</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Business Type</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let type of supplierDetails?.typeOfCompany" class="badge bg-primary me-2 mb-2">
-                        {{ type }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Industry Focus</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let industry of supplierDetails?.industry_Sector" class="badge bg-primary me-2 mb-2">
-                        {{ industry }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Company Size</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.employeeCount" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Turnover</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.turnover" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Total Projects Executed</label>
-                  <input type="text" class="form-control" [value]="supplierDetails?.totalProjectsExecuted" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Certifications</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let cert of supplierDetails?.certifications" class="badge bg-primary me-2 mb-2">
-                        {{ cert }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Expertise</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let exp of supplierDetails?.expertise" class="badge bg-primary me-2 mb-2">
-                        {{ exp.name }}
-                        <!-- <ul *ngIf="exp.subExpertise && exp.subExpertise.length" class="list-unstyled mt-2">
-                          <li *ngFor="let sub of exp.subExpertise" class="badge bg-secondary me-2 mb-2">
-                            {{ sub }}
-                          </li>
-                        </ul> -->
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Category</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let cat of supplierDetails?.categoryList" class="badge bg-primary me-2 mb-2">
-                        {{ cat }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Technologies</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let tech of supplierDetails?.technologyStack" class="badge bg-primary me-2 mb-2">
-                        {{ tech }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+    <!-- Tools Section -->
+    <section *ngIf="activeTab === 'tools'" class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-primary mb-4">Tools, Technologies & Platforms</h3>
 
-              <!-- Key Clients -->
+          <!-- Services -->
+          <div class="row mb-4">
+            <div class="col-12">
               <div class="row">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Client Information</h5>
-                </div>
-                <div class="col-md-12 mb-3">
-                  <label class="form-label">Key Clients</label>
-                  <div class="border rounded p-3">
-                    <ul class="list-unstyled mb-0">
-                      <li *ngFor="let client of supplierDetails?.keyClients" class="badge bg-primary me-2 mb-2">
-                        {{ client }}
-                      </li>
-                    </ul>
-                  </div>
+                <label class="col-sm-2 col-form-label">Services</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.services?.join(', ')" readonly>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- Status Information -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Status Information</h5>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Current Status</label>
-                  <div class="d-flex align-items-center">
-                    <span class="badge" [ngClass]="supplierDetails?.active ? 'bg-success' : 'bg-danger'">
-                      {{supplierDetails?.active ? 'Active' : 'Inactive'}}
-                    </span>
-                  </div>
+          <!-- Technology Stack -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Technology Stack</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.technologyStack?.join(', ')"
+                    readonly>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- Inactive Information (shown only if supplier is inactive) -->
-              <div class="row mb-4" *ngIf="!supplierDetails?.active">
-                <div class="col-12">
-                  <h5 class="text-danger mb-3">Inactive Information</h5>
+          <!-- Product -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Product</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.product?.join(', ')" readonly>
                 </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Reason for Inactivation</label>
-                  <div class="p-3 border rounded inactive-info-container">
-                    <div *ngIf="supplierDetails?.activeStatus?.length; else noComment">
-                      <div *ngFor="let status of supplierDetails.activeStatus">
-                        <p class="mb-1">{{ status.log }}</p>
-                        <small class="text-muted">
-                          <i class="bi bi-clock me-1"></i>
-                          {{ status.date | date: 'dd/MM/yyyy, h:mm a' }}
-                        </small>
-                        <hr>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testing Tools -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Testing Tools</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.testingQA?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Platforms -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Cloud Platforms</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.cloudPlatforms?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DevOps & Automation -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">DevOps & Automation</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.devOpsAutomation?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Containerization & Orchestration -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Containerization & Orchestration</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.containerizationOrchestration?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Networking & Infrastructure -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Networking & Infrastructure</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.networkingInfrastructure?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Database Platforms -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Database Platforms</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.databasePlatforms?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Analytics & BI -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Data Analytics & BI</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.dataAnalyticsBI?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI/ML Platforms -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">AI/ML Platforms</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.aiMLPlatforms?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security & IAM -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Security & IAM</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.securityIAM?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monitoring & Observability -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Monitoring & Observability</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.monitoringObservability?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integration & API Management -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Integration & API Management</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.integrationAPIManagement?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Streaming & Messaging -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Event Streaming & Messaging</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.eventStreamingMessaging?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ERP/Enterprise Systems -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">ERP/Enterprise Systems</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.erpEnterpriseSystems?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CRM & Customer Platforms -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">CRM & Customer Platforms</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.crmCustomerPlatforms?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITSM/IT Operations -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">ITSM/IT Operations</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.itsmITOperations?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Apps & Productivity -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Business Apps & Productivity</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                    [value]="supplierDetails?.businessAppsProductivity?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- E-Commerce & CMS -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">E-Commerce & CMS</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.eCommerceCMS?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning & HR Systems -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Learning & HR Systems</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.learningHRSystems?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Low-Code/No-Code Platforms -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Low-Code/No-Code Platforms</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.lowCodeNoCodePlatforms?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testing & QA -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Testing & QA</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.testingQA?.join(', ')" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Web3 & Decentralized Tech -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Web3 & Decentralized Tech</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" [value]="supplierDetails?.web3DecentralizedTech?.join(', ')"
+                    readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="casestudy-section">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
+            <h4 class="text-theme mb-4"><strong>Users</strong></h4>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th></th>
+                <th>User Name</th>
+                <th>Mail ID</th>
+                <th>User ID</th>
+                <th>Domain</th>
+                <th>Department</th>
+                <th>Joined</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td *ngIf="!manageUserList?.length" colspan="8">
+                  <app-no-record-found></app-no-record-found>
+                </td>
+              </tr>
+
+              <tr
+                *ngFor="let item of manageUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
+                <td>
+                  <div class="avtar32">
+                    <img src="assets/img/face1.jpg" />
+                  </div>
+                </td>
+                <td><a href="javascript:;">{{item?.userName}}</a></td>
+                <td><a href="javascript:;">{{item?.email}}</a></td>
+                <td>{{item?._id}}</td>
+                <td>{{item?.domain}}</td>
+                <td>{{item?.department}}</td>
+                <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+                <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="casestudy-section mt-4" *ngIf="supplierDetails?.isInHold === true">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="text-theme mb-4"><strong>Add InHold Comment</strong></h4>
+                <form [formGroup]="inHoldCommentForm" (ngSubmit)="submitInHoldComment()">
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <label for="comment" class="form-label">Comment</label>
+                      <textarea id="comment" rows="4" class="form-control" formControlName="comment"
+                        placeholder="Enter your comment here"></textarea>
+                      <div
+                        *ngIf="inHoldCommentForm.get('comment')?.invalid && inHoldCommentForm.get('comment')?.touched"
+                        class="text-danger">
+                        Comment is required
                       </div>
                     </div>
-                    <ng-template #noComment>
-                      <p class="mb-1">No comment provided</p>
-                    </ng-template>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 text-end">
+                      <button type="submit" class="btn btn-primary" [disabled]="inHoldCommentForm.invalid">
+                        <i class="bi bi-save me-1"></i> Submit Comment
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Existing InHold Comments -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="text-theme mb-4"><strong>InHold Comments History</strong></h4>
+
+                <div *ngIf="!supplierDetails?.inHoldComment?.length" class="alert alert-info">
+                  No comments available
+                </div>
+
+                <div *ngIf="supplierDetails?.inHoldComment?.length" class="comment-list">
+                  <div *ngFor="let comment of supplierDetails.inHoldComment"
+                    class="comment-item mb-3 p-3 border rounded">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-1  fw-bold">{{ comment.comment }}</p>
+                      <small class="text-muted">{{ comment.date | date: 'dd/MM/yyyy HH:mm' }}</small>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <!-- Additional Supplier Information -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <h5 class="text-primary mb-3">Additional Information</h5>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Resource Sharing Supplier</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" [checked]="supplierDetails?.resourceSharingSupplier" disabled>
-                    <label class="form-check-label">
-                      {{supplierDetails?.resourceSharingSupplier ? 'Yes' : 'No'}}
-                    </label>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Subcontracting Supplier</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" [checked]="supplierDetails?.subcontractingSupplier" disabled>
-                    <label class="form-check-label">
-                      {{supplierDetails?.subcontractingSupplier ? 'Yes' : 'No'}}
-                    </label>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
   </section>
 </main>
-
-<section class="casestudy-section">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-8">
-        <h4 class="text-theme mb-4"><strong>Users</strong></h4>
-      </div>
-    </div>
-    <div class="table-responsive">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th></th>
-            <th>User Name</th>
-            <th>Mail ID</th>
-            <th>User ID</th>
-            <th>Domain</th>
-            <th>Department</th>
-            <th>Joined</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-
-          <tr>
-            <td *ngIf="!manageUserList?.length" colspan="8">
-              <app-no-record-found></app-no-record-found>
-            </td>
-          </tr>
-
-          <tr
-            *ngFor="let item of manageUserList |  paginate: { itemsPerPage: pagesize , currentPage: page, totalItems: totalRecords } ; let i = index">
-            <td>
-              <div class="avtar32">
-                <img src="assets/img/face1.jpg" />
-              </div>
-            </td>
-            <td><a href="javascript:;">{{item?.userName}}</a></td>
-            <td><a href="javascript:;">{{item?.email}}</a></td>
-            <td>{{item?._id}}</td>
-            <td>{{item?.domain}}</td>
-            <td>{{item?.department}}</td>
-            <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-            <td><button (click)="deleteUser(item?._id)" class="btn btn-sm btn-secondary">Remove</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="casestudy-section mt-4" *ngIf="supplierDetails?.isInHold === true">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="text-theme mb-4"><strong>Add InHold Comment</strong></h4>
-            <form [formGroup]="inHoldCommentForm" (ngSubmit)="submitInHoldComment()">
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label for="comment" class="form-label">Comment</label>
-                  <textarea id="comment" rows="4" class="form-control" formControlName="comment"
-                    placeholder="Enter your comment here"></textarea>
-                  <div *ngIf="inHoldCommentForm.get('comment')?.invalid && inHoldCommentForm.get('comment')?.touched"
-                    class="text-danger">
-                    Comment is required
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn btn-primary" [disabled]="inHoldCommentForm.invalid">
-                    <i class="bi bi-save me-1"></i> Submit Comment
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Existing InHold Comments -->
-    <div class="row mt-4">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="text-theme mb-4"><strong>InHold Comments History</strong></h4>
-
-            <div *ngIf="!supplierDetails?.inHoldComment?.length" class="alert alert-info">
-              No comments available
-            </div>
-
-            <div *ngIf="supplierDetails?.inHoldComment?.length" class="comment-list">
-              <div *ngFor="let comment of supplierDetails.inHoldComment" class="comment-item mb-3 p-3 border rounded">
-                <div class="d-flex justify-content-between">
-                  <p class="mb-1  fw-bold">{{ comment.comment }}</p>
-                  <small class="text-muted">{{ comment.date | date: 'dd/MM/yyyy HH:mm' }}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>

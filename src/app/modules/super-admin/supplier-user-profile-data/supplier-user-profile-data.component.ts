@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./supplier-user-profile-data.component.css']
 })
 export class SupplierUserProfileDataComponent {
-
+  activeTab: string = 'profile';
   supplierData: any = [];
   supplierID: string = '';
   showLoader: boolean = false;

@@ -3,6 +3,72 @@
   font-size: 14px;
 }
 
+.fa-info-circle {
+  color: #6c757d;
+  font-size: 0.85rem;
+  cursor: help;
+  transition: color 0.2s ease;
+  margin-left: 4px;
+}
+.fa-info-circle:hover {
+  color: #0d6efd;
+}
+.tooltip-inner {
+  max-width: 300px !important;
+  text-align: left !important;
+  padding: 8px 12px !important;
+  font-size: 0.875rem !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+input[readonly], textarea[readonly] {
+  background-color: rgb(245, 245, 245) !important;
+}
+.form-check-input:disabled {
+  background-color: rgb(245, 245, 245) !important;
+  opacity: 1 !important;
+}
+.text-primary {
+  color: #1976d2 !important;
+}
+::ng-deep .ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+  color: #1976d2 !important;
+  font-weight: 600;
+}
+.sub-expertise-tags .tag {
+  background-color: #F1F2F3 !important;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 2px;
+  display: inline-flex;
+  align-items: center;
+}
+::ng-deep .expertise-select .ng-select .ng-select-container {
+  background-color: #F1F2F3 !important;
+}
+::ng-deep .expertise-select .ng-select.ng-select-focused .ng-select-container {
+  background-color: #F1F2F3 !important;
+}
+.tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  color: #888;
+  font-weight: 500;
+}
+.tab-btn.active {
+  color: #1976d2;
+  border-bottom: 3px solid #1976d2;
+}
+
 @media (min-width: 320px) and (max-width: 767px) {
   ul.projects-nav-tab {
     display: block;
