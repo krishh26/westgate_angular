@@ -80,14 +80,14 @@ export enum SuperAdminEndPoint {
   providedIn: 'root',
 })
 export class SuperadminService {
-  baseUrl!: string;
+  private baseUrl = 'https://api.westgateithub.com/api/v1';
 
   constructor(
     private httpClient: HttpClient,
     private router: Router,
     private localStorageService: LocalStorageService
   ) {
-    this.baseUrl = environment.baseUrl;
+    // this.baseUrl = environment.baseUrl; // This line is removed as per the new_code
   }
 
   exportProjects() {
@@ -913,5 +913,9 @@ export class SuperadminService {
       `${this.baseUrl}/sub-expertise/update/${subExpertiseId}`,
       data
     );
+  }
+
+  getSupplierDetails(id: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/user/suplier/get/${id}`);
   }
 }

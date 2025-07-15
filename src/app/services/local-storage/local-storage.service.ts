@@ -55,4 +55,9 @@ export class LocalStorageService {
   getImageData(): BehaviorSubject<string | null> {
     return this.imageChangeEvent;
   }
+
+  removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+
 }

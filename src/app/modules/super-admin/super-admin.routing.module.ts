@@ -111,6 +111,10 @@ const routes: Routes = [
         component: SuperAdminUserProfileComponent
       },
       {
+        path: "supplier-user-profile-edit/:id",
+        component: SupplierUserProfileEditComponent
+      },
+      {
         path: "supplier-user-profile-edit",
         component: SupplierUserProfileEditComponent
       },
