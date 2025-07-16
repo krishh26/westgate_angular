@@ -139,7 +139,7 @@ const routes: Routes = [
         component: BossUserResourcesDetailsComponent
       },
       {
-        path: "supplier-user-profile-edit",
+        path: "supplier-user-profile-edit/:id",
         component: BossUserSupplierUserProfileEditComponent
       },
       {
