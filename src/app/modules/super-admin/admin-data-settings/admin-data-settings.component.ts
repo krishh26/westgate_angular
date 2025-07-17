@@ -307,7 +307,7 @@ export class AdminDataSettingsComponent implements OnInit {
     const params = {
       search: this.searchQuery
     };
-    this.superadminService.getAllRoles(params).subscribe({
+    this.superadminService.getRolesListByAdmin(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.roles = response?.data?.roles || [];

@@ -43,6 +43,7 @@ export enum SuperAdminEndPoint {
   CANDIDATE_LIST = '/candidate/list',
   ADD_EXPERTISE_AND_SUBEXPERTISE = '/web-user/add-expertise',
   ROLES_LIST = '/roles/get-all',
+  ROLES_GET_LIST = '/roles/get-list',
   ROLES_ADD = '/roles/add',
   ROLES_DELETE = '/roles/delete',
   ROLES_CANDIDATES = '/roles/candidates',
@@ -506,6 +507,31 @@ export class SuperadminService {
     );
   }
 
+  getRolesListNew(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params.startDate) {
+      queryParams = queryParams.set('startDate', params.startDate);
+    }
+    if (params.endDate) {
+      queryParams = queryParams.set('endDate', params.endDate);
+    }
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+    if (params.page) {
+      queryParams = queryParams.set('page', params.page.toString());
+    }
+    if (params.limit) {
+      queryParams = queryParams.set('limit', params.limit.toString());
+    }
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.ROLES_GET_LIST,
+      { params: queryParams }
+    );
+  }
+
   addRole(roleData: { name: string }): Observable<any> {
     return this.httpClient.post<any>(
       this.baseUrl + SuperAdminEndPoint.ROLES_ADD,
@@ -722,6 +748,21 @@ export class SuperadminService {
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.ROLES_LIST,
+      { params: queryParams }
+    );
+  }
+
+  getRolesListByAdmin(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+
+    if (params?.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+    // Add role=admin parameter
+    queryParams = queryParams.set('role', 'admin');
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.ROLES_GET_LIST,
       { params: queryParams }
     );
   }

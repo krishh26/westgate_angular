@@ -73,12 +73,14 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Cadidates</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let tech of technologies">
                     <td>{{ tech.name }}</td>
+                    <td>{{ tech.candidateCount }}</td>
                     <td>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="openAddTechnologyModal(addTechnologyModal, tech)" [ngbTooltip]="'Edit'" placement="top">
