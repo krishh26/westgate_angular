@@ -39,6 +39,33 @@ export class ExpertiseViewComponent {
   selectedType: string = '';
   currentList: any[] = [];
 
+  // New types array for dropdown
+  expertiseTypes: string[] = [
+    "Product",
+    "Service",
+    "Testing Tools",
+    "Cloud Platforms",
+    "DevOps & Automation",
+    "Containerization & Orchestration",
+    "Networking & Infrastructure",
+    "Database Platforms",
+    "Data, Analytics & BI",
+    "AI/ML Platforms",
+    "Security & IAM",
+    "Monitoring & Observability",
+    "Integration & API Management",
+    "Event Streaming & Messaging",
+    "ERP/Enterprise Systems",
+    "CRM & Customer Platforms",
+    "ITSM/IT Operations",
+    "Business Apps & Productivity",
+    "E-Commerce & CMS",
+    "Learning & HR Systems",
+    "Low-Code/No-Code Platforms",
+    "Testing & QA",
+    "Web3 & Decentralized Tech"
+  ];
+
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -71,14 +98,14 @@ export class ExpertiseViewComponent {
 
       // Refresh data based on current view
       if (this.selectedType) {
-        this.fetchDropdownData(this.getTypeValue(this.selectedType));
+        this.fetchDropdownData(this.selectedType);
       } else {
-        // Load technologies data by default
-        this.fetchDropdownData('technologies');
+        // Load first type by default
+        this.fetchDropdownData(this.expertiseTypes[0]);
       }
     } else {
-      // Load technologies data by default if no modification flag
-      this.fetchDropdownData('technologies');
+      // Load first type by default if no modification flag
+      this.fetchDropdownData(this.expertiseTypes[0]);
     }
   }
 
@@ -148,36 +175,11 @@ export class ExpertiseViewComponent {
 
     // If we are viewing a specific type, search within that type
     if (this.selectedType) {
-      const type = this.getTypeValue(this.selectedType);
       // Use fetchDropdownData method to ensure consistent implementation
-      this.fetchDropdownData(type);
+      this.fetchDropdownData(this.selectedType);
     } else {
-      // Otherwise search in expertise list (should not happen with current implementation)
-      const params = {
-        search: this.searchText?.trim() || '',
-        startDate: this.startDate,
-        endDate: this.endDate
-      };
-
-      this.superService.getExpertiseList(params).subscribe(
-        (response) => {
-          if (response?.status) {
-            this.expertiseList = response?.data || [];
-            this.currentList = this.expertiseList || [];
-          } else {
-            this.expertiseList = [];
-            this.currentList = [];
-            console.error('Failed to fetch supplier data:', response?.message);
-          }
-          this.showLoader = false;
-        },
-        (error) => {
-          this.expertiseList = [];
-          this.currentList = [];
-          console.error('Error fetching supplier data:', error);
-          this.showLoader = false;
-        }
-      );
+      // Default to first type if nothing is selected
+      this.fetchDropdownData(this.expertiseTypes[0]);
     }
   }
 
@@ -308,16 +310,17 @@ export class ExpertiseViewComponent {
     this.searchText = '';
 
     // Refresh the current view based on selected type
-    if (this.selectedType === 'Technology') {
-      this.fetchDropdownData('technologies');
-    } else if (this.selectedType === 'Products') {
-      this.fetchDropdownData('product');
-    } else if (this.selectedType === 'Domain') {
-      this.fetchDropdownData('domain');
+    if (this.selectedType) {
+      this.fetchDropdownData(this.selectedType);
     } else {
-      // Default to technologies if nothing is selected
-      this.fetchDropdownData('technologies');
+      // Default to first type if nothing is selected
+      this.fetchDropdownData(this.expertiseTypes[0]);
     }
+  }
+
+  onTypeChange(selectedType: string) {
+    this.selectedType = selectedType;
+    this.fetchDropdownData(selectedType);
   }
 
   fetchDropdownData(type: string) {
@@ -330,7 +333,7 @@ export class ExpertiseViewComponent {
         if (response?.status) {
           this.dropdownData = response.data || [];
           this.currentList = this.dropdownData || [];
-          this.selectedType = this.formatTypeName(type);
+          this.selectedType = type;
           //this.notificationService.showSuccess(`${this.selectedType} data loaded successfully`);
         } else {
           this.dropdownData = [];
@@ -350,34 +353,6 @@ export class ExpertiseViewComponent {
     );
   }
 
-  formatTypeName(type: string): string {
-    switch(type) {
-      case 'technologies':
-        return 'Technology';
-      case 'product':
-        return 'Products';
-      case 'domain':
-        return 'Domain';
-      case 'other':
-        return 'Other';
-      default:
-        return type.charAt(0).toUpperCase() + type.slice(1);
-    }
-  }
 
-  getTypeValue(displayName: string): string {
-    switch(displayName) {
-      case 'Technology':
-        return 'technologies';
-      case 'Products':
-        return 'product';
-      case 'Domain':
-        return 'domain';
-      case 'Other':
-        return 'other';
-      default:
-        return displayName.toLowerCase();
-    }
-  }
 
 }

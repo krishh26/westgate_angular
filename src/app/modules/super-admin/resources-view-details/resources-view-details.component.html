@@ -20,6 +20,21 @@
           <!-- Resource Details -->
           <div *ngIf="!showLoader && resourceList?.length" class="card">
             <div class="card-body">
+              <!-- Supplier Information -->
+              <div class="row mb-4" *ngIf="resourceList[0]?.supplierId">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Supplier Information</h5>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Supplier Name</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.supplierId?.name" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Supplier ID</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.supplierId?._id" readonly>
+                </div>
+              </div>
+
               <!-- Personal Information -->
               <div class="row mb-4">
                 <div class="col-12">
@@ -27,19 +42,19 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Full Name</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.name" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.fullName" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Gender</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.gender" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.gender" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Nationality</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.nationality" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.nationality" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Qualification</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.qualification + ' (' + resourceList[0]?.details?.yearOfGraduation + ')'" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.highestQualification + ' (' + resourceList[0]?.yearOfGraduation + ')'" readonly>
                 </div>
               </div>
 
@@ -50,44 +65,72 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Job Title</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.jobTitle" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.currentRole?.name" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Experience</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.experience + ' years'" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.totalExperience + ' years'" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Hourly Rate</label>
-                  <input type="text" class="form-control" [value]="'$' + resourceList[0]?.details?.hourlyRate" readonly>
+                  <input type="text" class="form-control" [value]="'£' + resourceList[0]?.ukHourlyRate" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Available From</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.availableFrom | date: 'dd/MM/yyyy'" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.startDate | date: 'dd/MM/yyyy'" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Status</label>
                   <div class="d-flex align-items-center">
-                    <span class="badge" [ngClass]="resourceList[0]?.details?.active ? 'bg-success' : 'bg-danger'">
-                      {{ resourceList[0]?.details?.active ? 'Active' : 'Inactive' }}
+                    <span class="badge" [ngClass]="resourceList[0]?.active ? 'bg-success' : 'bg-danger'">
+                      {{ resourceList[0]?.active ? 'Active' : 'Inactive' }}
                     </span>
                   </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Projects Executed</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.projectsExecuted || 0" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">CTC (Annual)</label>
+                  <input type="text" class="form-control" [value]="'₹' + (resourceList[0]?.ctc || 0)" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">UK Day Rate</label>
+                  <input type="text" class="form-control" [value]="'£' + (resourceList[0]?.ukDayRate || 0)" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Indian Day Rate</label>
+                  <input type="text" class="form-control" [value]="'₹' + (resourceList[0]?.indianDayRate || 0)" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Executive Level</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.executive ? 'Yes' : 'No'" readonly>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Key Responsibilities</label>
+                  <textarea class="form-control" rows="3" readonly>{{ resourceList[0]?.keyResponsibilities || 'N/A' }}</textarea>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Previous Employers</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.previousEmployers?.join(', ') || 'N/A'" readonly>
                 </div>
               </div>
 
               <!-- Inactive Information (shown only if resource is inactive) -->
-              <div class="row mb-4" *ngIf="resourceList[0]?.details?.active === false">
+              <div class="row mb-4" *ngIf="resourceList[0]?.active === false">
                 <div class="col-12">
                   <h5 class="text-danger mb-3">Inactive Information</h5>
                 </div>
                 <div class="col-12 mb-3">
                   <label class="form-label">Reason for Inactivation</label>
                   <div class="p-3 border rounded inactive-info-container">
-                    <p class="mb-1">{{ resourceList[0]?.details?.inactiveComment || 'No comment provided' }}</p>
-                    <small class="text-muted" *ngIf="resourceList[0]?.details?.inactiveDate">
+                    <p class="mb-1">{{ resourceList[0]?.inactiveComment || 'No comment provided' }}</p>
+                    <small class="text-muted" *ngIf="resourceList[0]?.inactiveDate">
                       <i class="bi bi-clock me-1"></i>
-                      {{ resourceList[0]?.details?.inactiveDate | date: 'dd/MM/yyyy, h:mm a' }}
+                      {{ resourceList[0]?.inactiveDate | date: 'dd/MM/yyyy, h:mm a' }}
                     </small>
-                    <small class="text-muted" *ngIf="!resourceList[0]?.details?.inactiveDate">
+                    <small class="text-muted" *ngIf="!resourceList[0]?.inactiveDate">
                       <i class="bi bi-clock me-1"></i>
                       N/A
                     </small>
@@ -102,11 +145,61 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Technical Skills</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.technicalSkills?.join(', ')" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.technicalSkills?.join(', ')" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Languages Known</label>
-                  <input type="text" class="form-control" [value]="resourceList[0]?.details?.languages?.join(', ')" readonly>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.languagesKnown?.join(', ')" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Soft Skills</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.softSkills?.join(', ') || 'N/A'" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Certifications</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.certifications?.join(', ') || 'N/A'" readonly>
+                </div>
+              </div>
+
+              <!-- Roles Information -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5 class="text-primary mb-3">Roles Information</h5>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Current Role</label>
+                  <input type="text" class="form-control" [value]="resourceList[0]?.currentRole?.name || 'N/A'" readonly>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">All Roles</label>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                      <thead>
+                        <tr>
+                          <th>Role Name</th>
+                          <th>Type</th>
+                          <th>Other Roles</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let role of resourceList[0]?.roleId">
+                          <td>{{ role.name }}</td>
+                          <td>
+                            <span class="badge" [ngClass]="role.type === 'main' ? 'bg-primary' : 'bg-secondary'">
+                              {{ role.type }}
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="role.otherRoles?.length">{{ role.otherRoles.join(', ') }}</span>
+                            <span *ngIf="!role.otherRoles?.length" class="text-muted">N/A</span>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!resourceList[0]?.roleId?.length">
+                          <td colspan="3" class="text-center text-muted">No roles assigned</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 

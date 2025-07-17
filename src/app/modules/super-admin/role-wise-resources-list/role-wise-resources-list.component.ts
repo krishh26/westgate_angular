@@ -50,7 +50,7 @@ export class RoleWiseResourcesListComponent implements OnInit {
       queryParams.search = this.searchText;
     }
 
-    this.superadminService.getRolesList(queryParams).subscribe({
+    this.superadminService.getRolesListNew(queryParams).subscribe({
       next: (response) => {
         this.rolesList = response.data?.roles || [];
         this.totalRecords = this.rolesList.length;
