@@ -38,6 +38,35 @@ export class ExpertiseListComponent {
   selectedExpertise: ExpertiseItem[] = [];
   newExpertiseType: string = 'technologies';
 
+  // New properties for the two dropdowns
+  expertiseTypes: string[] = [
+    "Product",
+    "Testing Tools",
+    "Cloud Platforms",
+    "DevOps & Automation",
+    "Containerization & Orchestration",
+    "Networking & Infrastructure",
+    "Database Platforms",
+    "Data, Analytics & BI",
+    "AI/ML Platforms",
+    "Security & IAM",
+    "Monitoring & Observability",
+    "Integration & API Management",
+    "Event Streaming & Messaging",
+    "ERP/Enterprise Systems",
+    "CRM & Customer Platforms",
+    "ITSM/IT Operations",
+    "Business Apps & Productivity",
+    "E-Commerce & CMS",
+    "Learning & HR Systems",
+    "Low-Code/No-Code Platforms",
+    "Testing & QA",
+    "Web3 & Decentralized Tech"
+  ];
+  selectedExpertiseType: string = '';
+  expertiseListByType: ExpertiseItem[] = [];
+  selectedExpertiseFromList: ExpertiseItem[] = [];
+
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -175,72 +204,6 @@ export class ExpertiseListComponent {
     });
   }
 
-  saveExpertise() {
-    if (!this.selectedExpertise || this.selectedExpertise.length === 0) {
-      this.notificationService.showError('Please select at least one expertise');
-      return;
-    }
-
-    if (!this.supplierID) {
-      this.notificationService.showError('Supplier ID is missing, cannot save expertise.');
-      return;
-    }
-
-    const expertiseData = {
-      supplierId: this.supplierID,
-      expertise: this.selectedExpertise
-    };
-
-    this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
-      (response: any) => {
-        if (response?.status) {
-          this.notificationService.showSuccess('Expertise added successfully!');
-          this.selectedExpertise = [];
-
-          // Try to close the modal
-          const modalElement = document.getElementById('addExpertiseModal');
-          if (modalElement) {
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            if (modal) {
-              modal.hide();
-            }
-          }
-
-          // Reload page after a short delay to ensure notification is shown
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add expertise');
-        }
-      },
-      (error: any) => {
-        this.notificationService.showError(error?.message || 'Failed to add expertise');
-      }
-    );
-  }
-
-  onItemAddCategory(item: { category: string }): void {
-    // // Add type annotation for 'categoryItem'
-    // const found = this.categoryList.some((categoryItem: { category: string }) => categoryItem.category === item.category);
-    // if (!found) {
-    //   this.showLoader = true;
-    //   this.projectService.createCategory(item).subscribe((response) => {
-    //     if (response?.status == true) {
-    //       this.showLoader = false;
-    //       this.getcategoryList();
-
-    //     } else {
-    //       this.notificationService.showError(response?.message);
-    //       this.showLoader = false;
-    //     }
-    //   }, (error) => {
-    //     this.notificationService.showError(error?.error?.message || error?.message);
-    //     this.showLoader = false;
-    //   });
-    // }
-  }
-
   onAddTag = (name: string) => {
     if (!this.newExpertiseType) {
       this.notificationService.showError('Please select expertise type');
@@ -282,6 +245,93 @@ export class ExpertiseListComponent {
 
     // Return the new expertise object so it can be added to the list while API call is in progress
     return newExpertise;
+  }
+
+  // New methods for the two dropdown system
+  onExpertiseTypeChange() {
+    if (this.selectedExpertiseType) {
+      this.getExpertiseListByType(this.selectedExpertiseType);
+      this.selectedExpertiseFromList = []; // Reset selected expertise when type changes
+    } else {
+      this.expertiseListByType = [];
+      this.selectedExpertiseFromList = [];
+    }
+  }
+
+  getExpertiseListByType(type: string) {
+    this.showLoader = true;
+    this.superService.getExpertiseDropdownList(type).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.expertiseListByType = response.data || [];
+          this.expertiseListByType = this.expertiseListByType.map(item => {
+            return {
+              itemId: item.itemId || (item as any)._id,
+              name: item.name,
+              type: item.type || type
+            };
+          });
+        } else {
+          console.error('Failed to fetch expertise list by type:', response?.message);
+          this.notificationService.showError('Failed to fetch expertise list');
+          this.expertiseListByType = [];
+        }
+        this.showLoader = false;
+      },
+      (error: any) => {
+        console.error('Error fetching expertise list by type:', error);
+        this.notificationService.showError('Error fetching expertise list');
+        this.expertiseListByType = [];
+        this.showLoader = false;
+      }
+    );
+  }
+
+  saveExpertise() {
+    if (!this.selectedExpertiseFromList || this.selectedExpertiseFromList.length === 0) {
+      this.notificationService.showError('Please select at least one expertise');
+      return;
+    }
+
+    if (!this.supplierID) {
+      this.notificationService.showError('Supplier ID is missing, cannot save expertise.');
+      return;
+    }
+
+    const expertiseData = {
+      supplierId: this.supplierID,
+      expertise: this.selectedExpertiseFromList
+    };
+
+    this.superService.addExpertiseandSubExpertise(expertiseData).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Expertise added successfully!');
+          this.selectedExpertiseFromList = [];
+          this.selectedExpertiseType = '';
+          this.expertiseListByType = [];
+
+          // Try to close the modal
+          const modalElement = document.getElementById('addExpertiseModal');
+          if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+              modal.hide();
+            }
+          }
+
+          // Reload page after a short delay to ensure notification is shown
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add expertise');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to add expertise');
+      }
+    );
   }
 
   deleteExpertise(expertise: any) {
