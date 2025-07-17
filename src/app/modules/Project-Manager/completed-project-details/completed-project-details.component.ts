@@ -1156,5 +1156,30 @@ export class CompletedProjectDetailsComponent {
     return hasComment;
   }
 
+  updateAttendee(supplier: any) {
+    if (!supplier) {
+      return this.notificationService.showError('Invalid supplier');
+    }
+
+    const payload = {
+      projectId: this.projectId,
+      supplierId: supplier._id,
+      attendee: !supplier.attendee
+    };
+
+    this.superadminService.updateAttendee(payload).subscribe(
+      (response) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Successfully updated attendance status');
+          this.getProjectDetails(); // Refresh the project details
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update attendance status');
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Something went wrong');
+      }
+    );
+  }
 
 }
