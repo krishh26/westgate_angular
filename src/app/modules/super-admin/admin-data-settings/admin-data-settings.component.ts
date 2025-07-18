@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-data-settings',
@@ -85,9 +86,22 @@ export class AdminDataSettingsComponent implements OnInit {
   selectedTechnologyId: string = '';
   isEditingTechnology: boolean = false;
 
+  // Infinite scrolling pagination properties for technologies
+  technologyPage: number = 1;
+  technologyLimit: number = 100;
+  loadingMoreTechnologies: boolean = false;
+  hasMoreTechnologies: boolean = true;
+  allTechnologies: any[] = [];
+
+  // Infinite scrolling pagination properties for expertise
+  expertisePage: number = 1;
+  expertiseLimit: number = 100;
+  loadingMoreExpertises: boolean = false;
+  hasMoreExpertises: boolean = true;
+  allExpertises: any[] = [];
+
   expertiseTypes: any[] = [
     { name: "Product", value: "Product" },
-    { name: "Service", value: "Service" },
     { name: "Testing Tools", value: "Testing Tools" },
     { name: "Cloud Platforms", value: "Cloud Platforms" },
     { name: "DevOps & Automation", value: "DevOps & Automation" },
@@ -111,6 +125,13 @@ export class AdminDataSettingsComponent implements OnInit {
     { name: "Web3 & Decentralized Tech", value: "Web3 & Decentralized Tech" }
   ];
 
+  // Infinite scrolling pagination properties for roles
+  rolePage: number = 1;
+  roleLimit: number = 100;
+  loadingMoreRoles: boolean = false;
+  hasMoreRoles: boolean = true;
+  allRoles: any[] = [];
+
   constructor(
     private superadminService: SuperadminService,
     private spinner: NgxSpinnerService,
@@ -118,7 +139,8 @@ export class AdminDataSettingsComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.servicesList = [
       { name: 'Pre-Built Software Solutions', value: 'Pre-Built Software Solutions' },
@@ -234,9 +256,15 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadTechnologies(): void {
     this.showLoader = true;
+    this.technologyPage = 1;
+    this.hasMoreTechnologies = true;
+    this.allTechnologies = [];
 
-    // Create params object to include search if present
-    const params: any = {};
+    // Create params object to include search and pagination
+    const params: any = {
+      page: this.technologyPage,
+      limit: this.technologyLimit
+    };
     if (this.technologySearchQuery) {
       params.search = this.technologySearchQuery;
     }
@@ -244,7 +272,11 @@ export class AdminDataSettingsComponent implements OnInit {
     this.superadminService.getTechnologies(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.technologies = response.data || [];
+          this.allTechnologies = response.data || [];
+          this.technologies = [...this.allTechnologies];
+
+          // Check if there are more items to load
+          this.hasMoreTechnologies = response.data && response.data.length === this.technologyLimit;
         } else {
           this.error = response?.message || 'Failed to load technologies';
         }
@@ -257,17 +289,77 @@ export class AdminDataSettingsComponent implements OnInit {
     });
   }
 
-  loadExpertises(): void {
-    this.showLoader = true;
+  loadMoreTechnologies(): void {
+    if (this.loadingMoreTechnologies || !this.hasMoreTechnologies) {
+      return;
+    }
 
-    // Pass type and search as separate parameters
-    this.superadminService.getExpertiseDropdownList(
-      this.selectedExpertiseType || undefined,
-      this.expertiseSearchQuery || undefined
-    ).subscribe({
+    this.loadingMoreTechnologies = true;
+    this.technologyPage++;
+
+    // Create params object to include search and pagination
+    const params: any = {
+      page: this.technologyPage,
+      limit: this.technologyLimit
+    };
+    if (this.technologySearchQuery) {
+      params.search = this.technologySearchQuery;
+    }
+
+    this.superadminService.getTechnologies(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.expertises = response.data || [];
+          const newTechnologies = response.data || [];
+          this.allTechnologies = [...this.allTechnologies, ...newTechnologies];
+          this.technologies = [...this.allTechnologies];
+
+          // Check if there are more items to load
+          this.hasMoreTechnologies = newTechnologies.length === this.technologyLimit;
+        } else {
+          this.error = response?.message || 'Failed to load more technologies';
+        }
+        this.loadingMoreTechnologies = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading more technologies';
+        this.loadingMoreTechnologies = false;
+      }
+    });
+  }
+
+  onTechnologyTableScroll(event: any): void {
+    const element = event.target;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
+
+    if (atBottom && this.hasMoreTechnologies && !this.loadingMoreTechnologies) {
+      this.loadMoreTechnologies();
+    }
+  }
+
+  loadExpertises(): void {
+    this.showLoader = true;
+    this.expertisePage = 1;
+    this.hasMoreExpertises = true;
+    this.allExpertises = [];
+
+    // Pass type, search, and pagination as parameters
+    const params: any = {
+      page: this.expertisePage,
+      limit: this.expertiseLimit
+    };
+    if (this.selectedExpertiseType) {
+      params.type = this.selectedExpertiseType;
+    }
+    if (this.expertiseSearchQuery) {
+      params.search = this.expertiseSearchQuery;
+    }
+
+    this.superadminService.getExpertiseDropdownList(params).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.allExpertises = response.data || [];
+          this.expertises = [...this.allExpertises];
+          this.hasMoreExpertises = response.data && response.data.length === this.expertiseLimit;
         } else {
           this.error = response?.message || 'Failed to load expertises';
         }
@@ -278,6 +370,51 @@ export class AdminDataSettingsComponent implements OnInit {
         this.showLoader = false;
       }
     });
+  }
+
+  loadMoreExpertises(): void {
+    if (this.loadingMoreExpertises || !this.hasMoreExpertises) {
+      return;
+    }
+    this.loadingMoreExpertises = true;
+    this.expertisePage++;
+
+    const params: any = {
+      page: this.expertisePage,
+      limit: this.expertiseLimit
+    };
+    if (this.selectedExpertiseType) {
+      params.type = this.selectedExpertiseType;
+    }
+    if (this.expertiseSearchQuery) {
+      params.search = this.expertiseSearchQuery;
+    }
+
+    this.superadminService.getExpertiseDropdownList(params).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          const newExpertises = response.data || [];
+          this.allExpertises = [...this.allExpertises, ...newExpertises];
+          this.expertises = [...this.allExpertises];
+          this.hasMoreExpertises = newExpertises.length === this.expertiseLimit;
+        } else {
+          this.error = response?.message || 'Failed to load more expertises';
+        }
+        this.loadingMoreExpertises = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading more expertises';
+        this.loadingMoreExpertises = false;
+      }
+    });
+  }
+
+  onExpertiseTableScroll(event: any): void {
+    const element = event.target;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
+    if (atBottom && this.hasMoreExpertises && !this.loadingMoreExpertises) {
+      this.loadMoreExpertises();
+    }
   }
 
   loadSubExpertises(): void {
@@ -304,13 +441,21 @@ export class AdminDataSettingsComponent implements OnInit {
 
   loadRoles(): void {
     this.showLoader = true;
-    const params = {
-      search: this.searchQuery
+    this.rolePage = 1;
+    this.hasMoreRoles = true;
+    this.allRoles = [];
+
+    const params: any = {
+      search: this.searchQuery,
+      page: this.rolePage,
+      limit: this.roleLimit
     };
     this.superadminService.getRolesListByAdmin(params).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.roles = response?.data?.roles || [];
+          this.allRoles = response?.data?.roles || [];
+          this.roles = [...this.allRoles];
+          this.hasMoreRoles = this.allRoles.length === this.roleLimit;
         } else {
           this.error = response?.message || 'Failed to load roles';
         }
@@ -321,6 +466,44 @@ export class AdminDataSettingsComponent implements OnInit {
         this.showLoader = false;
       }
     });
+  }
+
+  loadMoreRoles(): void {
+    if (this.loadingMoreRoles || !this.hasMoreRoles) {
+      return;
+    }
+    this.loadingMoreRoles = true;
+    this.rolePage++;
+    const params: any = {
+      search: this.searchQuery,
+      page: this.rolePage,
+      limit: this.roleLimit
+    };
+    this.superadminService.getRolesListByAdmin(params).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          const newRoles = response?.data?.roles || [];
+          this.allRoles = [...this.allRoles, ...newRoles];
+          this.roles = [...this.allRoles];
+          this.hasMoreRoles = newRoles.length === this.roleLimit;
+        } else {
+          this.error = response?.message || 'Failed to load more roles';
+        }
+        this.loadingMoreRoles = false;
+      },
+      error: (error: any) => {
+        this.error = error?.message || 'An error occurred while loading more roles';
+        this.loadingMoreRoles = false;
+      }
+    });
+  }
+
+  onRoleTableScroll(event: any): void {
+    const element = event.target;
+    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
+    if (atBottom && this.hasMoreRoles && !this.loadingMoreRoles) {
+      this.loadMoreRoles();
+    }
   }
 
   onSearchChange(query: string): void {
@@ -771,6 +954,10 @@ export class AdminDataSettingsComponent implements OnInit {
     // Set a new timeout to debounce the search
     this.technologySearchTimeout = setTimeout(() => {
       this.technologySearchQuery = query;
+      // Reset pagination and reload technologies
+      this.technologyPage = 1;
+      this.hasMoreTechnologies = true;
+      this.allTechnologies = [];
       this.loadTechnologies();
     }, 300); // Wait for 300ms after user stops typing
   }
@@ -1309,5 +1496,9 @@ export class AdminDataSettingsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  viewSuppliers(expertiseName: string) {
+    this.router.navigate(['/super-admin/admin-data-expertise-list', expertiseName]);
   }
 }

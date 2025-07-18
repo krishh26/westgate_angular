@@ -645,19 +645,40 @@ export class SuperadminService {
     );
   }
 
-  getExpertiseDropdownList(type?: string, search?: string): Observable<any> {
-    let params = new HttpParams();
+  getExpertiseDropdownList(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
 
-    if (type) {
-      params = params.set('type', type);
+    // Always add role=admin as a static parameter
+    queryParams = queryParams.set('role', 'admin');
+
+    if (params.type) {
+      queryParams = queryParams.set('type', params.type);
     }
-
-    if (search) {
-      params = params.set('search', search);
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+    if (params.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params.limit) {
+      queryParams = queryParams.set('limit', params.limit);
     }
 
     return this.httpClient.get<any>(
-      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN_LIST,
+      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
+      { params: queryParams }
+    );
+  }
+
+  getExpertiseDropdownByType(type: string): Observable<any> {
+    let params = new HttpParams();
+
+    // Set type and role=admin as required parameters
+    params = params.set('type', type);
+    params = params.set('role', 'admin');
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
       { params }
     );
   }
@@ -730,6 +751,12 @@ export class SuperadminService {
     if (params.search) {
       queryParams = queryParams.set('search', params.search);
     }
+    if (params.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params.limit) {
+      queryParams = queryParams.set('limit', params.limit);
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TECHNOLOGIES,
@@ -760,6 +787,12 @@ export class SuperadminService {
     }
     // Add role=admin parameter
     queryParams = queryParams.set('role', 'admin');
+    if (params?.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params?.limit) {
+      queryParams = queryParams.set('limit', params.limit);
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.ROLES_GET_LIST,
@@ -958,5 +991,11 @@ export class SuperadminService {
 
   getSupplierDetails(id: string): Observable<any> {
     return this.httpClient.get<any>(`${this.baseUrl}/user/suplier/get/${id}`);
+  }
+
+  getSuppliersByExpertise(expertiseName: string) {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}/web-user/expertise/${encodeURIComponent(expertiseName)}/suppliers`
+    );
   }
 }

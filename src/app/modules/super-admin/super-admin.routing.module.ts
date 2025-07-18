@@ -48,6 +48,7 @@ import { TeamProductivityViewComponent } from './team-productivity-view/team-pro
 import { TodoTaskViewPageComponent } from './todo-task-view-page/todo-task-view-page.component';
 import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/supplier-wise-project-list.component';
 import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
+import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/admin-data-expertise-list.component';
 
 const routes: Routes = [
   {
@@ -246,6 +247,10 @@ const routes: Routes = [
         path: "admin-data-settings",
         component: AdminDataSettingsComponent
       },
+      {
+        path: 'admin-data-expertise-list/:expertiseName',
+        component: AdminDataExpertiseListComponent
+      }
     ]
   },
   {
