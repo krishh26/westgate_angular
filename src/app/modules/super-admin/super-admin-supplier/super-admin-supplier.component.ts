@@ -681,4 +681,14 @@ export class SuperAdminSupplierComponent {
     return '-';
   }
 
+  // Helper to check if a comment is long (over 100 chars)
+  isCommentLong(comment: string, length: number = 100): boolean {
+    return typeof comment === 'string' && comment.length > length;
+  }
+
+  // Toggle view more/view less for a supplier's inHoldComment
+  toggleInHoldComment(item: any) {
+    item.showFullInHoldComment = !item.showFullInHoldComment;
+  }
+
 }

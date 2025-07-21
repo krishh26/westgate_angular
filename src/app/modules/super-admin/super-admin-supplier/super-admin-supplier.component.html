@@ -110,12 +110,13 @@
                   <tr>
                     <th width="200px">Supplier Name</th>
                     <th>Join Date</th>
-                    <th>Last Login</th>
+                    <th *ngIf="currentFilter !== 'isDeleted'">Last Login</th>
                     <th>Total Employees</th>
-                    <th>Total Candidates</th>
+                    <th *ngIf="currentFilter !== 'isDeleted'">Total Candidates</th>
                     <th *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
                       Assigned Projects</th>
                     <th *ngIf="currentFilter === 'inHold'">InHold Comment</th>
+                    <th *ngIf="currentFilter === 'isDeleted'">InHold Comment</th>
                     <th>Action</th>
                     <th *ngIf="currentFilter !== 'isDeleted'">Status</th>
                   </tr>
@@ -132,14 +133,31 @@
                     *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
                     <td>{{item?.companyName || item?.name}}</td>
                     <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
-                    <td>{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
+                    <td *ngIf="currentFilter !== 'isDeleted'">{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
                     <td>{{item?.employeeCount}}</td>
-                    <td>{{item?.totalCandidates}}</td>
+                    <td *ngIf="currentFilter !== 'isDeleted'">{{item?.totalCandidates}}</td>
                     <td *ngIf="currentFilter !== 'inHold' && currentFilter !== 'isDeleted' && currentFilter !== 'inactive'">
                       {{item?.assignedProjectCount}}
                     </td>
                     <td *ngIf="currentFilter === 'inHold' && item?.isInHold">
                       {{ getFirstInHoldComment(item?.inHoldComment) }}
+                    </td>
+                    <td *ngIf="currentFilter === 'isDeleted'" style="max-width: 500px; width: 500px; word-break: break-word;">
+                      <ng-container *ngIf="item?.inHoldComment?.length; else noComment">
+                        <div *ngIf="item.inHoldComment[item.inHoldComment.length - 1] as lastComment">
+                          <div [class.collapsed-text]="!item.showFullInHoldComment && isCommentLong(lastComment.comment)"
+                               [class.expanded-text]="item.showFullInHoldComment"
+                               style="max-width: 500px; width: 100%; word-break: break-word;">
+                            {{ item.showFullInHoldComment ? lastComment.comment : (lastComment.comment | slice:0:100) + (isCommentLong(lastComment.comment) ? '...' : '') }}
+                          </div>
+                          <div *ngIf="isCommentLong(lastComment.comment)" class="mt-2">
+                            <button class="btn btn-link text-primary p-0" (click)="toggleInHoldComment(item)">
+                              {{ item.showFullInHoldComment ? 'View Less' : 'View More' }}
+                            </button>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-template #noComment>-</ng-template>
                     </td>
                     <td>
                       <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
