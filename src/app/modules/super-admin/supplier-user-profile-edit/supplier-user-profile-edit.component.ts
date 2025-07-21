@@ -1039,6 +1039,11 @@ export class SupplierUserProfileEditComponent implements OnInit, AfterViewInit {
       // Get the form values (including disabled controls)
       const formData = { ...this.profileForm.getRawValue() };
 
+      // Ensure typeOfCompany is always an array before submission
+      if (formData.typeOfCompany && !Array.isArray(formData.typeOfCompany)) {
+        formData.typeOfCompany = [formData.typeOfCompany];
+      }
+
       // Create the registration data structure
       const registrationData = {
         ...formData,
