@@ -87,15 +87,19 @@ export class AdminDataSettingsComponent implements OnInit {
   isEditingTechnology: boolean = false;
 
   // Infinite scrolling pagination properties for technologies
+  initialTechnologyLimit: number = 300;
+  subsequentTechnologyLimit: number = 100;
   technologyPage: number = 1;
-  technologyLimit: number = 100;
+  technologyLimit: number = 300; // Start with initial limit
   loadingMoreTechnologies: boolean = false;
   hasMoreTechnologies: boolean = true;
   allTechnologies: any[] = [];
 
   // Infinite scrolling pagination properties for expertise
+  initialExpertiseLimit: number = 300;
+  subsequentExpertiseLimit: number = 100;
   expertisePage: number = 1;
-  expertiseLimit: number = 100;
+  expertiseLimit: number = 300; // Start with initial limit
   loadingMoreExpertises: boolean = false;
   hasMoreExpertises: boolean = true;
   allExpertises: any[] = [];
@@ -127,8 +131,10 @@ export class AdminDataSettingsComponent implements OnInit {
   ];
 
   // Infinite scrolling pagination properties for roles
+  initialRoleLimit: number = 300;
+  subsequentRoleLimit: number = 100;
   rolePage: number = 1;
-  roleLimit: number = 1000;  // Changed from 100 to 300
+  roleLimit: number = 300; // Start with initial limit
   loadingMoreRoles: boolean = false;
   hasMoreRoles: boolean = true;
   allRoles: any[] = [];
@@ -238,13 +244,16 @@ export class AdminDataSettingsComponent implements OnInit {
   selectOption(option: string): void {
     this.selectedOption = option;
     if (option === 'technology') {
+      this.technologyLimit = this.initialTechnologyLimit; // Reset to 300 on tab switch
       this.loadTechnologies();
     } else if (option === 'expertise') {
       this.selectedExpertiseType = 'Product'; // Set to Product when switching to expertise
+      this.expertiseLimit = this.initialExpertiseLimit; // Reset to 300 on tab switch
       this.loadExpertises();
     } else if (option === 'subexpertise') {
       this.loadSubExpertises();
     } else if (option === 'role') {
+      this.roleLimit = this.initialRoleLimit; // Reset to 300 on tab switch
       this.loadRoles();
     } else if (option === 'user') {
       this.loadUsers();
@@ -258,6 +267,7 @@ export class AdminDataSettingsComponent implements OnInit {
   loadTechnologies(): void {
     this.showLoader = true;
     this.technologyPage = 1;
+    this.technologyLimit = this.initialTechnologyLimit; // Use 300 for initial load
     this.hasMoreTechnologies = true;
     this.allTechnologies = [];
 
@@ -297,6 +307,7 @@ export class AdminDataSettingsComponent implements OnInit {
 
     this.loadingMoreTechnologies = true;
     this.technologyPage++;
+    this.technologyLimit = this.subsequentTechnologyLimit; // Use 100 for subsequent loads
 
     // Create params object to include search and pagination
     const params: any = {
@@ -330,9 +341,11 @@ export class AdminDataSettingsComponent implements OnInit {
 
   onTechnologyTableScroll(event: any): void {
     const element = event.target;
-    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
+    // Trigger when user scrolls past the middle of the scrollable area
+    const scrollPosition = element.scrollTop + element.clientHeight;
+    const triggerPoint = element.scrollHeight / 2;
 
-    if (atBottom && this.hasMoreTechnologies && !this.loadingMoreTechnologies) {
+    if (scrollPosition >= triggerPoint && this.hasMoreTechnologies && !this.loadingMoreTechnologies) {
       this.loadMoreTechnologies();
     }
   }
@@ -340,6 +353,7 @@ export class AdminDataSettingsComponent implements OnInit {
   loadExpertises(): void {
     this.showLoader = true;
     this.expertisePage = 1;
+    this.expertiseLimit = this.initialExpertiseLimit; // Use 300 for initial load
     this.hasMoreExpertises = true;
     this.allExpertises = [];
 
@@ -379,6 +393,7 @@ export class AdminDataSettingsComponent implements OnInit {
     }
     this.loadingMoreExpertises = true;
     this.expertisePage++;
+    this.expertiseLimit = this.subsequentExpertiseLimit; // Use 100 for subsequent loads
 
     const params: any = {
       page: this.expertisePage,
@@ -412,8 +427,10 @@ export class AdminDataSettingsComponent implements OnInit {
 
   onExpertiseTableScroll(event: any): void {
     const element = event.target;
-    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
-    if (atBottom && this.hasMoreExpertises && !this.loadingMoreExpertises) {
+    // Trigger when user scrolls past the middle of the scrollable area
+    const scrollPosition = element.scrollTop + element.clientHeight;
+    const triggerPoint = element.scrollHeight / 2;
+    if (scrollPosition >= triggerPoint && this.hasMoreExpertises && !this.loadingMoreExpertises) {
       this.loadMoreExpertises();
     }
   }
@@ -443,6 +460,7 @@ export class AdminDataSettingsComponent implements OnInit {
   loadRoles(): void {
     this.showLoader = true;
     this.rolePage = 1;
+    this.roleLimit = this.initialRoleLimit; // Use 300 for initial load
     this.hasMoreRoles = true;
     this.allRoles = [];
 
@@ -475,6 +493,7 @@ export class AdminDataSettingsComponent implements OnInit {
     }
     this.loadingMoreRoles = true;
     this.rolePage++;
+    this.roleLimit = this.subsequentRoleLimit; // Use 100 for subsequent loads
     const params: any = {
       search: this.searchQuery,
       page: this.rolePage,
@@ -501,8 +520,10 @@ export class AdminDataSettingsComponent implements OnInit {
 
   onRoleTableScroll(event: any): void {
     const element = event.target;
-    const atBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 1;
-    if (atBottom && this.hasMoreRoles && !this.loadingMoreRoles) {
+    // Trigger when user scrolls past the middle of the scrollable area
+    const scrollPosition = element.scrollTop + element.clientHeight;
+    const triggerPoint = element.scrollHeight / 2;
+    if (scrollPosition >= triggerPoint && this.hasMoreRoles && !this.loadingMoreRoles) {
       this.loadMoreRoles();
     }
   }
@@ -516,6 +537,11 @@ export class AdminDataSettingsComponent implements OnInit {
     // Set a new timeout to debounce the search
     this.searchTimeout = setTimeout(() => {
       this.searchQuery = query;
+      // Reset pagination and reload roles
+      this.rolePage = 1;
+      this.roleLimit = this.initialRoleLimit; // Reset to 300 for new search
+      this.hasMoreRoles = true;
+      this.allRoles = [];
       this.loadRoles();
     }, 300); // Wait for 300ms after user stops typing
   }
@@ -825,6 +851,11 @@ export class AdminDataSettingsComponent implements OnInit {
     // Set a new timeout to debounce the search
     this.expertiseSearchTimeout = setTimeout(() => {
       this.expertiseSearchQuery = query;
+      // Reset pagination and reload expertises
+      this.expertisePage = 1;
+      this.expertiseLimit = this.initialExpertiseLimit; // Reset to 300 for new search
+      this.hasMoreExpertises = true;
+      this.allExpertises = [];
       this.loadExpertises();
     }, 300); // Wait for 300ms after user stops typing
   }
@@ -957,6 +988,7 @@ export class AdminDataSettingsComponent implements OnInit {
       this.technologySearchQuery = query;
       // Reset pagination and reload technologies
       this.technologyPage = 1;
+      this.technologyLimit = this.initialTechnologyLimit; // Reset to 300 for new search
       this.hasMoreTechnologies = true;
       this.allTechnologies = [];
       this.loadTechnologies();
