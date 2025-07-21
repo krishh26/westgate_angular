@@ -80,7 +80,11 @@
                 <tbody>
                   <tr *ngFor="let tech of technologies">
                     <td>{{ tech.name }}</td>
-                    <td>{{ tech.candidateCount }}</td>
+                    <td>
+                      <a style="cursor:pointer; text-decoration:underline" (click)="viewCandidates(tech.name)">
+                        {{ tech.candidateCount }}
+                      </a>
+                    </td>
                     <td>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="openAddTechnologyModal(addTechnologyModal, tech)" [ngbTooltip]="'Edit'" placement="top">
@@ -294,33 +298,37 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th style="width: 25%">Role</th>
-                    <th style="width: 65%">Other Roles</th>
+                    <th style="width: 20%">Role</th>
+                    <!-- <th style="width: 15%">Active Candidates</th> -->
+                    <th style="width: 55%">Other Roles</th>
                     <th style="width: 10%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let role of roles">
-                    <td style="width: 25%; vertical-align: top;">
+                    <td style="vertical-align: top;">
                       <span class="text-truncate d-inline-block w-100" [ngbTooltip]="role.name" placement="top">
-                        {{ role.name }}
+                        {{ role.name }} ({{ role.activeCandidatesCount }})
                       </span>
                     </td>
-                    <td style="width: 65%;">
+                    <!-- <td style="vertical-align: top;">
+                      <a style="cursor:pointer; text-decoration:underline" (click)="viewRoleCandidates(role.name)">
+                        {{ role.activeCandidatesCount }}
+                      </a>
+                    </td> -->
+                    <td>
                       <div class="d-flex flex-wrap" style="gap: 8px; padding: 4px 0;">
-                        <ng-container *ngIf="role?.otherRoles && role.otherRoles.length > 0">
-                          <span *ngFor="let subRole of role.otherRoles"
-                                class="badge bg-primary"
-                                [ngbTooltip]="subRole"
-                                placement="top"
-                                style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2;">
-                            {{subRole}}
-                          </span>
+                        <ng-container *ngIf="role?.otherRolesWithCounts && role.otherRolesWithCounts.length > 0">
+                          <div *ngFor="let subRole of role.otherRolesWithCounts"
+                               class="badge bg-primary p-2 d-flex align-items-center"
+                               style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2;">
+                            <span>{{subRole.name}} ({{subRole.activeCandidatesCount}})</span>
+                          </div>
                         </ng-container>
-                        <span *ngIf="!role?.otherRoles || role.otherRoles.length === 0">-</span>
+                        <span *ngIf="!role?.otherRolesWithCounts || role.otherRolesWithCounts.length === 0">-</span>
                       </div>
                     </td>
-                    <td style="width: 10%; vertical-align: top;">
+                    <td style="vertical-align: top;">
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary"
                                 [ngbTooltip]="'Edit'"
@@ -338,11 +346,11 @@
                     </td>
                   </tr>
                   <tr *ngIf="roles.length === 0 && !showLoader">
-                    <td colspan="3" class="text-center">No roles found</td>
+                    <td colspan="4" class="text-center">No roles found</td>
                   </tr>
                   <!-- Loading more indicator -->
                   <tr *ngIf="loadingMoreRoles">
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                       <div class="d-flex justify-content-center align-items-center">
                         <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
                           <span class="visually-hidden">Loading more...</span>
@@ -353,7 +361,7 @@
                   </tr>
                   <!-- End of data indicator -->
                   <tr *ngIf="!hasMoreRoles && roles.length > 0 && !loadingMoreRoles">
-                    <td colspan="3" class="text-center text-muted">
+                    <td colspan="4" class="text-center text-muted">
                       <small>No more roles to load</small>
                     </td>
                   </tr>

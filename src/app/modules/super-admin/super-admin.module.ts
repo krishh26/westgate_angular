@@ -65,6 +65,7 @@ import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/s
 import { FilterNonZeroCountsPipe } from '../../pipes/filter-non-zero-counts.pipe';
 import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
 import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/admin-data-expertise-list.component';
+import { AdminDataCandidateListComponent } from './admin-data-candidate-list/admin-data-candidate-list.component';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -121,7 +122,8 @@ import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/adm
     SupplierWiseProjectListComponent,
     FilterNonZeroCountsPipe,
     AdminDataSettingsComponent,
-    AdminDataExpertiseListComponent
+    AdminDataExpertiseListComponent,
+    AdminDataCandidateListComponent
   ],
 
   imports: [

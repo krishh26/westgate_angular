@@ -1,0 +1,163 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="mb-0">Candidates for Technology: {{ technologyName }}</h4>
+            <small class="text-muted">Showing candidates with {{ technologyName }} skills</small>
+          </div>
+          <button class="btn btn-secondary" (click)="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>Back to Settings
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Loading Indicator -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading candidates...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading candidates...</p>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="error" class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+          </div>
+
+          <!-- Candidates Table -->
+          <div *ngIf="!loading && !error" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Supplier</th>
+                  <th>Current Role</th>
+                  <th>Experience</th>
+                  <th>Technical Skills</th>
+                  <th>CTC</th>
+                  <th>UK Rates</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                    let candidate of candidates
+                      | paginate
+                        : {
+                            itemsPerPage: pagesize,
+                            currentPage: page,
+                            totalItems: totalRecords
+                          };
+                    let i = index
+                  ">
+                  <td>
+                    <div>
+                      <strong>{{ candidate.fullName }}</strong>
+                      <br>
+                      <small class="text-muted">{{ candidate.gender }} | {{ candidate.nationality }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>{{ candidate.supplierId?.name }}</strong>
+                      <br>
+                      <small class="text-muted">{{ candidate.supplierId?.companyName }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>{{ candidate.currentRole?.name }}</strong>
+                      <br>
+                      <small class="text-muted">{{ getRoleNames(candidate.roleId) }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>{{ candidate.totalExperience }} years</strong>
+                      <br>
+                      <small class="text-muted">{{ candidate.highestQualification }} ({{ candidate.yearOfGraduation }})</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-wrap" style="gap: 4px;">
+                      <span *ngFor="let skill of candidate.technicalSkills"
+                            class="badge bg-primary"
+                            style="font-size: 11px;">
+                        {{ skill }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>{{ formatCurrency(candidate.ctc) }}</strong>
+                      <br>
+                      <small class="text-muted">{{ formatCurrency(candidate.indianDayRate) }}/day</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>{{ formatUKCurrency(candidate.ukHourlyRate) }}/hr</strong>
+                      <br>
+                      <small class="text-muted">{{ formatUKCurrency(candidate.ukDayRate) }}/day</small>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-success': candidate.active,
+                      'bg-danger': !candidate.active
+                    }">
+                      {{ candidate.active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-sm btn-outline-primary"
+                              (click)="editSupplier(candidate.supplierId._id)"
+                              [ngbTooltip]="'Edit Supplier'"
+                              placement="top">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="candidates.length === 0 && !loading">
+                  <td colspan="9" class="text-center py-4">
+                    <div class="text-muted">
+                      <i class="bi bi-people fs-1 d-block mb-2"></i>
+                      <div *ngIf="page === 1; else noMoreResults">
+                        No candidates found for this technology
+                      </div>
+                      <ng-template #noMoreResults>
+                        No more candidates found on page {{ page }}
+                      </ng-template>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Candidate Count and Pagination -->
+          <div *ngIf="!loading && !error && candidates.length > 0" class="mt-3">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <small class="text-muted">
+                  Showing {{ (page - 1) * pagesize + 1 }} to {{ Math.min(page * pagesize, totalRecords) }} of {{ totalRecords }} candidate(s) for {{ technologyName }}
+                </small>
+              </div>
+            </div>
+            <div class="row mt-3 align-items-center">
+              <div class="row">
+                <div class="pagination">
+                  <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

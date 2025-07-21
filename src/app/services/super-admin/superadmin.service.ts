@@ -63,6 +63,7 @@ export enum SuperAdminEndPoint {
   GET_TECHNOLOGIES = '/tech-language/technologies',
   CREATE_TECHNOLOGY = '/tech-language/create',
   DELETE_TECHNOLOGY = '/tech-language/technologies/_id',
+  GET_CANDIDATES_BY_TECHNOLOGY = '/tech-language/:technology/candidates',
   DELETE_CASE_STUDY = '/case-study/delete/',
   WITHOUT_SUPPLIER_SUB_EXPERTISE_DROPDOWN = '/sub-expertise/list',
   PROMOTE_EXPERTISE = '/web-user/masterlist/promote',
@@ -997,5 +998,13 @@ export class SuperadminService {
     return this.httpClient.get<any>(
       `${this.baseUrl}/web-user/expertise/${encodeURIComponent(expertiseName)}/suppliers`
     );
+  }
+
+  getCandidatesByTechnology(technologyName: string, page: number = 1, limit: number = 10): Observable<any> {
+    const url = this.baseUrl + SuperAdminEndPoint.GET_CANDIDATES_BY_TECHNOLOGY.replace(':technology', technologyName);
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('page', page.toString());
+    queryParams = queryParams.set('limit', limit.toString());
+    return this.httpClient.get<any>(url, { params: queryParams });
   }
 }

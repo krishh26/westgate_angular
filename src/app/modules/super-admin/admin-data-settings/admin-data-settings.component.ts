@@ -102,6 +102,7 @@ export class AdminDataSettingsComponent implements OnInit {
 
   expertiseTypes: any[] = [
     { name: "Product", value: "Product" },
+    { name: "Service", value: "Service" },
     { name: "Testing Tools", value: "Testing Tools" },
     { name: "Cloud Platforms", value: "Cloud Platforms" },
     { name: "DevOps & Automation", value: "DevOps & Automation" },
@@ -127,7 +128,7 @@ export class AdminDataSettingsComponent implements OnInit {
 
   // Infinite scrolling pagination properties for roles
   rolePage: number = 1;
-  roleLimit: number = 100;
+  roleLimit: number = 1000;  // Changed from 100 to 300
   loadingMoreRoles: boolean = false;
   hasMoreRoles: boolean = true;
   allRoles: any[] = [];
@@ -1500,5 +1501,13 @@ export class AdminDataSettingsComponent implements OnInit {
 
   viewSuppliers(expertiseName: string) {
     this.router.navigate(['/super-admin/admin-data-expertise-list', expertiseName]);
+  }
+
+  viewCandidates(technologyName: string) {
+    this.router.navigate(['/super-admin/admin-data-candidate-list', technologyName]);
+  }
+
+  viewRoleCandidates(roleName: string) {
+    this.router.navigate(['/super-admin/admin-data-candidate-list', roleName]);
   }
 }

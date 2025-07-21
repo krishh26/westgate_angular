@@ -41,6 +41,7 @@ export class ExpertiseListComponent {
   // New properties for the two dropdowns
   expertiseTypes: string[] = [
     "Product",
+    "Service",
     "Testing Tools",
     "Cloud Platforms",
     "DevOps & Automation",
@@ -260,7 +261,7 @@ export class ExpertiseListComponent {
 
   getExpertiseListByType(type: string) {
     this.showLoader = true;
-    this.superService.getExpertiseDropdownList(type).subscribe(
+    this.superService.getExpertiseDropdownList({ type: type }).subscribe(
       (response: any) => {
         if (response?.status) {
           this.expertiseListByType = response.data || [];
