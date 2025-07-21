@@ -211,7 +211,8 @@ export class ResourcesAddBulkComponent implements OnInit {
           currentRole: currentRole,
           roleId: roleIdArr,
           certifications: this.convertToArray(row[15]),
-          projectsExecuted: this.getValueOrEmpty(row[16])
+          projectsExecuted: this.getValueOrEmpty(row[16]),
+          uniqueId: this.getValueOrEmpty(row[17])
         };
       });
 
