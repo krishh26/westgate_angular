@@ -154,6 +154,229 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     { number: 8, title: 'Success', completed: false, active: false }
   ];
 
+  // Tag arrays for 'Other' fields in steps 2-7
+  servicesOtherTags: string[] = [];
+  technologyStackOtherTags: string[] = [];
+  cloudPlatformsOtherTags: string[] = [];
+  devOpsAutomationOtherTags: string[] = [];
+  containerizationOrchestrationOtherTags: string[] = [];
+  networkingInfrastructureOtherTags: string[] = [];
+  securityIAMOtherTags: string[] = [];
+  monitoringObservabilityOtherTags: string[] = [];
+  integrationAPIManagementOtherTags: string[] = [];
+  eventStreamingMessagingOtherTags: string[] = [];
+  databasePlatformsOtherTags: string[] = [];
+  dataAnalyticsBIOtherTags: string[] = [];
+  aiMLPlatformsOtherTags: string[] = [];
+  erpEnterpriseSystemsOtherTags: string[] = [];
+  crmCustomerPlatformsOtherTags: string[] = [];
+  itsmITOperationsOtherTags: string[] = [];
+  businessAppsProductivityOtherTags: string[] = [];
+  eCommerceCMSOtherTags: string[] = [];
+  learningHRSystemsOtherTags: string[] = [];
+  lowCodeNoCodePlatformsOtherTags: string[] = [];
+  testingQAOtherTags: string[] = [];
+  web3DecentralizedTechOtherTags: string[] = [];
+
+  // Tag add/remove methods for each field
+  addServicesOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.servicesOtherTags.includes(value)) {
+      this.servicesOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeServicesOtherTag(index: number) { this.servicesOtherTags.splice(index, 1); }
+
+  addTechnologyStackOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.technologyStackOtherTags.includes(value)) {
+      this.technologyStackOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeTechnologyStackOtherTag(index: number) { this.technologyStackOtherTags.splice(index, 1); }
+
+  addCloudPlatformsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.cloudPlatformsOtherTags.includes(value)) {
+      this.cloudPlatformsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeCloudPlatformsOtherTag(index: number) { this.cloudPlatformsOtherTags.splice(index, 1); }
+
+  addDevOpsAutomationOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.devOpsAutomationOtherTags.includes(value)) {
+      this.devOpsAutomationOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeDevOpsAutomationOtherTag(index: number) { this.devOpsAutomationOtherTags.splice(index, 1); }
+
+  addContainerizationOrchestrationOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.containerizationOrchestrationOtherTags.includes(value)) {
+      this.containerizationOrchestrationOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeContainerizationOrchestrationOtherTag(index: number) { this.containerizationOrchestrationOtherTags.splice(index, 1); }
+
+  addNetworkingInfrastructureOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.networkingInfrastructureOtherTags.includes(value)) {
+      this.networkingInfrastructureOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeNetworkingInfrastructureOtherTag(index: number) { this.networkingInfrastructureOtherTags.splice(index, 1); }
+
+  addSecurityIAMOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.securityIAMOtherTags.includes(value)) {
+      this.securityIAMOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeSecurityIAMOtherTag(index: number) { this.securityIAMOtherTags.splice(index, 1); }
+
+  addMonitoringObservabilityOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.monitoringObservabilityOtherTags.includes(value)) {
+      this.monitoringObservabilityOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeMonitoringObservabilityOtherTag(index: number) { this.monitoringObservabilityOtherTags.splice(index, 1); }
+
+  addIntegrationAPIManagementOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.integrationAPIManagementOtherTags.includes(value)) {
+      this.integrationAPIManagementOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeIntegrationAPIManagementOtherTag(index: number) { this.integrationAPIManagementOtherTags.splice(index, 1); }
+
+  addEventStreamingMessagingOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.eventStreamingMessagingOtherTags.includes(value)) {
+      this.eventStreamingMessagingOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeEventStreamingMessagingOtherTag(index: number) { this.eventStreamingMessagingOtherTags.splice(index, 1); }
+
+  addDatabasePlatformsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.databasePlatformsOtherTags.includes(value)) {
+      this.databasePlatformsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeDatabasePlatformsOtherTag(index: number) { this.databasePlatformsOtherTags.splice(index, 1); }
+
+  addDataAnalyticsBIOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.dataAnalyticsBIOtherTags.includes(value)) {
+      this.dataAnalyticsBIOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeDataAnalyticsBIOtherTag(index: number) { this.dataAnalyticsBIOtherTags.splice(index, 1); }
+
+  addAiMLPlatformsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.aiMLPlatformsOtherTags.includes(value)) {
+      this.aiMLPlatformsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeAiMLPlatformsOtherTag(index: number) { this.aiMLPlatformsOtherTags.splice(index, 1); }
+
+  addErpEnterpriseSystemsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.erpEnterpriseSystemsOtherTags.includes(value)) {
+      this.erpEnterpriseSystemsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeErpEnterpriseSystemsOtherTag(index: number) { this.erpEnterpriseSystemsOtherTags.splice(index, 1); }
+
+  addCrmCustomerPlatformsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.crmCustomerPlatformsOtherTags.includes(value)) {
+      this.crmCustomerPlatformsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeCrmCustomerPlatformsOtherTag(index: number) { this.crmCustomerPlatformsOtherTags.splice(index, 1); }
+
+  addItsmITOperationsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.itsmITOperationsOtherTags.includes(value)) {
+      this.itsmITOperationsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeItsmITOperationsOtherTag(index: number) { this.itsmITOperationsOtherTags.splice(index, 1); }
+
+  addBusinessAppsProductivityOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.businessAppsProductivityOtherTags.includes(value)) {
+      this.businessAppsProductivityOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeBusinessAppsProductivityOtherTag(index: number) { this.businessAppsProductivityOtherTags.splice(index, 1); }
+
+  addECommerceCMSOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.eCommerceCMSOtherTags.includes(value)) {
+      this.eCommerceCMSOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeECommerceCMSOtherTag(index: number) { this.eCommerceCMSOtherTags.splice(index, 1); }
+
+  addLearningHRSystemsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.learningHRSystemsOtherTags.includes(value)) {
+      this.learningHRSystemsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeLearningHRSystemsOtherTag(index: number) { this.learningHRSystemsOtherTags.splice(index, 1); }
+
+  addLowCodeNoCodePlatformsOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.lowCodeNoCodePlatformsOtherTags.includes(value)) {
+      this.lowCodeNoCodePlatformsOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeLowCodeNoCodePlatformsOtherTag(index: number) { this.lowCodeNoCodePlatformsOtherTags.splice(index, 1); }
+
+  addTestingQAOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.testingQAOtherTags.includes(value)) {
+      this.testingQAOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeTestingQAOtherTag(index: number) { this.testingQAOtherTags.splice(index, 1); }
+
+  addWeb3DecentralizedTechOtherTag(event: any) {
+    const value = event.target.value.trim();
+    if (value && !this.web3DecentralizedTechOtherTags.includes(value)) {
+      this.web3DecentralizedTechOtherTags.push(value);
+      event.target.value = '';
+    }
+  }
+  removeWeb3DecentralizedTechOtherTag(index: number) { this.web3DecentralizedTechOtherTags.splice(index, 1); }
+
   constructor(
     private formBuilder: FormBuilder,
     private superadminservice: SuperadminService,
@@ -416,13 +639,6 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         this.loadStep7Dropdowns();
       }
     });
-
-    // Ensure typeOfCompany is always an array
-    // this.profileForm.get('typeOfCompany')?.valueChanges.subscribe(val => {
-    //   if (val && !Array.isArray(val)) {
-    //     this.profileForm.get('typeOfCompany')?.setValue([val], { emitEvent: false });
-    //   }
-    // });
   }
 
   ngAfterViewInit(): void {
@@ -893,41 +1109,30 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       // Create the registration data structure
       const registrationData = {
         ...formData,
-        services: this.combineMainAndOther(formData.services, formData.servicesOther),
+        services: this.combineMainAndOther(formData.services, this.servicesOtherTags),
         product: formData.product || [],
-
-        // Core services fields
-        cloudPlatforms: this.combineMainAndOther(formData.cloudPlatforms, formData.cloudPlatformsOther),
-        devOpsAutomation: this.combineMainAndOther(formData.devOpsAutomation, formData.devOpsAutomationOther),
-        containerizationOrchestration: this.combineMainAndOther(formData.containerizationOrchestration, formData.containerizationOrchestrationOther),
-
-        // Infrastructure fields
-        networkingInfrastructure: this.combineMainAndOther(formData.networkingInfrastructure, formData.networkingInfrastructureOther),
-        securityIAM: this.combineMainAndOther(formData.securityIAM, formData.securityIAMOther),
-        monitoringObservability: this.combineMainAndOther(formData.monitoringObservability, formData.monitoringObservabilityOther),
-        integrationAPIManagement: this.combineMainAndOther(formData.integrationAPIManagement, formData.integrationAPIManagementOther),
-        eventStreamingMessaging: this.combineMainAndOther(formData.eventStreamingMessaging, formData.eventStreamingMessagingOther),
-
-        // Data and intelligence fields
-        databasePlatforms: this.combineMainAndOther(formData.databasePlatforms, formData.databasePlatformsOther),
-        dataAnalyticsBI: this.combineMainAndOther(formData.dataAnalyticsBI, formData.dataAnalyticsBIOther),
-        aiMLPlatforms: this.combineMainAndOther(formData.aiMLPlatforms, formData.aiMLPlatformsOther),
-
-        // Enterprise systems fields
-        erpEnterpriseSystems: this.combineMainAndOther(formData.erpEnterpriseSystems, formData.erpEnterpriseSystemsOther),
-        crmCustomerPlatforms: this.combineMainAndOther(formData.crmCustomerPlatforms, formData.crmCustomerPlatformsOther),
-        itsmITOperations: this.combineMainAndOther(formData.itsmITOperations, formData.itsmITOperationsOther),
-        businessAppsProductivity: this.combineMainAndOther(formData.businessAppsProductivity, formData.businessAppsProductivityOther),
-
-        // Front-end and emerging tech fields
-        eCommerceCMS: this.combineMainAndOther(formData.eCommerceCMS, formData.eCommerceCMSOther),
-        learningHRSystems: this.combineMainAndOther(formData.learningHRSystems, formData.learningHRSystemsOther),
-        lowCodeNoCodePlatforms: this.combineMainAndOther(formData.lowCodeNoCodePlatforms, formData.lowCodeNoCodePlatformsOther),
-        testingQA: this.combineMainAndOther(formData.testingQA, formData.testingQAOther),
-        web3DecentralizedTech: this.combineMainAndOther(formData.web3DecentralizedTech, formData.web3DecentralizedTechOther),
-
+        technologyStack: this.combineMainAndOther(formData.technologyStack, this.technologyStackOtherTags),
+        cloudPlatforms: this.combineMainAndOther(formData.cloudPlatforms, this.cloudPlatformsOtherTags),
+        devOpsAutomation: this.combineMainAndOther(formData.devOpsAutomation, this.devOpsAutomationOtherTags),
+        containerizationOrchestration: this.combineMainAndOther(formData.containerizationOrchestration, this.containerizationOrchestrationOtherTags),
+        networkingInfrastructure: this.combineMainAndOther(formData.networkingInfrastructure, this.networkingInfrastructureOtherTags),
+        securityIAM: this.combineMainAndOther(formData.securityIAM, this.securityIAMOtherTags),
+        monitoringObservability: this.combineMainAndOther(formData.monitoringObservability, this.monitoringObservabilityOtherTags),
+        integrationAPIManagement: this.combineMainAndOther(formData.integrationAPIManagement, this.integrationAPIManagementOtherTags),
+        eventStreamingMessaging: this.combineMainAndOther(formData.eventStreamingMessaging, this.eventStreamingMessagingOtherTags),
+        databasePlatforms: this.combineMainAndOther(formData.databasePlatforms, this.databasePlatformsOtherTags),
+        dataAnalyticsBI: this.combineMainAndOther(formData.dataAnalyticsBI, this.dataAnalyticsBIOtherTags),
+        aiMLPlatforms: this.combineMainAndOther(formData.aiMLPlatforms, this.aiMLPlatformsOtherTags),
+        erpEnterpriseSystems: this.combineMainAndOther(formData.erpEnterpriseSystems, this.erpEnterpriseSystemsOtherTags),
+        crmCustomerPlatforms: this.combineMainAndOther(formData.crmCustomerPlatforms, this.crmCustomerPlatformsOtherTags),
+        itsmITOperations: this.combineMainAndOther(formData.itsmITOperations, this.itsmITOperationsOtherTags),
+        businessAppsProductivity: this.combineMainAndOther(formData.businessAppsProductivity, this.businessAppsProductivityOtherTags),
+        eCommerceCMS: this.combineMainAndOther(formData.eCommerceCMS, this.eCommerceCMSOtherTags),
+        learningHRSystems: this.combineMainAndOther(formData.learningHRSystems, this.learningHRSystemsOtherTags),
+        lowCodeNoCodePlatforms: this.combineMainAndOther(formData.lowCodeNoCodePlatforms, this.lowCodeNoCodePlatformsOtherTags),
+        testingQA: this.combineMainAndOther(formData.testingQA, this.testingQAOtherTags),
+        web3DecentralizedTech: this.combineMainAndOther(formData.web3DecentralizedTech, this.web3DecentralizedTechOtherTags),
         // Basic fields
-        companyName: formData.companyName,
         website: formData.website,
         companyAddress: formData.companyAddress,
         country: formData.country,
@@ -943,23 +1148,66 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         resourceSharingSupplier: formData.resourceSharingSupplier,
         subcontractingSupplier: formData.subcontractingSupplier,
         typeOfCompany: formData.typeOfCompany,
-        technologyStack: this.combineMainAndOther(formData.technologyStack, formData.technologyStackOther)
+        // companyName property is already included above, so no need to repeat it
+        // technologyStack: this.combineMainAndOther(formData.technologyStack, this.technologyStackOtherTags)
       };
 
-      // Call the register API
-      this.superadminservice.supplierregister(registrationData).subscribe(
-        (response: any) => {
-          this.loading = false;
-          this.successMessage = 'Registration completed successfully!';
-          // Navigate to success step
-          this.moveToSuccessStep();
-        },
-        (error: Error) => {
-          this.loading = false;
-          this.errorMessage = 'An error occurred while registering. Please try again.';
-          console.error('Error during registration:', error);
-        }
-      );
+      // --- ADDITION: Call createCustomExpertise for each new custom tag ---
+      const customTagCalls: any[] = [];
+      // Helper to add calls for a tag array and type
+      const addCustomTags = (tags: string[], type: string, existingList: any[] = []) => {
+        if (!tags) return;
+        tags.forEach(tag => {
+          if (tag && tag.trim() && (!existingList || !existingList.some((item: any) => (item.name || item) === tag))) {
+            customTagCalls.push(this.superadminservice.createCustomExpertise({ name: tag.trim(), type }));
+          }
+        });
+      };
+      // Add for each field
+      addCustomTags(this.servicesOtherTags, 'Service', this.services);
+      addCustomTags(this.technologyStackOtherTags, 'Technology Stack', this.technologies);
+      addCustomTags(this.cloudPlatformsOtherTags, 'Cloud Platforms', this.cloudPlatformsList);
+      addCustomTags(this.devOpsAutomationOtherTags, 'DevOps & Automation', this.devOpsList);
+      addCustomTags(this.containerizationOrchestrationOtherTags, 'Containerization & Orchestration', this.containerizationList);
+      addCustomTags(this.networkingInfrastructureOtherTags, 'Networking & Infrastructure', this.networkingList);
+      addCustomTags(this.securityIAMOtherTags, 'Security & IAM', this.securityList);
+      addCustomTags(this.monitoringObservabilityOtherTags, 'Monitoring & Observability', this.monitoringList);
+      addCustomTags(this.integrationAPIManagementOtherTags, 'Integration & API Management', this.apiManagementList);
+      addCustomTags(this.eventStreamingMessagingOtherTags, 'Event Streaming & Messaging', this.eventStreamingList);
+      addCustomTags(this.databasePlatformsOtherTags, 'Database Platforms', this.databasePlatformsList);
+      addCustomTags(this.dataAnalyticsBIOtherTags, 'Data, Analytics & BI', this.dataAnalyticsList);
+      addCustomTags(this.aiMLPlatformsOtherTags, 'AI/ML Platforms', this.aiMlPlatformsList);
+      addCustomTags(this.erpEnterpriseSystemsOtherTags, 'ERP/Enterprise Systems', this.erpSystemsList);
+      addCustomTags(this.crmCustomerPlatformsOtherTags, 'CRM & Customer Platforms', this.crmPlatformsList);
+      addCustomTags(this.itsmITOperationsOtherTags, 'ITSM/IT Operations', this.itsmList);
+      addCustomTags(this.businessAppsProductivityOtherTags, 'Business Apps & Productivity', this.businessAppsList);
+      addCustomTags(this.eCommerceCMSOtherTags, 'E-Commerce & CMS', this.eCommerceCmsList);
+      addCustomTags(this.learningHRSystemsOtherTags, 'Learning & HR Systems', this.learningHrSystemsList);
+      addCustomTags(this.lowCodeNoCodePlatformsOtherTags, 'Low-Code/No-Code Platforms', this.lowCodeNoCodeList);
+      addCustomTags(this.testingQAOtherTags, 'Testing & QA', this.testingQaList);
+      addCustomTags(this.web3DecentralizedTechOtherTags, 'Web3 & Decentralized Tech', this.web3DecentralizedList);
+
+      // Wait for all custom tag API calls to finish, then submit registration
+      Promise.all(customTagCalls.map(obs => obs.toPromise ? obs.toPromise() : obs)).then(() => {
+        // Call the register API
+        this.superadminservice.supplierregister(registrationData).subscribe(
+          (response: any) => {
+            this.loading = false;
+            this.successMessage = 'Registration completed successfully!';
+            // Navigate to success step
+            this.moveToSuccessStep();
+          },
+          (error: Error) => {
+            this.loading = false;
+            this.errorMessage = 'An error occurred while registering. Please try again.';
+            console.error('Error during registration:', error);
+          }
+        );
+      }).catch(error => {
+        this.loading = false;
+        this.errorMessage = 'An error occurred while adding custom expertise. Please try again.';
+        console.error('Error during custom expertise creation:', error);
+      });
     } else {
       console.log('Form validation failed');
       console.log('Form validation errors:', this.getFormValidationErrors());
@@ -968,12 +1216,16 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
   }
 
   // Helper method to combine main field values with other field value
-  private combineMainAndOther(mainValues: string[], otherValue: string): string[] {
+  private combineMainAndOther(mainValues: string[], otherValues: string[] | string): string[] {
     if (!mainValues) mainValues = [];
-    if (otherValue && otherValue.trim()) {
-      return [...mainValues, otherValue.trim()];
+    // Remove 'Other' from the main values
+    const filteredMain = mainValues.filter(v => v !== 'Other');
+    if (Array.isArray(otherValues) && otherValues.length > 0) {
+      return [...filteredMain, ...otherValues.map(v => v.trim()).filter(v => v)];
+    } else if (typeof otherValues === 'string' && otherValues.trim()) {
+      return [...filteredMain, otherValues.trim()];
     }
-    return mainValues;
+    return filteredMain;
   }
 
   // Update the setupOtherFieldSubscriptions method to handle all fields
@@ -1014,7 +1266,9 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         control.valueChanges.subscribe((values:any) => {
           if (values?.includes('Other')) {
             (this as any)[config.showProperty] = true;
-            otherControl.setValidators([Validators.required]);
+            // Do NOT set Validators.required, just clear validators and set value to ''
+            otherControl.clearValidators();
+            otherControl.setValue('');
             otherControl.markAsTouched(); // Mark as touched to show validation immediately
           } else {
             (this as any)[config.showProperty] = false;
