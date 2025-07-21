@@ -633,6 +633,13 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
         this.loadStep4Dropdowns();
       }
     });
+
+    // Ensure typeOfCompany is always an array
+    this.profileForm.get('typeOfCompany')?.valueChanges.subscribe(val => {
+      if (val && !Array.isArray(val)) {
+        this.profileForm.get('typeOfCompany')?.setValue([val], { emitEvent: false });
+      }
+    });
   }
 
   ngAfterViewInit(): void {

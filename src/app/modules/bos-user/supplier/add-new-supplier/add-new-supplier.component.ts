@@ -416,6 +416,13 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         this.loadStep7Dropdowns();
       }
     });
+
+    // Ensure typeOfCompany is always an array
+    // this.profileForm.get('typeOfCompany')?.valueChanges.subscribe(val => {
+    //   if (val && !Array.isArray(val)) {
+    //     this.profileForm.get('typeOfCompany')?.setValue([val], { emitEvent: false });
+    //   }
+    // });
   }
 
   ngAfterViewInit(): void {
@@ -877,6 +884,11 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
 
       // Get the form values (including disabled controls)
       const formData = { ...this.profileForm.getRawValue() };
+
+      // Ensure typeOfCompany is always an array before submission
+      if (formData.typeOfCompany && !Array.isArray(formData.typeOfCompany)) {
+        formData.typeOfCompany = [formData.typeOfCompany];
+      }
 
       // Create the registration data structure
       const registrationData = {
