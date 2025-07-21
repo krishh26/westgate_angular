@@ -24,6 +24,11 @@ export class SuperAdminDashboardComponent {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   totalRecords: number = pagination.totalRecords;
+
+  // Separate pagination for supplier list
+  supplierPage: number = pagination.page;
+  supplierPageSize = pagination.itemsPerPage;
+  supplierTotalRecords: number = pagination.totalRecords;
   categoryWise: any = [];
   projectTypeWise: any = [];
   selectedCategorisation: string[] = [];
@@ -271,9 +276,12 @@ export class SuperAdminDashboardComponent {
   getManageUserList(dateFilter?: boolean) {
     this.showLoader = true;
 
-    // Build payload with date filter if needed
+    // Build payload with date filter if needed and pagination
     const payload: any = {
-      role: 'SupplierAdmin'
+      role: 'SupplierAdmin',
+      active: true, // Only fetch active suppliers
+      page: this.supplierPage,
+      limit: this.supplierPageSize
     };
 
     // Add date filter parameters if dateFilter is true
@@ -285,11 +293,12 @@ export class SuperAdminDashboardComponent {
     this.authservice.getUserList('SupplierAdmin', payload).subscribe(
       (response) => {
         this.supplierUserList = [];
-        this.totalRecords = response?.data?.meta_data?.items;
         if (response?.status == true) {
           this.showLoader = false;
-          this.supplierUserList = response?.data;
-          this.totalRecords = response?.totalCount;
+          this.supplierUserList = response?.data || [];
+          // Set total records based on the actual array length if no pagination metadata
+          // If the API doesn't provide totalCount, we use the current data length
+          this.supplierTotalRecords = response?.totalCount || response?.data?.length || 0;
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -303,7 +312,7 @@ export class SuperAdminDashboardComponent {
   }
 
   paginate(page: number) {
-    this.page = page;
+    this.supplierPage = page;
     this.getManageUserList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -311,6 +320,7 @@ export class SuperAdminDashboardComponent {
   // Helper method to reset pagination when filters change
   resetPagination(): void {
     this.page = 1; // Reset to first page when filters are applied
+    this.supplierPage = 1; // Reset supplier pagination as well
   }
 
 }

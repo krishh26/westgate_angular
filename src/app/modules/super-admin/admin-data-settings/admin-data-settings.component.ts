@@ -103,7 +103,7 @@ export class AdminDataSettingsComponent implements OnInit {
   expertiseTypes: any[] = [
     { name: "Product", value: "Product" },
     { name: "Service", value: "Service" },
-    { name: "Testing Tools", value: "Testing Tools" },
+    // { name: "Testing Tools", value: "Testing Tools" },
     { name: "Cloud Platforms", value: "Cloud Platforms" },
     { name: "DevOps & Automation", value: "DevOps & Automation" },
     { name: "Containerization & Orchestration", value: "Containerization & Orchestration" },
