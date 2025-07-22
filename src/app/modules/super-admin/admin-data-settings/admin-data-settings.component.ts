@@ -103,6 +103,14 @@ export class AdminDataSettingsComponent implements OnInit {
   loadingMoreExpertises: boolean = false;
   hasMoreExpertises: boolean = true;
   allExpertises: any[] = [];
+  isSystemList: boolean = false;
+  private _isSystemRadio: boolean = true;
+  get isSystemRadio(): boolean {
+    return this._isSystemRadio;
+  }
+  set isSystemRadio(val: any) {
+    this._isSystemRadio = (val === true || val === 'true');
+  }
 
   expertiseTypes: any[] = [
     { name: "Product", value: "Product" },
@@ -138,6 +146,11 @@ export class AdminDataSettingsComponent implements OnInit {
   loadingMoreRoles: boolean = false;
   hasMoreRoles: boolean = true;
   allRoles: any[] = [];
+
+  otherExpertises: any[] = [];
+  otherExpertiseSearchQuery: string = '';
+  showOtherExpertiseLoader: boolean = false;
+  otherExpertiseSearchTimeout: any;
 
   constructor(
     private superadminService: SuperadminService,
@@ -261,6 +274,8 @@ export class AdminDataSettingsComponent implements OnInit {
       this.loadPoundRate();
     } else if (option === 'tags') {
       this.loadTags();
+    } else if (option === 'other-expertise') {
+      this.loadOtherExpertises();
     }
   }
 
@@ -368,6 +383,7 @@ export class AdminDataSettingsComponent implements OnInit {
     if (this.expertiseSearchQuery) {
       params.search = this.expertiseSearchQuery;
     }
+    params.isSystem = this.isSystemRadio;
 
     this.superadminService.getExpertiseDropdownList(params).subscribe({
       next: (response: any) => {
@@ -405,6 +421,7 @@ export class AdminDataSettingsComponent implements OnInit {
     if (this.expertiseSearchQuery) {
       params.search = this.expertiseSearchQuery;
     }
+    params.isSystem = this.isSystemRadio;
 
     this.superadminService.getExpertiseDropdownList(params).subscribe({
       next: (response: any) => {
@@ -467,7 +484,8 @@ export class AdminDataSettingsComponent implements OnInit {
     const params: any = {
       search: this.searchQuery,
       page: this.rolePage,
-      limit: this.roleLimit
+      limit: this.roleLimit,
+      type: 'main'
     };
     this.superadminService.getRolesListByAdmin(params).subscribe({
       next: (response: any) => {
@@ -497,7 +515,8 @@ export class AdminDataSettingsComponent implements OnInit {
     const params: any = {
       search: this.searchQuery,
       page: this.rolePage,
-      limit: this.roleLimit
+      limit: this.roleLimit,
+      type: 'main'
     };
     this.superadminService.getRolesListByAdmin(params).subscribe({
       next: (response: any) => {
@@ -730,7 +749,7 @@ export class AdminDataSettingsComponent implements OnInit {
       case 'tags':
         return 'Tags/Services Settings';
       default:
-        return 'Admin Data Settings';
+        return 'Other Expertise';
     }
   }
 
@@ -1541,5 +1560,69 @@ export class AdminDataSettingsComponent implements OnInit {
 
   viewRoleCandidates(roleName: string) {
     this.router.navigate(['/super-admin/admin-data-candidate-list', roleName]);
+  }
+
+  loadOtherExpertises(): void {
+    this.showOtherExpertiseLoader = true;
+    const params: any = {};
+    if (this.otherExpertiseSearchQuery) {
+      params.search = this.otherExpertiseSearchQuery;
+    }
+    this.superadminService.getOtherExpertiseList(params).subscribe({
+      next: (response: any) => {
+        // Flatten all *-other arrays from the response
+        const raw = response?.data || [];
+        const flattened: any[] = [];
+        raw.forEach((group: any) => {
+          Object.keys(group).forEach(key => {
+            if (key.endsWith('-other') && Array.isArray(group[key])) {
+              flattened.push(...group[key]);
+            }
+          });
+        });
+        this.otherExpertises = flattened;
+        this.showOtherExpertiseLoader = false;
+      },
+      error: (error: any) => {
+        this.otherExpertises = [];
+        this.showOtherExpertiseLoader = false;
+      }
+    });
+  }
+
+  onOtherExpertiseSearchChange(query: string): void {
+    if (this.otherExpertiseSearchTimeout) {
+      clearTimeout(this.otherExpertiseSearchTimeout);
+    }
+    this.otherExpertiseSearchTimeout = setTimeout(() => {
+      this.otherExpertiseSearchQuery = query;
+      this.loadOtherExpertises();
+    }, 300);
+  }
+
+  approveOtherExpertise(expertise: any): void {
+    if (!expertise || !expertise._id) return;
+    const payload = {
+      itemId: expertise._id,
+      isSystem: true
+    };
+    this.superadminService.promoteExpertise(payload).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Expertise approved and promoted to system list.');
+          this.loadOtherExpertises();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to approve expertise.');
+        }
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error?.message || 'Failed to approve expertise.');
+      }
+    });
+  }
+
+  rejectOtherExpertise(expertise: any): void {
+    // Placeholder for reject logic
+    this.notificationService.showInfo('Reject action not implemented yet.');
   }
 }

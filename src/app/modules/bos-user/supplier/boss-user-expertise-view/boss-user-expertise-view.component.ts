@@ -35,9 +35,36 @@ export class BossUserExpertiseViewComponent {
   startDate: string = '';
   endDate: string = '';
   dropdownData: any[] = [];
-  selectedType: string = '';
+  selectedType: string = 'Product';
   currentList: any[] = [];
   filteredList: any[] = [];
+
+  // Add expertiseTypes for dropdown
+  expertiseTypes: string[] = [
+    "Product",
+    "Service",
+    "Testing Tools",
+    "Cloud Platforms",
+    "DevOps & Automation",
+    "Containerization & Orchestration",
+    "Networking & Infrastructure",
+    "Database Platforms",
+    "Data, Analytics & BI",
+    "AI/ML Platforms",
+    "Security & IAM",
+    "Monitoring & Observability",
+    "Integration & API Management",
+    "Event Streaming & Messaging",
+    "ERP/Enterprise Systems",
+    "CRM & Customer Platforms",
+    "ITSM/IT Operations",
+    "Business Apps & Productivity",
+    "E-Commerce & CMS",
+    "Learning & HR Systems",
+    "Low-Code/No-Code Platforms",
+    "Testing & QA",
+    "Web3 & Decentralized Tech"
+  ];
 
 
   constructor(
@@ -63,9 +90,8 @@ export class BossUserExpertiseViewComponent {
       console.log("No supplier data found in localStorage");
     }
 
-    // Load technology data by default instead of expertise
-    this.fetchDropdownData('technologies');
-    // this.getSupplierList();
+    // Load 'Product' data by default
+    this.fetchDropdownData(this.getTypeValue(this.selectedType));
   }
 
   navigateToSupplier() {
@@ -343,6 +369,12 @@ export class BossUserExpertiseViewComponent {
       default:
         return displayName.toLowerCase();
     }
+  }
+
+  // Add onTypeChange method for ng-select
+  onTypeChange(selectedType: string) {
+    const typeValue = this.getTypeValue(selectedType);
+    this.fetchDropdownData(typeValue);
   }
 
 }

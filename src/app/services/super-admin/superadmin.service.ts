@@ -664,6 +664,9 @@ export class SuperadminService {
     if (params.limit) {
       queryParams = queryParams.set('limit', params.limit);
     }
+    if (typeof params.isSystem !== 'undefined') {
+      queryParams = queryParams.set('isSystem', String(params.isSystem));
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN,
@@ -793,6 +796,9 @@ export class SuperadminService {
     }
     if (params?.limit) {
       queryParams = queryParams.set('limit', params.limit);
+    }
+    if (params?.type) {
+      queryParams = queryParams.set('type', params.type);
     }
 
     return this.httpClient.get<any>(
@@ -1006,5 +1012,29 @@ export class SuperadminService {
     queryParams = queryParams.set('page', page.toString());
     queryParams = queryParams.set('limit', limit.toString());
     return this.httpClient.get<any>(url, { params: queryParams });
+  }
+
+  /**
+   * Get Other Expertise List (isSystem=false)
+   */
+  getOtherExpertiseList(params: any = {}): Observable<any> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('isSystem', 'false');
+    if (params.type) {
+      queryParams = queryParams.set('type', params.type);
+    }
+    if (params.search) {
+      queryParams = queryParams.set('search', params.search);
+    }
+    if (params.page) {
+      queryParams = queryParams.set('page', params.page);
+    }
+    if (params.limit) {
+      queryParams = queryParams.set('limit', params.limit);
+    }
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN_LIST,
+      { params: queryParams }
+    );
   }
 }
