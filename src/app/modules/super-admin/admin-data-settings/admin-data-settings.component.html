@@ -323,7 +323,7 @@
                 <tbody>
                   <tr *ngFor="let role of roles">
                     <td style="vertical-align: top;">
-                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="role.name" placement="top">
+                      <span class="text-truncate d-inline-block w-100" [ngbTooltip]="role.name" placement="top" (click)="viewRoleCandidatesById(role._id, role.name)">
                         {{ role.name }} ({{ role.activeCandidatesCount }})
                       </span>
                     </td>
@@ -337,7 +337,8 @@
                         <ng-container *ngIf="role?.otherRolesWithCounts && role.otherRolesWithCounts.length > 0">
                           <div *ngFor="let subRole of role.otherRolesWithCounts"
                                class="badge bg-primary p-2 d-flex align-items-center"
-                               style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2;">
+                               style="font-size: 14px; padding: 8px 12px; white-space: normal; line-height: 1.2; background:#0d6efd;"
+                               (click)="viewRoleCandidatesById(subRole._id, subRole.name)">
                             <span>{{subRole.name}} ({{subRole.activeCandidatesCount}})</span>
                           </div>
                         </ng-container>

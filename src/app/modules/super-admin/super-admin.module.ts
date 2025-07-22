@@ -66,6 +66,7 @@ import { FilterNonZeroCountsPipe } from '../../pipes/filter-non-zero-counts.pipe
 import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
 import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/admin-data-expertise-list.component';
 import { AdminDataCandidateListComponent } from './admin-data-candidate-list/admin-data-candidate-list.component';
+import { RoleAdminCandidateListComponent } from './role-admin-candidate-list/role-admin-candidate-list.component';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -123,7 +124,8 @@ import { AdminDataCandidateListComponent } from './admin-data-candidate-list/adm
     FilterNonZeroCountsPipe,
     AdminDataSettingsComponent,
     AdminDataExpertiseListComponent,
-    AdminDataCandidateListComponent
+    AdminDataCandidateListComponent,
+    RoleAdminCandidateListComponent
   ],
 
   imports: [

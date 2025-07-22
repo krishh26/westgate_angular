@@ -1562,6 +1562,10 @@ export class AdminDataSettingsComponent implements OnInit {
     this.router.navigate(['/super-admin/admin-data-candidate-list', roleName]);
   }
 
+  viewRoleCandidatesById(roleId: string, roleName: string) {
+    this.router.navigate(['/super-admin/role-admin-candidate-list', roleId], { queryParams: { name: roleName } });
+  }
+
   loadOtherExpertises(): void {
     this.showOtherExpertiseLoader = true;
     const params: any = {};
