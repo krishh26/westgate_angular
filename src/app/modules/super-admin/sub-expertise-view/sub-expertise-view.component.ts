@@ -21,7 +21,10 @@ export class SubExpertiseViewComponent implements OnInit {
   page: number = pagination.page;
   pagesize = pagination.itemsPerPage;
   showLoader: boolean = false;
-  collapsedState: { [key: number]: boolean } = {};
+
+  // Nested accordion states
+  supplierCollapsedState: { [key: number]: boolean } = {};
+  expertiseCollapsedState: { [supplierIndex: number]: { [expertiseIndex: number]: boolean } } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -75,25 +78,36 @@ export class SubExpertiseViewComponent implements OnInit {
     });
   }
 
-  // For accordion toggle
-  toggleCollapse(index: number): void {
-    this.collapsedState[index] = !this.collapsedState[index];
+  // Supplier level accordion methods
+  toggleSupplierCollapse(supplierIndex: number): void {
+    this.supplierCollapsedState[supplierIndex] = !this.supplierCollapsedState[supplierIndex];
   }
 
-  isCollapsed(index: number): boolean {
-    return this.collapsedState[index] || false;
+  isSupplierCollapsed(supplierIndex: number): boolean {
+    return this.supplierCollapsedState[supplierIndex] || false;
+  }
+
+  // Expertise level accordion methods
+  toggleExpertiseCollapse(supplierIndex: number, expertiseIndex: number): void {
+    if (!this.expertiseCollapsedState[supplierIndex]) {
+      this.expertiseCollapsedState[supplierIndex] = {};
+    }
+    this.expertiseCollapsedState[supplierIndex][expertiseIndex] = !this.expertiseCollapsedState[supplierIndex][expertiseIndex];
+  }
+
+  isExpertiseCollapsed(supplierIndex: number, expertiseIndex: number): boolean {
+    return this.expertiseCollapsedState[supplierIndex]?.[expertiseIndex] || false;
+  }
+
+  // Helper method to count total documents for a supplier
+  getTotalDocumentsCount(supplier: any): number {
+    if (!supplier || !supplier.expertise) return 0;
+    return supplier.expertise.reduce((total: number, expertise: any) => {
+      return total + (expertise.totalFilesCount || 0);
+    }, 0);
   }
 
   goBack() {
     this.router.navigate(['/super-admin/expertise-view']);
-  }
-
-  getAllSubExpertise(supplier: any): string[] {
-    if (!supplier || !Array.isArray(supplier.expertise)) return [];
-    // Flatten all subExpertise arrays from all expertise objects
-    return supplier.expertise
-      .filter((exp: any) => Array.isArray(exp.subExpertise) && exp.subExpertise.length)
-      .flatMap((exp: any) => exp.subExpertise)
-      .filter((sub: any) => !!sub);
   }
 }

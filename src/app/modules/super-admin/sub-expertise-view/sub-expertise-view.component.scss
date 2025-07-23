@@ -9,6 +9,67 @@
   border: 1px solid #d1ecf1;
 }
 
+.section-header {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.sub-section-header {
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+  border-radius: 4px;
+}
+
+.sub-expertise-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.document-item {
+  background-color: white;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.file-info h6 {
+  font-size: 0.95rem;
+}
+
+.file-meta {
+  line-height: 1.4;
+}
+
+.no-files-state {
+  border: 2px dashed #dee2e6;
+}
+
+.expertise-accordion {
+  border-left: 3px solid #e9ecef;
+  margin-left: 1rem;
+
+  .card {
+    margin-bottom: 0;
+
+    .card-header {
+      background-color: rgba(248, 249, 250, 0.5) !important;
+      border-bottom: 1px solid #e9ecef;
+
+      &:hover {
+        background-color: rgba(233, 236, 239, 0.3) !important;
+      }
+    }
+
+    .card-body {
+      background-color: #fdfdfd;
+    }
+  }
+}
+
 @media (min-width: 320px) and (max-width: 767px) {
   ul.projects-nav-tab {
     display: block;
@@ -24,5 +85,26 @@
     padding: 0.75rem;
     border: 1px solid #d9d9d9 !important;
     margin-bottom: 15px;
+  }
+
+  .expertise-accordion {
+    margin-left: 0.5rem;
+    border-left-width: 2px;
+  }
+
+  .document-item {
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+
+    .file-actions {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+
+    .btn {
+      width: 100%;
+    }
   }
 }

@@ -5,7 +5,7 @@
       <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
           <h4 class="text-theme mb-1"><strong>{{expertiseName}} - Supplier Wise Sub-Expertise View</strong></h4>
-          <p class="text-muted mb-0">Manage and view supplier expertise and sub-expertise</p>
+          <p class="text-muted mb-0">Manage and view supplier expertise and sub-expertise documents</p>
         </div>
         <div>
           <button class="btn btn-primary btn-sm" (click)="goBack()">
@@ -22,39 +22,116 @@
       <!-- Suppliers Accordion -->
       <div *ngIf="suppliers && suppliers.length > 0">
         <div *ngFor="let supplier of suppliers; let i = index" class="card mb-3 shadow-sm">
-          <!-- Accordion Header -->
+          <!-- Supplier Accordion Header -->
           <div class="card-header bg-light d-flex justify-content-between align-items-center"
-               (click)="toggleCollapse(i)"
+               (click)="toggleSupplierCollapse(i)"
                style="cursor: pointer;">
             <div>
               <h6 class="mb-0 fw-bold">{{ supplier.name || 'Unnamed Supplier' }}</h6>
-              <small class="text-muted">{{ supplier.expertise?.length || 0 }} expertise</small>
+              <small class="text-muted">{{ supplier.expertise?.length || 0 }} expertise </small>
             </div>
             <div class="d-flex align-items-center">
-              <span class="badge custom-light-badge me-2">{{ getAllSubExpertise(supplier).length }} Sub-expertise</span>
-              <i class="bi" [ngClass]="isCollapsed(i) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+              <span class="badge custom-light-badge me-2">{{ getTotalDocumentsCount(supplier) }} Documents</span>
+              <i class="bi" [ngClass]="isSupplierCollapsed(i) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
             </div>
           </div>
 
-          <!-- Accordion Body -->
-          <div class="card-body" *ngIf="isCollapsed(i)">
+          <!-- Supplier Accordion Body -->
+          <div class="card-body p-0" *ngIf="isSupplierCollapsed(i)">
             <ng-container *ngIf="supplier.expertise && supplier.expertise.length; else noExpertise">
-              <div *ngFor="let exp of supplier.expertise; let expIndex = index" class="mb-3">
-                <h6 class="text-primary fw-bold mb-2">{{ exp.name }}</h6>
-                <div *ngIf="exp.subExpertise && exp.subExpertise.length; else noSub">
-                  <span *ngFor="let sub of exp.subExpertise"
-                        class="badge custom-light-badge me-2 mb-2">
-                    {{ sub }}
-                  </span>
-                </div>
-                <ng-template #noSub>
-                  <span class="text-muted">No sub-expertise available</span>
-                </ng-template>
+
+              <!-- Expertise Section Header -->
+              <div class="section-header bg-primary text-white p-3">
+                <h6 class="mb-0 fw-bold">Expertise </h6>
               </div>
+
+              <!-- Expertise Level Accordion -->
+              <div *ngFor="let expertise of supplier.expertise; let expIndex = index" class="expertise-accordion">
+                <div class="card border-0 border-bottom">
+                  <!-- Expertise Header -->
+                  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3"
+                       (click)="toggleExpertiseCollapse(i, expIndex)"
+                       style="cursor: pointer;">
+                    <div>
+                      <h6 class="mb-0 text-primary fw-bold">
+                        {{ expertise.name }}
+                      </h6>
+                      <small class="text-muted">{{ expertise.type || 'N/A' }}</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <span class="badge custom-light-badge me-2">{{ expertise.totalFilesCount || 0 }} files</span>
+                      <i class="bi" [ngClass]="isExpertiseCollapsed(i, expIndex) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                    </div>
+                  </div>
+
+                  <!-- Expertise Body with Sub-expertise -->
+                  <div class="card-body" *ngIf="isExpertiseCollapsed(i, expIndex)">
+                    <ng-container *ngIf="expertise.subExpertiseWithFiles && expertise.subExpertiseWithFiles.length; else noSubExpertise">
+
+                      <!-- Sub-expertise Section Header -->
+                      <div class="sub-section-header bg-success text-white p-2 mb-3">
+                        <h6 class="mb-0 fw-bold">Sub-expertise </h6>
+                      </div>
+
+                      <div *ngFor="let subExp of expertise.subExpertiseWithFiles; let subIndex = index" class="mb-4">
+                        <div class="sub-expertise-section">
+                          <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h6 class="text-success fw-bold mb-0">
+                              {{ subExp.name }}
+                            </h6>
+                            <span class="badge bg-success text-white">{{ subExp.files?.length || 0 }} files</span>
+                          </div>
+
+                          <!-- Documents List -->
+                          <div *ngIf="subExp.files && subExp.files.length; else noFiles" class="documents-container">
+                            <div *ngFor="let file of subExp.files" class="document-item mb-3 p-3 border rounded">
+                              <div class="d-flex align-items-center justify-content-between">
+                                <div class="file-info">
+                                  <h6 class="mb-1 text-dark">
+                                    {{ file.fileName }}
+                                  </h6>
+                                  <div class="file-meta">
+                                    <small class="text-muted d-block">
+                                      <strong>Expertise:</strong> {{ file.expertise }}
+                                    </small>
+                                    <small class="text-muted d-block">
+                                      <strong>Uploaded:</strong> {{ file.createdAt | date:'short' }}
+                                    </small>
+                                  </div>
+                                </div>
+                                <div class="file-actions">
+                                  <a [href]="file.fileUrl" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Download
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <ng-template #noFiles>
+                            <div class="no-files-state text-center py-3 bg-light rounded">
+                              <span class="text-muted">No documents available for this sub-expertise</span>
+                            </div>
+                          </ng-template>
+                        </div>
+
+                        <hr *ngIf="subIndex < expertise.subExpertiseWithFiles.length - 1" class="my-3">
+                      </div>
+                    </ng-container>
+
+                    <ng-template #noSubExpertise>
+                      <div class="text-center py-4">
+                        <span class="text-muted">No sub-expertise data available for this expertise</span>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
             </ng-container>
 
             <ng-template #noExpertise>
-              <div class="text-center py-3">
+              <div class="text-center py-4">
                 <span class="text-muted">No expertise data available</span>
               </div>
             </ng-template>
