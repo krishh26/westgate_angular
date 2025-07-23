@@ -114,26 +114,15 @@ export class ExpertiseViewComponent {
   }
 
   navigateToSubExpertise(item: any) {
-    // Always ensure we have the complete data to pass
-    const queryParams: any = {
-      expertiseName: item.expertise || item.name
-    };
+    console.log('navigateToSubExpertise called with item:', item);
+    const expertiseName = item.expertise || item.name;
+    console.log('Expertise name:', expertiseName);
 
-    // Make sure we have the subExpertiseList data
-    if (item.subExpertiseList && Array.isArray(item.subExpertiseList)) {
-      queryParams.subExpertiseList = JSON.stringify(item.subExpertiseList);
-    } else {
-      // If we don't have subExpertiseList, send an empty array to avoid API call
-      queryParams.subExpertiseList = JSON.stringify([]);
-    }
-
-    // Add expertiseId for reference only
-    if (item._id) {
-      queryParams.expertiseId = item._id;
-    }
-
+    // Navigate with query parameter instead of state
     this.router.navigate(['/super-admin/sub-expertise-view'], {
-      queryParams: queryParams
+      queryParams: {
+        expertiseName: expertiseName
+      }
     });
   }
 
