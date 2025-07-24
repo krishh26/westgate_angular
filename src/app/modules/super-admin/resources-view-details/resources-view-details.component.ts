@@ -42,18 +42,31 @@ export class ResourcesViewDetailsComponent implements OnInit {
 
           // Process and enhance the resource data
           this.resourceList.forEach((resource: any) => {
-            // Add default values for missing properties
-            if (resource.details) {
-              resource.details.active = resource.details.active !== undefined ? resource.details.active : true;
+            // Ensure active status has a default value
+            resource.active = resource.active !== undefined ? resource.active : true;
 
-              // Format dates properly if they exist
-              if (resource.details.inactiveDate) {
-                // Convert string date to Date object if needed
-                if (typeof resource.details.inactiveDate === 'string') {
-                  resource.details.inactiveDate = new Date(resource.details.inactiveDate);
-                }
+            // Format dates properly if they exist
+            if (resource.inactiveDate) {
+              // Convert string date to Date object if needed
+              if (typeof resource.inactiveDate === 'string') {
+                resource.inactiveDate = new Date(resource.inactiveDate);
               }
             }
+
+            // Format start date if it exists
+            if (resource.startDate) {
+              if (typeof resource.startDate === 'string') {
+                resource.startDate = new Date(resource.startDate);
+              }
+            }
+
+            // Ensure arrays are properly initialized
+            resource.technicalSkills = resource.technicalSkills || [];
+            resource.languagesKnown = resource.languagesKnown || [];
+            resource.softSkills = resource.softSkills || [];
+            resource.certifications = resource.certifications || [];
+            resource.previousEmployers = resource.previousEmployers || [];
+            resource.roleId = resource.roleId || [];
           });
 
           this.filteredResourceList = [...this.resourceList];

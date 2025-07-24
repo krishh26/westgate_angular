@@ -200,26 +200,7 @@ export class ResourcesViewComponent implements OnInit {
     this.router.navigate(['/super-admin/resources-view-details'], {
       queryParams: {
         resourceName: candidate.fullName,
-        resourceList: JSON.stringify([{
-          name: candidate.fullName,
-          supplierCount: 1,
-          details: {
-            jobTitle: candidate.jobTitle,
-            experience: candidate.totalExperience,
-            qualification: candidate.highestQualification,
-            yearOfGraduation: candidate.yearOfGraduation,
-            gender: candidate.gender,
-            nationality: candidate.nationality,
-            technicalSkills: candidate.technicalSkills,
-            languages: candidate.languagesKnown,
-            hourlyRate: candidate.hourlyRate,
-            workingHours: candidate.workingHoursPerWeek,
-            availableFrom: candidate.availableFrom,
-            active: candidate.active,
-            inactiveComment: candidate.inactiveComment,
-            inactiveDate: candidate.inactiveDate
-          }
-        }])
+        resourceList: JSON.stringify([candidate])
       }
     });
   }
