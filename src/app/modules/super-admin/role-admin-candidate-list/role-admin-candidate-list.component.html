@@ -99,7 +99,10 @@
                   </td>
                   <td>
                     <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-outline-primary"  [ngbTooltip]="'Edit Supplier'" placement="top">
+                      <button class="btn btn-sm btn-outline-primary"
+                              (click)="editCandidate(candidate._id)"
+                              [ngbTooltip]="'Edit Candidate'"
+                              placement="top">
                         <i class="bi bi-pencil"></i>
                       </button>
                     </div>

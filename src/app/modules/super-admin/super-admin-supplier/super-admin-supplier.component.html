@@ -144,13 +144,13 @@
                     </td>
                     <td *ngIf="currentFilter === 'isDeleted'" style="max-width: 500px; width: 500px; word-break: break-word;">
                       <ng-container *ngIf="item?.inHoldComment?.length; else noComment">
-                        <div *ngIf="item.inHoldComment[item.inHoldComment.length - 1] as lastComment">
-                          <div [class.collapsed-text]="!item.showFullInHoldComment && isCommentLong(lastComment.comment)"
+                        <div *ngIf="item.inHoldComment[0] as latestComment">
+                          <div [class.collapsed-text]="!item.showFullInHoldComment && isCommentLong(latestComment.comment)"
                                [class.expanded-text]="item.showFullInHoldComment"
                                style="max-width: 500px; width: 100%; word-break: break-word;">
-                            {{ item.showFullInHoldComment ? lastComment.comment : (lastComment.comment | slice:0:100) + (isCommentLong(lastComment.comment) ? '...' : '') }}
+                            {{ item.showFullInHoldComment ? latestComment.comment : (latestComment.comment | slice:0:100) + (isCommentLong(latestComment.comment) ? '...' : '') }}
                           </div>
-                          <div *ngIf="isCommentLong(lastComment.comment)" class="mt-2">
+                          <div *ngIf="isCommentLong(latestComment.comment)" class="mt-2">
                             <button class="btn btn-link text-primary p-0" (click)="toggleInHoldComment(item)">
                               {{ item.showFullInHoldComment ? 'View Less' : 'View More' }}
                             </button>

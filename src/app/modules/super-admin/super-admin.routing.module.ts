@@ -50,6 +50,7 @@ import { SupplierWiseProjectListComponent } from './supplier-wise-project-list/s
 import { AdminDataSettingsComponent } from './admin-data-settings/admin-data-settings.component';
 import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/admin-data-expertise-list.component';
 import { AdminDataCandidateListComponent } from './admin-data-candidate-list/admin-data-candidate-list.component';
+import { AdminDataEditCandidateComponent } from './admin-data-edit-candidate/admin-data-edit-candidate.component';
 import { RoleAdminCandidateListComponent } from './role-admin-candidate-list/role-admin-candidate-list.component';
 
 const routes: Routes = [
@@ -256,6 +257,10 @@ const routes: Routes = [
       {
         path: 'admin-data-candidate-list/:technologyName',
         component: AdminDataCandidateListComponent
+      },
+      {
+        path: 'admin-data-edit-candidate/:id',
+        component: AdminDataEditCandidateComponent
       },
       {
         path: 'role-admin-candidate-list/:roleId',

@@ -70,6 +70,10 @@ export class AdminDataCandidateListComponent implements OnInit {
     });
   }
 
+  editCandidate(candidateId: string): void {
+    this.router.navigate(['/super-admin/admin-data-edit-candidate', candidateId]);
+  }
+
   editSupplier(supplierId: string): void {
     this.router.navigate(['/super-admin/supplier-profile-edit', supplierId]);
   }

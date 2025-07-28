@@ -41,6 +41,7 @@ import { AddEditProjectComponent } from './add-edit-project/add-edit-project.com
 import { NgxEditorModule } from 'ngx-editor';
 import { ExpertiseViewBidManagerComponent } from './expertise-view-bid-manager/expertise-view-bid-manager.component';
 import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-manager/sub-expertise-view-bid-manager.component';
+import { InterestedSupplierWiseProjectsComponent } from './interested-supplier-wise-projects/interested-supplier-wise-projects.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -87,7 +88,8 @@ import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-ma
     CompletedProjectDetailsComponent,
     AddEditProjectComponent,
     ExpertiseViewBidManagerComponent,
-    SubExpertiseViewBidManagerComponent
+    SubExpertiseViewBidManagerComponent,
+    InterestedSupplierWiseProjectsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],
