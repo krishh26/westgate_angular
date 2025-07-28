@@ -259,7 +259,7 @@ const routes: Routes = [
         component: AdminDataCandidateListComponent
       },
       {
-        path: 'admin-data-edit-candidate/:id',
+        path: 'admin-data-edit-candidate',
         component: AdminDataEditCandidateComponent
       },
       {

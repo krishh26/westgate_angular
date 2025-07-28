@@ -71,7 +71,19 @@ export class AdminDataCandidateListComponent implements OnInit {
   }
 
   editCandidate(candidateId: string): void {
-    this.router.navigate(['/super-admin/admin-data-edit-candidate', candidateId]);
+    // Find the candidate data from the candidates array
+    const candidateData = this.candidates.find(c => c._id === candidateId);
+    if (candidateData) {
+      // Store the candidate data in localStorage
+      localStorage.setItem('editCandidateData', JSON.stringify(candidateData));
+      // Navigate to the edit page with the correct path
+      this.router.navigate(['super-admin/admin-data-edit-candidate'], {
+        queryParams: { candidateId: candidateId }
+      }).then(() => {
+        // Force a reload of the component
+        window.location.reload();
+      });
+    }
   }
 
   editSupplier(supplierId: string): void {

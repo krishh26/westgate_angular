@@ -476,7 +476,7 @@ export class AdminDataEditCandidateComponent implements OnInit {
 
       // Patch the form with candidate data
       this.userProfileForm.patchValue({
-        supplierId: candidateData.supplierId,
+        supplierId: candidateData.supplierId?._id || candidateData.supplierId,
         uniqueId: candidateData.uniqueId,
         fullName: candidateData.fullName,
         gender: candidateData.gender,
@@ -487,14 +487,14 @@ export class AdminDataEditCandidateComponent implements OnInit {
         startDate: this.formatDateForInput(candidateData.startDate),
         keyResponsibilities: candidateData.keyResponsibilities,
         availableFrom: this.formatDateForInput(candidateData.availableFrom),
-        // hourlyRate: candidateData.hourlyRate,
         ctc: candidateData.ctc,
         ukHourlyRate: candidateData.ukHourlyRate,
         ukDayRate: candidateData.ukDayRate,
         indianDayRate: candidateData.indianDayRate,
         projectsExecuted: candidateData.projectsExecuted,
-        currentRole: candidateData.currentRole,
-        roleId: roleIds
+        currentRole: candidateData.currentRole?._id || candidateData.currentRole,
+        roleId: roleIds,
+        executive: candidateData.executive
       });
 
       // Set the arrays for tag-like inputs
@@ -509,6 +509,9 @@ export class AdminDataEditCandidateComponent implements OnInit {
       }
       if (candidateData.languagesKnown) {
         this.languagesKnown = [...candidateData.languagesKnown];
+      }
+      if (candidateData.certifications) {
+        this.certifications = [...candidateData.certifications];
       }
 
       // Handle projects worked on
@@ -540,8 +543,10 @@ export class AdminDataEditCandidateComponent implements OnInit {
         });
       }
 
+      // Store additional data that might be needed later
+      this.candidateId = candidateData._id;
+
       // After loading the data, clear it from localStorage to avoid issues if the user refreshes
-      // Comment out this line if you need to persist the data across refreshes
       // localStorage.removeItem('editCandidateData');
     } else {
       this.notificationService.showError('Failed to load candidate data');
