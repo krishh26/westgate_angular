@@ -26,7 +26,7 @@ export const Payload = {
     endCreatedDate: '',
     categorisation: '',
     notRelatedDashboard: false,
-    registerInterest: true
+    registerInterest: false
   },
 
   projectListStatusWiseTracker: {

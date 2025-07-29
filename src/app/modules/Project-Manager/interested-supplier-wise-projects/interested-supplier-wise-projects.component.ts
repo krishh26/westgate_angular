@@ -409,14 +409,9 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.tempPayload.projectList.keyword = this.searchText;
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
-    // this.tempPayload.projectList.match = 'partial';
-    // this.tempPayload.projectList.myList = this.loginUser?._id;
     this.tempPayload.projectList.appointed = this.loginUser?.id;
-    // this.tempPayload.projectList.status = 'Passed'
-    // this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
-    // this.tempPayload.projectList.bidManagerStatus = 'Awaiting,Query Raised';
     this.tempPayload.projectList.expired = true;
-    this.tempPayload.projectList.registerInterest = true;
+    this.tempPayload.projectList.registerInterest = true; // This is correct for this page
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];
