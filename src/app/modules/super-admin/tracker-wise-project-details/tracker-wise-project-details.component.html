@@ -908,7 +908,7 @@
               <td colspan="2" class="text-center">No interested suppliers found</td>
             </tr>
             <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
-              <td>{{ supplier.name }}</td>
+              <td>{{ supplier.companyName }}</td>
               <td>
                 <div class="d-flex align-items-center gap-2">
                   <span class="badge" [ngClass]="supplier.attendee ? 'bg-primary' : 'bg-warning'">
@@ -1121,7 +1121,7 @@
 </div>
 
 <!-- View StripAdd Modal -->
-<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewStripAddLabel" aria-hidden="true">
+<div class="modal fade" id="ViewStripAdd" tabindex="-1" aria-labelledby="ViewLogin">
   <div class="modal-dialog modal-dialog-centered" [formGroup]="addStripForm">
     <div class="modal-content">
       <div class="modal-header">

@@ -114,11 +114,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
       this.searchText = res.toLowerCase();
     });
 
-    // Set default status to "Awaiting" on page load
-    this.selectedStatus = 'Awaiting';
+    // Remove default status selection
+    // this.selectedStatus = 'Awaiting';
 
-    // Set the payload status for "Awaiting" (feasibility status)
-    Payload.projectListStatusWiseTracker.status = 'Awaiting';
+    // Remove default payload status
+    // Payload.projectListStatusWiseTracker.status = 'Awaiting';
     Payload.projectListStatusWiseTracker.bidManagerStatus = '';
     Payload.projectListStatusWiseTracker.sortlist = false;
 
