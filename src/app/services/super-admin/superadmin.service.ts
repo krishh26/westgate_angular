@@ -941,7 +941,7 @@ export class SuperadminService {
     );
   }
 
-  updateAttendee(payload: { projectId: string, supplierId: string, attendee: boolean }): Observable<any> {
+  updateAttendee(payload: { projectId: string, supplierId: string, attendee: boolean, comment?: string }): Observable<any> {
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.UPDATE_ATTENDEE,
       payload

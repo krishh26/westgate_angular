@@ -900,21 +900,37 @@
           <thead>
             <tr>
               <th>Supplier Name</th>
+              <th>Comment</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="!projectDetails?.interestedSuppliers?.length">
-              <td colspan="2" class="text-center">No interested suppliers found</td>
+              <td colspan="3" class="text-center">No interested suppliers found</td>
             </tr>
             <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
               <td>{{ supplier.companyName }}</td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter comment"
+                  [(ngModel)]="supplier.comment"
+                  [disabled]="supplier.attendee"
+                />
+              </td>
               <td>
                 <div class="d-flex align-items-center gap-2">
                   <span class="badge" [ngClass]="supplier.attendee ? 'bg-primary' : 'bg-warning'">
                     {{ supplier.attendee ? 'Attended' : 'Not Attending' }}
                   </span>
-                  <button *ngIf="supplier.attendee != true" class="btn btn-sm btn-primary" (click)="updateAttendee(supplier)">Attend</button>
+                  <button
+                    *ngIf="supplier.attendee != true"
+                    class="btn btn-sm btn-primary"
+                    (click)="updateAttendee(supplier)"
+                    [disabled]="!supplier.comment">
+                    Attend
+                  </button>
                 </div>
               </td>
             </tr>

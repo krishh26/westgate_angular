@@ -2310,10 +2310,15 @@ export class TrackerWiseProjectDetailsComponent {
       return this.notificationService.showError('Invalid supplier');
     }
 
+    if (!supplier.comment) {
+      return this.notificationService.showError('Please enter a comment before marking as attended');
+    }
+
     const payload = {
       projectId: this.projectId,
       supplierId: supplier._id,
-      attendee: !supplier.attendee
+      attendee: !supplier.attendee,
+      comment: supplier.comment
     };
 
     this.superadminService.updateAttendee(payload).subscribe(
