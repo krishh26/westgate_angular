@@ -9,3 +9,23 @@
     min-height: 48px !important;
     align-items: center;
 }
+
+.collapsed-text {
+    max-height: 3.6em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.expanded-text {
+    max-height: none;
+    overflow: visible;
+}
+
+.btn-link {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}

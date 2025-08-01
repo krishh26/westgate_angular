@@ -29,6 +29,57 @@ export class GapAnalysisComponent {
   pageFailed: number = 1;
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
+
+  // Helper method to check if comment exceeds a certain length
+  isCommentLong(comment: string | undefined | null, length: number = 100): boolean {
+    if (!comment) return false;
+    // Remove HTML tags for length calculation
+    const plainText = comment.replace(/<[^>]*>/g, '');
+    return plainText.length > length;
+  }
+
+  // Toggle comment visibility
+  toggleComment(item: any): void {
+    item.showFullComment = !item.showFullComment;
+  }
+
+  // Get sliced comment while preserving HTML
+  getSlicedComment(comment: string | undefined | null): string {
+    if (!comment) return '';
+    if (!this.isCommentLong(comment)) return comment;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = comment;
+    const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+    // If the text is not long enough, return original comment
+    if (plainText.length <= 100) return comment;
+
+    let truncated = '';
+    let currentLength = 0;
+    let tempElement = document.createElement('div');
+
+    // Process the HTML content
+    const nodes = Array.from(tempDiv.childNodes);
+    for (const node of nodes) {
+      if (currentLength >= 100) break;
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        const remainingLength = 100 - currentLength;
+        const text = node.textContent || '';
+        truncated += text.slice(0, remainingLength);
+        currentLength += text.length;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        tempElement.appendChild(node.cloneNode(true));
+        const text = tempElement.textContent || '';
+        currentLength += text.length;
+        truncated += tempElement.innerHTML;
+        tempElement.innerHTML = '';
+      }
+    }
+
+    return truncated + '...';
+  }
   categorywiseList: string[] = ['DPS', 'Framework', 'DTD'];
   projectwiseList: string[] = ['Product', 'Development/Service', 'StaffAugmentation'];
   selectedCategory: string | undefined;
@@ -301,7 +352,10 @@ export class GapAnalysisComponent {
       (response) => {
         this.showLoader = false;
         if (response?.status) {
-          this.gapAnalysisDataNoSupplier = response?.data;
+          this.gapAnalysisDataNoSupplier = (response?.data || []).map((item: any) => ({
+            ...item,
+            showFullComment: false
+          }));
           this.totalRecords = response?.totalRecords;
         } else {
           this.notificationService.showError(response?.message);

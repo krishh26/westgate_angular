@@ -207,7 +207,17 @@
                           item?.projects[0]?.projectName }}</a>
                       </td>
                       <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
-                      <td [innerHTML]="item?.comment"></td>
+                      <td>
+                        <div [class.collapsed-text]="!item?.showFullComment && isCommentLong(item?.comment)"
+                             [class.expanded-text]="item?.showFullComment">
+                          <div [innerHTML]="item?.showFullComment ? item?.comment : getSlicedComment(item?.comment)"></div>
+                        </div>
+                        <div *ngIf="isCommentLong(item?.comment)" class="mt-2">
+                          <button class="btn btn-link text-primary p-0" (click)="toggleComment(item)">
+                            {{ item?.showFullComment ? 'View Less' : 'View More' }}
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
