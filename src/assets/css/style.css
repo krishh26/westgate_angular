@@ -924,7 +924,7 @@ section {
 }
 
 .casestudy-section {
-  background-image: url("../img/case-studies-bg.png");
+  /* background-image: url("../img/case-studies-bg.png"); */
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
