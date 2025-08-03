@@ -123,6 +123,30 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   showTestingQAOther = false;
   showWeb3DecentralizedTechOther = false;
 
+  // Tags for Other fields
+  servicesOtherTags: string[] = [];
+  technologyStackOtherTags: string[] = [];
+  cloudPlatformsOtherTags: string[] = [];
+  devOpsAutomationOtherTags: string[] = [];
+  containerizationOrchestrationOtherTags: string[] = [];
+  networkingInfrastructureOtherTags: string[] = [];
+  securityIAMOtherTags: string[] = [];
+  monitoringObservabilityOtherTags: string[] = [];
+  integrationAPIManagementOtherTags: string[] = [];
+  eventStreamingMessagingOtherTags: string[] = [];
+  databasePlatformsOtherTags: string[] = [];
+  dataAnalyticsBIOtherTags: string[] = [];
+  aiMLPlatformsOtherTags: string[] = [];
+  erpEnterpriseSystemsOtherTags: string[] = [];
+  crmCustomerPlatformsOtherTags: string[] = [];
+  itsmITOperationsOtherTags: string[] = [];
+  businessAppsProductivityOtherTags: string[] = [];
+  eCommerceCMSOtherTags: string[] = [];
+  learningHRSystemsOtherTags: string[] = [];
+  lowCodeNoCodePlatformsOtherTags: string[] = [];
+  testingQAOtherTags: string[] = [];
+  web3DecentralizedTechOtherTags: string[] = [];
+
   // Add business types list
   businessTypesList = [
     { name: 'Private Limited Company', value: 'Private Limited Company' },
@@ -633,13 +657,6 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
         this.loadStep4Dropdowns();
       }
     });
-
-    // Ensure typeOfCompany is always an array
-    this.profileForm.get('typeOfCompany')?.valueChanges.subscribe(val => {
-      if (val && !Array.isArray(val)) {
-        this.profileForm.get('typeOfCompany')?.setValue([val], { emitEvent: false });
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -1046,41 +1063,46 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
       // Get the form values (including disabled controls)
       const formData = { ...this.profileForm.getRawValue() };
 
+      // Ensure typeOfCompany is always an array before submission
+      if (formData.typeOfCompany && !Array.isArray(formData.typeOfCompany)) {
+        formData.typeOfCompany = [formData.typeOfCompany];
+      }
+
       // Create the registration data structure
       const registrationData = {
         ...formData,
-        services: this.combineMainAndOther(formData.services, formData.servicesOther),
+        services: this.combineMainAndOther(formData.services, this.servicesOtherTags),
         product: formData.product || [],
 
         // Core services fields
-        cloudPlatforms: this.combineMainAndOther(formData.cloudPlatforms, formData.cloudPlatformsOther),
-        devOpsAutomation: this.combineMainAndOther(formData.devOpsAutomation, formData.devOpsAutomationOther),
-        containerizationOrchestration: this.combineMainAndOther(formData.containerizationOrchestration, formData.containerizationOrchestrationOther),
+        cloudPlatforms: this.combineMainAndOther(formData.cloudPlatforms, this.cloudPlatformsOtherTags),
+        devOpsAutomation: this.combineMainAndOther(formData.devOpsAutomation, this.devOpsAutomationOtherTags),
+        containerizationOrchestration: this.combineMainAndOther(formData.containerizationOrchestration, this.containerizationOrchestrationOtherTags),
 
         // Infrastructure fields
-        networkingInfrastructure: this.combineMainAndOther(formData.networkingInfrastructure, formData.networkingInfrastructureOther),
-        securityIAM: this.combineMainAndOther(formData.securityIAM, formData.securityIAMOther),
-        monitoringObservability: this.combineMainAndOther(formData.monitoringObservability, formData.monitoringObservabilityOther),
-        integrationAPIManagement: this.combineMainAndOther(formData.integrationAPIManagement, formData.integrationAPIManagementOther),
-        eventStreamingMessaging: this.combineMainAndOther(formData.eventStreamingMessaging, formData.eventStreamingMessagingOther),
+        networkingInfrastructure: this.combineMainAndOther(formData.networkingInfrastructure, this.networkingInfrastructureOtherTags),
+        securityIAM: this.combineMainAndOther(formData.securityIAM, this.securityIAMOtherTags),
+        monitoringObservability: this.combineMainAndOther(formData.monitoringObservability, this.monitoringObservabilityOtherTags),
+        integrationAPIManagement: this.combineMainAndOther(formData.integrationAPIManagement, this.integrationAPIManagementOtherTags),
+        eventStreamingMessaging: this.combineMainAndOther(formData.eventStreamingMessaging, this.eventStreamingMessagingOtherTags),
 
         // Data and intelligence fields
-        databasePlatforms: this.combineMainAndOther(formData.databasePlatforms, formData.databasePlatformsOther),
-        dataAnalyticsBI: this.combineMainAndOther(formData.dataAnalyticsBI, formData.dataAnalyticsBIOther),
-        aiMLPlatforms: this.combineMainAndOther(formData.aiMLPlatforms, formData.aiMLPlatformsOther),
+        databasePlatforms: this.combineMainAndOther(formData.databasePlatforms, this.databasePlatformsOtherTags),
+        dataAnalyticsBI: this.combineMainAndOther(formData.dataAnalyticsBI, this.dataAnalyticsBIOtherTags),
+        aiMLPlatforms: this.combineMainAndOther(formData.aiMLPlatforms, this.aiMLPlatformsOtherTags),
 
         // Enterprise systems fields
-        erpEnterpriseSystems: this.combineMainAndOther(formData.erpEnterpriseSystems, formData.erpEnterpriseSystemsOther),
-        crmCustomerPlatforms: this.combineMainAndOther(formData.crmCustomerPlatforms, formData.crmCustomerPlatformsOther),
-        itsmITOperations: this.combineMainAndOther(formData.itsmITOperations, formData.itsmITOperationsOther),
-        businessAppsProductivity: this.combineMainAndOther(formData.businessAppsProductivity, formData.businessAppsProductivityOther),
+        erpEnterpriseSystems: this.combineMainAndOther(formData.erpEnterpriseSystems, this.erpEnterpriseSystemsOtherTags),
+        crmCustomerPlatforms: this.combineMainAndOther(formData.crmCustomerPlatforms, this.crmCustomerPlatformsOtherTags),
+        itsmITOperations: this.combineMainAndOther(formData.itsmITOperations, this.itsmITOperationsOtherTags),
+        businessAppsProductivity: this.combineMainAndOther(formData.businessAppsProductivity, this.businessAppsProductivityOtherTags),
 
         // Front-end and emerging tech fields
-        eCommerceCMS: this.combineMainAndOther(formData.eCommerceCMS, formData.eCommerceCMSOther),
-        learningHRSystems: this.combineMainAndOther(formData.learningHRSystems, formData.learningHRSystemsOther),
-        lowCodeNoCodePlatforms: this.combineMainAndOther(formData.lowCodeNoCodePlatforms, formData.lowCodeNoCodePlatformsOther),
-        testingQA: this.combineMainAndOther(formData.testingQA, formData.testingQAOther),
-        web3DecentralizedTech: this.combineMainAndOther(formData.web3DecentralizedTech, formData.web3DecentralizedTechOther),
+        eCommerceCMS: this.combineMainAndOther(formData.eCommerceCMS, this.eCommerceCMSOtherTags),
+        learningHRSystems: this.combineMainAndOther(formData.learningHRSystems, this.learningHRSystemsOtherTags),
+        lowCodeNoCodePlatforms: this.combineMainAndOther(formData.lowCodeNoCodePlatforms, this.lowCodeNoCodePlatformsOtherTags),
+        testingQA: this.combineMainAndOther(formData.testingQA, this.testingQAOtherTags),
+        web3DecentralizedTech: this.combineMainAndOther(formData.web3DecentralizedTech, this.web3DecentralizedTechOtherTags),
 
         // Basic fields
         companyName: formData.companyName,
@@ -1151,12 +1173,14 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
   }
 
   // Helper method to combine main field values with other field value
-  private combineMainAndOther(mainValues: string[], otherValue: string): string[] {
+    private combineMainAndOther(mainValues: string[], otherTags: string[]): string[] {
     if (!mainValues) mainValues = [];
-    if (otherValue && otherValue.trim()) {
-      return [...mainValues, otherValue.trim()];
-    }
-    return mainValues;
+
+    // Filter out 'Other' from mainValues
+    const filteredMainValues = mainValues.filter(value => value !== 'Other');
+
+    // Combine with other tags
+    return [...filteredMainValues, ...otherTags];
   }
 
   // Update the setupOtherFieldSubscriptions method to handle all fields
@@ -1278,5 +1302,99 @@ export class BossUserSupplierUserProfileEditComponent implements OnInit, AfterVi
     console.log('Step valid:', this.isCurrentStepValid());
     console.log('Current step:', this.currentStep);
     console.log('Total steps:', this.totalSteps);
+  }
+
+  // Method to add a tag to a specific Other field
+  addOtherTag(event: any, tagsArray: string[], controlName: string) {
+    event.preventDefault(); // Prevent default form submission
+    const input = event.target;
+    const value = input.value.trim();
+    console.log('Adding other tag:', { value, controlName, tagsArray });
+
+    if (value) {
+      // Split by comma and add each value as a tag
+      const newTags = value.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0);
+      console.log('New tags to add:', newTags);
+      tagsArray.push(...newTags);
+
+      // Call the masterlist API for each new tag
+      newTags.forEach((tag: string) => {
+        // Extract the type from the controlName (e.g., 'cloudPlatformsOther' -> 'Cloud Platforms')
+        let type = this.getTypeFromControlName(controlName);
+        console.log('Making API call for tag:', { tag, type, controlName });
+
+        // Make the API call using the service
+        this.superAdminService.createCustomExpertise({
+          name: tag,
+          type: type
+        }).subscribe({
+          next: (response: any) => {
+            console.log('Successfully added custom tag:', { tag, type, response });
+          },
+          error: (error) => {
+            console.error('Error adding custom tag:', { tag, type, error });
+          }
+        });
+      });
+
+      // Clear the input field and form control
+      input.value = '';
+
+      // Update the form control with the joined tags
+      const control = this.profileForm.get(controlName);
+      if (control) {
+        // Set the form control value but don't include the current input value
+        control.setValue('');
+        control.markAsUntouched();
+        control.markAsPristine();
+
+        // Use setTimeout to ensure the input is cleared after Angular's change detection
+        setTimeout(() => {
+          input.value = '';
+          control.setValue(tagsArray.join(', '));
+        }, 0);
+      }
+    }
+  }
+
+  // Method to remove a tag from a specific Other field
+  removeOtherTag(index: number, tagsArray: string[], controlName: string) {
+    tagsArray.splice(index, 1);
+
+    // Update the form control with the remaining tags
+    const control = this.profileForm.get(controlName);
+    if (control) {
+      control.setValue(tagsArray.join(', '));
+    }
+  }
+
+  // Helper method to convert control names to proper types
+  private getTypeFromControlName(controlName: string): string {
+    const typeMap: { [key: string]: string } = {
+      'cloudPlatformsOther': 'Cloud Platforms',
+      'devOpsAutomationOther': 'DevOps & Automation',
+      'containerizationOrchestrationOther': 'Containerization & Orchestration',
+      'networkingInfrastructureOther': 'Networking & Infrastructure',
+      'securityIAMOther': 'Security & IAM',
+      'monitoringObservabilityOther': 'Monitoring & Observability',
+      'integrationAPIManagementOther': 'Integration & API Management',
+      'eventStreamingMessagingOther': 'Event Streaming & Messaging',
+      'databasePlatformsOther': 'Database Platforms',
+      'dataAnalyticsBIOther': 'Data, Analytics & BI',
+      'aiMLPlatformsOther': 'AI/ML Platforms',
+      'erpEnterpriseSystemsOther': 'ERP/Enterprise Systems',
+      'crmCustomerPlatformsOther': 'CRM & Customer Platforms',
+      'itsmITOperationsOther': 'ITSM/IT Operations',
+      'businessAppsProductivityOther': 'Business Apps & Productivity',
+      'eCommerceCMSOther': 'E-Commerce & CMS',
+      'learningHRSystemsOther': 'Learning & HR Systems',
+      'lowCodeNoCodePlatformsOther': 'Low-Code/No-Code Platforms',
+      'testingQAOther': 'Testing & QA',
+      'web3DecentralizedTechOther': 'Web3 & Decentralized Tech',
+      'servicesOther': 'Services',
+      'technologyStackOther': 'Technology Stack'
+    };
+
+    return typeMap[controlName] || controlName.replace('Other', '');
   }
 }

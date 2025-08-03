@@ -129,8 +129,8 @@
             <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
             <div class="mb-3">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="col-md-4 d-flex align-items-center" style="gap: 10px;">
+              <div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+                <div class="col-md-6 d-flex align-items-center" style="gap: 10px;">
                   <ng-select
                     [items]="expertiseTypes"
                     bindLabel="name"
@@ -142,16 +142,16 @@
                     [(ngModel)]="selectedExpertiseType"
                     (change)="loadExpertises()"
                     [clearOnBackspace]="false"
-                    class="custom-ng-select">
+                    class="custom-ng-select w-100">
                     <ng-template ng-option-tmp let-item="item">
                       {{item.name}}
                     </ng-template>
                   </ng-select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control w-100"
                     placeholder="Search expertises..."
                     [(ngModel)]="expertiseSearchQuery"
                     (ngModelChange)="onExpertiseSearchChange($event)">
