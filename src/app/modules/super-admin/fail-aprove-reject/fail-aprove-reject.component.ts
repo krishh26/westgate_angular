@@ -1,4 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider/options';
+import * as bootstrap from 'bootstrap';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,6 +31,8 @@ interface Project {
 })
 export class FailAproveRejectComponent {
   showLoader: boolean = false;
+  rejectComment: string = '';
+  selectedProjectId: string = '';
   projectList: any = [];
   isExpired: boolean = false;
   page: number = pagination.page;
@@ -490,10 +493,15 @@ export class FailAproveRejectComponent {
     }
   }
 
-  approveOrRejectProjects(action: string, projectId: string) {
-    const payload = {
+  approveOrRejectProjects(action: string, projectId: string, comment?: string) {
+    const payload: any = {
       action: action // 'approve' or 'reject'
     };
+
+    if (comment) {
+      payload.comment = comment;
+    }
+
     this.showLoader = true;
     this.superService.approveOrRejectProjectsuperAdmin(payload, projectId).subscribe(
       (response) => {
@@ -501,6 +509,9 @@ export class FailAproveRejectComponent {
         if (response?.status === true) {
           this.getProjectList();
           this.notificationService.showSuccess('Project updated successfully');
+          if (action === 'reject') {
+            this.closeRejectModal();
+          }
         } else {
           this.notificationService.showError(response?.message || 'Failed to update project');
         }
@@ -510,6 +521,34 @@ export class FailAproveRejectComponent {
         this.notificationService.showError(error?.message || 'An error occurred');
       }
     );
+  }
+
+  openRejectModal(projectId: string) {
+    this.selectedProjectId = projectId;
+    this.rejectComment = '';
+    const modal = document.getElementById('rejectCommentModal');
+    if (modal) {
+      const bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
+
+  closeRejectModal() {
+    const modal = document.getElementById('rejectCommentModal');
+    if (modal) {
+      const bootstrapModal = bootstrap.Modal.getInstance(modal);
+      if (bootstrapModal) {
+        bootstrapModal.hide();
+      }
+    }
+  }
+
+  submitReject() {
+    if (!this.rejectComment.trim()) {
+      this.notificationService.showError('Please enter a rejection reason');
+      return;
+    }
+    this.approveOrRejectProjects('reject', this.selectedProjectId, this.rejectComment);
   }
 
 
