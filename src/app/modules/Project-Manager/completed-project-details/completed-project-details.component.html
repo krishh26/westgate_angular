@@ -425,7 +425,7 @@
             <div class="card-header bg-secondary text-white mb-3 d-flex justify-content-between align-items-center">
               <h5 class="mb-0">
                 Shortlisted Supplier :
-                {{ projectDetails?.select[0]?.supplierDetails?.name }}
+                {{ projectDetails?.select[0]?.supplierDetails?.companyName }}
               </h5>
               <div class="d-flex gap-3 align-items-center">
                 <button class="btn btn-outline-light btn-sm" type="button" (click)="toggleSupplierList()">
@@ -440,7 +440,7 @@
                   class="list-group-item d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center w-100 gap-2">
                     <!-- Supplier Name -->
-                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.name }}</span>
+                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName }}</span>
 
                     <!-- View All Button -->
                     <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"

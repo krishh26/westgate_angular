@@ -315,14 +315,14 @@
               <h5 class="mb-0">
                 Shortlisted Supplier :
                 <span *ngIf="projectDetails?.selectedUserIds?.[0]?.isSelected !== false">
-                  {{ projectDetails?.selectedUserIds?.[0]?.name }}
+                  {{ projectDetails?.selectedUserIds?.[0]?.companyName }}
                 </span>
 
               </h5>
               <div class="d-flex gap-3 align-items-center">
                 <ng-container>
                   <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                    class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="name" bindValue="_id"
+                    class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="companyName" bindValue="_id"
                     [addTag]="true" [clearable]="false" [multiple]="true" [(ngModel)]="selectedSupplierIds">
                   </ng-select>
                 </ng-container>
@@ -340,7 +340,7 @@
                 <li *ngFor="let supplier of selectedSuppliersList"
                   class="list-group-item d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center w-100 gap-2">
-                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.name }}</span>
+                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName }}</span>
                     <ng-container>
                       <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
                         placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
