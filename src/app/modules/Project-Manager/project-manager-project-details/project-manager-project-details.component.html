@@ -322,8 +322,9 @@
               <div class="d-flex gap-3 align-items-center">
                 <ng-container>
                   <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                    class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="companyName" bindValue="_id"
-                    [addTag]="true" [clearable]="false" [multiple]="true" [(ngModel)]="selectedSupplierIds">
+                    class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="companyName"
+                    bindValue="_id" [addTag]="true" [clearable]="false" [multiple]="true"
+                    [(ngModel)]="selectedSupplierIds">
                   </ng-select>
                 </ng-container>
                 <button class="btn btn-primary btn-sm" type="button" (click)="submitSelectedSuppliers()">
@@ -340,7 +341,8 @@
                 <li *ngFor="let supplier of selectedSuppliersList"
                   class="list-group-item d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center w-100 gap-2">
-                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName }}</span>
+                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName
+                      }}</span>
                     <ng-container>
                       <input type="text" class="form-control me-2" [(ngModel)]="supplier.inputValue"
                         placeholder="Enter a reason" style="flex-grow: 2; max-width: 300px" />
@@ -527,9 +529,7 @@
               <ng-container>
                 <div class="row justify-content-end mb-4">
                   <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                    <button
-                      (click)="saveFeasibilityStatus('save')"
-                      [disabled]="!canSaveFeasibilityStatus()"
+                    <button (click)="saveFeasibilityStatus('save')" [disabled]="!canSaveFeasibilityStatus()"
                       class="btn btn-primary w-100">
                       Save Status
                     </button>
@@ -570,8 +570,7 @@
                 (click)="statusChange('WaitingForResult')">
                 Waiting For Result
               </button>
-              <button class="btn btn-outline-success"
-                [class.active]="status === 'Dropped after feasibility'"
+              <button class="btn btn-outline-success" [class.active]="status === 'Dropped after feasibility'"
                 (click)="statusChange('Dropped after feasibility')">
                 Dropped After Feasibility
               </button>
@@ -708,7 +707,8 @@
                 <ng-container>
                   <div class="row justify-content-end mb-2 mt-3">
                     <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-12 text-end">
-                      <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()" class="btn btn-primary w-100">
+                      <a (click)="saveBidStatus('save')" [class.disabled]="!isBidCommentValid()"
+                        class="btn btn-primary w-100">
                         Save Bid Status
                       </a>
                     </div>
@@ -719,57 +719,49 @@
           </div>
         </div>
 
-        <div class="col-lg-12 col-xl-12 col-12 mb-3">
-          <div class="card shadow-sm p-4">
-            <div class="card-header bg-secondary text-white mb-3">
-              <h5 class="mb-0">Interested Suppliers</h5>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-striped align-middle">
-                <thead>
-                  <tr>
-                                  <th>Supplier Name</th>
-              <th>Comment</th>
-              <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngIf="!projectDetails?.interestedSuppliers?.length">
-                    <td colspan="3" class="text-center">No interested suppliers found</td>
-                  </tr>
-                  <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
-                    <td>{{ supplier.companyName }}</td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Enter comment"
-                        [(ngModel)]="supplier.comment"
-                        [disabled]="supplier.attendee"
-                      />
-                    </td>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <span class="badge" [ngClass]="supplier.attendee ? 'bg-primary' : 'bg-warning'">
-                          {{ supplier.attendee ? 'Attended' : 'Not Attending' }}
-                        </span>
-                        <button
-                          *ngIf="supplier.attendee != true"
-                          class="btn btn-sm btn-primary"
-                          (click)="updateAttendee(supplier)"
-                          [disabled]="!supplier.comment">
-                          Attend
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <br />
+      </div>
+
+      <div class="col-lg-12 col-xl-12 col-12 mb-3">
+        <div class="card shadow-sm p-4">
+          <div class="card-header bg-secondary text-white mb-3">
+            <h5 class="mb-0">Interested Suppliers</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Supplier Name</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!projectDetails?.interestedSuppliers?.length">
+                  <td colspan="3" class="text-center">No interested suppliers found</td>
+                </tr>
+                <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
+                  <td>{{ supplier.companyName }}</td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="Enter comment" [(ngModel)]="supplier.comment"
+                      [disabled]="supplier.attendee" />
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge" [ngClass]="supplier.attendee ? 'bg-primary' : 'bg-warning'">
+                        {{ supplier.attendee ? 'Attended' : 'Not Attending' }}
+                      </span>
+                      <button *ngIf="supplier.attendee != true" class="btn btn-sm btn-primary"
+                        (click)="updateAttendee(supplier)" [disabled]="!supplier.comment">
+                        Attend
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <br />
       </div>
     </div>
   </section>
