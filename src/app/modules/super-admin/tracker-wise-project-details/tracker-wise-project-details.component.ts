@@ -2336,4 +2336,78 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
+  removeInterestedSupplier(supplier: any) {
+    if (!supplier) {
+      return this.notificationService.showError('Invalid supplier');
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to remove ${supplier.companyName} from interested suppliers?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Remove!'
+    }).then((result) => {
+      if (result.value) {
+        const payload = {
+          projectId: this.projectId,
+          supplierId: supplier._id
+        };
+
+        this.superadminService.removeInterestedSupplier(payload).subscribe(
+          (response) => {
+            if (response?.status) {
+              this.notificationService.showSuccess('Successfully removed supplier from interested list');
+              this.getProjectDetails(); // Refresh the project details
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to remove supplier');
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'Something went wrong');
+          }
+        );
+      }
+    });
+  }
+
+  deleteAttendeeComment(supplier: any) {
+    if (!supplier) {
+      return this.notificationService.showError('Invalid supplier');
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete the comment for ${supplier.companyName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result) => {
+      if (result.value) {
+        const payload = {
+          projectId: this.projectId,
+          supplierId: supplier._id
+        };
+
+        this.superadminService.deleteAttendeeComment(payload).subscribe(
+          (response) => {
+            if (response?.status) {
+              this.notificationService.showSuccess('Successfully deleted supplier comment');
+              this.getProjectDetails(); // Refresh the project details
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete comment');
+            }
+          },
+          (error) => {
+            this.notificationService.showError(error?.message || 'Something went wrong');
+          }
+        );
+      }
+    });
+  }
+
 }

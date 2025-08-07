@@ -76,7 +76,9 @@ export enum SuperAdminEndPoint {
   UPDATE_ATTENDEE = '/project/update-attendee',
   GET_TAGS = '/tags',
   ADD_TAG = '/tags/add',
-  DELETE_TAG = '/tags/delete'
+  DELETE_TAG = '/tags/delete',
+  REMOVE_INTERESTED_SUPPLIER = '/project/remove-interested-supplier',
+  DELETE_ATTENDEE_COMMENT = '/project/delete-attendee-comment'
 }
 
 @Injectable({
@@ -1047,6 +1049,20 @@ export class SuperadminService {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_EXPERTISE_DROPDOWN_LIST,
       { params: queryParams }
+    );
+  }
+
+  removeInterestedSupplier(payload: { projectId: string, supplierId: string }): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.REMOVE_INTERESTED_SUPPLIER,
+      payload
+    );
+  }
+
+  deleteAttendeeComment(payload: { projectId: string, supplierId: string }): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + SuperAdminEndPoint.DELETE_ATTENDEE_COMMENT,
+      payload
     );
   }
 }
