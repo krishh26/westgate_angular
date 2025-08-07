@@ -24,6 +24,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
+import { ProcessManagerCaseStudiesComponent } from './process-manager-case-studies/process-manager-case-studies.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -53,7 +54,8 @@ import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/
     DashboardProcessManagerComponent,
     DatePickerComponent,
     TypeWiseProjectDetailsComponent,
-    TodoTaskViewDetailsPageComponent
+    TodoTaskViewDetailsPageComponent,
+    ProcessManagerCaseStudiesComponent
   ],
    providers: [NgbActiveModal],
   exports: [ToDoTasksProcessManagerComponent],

@@ -13,9 +13,7 @@ import { DashboardProcessManagerComponent } from './dashboard-process-manager/da
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/type-wise-project-details.component';
 import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
-
-
-
+import { ProcessManagerCaseStudiesComponent } from './process-manager-case-studies/process-manager-case-studies.component';
 
 const routes: Routes = [
   {
@@ -69,6 +67,10 @@ const routes: Routes = [
       {
         path: "todo-task-view-details/:id",
         component: TodoTaskViewDetailsPageComponent
+      },
+      {
+        path: "case-studies",
+        component: ProcessManagerCaseStudiesComponent
       },
     ]
   },
