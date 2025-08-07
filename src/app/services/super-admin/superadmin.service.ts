@@ -6,6 +6,7 @@ import { environment } from 'src/environment/environment';
 import { Observable } from 'rxjs';
 
 export enum SuperAdminEndPoint {
+  CASE_STUDY_LIST = '/case-study/list',
   DASHBOARD_LIST = '/user/admin/dashboard',
   SUPER_Statistics = '/user/admin/suppleir-statictics',
   CATEGORY_LIST = '/category/list',
@@ -979,6 +980,17 @@ export class SuperadminService {
     return this.httpClient.patch<any>(
       `${this.baseUrl}${SuperAdminEndPoint.DELETE_NO_SUPPLIER_COMMENT}/${taskId}`,
       { commentId }
+    );
+  }
+
+  getAllCaseStudies(page: number = 1, limit: number = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.CASE_STUDY_LIST,
+      { params }
     );
   }
 

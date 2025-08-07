@@ -52,6 +52,7 @@ import { AdminDataExpertiseListComponent } from './admin-data-expertise-list/adm
 import { AdminDataCandidateListComponent } from './admin-data-candidate-list/admin-data-candidate-list.component';
 import { AdminDataEditCandidateComponent } from './admin-data-edit-candidate/admin-data-edit-candidate.component';
 import { RoleAdminCandidateListComponent } from './role-admin-candidate-list/role-admin-candidate-list.component';
+import { AllCaseStudiesListComponent } from './all-case-studies-list/all-case-studies-list.component';
 
 const routes: Routes = [
   {
@@ -265,6 +266,10 @@ const routes: Routes = [
       {
         path: 'role-admin-candidate-list/:roleId',
         component: RoleAdminCandidateListComponent
+      },
+      {
+        path: 'all-case-studies-list',
+        component: AllCaseStudiesListComponent
       }
     ]
   },

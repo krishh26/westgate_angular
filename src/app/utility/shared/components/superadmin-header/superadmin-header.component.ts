@@ -30,6 +30,7 @@ export class SuperadminHeaderComponent {
     { title: 'TO DO Tasks', route: '/super-admin/todo-tasks' },
     { title: 'Gap Analysis', route: '/super-admin/gap-analysis' },
     { title: 'Approve/Reject', route: '/super-admin/approve-reject-projects' },
+    { title: 'Case-study View', route: '/super-admin/all-case-studies-list' },
   ];
 
 

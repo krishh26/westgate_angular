@@ -31,6 +31,7 @@ import { AddEditProjectComponent } from './add-edit-project/add-edit-project.com
 import { ExpertiseViewBidManagerComponent } from './expertise-view-bid-manager/expertise-view-bid-manager.component';
 import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-manager/sub-expertise-view-bid-manager.component';
 import { InterestedSupplierWiseProjectsComponent } from './interested-supplier-wise-projects/interested-supplier-wise-projects.component';
+import { ProjectManagerCaseStudiesComponent } from './project-manager-case-studies/project-manager-case-studies.component';
 
 const routes: Routes = [
   {
@@ -156,6 +157,10 @@ const routes: Routes = [
       {
         path: "interested-supplier-wise-projects",
         component: InterestedSupplierWiseProjectsComponent
+      },
+      {
+        path: "case-studies",
+        component: ProjectManagerCaseStudiesComponent
       }
     ],
   },
