@@ -72,7 +72,8 @@
           <thead>
             <tr>
               <th>Full Name</th>
-              <th>Roles</th>
+              <th>Role</th>
+              <th>I Can Be</th>
               <th>Experience</th>
               <th>Technical Skills</th>
               <th>Supplier Name</th>
@@ -83,6 +84,7 @@
             <tr
               *ngFor="let candidate of candidatesList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords }">
               <td>{{candidate?.fullName}}</td>
+              <td>{{candidate?.currentRole?.name}}</td>
               <td>
                 <div class="d-flex flex-wrap gap-1">
                   <span *ngFor="let role of candidate?.roleId">
