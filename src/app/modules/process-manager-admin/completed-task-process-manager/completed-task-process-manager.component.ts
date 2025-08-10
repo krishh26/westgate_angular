@@ -118,6 +118,7 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
       )
       .subscribe(value => {
         this.searchText = value;
+        this.page = 1; // Reset to page 1 when searching
         this.searchtext(); // Call your search method
       });
   }
@@ -211,13 +212,15 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
             const today = new Date().toISOString().split("T")[0];
 
             this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
+              // Check if comments exist and have length
+              const comments = task?.comments || [];
+              const todayComments = comments.length > 0 ? comments : null;
+
+              console.log('Search Task:', task?.task, 'Comments:', comments); // Debug log
 
               return {
                 ...task,
-                todayComments: todayComments?.length ? todayComments : null,
+                todayComments: todayComments,
               };
             });
           } else {
@@ -500,10 +503,15 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments;
+            // Check if comments exist and have length
+            const comments = task?.comments || [];
+            const todayComments = comments.length > 0 ? comments : null;
+
+            console.log('Task:', task?.task, 'Comments:', comments); // Debug log
+
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments,
             };
           });
           this.showLoader = false;
@@ -763,10 +771,13 @@ export class CompletedTaskProcessManagerComponent implements OnInit, OnDestroy {
                   const today = new Date().toISOString().split("T")[0];
                   this.totalRecords = response?.data?.meta_data?.items || 0;
                   this.taskList = response?.data?.data.map((task: any) => {
-                    const todayComments = task?.comments;
+                    // Check if comments exist and have length
+                    const comments = task?.comments || [];
+                    const todayComments = comments.length > 0 ? comments : null;
+
                     return {
                       ...task,
-                      todayComments: todayComments?.length ? todayComments : null,
+                      todayComments: todayComments,
                     };
                   });
                   // Restore scroll position after data is loaded

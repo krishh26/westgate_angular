@@ -115,6 +115,7 @@ export class CompletedTasksComponent {
       )
       .subscribe(value => {
         this.searchText = value;
+        this.page = 1; // Reset to page 1 when searching
         this.searchtext(); // Call your search method
       });
   }
@@ -188,18 +189,17 @@ export class CompletedTasksComponent {
     const type = Array.isArray(this.selectedtasktypes) ? this.selectedtasktypes[0] : this.selectedtasktypes || '';
     const keyword = this.searchText ? this.searchText.trim() : '';  // Ensure keyword is passed correctly
 
-    console.log('Searching for:', keyword); // Debugging log
     this.spinner.show();
     this.superService.getsuperadmintasks(
       this.selectedUserIds.join(','),  // assignId
       'Completed',                     // status
-      sortType,                         // sort
-      priorityType,                      // pickACategory
-      keyword,                          // ✅ Pass search keyword correctly
-      undefined,                        // myDay
-      type,
-      this.page,
-      this.pagesize                            // type
+      sortType,                        // sort
+      priorityType,                    // pickACategory
+      keyword,                         // keyword
+      false,                          // myDay
+      type,                           // type
+      1,                              // Reset to page 1 when searching
+      this.pagesize                   // pagesize
     )
       .subscribe(
         (response) => {
@@ -208,13 +208,15 @@ export class CompletedTasksComponent {
             const today = new Date().toISOString().split("T")[0];
 
             this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
+              // Check if comments exist and have length
+              const comments = task?.comments || [];
+              const todayComments = comments.length > 0 ? comments : null;
+
+              console.log('Search Task:', task?.task, 'Comments:', comments); // Debug log
 
               return {
                 ...task,
-                todayComments: todayComments?.length ? todayComments : null,
+                todayComments: todayComments,
               };
             });
 
@@ -490,10 +492,15 @@ export class CompletedTasksComponent {
           const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
           this.taskList = response?.data?.data.map((task: any) => {
-            const todayComments = task?.comments;
+            // Check if comments exist and have length
+            const comments = task?.comments || [];
+            const todayComments = comments.length > 0 ? comments : null;
+
+            console.log('Task:', task?.task, 'Comments:', comments); // Debug log
+
             return {
               ...task,
-              todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              todayComments: todayComments,
             };
           });
           this.showLoader = false;
@@ -751,10 +758,13 @@ export class CompletedTasksComponent {
                   this.totalRecords = response?.data?.meta_data?.items || 0;
                   const today = new Date().toISOString().split("T")[0];
                   this.taskList = response?.data?.data.map((task: any) => {
-                    const todayComments = task?.comments;
+                    // Check if comments exist and have length
+                    const comments = task?.comments || [];
+                    const todayComments = comments.length > 0 ? comments : null;
+
                     return {
                       ...task,
-                      todayComments: todayComments?.length ? todayComments : null,
+                      todayComments: todayComments,
                     };
                   });
                   // Restore scroll position after data is loaded
