@@ -159,7 +159,7 @@ const routes: Routes = [
         component: InterestedSupplierWiseProjectsComponent
       },
       {
-        path: "case-studies",
+        path: "case-studies-view",
         component: ProjectManagerCaseStudiesComponent
       }
     ],

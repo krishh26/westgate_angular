@@ -6,7 +6,8 @@ import { environment } from 'src/environment/environment';
 export enum ProjectManagerAPIEndPoint {
   DASHBOARD_LIST = '/project/project-manager/dashboard',
   USER_LIST = '/user/list/',
-  DROP_USER = '/project/update/project-manager/'
+  DROP_USER = '/project/update/project-manager/',
+  CASE_STUDY_LIST = '/case-study/list'
 }
 
 @Injectable({
@@ -68,5 +69,16 @@ export class ProjectManagerService {
   dropUser(payload: any, id: string): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + ProjectManagerAPIEndPoint.DROP_USER + id, payload);
+  }
+
+  getAllCaseStudies(page: number = 1, limit: number = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.httpClient.get<any>(
+      this.baseUrl + ProjectManagerAPIEndPoint.CASE_STUDY_LIST,
+      { params }
+    );
   }
 }
