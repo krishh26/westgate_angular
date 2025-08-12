@@ -40,6 +40,8 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
+  attendeeCount: number = 0;
+  nonAttendeeCount: number = 0;
   page: number = pagination.page;
   pagesize: number = 50;
   totalRecords: number = pagination.totalRecords;
@@ -131,6 +133,29 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     });
   }
 
+  getAttendeeCounts() {
+    const attendedPayload = { ...this.tempPayload.projectList, attended: 'true', page: '1', limit: '1' };
+    const nonAttendedPayload = { ...this.tempPayload.projectList, attended: 'false', page: '1', limit: '1' };
+
+    // Get attendee count
+    this.projectService.getProjectList(attendedPayload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.attendeeCount = response?.data?.meta_data?.items || 0;
+        }
+      }
+    );
+
+    // Get non-attendee count
+    this.projectService.getProjectList(nonAttendedPayload).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.nonAttendeeCount = response?.data?.meta_data?.items || 0;
+        }
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
     this.myControl.valueChanges.subscribe((res: any) => {
@@ -140,6 +165,7 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
+    this.getAttendeeCounts();
 
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
@@ -193,10 +219,9 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.tempPayload.projectList.page = String(this.page);
     this.tempPayload.projectList.limit = String(this.pagesize);
     this.tempPayload.projectList.status = this.selectedStatuses.join(',');
-    this.tempPayload.projectList.bidManagerStatus =
-      this.selectedBidStatuses?.length > 0
+    this.tempPayload.projectList.bidManagerStatus = this.selectedBidStatuses?.length > 0
         ? this.selectedBidStatuses.join(',')
-        : 'Awaiting';
+        : '';
     this.tempPayload.projectList.publishDateRange =
       this.publishStartDate.value && this.publishEndDate.value
         ? `${this.publishStartDate.value.year}-${this.publishStartDate.value.month}-${this.publishStartDate.value.day} , ${this.publishEndDate.value.year}-${this.publishEndDate.value.month}-${this.publishEndDate.value.day}`
@@ -212,7 +237,6 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
       this.tempPayload.projectList.attended = this.selectedAttendance;
     }
     this.tempPayload.projectList.appointed = this.loginUser?.id;
-    this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
 
     this.projectService.getProjectList(this.tempPayload.projectList)
       .pipe(takeUntil(this.destroy$))
@@ -420,7 +444,7 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.tempPayload.projectList.limit = String(this.pagesize);
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.tempPayload.projectList.expired = true;
-    this.tempPayload.projectList.registerInterest = true; // This is correct for this page
+    this.tempPayload.projectList.registerInterest = true;
     if (this.selectedAttendance) {
       this.tempPayload.projectList.attended = this.selectedAttendance;
     }
