@@ -66,6 +66,12 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     { bidvalue: 'Query Raised', bidstatus: 'Query Raised' },
   ];
 
+  attendanceList = [
+    { value: 'true', label: 'Attended' },
+    { value: 'false', label: 'Not Attended' }
+  ];
+  selectedAttendance: string = '';
+
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -202,6 +208,9 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.tempPayload.projectList.valueRange =
       this.minValue + '-' + this.maxValue;
     this.tempPayload.projectList.expired = true;
+    if (this.selectedAttendance) {
+      this.tempPayload.projectList.attended = this.selectedAttendance;
+    }
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.tempPayload.projectList.statusNotInclude = 'Fail,Not Releted';
 
@@ -412,6 +421,9 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.tempPayload.projectList.appointed = this.loginUser?.id;
     this.tempPayload.projectList.expired = true;
     this.tempPayload.projectList.registerInterest = true; // This is correct for this page
+    if (this.selectedAttendance) {
+      this.tempPayload.projectList.attended = this.selectedAttendance;
+    }
     this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
       (response) => {
         this.projectList = [];

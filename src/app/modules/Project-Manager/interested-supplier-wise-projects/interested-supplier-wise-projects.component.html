@@ -45,6 +45,14 @@
               </ng-select>
             </div>
 
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Attendance</h6>
+              <ng-select style="padding: 0px !important" placeholder="Filter by Attendance"
+                class="form-select custom-ng-select-option" [items]="attendanceList" bindLabel="label"
+                bindValue="value" [(ngModel)]="selectedAttendance" (change)="performSearch()" [clearable]="false">
+              </ng-select>
+            </div>
+
             <!-- <div class="sort-widget mb-3">
                             <h6 class="p-600">Expired Project</h6>
                             <div class="form-check">
