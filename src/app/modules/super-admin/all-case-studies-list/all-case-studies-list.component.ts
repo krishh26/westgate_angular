@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 interface UserInfo {
   _id: string;
@@ -34,9 +36,12 @@ interface CaseStudy {
   templateUrl: './all-case-studies-list.component.html',
   styleUrls: ['./all-case-studies-list.component.scss']
 })
-export class AllCaseStudiesListComponent implements OnInit {
+export class AllCaseStudiesListComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   showLoader: boolean = false;
   caseStudiesList: CaseStudy[] = [];
+  searchText: string = '';
+  private searchSubject = new Subject<string>();
 
   // Infinite scrolling pagination properties
   initialLimit: number = 20;
@@ -56,12 +61,36 @@ export class AllCaseStudiesListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.setupSearch();
     this.getCaseStudiesList();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  setupSearch(): void {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.page = 1;
+      this.allCaseStudies = [];
+      this.getCaseStudiesList();
+    });
+  }
+
+  onSearchInput(event: any): void {
+    const value = event.target.value?.toLowerCase() || '';
+    this.searchText = value;
+    this.searchSubject.next(value);
   }
 
   getCaseStudiesList() {
     this.showLoader = true;
-    this.superService.getAllCaseStudies(this.page, this.pagesize).subscribe({
+    this.superService.getAllCaseStudies(this.page, this.pagesize, this.searchText).subscribe({
       next: (response) => {
         if (response?.status === true) {
           const newCaseStudies = response?.data?.data || [];

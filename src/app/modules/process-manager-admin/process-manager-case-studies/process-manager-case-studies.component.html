@@ -12,10 +12,25 @@
         </div> -->
       </div>
       <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+        <div class="row align-items-center justify-content-between mb-4">
+          <div class="col-lg-11 col-xl-11 col-12 mob-mb1">
+            <div class="form-group mb-0">
+              <span class="input-icon"><i class="bi bi-search"></i></span>
+              <input class="form-control control-search"
+                placeholder="Search by case study name, supplier name, industry, or type"
+                type="text" [(ngModel)]="searchText" (input)="onSearchInput($event)" />
+            </div>
+          </div>
+          <div class="col-lg-auto col-xl-auto col-12 mob-mb1" style="cursor: pointer">
+            <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
+              title="Search by case study name, supplier name, industry, or type"></i>
+          </div>
+        </div>
         <div class="Flatcard shadow-1 mt-4 border">
-          <div class="card-body">
-            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;" (scroll)="onTableScroll($event)">
-              <table class="table align-middle">
+          <div class="card-body p-0">
+            <!-- Sticky Header -->
+            <div class="sticky-header">
+              <table class="table table-sticky mb-0">
                 <thead class="table-light">
                   <tr>
                     <th style="max-width: 300px; width: 300px;">Case Study</th>
@@ -25,9 +40,19 @@
                     <th style="max-width: 600px; width: 600px;">Description</th>
                   </tr>
                 </thead>
+              </table>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;" (scroll)="onTableScroll($event)">
+              <table class="table table-body mb-0">
                 <tbody>
                   <tr *ngIf="!caseStudiesList?.length && !showLoader">
-                    <td colspan="5">
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="max-width: 600px; width: 600px;">
                       <app-no-record-found></app-no-record-found>
                     </td>
                   </tr>
@@ -52,7 +77,11 @@
                   </tr>
                   <!-- Loading more indicator -->
                   <tr *ngIf="loadingMore">
-                    <td colspan="5" class="text-center">
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="max-width: 600px; width: 600px;" class="text-center">
                       <div class="d-flex justify-content-center align-items-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
                           <span class="visually-hidden">Loading more...</span>
@@ -63,7 +92,11 @@
                   </tr>
                   <!-- End of data indicator -->
                   <tr *ngIf="!hasMore && caseStudiesList.length > 0 && !loadingMore">
-                    <td colspan="5" class="text-center text-muted py-3">
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="max-width: 300px; width: 300px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="width: 150px;"></td>
+                    <td style="max-width: 600px; width: 600px;" class="text-center text-muted py-3">
                       <small>No more case studies to load</small>
                     </td>
                   </tr>

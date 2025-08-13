@@ -2,6 +2,101 @@
   color: #00B96F;
 }
 
+// Search Input Styles
+.control-search {
+  padding-left: 40px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+
+  &:focus {
+    border-color: #00B96F;
+    box-shadow: 0 0 0 0.2rem rgba(0, 185, 111, 0.25);
+  }
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  z-index: 2;
+}
+
+.form-group {
+  position: relative;
+}
+
+// Sticky Header Styles
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  border-bottom: 1px solid #dee2e6;
+
+  .table-sticky {
+    margin-bottom: 0;
+
+    thead {
+      th {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #dee2e6;
+        position: sticky;
+        top: 0;
+        z-index: 11;
+        padding: 12px 8px;
+        font-weight: 600;
+        color: #495057;
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
+// Table Body Styles
+.table-body {
+  margin-top: 0;
+
+  tbody {
+    tr {
+      td {
+        padding: 12px 8px;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+}
+
+// Ensure proper alignment between header and body
+.table-responsive {
+  .table-body {
+    thead {
+      display: none; // Hide the original thead in scrollable area
+    }
+  }
+}
+
 .description-container {
   .collapsed-text {
     display: -webkit-box;

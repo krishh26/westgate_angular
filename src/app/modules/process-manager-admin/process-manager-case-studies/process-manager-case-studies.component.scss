@@ -2,6 +2,76 @@
   color: #00B96F;
 }
 
+// Sticky Header Styles
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  border-bottom: 1px solid #dee2e6;
+
+  .table-sticky {
+    margin-bottom: 0;
+
+    thead {
+      th {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #dee2e6;
+        position: sticky;
+        top: 0;
+        z-index: 11;
+        padding: 12px 8px;
+        font-weight: 600;
+        color: #495057;
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
+// Table Body Styles
+.table-body {
+  margin-top: 0;
+
+  tbody {
+    tr {
+      td {
+        padding: 12px 8px;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+}
+
+// Ensure proper alignment between header and body
+.table-responsive {
+  .table-body {
+    thead {
+      display: none; // Hide the original thead in scrollable area
+    }
+  }
+}
+
 .description-container {
   .collapsed-text {
     display: -webkit-box;

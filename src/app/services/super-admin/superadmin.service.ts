@@ -985,10 +985,14 @@ export class SuperadminService {
     );
   }
 
-  getAllCaseStudies(page: number = 1, limit: number = 10): Observable<any> {
+  getAllCaseStudies(page: number = 1, limit: number = 10, search?: string): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
 
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.CASE_STUDY_LIST,
