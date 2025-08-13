@@ -2,6 +2,20 @@
   color: #00B96F;
 }
 
+.description-container {
+  .collapsed-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .expanded-text {
+    display: block;
+  }
+}
+
 .pagination {
   display: flex;
   justify-content: center;
