@@ -90,7 +90,7 @@ export class AllCaseStudiesListComponent implements OnInit, OnDestroy {
 
   getCaseStudiesList() {
     this.showLoader = true;
-    this.superService.getAllCaseStudies(this.page, this.pagesize, this.searchText).subscribe({
+    this.superService.getAllCaseStudies(this.page, this.pagesize, this.searchText, true).subscribe({
       next: (response) => {
         if (response?.status === true) {
           const newCaseStudies = response?.data?.data || [];

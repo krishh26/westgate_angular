@@ -985,13 +985,17 @@ export class SuperadminService {
     );
   }
 
-  getAllCaseStudies(page: number = 1, limit: number = 10, search?: string): Observable<any> {
+  getAllCaseStudies(page: number = 1, limit: number = 10, search?: string, activeOnly?: boolean): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
     if (search) {
       params = params.set('search', search);
+    }
+
+    if (activeOnly !== undefined) {
+      params = params.set('activeOnly', activeOnly.toString());
     }
 
     return this.httpClient.get<any>(
