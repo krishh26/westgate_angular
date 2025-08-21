@@ -382,7 +382,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
     private superadminservice: SuperadminService,
     private router: Router,
     private modalService: NgbModal,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) {
     this.initForm();
   }
@@ -698,7 +699,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         this.isLoadingTechnologies = false;
       },
       error: (error:any) => {
-        console.error('Error loading technologies:', error);
+        this.notificationService.showError(error?.error?.message || 'Failed to load technologies');
         this.isLoadingTechnologies = false;
       }
     });
@@ -716,7 +717,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
           this.isLoadingServices = false;
         },
         error: (error) => {
-          console.error('Error loading services:', error);
+          this.notificationService.showError(error?.error?.message || 'Failed to load services');
           this.isLoadingServices = false;
         }
       });
@@ -741,7 +742,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
           this.isLoadingProducts = false;
         },
         error: (error) => {
-          console.error('Error loading products:', error);
+          this.notificationService.showError(error?.error?.message || 'Failed to load products');
           this.isLoadingProducts = false;
         }
       });
@@ -762,7 +763,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
             }
           },
           error: (error) => {
-            console.error(`Error loading ${type} data:`, error);
+            this.notificationService.showError(error?.error?.message || `Failed to load ${type} data`);
             this.isLoadingDropdownData = false;
             reject(error);
           }
@@ -793,8 +794,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       }
 
       this.isLoadingDropdownData = false;
-    } catch (error) {
-      console.error('Error loading step 3 dropdowns:', error);
+    } catch (error: any) {
+      this.notificationService.showError(error?.error?.message || 'Failed to load step 3 dropdowns');
       this.isLoadingDropdownData = false;
     }
   }
@@ -813,7 +814,7 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
         this.isLoadingCloudPlatforms = false;
       },
       error: (error) => {
-        console.error('Error loading cloud platforms:', error);
+        this.notificationService.showError(error?.error?.message || 'Failed to load cloud platforms');
         this.isLoadingCloudPlatforms = false;
       }
     });
@@ -850,8 +851,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       }
 
       this.isLoadingStep5Data = false;
-    } catch (error) {
-      console.error('Error loading step 5 dropdowns:', error);
+    } catch (error: any) {
+      this.notificationService.showError(error?.error?.message || 'Failed to load step 5 dropdowns');
       this.isLoadingStep5Data = false;
     }
   }
@@ -894,8 +895,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       }
 
       this.isLoadingStep6Data = false;
-    } catch (error) {
-      console.error('Error loading step 6 dropdowns:', error);
+    } catch (error: any) {
+      this.notificationService.showError(error?.error?.message || 'Failed to load step 6 dropdowns');
       this.isLoadingStep6Data = false;
     }
   }
@@ -945,8 +946,8 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
       }
 
       this.isLoadingStep7Data = false;
-    } catch (error) {
-      console.error('Error loading step 7 dropdowns:', error);
+    } catch (error: any) {
+      this.notificationService.showError(error?.error?.message || 'Failed to load step 7 dropdowns');
       this.isLoadingStep7Data = false;
     }
   }
@@ -1197,15 +1198,15 @@ export class BossUserAddNewSupplierComponent implements OnInit, AfterViewInit {
             // Navigate to success step
             this.moveToSuccessStep();
           },
-          (error: Error) => {
+          (error: any) => {
             this.loading = false;
-            this.errorMessage = 'An error occurred while registering. Please try again.';
+            this.notificationService.showError(error?.error?.message || 'Failed to register supplier. Please try again.');
             console.error('Error during registration:', error);
           }
         );
       }).catch(error => {
         this.loading = false;
-        this.errorMessage = 'An error occurred while adding custom expertise. Please try again.';
+        this.notificationService.showError(error?.error?.message || 'Failed to add custom expertise. Please try again.');
         console.error('Error during custom expertise creation:', error);
       });
     } else {
