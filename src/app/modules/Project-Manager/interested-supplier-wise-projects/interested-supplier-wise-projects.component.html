@@ -20,13 +20,13 @@
               <a class="active d-flex align-items-center gap-2">
                 Interested Supplier
                 <div class="d-flex align-items-center gap-2">
-                  <span class="badge rounded-pill"
+                  <!-- <span class="badge rounded-pill"
                     style="background-color: #198754; font-size: 11px; padding: 5px 8px;">
                     <i class="bi bi-check-circle-fill me-1"></i>Attended: {{attendeeCount}}
-                  </span>
+                  </span> -->
                   <span class="badge rounded-pill"
                     style="background-color: #ffd700; color: black; font-size: 11px; padding: 5px 8px;">
-                    Not Attended: {{nonAttendeeCount}}
+                    ({{nonAttendeeCount}})
                   </span>
                 </div>
               </a>
@@ -150,14 +150,14 @@
               </div>
             </div>
             <div class="col-lg-auto col-xl-auto col-12 mob-mb1 d-flex align-items-center">
-              <!-- <div class="d-flex align-items-center gap-2 me-3">
+              <div class="d-flex align-items-center gap-2 me-3">
                 <span class="badge" style="background-color: #198754; color: white; padding: 5px 8px; font-size: 13px;">
                   <i class="bi bi-check-circle-fill me-1"></i>Attended: {{attendeeCount}}
                 </span>
                 <span class="badge" style="background-color: #ffd700; color: black; padding: 5px 8px; font-size: 13px;">
                   Not Attended: {{nonAttendeeCount}}
                 </span>
-              </div> -->
+              </div>
               <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
                 title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
             </div>
