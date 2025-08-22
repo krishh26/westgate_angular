@@ -289,68 +289,123 @@ export class TrackerWiseProjectDetailsComponent {
       return;
     }
 
-    const payload = {
-      userIds: this.selectedSupplierIds,
-      projectId: this.projectId,
-    };
-
-    // First call projectSortList API
-    this.projectService.projectSortList(payload).subscribe(
-      (response) => {
-        if (response?.status == true) {
-          // Then call dropUser API for each selected supplier
-          let completedCalls = 0;
-          const totalCalls = this.selectedSupplierIds.length;
-
-          this.selectedSupplierIds.forEach(supplierId => {
-            const dropUserPayload = {
-              dropUser: {
-                userId: supplierId,
-                reason: this.supplierSelectionReason,
-              },
-            };
-
-            this.projectManagerService.dropUser(dropUserPayload, this.projectId).subscribe(
-              (dropResponse) => {
-                completedCalls++;
-                if (dropResponse?.status == true) {
-                  if (completedCalls === totalCalls) {
-                    this.notificationService.showSuccess('Supplier selection and reason saved successfully');
-                    // Close the modal using Bootstrap
-                    const modalElement = document.getElementById('supplierModal');
-                    if (modalElement) {
-                      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                      if (modalInstance) {
-                        modalInstance.hide();
-                      } else {
-                        // If instance not found, create one and hide it
-                        const modal = new bootstrap.Modal(modalElement);
-                        modal.hide();
-                      }
-                    }
-                    // Reset the form
-                    this.supplierSelectionReason = '';
-                    this.selectedSupplierIds = [];
-                    // Reload the page instead of just refreshing data
-                    window.location.reload();
-                  }
-                } else {
-                  this.notificationService.showError('Error saving supplier reason');
-                }
-              },
-              (error) => {
-                this.notificationService.showError(error?.message || 'Error occurred while saving reason');
-              }
-            );
-          });
-        } else {
-          this.notificationService.showError('Try after some time.');
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message || 'Error occurred.');
+    // Close the current modal
+    const supplierModal = document.getElementById('supplierModal');
+    if (supplierModal) {
+      const modalInstance = bootstrap.Modal.getInstance(supplierModal);
+      if (modalInstance) {
+        modalInstance.hide();
       }
-    );
+    }
+
+    // Open the mail send clarification modal
+    setTimeout(() => {
+      const mailModal = document.getElementById('mailSendModal');
+      if (mailModal) {
+        const modalInstance = new bootstrap.Modal(mailModal);
+        modalInstance.show();
+      }
+    }, 500);
+  }
+
+     handleMailSendResponse(isMailSend: boolean) {
+     // Check if we're coming from the view all comments modal
+     const supplier = this.selectedSuppliersList.find(
+       (item) => item._id === this.currentViewingSupplierId
+     );
+
+     if (supplier && supplier.inputValue) {
+       // Create dropUser payload with mail send flag
+       const dropUserPayload = {
+         dropUser: {
+           userId: supplier._id,
+           reason: supplier.inputValue,
+           isMailSend: isMailSend
+         },
+       };
+
+       // Call the dropUser API
+       this.projectManagerService.dropUser(dropUserPayload, this.projectId).subscribe(
+         (response) => {
+           if (response?.status == true) {
+             this.notificationService.showSuccess('Reason added successfully');
+
+             // Update the filtered comments list
+             this.filteredComments.push({
+               comment: supplier.inputValue,
+               date: new Date()
+             });
+
+             // Clear the temporary data
+             this.newModalReason = '';
+             supplier.inputValue = '';
+
+             // Refresh the page
+             window.location.reload();
+           } else {
+             this.notificationService.showError('Error saving reason');
+           }
+         },
+         (error) => {
+           this.notificationService.showError(error?.message || 'Error occurred while saving reason');
+         }
+       );
+       return;
+     }
+
+     // Handle the original supplier selection flow
+     const payload = {
+       userIds: this.selectedSupplierIds,
+       projectId: this.projectId,
+       isMailSend: isMailSend
+     };
+
+     // First call projectSortList API
+     this.projectService.projectSortList(payload).subscribe(
+       (response) => {
+         if (response?.status == true) {
+           // Then call dropUser API for each selected supplier
+           let completedCalls = 0;
+           const totalCalls = this.selectedSupplierIds.length;
+
+           this.selectedSupplierIds.forEach(supplierId => {
+             const dropUserPayload = {
+               dropUser: {
+                 userId: supplierId,
+                 reason: this.supplierSelectionReason,
+                 isMailSend: isMailSend
+               },
+             };
+
+             this.projectManagerService.dropUser(dropUserPayload, this.projectId).subscribe(
+               (dropResponse) => {
+                 completedCalls++;
+                 if (dropResponse?.status == true) {
+                   if (completedCalls === totalCalls) {
+                     this.notificationService.showSuccess('Supplier selection and reason saved successfully');
+                     // Reset the form
+                     this.supplierSelectionReason = '';
+                     this.selectedSupplierIds = [];
+                     // Reload the page instead of just refreshing data
+                     window.location.reload();
+                   }
+                 } else {
+                   this.notificationService.showError('Error saving supplier reason');
+                 }
+               },
+               (error) => {
+                 this.notificationService.showError(error?.message || 'Error occurred while saving reason');
+               }
+             );
+           });
+         } else {
+           this.notificationService.showError('Try after some time.');
+         }
+       },
+       (error) => {
+         this.notificationService.showError(error?.message || 'Error occurred.');
+       }
+     );
   }
 
   deleteProject(id: any) {
@@ -856,29 +911,46 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-  selectSupplier(supplier: any) {
-    console.log(supplier);
+     selectSupplier(supplier: any) {
+     console.log(supplier);
 
-    const data = {
-      userId: supplier._id,
-      projectId: this.projectId,
-      isSelected: true
-    };
+     // Store the supplier temporarily
+     this.selectedSupplier = supplier;
 
-    this.superadminService.selectFromSortlist(data).subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.notificationService.showSuccess(response?.message);
-          this.getProjectDetails();
-        } else {
-          console.error('Error selecting supplier:');
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.error?.message);
-        this.showLoader = false;
-      }
-    );
+     // Open the mail send clarification modal
+     setTimeout(() => {
+       const mailModal = document.getElementById('mailSendModal');
+       if (mailModal) {
+         const modalInstance = new bootstrap.Modal(mailModal);
+         modalInstance.show();
+       }
+     }, 500);
+   }
+
+   handleSelectMailSendResponse(isMailSend: boolean) {
+     if (!this.selectedSupplier) return;
+
+     const data = {
+       userId: this.selectedSupplier._id,
+       projectId: this.projectId,
+       isSelected: true,
+       isMailSend: isMailSend
+     };
+
+     this.superadminService.selectFromSortlist(data).subscribe(
+       (response) => {
+         if (response?.status == true) {
+           this.notificationService.showSuccess(response?.message);
+           this.getProjectDetails();
+         } else {
+           console.error('Error selecting supplier:');
+         }
+       },
+       (error) => {
+         this.notificationService.showError(error?.error?.message);
+         this.showLoader = false;
+       }
+     );
   }
 
   deSelectSupplier(supplier: any) {
@@ -2237,32 +2309,37 @@ export class TrackerWiseProjectDetailsComponent {
     }
   }
 
-  addReasonFromModal() {
-    if (!this.newModalReason?.trim()) return;
+     addReasonFromModal() {
+     if (!this.newModalReason?.trim()) return;
 
-    // Get the selected supplier (we need to save the ID from viewAllComments)
-    const supplier = this.selectedSuppliersList.find(
-      (item) => item._id === this.currentViewingSupplierId
-    );
+     // Get the selected supplier (we need to save the ID from viewAllComments)
+     const supplier = this.selectedSuppliersList.find(
+       (item) => item._id === this.currentViewingSupplierId
+     );
 
-    if (supplier) {
-      // Create a new reason object
-      const newReason = {
-        comment: this.newModalReason,
-        date: new Date(),
-      };
+     if (supplier) {
+       // Store the data temporarily
+       supplier.inputValue = this.newModalReason;
 
-      // Call the existing method for saving reasons
-      supplier.inputValue = this.newModalReason;
-      this.dropUser(supplier);
+       // Close the current modal
+       const viewReasonModal = document.getElementById('viewReasonList');
+       if (viewReasonModal) {
+         const modalInstance = bootstrap.Modal.getInstance(viewReasonModal);
+         if (modalInstance) {
+           modalInstance.hide();
+         }
+       }
 
-      // Update the filtered comments list to show the new comment immediately
-      this.filteredComments.push(newReason);
-
-      // Clear the input field
-      this.newModalReason = '';
-    }
-  }
+       // Open the mail send clarification modal
+       setTimeout(() => {
+         const mailModal = document.getElementById('mailSendModal');
+         if (mailModal) {
+           const modalInstance = new bootstrap.Modal(mailModal);
+           modalInstance.show();
+         }
+       }, 500);
+     }
+   }
 
   isSupplierSelected(supplierId: string): boolean {
     return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
