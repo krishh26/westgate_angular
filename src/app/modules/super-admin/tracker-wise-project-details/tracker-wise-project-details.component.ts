@@ -30,6 +30,12 @@ import * as bootstrap from 'bootstrap';
 })
 export class TrackerWiseProjectDetailsComponent {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
+  expandedComments: { [key: string]: boolean } = {}; // Track expanded state for each comment
+
+  truncateText(text: string, maxLength: number = 100): string {
+    if (!text) return '';
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  }
 
   showLoader: boolean = false;
   projectDetails: any = [];

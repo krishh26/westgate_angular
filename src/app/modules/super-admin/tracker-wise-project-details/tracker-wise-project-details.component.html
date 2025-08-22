@@ -894,6 +894,15 @@
                 <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
                   <td>{{ supplier.companyName }}</td>
                   <td>
+                    <div *ngIf="supplier.comment && supplier.comment.trim().length > 0">
+                      <div [ngClass]="{'text-truncate': !expandedComments[supplier._id]}">
+                        {{ expandedComments[supplier._id] ? supplier.comment : truncateText(supplier.comment) }}
+                      </div>
+                      <button *ngIf="supplier.comment.length > 100" class="btn btn-link btn-sm p-0 mt-1"
+                        (click)="expandedComments[supplier._id] = !expandedComments[supplier._id]">
+                        {{ expandedComments[supplier._id] ? 'View Less' : 'View More' }}
+                      </button>
+                    </div>
                     <div class="position-relative">
                       <input
                         type="text"

@@ -23,6 +23,12 @@ import { LocalStorageService } from 'src/app/services/local-storage/local-storag
 })
 export class CompletedProjectDetailsComponent {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
+  expandedComments: { [key: string]: boolean } = {}; // Track expanded state for each comment
+
+  truncateText(text: string, maxLength: number = 100): string {
+    if (!text) return '';
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  }
   commentName: string = '';
   showLoader: boolean = false;
   projectDetails: any = [];
