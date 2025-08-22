@@ -884,12 +884,13 @@
                 <tr>
                   <th>Supplier Name</th>
                   <th>Comment</th>
+                  <th>Comment Date</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngIf="!projectDetails?.interestedSuppliers?.length">
-                  <td colspan="3" class="text-center">No interested suppliers found</td>
+                  <td colspan="4" class="text-center">No interested suppliers found</td>
                 </tr>
                 <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
                   <td>{{ supplier.companyName }}</td>
@@ -919,6 +920,14 @@
                         <i class="bi bi-trash-fill"></i>
                       </button>
                     </div>
+                  </td>
+                  <td>
+                    <span *ngIf="supplier.attendeeUpdatedAt" class="text-muted">
+                      {{ supplier.attendeeUpdatedAt | date:'dd/MM/yyyy, h:mm a' }}
+                    </span>
+                    <span *ngIf="!supplier.attendeeUpdatedAt" class="text-muted">
+                      -
+                    </span>
                   </td>
                   <td>
                     <div class="d-flex align-items-center gap-2">
