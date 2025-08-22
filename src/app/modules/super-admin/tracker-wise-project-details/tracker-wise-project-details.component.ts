@@ -283,32 +283,33 @@ export class TrackerWiseProjectDetailsComponent {
     // The modal will be shown automatically by Bootstrap's data-bs-toggle
   }
 
-  saveSupplierSelection() {
-    if (!this.supplierSelectionReason?.trim()) {
-      this.notificationService.showError('Please enter a reason for selecting these suppliers.');
-      return;
-    }
+     saveSupplierSelection() {
+     if (!this.supplierSelectionReason?.trim()) {
+       this.notificationService.showError('Please enter a reason for selecting these suppliers.');
+       return;
+     }
 
-    // Close the current modal
-    const supplierModal = document.getElementById('supplierModal');
-    if (supplierModal) {
-      const modalInstance = bootstrap.Modal.getInstance(supplierModal);
-      if (modalInstance) {
-        modalInstance.hide();
-      }
-    }
+     // Close the current modal
+     const supplierModal = document.getElementById('supplierModal');
+     if (supplierModal) {
+       const modalInstance = bootstrap.Modal.getInstance(supplierModal);
+       if (modalInstance) {
+         modalInstance.hide();
+       }
+     }
 
-    // Open the mail send clarification modal
-    setTimeout(() => {
-      const mailModal = document.getElementById('mailSendModal');
-      if (mailModal) {
-        const modalInstance = new bootstrap.Modal(mailModal);
-        modalInstance.show();
-      }
-    }, 500);
-  }
+     // Open the mail send clarification modal
+     setTimeout(() => {
+       const mailModal = document.getElementById('supplierMailModal');
+       if (mailModal) {
+         const modalInstance = new bootstrap.Modal(mailModal);
+         modalInstance.show();
+       }
+     }, 500);
+   }
 
-     handleMailSendResponse(isMailSend: boolean) {
+        // Handler for new reason mail send response
+   handleMailSendResponse(isMailSend: boolean) {
      // Check if we're coming from the view all comments modal
      const supplier = this.selectedSuppliersList.find(
        (item) => item._id === this.currentViewingSupplierId
@@ -350,10 +351,11 @@ export class TrackerWiseProjectDetailsComponent {
            this.notificationService.showError(error?.message || 'Error occurred while saving reason');
          }
        );
-       return;
      }
+   }
 
-     // Handle the original supplier selection flow
+   // Handler for supplier selection mail send response
+   handleSupplierMailSendResponse(isMailSend: boolean) {
      const payload = {
        userIds: this.selectedSupplierIds,
        projectId: this.projectId,
@@ -919,7 +921,7 @@ export class TrackerWiseProjectDetailsComponent {
 
      // Open the mail send clarification modal
      setTimeout(() => {
-       const mailModal = document.getElementById('mailSendModal');
+       const mailModal = document.getElementById('shortlistMailModal');
        if (mailModal) {
          const modalInstance = new bootstrap.Modal(mailModal);
          modalInstance.show();
@@ -2309,7 +2311,7 @@ export class TrackerWiseProjectDetailsComponent {
     }
   }
 
-     addReasonFromModal() {
+        addReasonFromModal() {
      if (!this.newModalReason?.trim()) return;
 
      // Get the selected supplier (we need to save the ID from viewAllComments)
@@ -2332,7 +2334,7 @@ export class TrackerWiseProjectDetailsComponent {
 
        // Open the mail send clarification modal
        setTimeout(() => {
-         const mailModal = document.getElementById('mailSendModal');
+         const mailModal = document.getElementById('newReasonMailModal');
          if (mailModal) {
            const modalInstance = new bootstrap.Modal(mailModal);
            modalInstance.show();

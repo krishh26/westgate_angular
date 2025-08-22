@@ -356,20 +356,62 @@
             </div>
           </div>
 
-          <!-- Mail Send Clarification Modal -->
-          <div class="modal fade" id="mailSendModal" tabindex="-1" aria-labelledby="mailSendModalLabel" aria-hidden="true">
+          <!-- Mail Send Clarification Modal for New Reason -->
+          <div class="modal fade" id="newReasonMailModal" tabindex="-1" aria-labelledby="newReasonMailModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="mailSendModalLabel">Mail Send Clarification</h5>
+                  <h5 class="modal-title" id="newReasonMailModalLabel">Mail Send Clarification</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the supplier?</label>
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the supplier for the new reason?</label>
+                    <div class="d-flex gap-2 mt-3">
+                      <button type="button" class="btn btn-danger flex-fill" (click)="handleMailSendResponse(false)" data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-success flex-fill" (click)="handleMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mail Send Clarification Modal for Shortlisted Selection -->
+          <div class="modal fade" id="shortlistMailModal" tabindex="-1" aria-labelledby="shortlistMailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="shortlistMailModalLabel">Mail Send Clarification</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the shortlisted supplier?</label>
                     <div class="d-flex gap-2 mt-3">
                       <button type="button" class="btn btn-danger flex-fill" (click)="handleSelectMailSendResponse(false)" data-bs-dismiss="modal">No</button>
                       <button type="button" class="btn btn-success flex-fill" (click)="handleSelectMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mail Send Clarification Modal for Supplier Selection -->
+          <div class="modal fade" id="supplierMailModal" tabindex="-1" aria-labelledby="supplierMailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="supplierMailModalLabel">Mail Send Clarification</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the selected suppliers?</label>
+                    <div class="d-flex gap-2 mt-3">
+                      <button type="button" class="btn btn-danger flex-fill" (click)="handleSupplierMailSendResponse(false)" data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-success flex-fill" (click)="handleSupplierMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
                     </div>
                   </div>
                 </div>
