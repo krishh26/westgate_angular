@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -14,14 +14,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { ProjectManagerService } from 'src/app/services/project-manager/project-manager.service';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { Editor, Toolbar } from 'ngx-editor';
 
+declare var bootstrap: any; // Added for Bootstrap modal functionality
 
 @Component({
   selector: 'app-completed-project-details',
   templateUrl: './completed-project-details.component.html',
   styleUrls: ['./completed-project-details.component.scss']
 })
-export class CompletedProjectDetailsComponent {
+export class CompletedProjectDetailsComponent implements OnDestroy {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
   expandedComments: { [key: string]: boolean } = {}; // Track expanded state for each comment
 
@@ -119,6 +121,22 @@ export class CompletedProjectDetailsComponent {
   projectStrips: any = [];
   getReasonList: any = [];
 
+  // Added properties for send mail and comment functionality
+  shortlistEditor: Editor = new Editor();
+  shortlistComment: FormControl = new FormControl('');
+  shortlistComments: any[] = [];
+  isSendMail: boolean = false;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private projectService: ProjectService,
     private notificationService: NotificationService,
@@ -151,6 +169,9 @@ export class CompletedProjectDetailsComponent {
       imageText: [''],
       roles: [''],
     });
+
+    // Initialize shortlist editor
+    this.shortlistEditor = new Editor();
   }
 
   addField() {
@@ -508,6 +529,7 @@ export class CompletedProjectDetailsComponent {
           this.getReasonList = this.projectDetails?.failStatusReason;
           this.feasibilityCommentData =
             this.projectDetails?.statusComment || [];
+          this.shortlistComments = this.projectDetails?.shortlistComments || []; // Loaded shortlist comments
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
           console.log(this.viewReasonList); // Logs the dropUser list for debugging
         } else {
@@ -855,7 +877,7 @@ export class CompletedProjectDetailsComponent {
       };
 
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason?.value];
       }
 
       // Conditionally add the `subContracting` field if it is defined
@@ -924,7 +946,7 @@ export class CompletedProjectDetailsComponent {
   }
 
   isPdf(url: string): boolean {
-    return url?.endsWith('.pdf') || false;
+    return url?.endsWith('.pdf') ?? false;
   }
 
   isWordOrExcel(url: string): boolean {
@@ -932,8 +954,7 @@ export class CompletedProjectDetailsComponent {
       url?.endsWith('.doc') ||
       url?.endsWith('.docx') ||
       url?.endsWith('.xls') ||
-      url?.endsWith('.xlsx') ||
-      false
+      url?.endsWith('.xlsx')
     );
   }
 
@@ -941,8 +962,7 @@ export class CompletedProjectDetailsComponent {
     return (
       url?.endsWith('.jpg') ||
       url?.endsWith('.jpeg') ||
-      url?.endsWith('.png') ||
-      false
+      url?.endsWith('.png')
     );
   }
 
@@ -958,29 +978,8 @@ export class CompletedProjectDetailsComponent {
 
   selectSupplier(supplier: any) {
     this.selectedSupplier = supplier;
-    // const data = {
-    //   select: {
-    //     supplierId: this.selectedSupplier?._id,
-    //   },
-    // };
-    let param = {
-      userId: this.selectedSupplier?._id,
-      projectId: this.projectId
-    }
-    this.projectService.projectSortList(param).subscribe(
-      (response) => {
-        if (response?.status == true) {
-          this.notificationService.showSuccess(
-            response?.message || 'supplier select successfully'
-          );
-        } else {
-          return this.notificationService.showError('Try after some time.');
-        }
-      },
-      (error) => {
-        this.notificationService.showError(error?.message || 'Error.');
-      }
-    );
+    // Open the send mail modal first
+    this.openSendMailModal();
   }
 
   saveBidStatus(type?: string, contractEdit?: boolean) {
@@ -1117,7 +1116,7 @@ export class CompletedProjectDetailsComponent {
 
       // Add fail reason if applicable
       if (this.failStatusReason?.value) {
-        payload['failStatusReason'] = [this.failStatusReason?.value] || [];
+        payload['failStatusReason'] = [this.failStatusReason?.value];
       }
     }
 
@@ -1191,6 +1190,90 @@ export class CompletedProjectDetailsComponent {
         this.notificationService.showError(error?.message || 'Something went wrong');
       }
     );
+  }
+
+  // Open send mail modal
+  openSendMailModal() {
+    // Open the modal
+    setTimeout(() => {
+      const mailModal = document.getElementById('sendMailModal');
+      if (mailModal) {
+        const modalInstance = new bootstrap.Modal(mailModal);
+        modalInstance.show();
+      }
+    }, 100);
+  }
+
+  // Handle send mail response from modal
+  handleSendMailResponse(isMailSend: boolean) {
+    this.isSendMail = isMailSend;
+
+    // Now call the API with the mail preference
+    const payload = {
+      userId: this.selectedSupplier?._id,
+      projectId: this.projectId
+    };
+
+    this.projectService.projectSortList(payload, this.isSendMail).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.notificationService.showSuccess(
+            response?.message || 'Supplier selected successfully'
+          );
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError('Try after some time.');
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.message || 'Error occurred.');
+      }
+    );
+  }
+
+  // Add comment with rich text editor
+  addCommentWithEditor(projectId: string) {
+    if (!projectId) {
+      this.notificationService.showError('Project ID is required');
+      return;
+    }
+    if (!this.hasValidContent(this.shortlistComment.value)) {
+      this.notificationService.showError('Please enter a comment');
+      return;
+    }
+    const payload = {
+      comment: this.shortlistComment.value.trim(),
+      projectId: projectId,
+      type: 'shortlist_comment'
+    };
+    this.superadminService.addComments(payload, projectId).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Comment added successfully');
+          this.shortlistComment.reset();
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add comment');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.error?.message || 'Error adding comment');
+        console.error('Error adding shortlist comment:', error);
+      }
+    );
+  }
+
+  // Helper method to strip HTML tags and check if content is meaningful
+  private hasValidContent(htmlContent: string): boolean {
+    if (!htmlContent) return false;
+    const textContent = htmlContent.replace(/<[^>]*>/g, '').trim();
+    return textContent.length > 0;
+  }
+
+  ngOnDestroy(): void {
+    if (this.shortlistEditor) {
+      this.shortlistEditor.destroy();
+    }
   }
 
 }

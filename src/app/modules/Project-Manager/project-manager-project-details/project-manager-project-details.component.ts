@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -20,12 +20,14 @@ import { Toolbar } from 'ngx-editor';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-project-manager-project-details',
   templateUrl: './project-manager-project-details.component.html',
   styleUrls: ['./project-manager-project-details.component.scss'],
 })
-export class ProjectManagerProjectDetailsComponent {
+export class ProjectManagerProjectDetailsComponent implements OnDestroy {
   @ViewChild('downloadLink') private downloadLink!: ElementRef;
   expandedComments: { [key: string]: boolean } = {}; // Track expanded state for each comment
 
@@ -133,6 +135,10 @@ export class ProjectManagerProjectDetailsComponent {
   bidStatusEditor: Editor = new Editor();
   selectedSuppliersList: any[] = [];
   allSuppliers: any[] = [];
+  shortlistEditor: Editor = new Editor();
+  shortlistComment: FormControl = new FormControl('');
+  shortlistComments: any[] = [];
+  isSendMail: boolean = false;
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -184,6 +190,7 @@ export class ProjectManagerProjectDetailsComponent {
     });
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
+    this.shortlistEditor = new Editor();
   }
 
   getUserDetails() {
@@ -219,6 +226,9 @@ export class ProjectManagerProjectDetailsComponent {
     }
     if (this.bidStatusEditor) {
       this.bidStatusEditor.destroy();
+    }
+    if (this.shortlistEditor) {
+      this.shortlistEditor.destroy();
     }
   }
 
@@ -577,6 +587,7 @@ export class ProjectManagerProjectDetailsComponent {
           this.commentData = this.projectDetails?.bidManagerStatusComment;
           this.getReasonList = this.projectDetails?.failStatusReason;
           this.feasibilityCommentData = this.projectDetails?.statusComment || [];
+          this.shortlistComments = this.projectDetails?.shortlistComments || [];
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
           console.log(this.viewReasonList); // Logs the dropUser list for debugging
         } else {
@@ -1100,12 +1111,33 @@ export class ProjectManagerProjectDetailsComponent {
       return;
     }
 
+    // Open the send mail modal first
+    this.openSendMailModal();
+  }
+
+  // Open send mail modal
+  openSendMailModal() {
+    // Open the modal
+    setTimeout(() => {
+      const mailModal = document.getElementById('sendMailModal');
+      if (mailModal) {
+        const modalInstance = new bootstrap.Modal(mailModal);
+        modalInstance.show();
+      }
+    }, 100);
+  }
+
+  // Handle send mail response from modal
+  handleSendMailResponse(isMailSend: boolean) {
+    this.isSendMail = isMailSend;
+
+    // Now call the API with the mail preference
     const payload = {
       userIds: this.selectedSupplierIds,
       projectId: this.projectId
     };
 
-    this.projectService.projectSortList(payload).subscribe(
+    this.projectService.projectSortList(payload, this.isSendMail).subscribe(
       (response) => {
         if (response?.status == true) {
           this.notificationService.showSuccess(
@@ -1120,6 +1152,45 @@ export class ProjectManagerProjectDetailsComponent {
         this.notificationService.showError(error?.message || 'Error occurred.');
       }
     );
+  }
+
+  // Add comment with rich text editor
+  addCommentWithEditor(projectId: string) {
+    if (!projectId) {
+      this.notificationService.showError('Project ID is required');
+      return;
+    }
+    if (!this.hasValidContent(this.shortlistComment.value)) {
+      this.notificationService.showError('Please enter a comment');
+      return;
+    }
+    const payload = {
+      comment: this.shortlistComment.value.trim(),
+      projectId: projectId,
+      type: 'shortlist_comment'
+    };
+    this.superadminService.addComments(payload, projectId).subscribe(
+      (response: any) => {
+        if (response?.status) {
+          this.notificationService.showSuccess('Comment added successfully');
+          this.shortlistComment.reset();
+          this.getProjectDetails();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to add comment');
+        }
+      },
+      (error: any) => {
+        this.notificationService.showError(error?.error?.message || 'Error adding comment');
+        console.error('Error adding shortlist comment:', error);
+      }
+    );
+  }
+
+  // Helper method to strip HTML tags and check if content is meaningful
+  private hasValidContent(htmlContent: string): boolean {
+    if (!htmlContent) return false;
+    const textContent = htmlContent.replace(/<[^>]*>/g, '').trim();
+    return textContent.length > 0;
   }
 
   // Method to remove a fail reason
@@ -1447,6 +1518,7 @@ export class ProjectManagerProjectDetailsComponent {
       }
     });
   }
+
   isSupplierSelected(supplierId: string): boolean {
     return this.projectDetails?.selectedUserIds?.some((user: any) => user._id === supplierId && user.isSelected);
   }
