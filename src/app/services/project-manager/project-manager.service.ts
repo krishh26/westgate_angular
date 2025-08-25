@@ -66,9 +66,15 @@ export class ProjectManagerService {
   }
 
 
-  dropUser(payload: any, id: string): Observable<any> {
+  dropUser(payload: any, id: string, isMailSend?: boolean): Observable<any> {
+    let params = new HttpParams();
+
+    if (isMailSend !== undefined) {
+      params = params.set('isMailSend', isMailSend.toString());
+    }
+
     return this.httpClient
-      .patch<any>(this.baseUrl + ProjectManagerAPIEndPoint.DROP_USER + id, payload);
+      .patch<any>(this.baseUrl + ProjectManagerAPIEndPoint.DROP_USER + id, payload, { params });
   }
 
   getAllCaseStudies(page: number = 1, limit: number = 10): Observable<any> {

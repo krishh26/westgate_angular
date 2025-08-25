@@ -613,10 +613,17 @@ export class SuperadminService {
     return this.httpClient.post(`${this.baseUrl}/task/logout`, {});
   }
 
-  selectFromSortlist(data: { userId: string; projectId: string; isSelected: boolean }): Observable<any> {
+  selectFromSortlist(data: { userId: string; projectId: string; isSelected: boolean }, isMailSend?: boolean): Observable<any> {
+    let params = new HttpParams();
+
+    if (isMailSend !== undefined) {
+      params = params.set('isMailSend', isMailSend.toString());
+    }
+
     return this.httpClient.patch<any>(
       this.baseUrl + SuperAdminEndPoint.SELECT_FROM_SORTLIST,
-      data
+      data,
+      { params }
     );
   }
 

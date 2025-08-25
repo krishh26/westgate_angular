@@ -554,9 +554,15 @@ export class ProjectService {
       .patch<any>(this.baseUrl + ProjectEndPoint.UPDATE_PROJECTMANAGER_SUPPLIER_STATUS, payload);
   }
 
-  projectSortList(payload: any): Observable<any> {
+  projectSortList(payload: any, isMailSend?: boolean): Observable<any> {
+    let params = new HttpParams();
+
+    if (isMailSend !== undefined) {
+      params = params.set('isMailSend', isMailSend.toString());
+    }
+
     return this.httpClient
-      .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload);
+      .patch<any>(this.baseUrl + ProjectEndPoint.SORT_LIST_PROJECT, payload, { params });
   }
 
   addSupplier(supplierId: any, payload: any) {
