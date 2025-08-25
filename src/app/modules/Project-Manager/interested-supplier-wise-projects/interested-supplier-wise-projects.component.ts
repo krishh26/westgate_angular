@@ -133,28 +133,7 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     });
   }
 
-  getAttendeeCounts() {
-    const attendedPayload = { ...this.tempPayload.projectList, attended: 'true', page: '1', limit: '1' };
-    const nonAttendedPayload = { ...this.tempPayload.projectList, attended: 'false', page: '1', limit: '1' };
 
-    // Get attendee count
-    this.projectService.getProjectList(attendedPayload).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.attendeeCount = response?.data?.meta_data?.items || 0;
-        }
-      }
-    );
-
-    // Get non-attendee count
-    this.projectService.getProjectList(nonAttendedPayload).subscribe(
-      (response) => {
-        if (response?.status === true) {
-          this.nonAttendeeCount = response?.data?.meta_data?.items || 0;
-        }
-      }
-    );
-  }
 
   ngOnInit(): void {
     this.tempPayload = createPayloadCopy();
@@ -165,7 +144,6 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
-    this.getAttendeeCounts();
 
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
@@ -247,6 +225,10 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
           if (response?.status === true) {
             // Set totalRecords first
             this.totalRecords = response?.data?.meta_data?.items || 0;
+
+            // Extract attendee counts from the response
+            this.attendeeCount = response?.data?.attendeeCount || 0;
+            this.nonAttendeeCount = response?.data?.nonAttendeeCount || 0;
 
             // Only set projectList if there is data
             if (response?.data?.data && response.data.data.length > 0) {
@@ -456,6 +438,10 @@ export class InterestedSupplierWiseProjectsComponent implements OnDestroy{
         if (response?.status == true) {
           this.showLoader = false;
           this.projectList = response?.data?.data;
+
+          // Extract attendee counts from the response
+          this.attendeeCount = response?.data?.attendeeCount || 0;
+          this.nonAttendeeCount = response?.data?.nonAttendeeCount || 0;
 
           this.totalRecords = response?.data?.meta_data?.items;
         } else {
