@@ -4,7 +4,10 @@
       <div class="row">
         <div class="row align-items-center justify-content-between">
           <div class="col-lg-10 col-12">
-            <h4 class="text-theme"><strong>Add Case Study</strong></h4>
+            <div class="edit-mode-header">
+              <h4 class="text-theme"><strong>{{ isEditMode ? 'Edit Case Study' : 'Add Case Study' }}</strong></h4>
+              <!-- <span *ngIf="isEditMode" class="edit-mode-indicator">Edit Mode</span> -->
+            </div>
           </div>
         </div>
       </div>
@@ -232,10 +235,10 @@
 
         <div class="row mt-4">
           <div class="col-12 text-end">
-            <button type="button" routerLink="/super-admin/admin-case-study-list" class="btn btn-primary">
+            <button type="button" (click)="goBack()" class="btn btn-primary">
               Back</button>&nbsp;
-            <button type="submit" class="btn btn-primary" [disabled]="data ? false : productForm.invalid">
-              Add
+            <button type="submit" class="btn btn-primary" [disabled]="isEditMode ? false : productForm.invalid">
+              {{ isEditMode ? 'Update' : 'Add' }}
             </button>
           </div>
         </div>

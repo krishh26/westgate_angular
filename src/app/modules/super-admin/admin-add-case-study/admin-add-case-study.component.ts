@@ -45,6 +45,7 @@ export class AdminAddCaseStudyComponent {
   industryDomainList: any[] = [];
 
   data:any;
+  isEditMode: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -58,8 +59,39 @@ export class AdminAddCaseStudyComponent {
   }
 
   ngOnInit(): void {
-    if(this.data) {
-      this.productForm.patchValue(this.data);
+    if(this.data && this.data.caseStudy) {
+      // Set edit mode flag
+      this.isEditMode = this.data.isEdit || false;
+
+      // Extract case study data and patch form values
+      const caseStudyData = this.data.caseStudy;
+      this.productForm.patchValue({
+        name: caseStudyData.name || '',
+        clientName: caseStudyData.clientName || '',
+        type: caseStudyData.type || '',
+        industry: caseStudyData.industry || '',
+        description: caseStudyData.description || '',
+        problem: caseStudyData.problem || '',
+        solutionProvided: caseStudyData.solutionProvided || '',
+        technologies: caseStudyData.technologies || '',
+        resourcesUsed: caseStudyData.resourcesUsed || '',
+        date: caseStudyData.date ? formatDate(new Date(caseStudyData.date), 'yyyy-MM-dd', 'en-US') : '',
+        contractDuration: caseStudyData.contractDuration || '',
+        resultAchieved: caseStudyData.resultAchieved || '',
+        cost: caseStudyData.cost || ''
+      });
+
+      // Log for debugging
+      console.log('Edit mode activated for case study:', caseStudyData);
+    } else if (this.data && !this.data.caseStudy) {
+      // Handle case where data is passed but not in expected format
+      console.warn('Data received but caseStudy property is missing:', this.data);
+      this.notificationService.showError('Invalid data format for editing case study');
+    } else if (this.isEditMode && !this.data) {
+      // Handle case where edit mode is expected but no data is provided
+      console.warn('Edit mode expected but no data provided');
+      this.notificationService.showError('No case study data provided for editing');
+      this.goBack();
     }
     const storedData = localStorage.getItem("supplierData");
     if (storedData) {
@@ -167,18 +199,32 @@ export class AdminAddCaseStudyComponent {
   }
 
 
+  goBack() {
+    this.router.navigate(['/super-admin/admin-case-study-list']);
+  }
+
   submitForm() {
-    if (this.data) {
+    if (this.isEditMode && this.data && this.data.caseStudy) {
       const payload = {
-        ...this.data,
+        ...this.data.caseStudy,
         ...this.productForm.value,
       };
+
+      // Log the payload and case study ID for debugging
+      console.log('Updating case study with ID:', this.data.caseStudy._id);
+      console.log('Update payload:', payload);
+
       this.showLoader = true;
-      this.supplierService.updateCaseStudy(payload,this.data._id).subscribe(
+
+      // Log the service call
+      console.log('Calling updateCaseStudy service with ID:', this.data.caseStudy._id);
+
+      this.supplierService.updateCaseStudy(payload, this.data.caseStudy._id).subscribe(
         (response) => {
+          console.log('Update API response:', response);
           if (response?.status === true) {
             this.showLoader = false;
-            this.notificationService.showSuccess('', 'Case Study Edit successfully.');
+            this.notificationService.showSuccess('', 'Case Study updated successfully.');
             this.router.navigate(['/super-admin/admin-case-study-list']);
           } else {
             this.notificationService.showError(response?.message);
@@ -186,6 +232,7 @@ export class AdminAddCaseStudyComponent {
           }
         },
         (error) => {
+          console.error('Update API error:', error);
           this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
