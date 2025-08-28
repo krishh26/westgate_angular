@@ -126,6 +126,7 @@ export class TrackerWiseProjectDetailsComponent {
   currentViewingSupplierId: string = '';
   logsList: any = [];
   activeLogType: string = ''; // To track which button is active
+  minimalRequirementData: any = null;
 
   loginDetailControl = {
     companyName: new FormControl('', Validators.required),
@@ -142,6 +143,7 @@ export class TrackerWiseProjectDetailsComponent {
   };
 
   mandatoryDetailsControl = {
+    title: new FormControl('', Validators.required),
     details: new FormControl('', Validators.required),
   };
 
@@ -244,6 +246,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.getUserAllList();
     this.getTask();
     this.getProjectLogs();
+    this.getMinimalRequirement();
     // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -1959,30 +1962,41 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-  saveMandatoryDetails() {
+    saveMandatoryDetails() {
     if (this.mandatoryDetailsForm.valid) {
       const formValues = this.mandatoryDetailsForm.value;
-      const params = {
-        projectId: this.projectDetails?._id,
-        details: formValues.details,
-        type: 'mandatoryDetails'
+      const payload = {
+        text: formValues.title,
+        description: formValues.details
       };
 
-      // Here you would typically call a service to save the mandatory details
-      // For now, we'll just show a success message and close the modal
-      this.notificationService.showSuccess('', 'Mandatory details saved successfully.');
+      this.projectService.createMinimalRequirement(this.projectId, payload).subscribe(
+                        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Mandatory details saved successfully');
 
-      // Close the modal
-      const modalElement = document.getElementById('ViewMandatoryDetails');
-      if (modalElement) {
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        if (modalInstance) {
-          modalInstance.hide();
+            // Close the modal
+            const modalElement = document.getElementById('ViewMandatoryDetails');
+            if (modalElement) {
+              const modalInstance = bootstrap.Modal.getInstance(modalElement);
+              if (modalInstance) {
+                modalInstance.hide();
+              }
+            }
+
+            // Reset the form
+            this.mandatoryDetailsForm.reset();
+
+            // Refresh the minimal requirement data instead of reloading the page
+            this.getMinimalRequirement();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to save mandatory details');
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.error?.message || error?.message || 'Failed to save mandatory details');
         }
-      }
-
-      // Reset the form
-      this.mandatoryDetailsForm.reset();
+      );
     } else {
       this.notificationService.showError('Please fill in all required fields.');
     }
@@ -2003,6 +2017,19 @@ export class TrackerWiseProjectDetailsComponent {
       (error) => {
         this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
+      }
+    );
+  }
+
+  getMinimalRequirement() {
+    this.projectService.getMinimalRequirement(this.projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.minimalRequirementData = response?.data;
+        }
+      },
+      (error) => {
+        console.error('Error fetching minimal requirement:', error);
       }
     );
   }
