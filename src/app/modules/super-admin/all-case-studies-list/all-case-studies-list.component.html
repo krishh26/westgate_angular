@@ -37,7 +37,8 @@
                     <th style="max-width: 300px; width: 300px;">Supplier Name</th>
                     <th style="width: 150px;">Industry</th>
                     <th style="width: 150px;">Type</th>
-                    <th style="max-width: 600px; width: 600px;">Description</th>
+                    <th style="max-width: 500px; width: 500px;">Description</th>
+                    <th style="width: 100px;">Actions</th>
                   </tr>
                 </thead>
               </table>
@@ -52,16 +53,17 @@
                     <td style="max-width: 300px; width: 300px;"></td>
                     <td style="width: 150px;"></td>
                     <td style="width: 150px;"></td>
-                    <td style="max-width: 600px; width: 600px;">
+                    <td style="max-width: 500px; width: 500px;">
                       <app-no-record-found></app-no-record-found>
                     </td>
+                    <td style="width: 100px;"></td>
                   </tr>
                   <tr *ngFor="let item of caseStudiesList">
                     <td style="max-width: 300px; width: 300px;">{{ item?.name || '-' }}</td>
                     <td style="max-width: 300px; width: 300px;">{{ item?.userId?.companyName || '-' }}</td>
                     <td style="width: 150px;">{{ item?.industry || '-' }}</td>
                     <td style="width: 150px;">{{ item?.type || '-' }}</td>
-                    <td style="max-width: 600px; width: 600px;">
+                    <td style="max-width: 500px; width: 500px;">
                       <div class="description-container">
                         <div [ngClass]="{'collapsed-text': !item?.showFullDescription && isDescriptionLong(item?.description), 'expanded-text': item?.showFullDescription}">
                           {{ item?.description || '-' }}
@@ -74,6 +76,13 @@
                         </div>
                       </div>
                     </td>
+                    <td style="width: 100px;">
+                      <button class="btn btn-danger btn-sm"
+                              (click)="deleteCaseStudy(item._id, item.name)"
+                              title="Delete Case Study">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
                   </tr>
                   <!-- Loading more indicator -->
                   <tr *ngIf="loadingMore">
@@ -81,7 +90,7 @@
                     <td style="max-width: 300px; width: 300px;"></td>
                     <td style="width: 150px;"></td>
                     <td style="width: 150px;"></td>
-                    <td style="max-width: 600px; width: 600px;" class="text-center">
+                    <td style="max-width: 500px; width: 500px;" class="text-center">
                       <div class="d-flex justify-content-center align-items-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
                           <span class="visually-hidden">Loading more...</span>
@@ -89,6 +98,7 @@
                         <span>Loading more case studies...</span>
                       </div>
                     </td>
+                    <td style="width: 100px;"></td>
                   </tr>
                   <!-- End of data indicator -->
                   <tr *ngIf="!hasMore && caseStudiesList.length > 0 && !loadingMore">
@@ -96,9 +106,10 @@
                     <td style="max-width: 300px; width: 300px;"></td>
                     <td style="width: 150px;"></td>
                     <td style="width: 150px;"></td>
-                    <td style="max-width: 600px; width: 600px;" class="text-center text-muted py-3">
+                    <td style="max-width: 500px; width: 500px;" class="text-center text-muted py-3">
                       <small>No more case studies to load</small>
                     </td>
+                    <td style="width: 100px;"></td>
                   </tr>
                 </tbody>
               </table>

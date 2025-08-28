@@ -5,6 +5,7 @@ import { SuperadminService } from 'src/app/services/super-admin/superadmin.servi
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 interface UserInfo {
   _id: string;
@@ -153,6 +154,37 @@ export class AllCaseStudiesListComponent implements OnInit, OnDestroy {
 
   isDescriptionLong(description: string | undefined): boolean {
     return (description || '').length > 150;
+  }
+
+  deleteCaseStudy(caseStudyId: string, caseStudyName: string): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete the case study "${caseStudyName}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!'
+    }).then((result: any) => {
+      if (result?.value) {
+        this.superService.deleteCaseStudy(caseStudyId).subscribe({
+          next: (response) => {
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Case study deleted successfully');
+              // Refresh the list after deletion
+              this.page = 1;
+              this.allCaseStudies = [];
+              this.getCaseStudiesList();
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete case study');
+            }
+          },
+          error: (error) => {
+            this.notificationService.showError(error?.error?.message || 'Something went wrong while deleting the case study');
+          }
+        });
+      }
+    });
   }
 
 }
