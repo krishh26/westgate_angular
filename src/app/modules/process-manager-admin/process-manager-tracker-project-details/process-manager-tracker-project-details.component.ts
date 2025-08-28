@@ -19,6 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
 import { Location } from '@angular/common';
 import { Editor, Toolbar } from 'ngx-editor';
+import Swal from 'sweetalert2';
 declare var bootstrap: any;
 
 @Component({
@@ -160,6 +161,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
 
     // Initialize editor
     this.editor = new Editor();
+    this.mandatoryDetailsEditor = new Editor();
 
     this.getProjectDetails();
     this.getUserAllList();
@@ -167,6 +169,7 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
     this.getTask();
     this.getProjectLogs();
     this.getProjectStrips();
+    this.getMinimalRequirement();
     this.initializeForm();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -180,6 +183,9 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
   ngOnDestroy(): void {
     // Destroy the editor to prevent memory leaks
     this.editor.destroy();
+    if (this.mandatoryDetailsEditor) {
+      this.mandatoryDetailsEditor.destroy();
+    }
   }
 
   goBack() {
@@ -887,5 +893,101 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
   // Add this method to get a raw string URL for PDFs
   getPdfUrl(url: string): string {
     return url ? url : '';
+  }
+
+  // Minimal Requirement functionality
+  minimalRequirementData: any = null;
+
+  mandatoryDetailsControl = {
+    title: new FormControl('', Validators.required),
+    details: new FormControl('', Validators.required),
+  };
+
+  mandatoryDetailsForm: FormGroup = new FormGroup(this.mandatoryDetailsControl);
+  mandatoryDetailsEditor: Editor = new Editor();
+
+  getMinimalRequirement() {
+    this.projectService.getMinimalRequirement(this.projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.minimalRequirementData = response?.data;
+        }
+      },
+      (error) => {
+        console.error('Error fetching minimal requirement:', error);
+      }
+    );
+  }
+
+  saveMandatoryDetails() {
+    if (this.mandatoryDetailsForm.valid) {
+      const formValues = this.mandatoryDetailsForm.value;
+      const payload = {
+        text: formValues.title,
+        description: formValues.details
+      };
+
+      this.projectService.createMinimalRequirement(this.projectId, payload).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Mandatory details saved successfully');
+
+            // Close the modal
+            const modalElement = document.getElementById('ViewMandatoryDetails');
+            if (modalElement) {
+              const modalInstance = bootstrap.Modal.getInstance(modalElement);
+              if (modalInstance) {
+                modalInstance.hide();
+              }
+            }
+
+            // Reset the form
+            this.mandatoryDetailsForm.reset();
+
+            // Refresh the minimal requirement data instead of reloading the page
+            this.getMinimalRequirement();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to save mandatory details');
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.error?.message || error?.message || 'Failed to save mandatory details');
+        }
+      );
+    } else {
+      this.notificationService.showError('Please fill in all required fields.');
+    }
+  }
+
+  deleteMinimalRequirement() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.showLoader = true;
+        this.projectService.deleteMinimalRequirement(this.projectId).subscribe(
+          (response) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Minimal requirement deleted successfully');
+              this.minimalRequirementData = null;
+            } else {
+              this.notificationService.showError(response?.message || 'Error deleting minimal requirement');
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError('Error deleting minimal requirement');
+            console.error('Error deleting minimal requirement:', error);
+          }
+        );
+      }
+    });
   }
 }
