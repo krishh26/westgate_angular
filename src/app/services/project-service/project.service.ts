@@ -32,7 +32,8 @@ export enum ProjectEndPoint {
   DELETE_DROPPED_REASON = '/project/delete-dafstatusreason',
   DELETE_BID_COMMENT = '/project/delete-bidstatuscomment',
   DELETE_DOCUMENT = '/project/delete-document',
-  CREATE_MINIMAL_REQUIREMENT = '/project/create'
+  CREATE_MINIMAL_REQUIREMENT = '/project/create',
+  DELETE_MINIMAL_REQUIREMENT = '/project/delete'
 }
 
 @Injectable({
@@ -586,6 +587,11 @@ export class ProjectService {
   getMinimalRequirement(projectId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + `/project/${projectId}/minimal-requirement`);
+  }
+
+  deleteMinimalRequirement(projectId: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + `${ProjectEndPoint.DELETE_MINIMAL_REQUIREMENT}/${projectId}/minimal-requirement`);
   }
 
 }

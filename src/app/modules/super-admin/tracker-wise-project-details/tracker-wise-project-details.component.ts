@@ -2034,6 +2034,38 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
+  deleteMinimalRequirement() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.spinner.show();
+        this.projectService.deleteMinimalRequirement(this.projectId).subscribe(
+          (response) => {
+            this.spinner.hide();
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Minimal requirement deleted successfully');
+              this.minimalRequirementData = null;
+            } else {
+              this.notificationService.showError(response?.message || 'Error deleting minimal requirement');
+            }
+          },
+          (error) => {
+            this.spinner.hide();
+            this.notificationService.showError('Error deleting minimal requirement');
+            console.error('Error deleting minimal requirement:', error);
+          }
+        );
+      }
+    });
+  }
+
   addField() {
     this.imageFields.push({ text: '', file: null });
   }

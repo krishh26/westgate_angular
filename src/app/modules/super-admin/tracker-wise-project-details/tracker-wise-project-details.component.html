@@ -471,8 +471,11 @@
 
       <!-- Minimal Requirement Card -->
       <div class="card mb-4" *ngIf="minimalRequirementData">
-        <div class="card-header">
-          <h6>Minimal Requirement Details</h6>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Mandatory requirements (Minimum eligibility criteria)</h6>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteMinimalRequirement()">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
         </div>
         <div class="card-body">
           <div class="row">
