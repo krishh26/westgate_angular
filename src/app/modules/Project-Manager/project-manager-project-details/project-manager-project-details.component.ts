@@ -106,6 +106,12 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
     userIds: new FormControl('', Validators.required),
   };
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
+
+  mandatoryDetailsControl = {
+    title: new FormControl('', Validators.required),
+    details: new FormControl('', Validators.required),
+  };
+  mandatoryDetailsForm: FormGroup = new FormGroup(this.mandatoryDetailsControl);
   selectedImage!: string;
 
   ForTitleuserList: any = [
@@ -130,6 +136,7 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
   getDroppedAfterReasonList: any = [];
   selectedDroppedAfterFeasibilityReason: string = '';
   westGetDocument: any[] = [];
+  minimalRequirementData: any = null;
 
   feasibilityEditor: Editor = new Editor();
   bidStatusEditor: Editor = new Editor();
@@ -137,6 +144,7 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
   allSuppliers: any[] = [];
   shortlistEditor: Editor = new Editor();
   shortlistComment: FormControl = new FormControl('');
+  mandatoryDetailsEditor: Editor = new Editor();
   shortlistComments: any[] = [];
   isSendMail: boolean = false;
 
@@ -180,6 +188,7 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
     this.getUserDetails();
     this.getUserAllList();
     this.getProjectStrips();
+    this.getMinimalRequirement();
     // this.getForTitleUserAllList();
     this.addStripForm = this.fb.group({
       type: ['', Validators.required],
@@ -191,6 +200,7 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
     this.shortlistEditor = new Editor();
+    this.mandatoryDetailsEditor = new Editor();
   }
 
   getUserDetails() {
@@ -339,6 +349,19 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
       (error) => {
         this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
+      }
+    );
+  }
+
+  getMinimalRequirement() {
+    this.projectService.getMinimalRequirement(this.projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.minimalRequirementData = response?.data;
+        }
+      },
+      (error) => {
+        console.log('Error fetching minimal requirement:', error);
       }
     );
   }
@@ -1560,5 +1583,43 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
         this.notificationService.showError(error?.message || 'Something went wrong');
       }
     );
+  }
+
+  saveMandatoryDetails() {
+    if (this.mandatoryDetailsForm.valid) {
+      const formValues = this.mandatoryDetailsForm.value;
+      const payload = {
+        text: formValues.title,
+        description: formValues.details
+      };
+
+      this.projectService.createMinimalRequirement(this.projectId, payload).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Mandatory details saved successfully');
+
+            // Close the modal
+            const modalElement = document.getElementById('ViewMandatoryDetails');
+            if (modalElement) {
+              const modalInstance = bootstrap.Modal.getInstance(modalElement);
+              if (modalInstance) {
+                modalInstance.hide();
+              }
+            }
+
+            // Reset the form
+            this.mandatoryDetailsForm.reset();
+
+            // Refresh the minimal requirement data
+            this.getMinimalRequirement();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to save mandatory details');
+          }
+        },
+        (error) => {
+          this.notificationService.showError(error?.error?.message || error?.message || 'Failed to save mandatory details');
+        }
+      );
+    }
   }
 }
