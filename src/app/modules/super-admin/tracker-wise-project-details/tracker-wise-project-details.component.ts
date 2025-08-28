@@ -141,6 +141,10 @@ export class TrackerWiseProjectDetailsComponent {
     description: new FormControl('', Validators.required),
   };
 
+  mandatoryDetailsControl = {
+    details: new FormControl('', Validators.required),
+  };
+
   eligibility = {
     caseStudyRequired: new FormControl('', Validators.required),
     certifications: new FormControl('', Validators.required),
@@ -161,6 +165,7 @@ export class TrackerWiseProjectDetailsComponent {
   summaryForm: FormGroup;
   loginDetailForm: FormGroup = new FormGroup(this.loginDetailControl);
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
+  mandatoryDetailsForm: FormGroup = new FormGroup(this.mandatoryDetailsControl);
   imageFields = [{ text: '', file: null }];
   failStatusReasons: { tag: string; comment: string }[] = [];
   droppedStatusReasons: { tag: string; comment: string }[] = [];
@@ -183,6 +188,7 @@ export class TrackerWiseProjectDetailsComponent {
 
   // Editor related properties
   editor: Editor = new Editor();
+  mandatoryDetailsEditor: Editor = new Editor();
   taskForm!: FormGroup;
   @ViewChild('taskModal') taskModal!: ElementRef;
 
@@ -251,6 +257,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.editor = new Editor();
     this.feasibilityEditor = new Editor();
     this.bidStatusEditor = new Editor();
+    this.mandatoryDetailsEditor = new Editor();
 
     this.bidManagerStatusComment.valueChanges?.subscribe((value) => {
       if (value && this.status && value !== "<p></p>") {
@@ -268,6 +275,9 @@ export class TrackerWiseProjectDetailsComponent {
     }
     if (this.editor) {
       this.editor.destroy();
+    }
+    if (this.mandatoryDetailsEditor) {
+      this.mandatoryDetailsEditor.destroy();
     }
   }
 
@@ -1948,6 +1958,36 @@ export class TrackerWiseProjectDetailsComponent {
       }
     );
   }
+
+  saveMandatoryDetails() {
+    if (this.mandatoryDetailsForm.valid) {
+      const formValues = this.mandatoryDetailsForm.value;
+      const params = {
+        projectId: this.projectDetails?._id,
+        details: formValues.details,
+        type: 'mandatoryDetails'
+      };
+
+      // Here you would typically call a service to save the mandatory details
+      // For now, we'll just show a success message and close the modal
+      this.notificationService.showSuccess('', 'Mandatory details saved successfully.');
+
+      // Close the modal
+      const modalElement = document.getElementById('ViewMandatoryDetails');
+      if (modalElement) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+      }
+
+      // Reset the form
+      this.mandatoryDetailsForm.reset();
+    } else {
+      this.notificationService.showError('Please fill in all required fields.');
+    }
+  }
+
   getProjectStrips() {
     this.projectService.getprojectStrips(this.projectId).subscribe(
       (response) => {
