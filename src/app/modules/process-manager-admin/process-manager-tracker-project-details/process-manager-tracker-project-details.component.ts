@@ -944,8 +944,8 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
             // Reset the form
             this.mandatoryDetailsForm.reset();
 
-            // Refresh the minimal requirement data instead of reloading the page
-            this.getMinimalRequirement();
+            // Reload the page after successful save
+            window.location.reload();
           } else {
             this.notificationService.showError(response?.message || 'Failed to save mandatory details');
           }
