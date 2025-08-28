@@ -640,7 +640,14 @@
                     <td>{{ expertise.name }}</td>
                     <td>{{ expertise.type }}</td>
                     <td>
-                      <button class="btn btn-success btn-sm me-2" (click)="approveOtherExpertise(expertise)">Approve</button>
+                      <button class="btn btn-success btn-sm" (click)="approveOtherExpertise(expertise)" [disabled]="expertise.isApproving">
+                        <span *ngIf="expertise.isApproving" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                        {{ expertise.isApproving ? 'Approving...' : 'Approve' }}
+                      </button>
+                      <button class="btn btn-danger btn-sm" (click)="rejectOtherExpertise(expertise)" [disabled]="expertise.isRejecting">
+                        <span *ngIf="expertise.isRejecting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                        {{ expertise.isRejecting ? 'Rejecting...' : 'Reject' }}
+                      </button>
                     </td>
                   </tr>
                   <tr *ngIf="otherExpertises.length === 0 && !showOtherExpertiseLoader">

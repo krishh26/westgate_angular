@@ -98,6 +98,24 @@
     min-width: 100px;
   }
 
+  // Button loading states
+  .btn {
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .spinner-border-sm {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+  }
+
+  // Action buttons spacing
+  .btn + .btn {
+    margin-left: 0.5rem;
+  }
+
   th:nth-child(11), td:nth-child(11) { // Actions
     min-width: 160px;
     white-space: nowrap;

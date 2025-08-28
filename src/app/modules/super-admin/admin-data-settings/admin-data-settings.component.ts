@@ -1606,12 +1606,17 @@ export class AdminDataSettingsComponent implements OnInit {
 
   approveOtherExpertise(expertise: any): void {
     if (!expertise || !expertise._id) return;
+
+    // Set loading state for this specific expertise
+    expertise.isApproving = true;
+
     const payload = {
       itemId: expertise._id,
       isSystem: true
     };
     this.superadminService.promoteExpertise(payload).subscribe({
       next: (response: any) => {
+        expertise.isApproving = false;
         if (response?.status) {
           this.notificationService.showSuccess('Expertise approved and promoted to system list.');
           this.loadOtherExpertises();
@@ -1620,13 +1625,51 @@ export class AdminDataSettingsComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        expertise.isApproving = false;
         this.notificationService.showError(error?.message || 'Failed to approve expertise.');
       }
     });
   }
 
   rejectOtherExpertise(expertise: any): void {
-    // Placeholder for reject logic
-    this.notificationService.showInfo('Reject action not implemented yet.');
+    if (!expertise || !expertise._id) return;
+
+    // Show confirmation dialog
+    Swal.fire({
+      title: 'Reject Expertise?',
+      text: `Are you sure you want to reject "${expertise.name}"? This action cannot be undone.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, Reject it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Set loading state for this specific expertise
+        expertise.isRejecting = true;
+
+        const payload = {
+          itemId: expertise._id,
+          isSystem: false
+        };
+
+        this.superadminService.promoteExpertise(payload).subscribe({
+          next: (response: any) => {
+            expertise.isRejecting = false;
+            if (response?.status) {
+              this.notificationService.showSuccess('Expertise rejected successfully.');
+              this.loadOtherExpertises(); // Reload the list
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to reject expertise.');
+            }
+          },
+          error: (error: any) => {
+            expertise.isRejecting = false;
+            this.notificationService.showError(error?.message || 'Failed to reject expertise.');
+          }
+        });
+      }
+    });
   }
 }
