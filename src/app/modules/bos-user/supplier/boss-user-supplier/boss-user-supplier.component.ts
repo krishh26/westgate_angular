@@ -389,37 +389,63 @@ export class BossUserSupplierComponent {
   }
 
   onToggleSwitch(item: any) {
-    console.log('Toggle switch clicked, new state:', item.active);
-
     // When switching to inactive (false), open the comment modal
     if (item.active === false) {
       this.openCommentModal(item);
     } else {
+      this.emailConfirmationForActiveSupplier(item);
+    }
+  }
+
+  emailConfirmationForActiveSupplier(item: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to send mail to supplier ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
+    }).then((result: any) => {
+      let payload = {};
       // When switching to active (true), update directly
-      const payload = {
-        active: true
-      };
-
-      console.log('Activating supplier with payload:', payload);
-
+      console.log("result?.value", result?.value);
+      if (result?.value) {
+        payload = {
+          active: true,
+          isSendMail: true
+        };
+      } else {
+        payload = {
+          active: true,
+          isSendMail: false
+        };
+      }
+      this.showLoader = true;
       this.authservice.updateUser(item._id, payload).subscribe(
         (response: any) => {
-          console.log('Activation response:', response);
           if (response?.status) {
             this.notificationService.showSuccess(response?.message || 'Supplier activated successfully');
-            this.getManageUserList();
+            // Maintain the current filter instead of resetting it
+            if (this.currentFilter && this.currentFilter !== 'clear') {
+              this.applyFilter(this.currentFilter);
+            } else {
+              this.getManageUserList();
+            }
           } else {
             this.notificationService.showError(response?.message || 'Failed to activate supplier');
             item.active = false; // Revert the toggle if there's an error
           }
+          this.showLoader = false;
         },
         (error: any) => {
-          console.error('Error activating supplier:', error);
+          this.showLoader = false;
           this.notificationService.showError(error?.error?.message || 'Error activating supplier');
           item.active = false; // Revert the toggle if there's an error
         }
       );
-    }
+    });
   }
 
   deleteSupplier(id: any) {
@@ -438,7 +464,12 @@ export class BossUserSupplierComponent {
           if (response?.status == true) {
             this.showLoader = false;
             this.notificationService.showSuccess('Supplier successfully deleted');
-            this.getManageUserList();
+            // Maintain the current filter after deletion
+            if (this.currentFilter && this.currentFilter !== 'clear') {
+              this.applyFilter(this.currentFilter);
+            } else {
+              this.getManageUserList();
+            }
           } else {
             this.showLoader = false;
             this.notificationService.showError(response?.message);
@@ -453,7 +484,12 @@ export class BossUserSupplierComponent {
 
   searchtext() {
     this.page = 1;
-    this.getManageUserList();
+    // Maintain the current filter when searching
+    if (this.currentFilter && this.currentFilter !== 'clear') {
+      this.applyFilter(this.currentFilter);
+    } else {
+      this.getManageUserList();
+    }
   }
 
   getManageUserList() {
@@ -716,12 +752,17 @@ export class BossUserSupplierComponent {
     const modalRef = this.modalService.open(SuperadminCommentModalComponent, { centered: true });
     modalRef.componentInstance.supplier = item;
     modalRef.componentInstance.itemType = 'supplier';
-    modalRef.componentInstance.sourceComponent = 'super-admin-supplier';
+    modalRef.componentInstance.sourceComponent = 'boss-user-supplier';
 
     modalRef.result.then(
       (result) => {
         console.log('Modal closed with result:', result);
-        this.getManageUserList();
+        // Maintain the current filter instead of resetting it
+        if (this.currentFilter && this.currentFilter !== 'clear') {
+          this.applyFilter(this.currentFilter);
+        } else {
+          this.getManageUserList();
+        }
       },
       (reason) => {
         console.log('Modal dismissed:', reason);
