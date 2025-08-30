@@ -142,6 +142,7 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
   bidStatusEditor: Editor = new Editor();
   selectedSuppliersList: any[] = [];
   allSuppliers: any[] = [];
+  supplierResponses: any[] = []; // Array to store supplier approval/rejection responses
   shortlistEditor: Editor = new Editor();
   shortlistComment: FormControl = new FormControl('');
   mandatoryDetailsEditor: Editor = new Editor();
@@ -613,6 +614,9 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
           this.shortlistComments = this.projectDetails?.shortlistComments || [];
           this.viewReasonList = this.projectDetails?.dropUser; // Store the dropUser list
           console.log(this.viewReasonList); // Logs the dropUser list for debugging
+
+          // Load supplier responses data if available
+          this.loadSupplierResponses();
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
@@ -1620,6 +1624,173 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
           this.notificationService.showError(error?.error?.message || error?.message || 'Failed to save mandatory details');
         }
       );
+    }
+  }
+
+  // Supplier Status Methods for Flag Button
+  getSupplierStatusClass(supplier: any): string {
+    const status = this.getSupplierStatus(supplier);
+    switch (status) {
+      case 'approved':
+        return 'btn-success';
+      case 'rejected':
+        return 'btn-danger';
+      case 'pending':
+        return 'btn-warning';
+      default:
+        return 'btn-secondary';
+    }
+  }
+
+  getSupplierStatusTooltip(supplier: any): string {
+    const status = this.getSupplierStatus(supplier);
+    let tooltip = `Supplier Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+
+    // Add explanation that button is for display only
+    tooltip += '\n\nThis button is for display purposes only and cannot be clicked.';
+
+    return tooltip;
+  }
+
+  getSupplierStatusIcon(supplier: any): string {
+    const status = this.getSupplierStatus(supplier);
+    switch (status) {
+      case 'approved':
+        return 'bi-check-circle-fill';
+      case 'rejected':
+        return 'bi-x-circle-fill';
+      case 'pending':
+        return 'bi-clock-fill';
+      default:
+        return 'bi-question-circle-fill';
+    }
+  }
+
+  getSupplierStatusText(supplier: any): string {
+    const status = this.getSupplierStatus(supplier);
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  }
+
+  getSupplierStatus(supplier: any): string {
+    // Check if supplier has approval status in the data
+    if (supplier?.approvalStatus) {
+      return supplier.approvalStatus.toLowerCase();
+    }
+
+    // Check supplierResponses data for approval/rejection status
+    if (this.supplierResponses && this.supplierResponses.length > 0) {
+      const supplierResponse = this.supplierResponses.find((response: any) =>
+        response.supplierId === supplier._id || response.supplierId === supplier.supplierId
+      );
+
+      if (supplierResponse) {
+        if (supplierResponse.status === 'approved' || supplierResponse.status === 'Approved') {
+          return 'approved';
+        } else if (supplierResponse.status === 'rejected' || supplierResponse.status === 'Rejected') {
+          return 'rejected';
+        } else if (supplierResponse.status === 'pending' || supplierResponse.status === 'Pending') {
+          return 'pending';
+        }
+      }
+    }
+
+    // Check if supplier is in selectedUserIds (approved)
+    if (this.projectDetails?.selectedUserIds?.some((user: any) =>
+      user._id === supplier._id && user.isSelected === true)) {
+      return 'approved';
+    }
+
+    // Check if supplier is in selectedUserIds but not selected (rejected)
+    if (this.projectDetails?.selectedUserIds?.some((user: any) =>
+      user._id === supplier._id && user.isSelected === false)) {
+      return 'rejected';
+    }
+
+    // Check if supplier is in sortlistedUsers but not in selectedUserIds (pending)
+    if (this.selectedSuppliersList?.some((item: any) => item._id === supplier._id)) {
+      return 'pending';
+    }
+
+    // Default status
+    return 'pending';
+  }
+
+  // Method to update supplier status manually
+  updateSupplierStatus(supplier: any, newStatus: string) {
+    if (!supplier || !newStatus) {
+      this.notificationService.showError('Invalid supplier or status');
+      return;
+    }
+
+    // Update the supplier status in supplierResponses
+    let supplierResponse = this.supplierResponses.find((response: any) =>
+      response.supplierId === supplier._id || response.supplierId === supplier.supplierId
+    );
+
+    if (supplierResponse) {
+      supplierResponse.status = newStatus;
+    } else {
+      // Create new response entry if it doesn't exist
+      this.supplierResponses.push({
+        supplierId: supplier._id,
+        supplierName: supplier.companyName,
+        status: newStatus,
+        updatedAt: new Date()
+      });
+    }
+
+    this.notificationService.showSuccess(`Supplier status updated to ${newStatus}`);
+  }
+
+  // Method to toggle supplier status (cycle through: pending -> approved -> rejected -> pending)
+  toggleSupplierStatus(supplier: any) {
+    const currentStatus = this.getSupplierStatus(supplier);
+    let newStatus: string;
+
+    switch (currentStatus) {
+      case 'pending':
+        newStatus = 'approved';
+        break;
+      case 'approved':
+        newStatus = 'rejected';
+        break;
+      case 'rejected':
+        newStatus = 'pending';
+        break;
+      default:
+        newStatus = 'pending';
+    }
+
+    this.updateSupplierStatus(supplier, newStatus);
+  }
+
+  // Method to set supplier responses data from external source
+  setSupplierResponses(responses: any[]) {
+    if (responses && Array.isArray(responses)) {
+      this.supplierResponses = responses;
+      console.log('Supplier responses data set:', this.supplierResponses);
+    }
+  }
+
+  // Method to get supplier response by ID
+  getSupplierResponse(supplierId: string): any {
+    return this.supplierResponses.find((response: any) =>
+      response.supplierId === supplierId
+    );
+  }
+
+  // Method to check if supplier status button should be disabled
+  isSupplierStatusDisabled(supplier: any): boolean {
+    // Always disable the button - it's just for display purposes
+    return true;
+  }
+
+  // Load supplier responses data for approval status
+  loadSupplierResponses() {
+    // This method can be extended to load supplier responses from an API
+    // For now, we'll check if the data exists in projectDetails
+    if (this.projectDetails?.supplierStatus) {
+      this.supplierResponses = this.projectDetails.supplierStatus;
     }
   }
 }
