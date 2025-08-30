@@ -385,3 +385,110 @@ textarea {
     }
   }
 }
+
+/* Supplier Status Flag Button Styles */
+.supplier-status-flag {
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  min-width: 90px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  // Disabled state styling
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+
+    &:hover:not(:disabled) {
+      background-color: #157347;
+      border-color: #146c43;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: #fff;
+    }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+
+    &:hover:not(:disabled) {
+      background-color: #bb2d3b;
+      border-color: #b02a37;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: #fff;
+    }
+  }
+
+  &.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+
+    &:hover:not(:disabled) {
+      background-color: #ffca2c;
+      border-color: #ffc720;
+      color: #000;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: #fff;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+
+    &:hover:not(:disabled) {
+      background-color: #5c636a;
+      border-color: #565e64;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: #fff;
+    }
+  }
+}
+
+/* Supplier List Item Enhancements */
+.list-group-item {
+  .d-flex {
+    gap: 8px;
+
+    .btn {
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+  }
+}

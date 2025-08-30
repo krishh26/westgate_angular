@@ -450,6 +450,16 @@
                     style="flex-grow: 0; min-width: 80px" (click)="deSelectSupplier(supplier)">
                     De-Select
                   </button>
+                  <!-- Flag Button for Supplier Status -->
+                  <button class="btn btn-sm supplier-status-flag"
+                    [ngClass]="getSupplierStatusClass(supplier)"
+                    [title]="getSupplierStatusTooltip(supplier)"
+                    (click)="toggleSupplierStatus(supplier)"
+                    [disabled]="isSupplierStatusDisabled(supplier)"
+                    style="flex-grow: 0; min-width: 80px; margin-right: 5px;">
+                    <i class="bi" [ngClass]="getSupplierStatusIcon(supplier)"></i>
+                    {{ getSupplierStatusText(supplier) }}
+                  </button>
                   <button class="btn btn-sm btn-danger" style="flex-grow: 0; min-width: 80px"
                     (click)="removeShortlistSupplier(supplier)">
                     Remove
