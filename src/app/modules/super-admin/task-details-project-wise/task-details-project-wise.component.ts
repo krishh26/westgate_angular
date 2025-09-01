@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { FeasibilityService } from 'src/app/services/feasibility-user/feasibility.service';
@@ -75,7 +76,8 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
   page: number = pagination.page;
   pagesize = 50;
   totalRecords: number = pagination.totalRecords;
-  sourcePage: string = '/super-admin/todo-tasks'; // Default source page
+  sourcePage: string = '/super-admin/status-wise-tracker'; // Default source page
+  previousUrl: string = '';
 
   taskType = [
     { taskType: 'Project', taskValue: 'Project' },
@@ -149,11 +151,15 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
+    private location: Location,
   ) {
     this.loginUser = this.localStorageService.getLogger();
   }
 
   ngOnInit(): void {
+    // Capture the previous URL for back navigation
+    this.capturePreviousUrl();
+
     // Get task ID and data from route params and state
     this.route.params.subscribe(params => {
       const taskId = params['id'];
@@ -163,7 +169,7 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
         const state = navigation?.extras.state;
 
         if (state) {
-          this.sourcePage = state['sourcePage'] || '/super-admin/todo-tasks';
+                     this.sourcePage = state['sourcePage'] || this.previousUrl || '/super-admin/status-wise-tracker';
           if (state['taskData']) {
             // Use the passed task data
             this.setupTaskDetails(state['taskData']);
@@ -176,7 +182,7 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
           // If no state, try to get from history state
           const historyState = window.history.state;
           if (historyState && historyState.taskData) {
-            this.sourcePage = historyState.sourcePage || '/super-admin/todo-tasks';
+                         this.sourcePage = historyState.sourcePage || this.previousUrl || '/super-admin/status-wise-tracker';
             this.setupTaskDetails(historyState.taskData);
             this.getSubtasks(taskId);
           } else {
@@ -218,6 +224,26 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.editor.destroy();
+  }
+
+  // Capture the previous URL from browser history
+  private capturePreviousUrl(): void {
+    // Try to get the previous URL from browser history
+    if (window.history.length > 1) {
+      // Store the current URL before it changes
+      const currentUrl = window.location.pathname;
+
+      // Use a timeout to capture the previous URL after navigation
+      setTimeout(() => {
+        // Check if we can access the previous URL
+        if (document.referrer) {
+          const referrer = new URL(document.referrer);
+          if (referrer.pathname !== currentUrl) {
+            this.previousUrl = referrer.pathname;
+          }
+        }
+      }, 100);
+    }
   }
 
   loadTaskDetails(taskId: string) {
@@ -1097,7 +1123,21 @@ export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
 
   // Navigate back to the previous page
   goBack() {
-    this.router.navigate([this.sourcePage]);
+    // First try to use the captured previous URL
+    if (this.previousUrl && this.previousUrl !== window.location.pathname) {
+      this.router.navigate([this.previousUrl]);
+    } else if (this.sourcePage && this.sourcePage !== window.location.pathname) {
+      // Fallback to the source page if no previous URL
+      this.router.navigate([this.sourcePage]);
+    } else {
+      // Try to go back in browser history
+      if (window.history.length > 1) {
+        this.location.back();
+      } else {
+                 // Final fallback to a default page
+         this.router.navigate(['/super-admin/status-wise-tracker']);
+      }
+    }
   }
 
   isSubtaskValid(): boolean {
