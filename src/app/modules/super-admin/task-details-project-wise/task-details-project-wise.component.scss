@@ -1,0 +1,410 @@
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+
+  .card-header {
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.admin-comment {
+  border: 1px solid red !important;
+  border-radius: 5px;
+  padding: 10px;
+  color: red !important;
+}
+
+.comments-section {
+  margin-top: 20px;
+
+  form {
+    .row {
+      margin-bottom: 1rem;
+    }
+
+    .form-control {
+      height: 38px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 0.375rem 0.75rem;
+
+      &:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+    }
+  }
+
+  /* When a comment is both pinned and from admin */
+  .pinned-comment.admin-comment {
+    background-color: #f1f5ff !important;
+    border: 1px solid red !important;
+    color: red !important;
+  }
+
+  .comment-item {
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &.admin-comment {
+      background-color: #f0f7ff;
+
+      &:hover {
+        background-color: #e5f1ff;
+      }
+    }
+
+    // Pinned comments with background and border
+    &.pinned-comment {
+      background-color: #f1f5ff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #e8f0ff;
+      }
+    }
+
+    // Comment items with no background, only border
+    &.no-bg {
+      background-color: transparent;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .user-role {
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    .comment-text {
+      margin-top: 5px;
+      word-break: break-word;
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+}
+
+.comments-scroll-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+.pin-btn,
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #212529;
+  }
+}
+
+.pin-btn:hover {
+  color: #0d6efd;
+}
+
+.delete-btn:hover {
+  color: #dc3545;
+}
+
+.details-container {
+  padding: 15px;
+  border-left: 1px solid #eee;
+
+  .details-header {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .detail-item {
+    margin-bottom: 15px;
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .mob-mb1 {
+    margin-bottom: 1rem;
+  }
+
+  .details-container {
+    border-left: none;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+}
+
+.detail-item {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.subtasks-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding: 1px;  // Prevent margin collapse
+}
+
+.subtask-item {
+  background-color: #DBF2D0;
+  border: 1px solid #c5e0b4;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  height: 100%;  // Ensure equal height in the row
+
+  &:hover {
+    background-color: lighten(#DBF2D0, 5%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  small {
+    font-size: 12px;
+    color: #4d4d4d;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-link {
+    padding: 0.25rem 0.5rem;
+    &:hover {
+      background-color: rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+  }
+}
+
+.subtasks-content {
+  .add-subtask-form {
+    background-color: #DBF2D0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #c5e0b4;
+
+    .custom-ng-select-option {
+      z-index: 1000;
+
+      ::ng-deep .ng-dropdown-panel {
+        z-index: 1001;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+    }
+
+    .form-control {
+      height: 38px;
+      background-color: white;
+      border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+      height: 38px;
+    }
+  }
+
+  .subtasks-list {
+    .subtask-card {
+      background-color: #DBF2D0;
+      border: 1px solid #c5e0b4;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 100%;
+
+      .subtask-header {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: darken(#DBF2D0, 5%);
+        }
+
+        .subtask-title {
+          font-weight: 500;
+          color: #0d6efd;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 200px;
+        }
+
+        .assigned-to {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+          margin-right: 1rem;
+        }
+
+        .due-date {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          white-space: nowrap;
+        }
+
+        i {
+          font-size: 0.875rem;
+          color: #4d4d4d;
+          transition: transform 0.2s;
+        }
+      }
+
+      .subtask-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background-color: white;
+
+        &.expanded {
+          max-height: 500px;
+          transition: max-height 0.3s ease-in;
+        }
+
+        .subtask-details {
+          padding: 1rem;
+
+          p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #4d4d4d;
+          }
+
+          .info-row {
+            margin-bottom: 0.5rem;
+
+            i {
+              color: #6c757d;
+            }
+          }
+
+          .actions {
+            .btn-outline-danger {
+              padding: 0.25rem 0.5rem;
+
+              i {
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .subtasks-list {
+    .subtask-card {
+      .subtask-header {
+        .subtask-title {
+          max-width: 120px;
+        }
+
+        .assigned-to {
+          max-width: none;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Custom scrollbar for subtasks container
+.subtasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.subtasks-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.subtasks-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.toggle-btn {
+  color: #4d4d4d;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #000;
+    transform: scale(1.1);
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}

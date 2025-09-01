@@ -296,10 +296,13 @@ export class SuperadminService {
     );
   }
 
-  getTask(assignId: string): Observable<any> {
+  getTask(assignId: string, projectId?: string): Observable<any> {
     let params = new HttpParams();
     if (assignId) {
       params = params.set('assignTo', assignId);
+    }
+    if (projectId) {
+      params = params.set('project', projectId);
     }
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.GET_TASK,

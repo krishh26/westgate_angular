@@ -53,6 +53,7 @@ import { AdminDataCandidateListComponent } from './admin-data-candidate-list/adm
 import { AdminDataEditCandidateComponent } from './admin-data-edit-candidate/admin-data-edit-candidate.component';
 import { RoleAdminCandidateListComponent } from './role-admin-candidate-list/role-admin-candidate-list.component';
 import { AllCaseStudiesListComponent } from './all-case-studies-list/all-case-studies-list.component';
+import { TaskDetailsProjectWiseComponent } from './task-details-project-wise/task-details-project-wise.component';
 
 const routes: Routes = [
   {
@@ -270,6 +271,10 @@ const routes: Routes = [
       {
         path: 'all-case-studies-list',
         component: AllCaseStudiesListComponent
+      },
+      {
+        path: 'task-details-project-wise',
+        component: TaskDetailsProjectWiseComponent
       }
     ]
   },

@@ -69,6 +69,7 @@ import { AdminDataCandidateListComponent } from './admin-data-candidate-list/adm
 import { AdminDataEditCandidateComponent } from './admin-data-edit-candidate/admin-data-edit-candidate.component';
 import { RoleAdminCandidateListComponent } from './role-admin-candidate-list/role-admin-candidate-list.component';
 import { AllCaseStudiesListComponent } from './all-case-studies-list/all-case-studies-list.component';
+import { TaskDetailsProjectWiseComponent } from './task-details-project-wise/task-details-project-wise.component';
 @NgModule({
   declarations: [
     SuperAdminComponent,
@@ -129,7 +130,8 @@ import { AllCaseStudiesListComponent } from './all-case-studies-list/all-case-st
     AdminDataCandidateListComponent,
     AdminDataEditCandidateComponent,
     RoleAdminCandidateListComponent,
-    AllCaseStudiesListComponent
+    AllCaseStudiesListComponent,
+    TaskDetailsProjectWiseComponent
   ],
 
   imports: [

@@ -245,7 +245,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.addDocument();
     this.getProjectStrips();
     this.getUserAllList();
-    this.getTask();
+    // this.getTask();
     this.getProjectLogs();
     this.getMinimalRequirement();
     // this.getForTitleUserAllList();
@@ -560,7 +560,7 @@ export class TrackerWiseProjectDetailsComponent {
     this.showLoader = true;
     const projectIdToMatch = this.projectId; // Replace with the actual project ID to match
 
-    this.superadminService.getTask(this.selectedUserIds.join(',')).subscribe(
+    this.superadminService.getTask(this.selectedUserIds.join(','), this.projectId).subscribe(
       (response) => {
         if (response?.status === true) {
           // Filter tasks based on project ID
@@ -2845,6 +2845,26 @@ export class TrackerWiseProjectDetailsComponent {
 
     // Default: allow status changes
     return false;
+  }
+
+  // Navigate to project-wise task details page
+  navigateToTaskDetails() {
+    if (!this.projectDetails?._id) {
+      this.notificationService.showError('Project ID not found');
+      return;
+    }
+
+    // Navigate to task-details-project-wise with project context
+    this.router.navigate(['/super-admin/task-details-project-wise'], {
+      queryParams: {
+        projectId: this.projectDetails._id,
+        projectName: this.projectDetails.projectName
+      },
+      state: {
+        sourcePage: '/super-admin/tracker-wise-project-details',
+        projectData: this.projectDetails
+      }
+    });
   }
 
 }

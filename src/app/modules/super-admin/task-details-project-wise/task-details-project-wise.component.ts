@@ -19,9 +19,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { pagination } from 'src/app/utility/shared/constant/pagination.constant';
 
 @Component({
-  selector: 'app-todo-task-view-page',
-  templateUrl: './todo-task-view-page.component.html',
-  styleUrls: ['./todo-task-view-page.component.scss'],
+  selector: 'app-task-details-project-wise',
+  templateUrl: './task-details-project-wise.component.html',
+  styleUrls: ['./task-details-project-wise.component.scss'],
   animations: [
     trigger('slideInOut', [
       state('in', style({
@@ -38,11 +38,12 @@ import { pagination } from 'src/app/utility/shared/constant/pagination.constant'
     ])
   ]
 })
-export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
+export class TaskDetailsProjectWiseComponent implements OnInit, OnDestroy {
   taskDetails: string = '';
   taskTitle: string = '';
   showLoader: boolean = false;
   taskList: any = [];
+  projectId: string | null = null;
   userList: any = [];
   assignTo: any[] = [];
   assignProject: string | undefined;
@@ -184,8 +185,17 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
           }
         }
       } else {
-        // Redirect to task list page if no ID specified
-        this.router.navigate([this.sourcePage]);
+        // If no taskId, try to load with projectId from query params
+        this.route.queryParams.subscribe(q => {
+          const pid = q['projectId'] || q['project'];
+          if (pid) {
+            this.projectId = pid;
+            this.loadTasksByProject(pid);
+          } else {
+            // Redirect to task list page if no identifiers specified
+            this.router.navigate([this.sourcePage]);
+          }
+        });
       }
     });
 
@@ -691,6 +701,47 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       );
   }
 
+  // Load tasks filtered by project id
+  loadTasksByProject(projectId: string) {
+    this.spinner.show();
+    this.superService.getTask('', projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.totalRecords = response?.data?.meta_data?.items || 0;
+          const today = new Date().toISOString().split('T')[0];
+          const data = response?.data?.data || response?.data || [];
+          const mappedTasks = (data || []).map((task: any) => {
+            const todayComments = task?.comments?.filter((comment: any) =>
+              comment.date.split('T')[0] === today
+            );
+            return {
+              ...task,
+              todayComments: todayComments?.length ? todayComments : null,
+            };
+          });
+          this.taskList = mappedTasks;
+
+          // Initialize details with the first task for viewing
+          const firstTask = mappedTasks[0];
+          if (firstTask) {
+            this.setupTaskDetails(firstTask);
+            if (firstTask?._id) {
+              this.getSubtasks(firstTask._id);
+            }
+          }
+          this.spinner.hide();
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to load tasks');
+          this.spinner.hide();
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.error?.message || error?.message || 'Error loading tasks');
+        this.spinner.hide();
+      }
+    );
+  }
+
   deleteTask(id: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -740,7 +791,8 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
             if (response?.status === true) {
 
               this.notificationService.showSuccess('Comment successfully deleted');
-              window.location.reload();
+            //  this.loadTaskDetails(this.modalTask._id);
+            window.location.reload();
             } else {
 
               this.notificationService.showError(response?.message);
