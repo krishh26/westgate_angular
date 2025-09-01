@@ -391,10 +391,6 @@
                 <div *ngIf="minimalRequirementData?.minimalRequirement; else noData">
                   <div class="row">
                     <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-                      <p class="text-muted mb-0">Title:</p>
-                      <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.text || '-' }}</p>
-                    </div>
-                    <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
                       <p class="text-muted mb-0">Created Date:</p>
                       <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.createdAt | date: 'dd/MM/yyyy hh:mm a'
                         }}</p>
@@ -704,14 +700,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="mandatoryDetailsForm">
-          <div class="mb-3">
-            <label for="title" class="form-label">Title *</label>
-            <input type="text" class="form-control" id="title" formControlName="title" placeholder="Enter title">
-            <div *ngIf="mandatoryDetailsForm.get('title')?.invalid && mandatoryDetailsForm.get('title')?.touched"
-              class="text-danger">
-              Title is required
-            </div>
-          </div>
+
           <div class="mb-3">
             <label for="details" class="form-label">Mandatory Details *</label>
             <div class="NgxEditor__Wrapper">

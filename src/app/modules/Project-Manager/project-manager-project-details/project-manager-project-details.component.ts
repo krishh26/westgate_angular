@@ -108,7 +108,6 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
   addStripForm: FormGroup = new FormGroup(this.addStripcontrol);
 
   mandatoryDetailsControl = {
-    title: new FormControl('', Validators.required),
     details: new FormControl('', Validators.required),
   };
   mandatoryDetailsForm: FormGroup = new FormGroup(this.mandatoryDetailsControl);
@@ -1593,7 +1592,6 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
     if (this.mandatoryDetailsForm.valid) {
       const formValues = this.mandatoryDetailsForm.value;
       const payload = {
-        text: formValues.title,
         description: formValues.details
       };
 

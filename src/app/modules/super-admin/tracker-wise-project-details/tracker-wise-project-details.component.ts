@@ -144,7 +144,6 @@ export class TrackerWiseProjectDetailsComponent {
   };
 
   mandatoryDetailsControl = {
-    title: new FormControl('', Validators.required),
     details: new FormControl('', Validators.required),
   };
 
@@ -2005,16 +2004,15 @@ export class TrackerWiseProjectDetailsComponent {
     );
   }
 
-    saveMandatoryDetails() {
+  saveMandatoryDetails() {
     if (this.mandatoryDetailsForm.valid) {
       const formValues = this.mandatoryDetailsForm.value;
       const payload = {
-        text: formValues.title,
         description: formValues.details
       };
 
       this.projectService.createMinimalRequirement(this.projectId, payload).subscribe(
-                        (response) => {
+        (response) => {
           if (response?.status === true) {
             this.notificationService.showSuccess('Mandatory details saved successfully');
 
@@ -2029,7 +2027,7 @@ export class TrackerWiseProjectDetailsComponent {
 
             // Reset the form
             this.mandatoryDetailsForm.reset();
-
+            window.location.reload();
             // Refresh the minimal requirement data instead of reloading the page
             this.getMinimalRequirement();
           } else {
@@ -2809,7 +2807,7 @@ export class TrackerWiseProjectDetailsComponent {
     }
   }
 
-    // Method to get supplier response by ID
+  // Method to get supplier response by ID
   getSupplierResponse(supplierId: string): any {
     return this.supplierResponses.find((response: any) =>
       response.supplierId === supplierId || response.supplierId === supplierId
@@ -2831,9 +2829,9 @@ export class TrackerWiseProjectDetailsComponent {
 
     // Disable if project is in certain statuses
     if (this.projectDetails?.status === 'Completed' ||
-        this.projectDetails?.status === 'Cancelled' ||
-        this.projectDetails?.bidManagerStatus === 'Awarded' ||
-        this.projectDetails?.bidManagerStatus === 'NotAwarded') {
+      this.projectDetails?.status === 'Cancelled' ||
+      this.projectDetails?.bidManagerStatus === 'Awarded' ||
+      this.projectDetails?.bidManagerStatus === 'NotAwarded') {
       return true;
     }
 

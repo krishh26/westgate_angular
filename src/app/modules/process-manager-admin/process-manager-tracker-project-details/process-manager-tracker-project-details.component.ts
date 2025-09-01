@@ -899,7 +899,6 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
   minimalRequirementData: any = null;
 
   mandatoryDetailsControl = {
-    title: new FormControl('', Validators.required),
     details: new FormControl('', Validators.required),
   };
 
@@ -923,7 +922,6 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
     if (this.mandatoryDetailsForm.valid) {
       const formValues = this.mandatoryDetailsForm.value;
       const payload = {
-        text: formValues.title,
         description: formValues.details
       };
 

@@ -605,10 +605,6 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-                  <p class="text-muted mb-0">Title:</p>
-                  <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.text || '-' }}</p>
-                </div>
-                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
                   <p class="text-muted mb-0">Description:</p>
                   <p class="mb-2" [innerHTML]="minimalRequirementData?.minimalRequirement?.description || '-'"></p>
                 </div>
@@ -1418,13 +1414,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="mandatoryDetailsForm">
-          <div class="form-group mb-3">
-            <label for="mandatoryTitle" class="form-label">Title:</label>
-            <input type="text" id="mandatoryTitle" class="form-control" placeholder="Enter title" formControlName="title" />
-            <div *ngIf="mandatoryDetailsForm.get('title')?.touched && mandatoryDetailsForm.get('title')?.invalid" class="text-danger">
-              Title is required.
-            </div>
-          </div>
+
 
           <div class="form-group mb-3">
             <label for="mandatoryDetails" class="form-label">Mandatory Details:</label>

@@ -493,13 +493,9 @@
         <div class="card-body">
           <div class="row">
             <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-              <p class="text-muted mb-0">Title:</p>
-              <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.text || '-' }}</p>
+              <p class="text-muted mb-0">Created Date:</p>
+              <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.createdAt | date: 'dd/MM/yyyy hh:mm a' }}</p>
             </div>
-                          <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 col-12">
-                <p class="text-muted mb-0">Created Date:</p>
-                <p class="mb-2">{{ minimalRequirementData?.minimalRequirement?.createdAt | date: 'dd/MM/yyyy hh:mm a' }}</p>
-              </div>
           </div>
           <div class="row">
             <div class="col-12">
@@ -1480,16 +1476,7 @@
       </div>
 
       <div class="modal-body">
-        <div class="form-group mb-3">
-          <label for="mandatoryTitle" class="form-label">Title:</label>
-          <input type="text" class="form-control" id="mandatoryTitle" formControlName="title" placeholder="Enter title here...">
-          <div *ngIf="
-              mandatoryDetailsForm.get('title')?.touched &&
-              mandatoryDetailsForm.get('title')?.invalid
-            " class="text-danger">
-            Title is required.
-          </div>
-        </div>
+
         <div class="form-group mb-3">
           <label for="mandatoryDetails" class="form-label">Mandatory Details:</label>
           <div class="NgxEditor__Wrapper">
