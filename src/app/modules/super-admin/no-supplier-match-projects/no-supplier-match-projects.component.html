@@ -60,7 +60,10 @@
                   <td><a (click)="projectDetails(item?._id)" href="javascript:;">{{item?.projectName}}</a></td>
                   <td v-align="middle">{{item?.BOSID}}</td>
                   <td>{{item?.publishDate | date:'dd/MM/yyyy'}}</td>
-                  <td>{{item?.dueDate | date:'dd/MM/yyyy, h:mm a'}}</td>
+                  <td>
+                    {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                    {{ item.bidsubmissiontime }}
+                  </td>
                   <td>{{item?.assignBidmanager[0]?.name}}</td>
                   <td>{{item?.status}}</td>
                   <td>{{item?.bidManagerStatus}}</td>
@@ -71,8 +74,7 @@
                         (click)="approveOrRejectProjects('approve', item?._id)">
                         Approve
                       </a>
-                      <a class="btn btn-danger btn-sm" style="cursor: pointer;"
-                        (click)="openRejectModal(item?._id)">
+                      <a class="btn btn-danger btn-sm" style="cursor: pointer;" (click)="openRejectModal(item?._id)">
                         Reject
                       </a>
                     </div>
@@ -111,7 +113,8 @@
               <!-- Pinned Comments Section -->
               <div *ngIf="viewComments && viewComments.length > 0">
                 <h6 class="mt-2 mb-3" *ngIf="hasPinnedComments()"><i class="bi bi-pin-fill" style="color: #6c757d;"></i>
-                  <strong>Pinned Comments</strong></h6>
+                  <strong>Pinned Comments</strong>
+                </h6>
                 <ul class="SecondarytaskList" *ngIf="hasPinnedComments()">
                   <li *ngFor="let comment of viewComments" class="mb-3" [hidden]="!comment?.pinnedAt">
                     <div class="comment-item p-3 pinned-comment">
@@ -189,7 +192,8 @@
     </div>
   </div>
   <!-- Reject Comment Modal -->
-  <div class="modal fade" id="rejectCommentModal" tabindex="-1" aria-labelledby="rejectCommentModalLabel" aria-hidden="true">
+  <div class="modal fade" id="rejectCommentModal" tabindex="-1" aria-labelledby="rejectCommentModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -199,7 +203,8 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="rejectComment" class="form-label">Comment</label>
-            <textarea class="form-control" id="rejectComment" rows="3" [(ngModel)]="rejectComment" placeholder="Enter rejection reason"></textarea>
+            <textarea class="form-control" id="rejectComment" rows="3" [(ngModel)]="rejectComment"
+              placeholder="Enter rejection reason"></textarea>
           </div>
         </div>
         <div class="modal-footer">
