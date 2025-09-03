@@ -149,10 +149,16 @@
                       {{ getFirstInHoldComment(item?.inHoldComment) }}
                     </td>
                     <td>
-                      <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
-                        title="View Details">
-                        View
-                      </a>
+                      <div class="d-flex gap-2">
+                        <a href="javascript:;" (click)="projectDetails(item?._id ,item)" class="btn btn-sm btn-primarysm"
+                          title="View Details">
+                          View
+                        </a>
+                        <button *ngIf="currentFilter === 'inHold'" (click)="deleteSupplier(item?._id)" class="btn btn-sm btn-danger"
+                          title="Delete Supplier">
+                          <i class="bi bi-trash3-fill"></i>
+                        </button>
+                      </div>
                     </td>
                     <td *ngIf="currentFilter === 'inHold'">
                       <label class="switch">

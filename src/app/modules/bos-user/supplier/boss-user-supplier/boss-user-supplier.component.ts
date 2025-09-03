@@ -448,35 +448,53 @@ export class BossUserSupplierComponent {
     });
   }
 
-  deleteSupplier(id: any) {
+  deleteSupplier(id: string) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete `,
+      title: 'Delete Supplier',
+      text: 'Are you sure you want to delete this supplier? This action cannot be undone.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#00B96F',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete!'
-    }).then((result: any) => {
-      if (result?.value) {
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.showLoader = true;
-        this.supplierService.deleteSupplierUser(id).subscribe((response: any) => {
-          if (response?.status == true) {
+        this.supplierService.deleteSupplierUser(id).subscribe({
+          next: (response: any) => {
             this.showLoader = false;
-            this.notificationService.showSuccess('Supplier successfully deleted');
-            // Maintain the current filter after deletion
-            if (this.currentFilter && this.currentFilter !== 'clear') {
-              this.applyFilter(this.currentFilter);
+            if (response?.status === true) {
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'Supplier has been deleted successfully.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              });
+              // Maintain the current filter after deletion
+              if (this.currentFilter && this.currentFilter !== 'clear') {
+                this.applyFilter(this.currentFilter);
+              } else {
+                this.getManageUserList();
+              }
             } else {
-              this.getManageUserList();
+              Swal.fire({
+                title: 'Error!',
+                text: response?.message || 'Failed to delete supplier',
+                icon: 'error'
+              });
             }
-          } else {
+          },
+          error: (error: any) => {
             this.showLoader = false;
-            this.notificationService.showError(response?.message);
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || error?.message || 'An error occurred while deleting the supplier',
+              icon: 'error'
+            });
           }
-        }, (error) => {
-          this.showLoader = false;
-          this.notificationService.showError(error?.error?.message || error?.message);
         });
       }
     });
