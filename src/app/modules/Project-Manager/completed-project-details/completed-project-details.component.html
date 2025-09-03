@@ -440,7 +440,8 @@
                   class="list-group-item d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center w-100 gap-2">
                     <!-- Supplier Name -->
-                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName }}</span>
+                    <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName
+                      }}</span>
 
                     <!-- View All Button -->
                     <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
@@ -521,7 +522,8 @@
                   [placeholder]="'Add a comment for shortlisted suppliers...'" class="ngx-editor-textarea">
                 </ngx-editor>
               </div>
-              <button class="btn btn-primary" type="button" (click)="addCommentWithEditor(projectDetails?._id)" [disabled]="!projectDetails?._id">
+              <button class="btn btn-primary" type="button" (click)="addCommentWithEditor(projectDetails?._id)"
+                [disabled]="!projectDetails?._id">
                 <i class="bi bi-plus-lg"></i> Add Comment
               </button>
             </div>
@@ -733,6 +735,34 @@
 
   <section class="container-fluid">
     <div class="col-lg-12 col-xl-12 col-12 mb-3">
+
+      <!-- Minimal Requirement Card -->
+      <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="minimalRequirementData">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h6>Mandatory requirements (Minimum eligibility criteria)</h6>
+          </div>
+          <div class="card-body">
+            <div [innerHTML]="minimalRequirementData?.minimalRequirement?.description || '-'"></div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Reject Reason Card -->
+       <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="projectDetails?.adminStatusComment">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h6>Reject Reason</h6>
+          </div>
+          <div class="card-body">
+            <small class="text-muted">
+              {{ projectDetails?.adminStatusComment?.timestamp | date : "dd/MM/yyyy, h:mm a" }}
+            </small>
+            <p class="mt-2" [innerHTML]="projectDetails?.adminStatusComment?.comment"></p>
+          </div>
+        </div>
+      </div>
+
       <div class="card shadow-sm p-4">
         <div class="card-header bg-secondary text-white mb-3">
           <h5 class="mb-0">Interested Suppliers</h5>
@@ -1321,8 +1351,10 @@
         <div class="form-group">
           <label for="mailConfirmation" class="form-label">Do you want to send mail to the shortlisted supplier?</label>
           <div class="d-flex gap-2 mt-3">
-            <button type="button" class="btn btn-danger flex-fill" (click)="handleSendMailResponse(false)" data-bs-dismiss="modal">No</button>
-            <button type="button" class="btn btn-success flex-fill" (click)="handleSendMailResponse(true)" data-bs-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-danger flex-fill" (click)="handleSendMailResponse(false)"
+              data-bs-dismiss="modal">No</button>
+            <button type="button" class="btn btn-success flex-fill" (click)="handleSendMailResponse(true)"
+              data-bs-dismiss="modal">Yes</button>
           </div>
         </div>
       </div>

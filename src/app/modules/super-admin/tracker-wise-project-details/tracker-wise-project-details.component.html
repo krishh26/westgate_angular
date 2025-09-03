@@ -4,49 +4,50 @@
 <main id="main">
   <section>
     <div class="container-fluid">
-              <div class="row align-items-center">
-          <div class="col-lg-12 col-xl-12 col-12 mb-3">
-            <!-- Project Title Row -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <div class="d-flex align-items-center flex-wrap project-title-container">
-                  <h4 class="me-3 mb-0"><strong>Project Title:</strong></h4>
-                  <h4 class="mb-0">{{ projectDetails?.projectName }}</h4>
-                </div>
+      <div class="row align-items-center">
+        <div class="col-lg-12 col-xl-12 col-12 mb-3">
+          <!-- Project Title Row -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="d-flex align-items-center flex-wrap project-title-container">
+                <h4 class="me-3 mb-0"><strong>Project Title:</strong></h4>
+                <h4 class="mb-0">{{ projectDetails?.projectName }}</h4>
               </div>
             </div>
+          </div>
 
-            <!-- Action Buttons Row -->
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end action-buttons-container">
-                  <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark">
-                    Add Strips
-                  </a>
-                  <a class="btn btn-primary btn-sm text-dark" style="cursor: pointer"
-                    (click)="editProjectDetails(projectDetails?._id)">
-                    Edit <i class="bi bi-pencil-fill"></i>
-                  </a>
-                  <a (click)="deleteProject(projectDetails?._id)" class="btn btn-danger btn-sm">
-                    Delete <i class="bi bi-trash3-fill"></i>
-                  </a>
-                  <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
-                    Logs
-                  </a>
-                  <a (click)="goBack()" class="btn btn-primary btn-sm text-dark">
-                    Back
-                  </a>
-                  <a data-bs-toggle="modal" data-bs-target="#ViewMandatoryDetails" class="btn btn-primary btn-sm text-dark">
-                    Mandatory Details
-                  </a>
-                  <a (click)="navigateToTaskDetails()" class="btn btn-info btn-sm text-white">
-                    Task Details
-                  </a>
-                </div>
+          <!-- Action Buttons Row -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end action-buttons-container">
+                <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark">
+                  Add Strips
+                </a>
+                <a class="btn btn-primary btn-sm text-dark" style="cursor: pointer"
+                  (click)="editProjectDetails(projectDetails?._id)">
+                  Edit <i class="bi bi-pencil-fill"></i>
+                </a>
+                <a (click)="deleteProject(projectDetails?._id)" class="btn btn-danger btn-sm">
+                  Delete <i class="bi bi-trash3-fill"></i>
+                </a>
+                <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
+                  Logs
+                </a>
+                <a (click)="goBack()" class="btn btn-primary btn-sm text-dark">
+                  Back
+                </a>
+                <a data-bs-toggle="modal" data-bs-target="#ViewMandatoryDetails"
+                  class="btn btn-primary btn-sm text-dark">
+                  Mandatory Details
+                </a>
+                <a (click)="navigateToTaskDetails()" class="btn btn-info btn-sm text-white">
+                  Task Details
+                </a>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
       <div class="col-lg-12 col-xl-12 col-12 mb-12 mt-5 mb-3">
         <div class="card">
@@ -335,8 +336,9 @@
             <div class="d-flex gap-3 align-items-center">
               <ng-container>
                 <ng-select style="padding: 0px !important" placeholder="Select Supplier"
-                  class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="companyName" bindValue="_id"
-                  [addTag]="true" [clearable]="false" [multiple]="true" [(ngModel)]="selectedSupplierIds">
+                  class="form-select custom-ng-select-option" [items]="allSuppliers" bindLabel="companyName"
+                  bindValue="_id" [addTag]="true" [clearable]="false" [multiple]="true"
+                  [(ngModel)]="selectedSupplierIds">
                 </ng-select>
               </ng-container>
               <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
@@ -374,7 +376,8 @@
           </div>
 
           <!-- Mail Send Clarification Modal for New Reason -->
-          <div class="modal fade" id="newReasonMailModal" tabindex="-1" aria-labelledby="newReasonMailModalLabel" aria-hidden="true">
+          <div class="modal fade" id="newReasonMailModal" tabindex="-1" aria-labelledby="newReasonMailModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
@@ -383,10 +386,13 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the supplier for the new reason?</label>
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the supplier for the
+                      new reason?</label>
                     <div class="d-flex gap-2 mt-3">
-                      <button type="button" class="btn btn-danger flex-fill" (click)="handleMailSendResponse(false)" data-bs-dismiss="modal">No</button>
-                      <button type="button" class="btn btn-success flex-fill" (click)="handleMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
+                      <button type="button" class="btn btn-danger flex-fill" (click)="handleMailSendResponse(false)"
+                        data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-success flex-fill" (click)="handleMailSendResponse(true)"
+                        data-bs-dismiss="modal">Yes</button>
                     </div>
                   </div>
                 </div>
@@ -395,7 +401,8 @@
           </div>
 
           <!-- Mail Send Clarification Modal for Shortlisted Selection -->
-          <div class="modal fade" id="shortlistMailModal" tabindex="-1" aria-labelledby="shortlistMailModalLabel" aria-hidden="true">
+          <div class="modal fade" id="shortlistMailModal" tabindex="-1" aria-labelledby="shortlistMailModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
@@ -404,10 +411,13 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the shortlisted supplier?</label>
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the shortlisted
+                      supplier?</label>
                     <div class="d-flex gap-2 mt-3">
-                      <button type="button" class="btn btn-danger flex-fill" (click)="handleSelectMailSendResponse(false)" data-bs-dismiss="modal">No</button>
-                      <button type="button" class="btn btn-success flex-fill" (click)="handleSelectMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
+                      <button type="button" class="btn btn-danger flex-fill"
+                        (click)="handleSelectMailSendResponse(false)" data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-success flex-fill"
+                        (click)="handleSelectMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
                     </div>
                   </div>
                 </div>
@@ -416,7 +426,8 @@
           </div>
 
           <!-- Mail Send Clarification Modal for Supplier Selection -->
-          <div class="modal fade" id="supplierMailModal" tabindex="-1" aria-labelledby="supplierMailModalLabel" aria-hidden="true">
+          <div class="modal fade" id="supplierMailModal" tabindex="-1" aria-labelledby="supplierMailModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
@@ -425,10 +436,13 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the selected suppliers?</label>
+                    <label for="mailConfirmation" class="form-label">Do you want to send mail to the selected
+                      suppliers?</label>
                     <div class="d-flex gap-2 mt-3">
-                      <button type="button" class="btn btn-danger flex-fill" (click)="handleSupplierMailSendResponse(false)" data-bs-dismiss="modal">No</button>
-                      <button type="button" class="btn btn-success flex-fill" (click)="handleSupplierMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
+                      <button type="button" class="btn btn-danger flex-fill"
+                        (click)="handleSupplierMailSendResponse(false)" data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-success flex-fill"
+                        (click)="handleSupplierMailSendResponse(true)" data-bs-dismiss="modal">Yes</button>
                     </div>
                   </div>
                 </div>
@@ -440,7 +454,8 @@
             <ul class="list-group">
               <li *ngFor="let supplier of selectedSuppliersList" class="list-group-item d-flex flex-column">
                 <div class="d-flex align-items-center w-100 gap-2 mb-2">
-                  <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName }}</span>
+                  <span class="flex-grow-1" style="min-width: 150px; text-align: left">{{ supplier?.companyName
+                    }}</span>
                   <button class="btn btn-sm btn-primary" style="flex-grow: 0; min-width: 80px"
                     (click)="viewAllComments(supplier._id)" data-bs-toggle="modal" data-bs-target="#viewReasonList">
                     View all
@@ -454,10 +469,8 @@
                     De-Select
                   </button>
                   <!-- Flag Button for Supplier Status -->
-                  <button class="btn btn-sm supplier-status-flag"
-                    [ngClass]="getSupplierStatusClass(supplier)"
-                    [title]="getSupplierStatusTooltip(supplier)"
-                    (click)="toggleSupplierStatus(supplier)"
+                  <button class="btn btn-sm supplier-status-flag" [ngClass]="getSupplierStatusClass(supplier)"
+                    [title]="getSupplierStatusTooltip(supplier)" (click)="toggleSupplierStatus(supplier)"
                     [disabled]="isSupplierStatusDisabled(supplier)"
                     style="flex-grow: 0; min-width: 80px; margin-right: 5px;">
                     <i class="bi" [ngClass]="getSupplierStatusIcon(supplier)"></i>
@@ -482,25 +495,26 @@
         </div>
       </div>
 
-             <!-- Minimal Requirement Card -->
-       <div class="card mb-4" *ngIf="minimalRequirementData">
-         <div class="card-header d-flex justify-content-between align-items-center">
-           <h6 class="mb-0">Mandatory requirements (Minimum eligibility criteria)</h6>
-           <div class="d-flex align-items-center gap-2">
-             <small class="text-muted">{{ minimalRequirementData?.minimalRequirement?.createdAt | date: 'dd/MM/yyyy hh:mm a' }}</small>
-             <button type="button" class="btn btn-danger btn-sm" (click)="deleteMinimalRequirement()">
-               <i class="bi bi-trash3-fill"></i>
-             </button>
-           </div>
-         </div>
-         <div class="card-body">
-           <div class="row">
-             <div class="col-12">
-               <div class="mb-2" [innerHTML]="minimalRequirementData?.minimalRequirement?.description || '-'"></div>
-             </div>
-           </div>
-         </div>
-       </div>
+      <!-- Minimal Requirement Card -->
+      <div class="card mb-4" *ngIf="minimalRequirementData">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Mandatory requirements (Minimum eligibility criteria)</h6>
+          <div class="d-flex align-items-center gap-2">
+            <small class="text-muted">{{ minimalRequirementData?.minimalRequirement?.createdAt | date: 'dd/MM/yyyy hh:mm
+              a' }}</small>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteMinimalRequirement()">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-2" [innerHTML]="minimalRequirementData?.minimalRequirement?.description || '-'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
@@ -942,30 +956,33 @@
                 <tr *ngFor="let supplier of projectDetails?.interestedSuppliers">
                   <td>{{ supplier.companyName }}</td>
                   <td>
-                    <div *ngIf="supplier.comment && supplier.comment.trim().length > 0">
-                      <div [ngClass]="{'text-truncate': !expandedComments[supplier._id]}">
-                        {{ expandedComments[supplier._id] ? supplier.comment : truncateText(supplier.comment) }}
-                      </div>
-                      <button *ngIf="supplier.comment.length > 100" class="btn btn-link btn-sm p-0 mt-1"
-                        (click)="expandedComments[supplier._id] = !expandedComments[supplier._id]">
-                        {{ expandedComments[supplier._id] ? 'View Less' : 'View More' }}
-                      </button>
-                    </div>
                     <div class="position-relative">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Enter comment"
-                        [(ngModel)]="supplier.comment"
-                        [disabled]="supplier.attendee"
-                      />
-                      <button
-                        *ngIf="supplier.comment"
-                        class="btn btn-sm btn-danger position-absolute"
-                        style="right: 5px; top: 50%; transform: translateY(-50%);"
-                        (click)="deleteAttendeeComment(supplier)">
-                        <i class="bi bi-trash-fill"></i>
-                      </button>
+                      <ng-container *ngIf="supplier.attendee; else editableComment">
+                        <!-- Read-only view for attended suppliers -->
+                        <div *ngIf="supplier.comment && supplier.comment.trim().length > 0" class="form-control bg-light">
+                          <div [ngClass]="{'text-truncate': !expandedComments[supplier._id]}">
+                            {{ expandedComments[supplier._id] ? supplier.comment : truncateText(supplier.comment) }}
+                          </div>
+                          <button *ngIf="supplier.comment.length > 100" class="btn btn-link btn-sm p-0 mt-1"
+                            (click)="expandedComments[supplier._id] = !expandedComments[supplier._id]">
+                            {{ expandedComments[supplier._id] ? 'View Less' : 'View More' }}
+                          </button>
+                          <button *ngIf="supplier.comment" class="btn btn-sm btn-danger position-absolute"
+                            style="right: 5px; top: 50%; transform: translateY(-50%);"
+                            (click)="deleteAttendeeComment(supplier)">
+                            <i class="bi bi-trash-fill"></i>
+                          </button>
+                        </div>
+                      </ng-container>
+                      <!-- Editable view for non-attended suppliers -->
+                      <ng-template #editableComment>
+                        <input type="text" class="form-control" placeholder="Enter comment" [(ngModel)]="supplier.comment" />
+                        <button *ngIf="supplier.comment" class="btn btn-sm btn-danger position-absolute"
+                          style="right: 5px; top: 50%; transform: translateY(-50%);"
+                          (click)="deleteAttendeeComment(supplier)">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </ng-template>
                     </div>
                   </td>
                   <td>
@@ -981,16 +998,11 @@
                       <span class="badge" [ngClass]="supplier.attendee ? 'bg-primary' : 'bg-warning'">
                         {{ supplier.attendee ? 'Attended' : 'Not Attending' }}
                       </span>
-                      <button
-                        *ngIf="supplier.attendee != true"
-                        class="btn btn-sm btn-primary"
-                        (click)="updateAttendee(supplier)"
-                        [disabled]="!supplier.comment">
+                      <button *ngIf="supplier.attendee != true" class="btn btn-sm btn-primary"
+                        (click)="updateAttendee(supplier)" [disabled]="!supplier.comment">
                         Attend
                       </button>
-                      <button
-                        class="btn btn-sm btn-danger"
-                        (click)="removeInterestedSupplier(supplier)">
+                      <button class="btn btn-sm btn-danger" (click)="removeInterestedSupplier(supplier)">
                         <i class="bi bi-trash-fill"></i>
                       </button>
                     </div>
@@ -1463,7 +1475,8 @@
 </div>
 
 <!-- Mandatory Details Modal -->
-<div class="modal fade" id="ViewMandatoryDetails" tabindex="-1" aria-labelledby="ViewMandatoryDetailsLabel" aria-hidden="true">
+<div class="modal fade" id="ViewMandatoryDetails" tabindex="-1" aria-labelledby="ViewMandatoryDetailsLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" [formGroup]="mandatoryDetailsForm">
     <div class="modal-content">
       <div class="modal-header">

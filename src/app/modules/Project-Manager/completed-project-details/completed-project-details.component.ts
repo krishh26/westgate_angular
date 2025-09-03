@@ -108,6 +108,7 @@ export class CompletedProjectDetailsComponent implements OnDestroy {
     'FeasibilityUser',
   ];
   displayForTitleedUsers: any = [];
+  minimalRequirementData: any = null;
   selectViewImage: any;
   uploadType: boolean = true;
   showSupplierList = false;
@@ -183,6 +184,19 @@ export class CompletedProjectDetailsComponent implements OnDestroy {
     if (this.imageFields.length > 1) {
       this.imageFields.splice(index, 1);
     }
+  }
+
+  getMinimalRequirement() {
+    this.projectService.getMinimalRequirement(this.projectId).subscribe(
+      (response) => {
+        if (response?.status === true) {
+          this.minimalRequirementData = response?.data;
+        }
+      },
+      (error) => {
+        console.log('Error fetching minimal requirement:', error);
+      }
+    );
   }
 
   // Handle file input change
