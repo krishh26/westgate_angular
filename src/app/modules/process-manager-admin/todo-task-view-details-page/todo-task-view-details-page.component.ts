@@ -94,6 +94,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
   modalTask: any = {};
   selectedUsers: any = [];
   previousPage: string = '/process-manager/to-do-tasks-process-manager'; // Default back navigation
+  projectTaskList: any[] = []; // Store tasks fetched by project ID
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -192,6 +193,10 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
 
               this.setupTaskDetails(task);
               this.getSubtasks(taskId);
+              // Fetch tasks by project ID if task has a project
+              if (task.project && task.project._id) {
+                this.getTasksByProjectId(task.project._id);
+              }
             } else {
               console.log(task);
 
@@ -1230,6 +1235,41 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
         );
       }
     });
+  }
+
+  /**
+   * Fetch tasks by project ID
+   * Calls the API: /task/list?project={projectId}
+   */
+  getTasksByProjectId(projectId: string) {
+    this.showLoader = true;
+    this.spinner.show();
+
+    // Using the existing getTask method from superService which accepts projectId
+    this.superService.getTask('', projectId).subscribe(
+      (response: any) => {
+        if (response?.status === true) {
+          this.projectTaskList = response?.data || [];
+          console.log('Tasks fetched by project ID:', this.projectTaskList);
+          // Only show success message if there are tasks
+          if (this.projectTaskList.length > 0) {
+            this.notificationService.showSuccess(`Found ${this.projectTaskList.length} tasks for this project`);
+          }
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to fetch project tasks');
+          this.projectTaskList = [];
+        }
+        this.showLoader = false;
+        this.spinner.hide();
+      },
+      (error: any) => {
+        console.error('Error fetching tasks by project ID:', error);
+        this.notificationService.showError(error?.error?.message || error?.message || 'Error fetching project tasks');
+        this.projectTaskList = [];
+        this.showLoader = false;
+        this.spinner.hide();
+      }
+    );
   }
 
 }

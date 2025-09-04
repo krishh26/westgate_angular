@@ -192,6 +192,25 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
     this.location.back();
   }
 
+  navigateToTaskDetails() {
+    if (!this.projectDetails?._id) {
+      this.notificationService.showError('Project ID not found');
+      return;
+    }
+
+    // Navigate to task-details-process-manager with project context (same pattern as super admin)
+    this.router.navigate(['/process-manager/task-details-process-manager'], {
+      queryParams: {
+        projectId: this.projectDetails._id,
+        projectName: this.projectDetails.projectName
+      },
+      state: {
+        sourcePage: '/process-manager/process-manager-project-details',
+        projectData: this.projectDetails
+      }
+    });
+  }
+
 
   uploadDocuments(event: any): void {
     if (event.target.files && event.target.files[0]) {
