@@ -98,3 +98,229 @@ input:checked + .slider:before {
   margin: 0;
   line-height: 1.5;
 }
+
+/* Action buttons container */
+.action-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Desktop layout */
+@media (min-width: 992px) {
+  .action-buttons-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+}
+
+/* Custom dropdown styling for resources list */
+.navbar {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.navbar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar li {
+  position: relative;
+  width: 100%;
+}
+
+.add-candidate-btn {
+  width: 100%;
+  text-align: center;
+  padding: 6px 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.navbar .dropdown ul {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  margin: 0;
+  padding: 8px 0;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  background: #fff;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  transform: translateY(-10px);
+}
+
+.navbar .dropdown ul li {
+  min-width: 160px;
+}
+
+.navbar .dropdown ul a {
+  padding: 12px 20px;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none !important;
+  display: block;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  margin: 2px 8px;
+}
+
+.navbar .dropdown ul a:hover {
+  color: #0077DC;
+  background-color: #f8f9fa;
+}
+
+.navbar .dropdown:hover > ul {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Executive toggle section */
+.executive-toggle-section {
+  width: 100%;
+}
+
+.form-check {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.form-check-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  margin-left: 6px;
+}
+
+.form-check-input {
+  width: 36px;
+  height: 20px;
+  margin: 0;
+}
+
+/* Back button section */
+.back-button-section {
+  width: 100%;
+}
+
+.back-btn {
+  width: 100%;
+  text-align: center;
+  padding: 6px 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+/* Mobile specific improvements */
+@media (max-width: 767.98px) {
+  .row.align-items-center.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .col-lg-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .action-buttons-container {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .add-candidate-btn,
+  .back-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .form-check {
+    padding: 6px 0;
+  }
+
+  .form-check-label {
+    font-size: 14px;
+  }
+
+  .navbar .dropdown ul {
+    position: static;
+    display: none;
+    margin: 8px 0 0 0;
+    padding: 12px 0;
+    z-index: 99;
+    opacity: 1;
+    visibility: visible;
+    background: #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    transform: none;
+    border: 1px solid #e9ecef;
+  }
+
+  .navbar .dropdown:hover > ul {
+    display: block;
+  }
+
+  .navbar .dropdown ul a {
+    padding: 10px 16px;
+    font-size: 14px;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .navbar .dropdown ul a:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+
+  .navbar .dropdown ul a:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 575.98px) {
+  .action-buttons-container {
+    gap: 6px;
+  }
+
+  .add-candidate-btn,
+  .back-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    min-height: 38px;
+  }
+
+  .form-check {
+    padding: 6px 0;
+  }
+
+  .form-check-label {
+    font-size: 14px;
+  }
+}

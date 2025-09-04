@@ -20,29 +20,25 @@
     <div class="container-fluid">
       <div class="row">
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-7 col-xl-7 col-md-7 col-sm-7 col-6">
-            <h4 class="text-theme mb-4">Roles List</h4>
+          <div class="col-lg-7 col-xl-7 col-md-7 col-sm-12 col-12">
+            <h4 class="text-theme mb-4"><strong>Roles List</strong></h4>
           </div>
-          <!-- <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-4 d-flex align-items-center">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="toggleSwitch" [(ngModel)]="isToggled">
-              <label class="form-check-label ms-2" for="toggleSwitch">Experties-view
-                {{ isToggled ? 'ON' : 'OFF' }}
-              </label>
+          <div class="col-lg-5 col-xl-5 col-md-5 col-sm-12 col-12">
+            <div class="action-buttons-container">
+              <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
+                <i class="bi bi-person-badge"></i> Roles
+              </button>
+              <div class="badges-container">
+                <span class="badge py-2"
+                  style="background-color: #20B2AA; color: white; font-size: 14px; border-radius: 6px; font-weight: 600;">
+                  Active: {{totalActiveCandidates}}
+                </span>
+                <span class="badge py-2"
+                  style="background-color: #20B2AA; color: white; font-size: 14px; border-radius: 6px; font-weight: 600;">
+                  Serviceable: {{totalresourcescount}}
+                </span>
+              </div>
             </div>
-          </div> -->
-          <div class="col-lg-5 col-xl-5 col-md-5 col-sm-5 col-6 d-flex align-items-center gap-2">
-            <button class="btn btn-primary btn-sm" routerLink="/super-admin/roles-list">
-              <i class="bi bi-person-badge"></i> Roles
-            </button>
-            <span class="badge py-2"
-              style="background-color: #20B2AA; color: white; font-size: 14px; border-radius: 4px;">
-              Total Active Candidates: {{totalActiveCandidates}}
-            </span>
-            <span class="badge py-2"
-            style="background-color: #20B2AA; color: white; font-size: 14px; border-radius: 4px;">
-            Total Serviceble count: {{totalresourcescount}}
-          </span>
           </div>
         </div>
       </div>

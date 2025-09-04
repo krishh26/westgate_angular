@@ -42,3 +42,21 @@
 .btn-link:hover {
   text-decoration: underline;
 }
+
+/* Button layout improvements */
+@media (max-width: 768px) {
+  .text-end {
+    text-align: left !important;
+    margin-top: 15px;
+  }
+
+  .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}

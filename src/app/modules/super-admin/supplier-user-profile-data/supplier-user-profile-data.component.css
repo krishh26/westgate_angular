@@ -96,3 +96,75 @@ input[readonly], textarea[readonly] {
   border-left: 4px solid #dc3545;
   background-color: rgba(220, 53, 69, 0.05);
 }
+
+/* Action buttons container */
+.action-buttons-container {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .action-buttons-container {
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
+
+/* Mobile layout - keep buttons in same row */
+@media (max-width: 767.98px) {
+  .row.align-items-center.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .col-lg-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .action-buttons-container {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+
+  .action-buttons-container .btn {
+    flex: 1;
+    min-width: 60px;
+    text-align: center;
+    padding: 6px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* Extra small screens - still keep in same row */
+@media (max-width: 575.98px) {
+  .action-buttons-container {
+    gap: 3px;
+  }
+
+  .action-buttons-container .btn {
+    flex: 1;
+    min-width: 50px;
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+}
+
+/* Very small screens - minimal spacing */
+@media (max-width: 400px) {
+  .action-buttons-container {
+    gap: 2px;
+  }
+
+  .action-buttons-container .btn {
+    padding: 5px 4px;
+    font-size: 10px;
+    min-width: 45px;
+  }
+}

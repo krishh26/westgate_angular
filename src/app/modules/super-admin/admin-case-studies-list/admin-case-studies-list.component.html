@@ -30,22 +30,20 @@
     <div class="container-fluid">
       <div class="row">
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-10 col-12">
-            <h4 class="text-theme"><strong>Historical Data</strong></h4>
+          <div class="col-lg-8 col-xl-8 col-md-8 col-sm-7 col-7">
+            <h4 class="text-theme mb-4"><strong>Historical Data</strong></h4>
           </div>
-          <div class="col-lg-2 col-xl-2 col-12">
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-primary btn-sm" (click)="goBack()">
-             Back to List
+          <div class="col-lg-4 col-xl-4 col-md-4 col-sm-5 col-5 text-end">
+            <button class="btn btn-primary btn-sm me-2" (click)="goBack()">
+              Back to List
+            </button>
+            <div ngbDropdown class="d-inline-block">
+              <button type="button" class="btn btn-outline-primary btn-sm" id="addCaseStudyDropdown" ngbDropdownToggle>
+                + Add Case Study
               </button>
-              <div ngbDropdown class="d-inline-block">
-                <button type="button" class="btn btn-outline-primary" id="addCaseStudyDropdown" ngbDropdownToggle>
-                  + Add Case Study
-                </button>
-                <div ngbDropdownMenu aria-labelledby="addCaseStudyDropdown">
-                  <button ngbDropdownItem routerLink="/super-admin/add-new-case-study">Single Entry</button>
-                  <button ngbDropdownItem (click)="openAddTeamModal()">Bulk Entry</button>
-                </div>
+              <div ngbDropdownMenu aria-labelledby="addCaseStudyDropdown">
+                <button ngbDropdownItem routerLink="/super-admin/add-new-case-study">Single Entry</button>
+                <button ngbDropdownItem (click)="openAddTeamModal()">Bulk Entry</button>
               </div>
             </div>
           </div>
