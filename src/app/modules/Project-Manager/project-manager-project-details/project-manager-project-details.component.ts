@@ -203,6 +203,25 @@ export class ProjectManagerProjectDetailsComponent implements OnDestroy {
     this.mandatoryDetailsEditor = new Editor();
   }
 
+  navigateToTaskDetails() {
+    if (!this.projectDetails?._id) {
+      this.notificationService.showError('Project ID not found');
+      return;
+    }
+
+    // Navigate to task-details-bid-manager-wise with project context (same pattern as super admin)
+    this.router.navigate(['/project-manager/project/task-details-bid-manager-wise'], {
+      queryParams: {
+        projectId: this.projectDetails._id,
+        projectName: this.projectDetails.projectName
+      },
+      state: {
+        sourcePage: '/project-manager/project/task-details-bid-manager-wise',
+        projectData: this.projectDetails
+      }
+    });
+  }
+
   getUserDetails() {
     this.projectManagerService.getUserList('SupplierAdmin').subscribe(
       (response) => {

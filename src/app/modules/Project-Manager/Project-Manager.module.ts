@@ -43,6 +43,7 @@ import { ExpertiseViewBidManagerComponent } from './expertise-view-bid-manager/e
 import { SubExpertiseViewBidManagerComponent } from './sub-expertise-view-bid-manager/sub-expertise-view-bid-manager.component';
 import { InterestedSupplierWiseProjectsComponent } from './interested-supplier-wise-projects/interested-supplier-wise-projects.component';
 import { ProjectManagerCaseStudiesComponent } from './project-manager-case-studies/project-manager-case-studies.component';
+import { TaskDetailsBidManagerWiseComponent } from './task-details-bid-manager-wise/task-details-bid-manager-wise.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -91,7 +92,8 @@ import { ProjectManagerCaseStudiesComponent } from './project-manager-case-studi
     ExpertiseViewBidManagerComponent,
     SubExpertiseViewBidManagerComponent,
     InterestedSupplierWiseProjectsComponent,
-    ProjectManagerCaseStudiesComponent
+    ProjectManagerCaseStudiesComponent,
+    TaskDetailsBidManagerWiseComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe],

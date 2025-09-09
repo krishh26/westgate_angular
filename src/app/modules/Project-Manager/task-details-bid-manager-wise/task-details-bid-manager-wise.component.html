@@ -1,257 +1,284 @@
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+<div class="container-fluid py-4">
+  <!-- Loading Spinner -->
+  <ngx-spinner *ngIf="showLoader" type="ball-clip-rotate" size="medium" color="#5cb85c">
+    <p style="color: white">Loading...</p>
+  </ngx-spinner>
 
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-8 col-12">
-      <div class="card shadow-lg">
-        <div class="card-header bg-white border-bottom">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-light">
           <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">{{ modalTask?.task }}</h4>
-            <button type="button" class="btn-close" onclick="history.back()" aria-label="Close"></button>
+            <h4>{{ modalTask?.task }}</h4>
+            <button class="btn btn-sm btn-outline-secondary" (click)="goBack()">
+              <i class="bi bi-arrow-left"></i> Back
+            </button>
           </div>
         </div>
 
-        <div class="card-body p-4">
-          <!-- Assigned Project Section -->
-          <div class="mb-4" *ngIf="modalTask?.project">
-            <h6 class="mb-2"><strong>Assigned Project</strong></h6>
-            <a (click)="navigateToProjectDetails(modalTask?.project?._id)" href="javascript:;" class="text-primary text-decoration-none">
-              {{ modalTask?.project?.projectName }}
-            </a>
-          </div>
-
-          <!-- Status Section -->
-          <div class="row mb-4">
-            <div class="col-md-6" *ngIf="modalTask?.project">
-              <h6 class="mb-2"><strong>Status</strong></h6>
-              <p class="mb-0">{{ ['Fail', 'Not Releted'].includes(modalTask?.project?.adminStatus) ? 'Waiting For Approval' : modalTask?.project?.status }}</p>
-            </div>
-            <div class="col-md-6" *ngIf="modalTask?.project">
-              <h6 class="mb-2"><strong>Bid Status</strong></h6>
-              <p class="mb-0">{{ modalTask?.project?.bidManagerStatus }}</p>
-            </div>
-          </div>
-          <!-- Subtasks Section -->
-          <div class="mb-4">
-            <div class="d-flex align-items-center mb-3">
-              <h6 class="mb-0 me-2"><strong>Subtasks</strong></h6>
-              <button class="btn btn-outline-secondary btn-sm rounded-circle" (click)="toggleSubtasks()">
-                <i class="bi bi-plus"></i>
-              </button>
-            </div>
-
-            <div [@slideInOut]="showSubtasks ? 'in' : 'out'" class="subtasks-content">
-              <!-- Existing Subtasks List -->
-              <div class="subtasks-container mb-4">
-                <div class="row g-2">
-                  <div class="col-md-6" *ngFor="let subtask of subtasks">
-                    <div class="subtask-item p-2 border rounded">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                          <p class="mb-1">{{ subtask.name }}</p>
-                          <small class="text-muted d-block">Due: {{ subtask.dueDate | date:'dd/MM/yyyy' }}</small>
-                          <small class="text-muted d-block">{{ subtask.assignedTo?.userName || 'Unassigned'
-                            }}</small>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-10 col-xl-10 col-12 mob-mb1">
+              <div class="mb-3">
+                <h6><strong>Description</strong></h6>
+                <p [innerHTML]="modalTask?.discription"></p>
+                <p *ngIf="!modalTask?.discription">No Record Found.</p>
               </div>
 
-              <!-- Add New Subtask Form -->
-              <div class="add-subtask-form p-3">
-                <div class="row g-2">
-                  <!-- First Row -->
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" [(ngModel)]="newSubtask.name" placeholder="Subtask title">
-                  </div>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" [(ngModel)]="newSubtask.description"
-                      placeholder="Subtask description">
-                  </div>
-                  <!-- Second Row -->
-                  <div class="col-md-6">
-                    <input type="date" class="form-control" [(ngModel)]="newSubtask.dueDate">
-                  </div>
-                  <div class="col-md-6">
-                    <ng-select class="form-select custom-ng-select-option" placeholder="Assign to" [items]="userList"
-                      bindLabel="userName" bindValue="_id" [(ngModel)]="newSubtask.assignedTo">
-                    </ng-select>
+              <!-- Subtasks Section -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <h6 class="mb-0"><strong>Subtasks</strong></h6>
+                    <button class="btn btn-link p-0 toggle-btn" (click)="toggleSubtasks()">
+                      <i class="bi" [ngClass]="showSubtasks ? 'bi-dash-circle' : 'bi-plus-circle'"></i>
+                    </button>
                   </div>
                 </div>
-                <!-- Add Button -->
-                <div class="mt-2">
-                  <button class="btn btn-primary w-100" (click)="addSubtask()" [disabled]="!isSubtaskValid()">
-                    Add Subtask
-                  </button>
-                </div>
-              </div>
 
-              <!-- After the add subtask form -->
-              <div class="subtasks-list mt-4" *ngIf="subtasksList.length > 0">
-                <h5 class="mb-3">Subtasks List</h5>
-                <div class="row g-3">
-                  <div class="col-12" *ngFor="let subtask of subtasksList; let i = index">
-                    <div class="subtask-card">
-                      <div class="subtask-header" (click)="subtask.isExpanded = !subtask.isExpanded">
-                        <div class="d-flex justify-content-between align-items-center">
-                          <span class="subtask-title">{{subtask.title || 'Untitled Task'}}</span>
-                          <div class="d-flex align-items-center gap-3">
-                            <span class="assigned-to">
-                              Assigned To: {{subtask.resources?.[0]?.candidateId?.name || 'Unassigned'}}
-                            </span>
-                            <span class="due-date">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
-                            <i class="bi" [ngClass]="subtask.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                <div class="subtasks-content">
+                  <!-- Existing Subtasks List -->
+                  <div class="subtasks-container mb-4">
+                    <div class="row g-2">
+                      <div class="col-md-6" *ngFor="let subtask of subtasks">
+                        <div class="subtask-item p-2 border rounded">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <p class="mb-1">{{ subtask.name }}</p>
+                              <small class="text-muted d-block">Due: {{ subtask.dueDate | date:'dd/MM/yyyy' }}</small>
+                              <small class="text-muted d-block">{{ subtask.assignedTo?.userName || 'Unassigned'
+                                }}</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                              <button class="btn btn-sm btn-link text-danger p-0" (click)="deleteSubtask(subtask)">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div class="subtask-content" [class.expanded]="subtask.isExpanded">
-                        <div class="subtask-details">
-                          <p class="mb-2 text-muted" *ngIf="subtask.description">{{subtask.description}}</p>
+                    </div>
+                  </div>
+
+                  <!-- Add New Subtask Form -->
+                  <div class="add-subtask-form p-3" *ngIf="showSubtasks">
+                    <div class="row g-2">
+                      <!-- First Row -->
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.name"
+                          placeholder="Subtask title">
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" [(ngModel)]="newSubtask.description"
+                          placeholder="Subtask description">
+                      </div>
+                      <!-- Second Row -->
+                      <div class="col-md-6">
+                        <input type="date" class="form-control" [(ngModel)]="newSubtask.dueDate">
+                      </div>
+                      <div class="col-md-6">
+                        <ng-select class="form-select custom-ng-select-option" placeholder="Assign to"
+                          [items]="userList" bindLabel="userName" bindValue="_id" [(ngModel)]="newSubtask.assignedTo">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <!-- Add Button -->
+                    <div class="mt-2">
+                      <button class="btn btn-primary w-100" (click)="addSubtask()" [disabled]="!isSubtaskValid()">
+                        Add Subtask
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- After the add subtask form -->
+                  <div class="subtasks-list mt-4" *ngIf="subtasksList.length > 0">
+                    <h5 class="mb-3">Subtasks List</h5>
+                    <div class="row g-3">
+                      <div class="col-12" *ngFor="let subtask of subtasksList; let i = index">
+                        <div class="subtask-card">
+                          <div class="subtask-header" (click)="subtask.isExpanded = !subtask.isExpanded">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <span class="subtask-title">{{subtask.title || 'Untitled Task'}}</span>
+                              <div class="d-flex align-items-center gap-3">
+                                <span class="assigned-to">
+                                  Assigned To: {{subtask.resources?.[0]?.candidateId?.name || 'Unassigned'}}
+                                </span>
+                                <span class="due-date">Due: {{formatDateForDisplay(subtask.dueDate)}}</span>
+                                <i class="bi" [ngClass]="subtask.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="subtask-content" [class.expanded]="subtask.isExpanded">
+                            <div class="subtask-details">
+                              <p class="mb-2 text-muted" *ngIf="subtask.description">{{subtask.description}}</p>
+                              <div class="actions text-end mt-2">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteSubtask(subtask._id)">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="text-center mt-4" *ngIf="subtasksList.length === 0">
+                    <p class="text-muted">No subtasks added yet</p>
+                  </div>
                 </div>
               </div>
-              <div class="text-center mt-4" *ngIf="subtasksList.length === 0">
-                <p class="text-muted">No subtasks added yet</p>
+
+              <div class="mb-3" *ngIf="modalTask?.project?.projectName">
+                <h6><strong>Assigned Project</strong></h6>
+                <a (click)="projectDetails(modalTask?.project?._id)" href="javascript:;">{{
+                  modalTask?.project?.projectName }}</a>
               </div>
-            </div>
-          </div>
+              <div class="mb-3" *ngIf="modalTask?.project">
+                <h6><strong>Status</strong></h6>
+                <p>{{ modalTask?.project?.status }}</p>
+              </div>
+              <div class="mb-3" *ngIf="modalTask?.project">
+                <h6><strong>Bid Status</strong></h6>
+                <p>{{ modalTask?.project?.bidManagerStatus }}</p>
+              </div>
 
-          <!-- Comment Section -->
-          <div class="mb-4">
-            <h6 class="mb-3"><strong>Comment</strong></h6>
-
-            <div class="mb-3">
-              <label class="form-label">Time Spent</label>
-              <select class="form-select" [(ngModel)]="timeMinutes" [ngModelOptions]="{standalone: true}">
-                <option [ngValue]="null">Select duration</option>
-                <optgroup label="Minutes">
-                  <option *ngFor="let min of minutesOptions.slice(0, 18)" [ngValue]="min.value">
-                    {{min.label}}
-                  </option>
-                </optgroup>
-                <optgroup label="Hours">
-                  <option *ngFor="let min of minutesOptions.slice(18)" [ngValue]="min.value">
-                    {{min.label}}
-                  </option>
-                </optgroup>
-              </select>
-              <small *ngIf="loginUser?.role === 'ProjectManager'" class="text-danger">Time is required for Project Managers</small>
-              <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
-            </div>
-
-            <div class="NgxEditor__Wrapper mb-3">
-              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
-              </ngx-editor-menu>
-              <ngx-editor [editor]="editor" rows="5" [(ngModel)]="newComment" [disabled]="false"
-                [placeholder]="'Type here...'"></ngx-editor>
-            </div>
-
-            <div class="d-flex align-items-center gap-2 mb-4">
-              <button class="btn btn-primary btn-sm" (click)="addComment(newComment, modalTask?._id)">
-                Comment
-              </button>
-              <button class="btn btn-primary btn-sm" (click)="onChangeMyday('MyDay')">
-                Add to My Day
-              </button>
-              <button class="btn btn-success btn-sm" (click)="onChange('completedTask', true)">
-                Completed Task
-              </button>
-            </div>
-          </div>
-
-          <!-- Pinned Comments Section -->
-          <div *ngIf="modalTask?.datewiseComments?.pinnedComments?.length > 0" class="mb-4">
-            <h6 class="mb-3"><i class="bi bi-pin-fill text-primary"></i> <strong>Pinned Comments</strong></h6>
-              <ul class="SecondarytaskList">
-                <li *ngFor="let comment of modalTask.datewiseComments.pinnedComments"
-                  class="comment-item p-3 pinned-comment"
-                  [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
-                  <div class="row align-items-center mb-2">
-                    <div class="col">
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
-                        <small class="comment-date" *ngIf="comment?.date">
-                          {{ comment?.date | date : "dd/MM/yyyy" }}
-                          <span *ngIf="comment?.timeStart && comment?.timeEnd">
-                            ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
-                          </span>
-                        </small>
+              <div class="comments-section">
+                <h6><strong>Comment</strong></h6>
+                <div class="mb-2">
+                  <form [formGroup]="commentForm" (ngSubmit)="addComment(modalTask?._id)">
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <label class="form-label">Time Spent</label>
+                        <select class="form-select" [(ngModel)]="timeMinutes" [ngModelOptions]="{standalone: true}">
+                          <option [ngValue]="null">Select duration</option>
+                          <optgroup label="Minutes">
+                            <option *ngFor="let min of minutesOptions.slice(0, 18)" [ngValue]="min.value">
+                              {{min.label}}
+                            </option>
+                          </optgroup>
+                          <optgroup label="Hours">
+                            <option *ngFor="let min of minutesOptions.slice(18)" [ngValue]="min.value">
+                              {{min.label}}
+                            </option>
+                          </optgroup>
+                        </select>
+                        <small class="text-danger" *ngIf="timeError">{{timeError}}</small>
                       </div>
-                      <small class="user-role d-block">
-                        {{ comment?.userDetail?.role === "BOS" ? "USER" : comment?.userDetail?.role }}
-                      </small>
                     </div>
-                  </div>
-                  <p class="comment-text" [innerHTML]="comment?.comment"></p>
-                  <div class="d-flex justify-content-end">
-                    <button class="btn btn-sm pin-btn"
-                      (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
-                      <i class="bi bi-pin-fill text-primary"></i> Unpin
-                    </button>
-                  </div>
-                </li>
-              </ul>
-          </div>
+                    <div class="NgxEditor__Wrapper">
+                      <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" style="padding: 15px !important;">
+                      </ngx-editor-menu>
+                      <ngx-editor [editor]="editor" rows="5" formControlName="description" [disabled]="false"
+                        [placeholder]="'Type here...'"></ngx-editor>
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                      <button class="btn btn-primary" type="submit" [disabled]="commentForm.invalid">
+                        Comment
+                      </button>
+                      <button class="btn btn-primary" *ngIf="!modalTask?.myDay?.includes(loginUser?._id)"
+                        [(ngModel)]="selectedStatus" (click)="onChangeMyday('MyDay')">
+                        Add to My Day
+                      </button>
+                      <button class="btn btn-success" (click)="onChange('completedTask', true)">
+                        Completed Task
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div *ngFor="let comment of modalTask.comments; let i = index" class="mb-3">
+                  <strong>{{ comment?.user }} </strong>
+                  <small class="text-muted">{{ comment?.time }}</small>
+                  <p class="mb-1">{{ comment?.text }}</p>
+                </div>
+              </div>
 
-          <!-- All Comments Section -->
-          <div class="mb-4">
-            <h6 class="mb-3"><strong>All Comments</strong></h6>
-            <div class="comments-scroll-container">
-              <ul class="SecondarytaskList mt-3">
-                <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
-                  class="comment-item p-3 no-bg">
-
-                  <h6 *ngIf="comment?.comment == 'No comments available for this date'">
-                    {{ comment?.commentDate | date : "dd/MM/yyyy" }}
-                  </h6>
-
-                  <div class="row align-items-center mb-3">
-                    <div class="col">
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
-                        <small class="comment-date" *ngIf="comment?.date">
-                          {{ comment?.date | date : "dd/MM/yyyy" }}
-                          <span *ngIf="comment?.timeStart && comment?.timeEnd">
-                            ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
-                          </span>
-                        </small>
+              <div class="comments-section">
+                <!-- Pinned Comments Section -->
+                <div *ngIf="modalTask?.datewiseComments?.pinnedComments?.length > 0" class="mb-4">
+                  <h6 class="mt-3"><i class="bi bi-pin-fill text-primary"></i> <strong>Pinned Comments</strong></h6>
+                  <ul class="SecondarytaskList">
+                    <li *ngFor="let comment of modalTask.datewiseComments.pinnedComments"
+                      class="comment-item p-3 pinned-comment"
+                      [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+                      <div class="row align-items-center mb-2">
+                        <div class="col">
+                          <div class="d-flex justify-content-between">
+                            <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                            <small class="comment-date" *ngIf="comment?.date">
+                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                            </small>
+                          </div>
+                          <small class="user-role d-block">
+                            {{ comment?.userDetail?.role === "BOS" ? "USER" : comment?.userDetail?.role }}
+                          </small>
+                        </div>
                       </div>
-                      <small class="user-role d-block">
-                        {{
-                        comment?.userDetail?.role === "BOS"
-                        ? "USER"
-                        : comment?.userDetail?.role
-                        }}
-                      </small>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-column mb-3">
-                    <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
-
                       <p class="comment-text" [innerHTML]="comment?.comment"></p>
-
-                      <div *ngIf="comment?.commentId" class="d-flex gap-2">
+                      <div class="d-flex justify-content-end">
                         <button class="btn btn-sm pin-btn"
                           (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
-                          <i class="bi"
-                            [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
+                          <i class="bi bi-pin-fill text-primary"></i> Unpin
                         </button>
                       </div>
-                    </div>
-                  </div>
+                    </li>
+                  </ul>
+                </div>
 
-                </li>
-              </ul>
+                <h6 class="mt-3"><strong>All Comments</strong></h6>
+                <div class="comments-scroll-container">
+                  <ul class="SecondarytaskList mt-3">
+                    <li *ngFor="let comment of transformData(modalTask?.datewiseComments); let i = index"
+                      class="comment-item p-3 no-bg">
+
+                      <h6 *ngIf="comment?.comment == 'No comments available for this date'">
+                        {{ comment?.commentDate | date : "dd/MM/yyyy" }}
+                      </h6>
+
+                      <div class="row align-items-center mb-3">
+                        <div class="col">
+                          <div class="d-flex justify-content-between">
+                            <p class="mb-0 user-name">{{ comment?.userDetail?.name }}</p>
+                            <small class="comment-date" *ngIf="comment?.date">
+                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }} <br>
+                              {{ comment?.minutes || '0' }} Min
+                            </small>
+                          </div>
+                          <small class="user-role d-block">
+                            {{
+                            comment?.userDetail?.role === "BOS"
+                            ? "USER"
+                            : comment?.userDetail?.role
+                            }}
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="d-flex flex-column mb-3">
+                        <div *ngIf="!comment.isEditing" class="d-flex justify-content-between align-items-center">
+
+                          <p class="comment-text" [innerHTML]="comment?.comment"></p>
+
+                          <div *ngIf="comment?.commentId" class="d-flex gap-2">
+                            <button class="btn btn-sm pin-btn"
+                              (mousedown)="togglePinComment(comment, modalTask); $event.stopPropagation()">
+                              <i class="bi"
+                                [ngClass]="{'bi-pin-fill': comment?.pinnedAt, 'bi-pin': !comment?.pinnedAt}"></i>
+                            </button>
+                            <!-- <button class="btn btn-sm delete-btn"
+                              (mousedown)="deleteComment(comment?.commentId); $event.stopPropagation()">
+                              <i class="bi bi-trash3"></i>
+                            </button> -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
             </div>
+
           </div>
         </div>
       </div>

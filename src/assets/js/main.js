@@ -13,11 +13,20 @@
    * Easy selector helper function
    */
   const select = (el, all = false) => {
+    if (!el) return null;
+
     el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
+
+    // Basic validation to prevent invalid selectors
+    try {
+      if (all) {
+        return [...document.querySelectorAll(el)]
+      } else {
+        return document.querySelector(el)
+      }
+    } catch (error) {
+      console.warn('Invalid CSS selector:', el, error);
+      return null;
     }
   }
 
@@ -36,7 +45,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
@@ -131,7 +140,11 @@
    * Scrool with ofset on links with a class name .scrollto
    */
   on('click', '.scrollto', function(e) {
-    if (select(this.hash)) {
+    // Check if the hash is a valid CSS selector before using it
+    const hash = this.hash;
+    const isValidSelector = hash && /^#[a-zA-Z][a-zA-Z0-9_-]*$/.test(hash);
+
+    if (isValidSelector && select(hash)) {
       e.preventDefault()
 
       let navbar = select('#navbar')
@@ -141,7 +154,7 @@
         navbarToggle.classList.toggle('bi-list')
         navbarToggle.classList.toggle('bi-x')
       }
-      scrollto(this.hash)
+      scrollto(hash)
     }
   }, true)
 
@@ -150,8 +163,12 @@
    */
   window.addEventListener('load', () => {
     if (window.location.hash) {
-      if (select(window.location.hash)) {
-        scrollto(window.location.hash)
+      // Check if the hash is a valid CSS selector (contains only valid characters for element IDs)
+      const hash = window.location.hash;
+      const isValidSelector = /^#[a-zA-Z][a-zA-Z0-9_-]*$/.test(hash);
+
+      if (isValidSelector && select(hash)) {
+        scrollto(hash)
       }
     }
   });
@@ -167,7 +184,7 @@
   }
 
   /**
-   * Initiate  glightbox 
+   * Initiate  glightbox
    */
   // const glightbox = GLightbox({
   //   selector: '.glightbox'
@@ -221,7 +238,7 @@
   });
 
   /**
-   * Initiate portfolio lightbox 
+   * Initiate portfolio lightbox
    */
   // const portfolioLightbox = GLightbox({
   //   selector: '.portfolio-lightbox'
