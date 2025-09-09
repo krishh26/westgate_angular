@@ -11,23 +11,23 @@
             <h4 class="text-break">{{ projectDetails?.projectName }}</h4>
           </div>
           <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto project-header-buttons">
-            <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-primary btn-sm text-dark">
+            <a data-bs-toggle="modal" data-bs-target="#ViewStripAdd" class="btn btn-success btn-sm">
               Add Strips
             </a>
             <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ViewProjectLogs">
               Logs
             </a>
-            <a class="btn btn-primary btn-sm text-dark" style="cursor: pointer"
+            <a class="btn btn-primary btn-sm" style="cursor: pointer"
               (click)="editProjectDetails(projectDetails?._id)">
               Edit <i class="bi bi-pencil-fill"></i>
             </a>
-            <a class="btn btn-info btn-sm text-dark" data-bs-toggle="modal" data-bs-target="#ViewMandatoryDetails">
+            <a class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#ViewMandatoryDetails">
               Mandatory Details
             </a>
-            <a (click)="navigateToTaskDetails()" class="btn btn-info btn-sm text-dark">
+            <a (click)="navigateToTaskDetails()" class="btn btn-secondary btn-sm">
               Task Details
             </a>
-            <a (click)="goBack()" class="btn btn-primary text-dark">Back</a>
+            <a (click)="goBack()" class="btn btn-dark">Back</a>
           </div>
         </div>
       </div>
