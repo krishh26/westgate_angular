@@ -632,6 +632,7 @@
                   <tr>
                     <th>Name</th>
                     <th>Type</th>
+                    <th>Supplier Name</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -639,6 +640,14 @@
                   <tr *ngFor="let expertise of otherExpertises">
                     <td>{{ expertise.name }}</td>
                     <td>{{ expertise.type }}</td>
+                    <td>
+                      <span *ngIf="expertise.supplierId && expertise.supplierId.name; else noSupplier">
+                        {{ expertise.supplierId.name }}
+                      </span>
+                      <ng-template #noSupplier>
+                        <span class="text-muted">-</span>
+                      </ng-template>
+                    </td>
                     <td>
                       <button class="btn btn-success btn-sm" (click)="approveOtherExpertise(expertise)" [disabled]="expertise.isApproving">
                         <span *ngIf="expertise.isApproving" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
@@ -651,7 +660,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="otherExpertises.length === 0 && !showOtherExpertiseLoader">
-                    <td colspan="3" class="text-center">No other expertises found</td>
+                    <td colspan="4" class="text-center">No other expertises found</td>
                   </tr>
                 </tbody>
               </table>
