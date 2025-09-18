@@ -390,33 +390,35 @@
           <!-- User Settings Section -->
           <div *ngIf="selectedOption === 'user'">
             <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-            <div class="table-responsive">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex gap-3 align-items-center">
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Search users..."
-                      [(ngModel)]="userSearchQuery"
-                      (ngModelChange)="onUserSearchChange($event)">
-                  </div>
-                  <div class="col-md-3">
-                    <select
-                      class="form-control"
-                      [(ngModel)]="selectedUserRole"
-                      (change)="onUserRoleFilterChange($any($event.target).value)">
-                      <option value="">All Roles</option>
-                      <option *ngFor="let role of rolesList" [value]="role.value">
-                        {{ role.label }}
-                      </option>
-                    </select>
-                  </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex gap-3 align-items-center flex-grow-1">
+                <div class="col-md-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search users..."
+                    [(ngModel)]="userSearchQuery"
+                    (ngModelChange)="onUserSearchChange($event)"
+                    style="height: 40px; font-size: 16px;">
                 </div>
-                <button class="btn btn-primary" (click)="openAddUserModal(addUserModal)">
-                  <i class="bi bi-plus-circle me-2"></i>Add User
-                </button>
+                <div class="col-md-5">
+                  <select
+                    class="form-control custom-select"
+                    [(ngModel)]="selectedUserRole"
+                    (change)="onUserRoleFilterChange($any($event.target).value)"
+                    style="height: 40px; font-size: 16px; min-width: 180px; width: 100%;">
+                    <option value="">All Roles</option>
+                    <option *ngFor="let role of rolesList" [value]="role.value">
+                      {{ role.label }}
+                    </option>
+                  </select>
+                </div>
               </div>
+              <button class="btn btn-primary" (click)="openAddUserModal(addUserModal)">
+                <i class="bi bi-plus-circle me-2"></i>Add User
+              </button>
+            </div>
+            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -426,7 +428,7 @@
                     <th style="width: 15%">Company</th>
                     <th style="width: 10%">Status</th>
                     <th style="width: 15%">Joined Date</th>
-                    <th style="width: 10%">Actions</th>
+                    <th style="width: 20%">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -481,7 +483,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="users.length === 0">
-                    <td colspan="8" class="text-center">No users found</td>
+                    <td colspan="7" class="text-center">No users found</td>
                   </tr>
                 </tbody>
               </table>
@@ -998,7 +1000,7 @@
             formControlName="role"
             [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('role')?.errors }"
           >
-            <option value="">Select Role</option>
+            <option value="" disabled selected>Select Role</option>
             <option value="BOS">Sales Manager</option>
             <option value="ProjectManager">Bid Manager</option>
             <option value="ProcessManagerAdmin">Process Manager</option>
@@ -1008,77 +1010,6 @@
           </select>
           <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('role')?.errors?.['required']">
             Role is required
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="userCompany" class="form-label">Company Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="userCompany"
-            formControlName="companyName"
-            placeholder="Enter company name (optional)"
-          >
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="userDesignation" class="form-label">Designation</label>
-          <input
-            type="text"
-            class="form-control"
-            id="userDesignation"
-            formControlName="designation"
-            placeholder="Enter designation (optional)"
-          >
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="pocName" class="form-label">POC Name <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            id="pocName"
-            formControlName="poc_name"
-            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_name')?.errors }"
-            placeholder="Enter POC name"
-          >
-          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_name')?.errors?.['required']">
-            POC Name is required
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="pocEmail" class="form-label">POC Email <span class="text-danger">*</span></label>
-          <input
-            type="email"
-            class="form-control"
-            id="pocEmail"
-            formControlName="poc_email"
-            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_email')?.errors }"
-            placeholder="Enter POC email"
-          >
-          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_email')?.errors?.['required']">
-            POC Email is required
-          </div>
-          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_email')?.errors?.['email']">
-            Please enter a valid POC email
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="pocPhone" class="form-label">POC Phone <span class="text-danger">*</span></label>
-          <input
-            type="tel"
-            class="form-control"
-            id="pocPhone"
-            formControlName="poc_phone"
-            [ngClass]="{ 'is-invalid': userSubmitted && userForm.get('poc_phone')?.errors }"
-            placeholder="Enter POC phone number"
-          >
-          <div class="invalid-feedback" *ngIf="userSubmitted && userForm.get('poc_phone')?.errors?.['required']">
-            POC Phone is required
           </div>
         </div>
       </div>
@@ -1159,7 +1090,7 @@
             formControlName="role"
             [ngClass]="{ 'is-invalid': editUserSubmitted && editUserForm.get('role')?.errors }"
           >
-            <option value="">Select Role</option>
+            <option value="" disabled>-- Select Role --</option>
             <option value="BOS">BOS</option>
             <option value="SupplierAdmin">Supplier Admin</option>
             <option value="SupplierUser">Supplier User</option>
@@ -1178,79 +1109,6 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="editUserCompany" class="form-label">Company Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="editUserCompany"
-            formControlName="companyName"
-            placeholder="Enter company name (optional)"
-          >
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="editUserDesignation" class="form-label">Designation</label>
-          <input
-            type="text"
-            class="form-control"
-            id="editUserDesignation"
-            formControlName="designation"
-            placeholder="Enter designation (optional)"
-          >
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="editPocName" class="form-label">POC Name <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            id="editPocName"
-            formControlName="poc_name"
-            [ngClass]="{ 'is-invalid': editUserSubmitted && editUserForm.get('poc_name')?.errors }"
-            placeholder="Enter POC name"
-          >
-          <div class="invalid-feedback" *ngIf="editUserSubmitted && editUserForm.get('poc_name')?.errors?.['required']">
-            POC Name is required
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="editPocEmail" class="form-label">POC Email <span class="text-danger">*</span></label>
-          <input
-            type="email"
-            class="form-control"
-            id="editPocEmail"
-            formControlName="poc_email"
-            [ngClass]="{ 'is-invalid': editUserSubmitted && editUserForm.get('poc_email')?.errors }"
-            placeholder="Enter POC email"
-          >
-          <div class="invalid-feedback" *ngIf="editUserSubmitted && editUserForm.get('poc_email')?.errors?.['required']">
-            POC Email is required
-          </div>
-          <div class="invalid-feedback" *ngIf="editUserSubmitted && editUserForm.get('poc_email')?.errors?.['email']">
-            Please enter a valid POC email
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="editPocPhone" class="form-label">POC Phone <span class="text-danger">*</span></label>
-          <input
-            type="tel"
-            class="form-control"
-            id="editPocPhone"
-            formControlName="poc_phone"
-            [ngClass]="{ 'is-invalid': editUserSubmitted && editUserForm.get('poc_phone')?.errors }"
-            placeholder="Enter POC phone number"
-          >
-          <div class="invalid-feedback" *ngIf="editUserSubmitted && editUserForm.get('poc_phone')?.errors?.['required']">
-            POC Phone is required
-          </div>
-        </div>
-      </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>

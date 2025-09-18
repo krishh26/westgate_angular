@@ -208,23 +208,13 @@ export class AdminDataSettingsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       userName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', [Validators.required]],
-      companyName: [''],
-      designation: [''],
-      poc_name: ['', [Validators.required]],
-      poc_email: ['', [Validators.required, Validators.email]],
-      poc_phone: ['', [Validators.required]]
+      role: ['', [Validators.required]]
     });
     this.editUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       userName: ['', Validators.required],
-      role: ['', Validators.required],
-      companyName: [''],
-      designation: [''],
-      poc_name: ['', Validators.required],
-      poc_email: ['', [Validators.required, Validators.email]],
-      poc_phone: ['', Validators.required]
+      role: ['', Validators.required]
     });
     this.poundRateForm = this.fb.group({
       rate: ['', [Validators.required, Validators.min(0.01)]]
@@ -1105,6 +1095,9 @@ export class AdminDataSettingsComponent implements OnInit {
 
   openAddUserModal(content: any): void {
     this.userForm.reset();
+    this.userForm.patchValue({
+      role: ''
+    });
     this.userSubmitted = false;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
@@ -1172,20 +1165,9 @@ export class AdminDataSettingsComponent implements OnInit {
         <h6><strong>Basic Information:</strong></h6>
         <p><strong>Name:</strong> ${user.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-
+        <p><strong>Username:</strong> ${user.userName || 'N/A'}</p>
         <p><strong>Role:</strong> ${user.role}</p>
         <p><strong>Status:</strong> ${user.active ? 'Active' : 'Inactive'}</p>
-
-        <h6><strong>Company Information:</strong></h6>
-        <p><strong>Company:</strong> ${user.companyName || 'N/A'}</p>
-        <p><strong>Website:</strong> ${user.website || 'N/A'}</p>
-        <p><strong>Location:</strong> ${user.location || 'N/A'}</p>
-        <p><strong>Country:</strong> ${user.country || 'N/A'}</p>
-
-        <h6><strong>Contact Information:</strong></h6>
-        <p><strong>POC Name:</strong> ${user.poc_name || 'N/A'}</p>
-        <p><strong>POC Email:</strong> ${user.poc_email || 'N/A'}</p>
-        <p><strong>POC Phone:</strong> ${user.poc_phone || 'N/A'}</p>
 
         <h6><strong>Activity:</strong></h6>
         <p><strong>Last Login:</strong> ${user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never'}</p>
@@ -1209,12 +1191,7 @@ export class AdminDataSettingsComponent implements OnInit {
       name: user.name,
       email: user.email,
       userName: user.userName,
-      role: user.role,
-      companyName: user.companyName || '',
-      designation: user.designation || '',
-      poc_name: user.poc_name,
-      poc_email: user.poc_email,
-      poc_phone: user.poc_phone
+      role: user.role
     });
     this.modalService.open(this.editUserModal, { size: 'lg' });
   }
