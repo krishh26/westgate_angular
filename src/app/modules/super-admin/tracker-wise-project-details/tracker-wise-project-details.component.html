@@ -516,6 +516,21 @@
         </div>
       </div>
 
+      <!-- Reject Reason Card -->
+      <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="projectDetails?.adminStatusComment">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h6>Reject Reason</h6>
+          </div>
+          <div class="card-body">
+            <small class="text-muted">
+              {{ projectDetails?.adminStatusComment?.timestamp | date : "dd/MM/yyyy, h:mm a" }}
+            </small>
+            <p class="mt-2" [innerHTML]="projectDetails?.adminStatusComment?.comment"></p>
+          </div>
+        </div>
+      </div>
+
       <section class="pageheader bg-dark mb-3">
         <div class="container d-flex justify-content-between align-items-center">
           <p class="mb-0">
