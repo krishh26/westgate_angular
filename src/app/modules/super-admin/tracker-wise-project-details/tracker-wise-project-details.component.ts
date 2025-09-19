@@ -2631,6 +2631,44 @@ export class TrackerWiseProjectDetailsComponent {
     });
   }
 
+  deleteRejectReason() {
+    if (!this.projectId) {
+      this.notificationService.showError('Project ID not found');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete the reject reason?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.value) {
+        this.showLoader = true;
+        this.projectService.deleteApproveRejectAdmin(this.projectId).subscribe(
+          (response: any) => {
+            this.showLoader = false;
+            if (response?.status === true) {
+              this.notificationService.showSuccess('Reject reason successfully deleted');
+              // Remove the adminStatusComment from projectDetails to hide the card
+              this.projectDetails.adminStatusComment = null;
+            } else {
+              this.notificationService.showError(response?.message || 'Failed to delete reject reason');
+            }
+          },
+          (error) => {
+            this.showLoader = false;
+            this.notificationService.showError(error?.error?.message || error?.message || 'Something went wrong');
+          }
+        );
+      }
+    });
+  }
+
   // Supplier Status Methods for Flag Button
   getSupplierStatusClass(supplier: any): string {
     const status = this.getSupplierStatus(supplier);

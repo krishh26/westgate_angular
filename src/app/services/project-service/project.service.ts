@@ -33,7 +33,8 @@ export enum ProjectEndPoint {
   DELETE_BID_COMMENT = '/project/delete-bidstatuscomment',
   DELETE_DOCUMENT = '/project/delete-document',
   CREATE_MINIMAL_REQUIREMENT = '/project/create',
-  DELETE_MINIMAL_REQUIREMENT = '/project/delete'
+  DELETE_MINIMAL_REQUIREMENT = '/project/delete',
+  DELETE_APPROVE_REJECT_ADMIN = '/project/delete/approve-reject-admin'
 }
 
 @Injectable({
@@ -592,6 +593,11 @@ export class ProjectService {
   deleteMinimalRequirement(projectId: string): Observable<any> {
     return this.httpClient
       .delete<any>(this.baseUrl + `${ProjectEndPoint.DELETE_MINIMAL_REQUIREMENT}/${projectId}/minimal-requirement`);
+  }
+
+  deleteApproveRejectAdmin(projectId: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + `${ProjectEndPoint.DELETE_APPROVE_REJECT_ADMIN}/${projectId}`);
   }
 
 }

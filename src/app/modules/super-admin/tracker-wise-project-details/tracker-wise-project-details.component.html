@@ -519,8 +519,11 @@
       <!-- Reject Reason Card -->
       <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="projectDetails?.adminStatusComment">
         <div class="card mb-4">
-          <div class="card-header">
-            <h6>Reject Reason</h6>
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Reject Reason</h6>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteRejectReason()" title="Delete Reject Reason">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
           </div>
           <div class="card-body">
             <small class="text-muted">
