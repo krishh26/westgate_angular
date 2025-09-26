@@ -1,0 +1,237 @@
+<main id="main">
+  <section>
+    <div class="container-fluids mb-3">
+      <div class="row align-items-center">
+        <nav>
+          <ul class="projects-nav-tab">
+            <li routerLink="/process-manager/process-manager-to-action">
+              <a class="active">To action</a>
+            </li>
+            <li routerLink="/process-manager/process-manager-in-progress">
+              <a>In progress</a>
+            </li>
+            <li routerLink="/process-manager/process-manager-completed">
+              <a>Completed projects</a>
+            </li>
+            <li routerLink="/process-manager/process-manager-project-failed">
+              <a>Failed</a>
+            </li>
+            <li routerLink="/process-manager/interested-supplier-wise-projects-process-manager">
+              <a>Interested Supplier </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12 bg-grays">
+          <div id="profile-menu-nav">
+            <br /><br />
+
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Feasibility Status</h6>
+              <ng-select style="padding: 0px !important" placeholder="Select Status"
+                class="form-select custom-ng-select-option" [items]="statusList" bindLabel="status" [multiple]="true"
+                bindValue="value" [(ngModel)]="selectedStatuses" (change)="performSearch()">
+              </ng-select>
+            </div>
+
+            <div class="sort-widget mb-3">
+              <h6 class="p-600">Bid Status</h6>
+              <ng-select style="padding: 0px !important" placeholder="Select Bid Status"
+                class="form-select custom-ng-select-option" [items]="bidstatusList" bindLabel="bidstatus"
+                [multiple]="true" bindValue="bidvalue" [(ngModel)]="selectedBidStatuses" (change)="performSearch()">
+              </ng-select>
+            </div>
+
+            <!-- <div class="sort-widget mb-3">
+                            <h6 class="p-600">Expired Project</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="expiredProject"
+                                    [(ngModel)]="isExpired" (change)="searchtext()">
+                                <label class="form-check-label" for="expiredProject">Expired</label>
+                            </div>
+                        </div> -->
+
+            <div class="sort-widget">
+              <h6 class="p-600">Publish Date Range</h6>
+              <form class="row row-cols-sm-auto">
+                <div class="col-6">
+                  <div class="input-group mb-2">
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="publishStartDate"
+                      ngbDatepicker #d="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                      type="button"></button>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="publishEndDate"
+                      ngbDatepicker #d1="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                      type="button"></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <br />
+            <div class="sort-widget">
+              <h6 class="p-600">Submission Due Date Range</h6>
+              <form class="row row-cols-sm-auto">
+                <div class="col-6">
+                  <div class="input-group mb-2">
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="submissionStartDate"
+                      ngbDatepicker #d2="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                      type="button"></button>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="DD-MM-YYYY" name="dp" [formControl]="submissionEndDate"
+                      ngbDatepicker #d3="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()"
+                      type="button"></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <br />
+            <!-- Slider for Value (GBP) -->
+            <div class="sort-widget">
+              <h6 class="p-600">Value (GBP)</h6>
+
+              <!-- Min and Max value input fields -->
+              <div class="input-fields">
+                <label for="min-value">Min Value (GBP): </label>
+                <input id="min-value" type="number" [(ngModel)]="minValue" (change)="changeRange()" />
+
+                <label for="max-value">Max Value (GBP): </label>
+                <input id="max-value" type="number" [(ngModel)]="maxValue" (change)="changeRange()" />
+              </div>
+
+              <!-- ngx-slider component -->
+              <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"
+                (userChange)="changeRange()">
+              </ngx-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-10 col-xl-10 col-md-12 col-sm-12 col-12">
+          <div class="row align-items-center justify-content-between">
+            <div class="col-lg-11 col-xl-11 col-12 mob-mb1">
+              <div class="form-group mb-0">
+                <span class="input-icon"><i class="bi bi-search"></i></span>
+                <input class="form-control control-search"
+                  placeholder="Search by BOS ID, Project name, Client name, Website, Notice reference, Link to notice"
+                  type="text" [(ngModel)]="searchText" (input)="onSearchInput($event)" />
+              </div>
+            </div>
+            <div class="col-lg-auto col-xl-auto col-12 mob-mb1" style="cursor: pointer">
+              <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip"
+                title="Search using BOS ID, Project name, Client name, Website, Notice reference"></i>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-12">
+            <div class="Flatcard shadow-1 mt-3 border">
+              <div class="card-body">
+                <div class="table-responsive mt-0 mb-3">
+                  <table class="table align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Project Title</th>
+                        <th>BOS ID</th>
+                        <th style="cursor: pointer" (click)="sort('publishDate')">
+                          Publish Date <i class="bi bi-sort-up"></i>
+                        </th>
+                        <th style="cursor: pointer" (click)="duedatesort('dueDate')">
+                          Due Date & Time <i class="bi bi-sort-up"></i>
+                        </th>
+                        <th>Status</th>
+                        <th>Bid Status</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="projectList?.length === 0">
+                        <td colspan="7" class="text-center">
+                          <app-no-record-found></app-no-record-found>
+                        </td>
+                      </tr>
+
+                      <tr *ngFor="
+                          let item of projectList
+                            | paginate
+                              : {
+                                  itemsPerPage: pagesize,
+                                  currentPage: page,
+                                  totalItems: totalRecords
+                                };
+                          let i = index
+                        ">
+                        <td>
+                          <a (click)="projectDetails(item?._id)" href="javascript:;">{{ item?.projectName }}</a>
+                        </td>
+                        <td v-align="middle">{{ item?.BOSID }}</td>
+                        <td>{{ item?.publishDate | date : "dd/MM/yyyy" }}</td>
+                        <td>
+                          {{ item?.dueDate | date : "dd/MM/yyyy" }} ,
+                          {{ item.bidsubmissiontime }}
+                        </td>
+                        <td>
+                          <ng-container
+                            *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
+                            <span>Waiting for approval</span>
+                          </ng-container>
+                          <ng-template #failStatus>
+                            {{ item?.status }}
+                          </ng-template>
+                        </td>
+
+                        <td>
+                          <ng-container *ngIf="
+                              !(
+                                item?.adminStatus === 'Nosuppliermatched' ||
+                                item?.adminStatus === 'Dropped after feasibility'
+                              );
+                              else waitingForApproval
+                            ">
+                            {{ item?.bidManagerStatus }}
+                          </ng-container>
+                          <ng-template #waitingForApproval>
+                            <span>Waiting for approval</span>
+                          </ng-template>
+                        </td>
+                        <td>
+                          <span class="status-dot" [ngStyle]="{
+                              'background-color': getStatusColor(item)
+                            }"></span>
+                        </td>
+                        <td>
+                          <span *ngIf="item?.register_interest" class="status-dot ms-2" style="background-color: blue;"></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row mt-3 align-items-center">
+            <div class="row">
+              <div class="pagination">
+                <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

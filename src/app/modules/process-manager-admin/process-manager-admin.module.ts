@@ -26,6 +26,11 @@ import { NgxEditorModule } from 'ngx-editor';
 import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
 import { ProcessManagerCaseStudiesComponent } from './process-manager-case-studies/process-manager-case-studies.component';
 import { TaskDetailsProcessManagerComponent } from './task-details-process-manager/task-details-process-manager.component';
+import { ProcessManagerToActionComponent } from './process-manager-to-action/process-manager-to-action.component';
+import { ProcessManagerInProgressComponent } from './process-manager-in-progress/process-manager-in-progress.component';
+import { ProcessManagerCompletedComponent } from './process-manager-completed/process-manager-completed.component';
+import { ProcessManagerProjectFailedComponent } from './process-manager-project-failed/process-manager-project-failed.component';
+import { InterestedSupplierWiseProjectsProcessManagerComponent } from './interested-supplier-wise-projects-process-manager/interested-supplier-wise-projects-process-manager.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -57,7 +62,12 @@ import { TaskDetailsProcessManagerComponent } from './task-details-process-manag
     TypeWiseProjectDetailsComponent,
     TodoTaskViewDetailsPageComponent,
     ProcessManagerCaseStudiesComponent,
-    TaskDetailsProcessManagerComponent
+    TaskDetailsProcessManagerComponent,
+    ProcessManagerToActionComponent,
+    ProcessManagerInProgressComponent,
+    ProcessManagerCompletedComponent,
+    ProcessManagerProjectFailedComponent,
+    InterestedSupplierWiseProjectsProcessManagerComponent
   ],
    providers: [NgbActiveModal],
   exports: [ToDoTasksProcessManagerComponent],

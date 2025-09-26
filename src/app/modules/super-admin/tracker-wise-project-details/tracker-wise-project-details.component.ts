@@ -592,7 +592,7 @@ export class TrackerWiseProjectDetailsComponent {
               user?.role === 'FeasibilityUser'
           );
           this.BiduserList = response?.data?.filter(
-            (user: any) => user?.role === 'ProjectManager'
+            (user: any) => user?.role === 'ProjectManager' || user?.role === 'ProcessManagerAdmin'
           );
           this.selectedSupplier = response?.data?.filter(
             (user: any) => user?.role === 'SupplierAdmin'

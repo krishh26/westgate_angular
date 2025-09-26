@@ -15,6 +15,11 @@ import { TypeWiseProjectDetailsComponent } from './type-wise-project-details/typ
 import { TodoTaskViewDetailsPageComponent } from './todo-task-view-details-page/todo-task-view-details-page.component';
 import { ProcessManagerCaseStudiesComponent } from './process-manager-case-studies/process-manager-case-studies.component';
 import { TaskDetailsProcessManagerComponent } from './task-details-process-manager/task-details-process-manager.component';
+import { ProcessManagerToActionComponent } from './process-manager-to-action/process-manager-to-action.component';
+import { ProcessManagerInProgressComponent } from './process-manager-in-progress/process-manager-in-progress.component';
+import { ProcessManagerCompletedComponent } from './process-manager-completed/process-manager-completed.component';
+import { ProcessManagerProjectFailedComponent } from './process-manager-project-failed/process-manager-project-failed.component';
+import { InterestedSupplierWiseProjectsProcessManagerComponent } from './interested-supplier-wise-projects-process-manager/interested-supplier-wise-projects-process-manager.component';
 
 const routes: Routes = [
   {
@@ -76,6 +81,26 @@ const routes: Routes = [
       {
         path: "task-details-process-manager",
         component: TaskDetailsProcessManagerComponent
+      },
+      {
+        path: "process-manager-to-action",
+        component: ProcessManagerToActionComponent
+      },
+      {
+        path: "process-manager-in-progress",
+        component: ProcessManagerInProgressComponent
+      },
+      {
+        path: "process-manager-completed",
+        component: ProcessManagerCompletedComponent
+      },
+      {
+        path: "process-manager-project-failed",
+        component: ProcessManagerProjectFailedComponent
+      },
+      {
+        path: "interested-supplier-wise-projects-process-manager",
+        component: InterestedSupplierWiseProjectsProcessManagerComponent
       },
     ]
   },
