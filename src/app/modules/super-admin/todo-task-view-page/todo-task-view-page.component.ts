@@ -617,7 +617,18 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           if (response?.status === true) {
-            this.taskList = response?.data?.data;
+            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+
+            this.taskList = response?.data?.data.map((task: any) => {
+              const todayComments = task?.comments?.filter((comment: any) =>
+                comment.date.split("T")[0] === today
+              );
+
+              return {
+                ...task,
+                todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
+              };
+            });
           } else {
             this.notificationService.showError(response?.message);
           }
