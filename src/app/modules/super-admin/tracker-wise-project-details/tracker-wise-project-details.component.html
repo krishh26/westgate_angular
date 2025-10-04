@@ -494,9 +494,8 @@
           </div>
         </div>
       </div>
-
       <!-- Minimal Requirement Card -->
-      <div class="card mb-4" *ngIf="minimalRequirementData">
+      <div class="card mb-4" *ngIf="minimalRequirementData?.minimalRequirement && (minimalRequirementData?.minimalRequirement?.description || minimalRequirementData?.minimalRequirement?.createdAt)">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h6 class="mb-0">Mandatory requirements (Minimum eligibility criteria)</h6>
           <div class="d-flex align-items-center gap-2">
@@ -515,9 +514,8 @@
           </div>
         </div>
       </div>
-
       <!-- Reject Reason Card -->
-      <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="projectDetails?.adminStatusComment">
+      <div class="col-lg-12 col-xl-12 col-12 mb-3" *ngIf="projectDetails?.adminStatusComment && projectDetails?.adminStatusComment && projectDetails.adminStatusComment.length > 0">
         <div class="card mb-4">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="mb-0">Reject Reason</h6>
