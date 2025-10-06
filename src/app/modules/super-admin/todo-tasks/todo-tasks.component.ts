@@ -688,7 +688,7 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
     }).then((result: any) => {
       if (result?.value) {
 
-        this.projectService.deleteComment(param, task._id).subscribe(
+        this.projectService.deleteComment(task._id, param).subscribe(
           (response: any) => {
             if (response?.status === true) {
 
