@@ -315,7 +315,8 @@ export class ExpertiseViewComponent {
   fetchDropdownData(type: string) {
     this.showLoader = true;
     // Include search parameter if available
-    const url = `${environment.baseUrl}/web-user/drop-down?type=${type}${this.searchText ? '&search=' + this.searchText.trim() : ''}`;
+    const encodedType = encodeURIComponent(type);
+    const url = `${environment.baseUrl}/web-user/drop-down-list?type=${encodedType}${this.searchText ? '&search=' + encodeURIComponent(this.searchText.trim()) : ''}`;
 
     this.http.get<any>(url).subscribe(
       (response) => {
