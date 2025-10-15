@@ -670,7 +670,14 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
   }
 
   // Method to format the display of status labels
-  getFormattedStatus(status: string): string {
+  getFormattedStatus(status: string, project?: any): string {
+    // Handle specific adminStatus that should show 'Waiting For Approval' for bid status
+    if (project && project.adminStatus &&
+        (project.adminStatus === 'Nosuppliermatched' || project.adminStatus === 'Dropped after feasibility')) {
+      return 'Waiting For Approval';
+    }
+
+    // Handle other status formatting
     return status === 'Not Releted' ? 'Not Related' : status;
   }
 

@@ -201,7 +201,7 @@
                       {{ item.bidsubmissiontime }}
                     </td>
                     <td>{{ getFormattedStatus(item?.status) }}</td>
-                    <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
+                    <td>{{ getFormattedStatus(item?.bidManagerStatus, item) }}</td>
                     <td>{{ item?.assignBidmanager[0]?.name }}</td>
                     <td *ngIf="selectedBidStatus === 'WaitingForResult'">{{ item?.resultExpected }}</td>
                     <td>
