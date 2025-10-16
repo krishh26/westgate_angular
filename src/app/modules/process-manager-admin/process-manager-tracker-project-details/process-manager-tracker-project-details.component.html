@@ -609,7 +609,7 @@
 
               <!-- Display Existing Comments -->
               <div *ngIf="feasibilityCommentData?.length" class="comment-list comments-section">
-                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of feasibilityCommentData">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of feasibilityCommentData; let i = index">
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">
@@ -622,6 +622,14 @@
                     <small class="text-muted d-block"><strong>Status :</strong> {{ item?.status }}</small>
                     <div class="d-flex justify-content-between">
                       <p class="mt-2" [innerHTML]="item?.comment"></p>
+                      <div class="d-flex align-items-center">
+                        <button *ngIf="loginUser?._id === item?.userId && isCommentDeletable(item?.date)" class="btn btn-sm text-danger" (click)="deleteFeasibilityComment(item, i)">
+                          Delete
+                        </button>
+                        <small *ngIf="loginUser?._id === item?.userId && !isCommentDeletable(item?.date)" class="text-muted">
+                          (Delete not available after 5 hours)
+                        </small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -795,7 +803,7 @@
 
               <!-- Display Existing Comments -->
               <div *ngIf="commentData?.length" class="comment-list comments-section">
-                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData">
+                <div class="comment-item border rounded p-3 mb-2" *ngFor="let item of commentData; let i = index">
                   <div class="comment mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <p class="mb-0 fw-bold">
@@ -809,6 +817,14 @@
                       {{ item?.bidManagerStatus }}</small>
                     <div class="d-flex justify-content-between">
                       <p class="mt-2" [innerHTML]="item?.comment"></p>
+                      <div class="d-flex align-items-center">
+                        <button *ngIf="loginUser?._id === item?.userId && isCommentDeletable(item?.date)" class="btn btn-sm text-danger" (click)="deleteBidStatusComment(item, i)">
+                          Delete
+                        </button>
+                        <small *ngIf="loginUser?._id === item?.userId && !isCommentDeletable(item?.date)" class="text-muted">
+                          (Delete not available after 5 hours)
+                        </small>
+                      </div>
                     </div>
                   </div>
                 </div>

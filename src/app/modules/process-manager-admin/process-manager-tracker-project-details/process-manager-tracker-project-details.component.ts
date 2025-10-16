@@ -2865,4 +2865,127 @@ export class ProcessManagerTrackerProjectDetailsComponent implements OnInit, OnD
     });
   }
 
+  // Check if comment is deletable (within 5 hours)
+  isCommentDeletable(commentDate: string): boolean {
+    if (!commentDate) return false;
+
+    const commentTime = new Date(commentDate).getTime();
+    const currentTime = new Date().getTime();
+    const fiveHoursInMs = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+
+    return (currentTime - commentTime) <= fiveHoursInMs;
+  }
+
+  // Delete feasibility status comment
+  deleteFeasibilityComment(item: any, id: any) {
+    console.log('Delete feasibility comment - item:', item);
+    console.log('Delete feasibility comment - id:', id);
+
+    let param = {
+      commentId: id,
+      statusComment: {
+        comment: item?.comment,
+        date: item?.date,
+        status: item?.status,
+        userId: item?.userDetails?._id,
+        userDetails: {
+          _id: item?.userDetails?._id,
+          name: item?.userDetails?.name,
+          email: item?.userDetails?.email,
+          role: item?.userDetails?.role,
+          companyName: item?.userDetails?.companyName,
+        },
+      },
+    };
+
+    console.log('Delete feasibility comment - param:', param);
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService
+          .deleteFeasiblityBidComment(param, this.projectId)
+          .subscribe(
+            (response: any) => {
+              if (response?.status === true) {
+                this.notificationService.showSuccess(
+                  'Comment successfully deleted'
+                );
+                window.location.reload();
+              } else {
+                this.notificationService.showError(response?.message);
+              }
+            },
+            (error) => {
+              this.notificationService.showError(error?.error?.message || error?.message);
+            }
+          );
+      }
+    });
+  }
+
+  // Delete bid status comment
+  deleteBidStatusComment(item: any, id: any) {
+    console.log('Delete bid status comment - item:', item);
+    console.log('Delete bid status comment - id:', id);
+
+    let param = {
+      commentId: id,
+      bidManagerStatusComment: {
+        comment: item?.comment,
+        date: item?.date,
+        bidManagerStatus: item?.bidManagerStatus,
+        userId: item?.userDetails?._id,
+        userDetails: {
+          _id: item?.userDetails?._id,
+          name: item?.userDetails?.name,
+          email: item?.userDetails?.email,
+          role: item?.userDetails?.role,
+          companyName: item?.userDetails?.companyName,
+        },
+      },
+    };
+
+    console.log('Delete bid status comment - param:', param);
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete this comment?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00B96F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete!',
+    }).then((result: any) => {
+      if (result?.value) {
+        this.showLoader = true;
+        this.projectService
+          .deleteBidComment(param, this.projectId)
+          .subscribe(
+            (response: any) => {
+              if (response?.status === true) {
+                this.notificationService.showSuccess(
+                  'Comment successfully deleted'
+                );
+                window.location.reload();
+              } else {
+                this.notificationService.showError(response?.message);
+              }
+            },
+            (error) => {
+              this.notificationService.showError(error?.error?.message || error?.message);
+            }
+          );
+      }
+    });
+  }
+
 }
