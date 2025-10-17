@@ -146,11 +146,44 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Get task ID from route params
+    // Get task ID and data from route params and state
     this.route.params.subscribe(params => {
       const taskId = params['id'];
       if (taskId) {
-        this.loadTaskDetails(taskId);
+        // Get the task data and source page from navigation state
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras.state;
+
+        if (state) {
+          this.previousPage = state['sourcePage'] || '/process-manager/to-do-tasks-process-manager';
+          if (state['taskData']) {
+            // Use the passed task data
+            this.setupTaskDetails(state['taskData']);
+            this.getSubtasks(taskId);
+            // Fetch tasks by project ID if task has a project
+            if (state['taskData'].project && state['taskData'].project._id) {
+              this.getTasksByProjectId(state['taskData'].project._id);
+            }
+          } else {
+            // Fallback to API call if no data was passed
+            this.loadTaskDetails(taskId);
+          }
+        } else {
+          // If no state, try to get from history state
+          const historyState = window.history.state;
+          if (historyState && historyState.taskData) {
+            this.previousPage = historyState.sourcePage || '/process-manager/to-do-tasks-process-manager';
+            this.setupTaskDetails(historyState.taskData);
+            this.getSubtasks(taskId);
+            // Fetch tasks by project ID if task has a project
+            if (historyState.taskData.project && historyState.taskData.project._id) {
+              this.getTasksByProjectId(historyState.taskData.project._id);
+            }
+          } else {
+            // Fallback to API call
+            this.loadTaskDetails(taskId);
+          }
+        }
       } else {
         // Redirect to task list page if no ID specified
         this.router.navigate([this.previousPage]);
@@ -441,9 +474,8 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
         (response) => {
           if (response?.status === true) {
             this.notificationService.showSuccess('Task Created Successfully');
-            this.getTask();
-            // this.activeModal.close();
-            window.location.reload();
+            // Redirect back to the previous page after creating a task
+            this.router.navigate([this.previousPage]);
           } else {
             this.notificationService.showError(response?.message);
           }
@@ -547,18 +579,39 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
 
   // API call to update the task
   updateTask(params: any) {
-    this.showLoader = true;
     this.spinner.show();
     this.superService.updateTask(params, this.modalTask._id).subscribe(
       (response) => {
-        this.notificationService.showSuccess('Task updated Successfully');
-        // Reload task details
-        this.loadTaskDetails(this.modalTask._id);
+        if (response?.status === true) {
+          // Update the local task data instead of reloading everything
+          this.modalTask = { ...this.modalTask, ...params };
+
+          // Update form values if they were changed
+          if (params.pickACategory) {
+            this.selectedCategory = params.pickACategory;
+          }
+          if (params.status) {
+            this.selectedStatus = params.status;
+          }
+          if (params.type) {
+            this.selectedTaskType = params.type;
+          }
+          if (params.dueDate) {
+            this.dueDateValue = this.formatDateToNgbDate(params.dueDate);
+          }
+          if (params.assignTo) {
+            this.assignTo = params.assignTo;
+          }
+
+          this.notificationService.showSuccess('Task updated Successfully');
+        } else {
+          this.notificationService.showError(response?.message || 'Failed to update task');
+        }
+        this.spinner.hide();
       },
       (error) => {
         console.error('Error updating task', error);
         this.notificationService.showError('Error updating task');
-        this.showLoader = false;
         this.spinner.hide();
       }
     );
@@ -647,38 +700,6 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  getTask() {
-    this.showLoader = true;
-    return this.superService
-      .getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
-      .subscribe(
-        (response) => {
-          if (response?.status === true) {
-            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-
-            this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
-
-              return {
-                ...task,
-                todayComments: todayComments?.length ? todayComments : null, // Assign filtered comments
-              };
-            });
-
-            this.showLoader = false;
-          } else {
-            this.notificationService.showError(response?.message);
-            this.showLoader = false;
-          }
-        },
-        (error) => {
-          this.notificationService.showError(error?.error?.message || error?.message);
-          this.showLoader = false;
-        }
-      );
-  }
 
   deleteTask(id: any) {
     Swal.fire({
@@ -726,21 +747,35 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+        this.spinner.show();
         this.projectService.deleteComment(param, this.modalTask._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
               this.notificationService.showSuccess('Comment successfully deleted');
-              this.loadTaskDetails(this.modalTask._id);
+
+              // Remove comment from local data instead of reloading
+              if (this.modalTask.comments) {
+                this.modalTask.comments = this.modalTask.comments.filter(
+                  (comment: any) => comment.commentId !== id
+                );
+              }
+
+              // Also remove from datewiseComments
+              if (this.modalTask.datewiseComments) {
+                Object.keys(this.modalTask.datewiseComments).forEach(date => {
+                  this.modalTask.datewiseComments[date] = this.modalTask.datewiseComments[date].filter(
+                    (comment: any) => comment.commentId !== id
+                  );
+                });
+              }
             } else {
-              this.showLoader = false;
               this.notificationService.showError(response?.message);
             }
+            this.spinner.hide();
           },
           (error) => {
-            this.showLoader = false;
             this.notificationService.showError(error?.error?.message || error?.message);
+            this.spinner.hide();
           }
         );
       }
@@ -761,23 +796,37 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+        this.spinner.show();
         this.projectService.deleteComment(param, task._id).subscribe(
           (response: any) => {
             if (response?.status === true) {
-              this.showLoader = false;
               this.notificationService.showSuccess(
                 'Comment successfully deleted'
               );
-              window.location.reload();
+
+              // Remove comment from local data instead of reloading
+              if (this.modalTask.comments) {
+                this.modalTask.comments = this.modalTask.comments.filter(
+                  (comment: any) => comment.commentId !== id
+                );
+              }
+
+              // Also remove from datewiseComments
+              if (this.modalTask.datewiseComments) {
+                Object.keys(this.modalTask.datewiseComments).forEach(date => {
+                  this.modalTask.datewiseComments[date] = this.modalTask.datewiseComments[date].filter(
+                    (comment: any) => comment.commentId !== id
+                  );
+                });
+              }
             } else {
-              this.showLoader = false;
               this.notificationService.showError(response?.message);
             }
+            this.spinner.hide();
           },
           (error) => {
-            this.showLoader = false;
             this.notificationService.showError(error?.error?.message || error?.message);
+            this.spinner.hide();
           }
         );
       }
@@ -800,6 +849,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
         comment: comment.updatedComment,
       };
 
+      this.spinner.show();
       this.superService
         .updateComment(payload, comment._id, this.modalTask._id)
         .subscribe(
@@ -808,19 +858,21 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
               this.notificationService.showSuccess(
                 'Comment Updated Successfully'
               );
-              this.getTask();
-              comment.comment = comment.updatedComment; // Update UI
-              comment.isEditing = false; // Exit edit mode
+              // Update the comment in local data instead of reloading
+              comment.comment = comment.updatedComment;
+              comment.isEditing = false;
             } else {
               this.notificationService.showError(
                 response?.message || 'Comment cannot be updated after 24 hours'
               );
             }
+            this.spinner.hide();
           },
           (error) => {
             this.notificationService.showError(
               error?.message || 'Comment cannot be updated after 24 hours'
             );
+            this.spinner.hide();
           }
         );
     } else {
@@ -848,7 +900,6 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.showLoader = true;
     this.spinner.show();
     const payload: any = {
       comment: commentContent,
@@ -865,19 +916,44 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response?.status === true) {
           this.notificationService.showSuccess('Comment added successfully');
+
+          // Add the new comment to the local task data instead of reloading
+          const newComment = {
+            comment: commentContent,
+            date: new Date().toISOString(),
+            userDetail: {
+              name: this.loginUser?.userName || this.loginUser?.name,
+              role: this.loginUser?.role
+            },
+            commentId: response?.data?.commentId || Date.now().toString(),
+            minutes: this.timeMinutes
+          };
+
+          // Update the comments array
+          if (!this.modalTask.comments) {
+            this.modalTask.comments = [];
+          }
+          this.modalTask.comments.push(newComment);
+
+          // Update datewiseComments if it exists
+          const today = new Date().toISOString().split('T')[0];
+          if (!this.modalTask.datewiseComments) {
+            this.modalTask.datewiseComments = {};
+          }
+          if (!this.modalTask.datewiseComments[today]) {
+            this.modalTask.datewiseComments[today] = [];
+          }
+          this.modalTask.datewiseComments[today].push(newComment);
+
           this.commentForm.reset();
           this.timeMinutes = null;
-          // Reload the page after successful comment
-          window.location.reload();
         } else {
           this.notificationService.showError(response?.message || 'Failed to add comment');
-          this.showLoader = false;
-          this.spinner.hide();
         }
+        this.spinner.hide();
       },
       (error: any) => {
         this.notificationService.showError(error?.message || 'An error occurred');
-        this.showLoader = false;
         this.spinner.hide();
       }
     );
@@ -890,7 +966,7 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
     } else {
       this.selectedUserIds.push(userId);
     }
-    this.getTask();
+    // Not needed on detail page - this is for filtering task list
   }
 
   saveBidStatus(type?: string, contractEdit?: boolean) {
@@ -986,51 +1062,21 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       pin: !comment.pinnedAt
     };
 
+    this.spinner.show();
     this.superService.updateCommentPin(task._id, comment.commentId, payload).subscribe(
       (response: any) => {
         if (response?.status) {
           this.notificationService.showSuccess(comment.pinnedAt ? 'Comment unpinned successfully' : 'Comment pinned successfully');
-          // Update the comment's pinned status
+          // Update the comment's pinned status in local data
           comment.pinnedAt = comment.pinnedAt ? null : new Date().toISOString();
-
-          // Store current scroll position
-          const currentScrollPosition = window.pageYOffset;
-
-          // Refresh the task list
-          this.showLoader = true;
-          this.superService.getsuperadmintasks(this.selectedUserIds.join(','), 'Ongoing')
-            .subscribe(
-              (response) => {
-                if (response?.status === true) {
-                  const today = new Date().toISOString().split("T")[0];
-                  this.taskList = response?.data?.data.map((task: any) => {
-                    const todayComments = task?.comments?.filter((comment: any) =>
-                      comment.date.split("T")[0] === today
-                    );
-                    return {
-                      ...task,
-                      todayComments: todayComments?.length ? todayComments : null,
-                    };
-                  });
-                  // Restore scroll position after data is loaded
-                  window.scrollTo(0, currentScrollPosition);
-                } else {
-                  this.notificationService.showError(response?.message);
-                }
-                window.location.reload();
-                this.showLoader = false;
-              },
-              (error) => {
-                this.notificationService.showError(error?.error?.message || error?.message);
-                this.showLoader = false;
-              }
-            );
         } else {
           this.notificationService.showError(response?.message || 'Failed to update comment pin status');
         }
+        this.spinner.hide();
       },
       (error: any) => {
         this.notificationService.showError(error?.message || 'Failed to update comment pin status');
+        this.spinner.hide();
       }
     );
   }
@@ -1226,22 +1272,21 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, Delete!',
     }).then((result: any) => {
       if (result?.value) {
-        this.showLoader = true;
+        this.spinner.show();
         this.projectService.removeTaskFromMyDay(this.modalTask?._id, this.loginUser._id).subscribe(
           (response: any) => {
             if (response?.status == true) {
-              this.showLoader = false;
               this.notificationService.showSuccess('Task successfully removed from my-day');
-              window.location.reload();
-              this.getTask();
+              // Update the local task status instead of reloading
+              this.modalTask.status = 'Ongoing'; // Or whatever the appropriate status is
             } else {
-              this.showLoader = false;
               this.notificationService.showError(response?.message);
             }
+            this.spinner.hide();
           },
           (error) => {
-            this.showLoader = false;
             this.notificationService.showError(error?.error?.message || error?.message);
+            this.spinner.hide();
           }
         );
       }

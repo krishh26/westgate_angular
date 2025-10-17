@@ -357,7 +357,12 @@ export class ToDoTasksProcessManagerComponent implements OnInit, OnDestroy {
   // Navigate to task detail page instead of opening modal
   navigateToTaskDetail(task: any) {
     if (task && task._id) {
-      this.router.navigate(['/process-manager/todo-task-view-details', task._id]);
+      this.router.navigate(['/process-manager/todo-task-view-details', task._id], {
+        state: {
+          taskData: task,
+          sourcePage: '/process-manager/to-do-tasks-process-manager'
+        }
+      });
     } else {
       this.notificationService.showError('Task ID not found');
     }
