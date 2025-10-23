@@ -17,6 +17,7 @@ export enum SuperAdminEndPoint {
   PROJECT_MAIL_SEND = '/project/new-project-mail',
   CREATE_TASK = '/task/create',
   GET_TASK = '/task/list',
+  TASK_DETAIL = '/task/detail',
   TASK_GRAPH = '/task/graph',
   ADD_COMMENTS = '/task/add-comment/',
   UPDATE_TASK = '/task/update',
@@ -643,7 +644,7 @@ export class SuperadminService {
 
   // Get task details by ID
   getTaskDetails(taskId: string) {
-    return this.httpClient.get(`${this.baseUrl}/task/detail/${taskId}`);
+    return this.httpClient.get(`${this.baseUrl}${SuperAdminEndPoint.TASK_DETAIL}/${taskId}`);
   }
 
   getExpertiseDropdown(type?: string): Observable<any> {

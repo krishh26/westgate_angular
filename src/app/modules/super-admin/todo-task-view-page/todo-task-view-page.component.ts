@@ -153,36 +153,26 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Get task ID and data from route params and state
+    // Get task ID from route params and call API
     this.route.params.subscribe(params => {
       const taskId = params['id'];
       if (taskId) {
-        // Get the task data and source page from navigation state
+        // Get the source page from navigation state for back navigation
         const navigation = this.router.getCurrentNavigation();
         const state = navigation?.extras.state;
 
-        if (state) {
-          this.sourcePage = state['sourcePage'] || '/super-admin/todo-tasks';
-          if (state['taskData']) {
-            // Use the passed task data
-            this.setupTaskDetails(state['taskData']);
-            this.getSubtasks(taskId);
-          } else {
-            // Fallback to API call if no data was passed
-            this.loadTaskDetails(taskId);
-          }
+        if (state && state['sourcePage']) {
+          this.sourcePage = state['sourcePage'];
         } else {
-          // If no state, try to get from history state
+          // Try to get from history state
           const historyState = window.history.state;
-          if (historyState && historyState.taskData) {
-            this.sourcePage = historyState.sourcePage || '/super-admin/todo-tasks';
-            this.setupTaskDetails(historyState.taskData);
-            this.getSubtasks(taskId);
-          } else {
-            // Fallback to API call
-            this.loadTaskDetails(taskId);
+          if (historyState && historyState.sourcePage) {
+            this.sourcePage = historyState.sourcePage;
           }
         }
+
+        // Always call the API to get fresh task details
+        this.loadTaskDetails(taskId);
       } else {
         // Redirect to task list page if no ID specified
         this.router.navigate([this.sourcePage]);
@@ -212,35 +202,31 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
 
   loadTaskDetails(taskId: string) {
     this.spinner.show();
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, 5000)
+    // Using the specific task detail API endpoint
+    this.superService.getTaskDetails(taskId)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
-            // Find the task with matching ID
-            this.totalRecords = response?.data?.meta_data?.items || 0;
-            const task = response?.data?.data.find((t: any) => t._id === taskId);
-            console.log(task);
+            const task = response?.data;
 
             if (task) {
+              console.log('Task details loaded:', task);
               this.setupTaskDetails(task);
-              // Load subtasks after task details are loaded
-              this.getSubtasks(taskId);
-              this.spinner.hide();
+              // Subtasks are now included in the API response, no need to call getSubtasks separately
+              // this.getSubtasks(taskId);
             } else {
               this.notificationService.showError('Task not found');
               this.router.navigate([this.sourcePage]);
-              this.spinner.hide();
             }
           } else {
             this.notificationService.showError(response?.message || 'Error loading task details');
-            this.router.navigate([this.sourcePage]);
-            this.spinner.hide();
           }
+          this.spinner.hide();
         },
         (error: any) => {
           this.notificationService.showError(error?.message || 'Error loading task details');
-          this.router.navigate([this.sourcePage]);
           this.spinner.hide();
+          this.router.navigate([this.sourcePage]);
         }
       );
   }
@@ -254,12 +240,31 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
     });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
 
-    // Set form values
-    this.selectedCategory = this.modalTask.priority;
+    // Set form values based on API response structure
+    this.selectedCategory = this.modalTask.pickACategory || this.modalTask.priority;
     this.selectedStatus = this.modalTask.status;
     this.selectedTaskType = this.modalTask.type;
     if (this.modalTask.dueDate) {
       this.dueDateValue = this.formatDateToNgbDate(this.modalTask.dueDate);
+    }
+
+    // Handle comments structure - convert from array to datewise format if needed
+    if (this.modalTask.comments && Array.isArray(this.modalTask.comments)) {
+      this.modalTask.datewiseComments = this.convertCommentsToDatewise(this.modalTask.comments);
+    }
+
+    // Handle subtasks from API response
+    if (this.modalTask.subtasks && Array.isArray(this.modalTask.subtasks)) {
+      this.subtasksList = this.modalTask.subtasks;
+    }
+
+    // Handle assignTo with userDetail for display
+    if (this.modalTask.assignTo && Array.isArray(this.modalTask.assignTo)) {
+      this.modalTask.assignTo = this.modalTask.assignTo.map((assignee: any) => ({
+        ...assignee,
+        userName: assignee.userDetail?.name || `User ${assignee.userId?.substring(0, 8)}...`,
+        userRole: assignee.userDetail?.role || 'User'
+      }));
     }
   }
 
@@ -270,6 +275,43 @@ export class TodoTaskViewPageComponent implements OnInit, OnDestroy {
       month: date.getMonth() + 1,
       day: date.getDate()
     };
+  }
+
+  // Convert comments array to datewise format for display
+  convertCommentsToDatewise(comments: any[]): any {
+    const datewiseComments: any = {};
+    const pinnedComments: any[] = [];
+
+    comments.forEach(comment => {
+      const commentDate = new Date(comment.date).toISOString().split('T')[0]; // Get YYYY-MM-DD format
+
+      // Use userDetail from API response if available, otherwise create fallback
+      const commentWithUserDetails = {
+        ...comment,
+        userDetail: comment.userDetail || {
+          name: `User ${comment.userId?.substring(0, 8)}...`,
+          role: 'User'
+        }
+      };
+
+      // Check if comment is pinned
+      if (comment.pin === true || comment.pinnedAt) {
+        pinnedComments.push(commentWithUserDetails);
+      } else {
+        // Add to datewise comments
+        if (!datewiseComments[commentDate]) {
+          datewiseComments[commentDate] = [];
+        }
+        datewiseComments[commentDate].push(commentWithUserDetails);
+      }
+    });
+
+    // Add pinned comments to the result
+    if (pinnedComments.length > 0) {
+      datewiseComments.pinnedComments = pinnedComments;
+    }
+
+    return datewiseComments;
   }
 
   transformData = (data: any) => {

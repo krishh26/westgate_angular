@@ -146,44 +146,26 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Get task ID and data from route params and state
+    // Get task ID from route params and call API
     this.route.params.subscribe(params => {
       const taskId = params['id'];
       if (taskId) {
-        // Get the task data and source page from navigation state
+        // Get the source page from navigation state for back navigation
         const navigation = this.router.getCurrentNavigation();
         const state = navigation?.extras.state;
 
-        if (state) {
-          this.previousPage = state['sourcePage'] || '/process-manager/to-do-tasks-process-manager';
-          if (state['taskData']) {
-            // Use the passed task data
-            this.setupTaskDetails(state['taskData']);
-            this.getSubtasks(taskId);
-            // Fetch tasks by project ID if task has a project
-            if (state['taskData'].project && state['taskData'].project._id) {
-              this.getTasksByProjectId(state['taskData'].project._id);
-            }
-          } else {
-            // Fallback to API call if no data was passed
-            this.loadTaskDetails(taskId);
-          }
+        if (state && state['sourcePage']) {
+          this.previousPage = state['sourcePage'];
         } else {
-          // If no state, try to get from history state
+          // Try to get from history state
           const historyState = window.history.state;
-          if (historyState && historyState.taskData) {
-            this.previousPage = historyState.sourcePage || '/process-manager/to-do-tasks-process-manager';
-            this.setupTaskDetails(historyState.taskData);
-            this.getSubtasks(taskId);
-            // Fetch tasks by project ID if task has a project
-            if (historyState.taskData.project && historyState.taskData.project._id) {
-              this.getTasksByProjectId(historyState.taskData.project._id);
-            }
-          } else {
-            // Fallback to API call
-            this.loadTaskDetails(taskId);
+          if (historyState && historyState.sourcePage) {
+            this.previousPage = historyState.sourcePage;
           }
         }
+
+        // Always call the API to get fresh task details
+        this.loadTaskDetails(taskId);
       } else {
         // Redirect to task list page if no ID specified
         this.router.navigate([this.previousPage]);
@@ -212,27 +194,23 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
   loadTaskDetails(taskId: string) {
     this.showLoader = true;
     this.spinner.show();
-    // Using getsuperadmintasks with filter instead since there's no direct getTaskById method
-    this.superService.getsuperadmintasks('', '', '', '', '', false, '', this.page, 5000)
+    // Using the specific task detail API endpoint
+    this.superService.getTaskDetails(taskId)
       .subscribe(
         (response: any) => {
           if (response?.status === true) {
-            this.totalRecords = response?.data?.meta_data?.items || 0;
-            // Find the task with matching ID
-            const task = response?.data?.data.find((t: any) => t._id === taskId);
+            const task = response?.data;
 
             if (task) {
-              console.log(task);
-
+              console.log('Task details loaded:', task);
               this.setupTaskDetails(task);
-              this.getSubtasks(taskId);
+              // Subtasks are now included in the API response, no need to call getSubtasks separately
+              // this.getSubtasks(taskId);
               // Fetch tasks by project ID if task has a project
               if (task.project && task.project._id) {
                 this.getTasksByProjectId(task.project._id);
               }
             } else {
-              console.log(task);
-
               this.notificationService.showError('Task not found');
               this.router.navigate([this.previousPage]);
             }
@@ -260,12 +238,31 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
     });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
 
-    // Set form values
-    this.selectedCategory = this.modalTask.priority;
+    // Set form values based on API response structure
+    this.selectedCategory = this.modalTask.pickACategory || this.modalTask.priority;
     this.selectedStatus = this.modalTask.status;
     this.selectedTaskType = this.modalTask.type;
     if (this.modalTask.dueDate) {
       this.dueDateValue = this.formatDateToNgbDate(this.modalTask.dueDate);
+    }
+
+    // Handle comments structure - convert from array to datewise format if needed
+    if (this.modalTask.comments && Array.isArray(this.modalTask.comments)) {
+      this.modalTask.datewiseComments = this.convertCommentsToDatewise(this.modalTask.comments);
+    }
+
+    // Handle subtasks from API response
+    if (this.modalTask.subtasks && Array.isArray(this.modalTask.subtasks)) {
+      this.subtasksList = this.modalTask.subtasks;
+    }
+
+    // Handle assignTo with userDetail for display
+    if (this.modalTask.assignTo && Array.isArray(this.modalTask.assignTo)) {
+      this.modalTask.assignTo = this.modalTask.assignTo.map((assignee: any) => ({
+        ...assignee,
+        userName: assignee.userDetail?.name || `User ${assignee.userId?.substring(0, 8)}...`,
+        userRole: assignee.userDetail?.role || 'User'
+      }));
     }
   }
 
@@ -276,6 +273,43 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
       month: date.getMonth() + 1,
       day: date.getDate()
     };
+  }
+
+  // Convert comments array to datewise format for display
+  convertCommentsToDatewise(comments: any[]): any {
+    const datewiseComments: any = {};
+    const pinnedComments: any[] = [];
+
+    comments.forEach(comment => {
+      const commentDate = new Date(comment.date).toISOString().split('T')[0]; // Get YYYY-MM-DD format
+
+      // Use userDetail from API response if available, otherwise create fallback
+      const commentWithUserDetails = {
+        ...comment,
+        userDetail: comment.userDetail || {
+          name: `User ${comment.userId?.substring(0, 8)}...`,
+          role: 'User'
+        }
+      };
+
+      // Check if comment is pinned
+      if (comment.pin === true || comment.pinnedAt) {
+        pinnedComments.push(commentWithUserDetails);
+      } else {
+        // Add to datewise comments
+        if (!datewiseComments[commentDate]) {
+          datewiseComments[commentDate] = [];
+        }
+        datewiseComments[commentDate].push(commentWithUserDetails);
+      }
+    });
+
+    // Add pinned comments to the result
+    if (pinnedComments.length > 0) {
+      datewiseComments.pinnedComments = pinnedComments;
+    }
+
+    return datewiseComments;
   }
 
   // Function to transform the data
@@ -888,75 +922,50 @@ export class TodoTaskViewDetailsPageComponent implements OnInit, OnDestroy {
   }
 
   addComment(id: string) {
-    const commentContent = this.commentForm.get('description')?.value;
+    if (this.commentForm.valid) {
+      const description = this.commentForm.get('description')?.value;
 
-    if (!commentContent || !id) {
-      this.notificationService.showError('Please add a comment');
-      return;
-    }
-
-    if (!this.timeMinutes) {
-      this.notificationService.showError('Please select time spent');
-      return;
-    }
-
-    this.spinner.show();
-    const payload: any = {
-      comment: commentContent,
-      taskId: id,
-      userId: this.loginUser?.id
-    };
-
-    // Add minutes parameter if it has a value
-    if (this.timeMinutes !== null) {
-      payload.minutes = Number(this.timeMinutes);
-    }
-
-    this.superService.addComments(payload, id).subscribe(
-      (response: any) => {
-        if (response?.status === true) {
-          this.notificationService.showSuccess('Comment added successfully');
-
-          // Add the new comment to the local task data instead of reloading
-          const newComment = {
-            comment: commentContent,
-            date: new Date().toISOString(),
-            userDetail: {
-              name: this.loginUser?.userName || this.loginUser?.name,
-              role: this.loginUser?.role
-            },
-            commentId: response?.data?.commentId || Date.now().toString(),
-            minutes: this.timeMinutes
-          };
-
-          // Update the comments array
-          if (!this.modalTask.comments) {
-            this.modalTask.comments = [];
-          }
-          this.modalTask.comments.push(newComment);
-
-          // Update datewiseComments if it exists
-          const today = new Date().toISOString().split('T')[0];
-          if (!this.modalTask.datewiseComments) {
-            this.modalTask.datewiseComments = {};
-          }
-          if (!this.modalTask.datewiseComments[today]) {
-            this.modalTask.datewiseComments[today] = [];
-          }
-          this.modalTask.datewiseComments[today].push(newComment);
-
-          this.commentForm.reset();
-          this.timeMinutes = null;
-        } else {
-          this.notificationService.showError(response?.message || 'Failed to add comment');
-        }
-        this.spinner.hide();
-      },
-      (error: any) => {
-        this.notificationService.showError(error?.message || 'An error occurred');
-        this.spinner.hide();
+      if (!description || description.trim() === '<p></p>' || description.trim() === '') {
+        this.notificationService.showError('Please enter a comment');
+        return;
       }
-    );
+
+      if (!this.timeMinutes) {
+        this.notificationService.showError('Please select time spent');
+        return;
+      }
+
+      const payload: any = {
+        comment: description
+      };
+
+      // Add minutes parameter if it has a value
+      if (this.timeMinutes !== null) {
+        payload.minutes = Number(this.timeMinutes);
+      }
+
+      this.spinner.show();
+      this.superService.addComments(payload, id).subscribe(
+        (response) => {
+          if (response?.status === true) {
+            this.notificationService.showSuccess('Comment added successfully');
+            this.commentForm.reset();
+            this.timeMinutes = null;
+            // Reload the page after successful comment
+            window.location.reload();
+          } else {
+            this.notificationService.showError(response?.message || 'Failed to add comment');
+          }
+          this.spinner.hide();
+        },
+        (error) => {
+          this.spinner.hide();
+          this.notificationService.showError('An error occurred while adding comment');
+        }
+      );
+    } else {
+      this.notificationService.showError('Please fill in all required fields');
+    }
   }
 
   toggleUserSelection(userId: number): void {
