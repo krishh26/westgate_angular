@@ -169,10 +169,10 @@
                               {{ comment?.userDetail?.name }}
                             </p>
                             <small class="comment-date" *ngIf="comment?.date">
-                              {{ comment?.date | date : "dd/MM/yyyy" }}
-                              <span *ngIf="comment?.timeStart && comment?.timeEnd">
+                              {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                              <!-- <span *ngIf="comment?.timeStart && comment?.timeEnd">
                                 ({{ comment?.timeStart | timeFormat }} - {{ comment?.timeEnd | timeFormat }})
-                              </span>
+                              </span> -->
                             </small>
                           </div>
                           <small class="text-muted user-role d-block">
