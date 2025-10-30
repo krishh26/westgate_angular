@@ -158,9 +158,28 @@
                       {{ item?.dueDate | date : "dd/MM/yyyy"
                       }} , {{ item.bidsubmissiontime }}
                     </td>
-                    <td>{{ getFormattedStatus(item?.status) }}</td>
-                    <!-- <td>{{ item?.assignFeasibilityUser[0]?.name }}</td> -->
-                    <td>{{ getFormattedStatus(item?.bidManagerStatus) }}</td>
+                    <td>
+                      <ng-container *ngIf="item?.adminStatus === 'Fail' || item?.adminStatus === 'Not Releted' ; else failStatus">
+                        <span>Waiting for approval</span>
+                      </ng-container>
+                      <ng-template #failStatus>
+                        {{ item?.status }}
+                      </ng-template>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="
+                          !(
+                            item?.adminStatus === 'Nosuppliermatched' ||
+                            item?.adminStatus === 'Dropped after feasibility'
+                          );
+                          else waitingForApproval
+                        ">
+                        {{ item?.bidManagerStatus }}
+                      </ng-container>
+                      <ng-template #waitingForApproval>
+                        <span>Waiting for approval</span>
+                      </ng-template>
+                    </td>
                     <td>{{ item?.assignBidmanager[0]?.name }}</td>
                     <td *ngIf="selectedBidStatus === 'WaitingForResult'">{{ item?.resultExpected }}</td>
                     <td>
