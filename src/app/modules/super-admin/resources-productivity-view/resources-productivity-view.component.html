@@ -41,9 +41,9 @@
             <span [ngClass]="{
                 'selected-user': selectedUserIds.includes(user._id)
               }" (click)="toggleUserSelection(user._id)">
-              {{ user.userName }}
+              {{ user.userName }} - {{ user?.taskcount }}
             </span>
-            - {{ user?.taskcount }}
+
           </li>
           <!-- View More / View Less Link -->
           <li *ngIf="userList.length > 7">

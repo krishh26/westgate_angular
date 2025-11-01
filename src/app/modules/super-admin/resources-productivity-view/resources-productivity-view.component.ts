@@ -823,7 +823,8 @@ export class ResourcesProductivityViewComponent implements OnInit, OnDestroy {
   getUserAllList(priorityType: string = '', type: string = '') {
     this.showLoader = true;
     const taskcount = true;
-    const taskPage = 1;
+    const taskPage = 'Ongoing'
+    // const taskPage = 1;
 
     this.projectManagerService.getUserallList(taskcount, taskPage, priorityType, type).subscribe(
       (response) => {
