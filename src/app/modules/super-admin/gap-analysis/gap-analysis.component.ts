@@ -29,6 +29,7 @@ export class GapAnalysisComponent {
   pageFailed: number = 1;
   pageDropped: number = 1;
   pageNoSupplier: number = 1;
+  totalRecordsNoSupplier: number = 0;
 
   // Helper method to check if comment exceeds a certain length
   isCommentLong(comment: string | undefined | null, length: number = 100): boolean {
@@ -108,6 +109,7 @@ export class GapAnalysisComponent {
       return;
     }
 
+    this.pageNoSupplier = 1; // Reset to first page when filters change
     this.getGapAnalysisData();
     this.getGapAnalysisDataNoSupplier();
     this.getGapAnalysisDataDropped();
@@ -122,6 +124,7 @@ export class GapAnalysisComponent {
       return;
     }
 
+    this.pageNoSupplier = 1; // Reset to first page when date range changes
     this.getGapAnalysisData();
     this.getGapAnalysisDataNoSupplier();
     this.getGapAnalysisDataDropped();
@@ -173,6 +176,7 @@ export class GapAnalysisComponent {
   }
 
   filterGapAnalysisData() {
+    this.pageNoSupplier = 1; // Reset to first page when filters change
     this.getGapAnalysisData('', this.selectedCategorisation, this.selectedProjectType);
     this.getGapAnalysisDataDropped('', this.selectedCategorisation, this.selectedProjectType);
     this.getGapAnalysisDataNoSupplier('', this.selectedCategorisation, this.selectedProjectType);
@@ -356,7 +360,8 @@ export class GapAnalysisComponent {
             ...item,
             showFullComment: false
           }));
-          this.totalRecords = response?.totalRecords;
+          // Use meta_data.items for total records if available, otherwise fallback to totalRecords
+          this.totalRecordsNoSupplier = response?.meta_data?.items || response?.totalRecords || 0;
         } else {
           this.notificationService.showError(response?.message);
         }
@@ -411,6 +416,12 @@ export class GapAnalysisComponent {
   paginate(page: number) {
     this.page = page;
     this.getGapAnalysisData();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  paginateNoSupplier(page: number) {
+    this.pageNoSupplier = page;
+    this.getGapAnalysisDataNoSupplier();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

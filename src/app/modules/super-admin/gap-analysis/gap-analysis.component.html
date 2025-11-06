@@ -197,8 +197,9 @@
                           | paginate
                             : {
                                 itemsPerPage: pagesize,
-                                currentPage: page,
-                                totalItems: totalRecords
+                                currentPage: pageNoSupplier,
+                                totalItems: totalRecordsNoSupplier,
+                                id: 'noSupplierPagination'
                               };
                         let i = index
                       ">
@@ -225,7 +226,13 @@
               <div class="row mt-3 align-items-center">
                 <div class="row">
                   <div class="pagination">
-                    <pagination-controls (pageChange)="paginate($event)" [idMaxSize]="100"></pagination-controls>
+                    <pagination-controls 
+                      (pageChange)="paginateNoSupplier($event)" 
+                      [id]="'noSupplierPagination'"
+                      [maxSize]="10"
+                      [directionLinks]="true"
+                      [autoHide]="false">
+                    </pagination-controls>
                   </div>
                 </div>
               </div>
