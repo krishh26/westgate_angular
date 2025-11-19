@@ -34,8 +34,13 @@ export class GapAnalysisComponent {
   // Helper method to check if comment exceeds a certain length
   isCommentLong(comment: string | undefined | null, length: number = 100): boolean {
     if (!comment) return false;
+
+    if (typeof comment !== 'string') {
+      return false;
+    }
+    // debugger;
     // Remove HTML tags for length calculation
-    const plainText = comment.replace(/<[^>]*>/g, '');
+    const plainText = comment?.replace(/<[^>]*>/g, '');
     return plainText.length > length;
   }
 
