@@ -29,6 +29,7 @@ export class ProcessManagerHeaderComponent {
     { title: 'Dashboard', route: '/process-manager/dashboard-process-manager' },
     { title: 'Project Tracker', route: '/process-manager/process-manager-tracker' },
     { title: 'TO DO TASKS', route: '/process-manager/to-do-tasks-process-manager' },
+    { title: 'Gap Analysis', route: '/process-manager/gap-analysis' },
     { title: 'Case Studies', route: '/process-manager/case-studies' },
     {  title: 'My Projects', route: '/process-manager/process-manager-to-action' },
   ];

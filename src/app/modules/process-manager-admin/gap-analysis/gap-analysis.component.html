@@ -1,0 +1,351 @@
+<main id="main">
+  <section>
+    <div class="container-fluid mb-3">
+      <div class="row align-items-center justify-content-between mb-4">
+        <!-- Heading -->
+        <div class="col-12 mb-2">
+          <h4 class="text-theme mb-0"><strong>Gap Analysis</strong></h4>
+        </div>
+
+        <div class="col-lg-8 col-xl-8 co-12">
+          <form (ngSubmit)="onSubmitDaterange()">
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-xl-5 col-md-4 col-sm-4 col-12 mob-mb1">
+                <div class="input-group">
+                  <input class="form-control" type="date" [formControl]="trackerStartDate" />
+                </div>
+              </div>
+              <div class="col-lg-5 col-xl-5 col-md-4 col-sm-4 col-12 mob-mb1">
+                <div class="input-group">
+                  <input class="form-control" type="date" [formControl]="trackerEndDate" />
+                </div>
+              </div>
+              <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-12 mob-mb1">
+                <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="col-lg-2 col-xl-2 col-12">
+          <ng-select id="category" class="height48 custom-ng-select-option w-100" placeholder="Pick a Category"
+            [items]="categorywiseList" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)"
+            style="height: 48px;">
+          </ng-select>
+        </div>
+
+        <div class="col-lg-2 col-xl-2 col-12">
+          <ng-select id="product" class="height48 custom-ng-select-option w-100" placeholder="Pick a Product Type"
+            [items]="projectwiseList" [(ngModel)]="selectedProduct" (ngModelChange)="onProductChange($event)"
+            style="height: 48px;">
+          </ng-select>
+        </div>
+
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="statistic-card mb-4">
+            <div class="card-body">
+              <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
+                <h5 class="text-theme mb-0"><strong>Failed</strong></h5>
+              </div>
+              <div class="table-responsive mt-3 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Tags</th>
+                      <th>Total Projects</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!gapAnalysisData?.length" colspan="3">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let item of gapAnalysisData; let i = index">
+                      <td>{{ item?.tag }}</td>
+                      <td>{{ item?.projectCount }}</td>
+                      <td>
+                        <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                          data-bs-target="#viewAllProjects" (click)="showProjects(item?.projects)">View
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-6 col-12">
+          <div class="statistic-card mb-4">
+            <div class="card-body">
+              <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
+                <h5 class="text-theme mb-0">
+                  <strong>Dropped after Feasibility</strong>
+                </h5>
+                <!-- <form class="d-flex align-items-center gap-2">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerStartDate" ngbDatepicker
+                                            #startDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="startDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="endDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                </form> -->
+              </div>
+              <div class="table-responsive mt-3 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Tags</th>
+                      <th>Total Projects</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!gapAnalysisDataDropped?.length" colspan="3">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let item of gapAnalysisDataDropped; let i = index">
+                      <td>{{ item?.tag }}</td>
+                      <td>{{ item?.projectCount }}</td>
+                      <td>
+                        <a class="btn btn-primary btn-sm" style="cursor: pointer" data-bs-toggle="modal"
+                          data-bs-target="#viewProjects" (click)="showProjects(item?.projects)">View
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-xl-12 col-12">
+          <div class="statistic-card">
+            <div class="card-body">
+              <div style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                ">
+                <h5 class="text-theme mb-0">
+                  <strong>No Supplier Matched</strong>
+                </h5>
+                <!-- <form class="d-flex align-items-center gap-2">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerStartDate" ngbDatepicker
+                                            #startDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="startDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="DD-MM-YYYY"
+                                            [formControl]="trackerEndDate" ngbDatepicker
+                                            #endDatePicker="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary bi bi-calendar3"
+                                            (click)="endDatePicker.toggle()" type="button">
+                                        </button>
+                                    </div>
+                                </form> -->
+              </div>
+              <div class="table-responsive mt-3 mb-3">
+                <table class="table table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th width="200px">Project Name</th>
+                      <th width="200px">Assign User</th>
+                      <th>Comments</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!gapAnalysisDataNoSupplier?.length" colspan="3">
+                        <app-no-record-found></app-no-record-found>
+                      </td>
+                    </tr>
+                    <tr *ngFor="
+                        let item of gapAnalysisDataNoSupplier
+                          | paginate
+                            : {
+                                itemsPerPage: pagesize,
+                                currentPage: pageNoSupplier,
+                                totalItems: totalRecordsNoSupplier,
+                                id: 'noSupplierPagination'
+                              };
+                        let i = index
+                      ">
+                      <td>
+                        <a (click)="projectDetails(item?.projects[0]?._id)" href="javascript:;">{{
+                          item?.projects[0]?.projectName }}</a>
+                      </td>
+                      <td>{{ item?.projects[0]?.assignBidManager?.name }}</td>
+                      <td>
+                        <div [class.collapsed-text]="!item?.showFullComment && isCommentLong(item?.comment)"
+                             [class.expanded-text]="item?.showFullComment">
+                          <div [innerHTML]="item?.showFullComment ? item?.comment : getSlicedComment(item?.comment)"></div>
+                        </div>
+                        <div *ngIf="isCommentLong(item?.comment)" class="mt-2">
+                          <button class="btn btn-link text-primary p-0" (click)="toggleComment(item)">
+                            {{ item?.showFullComment ? 'View Less' : 'View More' }}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mt-3 align-items-center">
+                <div class="row">
+                  <div class="pagination">
+                    <pagination-controls 
+                      (pageChange)="paginateNoSupplier($event)" 
+                      [id]="'noSupplierPagination'"
+                      [maxSize]="10"
+                      [directionLinks]="true"
+                      [autoHide]="false">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal fade" id="viewAllProjects" tabindex="-1" aria-labelledby="viewAllProjectsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          View All Projects
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+            <div class="form-group mb-0">
+              <span class="input-icon"><i class="bi bi-search"></i></span>
+              <input class="form-control control-search" placeholder="Search comments..." type="text"
+                [(ngModel)]="searchText" (input)="searchInputChange()" />
+            </div>
+          </div>
+        </div>
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Project Name</th>
+              <th>Comment</th>
+              <!-- <th>Feasibility Status</th> -->
+              <th>Assigned Bid User</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!filteredData?.length">
+              <td colspan="4">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+            <tr *ngFor="let project of filteredData">
+              <td>
+                <a (click)="projectDetails(project?._id)" href="javascript:;">{{
+                  project?.projectName
+                  }}</a>
+              </td>
+              <td>{{ project?.comment }}</td>
+              <!-- <td>{{ project?.status }}</td> -->
+              <td>{{ project?.assignBidManager?.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewProjects" tabindex="-1" aria-labelledby="viewProjectsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="display: flex; justify-content: space-between">
+        <h5 class="modal-title" id="ViewDocumentModalLabel">
+          View All Projects
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-6 col-xl-6 col-12 mob-mb1">
+            <div class="form-group mb-0">
+              <span class="input-icon"><i class="bi bi-search"></i></span>
+              <input class="form-control control-search" placeholder="Search comments..." type="text"
+                [(ngModel)]="searchText" (input)="searchInputChange()" />
+            </div>
+          </div>
+        </div>
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Project Name</th>
+              <th>Comment</th>
+              <th>Assigned Bid User</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!filteredData?.length">
+              <td colspan="4">
+                <app-no-record-found></app-no-record-found>
+              </td>
+            </tr>
+            <tr *ngFor="let project of filteredData">
+              <td>
+                <a (click)="projectDetails(project?._id)" href="javascript:;">{{
+                  project?.projectName
+                  }}</a>
+              </td>
+              <td>
+                {{
+                project?.droppedAfterFeasibilityStatusReason?.comment ||
+                "No comment available"
+                }}
+              </td>
+              <td>{{ project?.assignBidManager?.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

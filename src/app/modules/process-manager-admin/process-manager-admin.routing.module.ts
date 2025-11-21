@@ -20,6 +20,7 @@ import { ProcessManagerInProgressComponent } from './process-manager-in-progress
 import { ProcessManagerCompletedComponent } from './process-manager-completed/process-manager-completed.component';
 import { ProcessManagerProjectFailedComponent } from './process-manager-project-failed/process-manager-project-failed.component';
 import { InterestedSupplierWiseProjectsProcessManagerComponent } from './interested-supplier-wise-projects-process-manager/interested-supplier-wise-projects-process-manager.component';
+import { GapAnalysisComponent } from './gap-analysis/gap-analysis.component';
 
 const routes: Routes = [
   {
@@ -101,6 +102,10 @@ const routes: Routes = [
       {
         path: "interested-supplier-wise-projects-process-manager",
         component: InterestedSupplierWiseProjectsProcessManagerComponent
+      },
+      {
+        path: "gap-analysis",
+        component: GapAnalysisComponent
       },
     ]
   },
