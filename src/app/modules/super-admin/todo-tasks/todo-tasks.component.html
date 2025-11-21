@@ -186,9 +186,18 @@
                       </div>
 
                       <div class="d-flex justify-content-between">
-                        <p class="comment-text" [innerHTML]="comment?.comment">
-                          <!-- {{ comment?.comment }} -->
-                        </p>
+                        <div class="comment-content-wrapper flex-grow-1">
+                          <p class="comment-text"
+                             [class.comment-truncated]="!isCommentExpanded(comment?.commentId)"
+                             [innerHTML]="comment?.comment">
+                          </p>
+                          <button
+                            *ngIf="shouldShowViewMoreButton(comment?.comment)"
+                            class="btn btn-link btn-sm p-0 view-more-btn"
+                            (click)="toggleCommentExpansion(comment?.commentId)">
+                            {{ isCommentExpanded(comment?.commentId) ? 'View Less' : 'View More' }}
+                          </button>
+                        </div>
                         <div class="d-flex gap-2">
                           <button class="btn btn-sm delete-btn" (click)="deleteComments(comment?.commentId, task)">
                             <i class="bi bi-trash3"></i>
