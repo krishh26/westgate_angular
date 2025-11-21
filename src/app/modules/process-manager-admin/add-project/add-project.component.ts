@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -52,6 +54,9 @@ export class AddProjectComponent {
   projectId: string = '';
   categoryList: any = [];
   industryList: any = [];
+  projectList: any = [];
+  projectSearchLoading: boolean = false;
+  projectSearch = new Subject<string>();
 
   projectTypeList = [
     { type: 'Development/Service', value: 'Development/Service' },
@@ -84,6 +89,33 @@ export class AddProjectComponent {
     if (this.projectId && this.projectId.length) {
       this.patchProjectValue()
     }
+    this.setupProjectSearch();
+  }
+
+  setupProjectSearch() {
+    this.projectSearch.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((keyword: string) => {
+        if (keyword && keyword.length >= 2) {
+          this.projectSearchLoading = true;
+          return this.superService.searchProjects(keyword);
+        } else {
+          this.projectList = [];
+          return [];
+        }
+      })
+    ).subscribe((response: any) => {
+      if (response?.status) {
+        this.projectList = response?.data || [];
+      } else {
+        this.projectList = [];
+      }
+      this.projectSearchLoading = false;
+    }, (error) => {
+      this.projectSearchLoading = false;
+      this.projectList = [];
+    });
   }
 
   // Number only validation
@@ -149,25 +181,16 @@ export class AddProjectComponent {
   }
 
 
-  validateForm(): boolean {
-    return [
-      this.addEditProjectForm.projectName?.value?.trim(),
-      this.addEditProjectForm.BOSID?.value?.trim(),
-      this.addEditProjectForm.publishDate?.value?.trim(),
-      this.addEditProjectForm.clientName?.value?.trim(),
-      this.addEditProjectForm.dueDate?.value?.trim(),
-      this.addEditProjectForm.link?.value?.trim(),
-      this.addEditProjectForm.website?.value?.trim(),
-      this.addEditProjectForm.noticeReference?.value?.trim(),
-      this.addEditProjectForm.clientType?.value?.trim()
-    ].every(field => field && field.length > 0);
-  }
-
-
   submitForm() {
+    if (this.productForm.invalid) {
+      // Mark all fields as touched to trigger validation display
+      Object.keys(this.productForm.controls).forEach(key => {
+        const control = this.productForm.get(key);
+        control?.markAsTouched();
+      });
 
-    if (!this.validateForm()) {
-      this.notificationService.showError("Please fill all required fields.");
+      // Show error notification
+      this.notificationService.showError('Please fill in all required fields');
       return;
     }
 
@@ -267,5 +290,9 @@ export class AddProjectComponent {
         this.showLoader = false;
       });
     }
+  }
+
+  addCustomProject = (term: string) => {
+    return term;
   }
 }

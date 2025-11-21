@@ -8,18 +8,40 @@
         </div>
       </div>
       <form [formGroup]="productForm" (ngSubmit)="submitForm()">
+        <!-- Full Width Project Name Field -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <label for="projectName" class="col-form-label">Project Name *</label>
+            <ng-select 
+              style="padding: 0px !important" 
+              placeholder="Type to search existing projects or enter new project name"
+              class="form-select custom-ng-select-option" 
+              [items]="projectList" 
+              bindLabel="projectName"
+              bindValue="projectName"
+              formControlName="projectName"
+              [typeahead]="projectSearch"
+              [loading]="projectSearchLoading"
+              [addTag]="addCustomProject"
+              [clearable]="true"
+              [searchable]="true">
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  <div><strong>{{item.projectName}}</strong></div>
+                  <div class="small text-muted">BOS ID: {{item.BOSID}}</div>
+                  <div class="small text-muted" *ngIf="item.createdAt">Created: {{item.createdAt | date:'dd-MMM-yyyy'}}</div>
+                </div>
+              </ng-template>
+            </ng-select>
+            <div class="error-message"
+              *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched">
+              Project name is required
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-lg-5 col-xl-5 col-12">
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Project Name *</label>
-              <div class="col-sm-8">
-                <textarea formControlName="projectName" class="form-control" rows="3" cols="100"></textarea>
-                <div class="error-message"
-                  *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched">
-                  Project name is required
-                </div>
-              </div>
-            </div>
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-4 col-form-label">BOS ID *</label>
               <div class="col-sm-8">

@@ -57,7 +57,8 @@ export const Payload = {
     categorisation: '',
     supplierId: '',
     assignBidManagerId: '',
-    registerInterest: false
+    registerInterest: false,
+    attended: undefined as boolean | undefined
   },
 
   projectListSupplierwise: {

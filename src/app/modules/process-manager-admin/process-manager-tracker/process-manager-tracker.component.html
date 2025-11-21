@@ -101,6 +101,24 @@
           </ul>
         </div>
       </div>
+
+      <!-- Attended / Unattended Buttons -->
+      <div class="row mt-2">
+        <div class="col-12">
+          <div class="d-flex gap-2">
+            <button class="btn" [class.btn-primary]="!isAttended" [class.btn-success]="isAttended"
+              (click)="toggleAttended(true)">
+              <i class="bi bi-check-circle"></i>
+              Attended
+            </button>
+            <button class="btn" [class.btn-primary]="!isUnattended" [class.btn-success]="isUnattended"
+              (click)="toggleAttended(false)">
+              <i class="bi bi-x-circle"></i>
+              Unattended
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="container-fluid">

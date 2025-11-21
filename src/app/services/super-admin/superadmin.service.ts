@@ -79,7 +79,8 @@ export enum SuperAdminEndPoint {
   ADD_TAG = '/tags/add',
   DELETE_TAG = '/tags/delete',
   REMOVE_INTERESTED_SUPPLIER = '/project/remove-interested-supplier',
-  DELETE_ATTENDEE_COMMENT = '/project/delete-attendee-comment'
+  DELETE_ATTENDEE_COMMENT = '/project/delete-attendee-comment',
+  PROJECT_SEARCH = '/project/search'
 }
 
 @Injectable({
@@ -163,6 +164,14 @@ export class SuperadminService {
   getCategoryList(): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + SuperAdminEndPoint.CATEGORY_LIST
+    );
+  }
+
+  searchProjects(keyword: string): Observable<any> {
+    const params = new HttpParams().set('keyword', keyword);
+    return this.httpClient.get<any>(
+      this.baseUrl + SuperAdminEndPoint.PROJECT_SEARCH,
+      { params }
     );
   }
 

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { ProjectService } from 'src/app/services/project-service/project.service';
 import { SuperadminService } from 'src/app/services/super-admin/superadmin.service';
@@ -53,6 +55,9 @@ export class SuperadminAddProjectComponent implements OnInit {
   projectId: string = '';
   categoryList: any = [];
   industryList: any = [];
+  projectList: any = [];
+  projectSearchLoading: boolean = false;
+  projectSearch = new Subject<string>();
 
   projectTypeList = [
     { type: 'Development/Service', value: 'Development/Service' },
@@ -85,6 +90,33 @@ export class SuperadminAddProjectComponent implements OnInit {
     if (this.projectId && this.projectId.length) {
       this.patchProjectValue()
     }
+    this.setupProjectSearch();
+  }
+
+  setupProjectSearch() {
+    this.projectSearch.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((keyword: string) => {
+        if (keyword && keyword.length >= 2) {
+          this.projectSearchLoading = true;
+          return this.superService.searchProjects(keyword);
+        } else {
+          this.projectList = [];
+          return [];
+        }
+      })
+    ).subscribe((response: any) => {
+      if (response?.status) {
+        this.projectList = response?.data || [];
+      } else {
+        this.projectList = [];
+      }
+      this.projectSearchLoading = false;
+    }, (error) => {
+      this.projectSearchLoading = false;
+      this.projectList = [];
+    });
   }
 
   // Number only validation
@@ -211,6 +243,10 @@ export class SuperadminAddProjectComponent implements OnInit {
       this.notificationService.showError(error?.error?.message || error?.message);
       this.showLoader = false;
     });
+  }
+
+  addCustomProject = (term: string) => {
+    return term;
   }
 
   // getCurrentDate(): string {

@@ -2,22 +2,43 @@
   <section>
     <div class="container-fluid">
       <form [formGroup]="productForm" (ngSubmit)="submitForm()">
+        <!-- Full Width Project Name Field -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <label for="projectName" class="col-form-label">Project Name *</label>
+            <ng-select 
+              style="padding: 0px !important" 
+              placeholder="Type to search existing projects or enter new project name"
+              class="form-select custom-ng-select-option" 
+              [items]="projectList" 
+              bindLabel="projectName"
+              bindValue="projectName"
+              formControlName="projectName"
+              [typeahead]="projectSearch"
+              [loading]="projectSearchLoading"
+              [addTag]="addCustomProject"
+              [clearable]="true"
+              [searchable]="true">
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  <div><strong>{{item.projectName}}</strong></div>
+                  <div class="small text-muted">BOS ID: {{item.BOSID}}</div>
+                  <div class="small text-muted" *ngIf="item.createdAt">Created: {{item.createdAt | date:'dd-MMM-yyyy'}}</div>
+                </div>
+              </ng-template>
+            </ng-select>
+            <div *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched"
+              class="text-danger mt-1">
+              Project Name is required.
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-lg-5 col-xl-5 col-12">
 
             <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Project Name</label>
-              <div class="col-sm-8">
-                <textarea formControlName="projectName" class="form-control"></textarea>
-                <div *ngIf="productForm.get('projectName')?.invalid && productForm.get('projectName')?.touched"
-                  class="text-danger">
-                  Project Name is required.
-                </div>
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">BOS ID</label>
+              <label for="inputEmail3" class="col-sm-4 col-form-label">BOS ID *</label>
               <div class="col-sm-8">
                 <input formControlName="BOSID" type="text" class="form-control" />
                 <div *ngIf="productForm.get('BOSID')?.invalid && productForm.get('BOSID')?.touched" class="text-danger">
@@ -27,9 +48,9 @@
             </div>
 
             <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Publish Date</label>
+              <label for="inputEmail3" class="col-sm-4 col-form-label">Publish Date *</label>
               <div class="col-sm-8">
-                <input formControlName="publishDate" type="text" class="form-control" />
+                <input formControlName="publishDate" type="text" class="form-control" placeholder="Auto Detect System Calendar" />
                 <div *ngIf="productForm.get('publishDate')?.invalid && productForm.get('publishDate')?.touched"
                   class="text-danger">
                   Publish Date is required.
@@ -38,7 +59,7 @@
             </div>
 
             <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Submission Due Date</label>
+              <label for="inputEmail3" class="col-sm-4 col-form-label">Submission Due Date *</label>
               <div class="col-sm-8">
                 <input formControlName="dueDate" type="date" class="form-control" />
                 <div *ngIf="productForm.get('dueDate')?.invalid && productForm.get('dueDate')?.touched"
@@ -55,7 +76,7 @@
             </div>
 
             <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Website</label>
+              <label for="inputEmail3" class="col-sm-4 col-form-label">Website *</label>
               <div class="col-sm-8">
                 <select formControlName="website" class="form-select">
                   <option disabled selected hidden value="">Website URL</option>
@@ -72,7 +93,7 @@
             </div>
 
             <div class="row mb-3">
-              <label for="inputEmail3" class="col-sm-4 col-form-label">Notice Reference</label>
+              <label for="inputEmail3" class="col-sm-4 col-form-label">Notice Reference *</label>
               <div class="col-sm-8">
                 <input formControlName="noticeReference" type="text" class="form-control" />
                 <div *ngIf="productForm.get('noticeReference')?.invalid && productForm.get('noticeReference')?.touched"
@@ -144,7 +165,7 @@
             <div class="row">
               <div class="col-lg-6 col-xl-6 col-12">
                 <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-4 col-form-label">Link to notice</label>
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Link to notice *</label>
                   <div class="col-sm-8">
                     <input formControlName="link" type="text" class="form-control" />
                     <div *ngIf="productForm.get('link')?.invalid && productForm.get('link')?.touched"
@@ -214,7 +235,7 @@
             <div class="row mt-3">
               <div class="col-lg-6 col-xl-6 col-12">
                 <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-4 col-form-label">Client Type</label>
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Client Type *</label>
                   <div class="col-sm-8">
                     <select formControlName="clientType" class="form-select">
                       <option disabled selected hidden value="">Select Client Type</option>
@@ -231,7 +252,7 @@
 
               <div class="col-lg-6 col-xl-6 col-12">
                 <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name</label>
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Client Name *</label>
                   <div class="col-sm-8">
                     <input formControlName="clientName" type="text" class="form-control" />
                     <div *ngIf="productForm.get('clientName')?.invalid && productForm.get('clientName')?.touched"

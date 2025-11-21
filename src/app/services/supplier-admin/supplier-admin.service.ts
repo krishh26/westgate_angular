@@ -75,6 +75,9 @@ export class SupplierAdminService {
     if (params.assignBidManagerId) {
       queryParams = queryParams.set('assignBidManagerId', params.assignBidManagerId);
     }
+    if (params.attended !== undefined) {
+      queryParams = queryParams.set('attended', params.attended.toString());
+    }
 
     return this.httpClient.get<any>(url, { params: queryParams });
   }

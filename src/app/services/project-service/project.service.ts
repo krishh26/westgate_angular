@@ -81,7 +81,7 @@ export class ProjectService {
     categorisation?: string,
     assignBidManagerId?: string,
     registerInterest?: boolean,
-    attended?: string
+    attended?: boolean
   }): Observable<any> {
     const url = `${this.baseUrl}${ProjectEndPoint.PROJECT_LIST}`;
 
@@ -167,8 +167,8 @@ export class ProjectService {
     if (params?.registerInterest === true) {
       queryParams = queryParams.set('registerInterest', 'true');
     }
-    if (params?.attended) {
-      queryParams = queryParams.set('attended', params.attended);
+    if (params?.attended !== undefined) {
+      queryParams = queryParams.set('attended', params.attended.toString());
     }
     return this.httpClient.get<any>(url, { params: queryParams });
   }

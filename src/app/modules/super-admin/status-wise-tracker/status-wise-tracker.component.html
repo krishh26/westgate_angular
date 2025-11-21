@@ -100,14 +100,21 @@
         </div>
       </div>
 
-      <!-- Interested Supplier Button -->
+      <!-- Attended / Unattended Buttons -->
       <div class="row mt-2">
         <div class="col-12">
-          <button class="btn" [class.btn-primary]="!isInterestedSupplier" [class.btn-success]="isInterestedSupplier"
-            (click)="toggleInterestedSupplier()">
-            <i class="bi" [class.bi-star]="!isInterestedSupplier" [class.bi-star-fill]="isInterestedSupplier"></i>
-            Interested Supplier ({{ totalInterestedCount }})
-          </button>
+          <div class="d-flex gap-2">
+            <button class="btn" [class.btn-primary]="!isAttended" [class.btn-success]="isAttended"
+              (click)="toggleAttended(true)">
+              <i class="bi bi-check-circle"></i>
+              Attended
+            </button>
+            <button class="btn" [class.btn-primary]="!isUnattended" [class.btn-success]="isUnattended"
+              (click)="toggleAttended(false)">
+              <i class="bi bi-x-circle"></i>
+              Unattended
+            </button>
+          </div>
         </div>
       </div>
 

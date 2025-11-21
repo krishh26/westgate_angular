@@ -83,6 +83,9 @@ export class ProcessManagerTrackerComponent {
   myControl = new FormControl();
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
+  isAttended: boolean = false;
+  isUnattended: boolean = false;
+
   constructor(
     private supplierService: SupplierAdminService,
     private notificationService: NotificationService,
@@ -166,6 +169,15 @@ export class ProcessManagerTrackerComponent {
     Payload.projectListStatusWiseTracker.categorisation =
       this.selectedCategorisation.join(',');
 
+    // Add attended parameter if either attended or unattended is active
+    if (this.isAttended) {
+      Payload.projectListStatusWiseTracker.attended = true;
+    } else if (this.isUnattended) {
+      Payload.projectListStatusWiseTracker.attended = false;
+    } else {
+      Payload.projectListStatusWiseTracker.attended = undefined;
+    }
+
     this.projectService
       .getProjectList(Payload.projectListStatusWiseTracker)
       .subscribe(
@@ -221,12 +233,19 @@ export class ProcessManagerTrackerComponent {
       : '';
 
     // Prepare the request payload with expired and categorisation filters
-    const payload = {
+    const payload: any = {
       startDate,
       endDate,
       expired: this.isExpired, // Pass expired value
       categorisation: this.selectedCategorisation.join(','), // Pass selected categorisation as a comma-separated string
     };
+
+    // Add attended parameter if either attended or unattended is active
+    if (this.isAttended) {
+      payload.attended = true;
+    } else if (this.isUnattended) {
+      payload.attended = false;
+    }
 
     // Call the service to fetch data
     this.supplierService.getDataBYStatus(payload).subscribe(
@@ -358,6 +377,15 @@ export class ProcessManagerTrackerComponent {
     Payload.projectListStatusWiseTracker.categorisation = this.selectedCategorisation.join(',');
     Payload.projectListStatusWiseTracker.assignBidManagerId = this.selectedBidUsers.map(user => user._id).join(',');
 
+    // Add attended parameter if either attended or unattended is active
+    if (this.isAttended) {
+      Payload.projectListStatusWiseTracker.attended = true;
+    } else if (this.isUnattended) {
+      Payload.projectListStatusWiseTracker.attended = false;
+    } else {
+      Payload.projectListStatusWiseTracker.attended = undefined;
+    }
+
     // Do not modify status parameters here - they should already be set in the filter method
 
     console.log('ProcessManager getProjectList - Type:', type);
@@ -472,5 +500,25 @@ export class ProcessManagerTrackerComponent {
   // Method to format the display of status labels
   getFormattedStatus(status: string): string {
     return status === 'Not Releted' ? 'Not Related' : status;
+  }
+
+  toggleAttended(attended: boolean) {
+    if (attended) {
+      // Toggle attended button
+      this.isAttended = !this.isAttended;
+      if (this.isAttended) {
+        this.isUnattended = false; // Turn off unattended
+      }
+    } else {
+      // Toggle unattended button
+      this.isUnattended = !this.isUnattended;
+      if (this.isUnattended) {
+        this.isAttended = false; // Turn off attended
+      }
+    }
+
+    // Refresh the project list with the new filter
+    this.getProjectList();
+    this.getDataByStatus();
   }
 }
