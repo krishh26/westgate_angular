@@ -512,12 +512,18 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
         (response) => {
           if (response?.status === true) {
             this.totalRecords = response?.data?.meta_data?.items || 0;
-            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+            const currentTime = new Date();
 
             this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
+              const todayComments = task?.comments?.filter((comment: any) => {
+                const commentDate = new Date(comment.date);
+                // Calculate cutoff: 12:00 PM the next day after comment was created
+                const cutoffDate = new Date(commentDate);
+                cutoffDate.setDate(cutoffDate.getDate() + 1); // Add 1 day
+                cutoffDate.setHours(12, 0, 0, 0); // Set to 12:00 PM (noon)
+
+                return currentTime <= cutoffDate; // Show if current time is before cutoff
+              });
 
               return {
                 ...task,
@@ -574,12 +580,18 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
           if (response?.status === true) {
             this.totalRecords = response?.data?.meta_data?.items || 0;
             console.log("this.totalRecords", this.totalRecords)
-            const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+            const currentTime = new Date();
 
             this.taskList = response?.data?.data.map((task: any) => {
-              const todayComments = task?.comments?.filter((comment: any) =>
-                comment.date.split("T")[0] === today
-              );
+              const todayComments = task?.comments?.filter((comment: any) => {
+                const commentDate = new Date(comment.date);
+                // Calculate cutoff: 12:00 PM the next day after comment was created
+                const cutoffDate = new Date(commentDate);
+                cutoffDate.setDate(cutoffDate.getDate() + 1); // Add 1 day
+                cutoffDate.setHours(12, 0, 0, 0); // Set to 12:00 PM (noon)
+
+                return currentTime <= cutoffDate; // Show if current time is before cutoff
+              });
 
               return {
                 ...task,
@@ -933,11 +945,17 @@ export class TodoTasksComponent implements OnInit, OnDestroy {
               (response) => {
                 if (response?.status === true) {
                   this.totalRecords = response?.data?.meta_data?.items || 0;
-                  const today = new Date().toISOString().split("T")[0];
+                  const currentTime = new Date();
                   this.taskList = response?.data?.data.map((task: any) => {
-                    const todayComments = task?.comments?.filter((comment: any) =>
-                      comment.date.split("T")[0] === today
-                    );
+                    const todayComments = task?.comments?.filter((comment: any) => {
+                      const commentDate = new Date(comment.date);
+                      // Calculate cutoff: 12:00 PM the next day after comment was created
+                      const cutoffDate = new Date(commentDate);
+                      cutoffDate.setDate(cutoffDate.getDate() + 1); // Add 1 day
+                      cutoffDate.setHours(12, 0, 0, 0); // Set to 12:00 PM (noon)
+
+                      return currentTime <= cutoffDate; // Show if current time is before cutoff
+                    });
                     return {
                       ...task,
                       todayComments: todayComments?.length ? todayComments : null,
