@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider/options';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
@@ -31,7 +31,7 @@ interface Project {
   templateUrl: './project-manager-completed.component.html',
   styleUrls: ['./project-manager-completed.component.scss'],
 })
-export class ProjectManagerCompletedComponent {
+export class ProjectManagerCompletedComponent implements OnInit {
   showLoader: boolean = false;
   projectList: any = [];
   isExpired: boolean = false;
@@ -46,7 +46,7 @@ export class ProjectManagerCompletedComponent {
   categoryList: any = [];
   industryList: any = [];
   tempPayload: any;
-
+  nonAttendeeCount: number = 0;
   minValue: number = 0;
   maxValue: number = 99999999999999999;
   options: Options = {
@@ -121,6 +121,7 @@ export class ProjectManagerCompletedComponent {
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
+    this.getInterestedSupplierProjects();
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
         this.notificationService.showError(
@@ -326,6 +327,32 @@ export class ProjectManagerCompletedComponent {
           this.projectList = response?.data?.data;
 
           this.totalRecords = response?.data?.meta_data?.items;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.error?.message || error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getInterestedSupplierProjects() {
+    this.showLoader = true;
+    this.tempPayload.projectList.keyword = this.searchText;
+    this.tempPayload.projectList.page = String(this.page);
+    this.tempPayload.projectList.limit = String(this.pagesize);
+    this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.expired = true;
+    this.tempPayload.projectList.registerInterest = true;
+    this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          // Handle the interested supplier projects data here if needed
+          console.log('Interested Supplier Projects:', response?.data?.data);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
