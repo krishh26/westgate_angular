@@ -51,7 +51,7 @@ export class ProcessManagerToActionComponent implements OnInit {
   categoryList: any = [];
   industryList: any = [];
   tempPayload: any;
-
+  nonAttendeeCount: number = 0;
   bidstatusList = [
     { bidvalue: 'Awaiting', bidstatus: 'Awaiting' },
     { bidvalue: 'InSolution', bidstatus: 'In Solution' },
@@ -134,6 +134,7 @@ export class ProcessManagerToActionComponent implements OnInit {
     this.getCategoryList();
     this.getIndustryList();
     this.getProjectList();
+    this.getInterestedSupplierProjects();
 
     this.publishEndDate.valueChanges.subscribe((res: any) => {
       if (!this.publishStartDate.value) {
@@ -426,6 +427,32 @@ export class ProcessManagerToActionComponent implements OnInit {
           this.projectList = response?.data?.data;
 
           this.totalRecords = response?.data?.meta_data?.items;
+        } else {
+          this.notificationService.showError(response?.message);
+          this.showLoader = false;
+        }
+      },
+      (error) => {
+        this.notificationService.showError(error?.error?.message || error?.message);
+        this.showLoader = false;
+      }
+    );
+  }
+
+  getInterestedSupplierProjects() {
+    this.showLoader = true;
+    this.tempPayload.projectList.keyword = this.searchText;
+    this.tempPayload.projectList.page = String(this.page);
+    this.tempPayload.projectList.limit = String(this.pagesize);
+    this.tempPayload.projectList.appointed = this.loginUser?.id;
+    this.tempPayload.projectList.expired = true;
+    this.tempPayload.projectList.registerInterest = true;
+    this.projectService.getProjectList(this.tempPayload.projectList).subscribe(
+      (response) => {
+        if (response?.status == true) {
+          this.showLoader = false;
+          // Handle the interested supplier projects data here if needed
+          console.log('Interested Supplier Projects:', response?.data?.data);
         } else {
           this.notificationService.showError(response?.message);
           this.showLoader = false;
