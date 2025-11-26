@@ -90,6 +90,8 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
   isAttended: boolean = false;
   isUnattended: boolean = false;
+  attendeeCount: number = 0;
+  nonAttendeeCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -204,6 +206,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
         this.projectList = [];
         this.totalRecords = response?.data?.meta_data?.items;
           if (response?.status == true) {
+            this.updateAttendanceCounts(response?.data);
             this.showLoader = false;
             this.projectList = response?.data?.data;
             // Store bid manager counts if available in response
@@ -219,11 +222,13 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
             this.dateDifference = formattedDateDifference;
           });
         } else {
+          this.updateAttendanceCounts(undefined);
           this.notificationService.showError(response?.message);
           this.showLoader = false;
         }
       },
       (error) => {
+        this.updateAttendanceCounts(undefined);
         this.notificationService.showError(error?.error?.message || error?.message);
         this.showLoader = false;
       }
@@ -300,6 +305,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
           this.projectList = [];
           this.totalRecords = response?.data?.meta_data?.items;
           if (response?.status == true) {
+            this.updateAttendanceCounts(response?.data);
             this.showLoader = false;
             this.projectList = response?.data?.data;
 
@@ -320,11 +326,13 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
               this.dateDifference = formattedDateDifference;
             });
           } else {
+            this.updateAttendanceCounts(undefined);
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
         },
         (error) => {
+          this.updateAttendanceCounts(undefined);
           this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
@@ -533,6 +541,7 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
           this.totalRecords = response?.data?.meta_data?.items;
 
           if (response?.status === true) {
+            this.updateAttendanceCounts(response?.data);
             this.showLoader = false;
             this.projectList = response?.data?.data;
             this.projectList.forEach((project: any) => {
@@ -546,11 +555,13 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
               this.dateDifference = formattedDateDifference;
             });
           } else {
+            this.updateAttendanceCounts(undefined);
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
         },
         (error) => {
+          this.updateAttendanceCounts(undefined);
           this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
@@ -620,6 +631,11 @@ export class StatusWiseTrackerComponent implements OnInit, OnDestroy {
 
   showComments(comments: any[]) {
     this.viewComments = comments || [];
+  }
+
+  private updateAttendanceCounts(responseData: any) {
+    this.attendeeCount = responseData?.attendeeCount ?? 0;
+    this.nonAttendeeCount = responseData?.nonAttendeeCount ?? 0;
   }
 
   hasPinnedComments(): boolean {

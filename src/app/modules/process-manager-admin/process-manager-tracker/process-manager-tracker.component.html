@@ -110,11 +110,13 @@
               (click)="toggleAttended(true)">
               <i class="bi bi-check-circle"></i>
               Attended
+              <span class="badge bg-light text-dark ms-2">{{ attendeeCount || 0 }}</span>
             </button>
             <button class="btn" [class.btn-primary]="!isUnattended" [class.btn-success]="isUnattended"
               (click)="toggleAttended(false)">
               <i class="bi bi-x-circle"></i>
               Unattended
+              <span class="badge bg-light text-dark ms-2">{{ nonAttendeeCount || 0 }}</span>
             </button>
           </div>
         </div>

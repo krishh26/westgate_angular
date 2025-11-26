@@ -85,6 +85,8 @@ export class ProcessManagerTrackerComponent {
 
   isAttended: boolean = false;
   isUnattended: boolean = false;
+  attendeeCount: number = 0;
+  nonAttendeeCount: number = 0;
 
   constructor(
     private supplierService: SupplierAdminService,
@@ -185,6 +187,7 @@ export class ProcessManagerTrackerComponent {
           this.projectList = [];
           this.totalRecords = response?.data?.meta_data?.items;
           if (response?.status == true) {
+            this.updateAttendanceCounts(response?.data);
             this.showLoader = false;
             this.projectList = response?.data?.data;
 
@@ -200,11 +203,13 @@ export class ProcessManagerTrackerComponent {
               this.dateDifference = formattedDateDifference;
             });
           } else {
+            this.updateAttendanceCounts(undefined);
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
         },
         (error) => {
+          this.updateAttendanceCounts(undefined);
           this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
@@ -400,6 +405,7 @@ export class ProcessManagerTrackerComponent {
           this.totalRecords = response?.data?.meta_data?.items;
 
           if (response?.status === true) {
+            this.updateAttendanceCounts(response?.data);
             this.showLoader = false;
             this.projectList = response?.data?.data;
             this.projectList.forEach((project: any) => {
@@ -413,11 +419,13 @@ export class ProcessManagerTrackerComponent {
               this.dateDifference = formattedDateDifference;
             });
           } else {
+            this.updateAttendanceCounts(undefined);
             this.notificationService.showError(response?.message);
             this.showLoader = false;
           }
         },
         (error) => {
+          this.updateAttendanceCounts(undefined);
           this.notificationService.showError(error?.error?.message || error?.message);
           this.showLoader = false;
         }
@@ -520,5 +528,10 @@ export class ProcessManagerTrackerComponent {
     // Refresh the project list with the new filter
     this.getProjectList();
     this.getDataByStatus();
+  }
+
+  private updateAttendanceCounts(responseData: any) {
+    this.attendeeCount = responseData?.attendeeCount ?? 0;
+    this.nonAttendeeCount = responseData?.nonAttendeeCount ?? 0;
   }
 }
