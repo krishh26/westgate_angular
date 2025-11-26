@@ -211,28 +211,44 @@
                 <!-- Sub Task Section Start  -->
 
                 <ul class="SecondarytaskList" *ngIf="task?.todayComments">
-                  <div class="row align-items-center mb-3">
-                    <div class="col">
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-0 user-name">
-                          {{ task.todayComments[0]?.userDetail?.name }}
-                        </p>
-                        <small class="comment-date">
-                          {{ task.todayComments[0]?.date | date : "dd/MM/yyyy, h:mm a" }}
+                  <li *ngFor="let comment of task.todayComments" class="comment-item p-2"
+                    [ngClass]="{ 'admin-comment': comment?.userDetail?.role === 'Admin' }">
+
+                    <div class="row align-items-center mb-3">
+                      <div class="col">
+                        <div class="d-flex justify-content-between">
+                          <p class="mb-0 user-name">
+                            {{ comment?.userDetail?.name }}
+                          </p>
+                          <small class="comment-date" *ngIf="comment?.date">
+                            {{ comment?.date | date : "dd/MM/yyyy, h:mm a" }}
+                          </small>
+                        </div>
+                        <small class="text-muted user-role d-block">
+                          {{
+                          comment?.userDetail?.role === "BOS"
+                          ? "USER"
+                          : comment?.userDetail?.role
+                          }}
                         </small>
                       </div>
-                      <small class="text-muted user-role d-block">
-                        {{ task.todayComments[0]?.userDetail?.role }}
-                      </small>
                     </div>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <!-- <p class="comment-text">{{ task.todayComments[0]?.comment }}</p> -->
 
-                    <p class="comment-text" [innerHTML]="task.todayComments[0]?.comment">
-
-                    </p>
-                  </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="comment-content-wrapper flex-grow-1">
+                        <p class="comment-text"
+                           [class.comment-truncated]="!isCommentExpanded(comment?.commentId)"
+                           [innerHTML]="comment?.comment">
+                        </p>
+                        <button
+                          *ngIf="shouldShowViewMoreButton(comment?.comment)"
+                          class="btn btn-link btn-sm p-0 view-more-btn"
+                          (click)="toggleCommentExpansion(comment?.commentId)">
+                          {{ isCommentExpanded(comment?.commentId) ? 'View Less' : 'View More' }}
+                        </button>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
 
                 <p *ngIf="!task?.todayComments" class="text-muted">

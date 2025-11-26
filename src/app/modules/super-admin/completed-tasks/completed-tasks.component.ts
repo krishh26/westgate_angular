@@ -472,6 +472,8 @@ export class CompletedTasksComponent {
 
   modalTask: any = {};
   selectedUsers: any = [];
+  expandedComments: { [key: string]: boolean } = {}; // Track expanded state of comments
+
   openTaskModal(task: any) {
     this.assignTo = [];
     this.selectedUsers = [];
@@ -480,6 +482,23 @@ export class CompletedTasksComponent {
       this.selectedUsers.push(element?.userId);
     });
     this.modalTask = { ...task }; // Deep copy to avoid direct binding
+  }
+
+  toggleCommentExpansion(commentId: string): void {
+    this.expandedComments[commentId] = !this.expandedComments[commentId];
+  }
+
+  isCommentExpanded(commentId: string): boolean {
+    return !!this.expandedComments[commentId];
+  }
+
+  shouldShowViewMoreButton(comment: string): boolean {
+    // Check if comment has more than 3 lines worth of content
+    // Rough estimate: if comment is longer than ~150 characters, show button
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = comment;
+    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+    return textContent.length > 150;
   }
   getTask() {
     this.showLoader = true;
