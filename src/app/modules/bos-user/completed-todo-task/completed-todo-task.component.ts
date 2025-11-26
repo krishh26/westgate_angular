@@ -67,6 +67,7 @@ export class CompletedTodoTaskComponent {
   timeMinutes: number | null = null;
   minutesOptions: { value: number; label: string }[] = [];
   timeError: string = '';
+  expandedComments: { [key: string]: boolean } = {};
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -698,5 +699,20 @@ export class CompletedTodoTaskComponent {
 
     // Handle string ID comparison
     return candidateId === this.loginUser.id;
+  }
+
+  toggleCommentExpansion(commentId: string): void {
+    this.expandedComments[commentId] = !this.expandedComments[commentId];
+  }
+
+  isCommentExpanded(commentId: string): boolean {
+    return !!this.expandedComments[commentId];
+  }
+
+  shouldShowViewMoreButton(comment: string): boolean {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = comment;
+    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+    return textContent.length > 150;
   }
 }

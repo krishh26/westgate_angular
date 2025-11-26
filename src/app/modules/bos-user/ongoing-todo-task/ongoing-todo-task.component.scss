@@ -725,3 +725,45 @@ textarea {
   padding-right: 15px !important;
   margin-top: 10px;
 }
+
+/* Comment truncation styles */
+.comment-content-wrapper {
+  position: relative;
+}
+
+.comment-text {
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.comment-text.comment-truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  max-height: 4.5em; /* 3 lines * 1.5 line-height */
+}
+
+.view-more-btn {
+  color: #0d6efd;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+  
+  &:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+  }
+  
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

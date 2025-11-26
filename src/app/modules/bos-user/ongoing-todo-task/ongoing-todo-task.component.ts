@@ -115,6 +115,7 @@ export class OngoingTodoTaskComponent {
 
   // Add this property to store subtasks
   subtasksList: any[] = []; // Initialize as empty array
+  expandedComments: { [key: string]: boolean } = {};
 
   constructor(
     private superService: SuperadminService,
@@ -988,5 +989,20 @@ export class OngoingTodoTaskComponent {
         value: i
       });
     }
+  }
+
+  toggleCommentExpansion(commentId: string): void {
+    this.expandedComments[commentId] = !this.expandedComments[commentId];
+  }
+
+  isCommentExpanded(commentId: string): boolean {
+    return !!this.expandedComments[commentId];
+  }
+
+  shouldShowViewMoreButton(comment: string): boolean {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = comment;
+    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+    return textContent.length > 150;
   }
 }
