@@ -110,6 +110,8 @@
                   <tr>
                     <th width="200px">Supplier Name</th>
                     <th>Join Date</th>
+                    <th>Created By</th>
+                    <th>Activated</th>
                     <th *ngIf="currentFilter !== 'isDeleted'">Last Login</th>
                     <th>Total Employees</th>
                     <th *ngIf="currentFilter !== 'isDeleted'">Total Candidates</th>
@@ -124,7 +126,7 @@
                 <tbody>
 
                   <tr>
-                    <td *ngIf="!supplierUserList?.length" colspan="8">
+                    <td *ngIf="!supplierUserList?.length" colspan="10">
                       <app-no-record-found></app-no-record-found>
                     </td>
                   </tr>
@@ -133,6 +135,8 @@
                     *ngFor="let item of supplierUserList | paginate: { itemsPerPage: pagesize, currentPage: page, totalItems: totalRecords, id: currentFilter || 'default' }; let i = index">
                     <td>{{item?.companyName || item?.name}}</td>
                     <td>{{item?.doj | date : 'dd/MM/yyyy'}}</td>
+                    <td>{{item?.createdBy?.name || '-'}}</td>
+                    <td>{{item?.activeAt ? (item.activeAt | date : 'dd/MM/yyyy - hh:mm a') : '-'}}</td>
                     <td *ngIf="currentFilter !== 'isDeleted'">{{item?.lastLogin | date : 'dd/MM/yyyy - hh:mm a'}}</td>
                     <td>{{item?.employeeCount}}</td>
                     <td *ngIf="currentFilter !== 'isDeleted'">{{item?.totalCandidates}}</td>
